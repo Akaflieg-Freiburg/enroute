@@ -100,6 +100,8 @@ set(SOURCES
     traffic/TrafficDataSource_BluetoothClassic.h
     traffic/TrafficDataSource_BluetoothLowEnergy.h
     traffic/TrafficDataSource_File.h
+    traffic/TrafficDataSource_Ogn.h
+    traffic/TrafficDataSource_OgnParser.h
     traffic/TrafficDataSource_Simulate.h
     traffic/TrafficDataSource_Tcp.h
     traffic/TrafficDataSource_Udp.h
@@ -107,7 +109,9 @@ set(SOURCES
     traffic/TrafficFactor_Abstract.h
     traffic/TrafficFactor_DistanceOnly.h
     traffic/TrafficFactor_WithPosition.h
+    traffic/TrafficFactorAircraftType.h
     traffic/TrafficObserver.h
+    traffic/TransponderDB.h
     traffic/Warning.h
     units/Angle.h
     units/ByteSize.h
@@ -200,6 +204,8 @@ set(SOURCES
     traffic/TrafficDataSource_BluetoothClassic.cpp
     traffic/TrafficDataSource_BluetoothLowEnergy.cpp
     traffic/TrafficDataSource_File.cpp
+    traffic/TrafficDataSource_Ogn.cpp
+    traffic/TrafficDataSource_OgnParser.cpp
     traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp.cpp
@@ -208,7 +214,9 @@ set(SOURCES
     traffic/TrafficFactor_Abstract.cpp
     traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor_WithPosition.cpp
+    traffic/TrafficFactorAircraftType.cpp
     traffic/TrafficObserver.cpp
+    traffic/TransponderDB.cpp
     traffic/Warning.cpp
     units/Angle.cpp
     units/Density.cpp

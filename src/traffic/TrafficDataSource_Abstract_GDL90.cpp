@@ -341,35 +341,35 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
 
         // Traffic type
         auto ee = static_cast<quint8>(message.at(17));
-        auto type = Traffic::TrafficFactor_Abstract::unknown;
+        auto type = Traffic::unknown;
         switch(ee) {
         case 1:
         case 2:
         case 3:
         case 4:
         case 5:
-            type = Traffic::TrafficFactor_Abstract::Aircraft;
+            type = Traffic::Aircraft;
             break;
         case 6:
-            type = Traffic::TrafficFactor_Abstract::Jet;
+            type = Traffic::Jet;
             break;
         case 7:
-            type = Traffic::TrafficFactor_Abstract::Copter;
+            type = Traffic::Copter;
             break;
         case 9:
-            type = Traffic::TrafficFactor_Abstract::Glider;
+            type = Traffic::Glider;
             break;
         case 10:
-            type = Traffic::TrafficFactor_Abstract::Balloon;
+            type = Traffic::Balloon;
             break;
         case 11:
-            type = Traffic::TrafficFactor_Abstract::Skydiver;
+            type = Traffic::Skydiver;
             break;
         case 14:
-            type = Traffic::TrafficFactor_Abstract::Drone;
+            type = Traffic::Drone;
             break;
         case 19:
-            type = Traffic::TrafficFactor_Abstract::StaticObstacle;
+            type = Traffic::StaticObstacle;
             break;
         default:
             break;

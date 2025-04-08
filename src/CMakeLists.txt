@@ -629,7 +629,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/PrivacyPage.qml
     qml/pages/SettingsPage.qml
     qml/pages/TrafficReceiver.qml
-    qml/pages/URLResolver.qml
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml
     SOURCES

@@ -51,9 +51,9 @@ Bluetooth Classic
 ^^^^^^^^^^^^^^^^^
 
 The **Enroute Flight Navigation** is able to communicate with your traffic data
-receiver via the "Bluetooth Classic" radio standard.  
-
-.. note:: The radio standard "Bluetooth Low Energy" is currently unsupported.
+receiver via the "Bluetooth Classic" radio standard.  The radio standard 
+"Bluetooth Low Energy" is supported as a technology preview only and should not
+be used in production.
 
 .. note:: Due to limitations of the iOS platform, Bluetooth is not
     supported on iPhone and iPad devices.
@@ -63,20 +63,20 @@ Flight Navigation** as the "phone", and to your Bluetooth-enabled traffic
 data receiver as the "Bluetooth Device".  To configure a new data connection
 between your phone to the Bluetooth device, proceed as follows.
 
-- Ensure that your Bluetooth Classic device is switched on and in "discoverable"
-  mode.
+- Ensure that your Bluetooth device is switched on and in "discoverable" mode.
 
-- Because Bluetooth devices support only one data connection, the following
-  steps will fail if another phone is trying to connect to your Bluetooth
-  device. Ensure that there are no other phones around that could interfere
-  with your phone.  Keep in mind that other phones might be in someone
-  else's bag, stowed away in a nearby car, or in the office building next door.
+- Note that "Bluetooth Classic" devices support only one data connection.  If
+  you use "Bluetooth Classic", the following steps will fail if another phone is
+  trying to connect to your Bluetooth device. Ensure that there are no other
+  phones around that could interfere with your phone.  Keep in mind that other
+  phones might be in someone else's bag, stowed away in a nearby car, or in the
+  office building next door.
 
 - Ensure that Bluetooth is switched "on" in your phone.
 
 - Depending on the precise version of your operating system, you may need to
-  pair your phone with the Bluetooth Classic device.  Pairing never hurts, so
-  we recommend pairing if possible.  Note that some Bluetooth device cannot be
+  pair your phone with the Bluetooth device.  Pairing never hurts, so we
+  recommend pairing if possible.  Note that some Bluetooth device cannot be
   paired.
 
 - Open **Enroute Flight Navigation** on your phone, navigate to this page and

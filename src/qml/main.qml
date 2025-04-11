@@ -66,9 +66,9 @@ AppWindow {
                 Label { // Title
                     Layout.fillWidth: true
 
-                    leftPadding: 16+view.SafeArea.margins.left
+                    leftPadding: 16+SafeInsets.left
                     rightPadding: 16
-                    topPadding: 16+view.SafeArea.margins.top
+                    topPadding: 16+SafeInsets.top
 
                     Component.onCompleted: console.log(view.SafeArea.margins)
                     text: "Enroute Flight Navigation"

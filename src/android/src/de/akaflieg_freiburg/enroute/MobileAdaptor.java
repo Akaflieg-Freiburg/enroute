@@ -128,13 +128,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 			}
 		});
 
-		// Set fullscreen
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-			getWindow()
-					.getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-		}
-
 	}
 
 	@Override

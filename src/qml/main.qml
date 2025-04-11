@@ -32,15 +32,13 @@ AppWindow {
     id: view
     objectName: "applicationWindow"
 
-    // On Android, fullscreen mode is set in JAVA code
-    flags: ((Qt.platform.os === "android") || (Qt.platform.os === "ios")) ? Qt.MaximizeUsingFullscreenGeometryHint | Qt.Window : Qt.Window
+    flags: Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint | Qt.Window
+    topPadding: 0
     font.pixelSize: GlobalSettings.fontSize
     font.letterSpacing: GlobalSettings.fontSize > 15 ? 0.5 : 0.25
 
     visible: true
     title: "Enroute Flight Navigation"
-    width: SafeInsets.wWidth
-    height: SafeInsets.wHeight
 
     Settings {
         property alias x: view.x
@@ -52,10 +50,10 @@ AppWindow {
     Drawer {
         id: drawer
 
-        height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
+        height: parent.height
         width: col.implicitWidth
         Material.roundedScale: Material.NotRounded
-
+        topPadding: 0
 
         DecoratedScrollView {
             anchors.fill: parent
@@ -68,10 +66,11 @@ AppWindow {
                 Label { // Title
                     Layout.fillWidth: true
 
-                    leftPadding: 16+SafeInsets.left
+                    leftPadding: 16+view.SafeArea.margins.left
                     rightPadding: 16
-                    topPadding: 16+SafeInsets.top
+                    topPadding: 16+view.SafeArea.margins.top
 
+                    Component.onCompleted: console.log(view.SafeArea.margins)
                     text: "Enroute Flight Navigation"
                     color: "white"
                     font.pixelSize: 20

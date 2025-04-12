@@ -206,13 +206,13 @@ private:
 
     // Get own coordinates. 
     // @param useLastValidPosition If true, use the last valid position if the current position is invalid.
-    QGeoCoordinate getOwnShipCoordinate(bool useLastValidPosition) const;
+    static QGeoCoordinate getOwnShipCoordinate(bool useLastValidPosition);
 
     // Periodic update function called once per minute
     void periodicUpdate();
 
     // Update receive position
-    void updateReceivePosition(QGeoCoordinate position);
+    void updateReceivePosition(const QGeoCoordinate &position);
 
     // Send a keep-alive message to the APRS-IS server
     void sendKeepAlive();

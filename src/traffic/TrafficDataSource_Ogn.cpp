@@ -145,13 +145,17 @@ void Traffic::TrafficDataSource_Ogn::disconnectFromTrafficReceiver()
 void Traffic::TrafficDataSource_Ogn::sendLoginString()
 {
     // update own location
-    QGeoCoordinate coordinate = getOwnShipCoordinate(/*useLastValidPosition*/true);
+    QGeoCoordinate const coordinate = getOwnShipCoordinate(/*useLastValidPosition*/ true);
     if (coordinate.isValid()) {
         m_receiveLocation = coordinate;
     }
 
-    QString loginString = Ogn::TrafficDataSource_OgnParser::formatLoginString(
-        m_callSign, m_receiveLocation, m_receiveRadius, u"enroute", QCoreApplication::applicationVersion());
+    QString const loginString
+        = Ogn::TrafficDataSource_OgnParser::formatLoginString(m_callSign,
+                                                              m_receiveLocation,
+                                                              m_receiveRadius,
+                                                              u"enroute",
+                                                              QCoreApplication::applicationVersion());
 
     m_textStream << loginString;
     m_textStream.flush();
@@ -161,14 +165,14 @@ void Traffic::TrafficDataSource_Ogn::sendLoginString()
     #endif
 }
 
-QGeoCoordinate Traffic::TrafficDataSource_Ogn::getOwnShipCoordinate(bool useLastValidPosition) const
+QGeoCoordinate Traffic::TrafficDataSource_Ogn::getOwnShipCoordinate(bool useLastValidPosition)
 {
     QGeoCoordinate ownShipCoordinate;
     auto* positionProviderPtr = GlobalObject::positionProvider();
-    if (positionProviderPtr) {
+    if (positionProviderPtr != nullptr) {
         ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
         if (!ownShipCoordinate.isValid() && useLastValidPosition) {
-            ownShipCoordinate = positionProviderPtr->lastValidCoordinate();
+            ownShipCoordinate = Positioning::PositionProvider::lastValidCoordinate();
         }
     }
     return ownShipCoordinate;
@@ -176,7 +180,7 @@ QGeoCoordinate Traffic::TrafficDataSource_Ogn::getOwnShipCoordinate(bool useLast
 
 void Traffic::TrafficDataSource_Ogn::onReadyRead()
 {
-    static TransponderDB transponderDB; // Initialize the database
+    static TransponderDB const transponderDB; // Initialize the database
 
     m_ognMessage.reset();
     while (m_textStream.readLineInto(&m_ognMessage.sentence)) {
@@ -190,10 +194,10 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
         {
             case Traffic::Ogn::OgnMessageType::TRAFFIC_REPORT:
             {
-                if ((m_ognMessage.aircraftType == Traffic::AircraftType::unknown || 
-                     m_ognMessage.aircraftType == Traffic::AircraftType::StaticObstacle)
-                   && m_ognMessage.speed == 0) {
-                    #if OGN_DEBUG
+                if ((m_ognMessage.aircraftType == Traffic::AircraftType::unknown
+                     || m_ognMessage.aircraftType == Traffic::AircraftType::StaticObstacle)
+                    && !m_ognMessage.speed.isFinite()) {
+#if OGN_DEBUG
                     qDebug() << "Not an Aircraft.";
                     #endif
                     return;
@@ -206,7 +210,8 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 }
 
                 // Compute horizontal and vertical distance to traffic if our own position is known.
-                QGeoCoordinate ownShipCoordinate = getOwnShipCoordinate(/*useLastValidPosition*/true);
+                QGeoCoordinate const ownShipCoordinate = getOwnShipCoordinate(
+                    /*useLastValidPosition*/ true);
                 Units::Distance hDist {};
                 Units::Distance vDist {};
                 if (ownShipCoordinate.isValid()) {
@@ -218,12 +223,12 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 QString callsign;
                 if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
                     callsign = GlobalObject::flarmnetDB()->getRegistration(QString(m_ognMessage.address));
-                } else if (m_ognMessage.flightnumber.length()) {
+                } else if (static_cast<int>(!m_ognMessage.flightnumber.empty()) != 0) {
                     callsign = QString(m_ognMessage.flightnumber);
                 } else if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::ICAO) {
                     callsign = transponderDB.getRegistration(QString(m_ognMessage.address));
                 }
-                #if OGN_SHOW_ADDRESSTYPE
+#if OGN_SHOW_ADDRESSTYPE
                 const QMetaEnum metaEnum = QMetaEnum::fromType<Traffic::Ogn::OgnAddressType>();
                 callsign += QString(" (%1)").arg(metaEnum.valueToKey(static_cast<int>(m_ognMessage.addressType)));
                 #endif
@@ -240,8 +245,10 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 
                 // PositionInfo
                 QGeoPositionInfo pInfo(m_ognMessage.coordinate, QDateTime::currentDateTimeUtc());
-                pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course.toDouble());
-                pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, m_ognMessage.speed.toDouble());
+                pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course.toDEG());
+#warning
+                qWarning() << m_ognMessage.coordinate << m_ognMessage.course.toDEG();
+                pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, m_ognMessage.speed.toMPS());
                 pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, m_ognMessage.verticalSpeed);
                 if (!pInfo.isValid()) {
                     #if OGN_DEBUG
@@ -307,7 +314,8 @@ void Traffic::TrafficDataSource_Ogn::sendPosition(const QGeoCoordinate& coordina
     }
 
     // Use the OgnParser class to format the position report
-    QString positionReport = Traffic::Ogn::TrafficDataSource_OgnParser::formatPositionReport(m_callSign, coordinate, course, speed, altitude, m_aircraftType);
+    QString const positionReport = Traffic::Ogn::TrafficDataSource_OgnParser::formatPositionReport(
+        m_callSign, coordinate, course, speed, altitude, m_aircraftType);
 
     // Send the position report
     m_textStream << positionReport;
@@ -325,7 +333,7 @@ void Traffic::TrafficDataSource_Ogn::periodicUpdate()
     verifyConnection();
 
     // update receive position
-    QGeoCoordinate position = getOwnShipCoordinate(/*useLastValidPosition*/true);
+    QGeoCoordinate const position = getOwnShipCoordinate(/*useLastValidPosition*/ true);
     if (position.isValid()) {
         updateReceivePosition(position);
     }
@@ -345,16 +353,18 @@ void Traffic::TrafficDataSource_Ogn::periodicUpdate()
     #endif    
 }
 
-void Traffic::TrafficDataSource_Ogn::updateReceivePosition(QGeoCoordinate position)
+void Traffic::TrafficDataSource_Ogn::updateReceivePosition(const QGeoCoordinate &position)
 {
-    double distance = position.distanceTo(m_receiveLocation);
+    double const distance = position.distanceTo(m_receiveLocation);
     if (distance > 10000) { // More than 10 km
         #if OGN_DEBUG
         qDebug() << "Current position is more than 10 km away from OGN receive position. Updating receive position.";
         #endif
         m_receiveLocation = position;
-        QString filterCommand = Traffic::Ogn::TrafficDataSource_OgnParser::formatFilterCommand(m_receiveLocation, m_receiveRadius);
-        #if OGN_DEBUG
+        QString const filterCommand
+            = Traffic::Ogn::TrafficDataSource_OgnParser::formatFilterCommand(m_receiveLocation,
+                                                                             m_receiveRadius);
+#if OGN_DEBUG
         qDebug() << filterCommand; 
         #endif
         m_textStream << filterCommand;

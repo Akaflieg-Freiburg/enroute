@@ -35,54 +35,64 @@ namespace {
 Q_GLOBAL_STATIC(QRegularExpression, s_regex1, R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(.)(\d{3})[/\\](\d{3})[/\\]A=(\d{6})$)"_L1);
 Q_GLOBAL_STATIC(QRegularExpression, s_regex2, R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(.)[/\\]A=(\d{6})$)"_L1);
 Q_GLOBAL_STATIC(QRegularExpression, s_regex_weatherreport, R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(_)(\d{3})[/](\d{3})g(\d{3})t(\d{3})h(\d{2})b(\d{5})$)"_L1);
-}
+
+// see http://wiki.glidernet.org/wiki:ogn-flavoured-aprs
+using ATMap = QMap<QString, Traffic::AircraftType>; // Necessary because Q_GLOBAL_STATIC does not like templates
+Q_GLOBAL_STATIC(ATMap, AircraftTypeMap,
+                {
+                    {"/z",  Traffic::AircraftType::unknown},         // Unknown
+                    {"/'",  Traffic::AircraftType::Glider},          // Glider
+                    {"/X",  Traffic::AircraftType::Copter},          // Helicopter
+                    {"/g",  Traffic::AircraftType::Paraglider},      // Parachute, Hang Glider, Paraglider
+                    {"\\^", Traffic::AircraftType::Aircraft},        // Drop Plane, Powered Aircraft
+                    {"/^",  Traffic::AircraftType::Jet},             // Jet Aircraft
+                    {"/O",  Traffic::AircraftType::Balloon},         // Balloon, Airship
+                    {"\\n", Traffic::AircraftType::StaticObstacle},  // Static Object
+                });
+
+using ASMap = QMap<QString, Traffic::Ogn::OgnSymbol>; // Necessary because Q_GLOBAL_STATIC does not like templates
+Q_GLOBAL_STATIC(ASMap, AprsSymbolMap,
+                {
+                    {"/z",  Traffic::Ogn::OgnSymbol::UNKNOWN},        // Unknown
+                    {"/'",  Traffic::Ogn::OgnSymbol::GLIDER},         // Glider
+                    {"/X",  Traffic::Ogn::OgnSymbol::HELICOPTER},     // Helicopter
+                    {"/g",  Traffic::Ogn::OgnSymbol::PARACHUTE},      // Parachute, Hang Glider, Paraglider
+                    {"\\^", Traffic::Ogn::OgnSymbol::AIRCRAFT},       // Drop Plane, Powered Aircraft
+                    {"/^",  Traffic::Ogn::OgnSymbol::JET},            // Jet Aircraft
+                    {"/O",  Traffic::Ogn::OgnSymbol::BALLOON},        // Balloon, Airship
+                    {"\\n", Traffic::Ogn::OgnSymbol::STATIC_OBJECT},  // Static Object
+                    {"/_",  Traffic::Ogn::OgnSymbol::WEATHERSTATION},  // WeatherStation
+                });
+
+// see http://wiki.glidernet.org/wiki:ogn-flavoured-aprs
+using ACMap = QMap<uint32_t, Traffic::AircraftType>;
+Q_GLOBAL_STATIC(ACMap, AircraftCategoryMap,
+                {
+                    {0x0, Traffic::AircraftType::unknown},         // Reserved
+                    {0x1, Traffic::AircraftType::Glider},          // Glider/Motor Glider/TMG
+                    {0x2, Traffic::AircraftType::TowPlane},        // Tow Plane/Tug Plane
+                    {0x3, Traffic::AircraftType::Copter},          // Helicopter/Gyrocopter/Rotorcraft
+                    {0x4, Traffic::AircraftType::Skydiver},        // Skydiver/Parachute
+                    {0x5, Traffic::AircraftType::Aircraft},        // Drop Plane for Skydivers
+                    {0x6, Traffic::AircraftType::HangGlider},      // Hang Glider (hard)
+                    {0x7, Traffic::AircraftType::Paraglider},      // Paraglider (soft)
+                    {0x8, Traffic::AircraftType::Aircraft},        // Aircraft with reciprocating engine(s)
+                    {0x9, Traffic::AircraftType::Jet},             // Aircraft with jet/turboprop engine(s)
+                    {0xA, Traffic::AircraftType::unknown},         // Unknown
+                    {0xB, Traffic::AircraftType::Balloon},         // Balloon (hot, gas, weather, static)
+                    {0xC, Traffic::AircraftType::Airship},         // Airship/Blimp/Zeppelin
+                    {0xD, Traffic::AircraftType::Drone},           // UAV/RPAS/Drone
+                    {0xE, Traffic::AircraftType::unknown},         // Reserved
+                    {0xF, Traffic::AircraftType::StaticObstacle}   // Static Obstacle
+                });
+
+};
 
 namespace Traffic::Ogn {
 
 
 
-// see http://wiki.glidernet.org/wiki:ogn-flavoured-aprs
-static const QMap<QString, Traffic::AircraftType> AircraftTypeMap = {
-    {"/z",  Traffic::AircraftType::unknown},         // Unknown
-    {"/'",  Traffic::AircraftType::Glider},          // Glider
-    {"/X",  Traffic::AircraftType::Copter},          // Helicopter
-    {"/g",  Traffic::AircraftType::Paraglider},      // Parachute, Hang Glider, Paraglider
-    {"\\^", Traffic::AircraftType::Aircraft},        // Drop Plane, Powered Aircraft
-    {"/^",  Traffic::AircraftType::Jet},             // Jet Aircraft
-    {"/O",  Traffic::AircraftType::Balloon},         // Balloon, Airship
-    {"\\n", Traffic::AircraftType::StaticObstacle},  // Static Object
-};
-static const QMap<QString, OgnSymbol> AprsSymbolMap = {
-    {"/z",  OgnSymbol::UNKNOWN},        // Unknown
-    {"/'",  OgnSymbol::GLIDER},         // Glider
-    {"/X",  OgnSymbol::HELICOPTER},     // Helicopter
-    {"/g",  OgnSymbol::PARACHUTE},      // Parachute, Hang Glider, Paraglider
-    {"\\^", OgnSymbol::AIRCRAFT},       // Drop Plane, Powered Aircraft
-    {"/^",  OgnSymbol::JET},            // Jet Aircraft
-    {"/O",  OgnSymbol::BALLOON},        // Balloon, Airship
-    {"\\n", OgnSymbol::STATIC_OBJECT},  // Static Object
-    {"/_",  OgnSymbol::WEATHERSTATION},  // WeatherStation
-};
 
-// see http://wiki.glidernet.org/wiki:ogn-flavoured-aprs
-static const QMap<uint32_t, Traffic::AircraftType> AircraftCategoryMap = {
-    {0x0, Traffic::AircraftType::unknown},         // Reserved
-    {0x1, Traffic::AircraftType::Glider},          // Glider/Motor Glider/TMG
-    {0x2, Traffic::AircraftType::TowPlane},        // Tow Plane/Tug Plane
-    {0x3, Traffic::AircraftType::Copter},          // Helicopter/Gyrocopter/Rotorcraft
-    {0x4, Traffic::AircraftType::Skydiver},        // Skydiver/Parachute
-    {0x5, Traffic::AircraftType::Aircraft},        // Drop Plane for Skydivers
-    {0x6, Traffic::AircraftType::HangGlider},      // Hang Glider (hard)
-    {0x7, Traffic::AircraftType::Paraglider},      // Paraglider (soft)
-    {0x8, Traffic::AircraftType::Aircraft},        // Aircraft with reciprocating engine(s)
-    {0x9, Traffic::AircraftType::Jet},             // Aircraft with jet/turboprop engine(s)
-    {0xA, Traffic::AircraftType::unknown},         // Unknown
-    {0xB, Traffic::AircraftType::Balloon},         // Balloon (hot, gas, weather, static)
-    {0xC, Traffic::AircraftType::Airship},         // Airship/Blimp/Zeppelin
-    {0xD, Traffic::AircraftType::Drone},           // UAV/RPAS/Drone
-    {0xE, Traffic::AircraftType::unknown},         // Reserved
-    {0xF, Traffic::AircraftType::StaticObstacle}   // Static Obstacle
-};
 
 void TrafficDataSource_OgnParser::parseAprsisMessage(OgnMessage& ognMessage)
 {
@@ -178,7 +188,7 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
     #endif
 
     // Parse the Header
-    int const index = header.indexOf(u'>');
+    auto const index = header.indexOf(u'>');
     if (index == -1) {
         #if OGN_DEBUG
         qDebug() << "Invalid header format in Traffic Report: " << header << ":" << body;
@@ -189,13 +199,14 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
     ognMessage.sourceId = header.left(index);
 
     // Parse the body
-    int const blankIndex = body.indexOf(u' ');
+    auto const blankIndex = body.indexOf(u' ');
     QStringView aprsPart;
     QStringView ognPart;
     if (blankIndex == -1) {
         aprsPart = body;
     }
-    else {
+    else
+    {
         aprsPart = QStringView(body.constData(), blankIndex); // APRS Part before the first blank
         ognPart = QStringView(body.constData() + blankIndex + 1, body.size() - blankIndex - 1); // OGN Part after the first blank
     }
@@ -211,7 +222,7 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
         ognMessage.timestamp = match.capturedView(1); // timestamp
         QChar const symboltable = match.capturedView(4).at(0);     // Symbol table
         QChar const symbolselection = match.capturedView(7).at(0); // Symbol
-        ognMessage.symbol = AprsSymbolMap.value(QString(symboltable)+symbolselection);
+        ognMessage.symbol = AprsSymbolMap->value(QString(symboltable)+symbolselection);
         ognMessage.course = Units::Angle::fromDEG(match.capturedView(8).toDouble());    // Course
 #warning
         qWarning() << ognMessage.course.toDEG();
@@ -233,7 +244,7 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
             ognMessage.timestamp = match.capturedView(1); // timestamp
             QChar const symboltable = match.capturedView(4).at(0);     // Symbol table
             QChar const symbolselection = match.capturedView(7).at(0); // Symbol
-            ognMessage.symbol = AprsSymbolMap.value(QString(symboltable)+symbolselection);
+            ognMessage.symbol = AprsSymbolMap->value(QString(symboltable)+symbolselection);
             auto altitude = Units::Distance::fromFT(match.capturedView(8).toDouble()).toM();  // Altitude in m
             ognMessage.coordinate.setAltitude(altitude);
             latstring1 = match.capturedView(2);
@@ -252,7 +263,7 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
                 ognMessage.timestamp = match.capturedView(1); // timestamp
                 QChar const symboltable = match.capturedView(4).at(0);     // Symbol table
                 QChar const symbolselection = match.capturedView(7).at(0); // Symbol
-                ognMessage.symbol = AprsSymbolMap.value(QString(symboltable)+symbolselection);
+                ognMessage.symbol = AprsSymbolMap->value(QString(symboltable)+symbolselection);
                 auto latitude = decodeLatitude(match.capturedView(2), match.capturedView(3).at(0));
                 ognMessage.coordinate.setLatitude(latitude);
                 auto longitude = decodeLongitude(match.capturedView(5), match.capturedView(6).at(0));
@@ -336,7 +347,7 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
 
             uint32_t const aircraftCategory = ((hexcode >> 26) & 0xF);
             Traffic::AircraftType const aircraftTypeEnumValue
-                = AircraftCategoryMap.value(aircraftCategory, Traffic::AircraftType::unknown);
+                = AircraftCategoryMap->value(aircraftCategory, Traffic::AircraftType::unknown);
             ognMessage.aircraftType = aircraftTypeEnumValue;
 
             uint32_t const addressTypeValue = (hexcode >> 24) & 0x3;
@@ -387,7 +398,7 @@ QString TrafficDataSource_OgnParser::formatPositionReport(const QStringView call
     if (lastAircraftType != aircraftType) {
         // Perform reverse lookup
         lastSymbol.clear();
-        for (auto it = AircraftTypeMap.cbegin(); it != AircraftTypeMap.cend(); ++it) {
+        for (auto it = AircraftTypeMap->cbegin(); it != AircraftTypeMap->cend(); ++it) {
             if (it.value() == aircraftType) {
                 lastSymbol = it.key();
                 break;

@@ -556,4 +556,4 @@ QString TrafficDataSource_OgnParser::calculatePassword(const QStringView callSig
     return QString::number(sum % 10000); // Modulo 10000 to get a 4-digit passcode
 }
 
-} // namespace Traffic
+} // namespace Traffic::Ogn

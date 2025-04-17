@@ -48,6 +48,8 @@ Page {
             property var waypoint: ({})
             property int index: -1
 
+            width: co.width
+
             WaypointDelegate {
                 Layout.fillWidth: true
                 waypoint: waypointLayout.waypoint
@@ -711,6 +713,7 @@ Page {
             }
         }
     }
+
 
     CenteringDialog {
         id: flightRouteAddWPDialog

@@ -105,7 +105,7 @@ void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
     }
 
     // set Proxy
-    #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     QString proxyUrl = env.value("HTTP_PROXY");
     if (!proxyUrl.isEmpty()) {
@@ -119,7 +119,7 @@ void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
         // Apply the proxy to the socket
         m_socket.setProxy(proxy);
     }
-    #endif
+#endif
     
     // Start new connection
     m_socket.abort();
@@ -159,10 +159,10 @@ void Traffic::TrafficDataSource_Ogn::sendLoginString()
 
     m_textStream << loginString;
     m_textStream.flush();
-    
-    #if OGN_DEBUG
+
+#if OGN_DEBUG
     qDebug() << "Sent login string:" << loginString;
-    #endif
+#endif
 }
 
 QGeoCoordinate Traffic::TrafficDataSource_Ogn::getOwnShipCoordinate(bool useLastValidPosition)
@@ -192,114 +192,114 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
 
         switch (m_ognMessage.type)
         {
-            case Traffic::Ogn::OgnMessageType::TRAFFIC_REPORT:
-            {
-                if ((m_ognMessage.aircraftType == Traffic::AircraftType::unknown
-                     || m_ognMessage.aircraftType == Traffic::AircraftType::StaticObstacle)
-                    && !m_ognMessage.speed.isFinite()) {
+        case Traffic::Ogn::OgnMessageType::TRAFFIC_REPORT:
+        {
+            if ((m_ognMessage.aircraftType == Traffic::AircraftType::unknown
+                 || m_ognMessage.aircraftType == Traffic::AircraftType::StaticObstacle)
+                && !m_ognMessage.speed.isFinite()) {
 #if OGN_DEBUG
                     qDebug() << "Not an Aircraft.";
-                    #endif
+#endif
                     return;
-                }
-                if (!m_ognMessage.coordinate.isValid()) {
-                    #if OGN_DEBUG
-                    qDebug() << "Invalid coordinate for traffic report:" << m_ognMessage.sentence;
-                    #endif
-                    return;
-                }
-
-                // Compute horizontal and vertical distance to traffic if our own position is known.
-                QGeoCoordinate const ownShipCoordinate = getOwnShipCoordinate(
-                    /*useLastValidPosition*/ true);
-                Units::Distance hDist {};
-                Units::Distance vDist {};
-                if (ownShipCoordinate.isValid()) {
-                    hDist = Units::Distance::fromM(ownShipCoordinate.distanceTo(m_ognMessage.coordinate));
-                    vDist = Units::Distance::fromM(qFabs(m_ognMessage.coordinate.altitude() - ownShipCoordinate.altitude()));
-                }
-
-                // Decode callsign
-                QString callsign;
-                if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
-                    callsign = GlobalObject::flarmnetDB()->getRegistration(QString(m_ognMessage.address));
-                } else if (static_cast<int>(!m_ognMessage.flightnumber.empty()) != 0) {
-                    callsign = QString(m_ognMessage.flightnumber);
-                } else if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::ICAO) {
-                    callsign = transponderDB.getRegistration(QString(m_ognMessage.address));
-                }
-#if OGN_SHOW_ADDRESSTYPE
-                const QMetaEnum metaEnum = QMetaEnum::fromType<Traffic::Ogn::OgnAddressType>();
-                callsign += QString(" (%1)").arg(metaEnum.valueToKey(static_cast<int>(m_ognMessage.addressType)));
-                #endif
-
-                // Compute Alarm Level 0-3
-                int alarmLevel = 0;
-                if (hDist.toM() < 1000 && vDist.toFeet() < 400) {
-                    alarmLevel = 3; // High alert
-                } else if (hDist.toM() < 2000 && vDist.toFeet() < 600) {
-                    alarmLevel = 2; // Medium alert
-                } else if (hDist.toM() < 5000 && vDist.toFeet() < 800) {
-                    alarmLevel = 1; // Low alert
-                }
-                
-                // PositionInfo
-                QGeoPositionInfo pInfo(m_ognMessage.coordinate, QDateTime::currentDateTimeUtc());
-                pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course.toDEG());
-#warning
-                qWarning() << m_ognMessage.coordinate << m_ognMessage.course.toDEG();
-                pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, m_ognMessage.speed.toMPS());
-                pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, m_ognMessage.verticalSpeed);
-                if (!pInfo.isValid()) {
-                    #if OGN_DEBUG
-                    qDebug() << "Invalid position-info for traffic report:" << m_ognMessage.sentence;
-                    #endif
-                    return;
-                }
-
-                // Prepare the m_factor object
-                m_factor.setAlarmLevel(alarmLevel);
-                m_factor.setCallSign(callsign);
-                m_factor.setID(m_ognMessage.sourceId.toString());
-                m_factor.setType(m_ognMessage.aircraftType);
-                m_factor.setPositionInfo(Positioning::PositionInfo(pInfo, sourceName()));
-                m_factor.setHDist(hDist);
-                m_factor.setVDist(vDist);
-                m_factor.startLiveTime();
-            
-                // Emit the factorWithPosition signal
-                emit factorWithPosition(m_factor);
-
-                // simulate movement
-                #define OGN_SIMULATE_MOVEMENT_FOR_TESTING 0
-                #if OGN_SIMULATE_MOVEMENT_FOR_TESTING
-                const double centerLat = 48.353889;
-                const double centerLon = 11.786111;
-                static double fakeLat = centerLat;
-                static double fakeLon = centerLon;
-                static QDateTime lastTimeStamp = QDateTime::currentDateTimeUtc();
-                QDateTime currentTime = QDateTime::currentDateTimeUtc();
-                if (lastTimeStamp.secsTo(currentTime) > 1) {
-                    fakeLat += 0.01;
-                    lastTimeStamp = currentTime;
-                }
-                QGeoCoordinate fakecoordinate(fakeLat, fakeLon, 500.0);
-                QGeoPositionInfo fakegInfo(fakecoordinate, QDateTime::currentDateTimeUtc());
-                Positioning::PositionInfo fakepInfo(fakegInfo, sourceName());
-                emit positionUpdated(fakepInfo);
-                #endif
-                break;
             }
-            case Traffic::Ogn::OgnMessageType::COMMENT:
-                #if OGN_DEBUG
-                qDebug() << m_ognMessage.sentence;
-                #endif
-                break;
-            default:
-                #if OGN_DEBUG
-                qDebug() << m_ognMessage.sentence;
-                #endif
-                break;
+            if (!m_ognMessage.coordinate.isValid()) {
+#if OGN_DEBUG
+                qDebug() << "Invalid coordinate for traffic report:" << m_ognMessage.sentence;
+#endif
+                return;
+            }
+
+            // Compute horizontal and vertical distance to traffic if our own position is known.
+            QGeoCoordinate const ownShipCoordinate = getOwnShipCoordinate(
+                /*useLastValidPosition*/ true);
+            Units::Distance hDist {};
+            Units::Distance vDist {};
+            if (ownShipCoordinate.isValid()) {
+                hDist = Units::Distance::fromM(ownShipCoordinate.distanceTo(m_ognMessage.coordinate));
+                vDist = Units::Distance::fromM(qFabs(m_ognMessage.coordinate.altitude() - ownShipCoordinate.altitude()));
+            }
+
+            // Decode callsign
+            QString callsign;
+            if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
+                callsign = GlobalObject::flarmnetDB()->getRegistration(QString(m_ognMessage.address));
+            } else if (static_cast<int>(!m_ognMessage.flightnumber.empty()) != 0) {
+                callsign = QString(m_ognMessage.flightnumber);
+            } else if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::ICAO) {
+                callsign = transponderDB.getRegistration(QString(m_ognMessage.address));
+            }
+#if OGN_SHOW_ADDRESSTYPE
+            const QMetaEnum metaEnum = QMetaEnum::fromType<Traffic::Ogn::OgnAddressType>();
+            callsign += QString(" (%1)").arg(metaEnum.valueToKey(static_cast<int>(m_ognMessage.addressType)));
+#endif
+
+            // Compute Alarm Level 0-3
+            int alarmLevel = 0;
+            if (hDist.toM() < 1000 && vDist.toFeet() < 400) {
+                alarmLevel = 3; // High alert
+            } else if (hDist.toM() < 2000 && vDist.toFeet() < 600) {
+                alarmLevel = 2; // Medium alert
+            } else if (hDist.toM() < 5000 && vDist.toFeet() < 800) {
+                alarmLevel = 1; // Low alert
+            }
+
+            // PositionInfo
+            QGeoPositionInfo pInfo(m_ognMessage.coordinate, QDateTime::currentDateTimeUtc());
+            pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course.toDEG());
+#warning
+            qWarning() << m_ognMessage.coordinate << m_ognMessage.course.toDEG();
+            pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, m_ognMessage.speed.toMPS());
+            pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, m_ognMessage.verticalSpeed);
+            if (!pInfo.isValid()) {
+#if OGN_DEBUG
+                qDebug() << "Invalid position-info for traffic report:" << m_ognMessage.sentence;
+#endif
+                return;
+            }
+
+            // Prepare the m_factor object
+            m_factor.setAlarmLevel(alarmLevel);
+            m_factor.setCallSign(callsign);
+            m_factor.setID(m_ognMessage.sourceId.toString());
+            m_factor.setType(m_ognMessage.aircraftType);
+            m_factor.setPositionInfo(Positioning::PositionInfo(pInfo, sourceName()));
+            m_factor.setHDist(hDist);
+            m_factor.setVDist(vDist);
+            m_factor.startLiveTime();
+
+            // Emit the factorWithPosition signal
+            emit factorWithPosition(m_factor);
+
+// simulate movement
+#define OGN_SIMULATE_MOVEMENT_FOR_TESTING 0
+#if OGN_SIMULATE_MOVEMENT_FOR_TESTING
+            const double centerLat = 48.353889;
+            const double centerLon = 11.786111;
+            static double fakeLat = centerLat;
+            static double fakeLon = centerLon;
+            static QDateTime lastTimeStamp = QDateTime::currentDateTimeUtc();
+            QDateTime currentTime = QDateTime::currentDateTimeUtc();
+            if (lastTimeStamp.secsTo(currentTime) > 1) {
+                fakeLat += 0.01;
+                lastTimeStamp = currentTime;
+            }
+            QGeoCoordinate fakecoordinate(fakeLat, fakeLon, 500.0);
+            QGeoPositionInfo fakegInfo(fakecoordinate, QDateTime::currentDateTimeUtc());
+            Positioning::PositionInfo fakepInfo(fakegInfo, sourceName());
+            emit positionUpdated(fakepInfo);
+#endif
+            break;
+        }
+        case Traffic::Ogn::OgnMessageType::COMMENT:
+#if OGN_DEBUG
+            qDebug() << m_ognMessage.sentence;
+#endif
+            break;
+        default:
+#if OGN_DEBUG
+            qDebug() << m_ognMessage.sentence;
+#endif
+            break;
         }
     }
 }
@@ -307,9 +307,9 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
 void Traffic::TrafficDataSource_Ogn::sendPosition(const QGeoCoordinate& coordinate, double course, double speed, double altitude)
 {
     if (!m_socket.isOpen()) {
-        #if OGN_DEBUG
+#if OGN_DEBUG
         qDebug() << "Socket is not open. Cannot send position.";
-        #endif
+#endif
         return;
     }
 
@@ -321,9 +321,9 @@ void Traffic::TrafficDataSource_Ogn::sendPosition(const QGeoCoordinate& coordina
     m_textStream << positionReport;
     m_textStream.flush();
 
-    #if OGN_DEBUG
+#if OGN_DEBUG
     qDebug() << "Sent position report:" << positionReport;
-    #endif
+#endif
 }
 
 // called once per minute
@@ -338,37 +338,37 @@ void Traffic::TrafficDataSource_Ogn::periodicUpdate()
         updateReceivePosition(position);
     }
 
-    // update position report
-    #if OGN_SEND_OWN_POSITION
+// update position report
+#if OGN_SEND_OWN_POSITION
     if (getOwnShipCoordinate(/*useLastValidPosition*/false).coordinate().isValid()) {
         sendPosition(positionInfo.coordinate(),
                      positionInfo.trueTrack().toDEG(),
                      positionInfo.groundSpeed().toKN(),
                      positionInfo.coordinate().altitude());
     } else {
-        #if OGN_DEBUG
+#if OGN_DEBUG
         qDebug() << "Position is invalid, skipping position report.";
-        #endif
+#endif
     }
-    #endif    
+#endif
 }
 
 void Traffic::TrafficDataSource_Ogn::updateReceivePosition(const QGeoCoordinate &position)
 {
     double const distance = position.distanceTo(m_receiveLocation);
     if (distance > 10000) { // More than 10 km
-        #if OGN_DEBUG
+#if OGN_DEBUG
         qDebug() << "Current position is more than 10 km away from OGN receive position. Updating receive position.";
-        #endif
+#endif
         m_receiveLocation = position;
         QString const filterCommand
             = Traffic::Ogn::TrafficDataSource_OgnParser::formatFilterCommand(m_receiveLocation,
                                                                              m_receiveRadius);
 #if OGN_DEBUG
-        qDebug() << filterCommand; 
-        #endif
+        qDebug() << filterCommand;
+#endif
         m_textStream << filterCommand;
-        m_textStream.flush();    
+        m_textStream.flush();
     }
 }
 
@@ -377,9 +377,9 @@ void Traffic::TrafficDataSource_Ogn::sendKeepAlive()
     // Send a keep-alive message (newline character as per APRS-IS protocol)
     m_textStream << "# " << QCoreApplication::organizationName() << QCoreApplication::applicationName() << QCoreApplication::applicationVersion() << "\n";
     m_textStream.flush();
-    #if OGN_DEBUG
+#if OGN_DEBUG
     qDebug() << "Sent keep-alive message to APRS-IS server.";
-    #endif
+#endif
 }
 
 void Traffic::TrafficDataSource_Ogn::verifyConnection()

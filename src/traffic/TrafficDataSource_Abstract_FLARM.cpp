@@ -31,7 +31,9 @@ using namespace Qt::Literals::StringLiterals;
 // Static Helper functions
 //
 
-qreal interpretNMEALatLong(const QString& A, const QString& B)
+namespace {
+
+static qreal interpretNMEALatLong(const QString& A, const QString& B)
 {
     bool ok1 = false;
     bool ok2 = false;
@@ -46,7 +48,7 @@ qreal interpretNMEALatLong(const QString& A, const QString& B)
     return result;
 }
 
-QDateTime interpretNMEATime(const QString& timeString)
+static QDateTime interpretNMEATime(const QString& timeString)
 {
     auto HH = timeString.mid(0,2);
     auto MM = timeString.mid(2,2);
@@ -67,7 +69,7 @@ QDateTime interpretNMEATime(const QString& timeString)
 // substring message is returned. If the input string is not a valid NMEA
 // sentence, an empty string is returned.
 
-QString getNMEAMessage(const QString& input)
+static QString getNMEAMessage(const QString& input)
 {
     // Paranoid safety checks
     if (input.length() < 5)
@@ -101,6 +103,8 @@ QString getNMEAMessage(const QString& input)
 
     return message;
 }
+
+} // namespace
 
 
 //

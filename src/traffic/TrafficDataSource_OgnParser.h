@@ -20,13 +20,12 @@
 
 #pragma once
 
-#include <QString>
-#include <QStringView>
 #include <QGeoCoordinate>
+#include <QStringView>
 
+#include "TrafficFactorAircraftType.h"
 #include "units/Angle.h"
 #include "units/Speed.h"
-#include "TrafficFactorAircraftType.h"
 
 using namespace Qt::Literals::StringLiterals;
 

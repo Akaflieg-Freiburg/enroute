@@ -477,15 +477,16 @@ QString TrafficDataSource_OgnParser::formatPositionReport(const QStringView call
     }
 
     return QString("%1>APRS,TCPIP*: /%2h%3%4%5%6%7/%8/A=%9\n")
-        .arg(callSign.toString()) // Callsign
-        .arg(QDateTime::currentDateTimeUtc().toString("hhmmss")) // Timestamp
-        .arg(formatLatitude(coordinate.latitude())) // Latitude
-        .arg(lastSymbol[0]) // Symbol table
+        .arg(callSign.toString(),
+             QDateTime::currentDateTimeUtc().toString("hhmmss"),
+             formatLatitude(coordinate.latitude()))   // Latitude
+        .arg(lastSymbol[0])                           // Symbol table
         .arg(formatLongitude(coordinate.longitude())) // Longitude
-        .arg(lastSymbol[1]) // Symbol code
-        .arg(QString::number(course, 'f', 0).rightJustified(3, '0')) // Course
-        .arg(QString::number(speed, 'f', 0).rightJustified(3, '0')) // Speed
-        .arg(QString::number(Units::Distance::fromM(altitude).toFeet(), 'f', 0).rightJustified(6, '0')); // Altitude in feet
+        .arg(lastSymbol[1])                           // Symbol code
+        .arg(QString::number(course, 'f', 0).rightJustified(3, '0'),
+             QString::number(speed, 'f', 0).rightJustified(3, '0'),
+             QString::number(Units::Distance::fromM(altitude).toFeet(), 'f', 0)
+                 .rightJustified(6, '0')); // Altitude in feet
 }
 
 QString TrafficDataSource_OgnParser::formatLatitude(double latitude)
@@ -495,7 +496,9 @@ QString TrafficDataSource_OgnParser::formatLatitude(double latitude)
     latitude = qAbs(latitude);
     int const degrees = static_cast<int>(latitude);
     double const minutes = (latitude - degrees) * 60.0;
-    return QString("%1%2%3").arg(degrees, 2, 10, QChar('0')).arg(QString::number(minutes, 'f', 2).rightJustified(5, '0')).arg(direction);
+    return QString("%1%2%3")
+        .arg(degrees, 2, 10, QChar('0'))
+        .arg(QString::number(minutes, 'f', 2).rightJustified(5, '0'), direction);
 }
 
 QString TrafficDataSource_OgnParser::formatLongitude(double longitude)
@@ -505,7 +508,9 @@ QString TrafficDataSource_OgnParser::formatLongitude(double longitude)
     longitude = qAbs(longitude);
     int const degrees = static_cast<int>(longitude);
     double const minutes = (longitude - degrees) * 60.0;
-    return QString("%1%2%3").arg(degrees, 3, 10, QChar('0')).arg(QString::number(minutes, 'f', 2).rightJustified(5, '0')).arg(direction);
+    return QString("%1%2%3")
+        .arg(degrees, 3, 10, QChar('0'))
+        .arg(QString::number(minutes, 'f', 2).rightJustified(5, '0'), direction);
 }
 
 QString TrafficDataSource_OgnParser::formatFilterCommand(const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius)
@@ -536,11 +541,11 @@ QString TrafficDataSource_OgnParser::formatLoginString(
     QString const passcode = calculatePassword(callSign);
 
     auto loginString = QString("user %1 pass %2 vers %3 %4 filter %5\n")
-        .arg(callSign.toString())    // Callsign
-        .arg(passcode)              // Calculated passcode
-        .arg(appName.toString())    // Application name
-        .arg(appVersion.toString()) // Application version
-        .arg(filter);               // Filter string
+                           .arg(callSign.toString(),
+                                passcode,
+                                appName.toString(),
+                                appVersion.toString(),
+                                filter); // Filter string
 
     return loginString;
 }

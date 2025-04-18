@@ -293,6 +293,14 @@ public:
      */
     Q_INVOKABLE QString addDataSource_TCP(const QString& host, quint16 port);
 
+    /*! \brief Add an additional data source
+     *
+     * This method adds an additional OGN data source to this TrafficDataProvider.
+     *
+     * \returns An empty string on success, and a human-readable, translated error message on failure.
+     */
+    Q_INVOKABLE QString addDataSource_OGN();
+
     /*! \brief Remove data sources
      *
      * This method removes a data source from this TrafficDataProvider.

@@ -1,6 +1,13 @@
 # Changelog
 
-## [2.33.0] - xx
+## [2.33.1] - 2025-04-18
+
+### Fixed
+- Fix problem where TCP data connections were not restored on restart of the
+  app.
+
+
+## [2.33.0] - 2025-04-06
 
 ### Fixed
 - Fix problem where VACs were deleted on every app update on iOS.
@@ -8,6 +15,7 @@
 ### Changed
 - Even on very small screens, always show at least four characters of the
   destination waypoint in the remaining route bar. (#446)
+
 
 ## [2.32.14] - 2025-03-04
 
@@ -95,10 +103,6 @@
 - The app no longer hangs on startup.
 
 - Fixed typo in the manual.
-
-
-### Fixed
-- Fixed minor typo in the manual.
 
 
 ## [2.32.4] - 2024-12-24

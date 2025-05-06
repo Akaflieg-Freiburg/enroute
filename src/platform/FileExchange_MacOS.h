@@ -39,6 +39,15 @@ public:
     */
     explicit FileExchange(QObject *parent = nullptr);
 
+    // No default constructor, important for QML singleton
+    explicit FileExchange() = delete;
+
+    // factory function for QML singleton
+    static Platform::FileExchange* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::fileExchange();
+    }
+
     ~FileExchange() override = default;
 
 
@@ -76,11 +85,11 @@ public:
 
 public slots:
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
-    void onGUISetupCompleted() override{};
+    void onGUISetupCompleted() override {};
 
 protected:
     /*! \brief Implements virtual method from GlobalObject */
-    void deferredInitialization() override{};
+    void deferredInitialization() override {};
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange)

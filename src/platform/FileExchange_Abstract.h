@@ -66,16 +66,8 @@ public:
     */
     explicit FileExchange_Abstract(QObject* parent = nullptr);
 
-    // No default constructor, important for QML singleton
-    explicit FileExchange_Abstract() = delete;
-
     ~FileExchange_Abstract() override = default;
 
-    // factory function for QML singleton
-    static Platform::FileExchange_Abstract* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
-    {
-        return GlobalObject::fileExchange();
-    }
 
 
     //

@@ -40,8 +40,6 @@ namespace Platform {
 class FileExchange_Abstract : public GlobalObject
 {
     Q_OBJECT
-//    QML_NAMED_ELEMENT(FileExchange)
-//    QML_SINGLETON
 
 public:
     /*! \brief Functions and types of a file that this app handles */
@@ -68,16 +66,8 @@ public:
     */
     explicit FileExchange_Abstract(QObject* parent = nullptr);
 
-    // No default constructor, important for QML singleton
-    explicit FileExchange_Abstract() = delete;
-
     ~FileExchange_Abstract() override = default;
 
-    // factory function for QML singleton
-    static Platform::FileExchange_Abstract* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
-    {
-        return GlobalObject::fileExchange();
-    }
 
 
     //

@@ -166,7 +166,7 @@ Page {
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     PlatformAdaptor.vibrateBrief()
-                    WeatherDataProvider.update()
+                    WeatherDataProvider.requestUpdate()
                 }
             }
 

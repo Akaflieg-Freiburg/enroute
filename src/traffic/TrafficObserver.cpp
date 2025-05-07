@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2024 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,33 +19,40 @@
  ***************************************************************************/
 
 #include "traffic/TrafficDataProvider.h"
-#include "traffic/TrafficDataSource_BluetoothLowEnergy.h"
+#include "traffic/TrafficObserver.h"
 
 
-QString Traffic::TrafficDataProvider::addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo& connectionInfo)
-{    
-    // Sanity check
-    auto bluetoothDeviceInfo = connectionInfo.bluetoothDeviceInfo();
-    if (!bluetoothDeviceInfo.isValid())
-    {
-        return tr("Invalid connection.");
-    }
+Traffic::TrafficObserver::TrafficObserver(QObject* parent)
+    : QObject(parent)
+{
+    m_hasTraffic.setBinding([this]() {
+        return !m_traffic.value().isEmpty();
+    });
 
-    // Ignore new device if data source already exists.
-    foreach(auto _dataSource, m_dataSources.value())
-    {
-        auto* dataSourceBTClassic = qobject_cast<TrafficDataSource_BluetoothLowEnergy*>(_dataSource);
-        if (dataSourceBTClassic != nullptr)
+    m_traffic.setBinding([this]() {
+        QList<Traffic::TrafficFactor_Abstract*> result;
+        const auto list = GlobalObject::trafficDataProvider()->trafficObjects();
+        for(const auto* factor : list)
         {
-            if (connectionInfo.bluetoothDeviceInfo().address() == dataSourceBTClassic->sourceInfo().address())
+            if (factor == nullptr)
             {
-                return tr("A connection to this device already exists.");
+                continue;
             }
+            if (!factor->valid())
+            {
+                continue;
+            }
+            result << (Traffic::TrafficFactor_Abstract*)factor;
         }
-    }
+        const auto* factor = GlobalObject::trafficDataProvider()->trafficObjectWithoutPosition();
+        if ((factor != nullptr) && factor->valid())
+        {
+            result << (Traffic::TrafficFactor_Abstract*)factor;
+        }
 
-    auto* source = new TrafficDataSource_BluetoothLowEnergy(false, connectionInfo.bluetoothDeviceInfo(), this);
-    source->connectToTrafficReceiver();
-    addDataSource(source);
-    return {};
+        std::sort(result.begin(), result.end(),
+                  [](const Traffic::TrafficFactor_Abstract* first, const Traffic::TrafficFactor_Abstract* second)
+                  { return first->hasHigherPriorityThan(*second); });
+        return result;
+    });
 }

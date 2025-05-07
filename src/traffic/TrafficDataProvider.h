@@ -302,28 +302,6 @@ public:
      */
     Q_INVOKABLE void removeDataSource(Traffic::TrafficDataSource_Abstract* source);
 
-
-
-    //
-    // Constants
-    //
-
-
-    /*! \brief Maximal vertical distance for relevant traffic
-     *
-     *  Traffic whose vertical distance to the own aircraft is larger than this
-     *  number will be ignored.
-     */
-    static constexpr Units::Distance maxVerticalDistance = Units::Distance::fromM(1500.0);
-
-    /*! \brief Maximal horizontal distance for relevant traffic
-     *
-     *  Traffic whose horizontal distance to the own aircraft is larger than
-     *  this number will be ignored.
-     */
-    static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
-
-
 signals:
     /*! \brief Notifier signal */
     void dataSourcesChanged();
@@ -390,7 +368,7 @@ private slots:
     QString addDataSource_BluetoothClassic(const Traffic::ConnectionInfo &connectionInfo);
 
     // Identical to addDataSource, but handles Bluetooth Low Energy connections only.
-    static QString addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo &connectionInfo);
+    QString addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo &connectionInfo);
 
     // Clear all data sources
     void clearDataSources();

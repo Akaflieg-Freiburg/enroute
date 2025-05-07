@@ -51,7 +51,7 @@ platform :android do
     matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
     latest_version, changelog_text = matches.first
     major, minor, patch = latest_version.split('.').map(&:to_i)
-    version_code = 100000 * major + 1000 * minor + patch
+    version_code = 100000 * major + 1000 * minor + 10 * patch
     File.write("metadata/android/en-US/#{version_code}.txt", changelog_text.strip)      
   end
 
@@ -74,8 +74,8 @@ platform :android do
     matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
     latest_version, changelog_text = matches.first
     major, minor, patch = latest_version.split('.').map(&:to_i)
-    version_code = 100000 * major + 1000 * minor + patch
-    upload_to_play_store(track: 'beta', track_promote_to: 'production', version_code: version_code)
+    version_code = 100000 * major + 1000 * minor + 10 * patch
+    upload_to_play_store(track: 'beta', track_promote_to: 'production', version_code: "#{version_code}")
   end
 end
 
@@ -101,6 +101,77 @@ platform :linux do
     # Build linux binary
     UI.message('Building Linux Binary...')
     sh('cmake --build ../build/build-linux-release')
+  end
+
+  desc "Build on Flathub"
+  lane :flathub do
+    # Clean up previous builds
+    FileUtils.rm_rf('../build/build-linux-release')
+  
+    # Configure CMake build
+    qt6_linux_dir = ENV['Qt6_DIR_LINUX']
+    cmake_config_cmd = [
+      "#{qt6_linux_dir}/bin/qt-cmake",
+      '-G Ninja',
+      '-DCMAKE_BUILD_TYPE:STRING=Release',
+      '-S ..',
+      '-B ../build/build-linux-release'
+    ].join(' ')
+  
+    # Execute CMake configuration
+    sh(cmake_config_cmd)
+  
+    manifest_path = '../build/build-linux-release/packaging/flatpak/de.akaflieg_freiburg.enroute.json'
+  
+    # Get current git commit hash
+    commit_hash = sh("git rev-parse --short HEAD").strip
+  
+    # Clone Flathub repository
+    flathub_repo = "flathub/de.akaflieg_freiburg.enroute"
+    clone_folder = "../flathub-repo"
+  
+    # Remove existing clone if present
+    FileUtils.rm_rf(clone_folder)
+  
+    # Clone the repository
+    sh("git clone git@github.com:#{flathub_repo}.git #{clone_folder}")
+  
+    # Create a new branch
+    branch_name = "update-#{commit_hash}"
+  
+    Dir.chdir(clone_folder) do
+      sh("git checkout -b #{branch_name}")
+    
+      # Copy the new manifest
+      FileUtils.cp(manifest_path, "de.akaflieg_freiburg.enroute.json")
+    
+      # Commit changes
+      sh("git add de.akaflieg_freiburg.enroute.json")
+      sh("git commit -m 'Update manifest to commit #{commit_hash}'")
+    
+      # Push branch
+      sh("git push --set-upstream origin #{branch_name}")
+    end
+  
+    # Create Pull Request using GitHub API
+    github_api_token = ENV["GITHUB_TOKEN"]
+  
+    # Ensure GitHub token is available
+    #unless github_api_token
+    #  UI.user_error!("Please set the GITHUB_TOKEN environment variable")
+    #end
+  
+    # Get the commit message for additional context
+    commit_message = sh("git log -1 --pretty=%B").strip 
+
+    # Create PR using gh CLI
+    Dir.chdir(clone_folder) do
+      pr_body = "Updates the Flatpak manifest to latest commit #{commit_hash}\n\nSource commit message: #{commit_message}"
+      sh("gh pr create --title 'Update manifest to #{commit_hash}' --body '#{pr_body}' --base master --head #{branch_name}")
+    end
+  
+    # Clean up
+    FileUtils.rm_rf(clone_folder)
   end
 end
 

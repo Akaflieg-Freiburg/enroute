@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2024 by Stefan Kebekus                                  *
+ *   Copyright (C) 2024-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -84,7 +84,6 @@ public:
     [[nodiscard]] QList<GeoMaps::VAC> vacs();
 
 
-
     //
     // Methods
     //
@@ -151,9 +150,22 @@ public:
      *
      * @param position Geographic position used for sorting
      *
+     * @param filter List of words
+     *
      * @returns List of all VACs installed
      */
-    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position);
+    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position, const QString& filter);
+
+    /*! \brief List of all VACs that contain a given point.
+     *
+     * This method returns the list of all installed VACs that contain the given
+     * point.
+     *
+     * @param position Geographic position
+     *
+     * @returns List of all VACs containing the given point.
+     */
+    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacs4Point(const QGeoCoordinate& position);
 
 signals:
     /*! \brief Notifier signal */
@@ -178,6 +190,10 @@ private:
 
     // This method saves m_vacs to m_dataFile.
     void save();
+
+    // This method returns the absolute path of a given VAC. Needed for iOS
+    // after App Update. See GeoMaps::VACLibrary::janitor
+    QString absolutePathForVac(GeoMaps::VAC);
 
     QVector<GeoMaps::VAC> m_vacs;
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};

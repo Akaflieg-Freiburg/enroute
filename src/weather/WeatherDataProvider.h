@@ -121,10 +121,10 @@ public:
     Q_PROPERTY(QString sunInfo READ sunInfo NOTIFY sunInfoChanged)
 
     /*! \brief List of METARs */
-    Q_PROPERTY(QMap<QString, Weather::METAR> METARs READ METARs BINDABLE bindableMETARs)
+    Q_PROPERTY(QMap<QString,Weather::METAR> METARs READ METARs BINDABLE bindableMETARs)
 
     /*! \brief List of TAFs */
-    Q_PROPERTY(QMap<QString, Weather::TAF> TAFs READ TAFs BINDABLE bindableTAFs)
+    Q_PROPERTY(QMap<QString,Weather::TAF> TAFs READ TAFs BINDABLE bindableTAFs)
 
 
     //

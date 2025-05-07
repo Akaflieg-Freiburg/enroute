@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,7 +35,100 @@ Page {
 
     required property var appWindow
 
-    header: StandardHeader {}
+
+    header: PageHeader {
+
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_info_outline.svg"
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                openManual("05-referencePages/04-infoTraffic.html")
+            }
+        }
+    }
+
+
+    Component {
+        id: trafficDelegate
+
+        Item {
+            width: sView.width
+            height: idel.height
+
+            Rectangle {
+                anchors.fill: parent
+                color: model.modelData.color
+                opacity: 0.2
+            }
+
+            WordWrappingItemDelegate {
+                width: parent.width
+                leftPadding: SafeInsets.left+16
+                rightPadding: SafeInsets.right+16
+
+                id: idel
+                text: {
+                    var line1 = []
+                    if (model.modelData.callSign !== "")
+                        line1.push(model.modelData.callSign)
+                    line1.push(model.modelData.typeString)
+                    if (model.modelData.ID !== "")
+                        line1.push("ID: " + model.modelData.ID)
+
+                    var line2 = []
+                    if (model.modelData.hDist.isFinite())
+                        line2.push(qsTr("hDist") + ": " + Navigator.aircraft.horizontalDistanceToString(model.modelData.hDist))
+                    if (model.modelData.vDist.isFinite())
+                        line2.push(qsTr("vDist") + ": " + Navigator.aircraft.verticalDistanceToString(model.modelData.vDist))
+                    return "<strong>" + line1.join(" • ") + "</strong><br><font size='2'>" + line2.join(" • ") + "</font>"
+                }
+                icon.source: "/icons/material/ic_airplanemode_active.svg"
+            }
+        }
+    }
+
+    TrafficObserver {
+        id: trafficObserver
+    }
 
     DecoratedScrollView {
         id: sView
@@ -133,9 +226,41 @@ Page {
 
             }
 
-            Item {
-                Layout.preferredHeight: sView.font.pixelSize*0.5
-                Layout.columnSpan: 2
+            Label {
+                Layout.fillWidth: true
+                visible: TrafficDataProvider.receivingHeartbeat
+
+                text: trafficObserver.hasTraffic ? qsTr("Traffic") : qsTr("Currently No Traffic")
+                font.pixelSize: sView.font.pixelSize*1.2
+                font.bold: true
+            }
+
+            ListView {
+                Layout.fillWidth: true
+                Layout.preferredHeight: contentHeight
+                clip: true
+
+                model: trafficObserver.traffic
+                delegate: trafficDelegate
+                ScrollIndicator.vertical: ScrollIndicator {}
+
+                section.property: "modelData.relevantString"
+                section.delegate: Component {
+                    Control {
+                        required property string section
+
+                        height: lbl.height
+
+                        Label {
+                            id: lbl
+
+                            //x: font.pixelSize
+                            text: parent.section
+                            //font.pixelSize: parent.font.pixelSize*1.2
+                            //font.bold: true
+                        }
+                    }
+                }
             }
 
             Label {

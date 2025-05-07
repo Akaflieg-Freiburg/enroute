@@ -20,20 +20,23 @@
 
 #pragma once
 
-#include "weather/Observer.h"
+#include <QProperty>
 
-namespace Weather {
+#include "traffic/TrafficFactor_Abstract.h"
 
-/*! \brief Up-to-date list of all METAR/TAF stations
+
+namespace Traffic {
+
+/*! \brief Provides list of traffic, sorted by relevance
  *
- *  This class holds an up-to-date list of all METAR/TAF stations, frequently
- *  updated and sorted by distance to the current position. The class is
- *  relatively expensive, as the constant updates will take some computation
- *  time. It makes sense to hold instances only when required and to delete them
- *  as soon as possible.
+ *  This class monitors the global TrafficDataProvider to produce list of all
+ *  traffic factors, sorted by relevance. Holding an instance of this class is
+ *  relatively expensive because it needs to update and sort whenever any data
+ *  in the TrafficDataProvider changes. Instances should therefore be deleted as
+ *  soon as they are no longer used.
  */
 
-class ObserverList : public QObject {
+class TrafficObserver : public QObject {
     Q_OBJECT
     QML_ELEMENT
 
@@ -46,22 +49,21 @@ public:
      *
      * @param parent Standard QObject parent
      */
-    explicit ObserverList(QObject* parent=nullptr);
+    explicit TrafficObserver(QObject* parent=nullptr);
 
     /*! \brief Standard destructor */
-    ~ObserverList() override = default;
+    ~TrafficObserver() override = default;
 
 
     //
     // Properties
     //
 
-    /*! \brief List of METAR/TAF stations
-     *
-     *  This property holds the last METAR for the waypoint, sorted by distance
-     *  to the current positionq.
-     */
-    Q_PROPERTY(QList<Weather::Observer*> observers READ observers BINDABLE bindableObservers)
+    /*! \brief Indicates that the traffic property is not empty */
+    Q_PROPERTY(bool hasTraffic READ hasTraffic BINDABLE bindableHasTraffic)
+
+    /*! \brief List of current traffic, sorted by relevance */
+    Q_PROPERTY(QList<Traffic::TrafficFactor_Abstract*> traffic READ traffic BINDABLE bindableTraffic)
 
 
     //
@@ -70,32 +72,33 @@ public:
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property observers
+     * @returns Property hasTraffic
      */
-    [[nodiscard]] QList<Weather::Observer*> observers() {return m_observers.value();}
+    [[nodiscard]] bool hasTraffic() {return m_hasTraffic.value();}
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property observers
+     * @returns Property hasTraffic
      */
-    [[nodiscard]] QBindable<QList<Weather::Observer*>> bindableObservers() const {return &m_observers;}
+    [[nodiscard]] QBindable<bool> bindableHasTraffic() {return &m_hasTraffic;}
 
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property traffic
+     */
+    [[nodiscard]] QList<Traffic::TrafficFactor_Abstract*> traffic() {return m_traffic.value();}
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property traffic
+     */
+    [[nodiscard]] QBindable<QList<Traffic::TrafficFactor_Abstract*>> bindableTraffic() {return &m_traffic;}
 
 private:
-    Q_DISABLE_COPY_MOVE(ObserverList)
+    Q_DISABLE_COPY_MOVE(TrafficObserver)
 
-    // Observers by ICAO-Id. This map is used to store Observer instances.
-    QMap<QString,Weather::Observer*> m_observersByID;
-
-    // Currently active observers. This list is updated by a binding that
-    // watches GlobalObject::weatherDataProvider, creates observer instances if
-    // needed and stores them in m_observersByID.
-    QProperty<QList<Weather::Observer*>> m_unsortedObservers;
-
-    // Currently active observers, sorted by distance. This list is updated by a
-    // binding that watches m_unsortedObservers and the current position.
-    QProperty<QList<Weather::Observer*>> m_observers;
+    QProperty<bool> m_hasTraffic;
+    QProperty<QList<Traffic::TrafficFactor_Abstract*>> m_traffic;
 };
 
 } // namespace Weather
-

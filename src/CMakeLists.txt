@@ -107,6 +107,7 @@ set(SOURCES
     traffic/TrafficFactor_Abstract.h
     traffic/TrafficFactor_DistanceOnly.h
     traffic/TrafficFactor_WithPosition.h
+    traffic/TrafficObserver.h
     traffic/Warning.h
     units/Angle.h
     units/ByteSize.h
@@ -207,6 +208,7 @@ set(SOURCES
     traffic/TrafficFactor_Abstract.cpp
     traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor_WithPosition.cpp
+    traffic/TrafficObserver.cpp
     traffic/Warning.cpp
     units/Angle.cpp
     units/Density.cpp
@@ -573,7 +575,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/RenameVACDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
-#    qml/items/AppWindow.qml
+    qml/items/AppWindow.qml
     qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml
     qml/items/DecoratedListView.qml
@@ -582,13 +584,13 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/ElevationInput.qml
     qml/items/FlightMap.qml
     qml/items/FlightVector.qml
-#    qml/items/Footer.qml
+    qml/items/Footer.qml
     qml/items/+Material/Footer.qml
     qml/items/Global.qml
-#    qml/items/Icon.qml
+    qml/items/Icon.qml
     qml/items/+Material/Icon.qml
     qml/items/ImportManager.qml
-#    qml/items/MapButton.qml
+    qml/items/MapButton.qml
     qml/items/+Material/MapButton.qml
     qml/items/MapSet.qml
     qml/items/MFM.qml
@@ -596,7 +598,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/NavBar.qml
     qml/items/NotificationArea.qml
     qml/items/NotificationButton.qml
-#    qml/items/PageHeader.qml
+    qml/items/PageHeader.qml
     qml/items/+Material/PageHeader.qml
     qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml
@@ -627,7 +629,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/PrivacyPage.qml
     qml/pages/SettingsPage.qml
     qml/pages/TrafficReceiver.qml
-    qml/pages/URLResolver.qml
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml
     SOURCES
@@ -644,6 +645,7 @@ qt_add_qml_module(${PROJECT_NAME}
 
 qt_add_lrelease(
     TS_FILES
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cs.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
@@ -674,11 +676,13 @@ qt_add_resources(${PROJECT_NAME} translations_qt
     PREFIX
     i18n
     FILES
+    ${Qt6_TRANSLATION_DIR}/qtbase_cs.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_de.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_es.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_fr.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_it.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_pl.qm
+    #${Qt6_TRANSLATION_DIR}/qtdeclarative_cs.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_de.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_es.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_fr.qm

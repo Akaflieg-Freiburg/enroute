@@ -42,7 +42,8 @@ CenteringDialog {
         // Delete old text items
         let childCount = co.children.length;
         // Iterate through the children in reverse order
-        for (let i = childCount - 1; i >= 0; i--) {
+        var i
+        for (i = childCount - 1; i >= 0; i--) {
             // Check if the child is a valid QML item
             if (co.children[i] instanceof QtObject) {
                     // Destroy the child item
@@ -67,8 +68,13 @@ CenteringDialog {
 
         // Create airspace description items
         var asl = GeoMapProvider.airspaces(waypoint.coordinate)
-        for (var i in asl)
+        for (i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
+
+        // Create airspace description items
+        var vac = VACLibrary.vacs4Point(waypoint.coordinate)
+        for (i in vac)
+            vacButtonDelegate.createObject(co, {vac: vac[i]});
 
         satButtonDelegate.createObject(co, {});
     }
@@ -196,7 +202,6 @@ CenteringDialog {
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
             }
-
         }
     }
 
@@ -393,6 +398,40 @@ CenteringDialog {
     }
 
     Component {
+        id: vacButtonDelegate
+
+        RowLayout {
+            id: vb
+
+            Layout.preferredWidth: sv.width
+
+            property vac vac
+
+            Icon {
+                Layout.preferredWidth: button.font.pixelSize*3
+                Layout.alignment: Qt.AlignVCenter
+                source: "/icons/material/ic_map.svg"
+            }
+
+            Button {
+                id: button
+                text: "<a href='xx'>" + vb.vac.name + "</a>"
+                flat: true
+                Layout.alignment: Qt.AlignVCenter
+                onPressed:  {
+                    PlatformAdaptor.vibrateBrief()
+                    Global.currentVAC = vb.vac
+                    waypointDescriptionDialog.close()
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+        }
+    }
+
+    Component {
         id: satButtonDelegate
 
         RowLayout {
@@ -426,7 +465,6 @@ CenteringDialog {
             }
         }
     }
-
 
     ColumnLayout {
         anchors.fill: parent
@@ -484,17 +522,19 @@ CenteringDialog {
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        if (Navigator.flightRoute.size > 0)
+                        if (Navigator.flightRoute.size > 0) {
+                            addMenu.close()
                             overwriteDialog.open()
+                        }
                         else {
                             Navigator.flightRoute.clear()
                             Navigator.flightRoute.append(PositionProvider.lastValidCoordinate)
                             Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
                             Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
+                            addMenu.close()
+                            waypointDescriptionDialog.close()
                         }
-                        addMenu.close()
                     }
-
                 }
 
                 Rectangle {
@@ -509,7 +549,6 @@ CenteringDialog {
                         // Mention Object to ensure that property gets updated
                         // when flight route changes
                         Navigator.flightRoute.size
-
                         return Navigator.flightRoute.canAppend(waypointDescriptionDialog.waypoint)
                     }
 
@@ -517,6 +556,7 @@ CenteringDialog {
                         PlatformAdaptor.vibrateBrief()
                         Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
                         addMenu.close()
+                        waypointDescriptionDialog.close()
                         Global.toast.doToast(qsTr("Added %1 to route.").arg(waypointDescriptionDialog.waypoint.extendedName))
                     }
                 }
@@ -535,6 +575,7 @@ CenteringDialog {
                         PlatformAdaptor.vibrateBrief()
                         Navigator.flightRoute.insert(waypointDescriptionDialog.waypoint)
                         addMenu.close()
+                        waypointDescriptionDialog.close()
                         Global.toast.doToast(qsTr("Inserted %1 into route.").arg(waypointDescriptionDialog.waypoint.extendedName))
                     }
                 }
@@ -550,12 +591,13 @@ CenteringDialog {
                         return Navigator.flightRoute.contains(waypointDescriptionDialog.waypoint)
                     }
                     onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        addMenu.close()
+                        PlatformAdaptor.vibrateBrief()                        
                         var index = Navigator.flightRoute.lastIndexOf(waypointDescriptionDialog.waypoint)
                         if (index < 0)
                             return
                         Navigator.flightRoute.removeWaypoint(index)
+                        addMenu.close()
+                        waypointDescriptionDialog.close()
                         Global.toast.doToast(qsTr("Removed %1 from route.").arg(waypointDescriptionDialog.waypoint.extendedName))
                     }
                 }
@@ -698,12 +740,13 @@ CenteringDialog {
             PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
             Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
-            close()
+            overwriteDialog.close()
+            waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
-            close()
+            overwriteDialog.close()
             waypointDescriptionDialog.open()
         }
     }
@@ -718,6 +761,7 @@ CenteringDialog {
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.replace(waypointDescriptionDialog.waypoint, newWP)
+            waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
         }
     }
@@ -734,6 +778,7 @@ CenteringDialog {
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.add(newWP)
+            waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
         }
     }
@@ -751,6 +796,7 @@ CenteringDialog {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
             WaypointLibrary.remove(removeDialog.waypoint)
+            waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {

@@ -1,5 +1,78 @@
 # Changelog
 
+## [2.33.0] - xx
+
+### Fixed
+- Fix problem where VACs were deleted on every app update on iOS.
+
+### Changed
+- Even on very small screens, always show at least four characters of the
+  destination waypoint in the remaining route bar. (#446)
+
+## [2.32.14] - 2025-03-04
+
+### Fixed
+- Fix problem with the file picker dialog on Android, where files from external
+  sources were not opened. (#491)
+
+### Changed
+- Increase distance threshold where aircraft is considered to be on-route from 3
+  to 5 NM. (#503)
+
+
+## [2.32.13] - 2025-03-02
+
+### Fixed
+- Fix problem with openAIR import. (#501)
+
+
+## [2.32.12] - 2025-02-23
+
+### Fixed
+- Fix problem where irrelevant traffic is shown in the moving map. (#497)
+
+
+## [2.32.11] - 2025-02-22
+
+### Fixed
+- Fix problems importing GeoJSON files produced by third-party software. (#496)
+
+
+## [2.32.10] - 2025-02-21
+
+### Added
+- VACs can now be opened directly from the waypoint info dialog. (#492)
+
+- Added search bar to VAC page. (#493)
+
+
+## [2.32.9] - 2025-02-16
+
+### Fixed
+- The list of available maps was downloaded, but not processed on first startup.
+  As a result, new users were shown a message that maps are not available for
+  their location. (#485)
+
+- Android users experienced very infrequent, but annoying ANRs.
+
+### Changed
+- Show list of all traffic on the page "Information/Traffic Data Receiver".
+  Adjust the manual accordingly.
+
+
+## [2.32.8] - 2025-02-05
+
+### Changed
+- Close waypoint description dialog once waypoint has been (added to|edited
+  in|removed from) route or library. (#487)
+
+
+## [2.32.7] - 2025-01-28
+
+### Fixed
+- Fix problem where Route/Waypoint/Aircraft library pages do not open. (#488, #490)
+
+
 ## [2.32.6] - 2025-01-20
 
 ### Fixed

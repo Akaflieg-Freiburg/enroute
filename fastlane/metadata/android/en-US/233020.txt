@@ -1,0 +1,2 @@
+### Fixed
+- Fix problem with file import under Android.

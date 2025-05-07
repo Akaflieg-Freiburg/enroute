@@ -148,9 +148,9 @@ Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical)
 
 
 Traffic::ConnectionInfo::ConnectionInfo(const QString& host, quint16 port, bool canonical)
-    : m_canConnect(true), m_canonical(canonical), m_host(host), m_port(port), m_type(Traffic::ConnectionInfo::UDP)
+    : m_canConnect(true), m_canonical(canonical), m_host(host), m_port(port), m_type(Traffic::ConnectionInfo::TCP)
 {
-    m_name = QObject::tr("TCP Connection to %1, Port %1", "Traffic::ConnectionInfo").arg(m_host, m_port);
+    m_name = QObject::tr("TCP Connection to %1, Port %2", "Traffic::ConnectionInfo").arg(m_host).arg(m_port);
     m_icon = u"/icons/material/ic_wifi.svg"_s;
 }
 

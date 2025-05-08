@@ -267,8 +267,22 @@ Page {
                         }
                     }
 
+                    Action {
+                        text: qsTr("OGN glidernet.org Connection")
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            var resultString = TrafficDataProvider.addDataSource_OGN()
+                            if (resultString !== "")
+                            {
+                                ltd.text = resultString
+                                ltd.open()
+                                return
+                            }
+                            Global.toast.doToast( qsTr("Adding OGN Connection") )
+                            addMenu.close()
+                        }
+                    }
                 }
-
             }
         }
     }

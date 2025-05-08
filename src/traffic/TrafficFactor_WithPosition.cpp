@@ -57,40 +57,40 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
     }
 
     switch(type()) {
-    case TrafficFactor_Abstract::Aircraft:
+    case Traffic::Aircraft:
         results << tr("Aircraft");
         break;
-    case TrafficFactor_Abstract::Airship:
+    case Traffic::Airship:
         results << tr("Airship");
         break;
-    case TrafficFactor_Abstract::Balloon:
+    case Traffic::Balloon:
         results << tr("Balloon");
         break;
-    case TrafficFactor_Abstract::Copter:
+    case Traffic::Copter:
         results << tr("Copter");
         break;
-    case TrafficFactor_Abstract::Drone:
+    case Traffic::Drone:
         results << tr("Drone");
         break;
-    case TrafficFactor_Abstract::Glider:
+    case Traffic::Glider:
         results << tr("Glider");
         break;
-    case TrafficFactor_Abstract::HangGlider:
+    case Traffic::HangGlider:
         results << tr("Hang glider");
         break;
-    case TrafficFactor_Abstract::Jet:
+    case Traffic::Jet:
         results << tr("Jet");
         break;
-    case TrafficFactor_Abstract::Paraglider:
+    case Traffic::Paraglider:
         results << tr("Paraglider");
         break;
-    case TrafficFactor_Abstract::Skydiver:
+    case Traffic::Skydiver:
         results << tr("Skydiver");
         break;
-    case TrafficFactor_Abstract::StaticObstacle:
+    case Traffic::StaticObstacle:
         results << tr("Static Obstacle");
         break;
-    case TrafficFactor_Abstract::TowPlane:
+    case Traffic::TowPlane:
         results << tr("Tow Plane");
         break;
     default:

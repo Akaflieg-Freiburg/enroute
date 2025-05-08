@@ -547,7 +547,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                DataManager.updateRemoteDataItemList()
+                DataManager.updateRemoteDataItemListIfOutdated()
             }
         }
 

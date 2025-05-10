@@ -1,9 +1,12 @@
 # Changelog
 
-## [2.33.3] - 2025-?
+## [2.33.3] - 2025-05-10
 
 ### Fixed
-- Fix problem with waypoint selection when no aviation data in installed. (#532)
+- Fix problem with waypoint selection when no aviation data in installed. (#523)
+
+- Fix problem with CUP file import, where official files provided by
+  Austrocontrol could not be imported due to a problem with the parser (#522)
 
 
 ## [2.33.2] - 2025-05-06

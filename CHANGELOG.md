@@ -6,6 +6,12 @@
 - Fix problem with waypoint selection when no aviation data in installed. (#532)
 
 
+## [2.33.2] - 2025-05-06
+
+### Fixed
+- Fix problem with file import under Android.
+
+
 ## [2.33.1] - 2025-04-18
 
 ### Fixed

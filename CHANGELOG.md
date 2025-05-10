@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.33.3] - 2025-?
+
+### Fixed
+- Fix problem with waypoint selection when no aviation data in installed. (#532)
+
+
 ## [2.33.1] - 2025-04-18
 
 ### Fixed

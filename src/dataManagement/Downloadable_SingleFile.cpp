@@ -467,6 +467,8 @@ void DataManagement::Downloadable_SingleFile::downloadFileErrorReceiver(QNetwork
         return;
     }
 
+    qDebug() << "Download failed: " << code << m_url.toString() << "to" << m_fileName;
+
     // Stop the download
     stopDownload();
 

@@ -549,6 +549,7 @@ Item {
                                                         flightMap.toCoordinate(posTr))
                 if (!wp.isValid)
                     return
+
                 waypointDescription.waypoint = wp
                 waypointDescription.open()
             }

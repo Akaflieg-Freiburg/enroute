@@ -393,7 +393,7 @@ private slots:
     void loadConnectionInfos();
 
     // Called if one of the sources indicates a heartbeat change
-    void onSourceHeartbeatChanged();
+    void onCurrentSourceChanged();
 
     // Called if one of the sources reports traffic (position unknown)
     void onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition& factor);
@@ -435,7 +435,10 @@ private:
 
     // TrafficData Sources
     QProperty<QList<QPointer<Traffic::TrafficDataSource_Abstract>>> m_dataSources;
+
     QProperty<QPointer<Traffic::TrafficDataSource_Abstract>> m_currentSource;
+    QPropertyNotifier m_currentSourceNotifier;
+    QPointer<Traffic::TrafficDataSource_Abstract> computeCurrentSource();
 
     // Property cache
     Traffic::Warning m_Warning;
@@ -450,6 +453,7 @@ private:
     QTimer reconnectionTimer;
 
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, bool, m_receivingHeartbeat, &Traffic::TrafficDataProvider::receivingHeartbeatChanged);
+    bool computeReceivingHeartbeat();
 
     // Standard file name for saveConnectionInfos()
     QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/connectionInfos.data"};

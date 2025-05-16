@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -124,7 +124,7 @@ public:
      *  The setter and resetter methods are protected and can be used by
      *  subclasses to update the property content.
      */
-    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat WRITE setReceivingHeartbeat RESET resetReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
+    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat BINDABLE bindableReceivingHeartbeat WRITE setReceivingHeartbeat RESET resetReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
 
     /*! \brief Source name
      *
@@ -213,7 +213,10 @@ public:
      *
      *  @returns Property pressureAltitude
      */
-    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() const {return &m_pressureAltitude;}
+    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() const
+    {
+        return &m_pressureAltitude;
+    }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -221,7 +224,16 @@ public:
      */
     [[nodiscard]] bool receivingHeartbeat() const
     {
-        return m_heartbeatTimer.isActive();
+        return m_receivingHeartbeat.value();
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property receivingHeartbeat
+     */
+    [[nodiscard]] QBindable<bool> bindableReceivingHeartbeat() const
+    {
+        return &m_receivingHeartbeat;
     }
 
     /*! \brief Getter function for the property with the same name
@@ -507,7 +519,7 @@ private:
 
     // Heartbeat timer
     QTimer m_heartbeatTimer;
-    bool m_hasHeartbeat {false};
+    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficDataSource_Abstract, bool, m_receivingHeartbeat, false, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged);
 
     // Targets
     Traffic::TrafficFactor_WithPosition m_factor;

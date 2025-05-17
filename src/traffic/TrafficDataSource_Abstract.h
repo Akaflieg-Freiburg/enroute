@@ -391,6 +391,9 @@ public slots:
     }
 
 protected:
+#warning
+    Traffic::TrafficFactor_WithPosition m_factor;
+
     /*! \brief Process FLARM/NMEA data
      *
      *  This method handles FLARM/NMEA data. It collects data until a full FLARM/NMEA sentence is found
@@ -522,7 +525,6 @@ private:
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficDataSource_Abstract, bool, m_receivingHeartbeat, false, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged);
 
     // Targets
-    Traffic::TrafficFactor_WithPosition m_factor;
     Traffic::TrafficFactor_DistanceOnly m_factorDistanceOnly;
 };
 

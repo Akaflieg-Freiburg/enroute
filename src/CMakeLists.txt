@@ -197,6 +197,7 @@ set(SOURCES
     traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp
+    traffic/TrafficDataSource_Abstract_APRS.cpp
     traffic/TrafficDataSource_Abstract_FLARM.cpp
     traffic/TrafficDataSource_Abstract_GDL90.cpp
     traffic/TrafficDataSource_Abstract_XGPS.cpp

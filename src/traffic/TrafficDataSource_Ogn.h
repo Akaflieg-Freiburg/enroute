@@ -22,6 +22,7 @@
 
 #include <QPointer>
 #include <QTcpSocket>
+
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 #include "traffic/TrafficDataSource_OgnParser.h"
 
@@ -192,19 +193,10 @@ private:
     // Parse and process APRS-IS messages
     void processAprsisMessage(const QString& message);
 
-    // Handle Comment Message
-    void processCommentMessage(const QString& message);
-
-    // Handle Traffic Report messages
-    void processTrafficReport(const QStringView& header, const QStringView& body);
-
-    // Handle Receiver Status messages
-    void processStatusMessage(const QStringView& header, const QStringView& body);
-
     // Send login string to APRS-IS server
     void sendLoginString();
 
-    // Get own coordinates. 
+    // Get own coordinates.
     // @param useLastValidPosition If true, use the last valid position if the current position is invalid.
     static QGeoCoordinate getOwnShipCoordinate(bool useLastValidPosition);
 

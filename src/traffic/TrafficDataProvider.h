@@ -71,8 +71,6 @@ public:
         return GlobalObject::trafficDataProvider();
     }
 
-
-
     //
     // Properties
     //
@@ -383,7 +381,7 @@ private slots:
 
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.
-    void deferredInitialization() const;
+    void deferredInitialization();
 
     // Sends out foreflight broadcast message See
     // https://www.foreflight.com/connect/spec/

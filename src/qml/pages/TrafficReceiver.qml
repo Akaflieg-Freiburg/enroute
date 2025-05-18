@@ -230,9 +230,16 @@ Page {
                 Layout.fillWidth: true
                 visible: TrafficDataProvider.receivingHeartbeat
 
-                text: trafficObserver.hasTraffic ? qsTr("Traffic") : qsTr("Currently No Traffic")
+                text: qsTr("Traffic")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
+            }
+
+            Label {
+                Layout.fillWidth: true
+                visible: TrafficDataProvider.receivingHeartbeat && !trafficObserver.hasTraffic
+
+                text: qsTr("Currently No Traffic")
             }
 
             ListView {

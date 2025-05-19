@@ -492,7 +492,6 @@ QString TrafficDataSource_OgnParser::formatPositionReport(const QStringView call
              QString::number(Units::Distance::fromM(altitude).toFeet(), 'f', 0)
                  .rightJustified(6, '0')); // Altitude in feet
 }
-
 QString TrafficDataSource_OgnParser::formatLatitude(double latitude)
 {
     // e.g. "5111.32N"

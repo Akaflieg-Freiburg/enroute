@@ -29,9 +29,6 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-// Forward declaration for the test class
-class TrafficDataSource_OgnTest;
-
 namespace Traffic::Ogn {
 Q_NAMESPACE
 struct OgnMessage;
@@ -50,7 +47,6 @@ struct OgnMessage;
 * This class is used in the UnitTest. It should not have external dependencies like GlobalObject.
 */
 class TrafficDataSource_OgnParser {
-    friend class TrafficDataSource_OgnTest;
 public:
     static void parseAprsisMessage(OgnMessage& ognMessage);
     static QString formatLoginString(QStringView callSign,
@@ -64,8 +60,6 @@ public:
                                         double speed,
                                         double altitude,
                                         Traffic::AircraftType aircraftType);
-    static QString formatFilterCommand(const QGeoCoordinate &receiveLocation,
-                                       unsigned int receiveRadius);
 
 private:
     static QString formatFilter(const QGeoCoordinate &receiveLocation, unsigned int receiveRadius);

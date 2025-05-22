@@ -78,10 +78,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     m_statusString.setBinding([this]() {return computeStatusString();});
     m_currentSourceNotifier = m_currentSource.addNotifier([this]() {onCurrentSourceChanged();});
 
-    // Bindings for saving
-    loadConnectionInfos();
-    connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
-
     // Connect timer. Try to (re)connect after 2s, and then again every five minutes.
     QTimer::singleShot(2s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
     connect(&reconnectionTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
@@ -286,10 +282,23 @@ QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSo
     return result;
 }
 
-void Traffic::TrafficDataProvider::deferredInitialization() const
+void Traffic::TrafficDataProvider::deferredInitialization()
 {
     // Try to (re)connect whenever the network situation changes
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
+
+    // Real data sources in order of preference, preferred sources first
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("10.10.10.10"), 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.1.1"), 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.4.1"), 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.10.1"), 2000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.42.1"), 2000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Udp(true, 4000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Udp(true, 49002, this));
+    loadConnectionInfos();
+
+    // Bindings for saving
+    connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
 }
 
 void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()

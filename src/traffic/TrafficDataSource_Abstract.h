@@ -391,6 +391,14 @@ public slots:
     }
 
 protected:
+    /*! \brief Process APRS-IS data
+     *
+     *  This method handles APRS-IS data, as used by Open Glider Net.
+     *
+     *  @param data A QString containing one APRS-IS sentence.
+     */
+    void processAPRS(const QString& data);
+
     /*! \brief Process FLARM/NMEA data
      *
      *  This method handles FLARM/NMEA data. It collects data until a full FLARM/NMEA sentence is found

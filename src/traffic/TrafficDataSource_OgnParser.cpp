@@ -457,18 +457,22 @@ QString TrafficDataSource_OgnParser::formatPositionReport(const QStringView call
     static QString lastSymbol = "/z"; // Default to unknown symbol
 
     // Check if the cached value matches the current aircraft type
-    if (lastAircraftType != aircraftType) {
+    if (lastAircraftType != aircraftType)
+    {
         // Perform reverse lookup
         lastSymbol.clear();
-        for (auto it = AircraftTypeMap->cbegin(); it != AircraftTypeMap->cend(); ++it) {
-            if (it.value() == aircraftType) {
+        for (auto it = AircraftTypeMap->cbegin(); it != AircraftTypeMap->cend(); ++it)
+        {
+            if (it.value() == aircraftType)
+            {
                 lastSymbol = it.key();
                 break;
             }
         }
 
         // Default to unknown symbol if no match is found
-        if (lastSymbol.isEmpty()) {
+        if (lastSymbol.isEmpty())
+        {
             lastSymbol = "\\^";
         }
 
@@ -488,7 +492,6 @@ QString TrafficDataSource_OgnParser::formatPositionReport(const QStringView call
              QString::number(Units::Distance::fromM(altitude).toFeet(), 'f', 0)
                  .rightJustified(6, '0')); // Altitude in feet
 }
-
 QString TrafficDataSource_OgnParser::formatLatitude(double latitude)
 {
     // e.g. "5111.32N"
@@ -511,54 +514,6 @@ QString TrafficDataSource_OgnParser::formatLongitude(double longitude)
     return QString("%1%2%3")
         .arg(degrees, 3, 10, QChar('0'))
         .arg(QString::number(minutes, 'f', 2).rightJustified(5, '0'), direction);
-}
-
-QString TrafficDataSource_OgnParser::formatFilterCommand(const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius)
-{
-    // e.g. "# filter r/-48.0000/7.8512/99 t/o"
-    return QString("# filter %1\n").arg(formatFilter(receiveLocation, receiveRadius));
-}
-
-// see https://www.aprs-is.net/javAPRSFilter.aspx
-QString TrafficDataSource_OgnParser::formatFilter(const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius)
-{
-    // e.g. "r/-48.0000/7.8512/99 t/o"
-    return QString("r/%1/%2/%3 t/o")
-        .arg(receiveLocation.latitude(), 1, 'f', 4)
-        .arg(receiveLocation.longitude(), 1, 'f', 4)
-        .arg(receiveRadius);
-}
-
-QString TrafficDataSource_OgnParser::formatLoginString(
-    const QStringView callSign, const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius, const QStringView appName, const QStringView appVersion)
-{
-    // e.g. "user ENR12345 pass 1234 vers 1.0.0 1.0 filter r/-48.0000/7.8512/99 t/o"
-
-    // Prepare the filter for what data we want to receive
-    QString const filter = formatFilter(receiveLocation, receiveRadius);
-
-    // Calculate the password based on the call sign
-    QString const passcode = calculatePassword(callSign);
-
-    auto loginString = QString("user %1 pass %2 vers %3 %4 filter %5\n")
-                           .arg(callSign.toString(),
-                                passcode,
-                                appName.toString(),
-                                appVersion.toString(),
-                                filter); // Filter string
-
-    return loginString;
-}
-
-QString TrafficDataSource_OgnParser::calculatePassword(const QStringView callSign)
-{
-    // APRS-IS passcode calculation: Sum of ASCII values of the first 6 characters of the call sign
-    // e.g. "1234"
-    int sum = 0;
-    for (int i = 0; i < callSign.length() && i < 6; ++i) {
-        sum += callSign.at(i).unicode();
-    }
-    return QString::number(sum % 10000); // Modulo 10000 to get a 4-digit passcode
 }
 
 } // namespace Traffic::Ogn

@@ -19,6 +19,10 @@
  ***************************************************************************/
 
 #include "TrafficDataSource_Ogn.h"
+#include "GlobalObject.h"
+#include "positioning/PositionProvider.h"
+#include "TrafficDataSource_OgnParser.h"
+
 #include <QRandomGenerator>
 #include <QMap>
 #include <QRegularExpression>
@@ -27,14 +31,6 @@
 #include <QUrl>
 #include <QNetworkProxy>
 #include <QtMath>
-#include "GlobalObject.h"
-#include "positioning/PositionProvider.h"
-#include "TrafficDataSource_OgnParser.h"
-#include "TrafficFactor_WithPosition.h"
-#include "TrafficFactorAircraftType.h"
-#include "positioning/PositionInfo.h"
-#include "traffic/FlarmnetDB.h"
-#include "TransponderDB.h"
 #include <QTimer>
 #include <QMetaEnum>
 
@@ -49,12 +45,33 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
     // This could be a problem if we have more than 10000 users at the same time. 
     m_callSign = QString("ENR%1").arg(QRandomGenerator::global()->bounded(100000, 999999));
 
-    // Connect socket
-    connect(&m_socket, &QTcpSocket::connected, this, &Traffic::TrafficDataSource_Ogn::onConnected);
+    // Once the socket connects, send a login string
+    connect(&m_socket, &QTcpSocket::connected, this, [this]() {
+        // Send login string, e.g. "user ENR12345 pass 1234 vers 1.0.0 1.0 filter r/-48.0000/7.8512/99 t/o"
+        auto approximatelastValidCoordinate = GlobalObject::positionProvider()->lastValidCoordinate();
+        // Calculate the password based on the call sign
+        // APRS-IS passcode calculation: Sum of ASCII values of the first 6 characters of the call sign
+        // e.g. "1234"
+        int sum = 0;
+        for (int i = 0; i < m_callSign.length() && i < 6; ++i)
+        {
+            sum += m_callSign.at(i).unicode();
+        }
+
+        m_textStream << QString("user %1 pass %2 vers %3 %4 filter r/%5/%6/%7 t/o\n")
+                            .arg(m_callSign)
+                            .arg(QString::number(sum % 10000))
+                            .arg("enroute")
+                            .arg(QCoreApplication::applicationVersion())
+                            .arg(approximatelastValidCoordinate.latitude(), 1, 'f', 4)
+                            .arg(approximatelastValidCoordinate.longitude(), 1, 'f', 4)
+                            .arg(qRound(m_receiveRadius.toKM()));
+        m_textStream.flush();
+    });
+
     connect(&m_socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Ogn::onErrorOccurred);
     connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Ogn::onReadyRead);
     connect(&m_socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Ogn::onStateChanged);
-    connect(&m_socket, &QAbstractSocket::disconnected, [](){ qDebug() << "Disconnected from OGN APRS-IS server"; });
     connect(&m_socket, &QAbstractSocket::disconnected, this, &Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver, Qt::ConnectionType::QueuedConnection);
 
     // Set up text stream
@@ -68,32 +85,22 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
     auto* periodicUpdateTimer = new QTimer(this);
     connect(periodicUpdateTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Ogn::periodicUpdate);
     periodicUpdateTimer->start(60 * 1000); // 1 minute interval
+
+    // Whenever the approximate position changes, update the window for which traffic data is received.
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::approximateLastValidCoordinateChanged, this, [this]() {
+        auto approximatelastValidCoordinate = GlobalObject::positionProvider()->approximateLastValidCoordinate();
+        m_textStream << u"# filter r/%1/%2/%3 t/o"_s
+                            .arg(approximatelastValidCoordinate.latitude(), 1, 'f', 4)
+                            .arg(approximatelastValidCoordinate.longitude(), 1, 'f', 4)
+                            .arg(qRound(m_receiveRadius.toKM()));
+        m_textStream.flush();
+    });
 }
 
 Traffic::TrafficDataSource_Ogn::~TrafficDataSource_Ogn()
 {
     Traffic::TrafficDataSource_Ogn::disconnectFromTrafficReceiver();
     setReceivingHeartbeat(false); // This will release the WiFi lock if necessary
-}
-
-void Traffic::TrafficDataSource_Ogn::onConnected()
-{
-    qDebug() << "Connected to OGN APRS-IS server";
-
-    // Send login string
-    sendLoginString();
-
-    #if OGN_SEND_OWN_POSITION
-    // Send an initial position report
-    if (getOwnShipCoordinate(/*useLastValidPosition*/false).coordinate().isValid()) {
-        sendPosition(positionInfo.coordinate(),
-                     positionInfo.trueTrack().toDEG(),
-                     positionInfo.groundSpeed().toKN(),
-                     positionInfo.coordinate().altitude());
-    } else {
-        qDebug() << "Position is invalid, skipping initial position report.";
-    }
-    #endif
 }
 
 void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
@@ -142,171 +149,19 @@ void Traffic::TrafficDataSource_Ogn::disconnectFromTrafficReceiver()
     onStateChanged(m_socket.state());
 }
 
-void Traffic::TrafficDataSource_Ogn::sendLoginString()
-{
-    // update own location
-    QGeoCoordinate const coordinate = getOwnShipCoordinate(/*useLastValidPosition*/ true);
-    if (coordinate.isValid()) {
-        m_receiveLocation = coordinate;
-    }
-
-    QString const loginString
-        = Ogn::TrafficDataSource_OgnParser::formatLoginString(m_callSign,
-                                                              m_receiveLocation,
-                                                              m_receiveRadius,
-                                                              u"enroute",
-                                                              QCoreApplication::applicationVersion());
-
-    m_textStream << loginString;
-    m_textStream.flush();
-
-#if OGN_DEBUG
-    qDebug() << "Sent login string:" << loginString;
-#endif
-}
-
-QGeoCoordinate Traffic::TrafficDataSource_Ogn::getOwnShipCoordinate(bool useLastValidPosition)
-{
-    QGeoCoordinate ownShipCoordinate;
-    auto* positionProviderPtr = GlobalObject::positionProvider();
-    if (positionProviderPtr != nullptr) {
-        ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
-        if (!ownShipCoordinate.isValid() && useLastValidPosition) {
-            ownShipCoordinate = Positioning::PositionProvider::lastValidCoordinate();
-        }
-    }
-    return ownShipCoordinate;
-}
-
 void Traffic::TrafficDataSource_Ogn::onReadyRead()
 {
-    static TransponderDB const transponderDB; // Initialize the database
-
-    m_ognMessage.reset();
-    while (m_textStream.readLineInto(&m_ognMessage.sentence)) {
-        // notify that we are receiving data
-        setReceivingHeartbeat(true);
-
-        // Process APRS-IS sentence
-        Ogn::TrafficDataSource_OgnParser::parseAprsisMessage(m_ognMessage);
-
-        switch (m_ognMessage.type)
-        {
-        case Traffic::Ogn::OgnMessageType::TRAFFIC_REPORT:
-        {
-            if ((m_ognMessage.aircraftType == Traffic::AircraftType::unknown
-                 || m_ognMessage.aircraftType == Traffic::AircraftType::StaticObstacle)
-                && !m_ognMessage.speed.isFinite()) {
-#if OGN_DEBUG
-                    qDebug() << "Not an Aircraft.";
-#endif
-                    return;
-            }
-            if (!m_ognMessage.coordinate.isValid()) {
-#if OGN_DEBUG
-                qDebug() << "Invalid coordinate for traffic report:" << m_ognMessage.sentence;
-#endif
-                return;
-            }
-
-            // Compute horizontal and vertical distance to traffic if our own position is known.
-            QGeoCoordinate const ownShipCoordinate = getOwnShipCoordinate(
-                /*useLastValidPosition*/ true);
-            Units::Distance hDist {};
-            Units::Distance vDist {};
-            if (ownShipCoordinate.isValid()) {
-                hDist = Units::Distance::fromM(ownShipCoordinate.distanceTo(m_ognMessage.coordinate));
-                vDist = Units::Distance::fromM(qFabs(m_ognMessage.coordinate.altitude() - ownShipCoordinate.altitude()));
-            }
-
-            // Decode callsign
-            QString callsign;
-            if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
-                callsign = GlobalObject::flarmnetDB()->getRegistration(QString(m_ognMessage.address));
-            } else if (static_cast<int>(!m_ognMessage.flightnumber.empty()) != 0) {
-                callsign = QString(m_ognMessage.flightnumber);
-            } else if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::ICAO) {
-                callsign = transponderDB.getRegistration(QString(m_ognMessage.address));
-            }
-#if OGN_SHOW_ADDRESSTYPE
-            const QMetaEnum metaEnum = QMetaEnum::fromType<Traffic::Ogn::OgnAddressType>();
-            callsign += QString(" (%1)").arg(metaEnum.valueToKey(static_cast<int>(m_ognMessage.addressType)));
-#endif
-
-            // Compute Alarm Level 0-3
-            int alarmLevel = 0;
-            if (hDist.toM() < 1000 && vDist.toFeet() < 400) {
-                alarmLevel = 3; // High alert
-            } else if (hDist.toM() < 2000 && vDist.toFeet() < 600) {
-                alarmLevel = 2; // Medium alert
-            } else if (hDist.toM() < 5000 && vDist.toFeet() < 800) {
-                alarmLevel = 1; // Low alert
-            }
-
-            // PositionInfo
-            QGeoPositionInfo pInfo(m_ognMessage.coordinate, QDateTime::currentDateTimeUtc());
-            pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course.toDEG());
-#warning
-            qWarning() << m_ognMessage.coordinate << m_ognMessage.course.toDEG();
-            pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, m_ognMessage.speed.toMPS());
-            pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, m_ognMessage.verticalSpeed);
-            if (!pInfo.isValid()) {
-#if OGN_DEBUG
-                qDebug() << "Invalid position-info for traffic report:" << m_ognMessage.sentence;
-#endif
-                return;
-            }
-
-            // Prepare the m_factor object
-            m_factor.setAlarmLevel(alarmLevel);
-            m_factor.setCallSign(callsign);
-            m_factor.setID(m_ognMessage.sourceId.toString());
-            m_factor.setType(m_ognMessage.aircraftType);
-            m_factor.setPositionInfo(Positioning::PositionInfo(pInfo, sourceName()));
-            m_factor.setHDist(hDist);
-            m_factor.setVDist(vDist);
-            m_factor.startLiveTime();
-
-            // Emit the factorWithPosition signal
-            emit factorWithPosition(m_factor);
-
-// simulate movement
-#define OGN_SIMULATE_MOVEMENT_FOR_TESTING 0
-#if OGN_SIMULATE_MOVEMENT_FOR_TESTING
-            const double centerLat = 48.353889;
-            const double centerLon = 11.786111;
-            static double fakeLat = centerLat;
-            static double fakeLon = centerLon;
-            static QDateTime lastTimeStamp = QDateTime::currentDateTimeUtc();
-            QDateTime currentTime = QDateTime::currentDateTimeUtc();
-            if (lastTimeStamp.secsTo(currentTime) > 1) {
-                fakeLat += 0.01;
-                lastTimeStamp = currentTime;
-            }
-            QGeoCoordinate fakecoordinate(fakeLat, fakeLon, 500.0);
-            QGeoPositionInfo fakegInfo(fakecoordinate, QDateTime::currentDateTimeUtc());
-            Positioning::PositionInfo fakepInfo(fakegInfo, sourceName());
-            emit positionUpdated(fakepInfo);
-#endif
-            break;
-        }
-        case Traffic::Ogn::OgnMessageType::COMMENT:
-#if OGN_DEBUG
-            qDebug() << m_ognMessage.sentence;
-#endif
-            break;
-        default:
-#if OGN_DEBUG
-            qDebug() << m_ognMessage.sentence;
-#endif
-            break;
-        }
+    QString sentence;
+    while (m_textStream.readLineInto(&sentence))
+    {
+        processAPRS(sentence);
     }
 }
 
 void Traffic::TrafficDataSource_Ogn::sendPosition(const QGeoCoordinate& coordinate, double course, double speed, double altitude)
 {
-    if (!m_socket.isOpen()) {
+    if (!m_socket.isOpen())
+    {
 #if OGN_DEBUG
         qDebug() << "Socket is not open. Cannot send position.";
 #endif
@@ -332,20 +187,17 @@ void Traffic::TrafficDataSource_Ogn::periodicUpdate()
     sendKeepAlive();
     verifyConnection();
 
-    // update receive position
-    QGeoCoordinate const position = getOwnShipCoordinate(/*useLastValidPosition*/ true);
-    if (position.isValid()) {
-        updateReceivePosition(position);
-    }
-
 // update position report
 #if OGN_SEND_OWN_POSITION
-    if (getOwnShipCoordinate(/*useLastValidPosition*/false).coordinate().isValid()) {
+    if (getOwnShipCoordinate(/*useLastValidPosition*/false).coordinate().isValid())
+    {
         sendPosition(positionInfo.coordinate(),
                      positionInfo.trueTrack().toDEG(),
                      positionInfo.groundSpeed().toKN(),
                      positionInfo.coordinate().altitude());
-    } else {
+    }
+    else
+    {
 #if OGN_DEBUG
         qDebug() << "Position is invalid, skipping position report.";
 #endif
@@ -353,38 +205,17 @@ void Traffic::TrafficDataSource_Ogn::periodicUpdate()
 #endif
 }
 
-void Traffic::TrafficDataSource_Ogn::updateReceivePosition(const QGeoCoordinate &position)
-{
-    double const distance = position.distanceTo(m_receiveLocation);
-    if (distance > 10000) { // More than 10 km
-#if OGN_DEBUG
-        qDebug() << "Current position is more than 10 km away from OGN receive position. Updating receive position.";
-#endif
-        m_receiveLocation = position;
-        QString const filterCommand
-            = Traffic::Ogn::TrafficDataSource_OgnParser::formatFilterCommand(m_receiveLocation,
-                                                                             m_receiveRadius);
-#if OGN_DEBUG
-        qDebug() << filterCommand;
-#endif
-        m_textStream << filterCommand;
-        m_textStream.flush();
-    }
-}
-
 void Traffic::TrafficDataSource_Ogn::sendKeepAlive()
 {
     // Send a keep-alive message (newline character as per APRS-IS protocol)
     m_textStream << "# " << QCoreApplication::organizationName() << QCoreApplication::applicationName() << QCoreApplication::applicationVersion() << "\n";
     m_textStream.flush();
-#if OGN_DEBUG
-    qDebug() << "Sent keep-alive message to APRS-IS server.";
-#endif
 }
 
 void Traffic::TrafficDataSource_Ogn::verifyConnection()
 {
-    if (!m_socket.isOpen() || m_socket.state() != QAbstractSocket::ConnectedState) {
+    if (!m_socket.isOpen() || m_socket.state() != QAbstractSocket::ConnectedState)
+    {
         qWarning() << "Connection to OGN APRS-IS server lost. Reconnecting...";
         disconnectFromTrafficReceiver();
         connectToTrafficReceiver();

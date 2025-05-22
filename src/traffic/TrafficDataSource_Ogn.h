@@ -22,6 +22,7 @@
 
 #include <QPointer>
 #include <QTcpSocket>
+
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 #include "traffic/TrafficDataSource_OgnParser.h"
 
@@ -138,7 +139,6 @@ public slots:
      */
     void connectToTrafficReceiver() override;
 
-
     /*! \brief Disconnect from traffic receiver
      *
      *  This method implements the pure virtual method declared by its
@@ -158,12 +158,6 @@ public slots:
     void sendPosition(const QGeoCoordinate& coordinate, double course, double speed, double altitude);
 
 private slots:
-    /*! \brief Called when the socket successfully connects to the server
-     *
-     *  This function handles post-connection tasks such as sending the login string
-     *  and an initial position report.
-     */
-    void onConnected();
 
     // Read lines from the socket's text stream and passes the string on to
     // processAprsisMessage.
@@ -185,34 +179,11 @@ private:
     // our own AircraftType
     Traffic::AircraftType m_aircraftType = {Traffic::AircraftType::Aircraft};
 
-    // Receive Filter
-    QGeoCoordinate m_receiveLocation = {48.0, 7.85, 250};
-    unsigned int m_receiveRadius = {50};
-
-    // Parse and process APRS-IS messages
-    void processAprsisMessage(const QString& message);
-
-    // Handle Comment Message
-    void processCommentMessage(const QString& message);
-
-    // Handle Traffic Report messages
-    void processTrafficReport(const QStringView& header, const QStringView& body);
-
-    // Handle Receiver Status messages
-    void processStatusMessage(const QStringView& header, const QStringView& body);
-
-    // Send login string to APRS-IS server
-    void sendLoginString();
-
-    // Get own coordinates. 
-    // @param useLastValidPosition If true, use the last valid position if the current position is invalid.
-    static QGeoCoordinate getOwnShipCoordinate(bool useLastValidPosition);
+    // Radius around the approximate position for which traffic data is requested.
+    static constexpr Units::Distance m_receiveRadius = Units::Distance::fromKM(50);
 
     // Periodic update function called once per minute
     void periodicUpdate();
-
-    // Update receive position
-    void updateReceivePosition(const QGeoCoordinate &position);
 
     // Send a keep-alive message to the APRS-IS server
     void sendKeepAlive();

@@ -38,17 +38,17 @@ using namespace Qt::Literals::StringLiterals;
 
 Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString hostName, quint16 port, QObject *parent) :
     Traffic::TrafficDataSource_AbstractSocket(isCanonical, parent),
-    m_hostName(hostName.isEmpty() ? "aprs.glidernet.org" : std::move(hostName)), // Default to aprs.glidernet.org
+    m_hostName(hostName.isEmpty() ? u"aprs.glidernet.org"_s : std::move(hostName)), // Default to aprs.glidernet.org
     m_port(port == 0 ? 14580 : port) // Default to port 14580
 {
     // Generate a random number for the call sign.
     // This could be a problem if we have more than 10000 users at the same time. 
-    m_callSign = QString("ENR%1").arg(QRandomGenerator::global()->bounded(100000, 999999));
+    m_callSign = QString(u"ENR%1"_s).arg(QRandomGenerator::global()->bounded(100000, 999999));
 
     // Once the socket connects, send a login string
     connect(&m_socket, &QTcpSocket::connected, this, [this]() {
         // Send login string, e.g. "user ENR12345 pass 1234 vers 1.0.0 1.0 filter r/-48.0000/7.8512/99 t/o"
-        auto approximatelastValidCoordinate = GlobalObject::positionProvider()->lastValidCoordinate();
+        auto approximatelastValidCoordinate = Positioning::PositionProvider::lastValidCoordinate();
         // Calculate the password based on the call sign
         // APRS-IS passcode calculation: Sum of ASCII values of the first 6 characters of the call sign
         // e.g. "1234"

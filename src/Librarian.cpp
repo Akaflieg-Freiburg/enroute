@@ -300,10 +300,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += "<p>"
-                  + tr("Enroute Flight Navigation now offers ICAO and Glider Charts for Switzerland. "
-                       "To download these maps, open the main menu and go to Library/Maps and Data. "
-                       "We thank the swiss Federal Office of Topography and the Federal Office of Civil Aviation for making the maps publicly available. "
-                       "Use these maps for information only. The <a href='https://www.geo.admin.ch/en/general-terms-of-use-fsdi'>license conditions</a> do not allow operational use.")
+                  + tr("Enroute Flight Navigation is now available on Mac computers with Apple Silcon processor (M1 or newer). "
+                       "Download it on the App Store.")
                   + "</p>";
 #if !defined(Q_OS_IOS)
         result += "<p>"

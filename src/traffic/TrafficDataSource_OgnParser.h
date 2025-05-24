@@ -66,8 +66,8 @@ private:
     static QString formatLatitude(double latitude);
     static QString formatLongitude(double longitude);
     static QString calculatePassword(QStringView callSign);
-    static double decodeLatitude(QStringView nmeaLatitude, QChar latitudeDirection);
-    static double decodeLongitude(QStringView nmeaLongitude, QChar longitudeDirection);
+    static double decodeLatitude(QStringView nmeaLatitude, QChar latitudeDirection, QChar latEnhancement);
+    static double decodeLongitude(QStringView nmeaLongitude, QChar longitudeDirection, QChar lonEnhancement);
     static void parseTrafficReport(OgnMessage &ognMessage, QStringView header, QStringView body);
     static void parseCommentMessage(OgnMessage& ognMessage);
     static void parseStatusMessage(OgnMessage &ognMessage, QStringView header, QStringView body);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -420,37 +420,6 @@ Page {
         modal: true
 
         standardButtons: Dialog.Ok
-    }
-
-    LongTextDialog {
-        id: missingTerrainDataWarning
-
-        title: qsTr("Terrain Data Missing")
-        text: qsTr("The height above ground level cannot be computed for your current position, because the relevant terrain maps for your region have not been installed.")
-
-        footer: DialogButtonBox {
-            ToolButton {
-                text: qsTr("Install now")
-                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            }
-            ToolButton {
-                text: qsTr("Cancel")
-                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-            }
-        } // DialogButtonBox
-
-        onRejected: {
-            PlatformAdaptor.vibrateBrief()
-            showAltAGL.checked = false
-            close()
-        }
-
-        onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-            close()
-            stackView.pop()
-            stackView.push("../pages/DataManagerPage.qml")
-        }
     }
 
     LongTextDialog {

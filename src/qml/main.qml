@@ -868,7 +868,7 @@ AppWindow {
         text: qsTr("Do you wish to exit <strong>Enroute Flight Navigation</strong>?")
 
         onAccepted: Qt.quit()
-        onRejected: close()
+        onRejected: exitDialog.close()
     }
 
     Shortcut {
@@ -927,7 +927,7 @@ AppWindow {
         title: qsTr("Network security error")
 
         onAccepted: {
-            close()
+            sslErrorDialog.close()
             GlobalSettings.ignoreSSLProblems = true
             sslErrorConfirmation.open()
         }

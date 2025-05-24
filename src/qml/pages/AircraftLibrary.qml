@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -235,7 +235,7 @@ Page {
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
-            close()
+            overwriteDialog.close()
         }
     }
 
@@ -256,7 +256,7 @@ Page {
         onRejected: {
             PlatformAdaptor.vibrateBrief()
             page.reloadFlightRouteList() // Re-display aircraft that have been swiped out
-            close()
+            removeDialog.close()
         }
 
     }
@@ -307,13 +307,13 @@ Page {
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Aircraft, renameName.text)) {
                 Librarian.rename(Librarian.Aircraft, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
-                close()
+                renameDialog.close()
                 toast.doToast(qsTr("Aircraft renamed"))
             }
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
-            close()
+            renameDialog.close()
         }
     }
 

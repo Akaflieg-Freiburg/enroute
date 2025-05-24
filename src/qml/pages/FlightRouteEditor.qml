@@ -291,12 +291,12 @@ Page {
 
                         onAccepted: {
                             PlatformAdaptor.vibrateBrief()
-                            close()
+                            importFileDialog.close()
                             FileExchange.processFileOpenRequest(importFileDialog.selectedFile)
                         }
                         onRejected: {
                             PlatformAdaptor.vibrateBrief()
-                            close()
+                            importFileDialog.close()
                         }
                     }
                 }
@@ -773,7 +773,7 @@ Page {
                     if (wpList.model.length > 0) {
                         PlatformAdaptor.vibrateBrief()
                         Navigator.flightRoute.append(wpList.model[0])
-                        close()
+                        flightRouteAddWPDialog.close()
                     }
                 }
 
@@ -877,7 +877,7 @@ Page {
 
         onRejected: {
             PlatformAdaptor.vibrateBrief()
-            close()
+            clearDialog.close()
         }
     }
 
@@ -928,7 +928,7 @@ Page {
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             Navigator.flightRoute.replaceWaypoint(index, newWP)
-            close()
+            wpEditor.close()
         }
     }
 } // Page

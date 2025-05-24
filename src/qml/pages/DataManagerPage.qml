@@ -259,12 +259,12 @@ Page {
 
                         onAccepted: {
                             PlatformAdaptor.vibrateBrief()
-                            close()
+                            importFileDialog.close()
                             FileExchange.processFileOpenRequest(importFileDialog.selectedFile)
                         }
                         onRejected: {
                             PlatformAdaptor.vibrateBrief()
-                            close()
+                            importFileDialog.close()
                         }
                     }
                 }

@@ -146,7 +146,7 @@ Page {
                         }
                         onRejected: {
                             PlatformAdaptor.vibrateBrief()
-                            close()
+                            importFileDialog.close()
                         }
                     }
 
@@ -436,7 +436,7 @@ Page {
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
-            close()
+            overwriteDialog.close()
         }
     }
 
@@ -457,7 +457,7 @@ Page {
         onRejected: {
             PlatformAdaptor.vibrateBrief()
             page.reloadFlightRouteList()
-            close()
+            removeDialog.close()
         }
     }
 
@@ -506,13 +506,13 @@ Page {
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Routes, renameName.text)) {
                 Librarian.rename(Librarian.Routes, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
-                close()
+                renameDialog.close()
                 toast.doToast(qsTr("Flight route renamed"))
             }
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
-            close()
+            renameDialog.close()
         }
     }
 

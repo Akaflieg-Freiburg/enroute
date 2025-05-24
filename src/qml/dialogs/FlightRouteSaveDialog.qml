@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -103,7 +103,7 @@ CenteringDialog {
 
     onRejected: {
         PlatformAdaptor.vibrateBrief()
-        close()
+        dlg.close()
     }
 
     onAccepted: {
@@ -153,7 +153,7 @@ CenteringDialog {
 
         onRejected: {
             PlatformAdaptor.vibrateBrief()
-            close()
+            overwriteDialog.close()
             dlg.open()
         }
 

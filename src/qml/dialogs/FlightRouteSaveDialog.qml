@@ -41,9 +41,6 @@ CenteringDialog {
             text: modelData
             icon.source: "/icons/material/ic_directions.svg"
 
-            anchors.left: parent.left
-            anchors.right: parent.right
-
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
                 finalFileName = modelData

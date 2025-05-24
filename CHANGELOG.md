@@ -5,6 +5,8 @@
 ### Fixed
 - Fix unexpected exit when editing flight routes. (#526)
 
+- Fix problem renaming visual approach charts.
+
 
 ## [2.33.3] - 2025-05-10
 

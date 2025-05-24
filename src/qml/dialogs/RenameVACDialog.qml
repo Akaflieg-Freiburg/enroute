@@ -53,7 +53,7 @@ CenteringDialog {
             text: renameDialog.oldName
             implicitWidth: renameDialog.availableWidth
 
-            onAccepted: renameDialog.onAccepted()
+            onAccepted: renameDialog.accept()
         }
     }
 

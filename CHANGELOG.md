@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.33.5] - x
+
+### Changes
+- Address Android API level 35.
+
+
 ## [2.33.4] - 2025-05-24
 
 ### Fixed

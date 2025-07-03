@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.33.5] - 2025-07-03
+
+### Changes
+- Target Android API level 35.
+
+
 ## [2.33.4] - 2025-05-24
 
 ### Fixed

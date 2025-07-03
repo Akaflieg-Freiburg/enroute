@@ -680,7 +680,7 @@ Item {
                 icon.source: "/icons/material/ic_airplanemode_active.svg"
                 icon.color: "red"
 
-                enabled: !TrafficDataProvider.receivingHeartbeat
+                enabled: !TrafficDataProvider.receivingHeartbeat || TrafficDataProvider.currentSourceIsInternetService
                 visible: enabled
 
                 onClicked: {

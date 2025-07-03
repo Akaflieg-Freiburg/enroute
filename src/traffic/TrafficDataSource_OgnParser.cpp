@@ -27,7 +27,7 @@
 #include <QMetaEnum>
 #include <QRegularExpression>
 
-#define OGN_DEBUG 1
+//#define OGN_DEBUG 1
 
 using namespace Qt::Literals::StringLiterals;
 

@@ -174,7 +174,13 @@ Page {
 
                 background: Rectangle {
                     border.color: "black"
-                    color: (TrafficDataProvider.receivingHeartbeat) ? "green" : "red"
+                    color: {
+                        if (!TrafficDataProvider.receivingHeartbeat)
+                            return "red"
+                        if (TrafficDataProvider.currentSourceIsInternetService)
+                            return "yellow"
+                        return "green"
+                    }
                     opacity: 0.2
                     radius: 4
                 }

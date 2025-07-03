@@ -33,9 +33,6 @@ void Traffic::TrafficDataSource_Abstract::processAPRS(const QString& data)
 {
     static TransponderDB const transponderDB; // Initialize the database
 
-    qWarning() << "APRS" << data;
-
-#warning need to optimize
     Traffic::Ogn::OgnMessage m_ognMessage;
 
     m_ognMessage.sentence = data;

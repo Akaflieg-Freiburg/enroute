@@ -76,6 +76,9 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
     m_receivingHeartbeat.setBinding([this]() {return computeReceivingHeartbeat();});
     m_statusString.setBinding([this]() {return computeStatusString();});
+    m_currentSourceIsInternetService.setBinding([this]() {
+        return qobject_cast<TrafficDataSource_Ogn*>(m_currentSource.value()) != nullptr;
+    });
     m_currentSourceNotifier = m_currentSource.addNotifier([this]() {onCurrentSourceChanged();});
 
     // Connect timer. Try to (re)connect after 2s, and then again every five minutes.
@@ -223,7 +226,7 @@ QString Traffic::TrafficDataProvider::addDataSource_OGN()
         }
     }
 
-    auto* source = new TrafficDataSource_Ogn(false, "", 0, this);
+    auto* source = new TrafficDataSource_Ogn(false, {}, 0, this);
     source->connectToTrafficReceiver();
     addDataSource(source);
     return {};
@@ -597,7 +600,15 @@ QString Traffic::TrafficDataProvider::computeStatusString()
         {
             result += QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(m_currentSource->sourceName());
         }
-        result += QStringLiteral("<li>%1</li>").arg(tr("Receiving heartbeat."));
+
+        if (m_currentSourceIsInternetService.value())
+        {
+            result += QStringLiteral("<li>%1</li>").arg(tr("Receiving data through an internet service, which might be unreliable. Consider connecting to a proper traffic data receiver."));
+        }
+        else
+        {
+            result += QStringLiteral("<li>%1</li>").arg(tr("Receiving heartbeat."));
+        }
         if (positionInfo().isValid())
         {
             result += QStringLiteral("<li>%1</li>").arg(tr("Receiving position info."));

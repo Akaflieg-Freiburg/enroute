@@ -295,7 +295,7 @@ Page {
               + "<li>" + qsTr("You will not be visible to others.") + "</li>"
               + "</ul></p>"
               + "<p>"
-              + qsTr("We strongly feel that no responsible pilot should ever fly without a proper traffic data receicer, such as a FLARM or ADS-B device.")
+              + qsTr("We strongly feel that no responsible pilot should ever fly without a proper traffic data receiver, such as a FLARM or ADS-B device.")
               + "</p>"
 
         standardButtons: Dialog.Ok | Dialog.Cancel

@@ -299,23 +299,23 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += "<p>"
+        result += u"<p>"_s
+                  + tr("Enroute Flight Navigation is now able to display traffic data provided by the Open Glider Network. "
+                       "Consult the manual for more information.")
+                  + u"</p>"_s;
+        result += u"<p>"_s
                   + tr("Enroute Flight Navigation is now available on Mac computers with Apple Silcon processor (M1 or newer). "
                        "Download it on the App Store.")
-                  + "</p>";
+                  + u"</p>"_s;
 #if !defined(Q_OS_IOS)
-        result += "<p>"
-                  + tr("Due to a change in Google's policies, it is no longer possible to share locations from the apps 'Google Maps' and 'Google Maps Go' with Enroute Flight Navigation.") +
-                  + "</p>";
-        result += "<p>"
-                  + tr("<strong>Technology Preview:</strong> Enroute Flight Navigation is now able to connect to traffic data receivers via Bluetooth Low Energy. "
-                       "Please try the new feature and send us your feedback!") +
-                  + "</p>";
+        result += u"<p>"_s
+                  + tr("Due to a change in Google's policies, it is no longer possible to share locations from the apps 'Google Maps' and 'Google Maps Go' with Enroute Flight Navigation.")
+                  + u"</p>"_s;
 #endif
-        result += "<p>"
+        result += u"<p>"_s
                   + tr("We need help with promotional graphics for the app stores and with explainer videos. "
                        "If you are a graphic/video artist and would like to help, then please be in touch.")
-                  + "</p>";
+                  + u"</p>"_s;
         return result;
     }
 

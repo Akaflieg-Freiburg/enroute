@@ -242,45 +242,56 @@ GeoMaps::Waypoint GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate positi
 
     Waypoint result;
     const auto wayppoints = waypoints();
-    for(const auto& waypoint : wayppoints) {
-        if (!waypoint.isValid()) {
+    for(const auto& waypoint : wayppoints)
+    {
+        if (!waypoint.isValid())
+        {
             continue;
         }
-        if (!result.isValid()) {
+        if (!result.isValid())
+        {
             result = waypoint;
         }
-        if (position.distanceTo(waypoint.coordinate()) < position.distanceTo(result.coordinate())) {
+        if (position.distanceTo(waypoint.coordinate()) < position.distanceTo(result.coordinate()))
+        {
             result = waypoint;
         }
     }
 
     const auto wpLibrary = GlobalObject::waypointLibrary()->waypoints();
-    for(const auto& wayppoint : wpLibrary) {
-        if (!wayppoint.isValid()) {
+    for(const auto& wayppoint : wpLibrary)
+    {
+        if (!wayppoint.isValid())
+        {
             continue;
         }
-        if (!result.isValid()) {
+        if (!result.isValid())
+        {
             result = wayppoint;
         }
-        if (position.distanceTo(wayppoint.coordinate()) < position.distanceTo(result.coordinate())) {
+        if (position.distanceTo(wayppoint.coordinate()) < position.distanceTo(result.coordinate()))
+        {
             result = wayppoint;
         }
     }
 
-    for(auto& waypoint : GlobalObject::navigator()->flightRoute()->midFieldWaypoints() ) {
-        if (!waypoint.isValid()) {
+    for(auto& waypoint : GlobalObject::navigator()->flightRoute()->midFieldWaypoints() )
+    {
+        if (!waypoint.isValid())
+        {
             continue;
         }
-        if (position.distanceTo(waypoint.coordinate()) < position.distanceTo(result.coordinate())) {
+        if (position.distanceTo(waypoint.coordinate()) < position.distanceTo(result.coordinate()))
+        {
             result = waypoint;
         }
     }
 
-    if (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)) {
+    if (!result.isValid() || (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)))
+    {
         position.setAltitude( terrainElevationAMSL(position).toM() );
         return {position};
     }
-
     return result;
 }
 

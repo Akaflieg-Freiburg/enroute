@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.33.5] - 2025-07-03
+
+### Changes
+- Target Android API level 35.
+
+
+## [2.33.4] - 2025-05-24
+
+### Fixed
+- Fix unexpected exit when editing flight routes. (#526)
+
+- Fix problem renaming visual approach charts.
+
+
+## [2.33.3] - 2025-05-10
+
+### Fixed
+- Fix problem with waypoint selection when no aviation data in installed. (#523)
+
+- Fix problem with CUP file import, where official files provided by
+  Austrocontrol could not be imported due to a problem with the parser (#522)
+
+
 ## [2.33.2] - 2025-05-06
 
 ### Fixed

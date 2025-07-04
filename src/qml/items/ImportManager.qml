@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -176,7 +176,7 @@ Item {
             }
         }
 
-        onRejected: close()
+        onRejected: chooseFRorWPDialog.close()
     }
 
     CenteringDialog {
@@ -496,7 +496,7 @@ Item {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            close()
+            importTripKitDialog.close()
 
             var errorString = VACLibrary.importTripKit(importManager.filePath)
             if (errorString !== "") {

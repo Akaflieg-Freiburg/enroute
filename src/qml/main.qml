@@ -381,7 +381,13 @@ AppWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: (TrafficDataProvider.receivingHeartbeat) ? "green" : "red"
+                                color: {
+                                    if (!TrafficDataProvider.receivingHeartbeat)
+                                        return "red"
+                                    if (TrafficDataProvider.currentSourceIsInternetService)
+                                        return "yellow"
+                                    return "green"
+                                }
                                 opacity: 0.2
                             }
                         }
@@ -807,9 +813,12 @@ AppWindow {
         Connections { // Traffic receiver
             target: TrafficDataProvider
             function onReceivingHeartbeatChanged() {
-                if (TrafficDataProvider.receivingHeartbeat)
-                    toast.doToast(qsTr("Connected to traffic receiver."))
-                else
+                if (TrafficDataProvider.receivingHeartbeat) {
+                    if (TrafficDataProvider.currentSourceIsInternetService)
+                        toast.doToast(qsTr("Connected to internet service providing traffic data."))
+                    else
+                        toast.doToast(qsTr("Connected to traffic receiver."))
+                } else
                     toast.doToast(qsTr("Lost connection to traffic receiver."))
             }
         }
@@ -863,7 +872,7 @@ AppWindow {
         text: qsTr("Do you wish to exit <strong>Enroute Flight Navigation</strong>?")
 
         onAccepted: Qt.quit()
-        onRejected: close()
+        onRejected: exitDialog.close()
     }
 
     Shortcut {
@@ -922,7 +931,7 @@ AppWindow {
         title: qsTr("Network security error")
 
         onAccepted: {
-            close()
+            sslErrorDialog.close()
             GlobalSettings.ignoreSSLProblems = true
             sslErrorConfirmation.open()
         }

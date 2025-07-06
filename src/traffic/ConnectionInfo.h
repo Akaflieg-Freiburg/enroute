@@ -124,6 +124,8 @@ public:
      * \brief Constructor for OGN Connections
      *
      * This method constructs a ConnectionInfo for a OGN connection.
+     *
+     * \param info Info about the connection
      */
     explicit ConnectionInfo(const OgnInfo& info);
 

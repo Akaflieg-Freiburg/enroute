@@ -118,7 +118,14 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     std::sort(tmp.begin(),
               tmp.end(),
               [](const Traffic::TrafficDataSource_Abstract* first, const Traffic::TrafficDataSource_Abstract* second)
-              { return first->sourceName() < second->sourceName(); });
+              {
+                  if ((qobject_cast<const TrafficDataSource_Ogn*>(first) != nullptr) &&
+                      (qobject_cast<const TrafficDataSource_Ogn*>(second) == nullptr))
+                  {
+                      return false;
+                  }
+                  return first->sourceName() < second->sourceName();
+              });
     m_dataSources = tmp;
 
     emit dataSourcesChanged();

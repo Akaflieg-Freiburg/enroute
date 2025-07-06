@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Import Custom Vector Maps &mdash; Enroute Flight Navigation  documentation</title>
+  <title>Receive Traffic Data via the Internet &mdash; Enroute Flight Navigation  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=7a5cd723" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Import Custom Raster Maps" href="02-customMapsRaster.html" />
-    <link rel="prev" title="Advanced Use" href="../03-tutorialAdvanced.html" /> 
+    <link rel="next" title="Additional Software" href="../04-additionalSoftware.html" />
+    <link rel="prev" title="Import Visual Approach Charts" href="04-vac.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,15 +51,19 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Import Custom Vector Maps</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#import-maps">Import Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mbtiles-map-data-sources">MBTILES Map Data Sources</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="01-customMapsVector.html">Import Custom Vector Maps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02-customMapsRaster.html">Import Custom Raster Maps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03-airspace.html">Import Airspace Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04-vac.html">Import Visual Approach Charts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="05-OGN.html">Receive Traffic Data via the Internet</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Receive Traffic Data via the Internet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#one-time-setup">One-time Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-configure-the-connection">Step 1: Configure the Connection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-check-connectivity">Step 2: Check Connectivity</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#daily-operations">Daily Operations</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../04-additionalSoftware.html">Additional Software</a></li>
@@ -96,9 +100,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../03-tutorialAdvanced.html">Advanced Use</a></li>
-      <li class="breadcrumb-item active">Import Custom Vector Maps</li>
+      <li class="breadcrumb-item active">Receive Traffic Data via the Internet</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/03-tutorialAdvanced/01-customMapsVector.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/03-tutorialAdvanced/05-OGN.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -106,32 +110,51 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="import-custom-vector-maps">
-<h1>Import Custom Vector Maps<a class="headerlink" href="#import-custom-vector-maps" title="Link to this heading"></a></h1>
-<p><strong>Enroute Flight Navigation</strong> comes with a set of general-purpose base maps in
-vector format, which have been carefully optimized for memory consumption and
-display speed.  Still, there might be situations where a user might prefer
-different maps: If you fly a rescue helicopter, you might prefer high-detail
-vector maps for your particular region.</p>
-<p><strong>Enroute Flight Navigation</strong> is able to import MBTILES files containing vector
-data.  Vector data must follow the standard <a class="reference external" href="https://github.com/openmaptiles/openmaptiles">OpenMapTiles</a> schema.  Vector maps are
-rendered in the same style that <strong>Enroute Flight Navigation</strong> uses for its own
-maps.  It is possible to install vector maps along with the maps provided by
-<strong>Enroute Flight Navigation</strong>.</p>
-<section id="import-maps">
-<h2>Import Maps<a class="headerlink" href="#import-maps" title="Link to this heading"></a></h2>
-<p>Transfer the MBTILES file to your device and open the file on your device.  The
-Section <a class="reference internal" href="../06-referenceWorkflow/01-share.html#importdata"><span class="std std-ref">Import Data</span></a> explains the process in detail.</p>
-<p>To view and manage your maps, open the main menu and go to “Library/Maps and
-Data”.</p>
+  <section id="receive-traffic-data-via-the-internet">
+<h1>Receive Traffic Data via the Internet<a class="headerlink" href="#receive-traffic-data-via-the-internet" title="Link to this heading"></a></h1>
+<p>Starting with version 2.34.0, <strong>Enroute Flight Navigation</strong> is able to receive
+traffic data from the <a class="reference external" href="http://wiki.glidernet.org/about">Open Glider Network</a>
+and display traffic data in the moving map as long as no proper traffic data
+receiver is available.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While OGN data can be useful in certain scenarios, we recommend against using
+traffic data from internet services in real flight.</p>
+<ul class="simple">
+<li><p>Internet connectivity is not reliable in flight. Even when flying over
+populated areas, expect the internet connection to fail for about half of the
+time.</p></li>
+<li><p>Experience shows that data is frequently laggy and often outdated.</p></li>
+<li><p>You will not be visible to others.</p></li>
+</ul>
+<p>We strongly feel that no responsible pilot should ever fly without a proper
+traffic data receiver, such as a FLARM or ADS-B device.</p>
+</div>
+<p>To configure a data connection to the Open Glider Network, proceed as follows.</p>
+<section id="one-time-setup">
+<h2>One-time Setup<a class="headerlink" href="#one-time-setup" title="Link to this heading"></a></h2>
+<section id="step-1-configure-the-connection">
+<h3>Step 1: Configure the Connection<a class="headerlink" href="#step-1-configure-the-connection" title="Link to this heading"></a></h3>
+<p>Follow the steps described in the Section <a class="reference internal" href="../05-referencePages/03-settingsDataConnections.html#settingsdataconnectionspage"><span class="std std-ref">Settings: Data Connections</span></a>.</p>
 </section>
-<section id="mbtiles-map-data-sources">
-<h2>MBTILES Map Data Sources<a class="headerlink" href="#mbtiles-map-data-sources" title="Link to this heading"></a></h2>
-<p>The website <a class="reference external" href="https://data.maptiler.com/downloads/planet/">maptiler data</a>
-provides excellent vector maps that can be installed alongside the base maps
-provided by <strong>Enroute Flight Navigation</strong>, in order to provide high-detail maps
-for specific regions of interest.</p>
-<p>Please let us know if you know of other map data sources!</p>
+<section id="step-2-check-connectivity">
+<h3>Step 2: Check Connectivity<a class="headerlink" href="#step-2-check-connectivity" title="Link to this heading"></a></h3>
+<p>After your connection has been configured, everything else should be automatic.
+To check, open the main menu and navigate to the “Information” menu.  Choose the
+entry “Traffic Receiver”. The page “Traffic Data Receiver” will open.</p>
+<p>On the page “Traffic Data Receiver”, look for the text field “Connection
+Status”. If the text field is highlighted in yellow and starts with “OGN
+glidernet.org APRS-IS connection”, then your connections has been configured
+successfully.</p>
+</section>
+</section>
+<section id="daily-operations">
+<h2>Daily Operations<a class="headerlink" href="#daily-operations" title="Link to this heading"></a></h2>
+<p>Once things are set up properly, <strong>Enroute Flight Navigation</strong> will
+automatically connect to the “Open Glider Network”.  For reasons of flight
+safety, <strong>Enroute Flight Navigation</strong> will always prefer connections to proper
+traffic data receivers and will switch connections as soon as a data receiver
+becomes available.</p>
 </section>
 </section>
 
@@ -139,8 +162,8 @@ for specific regions of interest.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../03-tutorialAdvanced.html" class="btn btn-neutral float-left" title="Advanced Use" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="02-customMapsRaster.html" class="btn btn-neutral float-right" title="Import Custom Raster Maps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="04-vac.html" class="btn btn-neutral float-left" title="Import Visual Approach Charts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../04-additionalSoftware.html" class="btn btn-neutral float-right" title="Additional Software" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -68,14 +68,15 @@ Inheritance diagram for Traffic::TrafficDataSource_Abstract:</div>
  <div class="center">
   <img src="classTraffic_1_1TrafficDataSource__Abstract.png" usemap="#Traffic_3A_3ATrafficDataSource_5FAbstract_map" alt=""/>
   <map id="Traffic_3A_3ATrafficDataSource_5FAbstract_map" name="Traffic_3A_3ATrafficDataSource_5FAbstract_map">
-<area href="classTraffic_1_1TrafficDataSource__AbstractSocket.html" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="Traffic::TrafficDataSource_AbstractSocket" shape="rect" coords="584,56,866,80"/>
-<area href="classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver: Simulator file with FLARM/NMEA sentences." alt="Traffic::TrafficDataSource_File" shape="rect" coords="876,56,1158,80"/>
-<area href="classTraffic_1_1TrafficDataSource__Simulate.html" title="Traffic receiver: Simulator that provides constant data." alt="Traffic::TrafficDataSource_Simulate" shape="rect" coords="1168,56,1450,80"/>
+<area href="classTraffic_1_1TrafficDataSource__AbstractSocket.html" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="Traffic::TrafficDataSource_AbstractSocket" shape="rect" coords="730,56,1012,80"/>
+<area href="classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver: Simulator file with FLARM/NMEA sentences." alt="Traffic::TrafficDataSource_File" shape="rect" coords="1022,56,1304,80"/>
+<area href="classTraffic_1_1TrafficDataSource__Simulate.html" title="Traffic receiver: Simulator that provides constant data." alt="Traffic::TrafficDataSource_Simulate" shape="rect" coords="1314,56,1596,80"/>
 <area href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html" title="Traffic receiver: Bluetooth Classic connection to a FLARM/NMEA source." alt="Traffic::TrafficDataSource_BluetoothClassic" shape="rect" coords="0,112,282,136"/>
 <area href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html" title="Traffic receiver: Bluetooth LE connection to a FLARM/NMEA source via the &quot;Nordic UART Service&quot;." alt="Traffic::TrafficDataSource_BluetoothLowEnergy" shape="rect" coords="292,112,574,136"/>
-<area href="classTraffic_1_1TrafficDataSource__SerialPort.html" title="Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source." alt="Traffic::TrafficDataSource_SerialPort" shape="rect" coords="584,112,866,136"/>
-<area href="classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="Traffic::TrafficDataSource_Tcp" shape="rect" coords="876,112,1158,136"/>
-<area href="classTraffic_1_1TrafficDataSource__Udp.html" title="Traffic receiver: UDP connection to GDL90 source." alt="Traffic::TrafficDataSource_Udp" shape="rect" coords="1168,112,1450,136"/>
+<area href="classTraffic_1_1TrafficDataSource__Ogn.html" title="Traffic receiver: OGN glidernet.org via internet connection." alt="Traffic::TrafficDataSource_Ogn" shape="rect" coords="584,112,866,136"/>
+<area href="classTraffic_1_1TrafficDataSource__SerialPort.html" title="Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source." alt="Traffic::TrafficDataSource_SerialPort" shape="rect" coords="876,112,1158,136"/>
+<area href="classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="Traffic::TrafficDataSource_Tcp" shape="rect" coords="1168,112,1450,136"/>
+<area href="classTraffic_1_1TrafficDataSource__Udp.html" title="Traffic receiver: UDP connection to GDL90 source." alt="Traffic::TrafficDataSource_Udp" shape="rect" coords="1460,112,1742,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -153,6 +154,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a1ba60693dc062324e0b711c6b876d8ed" id="r_a1ba60693dc062324e0b711c6b876d8ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ba60693dc062324e0b711c6b876d8ed">processAPRS</a> (const QString &amp;data)</td></tr>
+<tr class="memdesc:a1ba60693dc062324e0b711c6b876d8ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process APRS-IS data.  <br /></td></tr>
 <tr class="memitem:aac401d3c39711343a5d4e240e5ae351e" id="r_aac401d3c39711343a5d4e240e5ae351e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac401d3c39711343a5d4e240e5ae351e">processFLARMData</a> (const QString &amp;data)</td></tr>
 <tr class="memdesc:aac401d3c39711343a5d4e240e5ae351e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process FLARM/NMEA data.  <br /></td></tr>
 <tr class="memitem:a6b26687aa06b80260d341c84fe5d592b" id="r_a6b26687aa06b80260d341c84fe5d592b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b26687aa06b80260d341c84fe5d592b">processGDLMessage</a> (const QByteArray &amp;message)</td></tr>
@@ -353,7 +356,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property connectionInfo </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html#a256e58785802dd20cb11084af1d9e0e5">Traffic::TrafficDataSource_BluetoothClassic</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html#aefbd248424e9d68144025b7118797ed9">Traffic::TrafficDataSource_BluetoothLowEnergy</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__SerialPort.html#aef1fafa1f8f49bab852ddafb25c2ac47">Traffic::TrafficDataSource_SerialPort</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#a8b115b0034b31f5df746cae5718a05b1">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#ae3768401c867a4f79be1eefc96524e60">Traffic::TrafficDataSource_Udp</a>.</p>
+<p>Reimplemented in <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html#a256e58785802dd20cb11084af1d9e0e5">Traffic::TrafficDataSource_BluetoothClassic</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html#aefbd248424e9d68144025b7118797ed9">Traffic::TrafficDataSource_BluetoothLowEnergy</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Ogn.html#ab7a207913600f0833faa0eae0e4ef19c">Traffic::TrafficDataSource_Ogn</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__SerialPort.html#aef1fafa1f8f49bab852ddafb25c2ac47">Traffic::TrafficDataSource_SerialPort</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#a8b115b0034b31f5df746cae5718a05b1">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#ae3768401c867a4f79be1eefc96524e60">Traffic::TrafficDataSource_Udp</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00174">174</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
@@ -443,7 +446,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property dataFormat </dd></dl>
 
-<p>Implemented in <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html#a48d21592299c3dcc617e847ffcb6c61f">Traffic::TrafficDataSource_BluetoothClassic</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html#a7ac7f53ce2f349f22d4e52d62d7b802f">Traffic::TrafficDataSource_BluetoothLowEnergy</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__File.html#aed0baa2cf9ff5f10dec290862b63c046">Traffic::TrafficDataSource_File</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__SerialPort.html#af4cd7adf086c2081061d2d6fa42f8e4c">Traffic::TrafficDataSource_SerialPort</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a71992b13c3a5e65f1bc0d00e9ef5097d">Traffic::TrafficDataSource_Simulate</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#a03da919a2dc27fed0062432b87d46547">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#a8479b7b967521857c06d66b190c77303">Traffic::TrafficDataSource_Udp</a>.</p>
+<p>Implemented in <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html#a48d21592299c3dcc617e847ffcb6c61f">Traffic::TrafficDataSource_BluetoothClassic</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html#a7ac7f53ce2f349f22d4e52d62d7b802f">Traffic::TrafficDataSource_BluetoothLowEnergy</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__File.html#aed0baa2cf9ff5f10dec290862b63c046">Traffic::TrafficDataSource_File</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Ogn.html#a40b6991d657712ba3019e4dbe6c17403">Traffic::TrafficDataSource_Ogn</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__SerialPort.html#af4cd7adf086c2081061d2d6fa42f8e4c">Traffic::TrafficDataSource_SerialPort</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a71992b13c3a5e65f1bc0d00e9ef5097d">Traffic::TrafficDataSource_Simulate</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#a03da919a2dc27fed0062432b87d46547">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#a8479b7b967521857c06d66b190c77303">Traffic::TrafficDataSource_Udp</a>.</p>
 
 </div>
 </div>
@@ -599,7 +602,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property icon </dd></dl>
 
-<p>Implemented in <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html#ae8c876328c444e08816553cbb1605c16">Traffic::TrafficDataSource_BluetoothClassic</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html#a407987ef3211562f1ff5343ba4690ba0">Traffic::TrafficDataSource_BluetoothLowEnergy</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__File.html#affe33ce8530598079f1a9cddd7a2f559">Traffic::TrafficDataSource_File</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__SerialPort.html#a5c035a9421b29c64da356d8edc5b2e39">Traffic::TrafficDataSource_SerialPort</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a4a5a05d79617db05e1a804b3a0132271">Traffic::TrafficDataSource_Simulate</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#ab6424198a69ef1267cbf11d5503a187f">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#af02aeba1d12a9a7499f05d5684a7323f">Traffic::TrafficDataSource_Udp</a>.</p>
+<p>Implemented in <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html#ae8c876328c444e08816553cbb1605c16">Traffic::TrafficDataSource_BluetoothClassic</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html#a407987ef3211562f1ff5343ba4690ba0">Traffic::TrafficDataSource_BluetoothLowEnergy</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__File.html#affe33ce8530598079f1a9cddd7a2f559">Traffic::TrafficDataSource_File</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Ogn.html#abc3695edebbecdea38eae8bfbf4c0549">Traffic::TrafficDataSource_Ogn</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__SerialPort.html#a5c035a9421b29c64da356d8edc5b2e39">Traffic::TrafficDataSource_SerialPort</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a4a5a05d79617db05e1a804b3a0132271">Traffic::TrafficDataSource_Simulate</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#ab6424198a69ef1267cbf11d5503a187f">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#af02aeba1d12a9a7499f05d5684a7323f">Traffic::TrafficDataSource_Udp</a>.</p>
 
 </div>
 </div>
@@ -658,6 +661,40 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Property pressureAltitude </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00210">210</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+
+</div>
+</div>
+<a id="a1ba60693dc062324e0b711c6b876d8ed" name="a1ba60693dc062324e0b711c6b876d8ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ba60693dc062324e0b711c6b876d8ed">&#9670;&#160;</a></span>processAPRS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataSource_Abstract::processAPRS </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Process APRS-IS data. </p>
+<p>This method handles APRS-IS data, as used by Open Glider Net.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>A QString containing one APRS-IS sentence. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1083,7 +1120,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property sourceName </dd></dl>
 
-<p>Implemented in <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html#aa6fd911a88616809c4a49af8d67f1a9b">Traffic::TrafficDataSource_BluetoothClassic</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html#ad2c9c3cda625c16376dfb4ae3a972f62">Traffic::TrafficDataSource_BluetoothLowEnergy</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">Traffic::TrafficDataSource_File</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__SerialPort.html#a0bde7b9f0ccc380171ad1d36cc3766ac">Traffic::TrafficDataSource_SerialPort</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a7bb350e54f4a7cb3d4888094b46b3ad8">Traffic::TrafficDataSource_Simulate</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#af19a983b2b917d655c20d27c2ad541fa">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">Traffic::TrafficDataSource_Udp</a>.</p>
+<p>Implemented in <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html#aa6fd911a88616809c4a49af8d67f1a9b">Traffic::TrafficDataSource_BluetoothClassic</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html#ad2c9c3cda625c16376dfb4ae3a972f62">Traffic::TrafficDataSource_BluetoothLowEnergy</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">Traffic::TrafficDataSource_File</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Ogn.html#ae8b60076c0e65739f91ffeab2ae08c7f">Traffic::TrafficDataSource_Ogn</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__SerialPort.html#a0bde7b9f0ccc380171ad1d36cc3766ac">Traffic::TrafficDataSource_SerialPort</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a7bb350e54f4a7cb3d4888094b46b3ad8">Traffic::TrafficDataSource_Simulate</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#af19a983b2b917d655c20d27c2ad541fa">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">Traffic::TrafficDataSource_Udp</a>.</p>
 
 </div>
 </div>

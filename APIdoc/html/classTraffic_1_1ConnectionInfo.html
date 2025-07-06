@@ -48,6 +48,7 @@ $(function() {
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
@@ -62,6 +63,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:OgnInfo" id="r_OgnInfo"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTraffic_1_1ConnectionInfo_1_1OgnInfo.html">OgnInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor parameter for OGN connections.  <a href="structTraffic_1_1ConnectionInfo_1_1OgnInfo.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a68bbc6f9b0b833c7625f56ef47dcf3f3" id="r_a68bbc6f9b0b833c7625f56ef47dcf3f3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68bbc6f9b0b833c7625f56ef47dcf3f3">Type</a> : quint8 { <br />
@@ -73,6 +79,7 @@ Public Types</h2></td></tr>
 &#160;&#160;<a class="el" href="#a68bbc6f9b0b833c7625f56ef47dcf3f3a44c397a720aa3689889270e45acd0213">UDP</a>
 , <a class="el" href="#a68bbc6f9b0b833c7625f56ef47dcf3f3a064d4f0bebca2b38a841af85d87de76a">Serial</a>
 , <a class="el" href="#a68bbc6f9b0b833c7625f56ef47dcf3f3a02bd8d2ca9201cdb73d1493e0915cc48">FLARMFile</a>
+, <a class="el" href="#a68bbc6f9b0b833c7625f56ef47dcf3f3a7a41eda7b7f85e612698c9e33657e4ea">OGN</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a68bbc6f9b0b833c7625f56ef47dcf3f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connection <a class="el" href="#a68bbc6f9b0b833c7625f56ef47dcf3f3" title="Connection Type.">Type</a>.  <a href="#a68bbc6f9b0b833c7625f56ef47dcf3f3">More...</a><br /></td></tr>
@@ -87,6 +94,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab93dfbe94e0044b667d1715c76773ee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for UDP Connections.  <br /></td></tr>
 <tr class="memitem:ae848e93ddf260e2397a2acbe25fdbd01" id="r_ae848e93ddf260e2397a2acbe25fdbd01"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae848e93ddf260e2397a2acbe25fdbd01">ConnectionInfo</a> (const QString &amp;<a class="el" href="#a9f0065ad8f3a6c1d832a0292311a9f7a">host</a>, quint16 <a class="el" href="#a26567c5149039c156cb0182ecea59b44">port</a>, bool <a class="el" href="#a4a95bbb6a01c4fffe9ed9d01044a5897">canonical</a>=false)</td></tr>
 <tr class="memdesc:ae848e93ddf260e2397a2acbe25fdbd01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for TCP Connections.  <br /></td></tr>
+<tr class="memitem:a6497d85b91e836273f17baa4b2c18b73" id="r_a6497d85b91e836273f17baa4b2c18b73"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6497d85b91e836273f17baa4b2c18b73">ConnectionInfo</a> (const <a class="el" href="structTraffic_1_1ConnectionInfo_1_1OgnInfo.html">OgnInfo</a> &amp;info)</td></tr>
+<tr class="memdesc:a6497d85b91e836273f17baa4b2c18b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for OGN Connections.  <br /></td></tr>
 <tr class="memitem:a2827acea39de818bd808e076fe669d74" id="r_a2827acea39de818bd808e076fe669d74"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2827acea39de818bd808e076fe669d74">canConnect</a> () const</td></tr>
 <tr class="memdesc:a2827acea39de818bd808e076fe669d74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a37803824a2e91f2bd62e749168d535e3" id="r_a37803824a2e91f2bd62e749168d535e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37803824a2e91f2bd62e749168d535e3">canonical</a> () const</td></tr>
@@ -170,6 +179,8 @@ Friends</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a68bbc6f9b0b833c7625f56ef47dcf3f3a02bd8d2ca9201cdb73d1493e0915cc48" name="a68bbc6f9b0b833c7625f56ef47dcf3f3a02bd8d2ca9201cdb73d1493e0915cc48"></a>FLARMFile&#160;</td><td class="fielddoc"><p>FLARM Simulator File </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a68bbc6f9b0b833c7625f56ef47dcf3f3a7a41eda7b7f85e612698c9e33657e4ea" name="a68bbc6f9b0b833c7625f56ef47dcf3f3a7a41eda7b7f85e612698c9e33657e4ea"></a>OGN&#160;</td><td class="fielddoc"><p>OGN glidernet.org internet connection </p>
+</td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00050">50</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
@@ -178,7 +189,7 @@ Friends</h2></td></tr>
 </div>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4b08ead190a204084e66775247b7a104" name="a4b08ead190a204084e66775247b7a104"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b08ead190a204084e66775247b7a104">&#9670;&#160;</a></span>ConnectionInfo() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b08ead190a204084e66775247b7a104">&#9670;&#160;</a></span>ConnectionInfo() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,7 +217,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="aa1557f83840085cbcd44a579e602178e" name="aa1557f83840085cbcd44a579e602178e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1557f83840085cbcd44a579e602178e">&#9670;&#160;</a></span>ConnectionInfo() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1557f83840085cbcd44a579e602178e">&#9670;&#160;</a></span>ConnectionInfo() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -245,7 +256,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="ab93dfbe94e0044b667d1715c76773ee8" name="ab93dfbe94e0044b667d1715c76773ee8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab93dfbe94e0044b667d1715c76773ee8">&#9670;&#160;</a></span>ConnectionInfo() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab93dfbe94e0044b667d1715c76773ee8">&#9670;&#160;</a></span>ConnectionInfo() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -284,7 +295,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="ae848e93ddf260e2397a2acbe25fdbd01" name="ae848e93ddf260e2397a2acbe25fdbd01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae848e93ddf260e2397a2acbe25fdbd01">&#9670;&#160;</a></span>ConnectionInfo() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae848e93ddf260e2397a2acbe25fdbd01">&#9670;&#160;</a></span>ConnectionInfo() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -328,6 +339,40 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a6497d85b91e836273f17baa4b2c18b73" name="a6497d85b91e836273f17baa4b2c18b73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6497d85b91e836273f17baa4b2c18b73">&#9670;&#160;</a></span>ConnectionInfo() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Traffic::ConnectionInfo::ConnectionInfo </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structTraffic_1_1ConnectionInfo_1_1OgnInfo.html">OgnInfo</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>info</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor for OGN Connections. </p>
+<p>This method constructs a <a class="el" href="classTraffic_1_1ConnectionInfo.html" title="Connection to a traffic data receiver.">ConnectionInfo</a> for a OGN connection.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">info</td><td>Info about the connection </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a8f11aaf94c98f562ef0ba761c2f6bc72" name="a8f11aaf94c98f562ef0ba761c2f6bc72"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8f11aaf94c98f562ef0ba761c2f6bc72">&#9670;&#160;</a></span>bluetoothDeviceInfo()</h2>
@@ -355,7 +400,7 @@ Friends</h2></td></tr>
 <p>Bluetooth Device Info. </p>
 <dl class="section return"><dt>Returns</dt><dd>If the connection is of type BluetoothClassic or BluetoothLowEnergy, this method returns a QBluetoothDeviceInfo describing the Bluetooth device. For all other connections, an invalid QBluetoothDeviceInfo is returned. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00248">248</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00261">261</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +430,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property canConnect </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00190">190</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00203">203</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -415,7 +460,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property canonical </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00197">197</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00210">210</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -445,7 +490,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property description </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00204">204</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00217">217</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -475,7 +520,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property host </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00211">211</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00224">224</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -505,7 +550,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property icon </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00218">218</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00231">231</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -535,7 +580,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00225">225</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00238">238</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -626,7 +671,7 @@ Friends</h2></td></tr>
 <p>Port. </p>
 <dl class="section return"><dt>Returns</dt><dd>If the connection is of type UDP, this method returns the port used in the UDP connection. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00265">265</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00278">278</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -691,7 +736,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00232">232</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00245">245</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -784,7 +829,7 @@ Friends</h2></td></tr>
 <p>Connectability. </p>
 <p>This property holds true if a connection is possible in principle. It does not guarantee that a connection attempt will be successful. Example: This property is 'false' for connections to Bluetooth Low Energy devices, which are currently unsupported. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00131">131</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00144">144</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -811,7 +856,7 @@ Friends</h2></td></tr>
 <p>Canonicity. </p>
 <p>This property holds true if the connection is canonical. Canonical connections are those that will always be in the connection library and cannot be edited or deleted in the GUI. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00140">140</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00153">153</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -838,7 +883,7 @@ Friends</h2></td></tr>
 <p>Description. </p>
 <p>This property holds a human-readable, translated, two-line description of the connection, in HTML format. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00148">148</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00161">161</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -865,7 +910,7 @@ Friends</h2></td></tr>
 <p>Host. </p>
 <p>For TCP connections, this property holds the host name. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00155">155</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00168">168</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -892,7 +937,7 @@ Friends</h2></td></tr>
 <p>Icon. </p>
 <p>This property holds the name of an icon file that can be used to represent the connection in the GUI. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00163">163</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00176">176</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -919,7 +964,7 @@ Friends</h2></td></tr>
 <p>Name. </p>
 <p>This property holds a human-readable, translated name of the connection. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00170">170</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00183">183</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -946,7 +991,7 @@ Friends</h2></td></tr>
 <p><a class="el" href="#a68bbc6f9b0b833c7625f56ef47dcf3f3" title="Connection Type.">Type</a>. </p>
 <p>This property holds the type of the connection. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00177">177</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00190">190</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
 </div>
 </div>

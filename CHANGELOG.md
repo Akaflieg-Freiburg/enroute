@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.34.0] - 2025-07-12
+
+### Added
+- Retrieve traffic data from the Open Glider Network (#512).
+
+
 ## [2.33.5] - 2025-07-03
 
 ### Changes

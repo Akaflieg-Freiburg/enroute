@@ -6,15 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Settings: Data Connections &mdash; Enroute Flight Navigation  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=330c1f8c" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
   
     <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -50,7 +53,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../04-additionalSoftware.html">Additional software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-additionalSoftware.html">Additional Software</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
 <ul class="current">
@@ -64,6 +67,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#serial-port">Serial Port</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tcp-via-wi-fi-or-lan">TCP via Wi-Fi or LAN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#udp-via-wi-fi-or-lan">UDP via Wi-Fi or LAN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ogn-glidernet-org-connection">OGN glidernet.org Connection</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#remove-a-data-connection">Remove a Data Connection</a></li>
@@ -302,6 +306,28 @@ the list of data connections.</p></li>
 <p>In the future, <strong>Enroute Flight Navigation</strong> will automatically detect and
 connect to your traffic receiver a few minutes after it becomes visible on
 Wi-Fi or LAN.</p>
+</section>
+<section id="ogn-glidernet-org-connection">
+<h3>OGN glidernet.org Connection<a class="headerlink" href="#ogn-glidernet-org-connection" title="Link to this heading"></a></h3>
+<p>The <a class="reference external" href="http://wiki.glidernet.org/about">Open Glider Network</a> is a network of
+ground station and internet servers operated by volunteers. It collects FLARM
+and ADS-B data and distributes this data in real time via internet service.</p>
+<p>Starting with version 2.34.0, <strong>Enroute Flight Navigation</strong> is able to display
+traffic data from the Open Glider Network in its moving map. To configure a data
+connection to the Open Glider Network, proceed as follows.</p>
+<ul class="simple">
+<li><p>Open <strong>Enroute Flight Navigation</strong> on your phone, navigate to this page and
+tap on “New Connection” at the bottom of the page and choose “OGN
+glidernet.org Connection” from the menu.</p></li>
+<li><p><strong>Enroute Flight Navigation</strong> will show two warning dialogs, pointing to
+technical restrictions of internet services in flight, aviation safety
+concerns, and consequences for data privacy. Read these text with care and
+click on “OK” only if you understand the implications.</p></li>
+</ul>
+<p>In the future, <strong>Enroute Flight Navigation</strong> will automatically connect to the
+“Open Glider Network”.  For reasons of flight safety, <strong>Enroute Flight
+Navigation</strong> will always prefer connections to proper traffic data receivers and
+will switch connections as soon as a data receiver becomes available.</p>
 </section>
 </section>
 <section id="remove-a-data-connection">

@@ -115,10 +115,19 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     auto tmp = m_dataSources.value();
     tmp.append(source);
     tmp.removeAll(nullptr);
+    // Sort new entries, so that OGN services always come last. This ensures that the method
+    // computeCurrentSource() prefers proper data receivers over OGN services.
     std::sort(tmp.begin(),
               tmp.end(),
               [](const Traffic::TrafficDataSource_Abstract* first, const Traffic::TrafficDataSource_Abstract* second)
-              { return first->sourceName() < second->sourceName(); });
+              {
+                  if ((qobject_cast<const TrafficDataSource_Ogn*>(first) != nullptr) &&
+                      (qobject_cast<const TrafficDataSource_Ogn*>(second) == nullptr))
+                  {
+                      return false;
+                  }
+                  return first->sourceName() < second->sourceName();
+              });
     m_dataSources = tmp;
 
     emit dataSourcesChanged();

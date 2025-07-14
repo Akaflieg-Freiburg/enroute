@@ -38,12 +38,14 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
     // QStandardPaths::GenericDataLocation to QStandardPaths::AppDataLocation, which is still writable
     // since we set "requestlegacystorage" in the manifest file and target Android 10. See
     // https://developer.android.com/training/data-storage/use-cases#opt-out-in-production-app
-    auto oldlibraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
+    auto oldlibraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + u"/enroute flight navigation/flight routes"_s;
     auto libraryPath = directory(Routes);
     QDir const dir(oldlibraryPath);
-    foreach(auto elt, dir.entryList( QStringList(), QDir::Files)) {
-        if (QFile::copy(oldlibraryPath+"/"+elt, libraryPath+"/"+elt)) {
-            QFile::remove(oldlibraryPath+"/"+elt);
+    foreach(auto elt, dir.entryList( QStringList(), QDir::Files))
+    {
+        if (QFile::copy(oldlibraryPath + u"/"_s + elt, libraryPath + u"/"_s + elt))
+        {
+            QFile::remove(oldlibraryPath + u"/"_s + elt);
         }
     }
     dir.rmdir(oldlibraryPath);
@@ -301,6 +303,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
         QString result;
         result += u"<p>"_s
                   + tr("Enroute Flight Navigation is now able to display traffic data provided by the Open Glider Network. "
+                       "We thank Christian Engelhardt for the implementation. "
                        "Consult the manual for more information.")
                   + u"</p>"_s;
         result += u"<p>"_s
@@ -365,9 +368,9 @@ auto Librarian::fullPath(Librarian::Library library, const QString &baseName) ->
     switch (library)
     {
     case Aircraft:
-        return directory(library)+"/"+baseName+".json";
+        return directory(library) + u"/"_s + baseName + u".json"_s;
     case Routes:
-        return directory(library)+"/"+baseName+".geojson";
+        return directory(library) + u"/"_s + baseName + u".geojson"_s;
     }
     return {};
 }
@@ -436,10 +439,10 @@ auto Librarian::directory(Library library) -> QString
     switch (library)
     {
     case Aircraft:
-        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft";
+        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/aircraft"_s;
         break;
     case Routes:
-        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight routes";
+        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/flight routes"_s;
         break;
     }
     QDir().mkpath(path);

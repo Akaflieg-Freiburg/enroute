@@ -87,8 +87,10 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::connectToTrafficReceiver()
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::disconnectFromTrafficReceiver()
 {
-    delete m_nusService;
-    m_nusService = nullptr;
+    delete m_nordicUARTService;
+    m_nordicUARTService = nullptr;
+    delete m_simpleUARTService;
+    m_simpleUARTService = nullptr;
 
     m_control->disconnectFromDevice();
     setErrorString();
@@ -101,11 +103,12 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::disconnectFromTrafficReceive
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onCharacteristicChanged(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue)
 {
-    if (characteristic.uuid() != txCharacteristicID)
+    if ((characteristic.uuid() == nordicUARTTxCharacteristicID) || (characteristic.uuid() == simpleUARTCharacteristicID))
     {
+        processFLARMData(QString(newValue));
         return;
     }
-    processFLARMData(QString(newValue));
+    setErrorString( tr("Received data from unknown characteristic %1.").arg(characteristic.name()) );
 }
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred(QLowEnergyController::Error error)
@@ -149,23 +152,31 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred(QLowEnergyCo
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscoveryFinished()
 {
-    if (!m_control->services().contains(nusServiceUuid))
+    if (m_control->services().contains(nordicUARTServiceUuid))
     {
-        setErrorString( tr("No UART service found.") );
-        return;
+        m_nordicUARTService = m_control->createServiceObject(nordicUARTServiceUuid, this);
+        if (m_nordicUARTService != nullptr)
+        {
+            setConnectivityStatus( tr("Nordic UART Service found. Requesting service characteristics.") );
+            connect(m_nordicUARTService, &QLowEnergyService::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged);
+            connect(m_nordicUARTService, &QLowEnergyService::characteristicChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onCharacteristicChanged);
+            m_nordicUARTService->discoverDetails();
+            return;
+        }
     }
-
-    m_nusService = m_control->createServiceObject(nusServiceUuid, this);
-    if (m_nusService == nullptr)
+    if (m_control->services().contains(simpleUARTServiceUuid))
     {
-        setErrorString( tr("No UART service found.") );
-        return;
+        m_simpleUARTService = m_control->createServiceObject(simpleUARTServiceUuid, this);
+        if (m_simpleUARTService != nullptr)
+        {
+            setConnectivityStatus( tr("Simple UART Service found. Requesting service characteristics.") );
+            connect(m_simpleUARTService, &QLowEnergyService::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged);
+            connect(m_simpleUARTService, &QLowEnergyService::characteristicChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onCharacteristicChanged);
+            m_simpleUARTService->discoverDetails();
+            return;
+        }
     }
-
-    setConnectivityStatus( tr("UART service found. Requesting service characteristics.") );
-    connect(m_nusService, &QLowEnergyService::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged);
-    connect(m_nusService, &QLowEnergyService::characteristicChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onCharacteristicChanged);
-    m_nusService->discoverDetails();
+    setErrorString( tr("No UART service found.") );
 }
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged(QLowEnergyService::ServiceState newState)
@@ -187,27 +198,44 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged(QLowEn
         return;
     }
 
-    auto txCharacteristic = m_nusService->characteristic(txCharacteristicID);
-    if (!txCharacteristic.isValid())
+    if (m_nordicUARTService != nullptr)
     {
-        setErrorString(tr("The NUS service does not contain the TX characteristic."));
+        auto txCharacteristic = m_nordicUARTService->characteristic(nordicUARTTxCharacteristicID);
+        if (!txCharacteristic.isValid())
+        {
+            setErrorString(tr("The Nordic UART Service does not contain the TX characteristic."));
+            return;
+        }
+        auto m_notificationDescriptor = txCharacteristic.descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
+        if (!m_notificationDescriptor.isValid())
+        {
+            setErrorString(tr("Cannot open the client characteristic configuration descriptor."));
+            return;
+        }
+        m_nordicUARTService->writeDescriptor(m_notificationDescriptor, QByteArray::fromHex("0100"));
+        setConnectivityStatus(tr("Data transfer enabled."));
         return;
     }
-    auto m_notificationDescriptor = txCharacteristic.descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
-    if (!m_notificationDescriptor.isValid())
+    if (m_simpleUARTService != nullptr)
     {
-        setErrorString(tr("Cannot open the client characteristic configuration descriptor."));
+        auto txCharacteristic = m_simpleUARTService->characteristic(simpleUARTCharacteristicID);
+        if (!txCharacteristic.isValid())
+        {
+            setErrorString(tr("The Simple UART Service does not contain the TX characteristic."));
+            return;
+        }
+        auto m_notificationDescriptor = txCharacteristic.descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
+        if (!m_notificationDescriptor.isValid())
+        {
+            setErrorString(tr("Cannot open the client characteristic configuration descriptor."));
+            return;
+        }
+        m_simpleUARTService->writeDescriptor(m_notificationDescriptor, QByteArray::fromHex("0100"));
+        setConnectivityStatus(tr("Data transfer enabled."));
         return;
     }
 
-    // Enable Notifications
-    if (m_nusService == nullptr)
-    {
-        setErrorString(tr("The NUS service is not available."));
-        return;
-    }
-    m_nusService->writeDescriptor(m_notificationDescriptor, QByteArray::fromHex("0100"));
-    setConnectivityStatus(tr("Data transfer enabled."));
+    setErrorString(tr("The Nordic UART Service is not available."));
 }
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged(QLowEnergyController::ControllerState state)

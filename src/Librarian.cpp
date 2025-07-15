@@ -312,7 +312,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                   + u"</p>"_s;
 #if !defined(Q_OS_IOS)
         result += u"<p>"_s
-                  + tr("Due to a change in Google's policies, it is no longer possible to share locations from the apps 'Google Maps' and 'Google Maps Go' with Enroute Flight Navigation.")
+                  + tr("Support for Bluetooth Low Energy has been extended, so Enroute Flight Navigation is now able to connect to a broader range traffic data receivers.")
                   + u"</p>"_s;
 #endif
         result += u"<p>"_s

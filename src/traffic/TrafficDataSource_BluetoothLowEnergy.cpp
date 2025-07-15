@@ -235,7 +235,7 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged(QLowEn
         return;
     }
 
-    setErrorString(tr("The Nordic UART Service is not available."));
+    setErrorString(tr("No UART Service available."));
 }
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged(QLowEnergyController::ControllerState state)

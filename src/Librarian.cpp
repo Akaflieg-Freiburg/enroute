@@ -38,12 +38,14 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
     // QStandardPaths::GenericDataLocation to QStandardPaths::AppDataLocation, which is still writable
     // since we set "requestlegacystorage" in the manifest file and target Android 10. See
     // https://developer.android.com/training/data-storage/use-cases#opt-out-in-production-app
-    auto oldlibraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
+    auto oldlibraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + u"/enroute flight navigation/flight routes"_s;
     auto libraryPath = directory(Routes);
     QDir const dir(oldlibraryPath);
-    foreach(auto elt, dir.entryList( QStringList(), QDir::Files)) {
-        if (QFile::copy(oldlibraryPath+"/"+elt, libraryPath+"/"+elt)) {
-            QFile::remove(oldlibraryPath+"/"+elt);
+    foreach(auto elt, dir.entryList( QStringList(), QDir::Files))
+    {
+        if (QFile::copy(oldlibraryPath + u"/"_s + elt, libraryPath + u"/"_s + elt))
+        {
+            QFile::remove(oldlibraryPath + u"/"_s + elt);
         }
     }
     dir.rmdir(oldlibraryPath);
@@ -71,7 +73,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                + "<strong>" + tr("Programming") + ":</strong> " + tr("Heinz Blöchinger has helped us with file import functionality. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.")
                + "</li>"
                + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an Embedded SW Engineer.")
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt implemented the OGN network connection and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an Embedded SW Engineer.")
                + "</li>"
                + "<li>"
                + "<strong>" + tr("Programming") + ":</strong> " + tr("Tom Linz completed height density calculation. He received his PPL license in late 2024. Tom works as a development engineer for safety systems.")
@@ -153,7 +155,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
 <h3>Acknowledgements</h3>
 
-<p>This program builds on a number of open source libraries, including <a href="https://https://github.com/nnaumenko/metaf">Metaf</a>, <a href="https://www.openssl.org">OpenSSL</a>, <a href="https://www.qt.io">Qt</a>, <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a> and <a href="https://github.com/buelowp/sunset">sunset</a>.</p>
+<p>This program builds on a number of open source libraries, including <a href="https://https://github.com/nnaumenko/metaf">Metaf</a>, <a href="https://www.openssl.org">OpenSSL</a>, <a href="https://www.qt.io">Qt</a> and <a href="https://github.com/buelowp/sunset">sunset</a>.</p>
 
 <p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(version);
     }
@@ -299,25 +301,24 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += "<p>"
-                  + tr("Enroute Flight Navigation now offers ICAO and Glider Charts for Switzerland. "
-                       "To download these maps, open the main menu and go to Library/Maps and Data. "
-                       "We thank the swiss Federal Office of Topography and the Federal Office of Civil Aviation for making the maps publicly available. "
-                       "Use these maps for information only. The <a href='https://www.geo.admin.ch/en/general-terms-of-use-fsdi'>license conditions</a> do not allow operational use.")
-                  + "</p>";
+        result += u"<p>"_s
+                  + tr("Enroute Flight Navigation is now able to display traffic data provided by the Open Glider Network. "
+                       "We thank Christian Engelhardt for the implementation. "
+                       "Consult the manual for more information.")
+                  + u"</p>"_s;
+        result += u"<p>"_s
+                  + tr("Enroute Flight Navigation is now available on Mac computers with Apple Silcon processor (M1 or newer). "
+                       "Download it on the App Store.")
+                  + u"</p>"_s;
 #if !defined(Q_OS_IOS)
-        result += "<p>"
-                  + tr("Due to a change in Google's policies, it is no longer possible to share locations from the apps 'Google Maps' and 'Google Maps Go' with Enroute Flight Navigation.") +
-                  + "</p>";
-        result += "<p>"
-                  + tr("<strong>Technology Preview:</strong> Enroute Flight Navigation is now able to connect to traffic data receivers via Bluetooth Low Energy. "
-                       "Please try the new feature and send us your feedback!") +
-                  + "</p>";
+        result += u"<p>"_s
+                  + tr("Due to a change in Google's policies, it is no longer possible to share locations from the apps 'Google Maps' and 'Google Maps Go' with Enroute Flight Navigation.")
+                  + u"</p>"_s;
 #endif
-        result += "<p>"
+        result += u"<p>"_s
                   + tr("We need help with promotional graphics for the app stores and with explainer videos. "
                        "If you are a graphic/video artist and would like to help, then please be in touch.")
-                  + "</p>";
+                  + u"</p>"_s;
         return result;
     }
 
@@ -367,9 +368,9 @@ auto Librarian::fullPath(Librarian::Library library, const QString &baseName) ->
     switch (library)
     {
     case Aircraft:
-        return directory(library)+"/"+baseName+".json";
+        return directory(library) + u"/"_s + baseName + u".json"_s;
     case Routes:
-        return directory(library)+"/"+baseName+".geojson";
+        return directory(library) + u"/"_s + baseName + u".geojson"_s;
     }
     return {};
 }
@@ -438,10 +439,10 @@ auto Librarian::directory(Library library) -> QString
     switch (library)
     {
     case Aircraft:
-        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft";
+        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/aircraft"_s;
         break;
     case Routes:
-        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight routes";
+        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/flight routes"_s;
         break;
     }
     QDir().mkpath(path);

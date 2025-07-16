@@ -54,7 +54,8 @@ public:
         TCP,                /*!< TCP Connection */
         UDP,                /*!< UDP Connection */
         Serial,             /*!< Serial Port Connection */
-        FLARMFile           /*!< FLARM Simulator File */
+        FLARMFile,          /*!< FLARM Simulator File */
+        OGN                 /*!< OGN glidernet.org internet connection */
     };
     Q_ENUM(Type)
 
@@ -114,7 +115,19 @@ public:
      */
     explicit ConnectionInfo(const QString& host, quint16 port, bool canonical=false);
 
+    /*!
+     * \brief Constructor parameter for OGN connections.
+     */
+    struct OgnInfo{};
 
+    /*!
+     * \brief Constructor for OGN Connections
+     *
+     * This method constructs a ConnectionInfo for a OGN connection.
+     *
+     * \param info Info about the connection
+     */
+    explicit ConnectionInfo(const OgnInfo& info);
 
     //
     // Properties
@@ -148,7 +161,14 @@ public:
     Q_PROPERTY(QString description READ description CONSTANT)
 
     /*!
-     * \brief Description
+     * \brief Host
+     *
+     * For TCP connections, this property holds the host name.
+     */
+    Q_PROPERTY(QString hostn READ host CONSTANT)
+
+    /*!
+     * \brief Icon
      *
      * This property holds the name of an icon file that can be used to
      * represent the connection in the GUI.
@@ -156,7 +176,7 @@ public:
     Q_PROPERTY(QString icon READ icon CONSTANT)
 
     /*!
-     * \brief Description
+     * \brief Name
      *
      * This property holds a human-readable, translated name of the connection.
      */
@@ -199,9 +219,9 @@ public:
     /*!
      * \brief Getter function for the property with the same name
      *
-     * \returns Property name
+     * \returns Property host
      */
-    [[nodiscard]] QString name() const { return m_name; }
+    [[nodiscard]] QString host() const { return m_host; }
 
     /*!
      * \brief Getter function for the property with the same name
@@ -209,6 +229,13 @@ public:
      * \returns Property icon
      */
     [[nodiscard]] QString icon() const { return m_icon; }
+
+    /*!
+     * \brief Getter function for the property with the same name
+     *
+     * \returns Property name
+     */
+    [[nodiscard]] QString name() const { return m_name; }
 
     /*!
      * \brief Getter function for the property with the same name

@@ -13,6 +13,25 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
+### gitHubRelease
+
+```sh
+[bundle exec] fastlane gitHubRelease
+```
+
+Create GitHub Release, using SSH authentication
+
+### flathubRelease
+
+```sh
+[bundle exec] fastlane flathubRelease
+```
+
+Create Flathub test build for release
+
+----
+
+
 ## Android
 
 ### android build
@@ -54,27 +73,6 @@ Deploy a new version to Google Play - Beta
 ```
 
 Promote Beta to Release
-
-----
-
-
-## linux
-
-### linux build
-
-```sh
-[bundle exec] fastlane linux build
-```
-
-Build Linux Binary
-
-### linux flathub
-
-```sh
-[bundle exec] fastlane linux flathub
-```
-
-Build on Flathub
 
 ----
 

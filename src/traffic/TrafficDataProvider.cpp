@@ -29,6 +29,7 @@
 #endif
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
+#include "traffic/TrafficDataSource_Ogn.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -71,14 +72,14 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     addDataSource( new Traffic::TrafficDataSource_Udp(true, 49002, this));
 
     // Setup Bindings
+    m_currentSource.setBinding([this]() {return computeCurrentSource();});
     m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
-
-    // Bindings for saving
-    loadConnectionInfos();
-    connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
-
-    // Bindings for status string
+    m_receivingHeartbeat.setBinding([this]() {return computeReceivingHeartbeat();});
     m_statusString.setBinding([this]() {return computeStatusString();});
+    m_currentSourceIsInternetService.setBinding([this]() {
+        return qobject_cast<TrafficDataSource_Ogn*>(m_currentSource.value()) != nullptr;
+    });
+    m_currentSourceNotifier = m_currentSource.addNotifier([this]() {onCurrentSourceChanged();});
 
     // Connect timer. Try to (re)connect after 2s, and then again every five minutes.
     QTimer::singleShot(2s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
@@ -108,17 +109,25 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
 
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordRequest, this, &Traffic::TrafficDataProvider::passwordRequest);
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordStorageRequest, this, &Traffic::TrafficDataProvider::passwordStorageRequest);
-    connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError);
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError);
 
     auto tmp = m_dataSources.value();
     tmp.append(source);
     tmp.removeAll(nullptr);
+    // Sort new entries, so that OGN services always come last. This ensures that the method
+    // computeCurrentSource() prefers proper data receivers over OGN services.
     std::sort(tmp.begin(),
               tmp.end(),
               [](const Traffic::TrafficDataSource_Abstract* first, const Traffic::TrafficDataSource_Abstract* second)
-              { return first->sourceName() < second->sourceName(); });
+              {
+                  if ((qobject_cast<const TrafficDataSource_Ogn*>(first) != nullptr) &&
+                      (qobject_cast<const TrafficDataSource_Ogn*>(second) == nullptr))
+                  {
+                      return false;
+                  }
+                  return first->sourceName() < second->sourceName();
+              });
     m_dataSources = tmp;
 
     emit dataSourcesChanged();
@@ -134,13 +143,15 @@ QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInf
     case Traffic::ConnectionInfo::BluetoothLowEnergy:
         return addDataSource_BluetoothLowEnergy(connectionInfo);
     case Traffic::ConnectionInfo::TCP:
-        return tr("Unable to add TCP connection. This is not implemented at the moment.");
+        return addDataSource_TCP(connectionInfo.host(), connectionInfo.port());
     case Traffic::ConnectionInfo::UDP:
         return addDataSource_UDP(connectionInfo.port());
     case Traffic::ConnectionInfo::Serial:
         return addDataSource_SerialPort(connectionInfo.name());
     case Traffic::ConnectionInfo::FLARMFile:
         return tr("Unable to add FLARM simulator file connection. This is not implemented at the moment.");
+    case Traffic::ConnectionInfo::OGN:
+        return addDataSource_OGN();
     }
     return {};
 }
@@ -212,6 +223,24 @@ QString Traffic::TrafficDataProvider::addDataSource_TCP(const QString& host, qui
     return {};
 }
 
+QString Traffic::TrafficDataProvider::addDataSource_OGN()
+{
+    // Ignore new device if data source already exists.
+    foreach(auto _dataSource, m_dataSources.value())
+    {
+        auto* dataSource = qobject_cast<TrafficDataSource_Ogn*>(_dataSource);
+        if (dataSource != nullptr)
+        {
+            return tr("A connection to this device already exists.");
+        }
+    }
+
+    auto* source = new TrafficDataSource_Ogn(false, {}, 0, this);
+    source->connectToTrafficReceiver();
+    addDataSource(source);
+    return {};
+}
+
 void Traffic::TrafficDataProvider::clearDataSources()
 {
     if (m_dataSources.value().isEmpty())
@@ -265,10 +294,23 @@ QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSo
     return result;
 }
 
-void Traffic::TrafficDataProvider::deferredInitialization() const
+void Traffic::TrafficDataProvider::deferredInitialization()
 {
     // Try to (re)connect whenever the network situation changes
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
+
+    // Real data sources in order of preference, preferred sources first
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("10.10.10.10"), 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.1.1"), 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.4.1"), 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.10.1"), 2000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.42.1"), 2000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Udp(true, 4000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Udp(true, 49002, this));
+    loadConnectionInfos();
+
+    // Bindings for saving
+    connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
 }
 
 void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
@@ -305,92 +347,27 @@ void Traffic::TrafficDataProvider::loadConnectionInfos()
     }
 }
 
-void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
+void Traffic::TrafficDataProvider::onCurrentSourceChanged()
 {
-    // If we have a current source, if the current source has a heartbeat and if the current source is a TCP source, then we simply stick with it.
-    if ((qobject_cast<Traffic::TrafficDataSource_Tcp*>(m_currentSource.value()) != nullptr)
-        && m_currentSource->receivingHeartbeat() )
-    {
-        m_receivingHeartbeat = true;
-        return;
-    }
-
-    // Among the m_dataSources, find the first (=most preferred) source that is receiving heartbeat messages.
-    Traffic::TrafficDataSource_Abstract *heartbeatDataSource = nullptr;
     foreach(auto source, m_dataSources.value())
     {
-        if (source.isNull())
+        if (!source.isNull())
         {
-            continue;
-        }
-
-        if (source->receivingHeartbeat())
-        {
-            heartbeatDataSource = source;
-            break;
+            source->disconnect(this);
         }
     }
-
-    // If the source has changed, then connect/disconnect old and new source, update m_currentSource
-    if (heartbeatDataSource != m_currentSource) {
-
-
-        // Disconnect old m_currentSource
-        if (!m_currentSource.value().isNull())
-        {
-            disconnect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
-            disconnect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
-            disconnect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
-            disconnect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
-        }
-
-        // Update m_currentsource
-        m_currentSource = heartbeatDataSource;
-
-        if (!m_currentSource.value().isNull())
-        {
-            // If there is a new m_currentSource, then setup Qt connections and
-            // disconnect all sources of lower priority from the traffic receivers.
-            connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
-            connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
-            connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
-            connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
-
-            // Disconnect from traffic receiver
-            bool doDisconnect = false;
-            foreach(auto source, m_dataSources.value())
-            {
-                if ( source.isNull() )
-                {
-                    continue;
-                }
-                if (source == m_currentSource)
-                {
-                    doDisconnect = true;
-                    continue;
-                }
-                if (doDisconnect)
-                {
-                    source->disconnectFromTrafficReceiver();
-                }
-            }
-        }
-        else
-        {
-            // If there is no m_currentSource, then try in 1sek to (re)connect to any
-            // traffic receiver out there.
-            QTimer::singleShot(1s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
-        }
-    }
-
-    // Update heartbeat status
-    if (m_currentSource.value().isNull())
+    if (m_currentSource.value() != nullptr)
     {
-        m_receivingHeartbeat = false;
+        connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
+        connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
+        connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
+        connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
     }
     else
     {
-        m_receivingHeartbeat = m_currentSource->receivingHeartbeat();
+        // If there is no m_currentSource, then try in 1sek to (re)connect to any
+        // traffic receiver out there.
+        QTimer::singleShot(1s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
     }
 }
 
@@ -580,6 +557,23 @@ void Traffic::TrafficDataProvider::setWarning(const Traffic::Warning& warning)
 // Private Methods
 //
 
+QPointer<Traffic::TrafficDataSource_Abstract> Traffic::TrafficDataProvider::computeCurrentSource()
+{
+    foreach(auto source, m_dataSources.value())
+    {
+        if (source.isNull())
+        {
+            continue;
+        }
+
+        if (source->receivingHeartbeat())
+        {
+            return source;
+        }
+    }
+    return nullptr;
+}
+
 Units::Distance Traffic::TrafficDataProvider::computePressureAltitude()
 {
     for (const auto &dataSource : m_dataSources.value()) {
@@ -596,6 +590,16 @@ Units::Distance Traffic::TrafficDataProvider::computePressureAltitude()
     return {};
 }
 
+bool Traffic::TrafficDataProvider::computeReceivingHeartbeat()
+{
+    // Update heartbeat status
+    if (m_currentSource.value().isNull())
+    {
+        return false;
+    }
+    return m_currentSource->receivingHeartbeat();
+}
+
 QString Traffic::TrafficDataProvider::computeStatusString()
 {
     if (receivingHeartbeat())
@@ -605,7 +609,15 @@ QString Traffic::TrafficDataProvider::computeStatusString()
         {
             result += QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(m_currentSource->sourceName());
         }
-        result += QStringLiteral("<li>%1</li>").arg(tr("Receiving heartbeat."));
+
+        if (m_currentSourceIsInternetService.value())
+        {
+            result += QStringLiteral("<li>%1</li>").arg(tr("Receiving data through an internet service, which might be unreliable. Consider connecting to a proper traffic data receiver."));
+        }
+        else
+        {
+            result += QStringLiteral("<li>%1</li>").arg(tr("Receiving heartbeat."));
+        }
         if (positionInfo().isValid())
         {
             result += QStringLiteral("<li>%1</li>").arg(tr("Receiving position info."));

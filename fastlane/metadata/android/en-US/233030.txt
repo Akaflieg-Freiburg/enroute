@@ -1,0 +1,5 @@
+### Fixed
+- Fix problem with waypoint selection when no aviation data in installed. (#523)
+
+- Fix problem with CUP file import, where official files provided by
+  Austrocontrol could not be imported due to a problem with the parser (#522)

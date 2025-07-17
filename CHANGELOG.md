@@ -1,6 +1,48 @@
 # Changelog
 
-## [2.33.0] - xx
+## [2.34.0] - 2025-07-12
+
+### Added
+- Retrieve traffic data from the Open Glider Network (#512).
+
+
+## [2.33.5] - 2025-07-03
+
+### Changes
+- Target Android API level 35.
+
+
+## [2.33.4] - 2025-05-24
+
+### Fixed
+- Fix unexpected exit when editing flight routes. (#526)
+
+- Fix problem renaming visual approach charts.
+
+
+## [2.33.3] - 2025-05-10
+
+### Fixed
+- Fix problem with waypoint selection when no aviation data in installed. (#523)
+
+- Fix problem with CUP file import, where official files provided by
+  Austrocontrol could not be imported due to a problem with the parser (#522)
+
+
+## [2.33.2] - 2025-05-06
+
+### Fixed
+- Fix problem with file import under Android.
+
+
+## [2.33.1] - 2025-04-18
+
+### Fixed
+- Fix problem where TCP data connections were not restored on restart of the
+  app.
+
+
+## [2.33.0] - 2025-04-06
 
 ### Fixed
 - Fix problem where VACs were deleted on every app update on iOS.
@@ -8,6 +50,7 @@
 ### Changed
 - Even on very small screens, always show at least four characters of the
   destination waypoint in the remaining route bar. (#446)
+
 
 ## [2.32.14] - 2025-03-04
 
@@ -95,10 +138,6 @@
 - The app no longer hangs on startup.
 
 - Fixed typo in the manual.
-
-
-### Fixed
-- Fixed minor typo in the manual.
 
 
 ## [2.32.4] - 2024-12-24

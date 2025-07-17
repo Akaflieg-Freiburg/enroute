@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -53,7 +53,7 @@ CenteringDialog {
             text: renameDialog.oldName
             implicitWidth: renameDialog.availableWidth
 
-            onAccepted: renameDialog.onAccepted()
+            onAccepted: renameDialog.accept()
         }
     }
 
@@ -79,11 +79,11 @@ CenteringDialog {
         else
             Global.toast.doToast(qsTr("Error: %1").arg(errorMsg))
 
-        close()
+        renameDialog.close()
     }
 
     onRejected: {
         PlatformAdaptor.vibrateBrief()
-        close()
+        renameDialog.close()
     }
 }

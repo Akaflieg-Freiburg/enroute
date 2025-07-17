@@ -224,6 +224,32 @@ connect to your traffic receiver a few minutes after it becomes visible on
 Wi-Fi or LAN.
 
 
+OGN glidernet.org Connection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The `Open Glider Network <http://wiki.glidernet.org/about>`__ is a network of
+ground station and internet servers operated by volunteers. It collects FLARM
+and ADS-B data and distributes this data in real time via internet service.
+
+Starting with version 2.34.0, **Enroute Flight Navigation** is able to display
+traffic data from the Open Glider Network in its moving map. To configure a data
+connection to the Open Glider Network, proceed as follows.
+
+- Open **Enroute Flight Navigation** on your phone, navigate to this page and
+  tap on "New Connection" at the bottom of the page and choose "OGN
+  glidernet.org Connection" from the menu.
+
+- **Enroute Flight Navigation** will show two warning dialogs, pointing to
+  technical restrictions of internet services in flight, aviation safety
+  concerns, and consequences for data privacy. Read these text with care and
+  click on "OK" only if you understand the implications.
+
+In the future, **Enroute Flight Navigation** will automatically connect to the
+"Open Glider Network".  For reasons of flight safety, **Enroute Flight
+Navigation** will always prefer connections to proper traffic data receivers and
+will switch connections as soon as a data receiver becomes available.
+
+
 Remove a Data Connection
 ------------------------
 

@@ -22,6 +22,7 @@
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_Abstract.h"
+#include "traffic/TrafficFactorAircraftType.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -30,7 +31,9 @@ using namespace Qt::Literals::StringLiterals;
 // Static Helper functions
 //
 
-qreal interpretNMEALatLong(const QString& A, const QString& B)
+namespace {
+
+static qreal interpretNMEALatLong(const QString& A, const QString& B)
 {
     bool ok1 = false;
     bool ok2 = false;
@@ -45,7 +48,7 @@ qreal interpretNMEALatLong(const QString& A, const QString& B)
     return result;
 }
 
-QDateTime interpretNMEATime(const QString& timeString)
+static QDateTime interpretNMEATime(const QString& timeString)
 {
     auto HH = timeString.mid(0,2);
     auto MM = timeString.mid(2,2);
@@ -66,7 +69,7 @@ QDateTime interpretNMEATime(const QString& timeString)
 // substring message is returned. If the input string is not a valid NMEA
 // sentence, an empty string is returned.
 
-QString getNMEAMessage(const QString& input)
+static QString getNMEAMessage(const QString& input)
 {
     // Paranoid safety checks
     if (input.length() < 5)
@@ -100,6 +103,8 @@ QString getNMEAMessage(const QString& input)
 
     return message;
 }
+
+} // namespace
 
 
 //
@@ -369,60 +374,60 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
     }
 
     // Target type is optional
-    Traffic::TrafficFactor_Abstract::AircraftType type = Traffic::TrafficFactor_Abstract::unknown;
+    auto type = Traffic::unknown;
     {
         const auto &targetType = arguments[10];
         if (targetType == u"1")
         {
-            type = Traffic::TrafficFactor_Abstract::Glider;
+            type = Traffic::Glider;
         }
         if (targetType == u"2")
         {
-            type = Traffic::TrafficFactor_Abstract::TowPlane;
+            type = Traffic::TowPlane;
         }
         if (targetType == u"3")
         {
-            type = Traffic::TrafficFactor_Abstract::Copter;
+            type = Traffic::Copter;
         }
         if (targetType == u"4")
         {
-            type = Traffic::TrafficFactor_Abstract::Skydiver;
+            type = Traffic::Skydiver;
         }
         if (targetType == u"5")
         {
-            type = Traffic::TrafficFactor_Abstract::Aircraft;
+            type = Traffic::Aircraft;
         }
         if (targetType == u"6")
         {
-            type = Traffic::TrafficFactor_Abstract::HangGlider;
+            type = Traffic::HangGlider;
         }
         if (targetType == u"7")
         {
-            type = Traffic::TrafficFactor_Abstract::Paraglider;
+            type = Traffic::Paraglider;
         }
         if (targetType == u"8")
         {
-            type = Traffic::TrafficFactor_Abstract::Aircraft;
+            type = Traffic::Aircraft;
         }
         if (targetType == u"9")
         {
-            type = Traffic::TrafficFactor_Abstract::Jet;
+            type = Traffic::Jet;
         }
         if (targetType == u"B")
         {
-            type = Traffic::TrafficFactor_Abstract::Balloon;
+            type = Traffic::Balloon;
         }
         if (targetType == u"C")
         {
-            type = Traffic::TrafficFactor_Abstract::Airship;
+            type = Traffic::Airship;
         }
         if (targetType == u"D")
         {
-            type = Traffic::TrafficFactor_Abstract::Drone;
+            type = Traffic::Drone;
         }
         if (targetType == u"F")
         {
-            type = Traffic::TrafficFactor_Abstract::StaticObstacle;
+            type = Traffic::StaticObstacle;
         }
     }
 

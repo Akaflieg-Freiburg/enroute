@@ -252,7 +252,7 @@ QString GeoMaps::VACLibrary::rename(const QString& oldName, const QString& newNa
     }
 
     // Rename raster image file
-    auto newFileName = absolutePathForVac(vac);
+    auto newFileName = absolutePathForVac(newName);
     if (!QFile::rename(vac.fileName, newFileName))
     {
         return tr("VAC file renaming failed.");
@@ -413,5 +413,10 @@ void GeoMaps::VACLibrary::save()
 
 QString GeoMaps::VACLibrary::absolutePathForVac(GeoMaps::VAC vac)
 {
-    return m_vacDirectory + "/" + vac.name + ".webp";
+    return absolutePathForVac(vac.name);
+}
+
+QString GeoMaps::VACLibrary::absolutePathForVac(const QString& name)
+{
+    return m_vacDirectory + "/" + name + ".webp";
 }

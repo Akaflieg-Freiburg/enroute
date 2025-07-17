@@ -148,9 +148,16 @@ Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical)
 
 
 Traffic::ConnectionInfo::ConnectionInfo(const QString& host, quint16 port, bool canonical)
-    : m_canConnect(true), m_canonical(canonical), m_host(host), m_port(port), m_type(Traffic::ConnectionInfo::UDP)
+    : m_canConnect(true), m_canonical(canonical), m_host(host), m_port(port), m_type(Traffic::ConnectionInfo::TCP)
 {
-    m_name = QObject::tr("TCP Connection to %1, Port %1", "Traffic::ConnectionInfo").arg(m_host, m_port);
+    m_name = QObject::tr("TCP Connection to %1, Port %2", "Traffic::ConnectionInfo").arg(m_host).arg(m_port);
+    m_icon = u"/icons/material/ic_wifi.svg"_s;
+}
+
+Traffic::ConnectionInfo::ConnectionInfo(const OgnInfo& info)
+    : m_canConnect(true), m_canonical(false), m_type(Traffic::ConnectionInfo::OGN)
+{
+    m_name = QObject::tr("OGN glidernet.org APRS-IS connection", "Traffic::ConnectionInfo");
     m_icon = u"/icons/material/ic_wifi.svg"_s;
 }
 
@@ -279,6 +286,8 @@ QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionI
         break;
     case Traffic::ConnectionInfo::FLARMFile:
         break;
+    case Traffic::ConnectionInfo::OGN:
+        break;
     }
 
     return stream;
@@ -330,6 +339,8 @@ QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& c
         stream >> connectionInfo.m_host;
         break;
     case Traffic::ConnectionInfo::FLARMFile:
+        break;
+    case Traffic::ConnectionInfo::OGN:
         break;
     }
 

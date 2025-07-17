@@ -194,6 +194,7 @@ private:
     // This method returns the absolute path of a given VAC. Needed for iOS
     // after App Update. See GeoMaps::VACLibrary::janitor
     QString absolutePathForVac(GeoMaps::VAC);
+    QString absolutePathForVac(const QString& name);
 
     QVector<GeoMaps::VAC> m_vacs;
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};

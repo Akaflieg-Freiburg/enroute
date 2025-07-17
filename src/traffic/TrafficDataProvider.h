@@ -71,11 +71,16 @@ public:
         return GlobalObject::trafficDataProvider();
     }
 
-
-
     //
     // Properties
     //
+
+    /*! \brief Internet service flag
+     *
+     * This property is true if the data source currently in use is an internet service rather than a proper traffic receiver.
+     * This can be used by the GUI to warn the user that data might not be reliable.
+     */
+    Q_PROPERTY(bool currentSourceIsInternetService READ currentSourceIsInternetService BINDABLE bindableCurrentSourceIsInternetService);
 
     /*! \brief Traffic data sources
      *
@@ -152,6 +157,18 @@ public:
     //
     // Getter Methods
     //
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property currentSourceIsInternetService
+     */
+    [[nodiscard]] bool currentSourceIsInternetService() const {return m_currentSourceIsInternetService.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property currentSourceIsInternetService
+     */
+    [[nodiscard]] QBindable<bool> bindableCurrentSourceIsInternetService() const {return &m_currentSourceIsInternetService;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -293,6 +310,14 @@ public:
      */
     Q_INVOKABLE QString addDataSource_TCP(const QString& host, quint16 port);
 
+    /*! \brief Add an additional data source
+     *
+     * This method adds an additional OGN data source to this TrafficDataProvider.
+     *
+     * \returns An empty string on success, and a human-readable, translated error message on failure.
+     */
+    Q_INVOKABLE QString addDataSource_OGN();
+
     /*! \brief Remove data sources
      *
      * This method removes a data source from this TrafficDataProvider.
@@ -375,7 +400,7 @@ private slots:
 
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.
-    void deferredInitialization() const;
+    void deferredInitialization();
 
     // Sends out foreflight broadcast message See
     // https://www.foreflight.com/connect/spec/
@@ -385,7 +410,7 @@ private slots:
     void loadConnectionInfos();
 
     // Called if one of the sources indicates a heartbeat change
-    void onSourceHeartbeatChanged();
+    void onCurrentSourceChanged();
 
     // Called if one of the sources reports traffic (position unknown)
     void onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition& factor);
@@ -427,7 +452,12 @@ private:
 
     // TrafficData Sources
     QProperty<QList<QPointer<Traffic::TrafficDataSource_Abstract>>> m_dataSources;
+
     QProperty<QPointer<Traffic::TrafficDataSource_Abstract>> m_currentSource;
+    QPropertyNotifier m_currentSourceNotifier;
+    QPointer<Traffic::TrafficDataSource_Abstract> computeCurrentSource();
+
+    QProperty<bool> m_currentSourceIsInternetService;
 
     // Property cache
     Traffic::Warning m_Warning;
@@ -442,9 +472,10 @@ private:
     QTimer reconnectionTimer;
 
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, bool, m_receivingHeartbeat, &Traffic::TrafficDataProvider::receivingHeartbeatChanged);
+    bool computeReceivingHeartbeat();
 
     // Standard file name for saveConnectionInfos()
-    QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/connectionInfos.data"};
+    QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/connectionInfos.data"_s};
 };
 
 } // namespace Traffic

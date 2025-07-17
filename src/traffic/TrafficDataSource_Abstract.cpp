@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -34,7 +34,7 @@ Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(bool isCanonical
     // Setup heartbeat timer
     m_heartbeatTimer.setSingleShot(true);
     m_heartbeatTimer.setInterval(5s);
-    connect(&m_heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat);
+    connect(&m_heartbeatTimer, &QTimer::timeout, this, [this]() {m_receivingHeartbeat = false;});
 
     // Setup timer for pressure altitude
     m_pressureAltitudeTimer.setInterval(Positioning::PositionInfo::lifetime);
@@ -77,19 +77,16 @@ void Traffic::TrafficDataSource_Abstract::setPressureAltitude(Units::Distance ne
 
 void Traffic::TrafficDataSource_Abstract::setReceivingHeartbeat(bool newReceivingHeartbeat)
 {
-    if (newReceivingHeartbeat) {
+    if (newReceivingHeartbeat)
+    {
         m_heartbeatTimer.start();
-    } else {
+    }
+    else
+    {
         m_heartbeatTimer.stop();
     }
-
-    if (m_hasHeartbeat == newReceivingHeartbeat) {
-        return;
-    }
-    m_hasHeartbeat = newReceivingHeartbeat;
-    emit receivingHeartbeatChanged(m_hasHeartbeat);
+    m_receivingHeartbeat = newReceivingHeartbeat;
 }
-
 
 void Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat()
 {

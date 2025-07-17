@@ -267,12 +267,73 @@ Page {
                         }
                     }
 
+                    Action {
+                        text: qsTr("OGN glidernet.org Connection")
+                        enabled: !TrafficDataProvider.currentSourceIsInternetService
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addMenu.close()
+                            ognWarning1.open()
+                        }
+                    }
                 }
-
             }
         }
     }
 
+    LongTextDialog {
+        id: ognWarning1
+        title: qsTr("Flight Safety Warning!")
+        text: "<p>"
+              + "<strong>" + qsTr("Know what you are doing!") + " </strong>"
+              + qsTr("You are about to add an internet connection to the 'Open Glider Network' as a traffic data source.") + " "
+              + qsTr("While OGN data can be useful in certain scenarios, we recommend against using traffic data from internet services in real flight.")
+              + "</p>"
+              + "<p><ul>"
+              + "<li>" + qsTr("Internet connectivity is not reliable in flight. Even when flying over populated areas, expect the internet connection to fail for about half of the time.") + "</li>"
+              + "<li>" + qsTr("Experience shows that data is frequently laggy and often outdated.") + "</li>"
+              + "<li>" + qsTr("You will not be visible to others.") + "</li>"
+              + "</ul></p>"
+              + "<p>"
+              + qsTr("We strongly feel that no responsible pilot should ever fly without a proper traffic data receiver, such as a FLARM or ADS-B device.")
+              + "</p>"
+
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            ognWarning2.open()
+        }
+
+        onRejected: PlatformAdaptor.vibrateBrief()
+    }
+
+    LongTextDialog {
+        id: ognWarning2
+        title: qsTr("Privacy Warning")
+        text: "<p>"
+              + qsTr("You are about to add an internet connection to the 'Open Glider Network' as a traffic data source.") + " "
+              + qsTr("When using this service, <strong>Enroute Flight Navigation</strong> will send your position data to servers of the Open Glider Network at regular intervals.") + " "
+              + qsTr("We do not control these servers. We do not know what data they collect.") + " "
+              + qsTr("Use these services only if you agree to the data handling practices of the Open Glider Network.")
+              + "</p>"
+
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            var resultString = TrafficDataProvider.addDataSource_OGN()
+            if (resultString !== "")
+            {
+                ltd.text = resultString
+                ltd.open()
+                return
+            }
+            Global.toast.doToast( qsTr("Adding OGN Connection") )
+        }
+
+        onRejected: PlatformAdaptor.vibrateBrief()
+    }
 
     LongTextDialog {
         id: ltd

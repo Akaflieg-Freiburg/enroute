@@ -144,7 +144,7 @@ auto GlobalObject::canConstruct() -> bool
 }
 
 
-auto GlobalObject::fileExchange() -> Platform::FileExchange_Abstract*
+auto GlobalObject::fileExchange() -> Platform::FileExchange*
 {
     return allocateInternal<Platform::FileExchange>(g_fileExchange);
 }

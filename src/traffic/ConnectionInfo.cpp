@@ -35,6 +35,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     : m_bluetoothDeviceInfo(info),
     m_canonical(canonical)
 {
+    qWarning() << m_bluetoothDeviceInfo.name();
     // Set Name
     {
         if (m_bluetoothDeviceInfo.isValid())
@@ -50,52 +51,49 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     // Set Description (must come after name)
     {
         QStringList descriptionItems;
-        if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+        if ((m_bluetoothDeviceInfo.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration) != 0)
         {
-            descriptionItems += QObject::tr("Bluetooth Low Energy Device (unsupported)", "Traffic::ConnectionInfo");
+            descriptionItems += QObject::tr("Bluetooth Low Energy Device", "Traffic::ConnectionInfo");
         }
-        else
+        switch(m_bluetoothDeviceInfo.majorDeviceClass())
         {
-            switch(m_bluetoothDeviceInfo.majorDeviceClass())
-            {
-            case QBluetoothDeviceInfo::MiscellaneousDevice:
-                descriptionItems += QObject::tr("Miscellaneous Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::ComputerDevice:
-                descriptionItems += QObject::tr("Computer or PDA Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::PhoneDevice:
-                descriptionItems += QObject::tr("Telephone Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::NetworkDevice:
-                descriptionItems += QObject::tr("Network Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::AudioVideoDevice:
-                descriptionItems += QObject::tr("Audio/Video Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::PeripheralDevice:
-                descriptionItems += QObject::tr("Peripheral Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::ImagingDevice:
-                descriptionItems += QObject::tr("Imaging Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::WearableDevice:
-                descriptionItems += QObject::tr("Wearable Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::ToyDevice:
-                descriptionItems += QObject::tr("Toy Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::HealthDevice:
-                descriptionItems += QObject::tr("Health Device", "Traffic::ConnectionInfo");
-                break;
-            case QBluetoothDeviceInfo::UncategorizedDevice:
-                descriptionItems += QObject::tr("Uncategorized Device", "Traffic::ConnectionInfo");
-                break;
-            }
-            if (m_bluetoothDeviceInfo.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
-            {
-                descriptionItems += QObject::tr("Serial Port Service", "Traffic::ConnectionInfo");
-            }
+        case QBluetoothDeviceInfo::MiscellaneousDevice:
+            descriptionItems += QObject::tr("Miscellaneous Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::ComputerDevice:
+            descriptionItems += QObject::tr("Computer or PDA Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::PhoneDevice:
+            descriptionItems += QObject::tr("Telephone Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::NetworkDevice:
+            descriptionItems += QObject::tr("Network Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::AudioVideoDevice:
+            descriptionItems += QObject::tr("Audio/Video Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::PeripheralDevice:
+            descriptionItems += QObject::tr("Peripheral Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::ImagingDevice:
+            descriptionItems += QObject::tr("Imaging Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::WearableDevice:
+            descriptionItems += QObject::tr("Wearable Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::ToyDevice:
+            descriptionItems += QObject::tr("Toy Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::HealthDevice:
+            descriptionItems += QObject::tr("Health Device", "Traffic::ConnectionInfo");
+            break;
+        case QBluetoothDeviceInfo::UncategorizedDevice:
+            descriptionItems += QObject::tr("Uncategorized Device", "Traffic::ConnectionInfo");
+            break;
+        }
+        if (m_bluetoothDeviceInfo.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
+        {
+            descriptionItems += QObject::tr("Serial Port Service", "Traffic::ConnectionInfo");
         }
         m_description = u"%1<br><font size='2'>%2</font>"_s.arg(m_name, descriptionItems.join(u" • "_s));
     }
@@ -104,20 +102,13 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     {
         if (m_bluetoothDeviceInfo.isValid())
         {
-            if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
-            {
-                m_icon = u"/icons/material/ic_bluetooth_disabled.svg"_s;
-            }
-            else
-            {
-                m_icon = u"/icons/material/ic_bluetooth.svg"_s;
-            }
+            m_icon = u"/icons/material/ic_bluetooth.svg"_s;
         }
     }
 
     // Set canConnect
     {
-        if (m_bluetoothDeviceInfo.isValid() && (m_bluetoothDeviceInfo.coreConfigurations() != QBluetoothDeviceInfo::LowEnergyCoreConfiguration))
+        if (m_bluetoothDeviceInfo.isValid())
         {
             m_canConnect = true;
         }
@@ -125,7 +116,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
 
     // Set type
     {
-        if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+        if ((m_bluetoothDeviceInfo.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration) != 0)
         {
             m_type = Traffic::ConnectionInfo::BluetoothLowEnergy;
         }
@@ -157,9 +148,16 @@ Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical)
 
 
 Traffic::ConnectionInfo::ConnectionInfo(const QString& host, quint16 port, bool canonical)
-    : m_canConnect(true), m_canonical(canonical), m_host(host), m_port(port), m_type(Traffic::ConnectionInfo::UDP)
+    : m_canConnect(true), m_canonical(canonical), m_host(host), m_port(port), m_type(Traffic::ConnectionInfo::TCP)
 {
-    m_name = QObject::tr("TCP Connection to %1, Port %1", "Traffic::ConnectionInfo").arg(m_host, m_port);
+    m_name = QObject::tr("TCP Connection to %1, Port %2", "Traffic::ConnectionInfo").arg(m_host).arg(m_port);
+    m_icon = u"/icons/material/ic_wifi.svg"_s;
+}
+
+Traffic::ConnectionInfo::ConnectionInfo(const OgnInfo& info)
+    : m_canConnect(true), m_canonical(false), m_type(Traffic::ConnectionInfo::OGN)
+{
+    m_name = QObject::tr("OGN glidernet.org APRS-IS connection", "Traffic::ConnectionInfo");
     m_icon = u"/icons/material/ic_wifi.svg"_s;
 }
 
@@ -288,6 +286,8 @@ QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionI
         break;
     case Traffic::ConnectionInfo::FLARMFile:
         break;
+    case Traffic::ConnectionInfo::OGN:
+        break;
     }
 
     return stream;
@@ -339,6 +339,8 @@ QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& c
         stream >> connectionInfo.m_host;
         break;
     case Traffic::ConnectionInfo::FLARMFile:
+        break;
+    case Traffic::ConnectionInfo::OGN:
         break;
     }
 

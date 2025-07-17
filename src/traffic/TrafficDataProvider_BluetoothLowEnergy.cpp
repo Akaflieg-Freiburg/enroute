@@ -19,9 +19,33 @@
  ***************************************************************************/
 
 #include "traffic/TrafficDataProvider.h"
+#include "traffic/TrafficDataSource_BluetoothLowEnergy.h"
 
 
-QString Traffic::TrafficDataProvider::addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo& /*connectionInfo*/)
-{
-    return tr("Connections to Bluetooth Low Energy devices are currently not supported.");
+QString Traffic::TrafficDataProvider::addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo& connectionInfo)
+{    
+    // Sanity check
+    auto bluetoothDeviceInfo = connectionInfo.bluetoothDeviceInfo();
+    if (!bluetoothDeviceInfo.isValid())
+    {
+        return tr("Invalid connection.");
+    }
+
+    // Ignore new device if data source already exists.
+    foreach(auto _dataSource, m_dataSources.value())
+    {
+        auto* dataSourceBTClassic = qobject_cast<TrafficDataSource_BluetoothLowEnergy*>(_dataSource);
+        if (dataSourceBTClassic != nullptr)
+        {
+            if (connectionInfo.bluetoothDeviceInfo().address() == dataSourceBTClassic->sourceInfo().address())
+            {
+                return tr("A connection to this device already exists.");
+            }
+        }
+    }
+
+    auto* source = new TrafficDataSource_BluetoothLowEnergy(false, connectionInfo.bluetoothDeviceInfo(), this);
+    source->connectToTrafficReceiver();
+    addDataSource(source);
+    return {};
 }

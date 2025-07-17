@@ -299,17 +299,23 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> now computes the density altitude from METAR data and shows warnings when density altitude affects aircraft performance.") + " "
-                  + tr("We thank Christian Engelhardt and Tom Linz for the implementation!") + "</p>";
-
-        result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + " "
-                  + tr("We thank Heinz Blöchinger for help with the implementation!") + "</p>";
-/*
-        result += "<p>" + tr("Users with nonstandard hardware can now configure IP adresses for their traffic data receivers. "
-                             "Serial port connections are also supported.") + "</p>";
-*/
-        result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
-                             "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
+        result += u"<p>"_s
+                  + tr("Enroute Flight Navigation is now able to display traffic data provided by the Open Glider Network. "
+                       "Consult the manual for more information.")
+                  + u"</p>"_s;
+        result += u"<p>"_s
+                  + tr("Enroute Flight Navigation is now available on Mac computers with Apple Silcon processor (M1 or newer). "
+                       "Download it on the App Store.")
+                  + u"</p>"_s;
+#if !defined(Q_OS_IOS)
+        result += u"<p>"_s
+                  + tr("Due to a change in Google's policies, it is no longer possible to share locations from the apps 'Google Maps' and 'Google Maps Go' with Enroute Flight Navigation.")
+                  + u"</p>"_s;
+#endif
+        result += u"<p>"_s
+                  + tr("We need help with promotional graphics for the app stores and with explainer videos. "
+                       "If you are a graphic/video artist and would like to help, then please be in touch.")
+                  + u"</p>"_s;
         return result;
     }
 
@@ -317,11 +323,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     file.open(QIODevice::ReadOnly);
     auto content = file.readAll();
     return QString::fromUtf8(content);
-
 }
 
 
-auto Librarian::getStringHashFromRessource(const QString &name) -> Units::ByteSize
+Units::ByteSize Librarian::getStringHashFromRessource(const QString &name)
 {
     return qHash(getStringFromRessource(name), (size_t)0);
 }

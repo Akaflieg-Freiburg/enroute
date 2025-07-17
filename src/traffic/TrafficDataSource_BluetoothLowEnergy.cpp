@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2024 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
+
 #include "traffic/TrafficDataSource_BluetoothLowEnergy.h"
 
 Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEnergy(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent) :
@@ -25,49 +27,86 @@ Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEne
     m_info(info),
     m_control(QLowEnergyController::createCentral(info, this))
 {
-#warning
-    qWarning() << "New data source" << info.name();
+    // Rectify Permissions
+    m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
 
-    connect(m_control,
-            &QLowEnergyController::serviceDiscovered,
-            this,
-            &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscovered);
-    connect(m_control, &QLowEnergyController::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged);
+    connect(m_control, &QLowEnergyController::connected, m_control, &QLowEnergyController::discoverServices);
     connect(m_control, &QLowEnergyController::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred);
-    connect(m_control, &QLowEnergyController::connected, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onConnected);
-    /*
-    connect(m_control, &QLowEnergyController::discoveryFinished, this, &DeviceHandler::serviceScanDone);
-    connect(m_control, &QLowEnergyController::disconnected, this, [this]() {
-        setError("LowEnergy controller disconnected");
-        setIcon(IconError);
-    });
-    */
+    connect(m_control, &QLowEnergyController::discoveryFinished, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscoveryFinished);
+    connect(m_control, &QLowEnergyController::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged);
 }
 
-void Traffic::TrafficDataSource_BluetoothLowEnergy::onConnected()
+
+//
+// Getter Methods
+//
+
+QString Traffic::TrafficDataSource_BluetoothLowEnergy::sourceName() const
 {
-    qWarning() << "Traffic::TrafficDataSource_BTLE::onConnected" << m_info.name();
-    m_control->discoverServices();
+    auto name = m_info.name();
+    if (name.isEmpty())
+    {
+        name = tr("Unnamed Device");
+    }
+    return tr("Bluetooth LE connection to %1").arg(name);
 }
 
-void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscovered(const QBluetoothUuid& newService)
-{
-    qWarning() << "Traffic::TrafficDataSource_BTLE::onServiceDiscovered" << m_info.name() << newService;
-}
 
+//
+// Public Slots
+//
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::connectToTrafficReceiver()
 {
-    qWarning() << "Traffic::TrafficDataSource_BTLE::connectToTrafficReceiver()";
+    // Do not do anything if the traffic receiver is connected and is receiving.
+    if (receivingHeartbeat())
+    {
+        return;
+    }
+    // Cannot connect unless we are unconnected
+    if (m_control->state() != QLowEnergyController::UnconnectedState)
+    {
+        return;
+    }
+
+    // Check if we have sufficient permissions
+    switch (qApp->checkPermission(m_bluetoothPermission)) {
+    case Qt::PermissionStatus::Undetermined:
+        qApp->requestPermission(m_bluetoothPermission, this, [this]() { connectToTrafficReceiver(); });
+        return;
+    case Qt::PermissionStatus::Denied:
+        setErrorString( tr("Necessary permission have been denied.") );
+        return;
+    case Qt::PermissionStatus::Granted:
+        break;
+    }
+
+    setErrorString();
     m_control->connectToDevice();
 }
 
-
 void Traffic::TrafficDataSource_BluetoothLowEnergy::disconnectFromTrafficReceiver()
 {
-    qWarning() << "Traffic::TrafficDataSource_BTLE::disconnectFromTrafficReceiver()";
+    delete m_nusService;
+    m_nusService = nullptr;
+
+    m_control->disconnectFromDevice();
+    setErrorString();
 }
 
+
+//
+// Private Slots
+//
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onCharacteristicChanged(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue)
+{
+    if (characteristic.uuid() != txCharacteristicID)
+    {
+        return;
+    }
+    processFLARMData(QString(newValue));
+}
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred(QLowEnergyController::Error error)
 {
@@ -108,10 +147,71 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred(QLowEnergyCo
     }
 }
 
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscoveryFinished()
+{
+    if (!m_control->services().contains(nusServiceUuid))
+    {
+        setErrorString( tr("No UART service found.") );
+        return;
+    }
+
+    m_nusService = m_control->createServiceObject(nusServiceUuid, this);
+    if (m_nusService == nullptr)
+    {
+        setErrorString( tr("No UART service found.") );
+        return;
+    }
+
+    setConnectivityStatus( tr("UART service found. Requesting service characteristics.") );
+    connect(m_nusService, &QLowEnergyService::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged);
+    connect(m_nusService, &QLowEnergyService::characteristicChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onCharacteristicChanged);
+    m_nusService->discoverDetails();
+}
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged(QLowEnergyService::ServiceState newState)
+{
+    switch(newState)
+    {
+    case QLowEnergyService::InvalidService:
+        setErrorString(tr("Invalid Service."));
+        return;
+    case QLowEnergyService::RemoteService:
+        setConnectivityStatus(tr("Service details unknown."));
+        return;
+    case QLowEnergyService::RemoteServiceDiscovering:
+        setConnectivityStatus(tr("Requesting service details."));
+        return;
+    case QLowEnergyService::RemoteServiceDiscovered:
+        break;
+    case QLowEnergyService::LocalService:
+        return;
+    }
+
+    auto txCharacteristic = m_nusService->characteristic(txCharacteristicID);
+    if (!txCharacteristic.isValid())
+    {
+        setErrorString(tr("The NUS service does not contain the TX characteristic."));
+        return;
+    }
+    auto m_notificationDescriptor = txCharacteristic.descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
+    if (!m_notificationDescriptor.isValid())
+    {
+        setErrorString(tr("Cannot open the client characteristic configuration descriptor."));
+        return;
+    }
+
+    // Enable Notifications
+    if (m_nusService == nullptr)
+    {
+        setErrorString(tr("The NUS service is not available."));
+        return;
+    }
+    m_nusService->writeDescriptor(m_notificationDescriptor, QByteArray::fromHex("0100"));
+    setConnectivityStatus(tr("Data transfer enabled."));
+}
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged(QLowEnergyController::ControllerState state)
 {
-    // Compute new status
     switch(state)
     {
     case QLowEnergyController::UnconnectedState:
@@ -136,20 +236,4 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged(QLowEnergyCon
         setConnectivityStatus( tr("The controller is currently advertising data.") );
         break;
     }
-}
-
-
-void Traffic::TrafficDataSource_BluetoothLowEnergy::onReadyRead()
-{
-}
-
-
-QString Traffic::TrafficDataSource_BluetoothLowEnergy::sourceName() const
-{
-    auto name = m_info.name();
-    if (name.isEmpty())
-    {
-        name = tr("Unnamed Device");
-    }
-    return tr("Bluetooth LE connection to %1 (not implemented yet, please ignore)").arg(name);
 }

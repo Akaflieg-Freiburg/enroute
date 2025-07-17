@@ -19,6 +19,5 @@ menu and choose :ref:`InfoTrafficPage`.
    02-senseAndAvoid/02-setup-wifi
    02-senseAndAvoid/03-setup-bluetooth
    02-senseAndAvoid/03-setup-serialport
-   02-senseAndAvoid/04-safesky
    02-senseAndAvoid/05-compatibility
 

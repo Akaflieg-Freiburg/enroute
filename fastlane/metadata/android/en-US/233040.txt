@@ -1,0 +1,4 @@
+### Fixed
+- Fix unexpected exit when editing flight routes. (#526)
+
+- Fix problem renaming visual approach charts.

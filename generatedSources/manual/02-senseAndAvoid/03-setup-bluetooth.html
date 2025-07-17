@@ -6,15 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Connect via Bluetooth &mdash; Enroute Flight Navigation  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=330c1f8c" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
   
     <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -48,6 +51,7 @@
 <li class="toctree-l2"><a class="reference internal" href="01-whatToExpect.html">What to Expect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02-setup-wifi.html">Connect via Wi-Fi</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Connect via Bluetooth</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bluetooth-protocols">Bluetooth Protocols</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#one-time-setup">One-time Setup</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#step-0-before-you-connect">Step 0: Before You Connect</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#step-1-configure-a-data-connection-to-the-bluetooth-classic-device">Step 1: Configure a Data Connection to the Bluetooth Classic Device</a></li>
@@ -58,7 +62,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="03-setup-serialport.html">Connect via the Serial Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04-safesky.html">Connect the SafeSky App</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05-compatibility.html">Compatibility List</a></li>
 </ul>
 </li>
@@ -67,11 +70,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../04-additionalSoftware.html">Additional software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-additionalSoftware.html">Additional Software</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../05-referencePages.html">User Interface: Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceDialogs.html">User Interface: Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceItems.html">User Interface: Other Elements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../06-referenceWorkflow.html">User Interface: Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../07-referenceTechnology.html">Technology</a></li>
 </ul>
@@ -116,20 +121,36 @@ using the Bluetooth Classic radio standard. Compared with Wi-Fi, Bluetooth
 connections are less reliable and require manual configuration. We found that
 many Bluetooth adaptors are build with cheap and unreliable hardware and
 implement industry standards only partially, if at all.</p>
-<p>Bluetooth Classic supports only point-to-point connections, so that only one single app
-can access traffic data at any given time.  Pilots and co-pilots must
-therefore decide who gets to see traffic data and configure their devices appropriately.</p>
+<section id="bluetooth-protocols">
+<h2>Bluetooth Protocols<a class="headerlink" href="#bluetooth-protocols" title="Link to this heading"></a></h2>
+<p>Quite confusingly, Bluetooth is an umbrella term for <a class="reference external" href="https://www.bluetooth.com/learn-about-bluetooth/tech-overview/">two unrelated and
+completely incompatible radio communication protocols</a> that operate
+in the same frequency range.</p>
+<ul>
+<li><p>Bluetooth Classic, marketed under the names “Bluetooth”, “Bluetooth Basic
+Rate” and “Bluetooth Enhanced Data Rate” is the standard radio protocol
+powering headphones and in-car entertainment systems.</p>
+<p>Bluetooth Classic supports only point-to-point connections, so that only one
+single app can access traffic data at any given time.  Pilots and co-pilots
+must therefore decide who gets to see traffic data and configure their devices
+appropriately.</p>
+</li>
+<li><p>Bluetooth Low Energy, marketed under the names “Bluetooth”, “Bluetooth LE” and
+“Bluetooth Smart” is a slower radio protocol designed for very low power
+operation and flexible network topologies.</p></li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>At present, <strong>Enroute Flight Navigation</strong> supports only Bluetooth Classic
-communication. Bluetooth Low Energy may be supported in the future if there is
-sufficient demand from the user community.</p>
+communication. Bluetooth Low Energy is supported as a technology preview and
+should not be used in production environments.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Access to Bluetooth radio is severely limited on iOS platforms. For that reason,
 Bluetooth communication is not supported at all on iPhone or iPad devices.</p>
 </div>
+</section>
 <section id="one-time-setup">
 <h2>One-time Setup<a class="headerlink" href="#one-time-setup" title="Link to this heading"></a></h2>
 <section id="step-0-before-you-connect">
@@ -145,6 +166,13 @@ following conditions are met.</p>
 <li><p>If possible, configure your traffic data receiver to always be in
 ‘discoverable mode’.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The steps described here might also work if your device uses the
+Bluetooth Low Energy radio standard, which is only supported as a technology
+preview.  If you use Bluetooth Low Energy, please let us know how it worked
+for you.  Our development team is very interested in your feedback.</p>
+</div>
 </section>
 <section id="step-1-configure-a-data-connection-to-the-bluetooth-classic-device">
 <h3>Step 1: Configure a Data Connection to the Bluetooth Classic Device<a class="headerlink" href="#step-1-configure-a-data-connection-to-the-bluetooth-classic-device" title="Link to this heading"></a></h3>

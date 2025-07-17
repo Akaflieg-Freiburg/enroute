@@ -13,6 +13,17 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
+### createGitHubRelease
+
+```sh
+[bundle exec] fastlane createGitHubRelease
+```
+
+Create GitHub Release with SSH authentication
+
+----
+
+
 ## Android
 
 ### android build

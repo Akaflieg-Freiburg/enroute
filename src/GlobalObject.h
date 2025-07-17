@@ -65,7 +65,7 @@ class TrafficDataProvider;
 
 namespace Platform
 {
-class FileExchange_Abstract;
+class FileExchange;
 class Notifier_Abstract;
 class PlatformAdaptor_Abstract;
 } // namespace Platform
@@ -166,7 +166,7 @@ public:
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Platform::FileExchange_Abstract* fileExchange();
+    Q_INVOKABLE static Platform::FileExchange* fileExchange();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::GeoMapProvider
      * instance

@@ -109,7 +109,7 @@ GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QStringList& fields)
         }
         if (eleString.endsWith(u"ft"))
         {
-            ele = eleString.chopped(1).toDouble(&ok) * 0.3048;
+            ele = eleString.chopped(2).toDouble(&ok) * 0.3048;
         }
         if (!ok)
         {

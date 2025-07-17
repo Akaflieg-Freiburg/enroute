@@ -174,7 +174,13 @@ Page {
 
                 background: Rectangle {
                     border.color: "black"
-                    color: (TrafficDataProvider.receivingHeartbeat) ? "green" : "red"
+                    color: {
+                        if (!TrafficDataProvider.receivingHeartbeat)
+                            return "red"
+                        if (TrafficDataProvider.currentSourceIsInternetService)
+                            return "yellow"
+                        return "green"
+                    }
                     opacity: 0.2
                     radius: 4
                 }
@@ -230,9 +236,16 @@ Page {
                 Layout.fillWidth: true
                 visible: TrafficDataProvider.receivingHeartbeat
 
-                text: trafficObserver.hasTraffic ? qsTr("Traffic") : qsTr("Currently No Traffic")
+                text: qsTr("Traffic")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
+            }
+
+            Label {
+                Layout.fillWidth: true
+                visible: TrafficDataProvider.receivingHeartbeat && !trafficObserver.hasTraffic
+
+                text: qsTr("Currently No Traffic")
             }
 
             ListView {

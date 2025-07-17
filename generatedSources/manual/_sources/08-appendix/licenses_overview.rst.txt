@@ -5,6 +5,7 @@
 - `Catch2 <https://github.com/catchorg/Catch2>`_. Boost Software License 1.0.
 - `Clip2Tri Polygon Triangulation Library <https://github.com/raptor/clip2tri>`_. MIT License.
 - `Clipper Polygon Clipping Library <https://sourceforge.net/projects/polyclipping/>`_. Boost Software License 1.0.
+- `cmake-runcmake-test-modules <https://cmake.org/>`_. BSD 3-Clause "New" or "Revised" License.
 - Cocoa Platform Plugin. BSD 3-clause "New" or "Revised" License.
 - `Cycle <http://fftw.org/>`_. MIT License.
 - `D3D12 Memory Allocator <https://github.com/GPUOpen-LibrariesAndSDKs/D3D12MemoryAllocator>`_. MIT License.
@@ -13,6 +14,7 @@
 - `Earth Gravitational Model <https://earth-info.nga.mil>`_. Public Domain.
 - `Easing Equations by Robert Penner <http://robertpenner.com/easing/>`_. BSD 3-clause "New" or "Revised" License.
 - `Efficient Binary-Decimal and Decimal-Binary Conversion Routines for IEEE Doubles <https://github.com/google/double-conversion>`_. BSD 3-clause "New" or "Revised" License.
+- `Emoji Segmenter <https://github.com/google/emoji-segmenter>`_. Apache License 2.0.
 - `extra-cmake-modules <https://api.kde.org/ecm/>`_. BSD-3-Clause.
 - `fontawesome <https://github.com/FortAwesome/Font-Awesome>`_. SIL Open Font Licence 1.1.
 - forkfd. MIT License.
@@ -27,7 +29,6 @@
 - `Gradle wrapper <https://gradle.org>`_. Apache License 2.0.
 - `Guidelines Support Library <https://github.com/microsoft/GSL>`_. MIT License.
 - `HarfBuzz-NG <http://harfbuzz.org>`_. MIT License.
-- `IAccessible2 IDL Specification <https://wiki.linuxfoundation.org/accessibility/iaccessible2/>`_. BSD 3-clause "New" or "Revised" License.
 - `JavaScriptCore Macro Assembler <https://trac.webkit.org/wiki/JavaScriptCore>`_. BSD 2-clause "Simplified" License.
 - `jQuery <https://github.com/jquery/jquery>`_. MIT License.
 - `KDAB's helper class for single-instance policy applications <https://github.com/KDAB/KDSingleApplication>`_. MIT License.

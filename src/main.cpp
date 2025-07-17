@@ -50,14 +50,9 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-//#include "dataManagement/DataManager.h"
-//#include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/Airspace.h"
-//#include "geomaps/GeoMapProvider.h"
-//#include "geomaps/WaypointLibrary.h"
-#include "platform/FileExchange_Abstract.h"
+#include "platform/FileExchange.h"
 #include "platform/PlatformAdaptor_Abstract.h"
-//#include "traffic/TrafficDataProvider.h"
 #include "traffic/Warning.h"
 
 using namespace std::chrono_literals;

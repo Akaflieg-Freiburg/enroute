@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2024 by Stefan Kebekus                                  *
+ *   Copyright (C) 2024-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -252,7 +252,7 @@ QString GeoMaps::VACLibrary::rename(const QString& oldName, const QString& newNa
     }
 
     // Rename raster image file
-    auto newFileName = absolutePathForVac(vac);
+    auto newFileName = absolutePathForVac(newName);
     if (!QFile::rename(vac.fileName, newFileName))
     {
         return tr("VAC file renaming failed.");
@@ -332,8 +332,8 @@ QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacs4Point(const QGeoCoordinate& posi
 
 void GeoMaps::VACLibrary::janitor()
 {
-    // Go through the list of all VAC. Find all VACs without image file, and a list of all image file managed
-    // by VACs in the list
+    // Go through the list of all VAC. Find all VACs without image file, and a
+    // list of all image file managed by VACs in the list
     QVector<GeoMaps::VAC> vacsWithoutImageFile;
     QVector<QFileInfo> imageFilesWithVAC;
     foreach(auto vac, m_vacs)
@@ -347,14 +347,17 @@ void GeoMaps::VACLibrary::janitor()
             auto newFileName = absolutePathForVac(vac);
             if (QFile::exists(newFileName))
             {
-                // This mechanism is necessary after an app update on iOS devices.
-                // After an update, the path of the app container is changed, and therefore the location of the vac files
-                // => we have to set the path to the current location
+                // This mechanism is necessary after an app update on iOS
+                // devices. After an update, the path of the app container is
+                // changed, and therefore the location of the vac files => we
+                // have to set the path to the current location
                 m_vacs.removeAll(vac);
                 vac.fileName = newFileName;
                 m_vacs.append(vac);
                 imageFilesWithVAC.append(QFileInfo(vac.fileName));
-            } else {
+            }
+            else
+            {
                 vacsWithoutImageFile.append(vac);
             }
         }
@@ -408,6 +411,12 @@ void GeoMaps::VACLibrary::save()
     m_dataFile.close();
 }
 
-QString GeoMaps::VACLibrary::absolutePathForVac(GeoMaps::VAC vac) {
-    return m_vacDirectory + "/" + vac.name + ".webp";
+QString GeoMaps::VACLibrary::absolutePathForVac(GeoMaps::VAC vac)
+{
+    return absolutePathForVac(vac.name);
+}
+
+QString GeoMaps::VACLibrary::absolutePathForVac(const QString& name)
+{
+    return m_vacDirectory + "/" + name + ".webp";
 }

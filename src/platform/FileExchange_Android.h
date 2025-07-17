@@ -30,6 +30,8 @@ namespace Platform {
 class FileExchange : public Platform::FileExchange_Abstract
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Standard constructor
@@ -37,6 +39,15 @@ public:
      * @param parent Standard QObject parent pointer
     */
     explicit FileExchange(QObject *parent = nullptr);
+
+    // No default constructor, important for QML singleton
+    explicit FileExchange() = delete;
+
+    // factory function for QML singleton
+    static Platform::FileExchange* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::fileExchange();
+    }
 
     ~FileExchange() override = default;
 

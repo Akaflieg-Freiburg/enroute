@@ -1,0 +1,3 @@
+### Fixed
+- Fix problem where TCP data connections were not restored on restart of the
+  app.

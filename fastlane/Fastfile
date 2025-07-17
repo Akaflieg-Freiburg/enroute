@@ -175,7 +175,6 @@ platform :linux do
   end
 end
 
-
 platform :mac do
   desc "Build macOS Bundle"
   lane :build do
@@ -202,4 +201,43 @@ platform :mac do
     sh('cmake --build ../build/build-macos-release --target install')
   end
 
+end
+
+desc "Create GitHub Release with SSH authentication"
+lane :createGitHubRelease do
+  # Extract version info from CHANGELOG.md
+  matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
+  latest_version, changelog_text = matches.first
+  
+  # Ensure we have a valid version
+  if latest_version.nil? || latest_version.empty?
+    UI.user_error!("Could not find version information in CHANGELOG.md")
+  end
+  
+  # Get the current git tag
+  current_tag = "v#{latest_version}"
+  
+  # Create the release using the GitHub CLI (gh)
+  # First check if gh CLI is installed
+  unless system("which gh > /dev/null 2>&1")
+    UI.user_error!("GitHub CLI not found. Please install it: https://cli.github.com/")
+  end
+  
+  # Create a notes file for the release
+  notes_file = "/tmp/release_notes_#{latest_version}.md"
+  File.write(notes_file, changelog_text.strip)
+  
+  # Create the release using GitHub CLI (uses SSH authentication)
+  UI.message("Creating GitHub release for version #{latest_version}")
+  sh("gh release create #{current_tag} --title 'Version #{latest_version}' --notes-file #{notes_file}")
+  
+  # Add assets to the release
+  # UI.message("Uploading Android APK and AAB files")
+  # sh("gh release upload #{current_tag} ../build/enroute.apk ../build/enroute.aab")
+  
+  # Clean up
+  FileUtils.rm(notes_file)
+  
+  UI.success("Successfully created GitHub release for #{latest_version}")
+  UI.success("Release URL: https://github.com/YOUR_USERNAME/YOUR_REPO/releases/tag/#{current_tag}")
 end

@@ -1,0 +1,2 @@
+### Added
+- Retrieve traffic data from the Open Glider Network (#512).

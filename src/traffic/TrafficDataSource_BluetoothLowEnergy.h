@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2024 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,6 +23,7 @@
 #include <QBluetoothDeviceInfo>
 #include <QBluetoothLocalDevice>
 #include <QBluetoothServiceInfo>
+#include <QBluetoothPermission>
 #include <QBluetoothSocket>
 #include <QLowEnergyController>
 
@@ -33,10 +34,39 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace Traffic {
 
-/*! \brief Traffic receiver: Bluetooth LE connection to FLARM/NMEA source
+/*! \brief Traffic receiver: Bluetooth LE connection to a FLARM/NMEA source via
+ * the "Nordic UART Service"
  *
- *  This class connects to a traffic receiver via a Bluetooth LE serial port
- *  service.
+ * This class connects to a traffic receiver via Bluetooth LE via the "Nordic
+ * UART Service" (NUS). This is a custom service developed by Nordic
+ * Semiconductor for Bluetooth Low Energy (BLE) devices. It acts as a bridge
+ * between BLE and UART (Universal Asynchronous Receiver/Transmitter) interfaces
+ * and allows for bidirectional communication between devices using a simple
+ * serial protocol over BLE.
+ *
+ * Details are described here:
+ * https://docs.ruuvi.com/communication/bluetooth-connection/nordic-uart-service-nus
+ *
+ * At the time of writing (early Mar 25), the implementation is not well-tested.
+ * The connection procedure is rather complicated.
+ *
+ * - Someone calls connectToTrafficReceiver(). The implementation calls
+ *   m_control->connectToDevice().
+ *
+ * - Once a connection is established, signal/slots ensure that
+ *   m_control->discoverServices() is called.
+ *
+ * - Once all services are found, the slot onDiscoveryFinished() is called. The
+ *   implementation checks if the device offers the "Nordic UART Service" (NUS).
+ *   If so, we need to find the service details. To start the search, the
+ *   implementation calls m_NUSService->discoverDetails().
+ *
+ * - Once the service details are found, the slot onServiceStateChanged() is
+ *   called with argument QLowEnergyService::RemoteServiceDiscovered. The
+ *   implementation checks if the service offers the "TX" characteristic. If so,
+ *   it switched notifications on.
+ *
+ * - Data will now flow in via the slot onCharacteristcChanged()
  */
 
 class TrafficDataSource_BluetoothLowEnergy : public TrafficDataSource_AbstractSocket {
@@ -47,10 +77,9 @@ public:
      *
      * @param isCanonical Intializer for property canonical
      *
-     *  @param info Description of a Bluetooth LE device offering
-     *  serial port service.
+     * @param info Description of a Bluetooth LE device
      *
-     *  @param parent The standard QObject parent pointer
+     * @param parent The standard QObject parent pointer
      */
     TrafficDataSource_BluetoothLowEnergy(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent);
 
@@ -77,6 +106,21 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     * @returns Property connectionInfo
+     */
+    [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const override
+    {
+        return Traffic::ConnectionInfo(m_info, canonical());
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property dataFormat
+     */
+    [[nodiscard]] QString dataFormat() const override { return u"FLARM/NMEA"_s; }
+
+    /*! \brief Getter function for the property with the same name
+     *
      *  This method implements the pure virtual method declared by its
      *  superclass.
      *
@@ -92,7 +136,6 @@ public:
      *  @returns Property sourceName
      */
     [[nodiscard]] QString sourceName() const override;
-
 
     /*! \brief Getter function for the property with the same name
      *
@@ -120,36 +163,32 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-    // Handle BT socket errors
+    // Read and process NMEA sentences
+    void onCharacteristicChanged(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue);
+
+    // Handle errors
     void onErrorOccurred(QLowEnergyController::Error error);
 
-    // Handle BT socket state changes
+    void onServiceDiscoveryFinished();
+
+    void onServiceStateChanged(QLowEnergyService::ServiceState newState);
+
     void onStateChanged(QLowEnergyController::ControllerState state);
-
-    // Read and process received NMEA sentences
-    void onConnected();
-
-
-    // Read and process received NMEA sentences
-    void onReadyRead();
-
-    void onServiceDiscovered(const QBluetoothUuid &newService);
-
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_BluetoothLowEnergy)
 
+    // Permissions
+    QBluetoothPermission m_bluetoothPermission;
+
     // Copied from the constructor
     QBluetoothDeviceInfo m_info;
 
-    // BT socket used for reading data
-    QBluetoothSocket socket {QBluetoothServiceInfo::RfcommProtocol};
-
-    // Text stream used for reading NMEA sentences
-    QTextStream m_textStream {&socket};
-
     QLowEnergyController* m_control {nullptr};
+    QLowEnergyService* m_nusService {nullptr};
 
+    QBluetoothUuid const nusServiceUuid {"6e400001-b5a3-f393-e0a9-e50e24dcca9e"};
+    QBluetoothUuid const txCharacteristicID {"6e400003-b5a3-f393-e0a9-e50e24dcca9e"};
 };
 
 } // namespace Traffic

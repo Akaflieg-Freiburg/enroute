@@ -211,6 +211,9 @@ auto main(int argc, char *argv[]) -> int
 #endif
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
     engine->load(u"qrc:/qml/main.qml"_s);
+#if defined(Q_OS_ANDROID)
+    QNativeInterface::QAndroidApplication::hideSplashScreen(1);
+#endif
 
     if (parser.isSet(googlePlayScreenshotOption))
     {

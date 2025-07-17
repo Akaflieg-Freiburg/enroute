@@ -161,14 +161,18 @@ $(function() {
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    QBluetoothDeviceInfo m_info;</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    QLowEnergyController* m_control {<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    QLowEnergyService* m_nusService {<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    QBluetoothUuid <span class="keyword">const</span> nusServiceUuid {<span class="stringliteral">&quot;6e400001-b5a3-f393-e0a9-e50e24dcca9e&quot;</span>};</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    QBluetoothUuid <span class="keyword">const</span> txCharacteristicID {<span class="stringliteral">&quot;6e400003-b5a3-f393-e0a9-e50e24dcca9e&quot;</span>};</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>};</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    QLowEnergyService* m_nordicUARTService {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    QBluetoothUuid <span class="keyword">const</span> nordicUARTServiceUuid {<span class="stringliteral">&quot;6e400001-b5a3-f393-e0a9-e50e24dcca9e&quot;</span>};</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    QBluetoothUuid <span class="keyword">const</span> nordicUARTTxCharacteristicID {<span class="stringliteral">&quot;6e400003-b5a3-f393-e0a9-e50e24dcca9e&quot;</span>};</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    QLowEnergyService* m_simpleUARTService {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    QBluetoothUuid <span class="keyword">const</span> simpleUARTServiceUuid {<span class="stringliteral">&quot;0000ffe0-0000-1000-8000-00805f9b34fb&quot;</span>};</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    QBluetoothUuid <span class="keyword">const</span> simpleUARTCharacteristicID {<span class="stringliteral">&quot;0000ffe1-0000-1000-8000-00805f9b34fb&quot;</span>};</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>};</div>
 </div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>} <span class="comment">// namespace Traffic</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>} <span class="comment">// namespace Traffic</span></div>
 <div class="ttc" id="aclassTraffic_1_1ConnectionInfo_html"><div class="ttname"><a href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a></div><div class="ttdoc">Connection to a traffic data receiver.</div><div class="ttdef"><b>Definition</b> <a href="ConnectionInfo_8h_source.html#l00041">ConnectionInfo.h:41</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__AbstractSocket_html_a4a445b729b2ac390df0d3dc703f055d0"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__AbstractSocket.html#a4a445b729b2ac390df0d3dc703f055d0">Traffic::TrafficDataSource_AbstractSocket::TrafficDataSource_AbstractSocket</a></div><div class="ttdeci">TrafficDataSource_AbstractSocket(bool isCanonical, QObject *parent)</div><div class="ttdoc">Default constructor.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Abstract_html_a5d7761678f5f74ba2c2d79e30ed61a5e"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5d7761678f5f74ba2c2d79e30ed61a5e">Traffic::TrafficDataSource_Abstract::canonical</a></div><div class="ttdeci">bool canonical</div><div class="ttdoc">Canonicity.</div><div class="ttdef"><b>Definition</b> <a href="TrafficDataSource__Abstract_8h_source.html#l00068">TrafficDataSource_Abstract.h:68</a></div></div>

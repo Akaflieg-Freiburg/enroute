@@ -311,9 +311,11 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                        "Download it on the App Store.")
                   + u"</p>"_s;
 #if !defined(Q_OS_IOS)
+/*
         result += u"<p>"_s
                   + tr("Support for Bluetooth Low Energy has been extended, so Enroute Flight Navigation is now able to connect to a broader range traffic data receivers.")
                   + u"</p>"_s;
+*/
 #endif
         result += u"<p>"_s
                   + tr("We need help with promotional graphics for the app stores and with explainer videos. "

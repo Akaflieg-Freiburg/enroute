@@ -527,9 +527,7 @@ CenteringDialog {
                             overwriteDialog.open()
                         }
                         else {
-                            Navigator.flightRoute.clear()
-                            Navigator.flightRoute.append(PositionProvider.lastValidCoordinate)
-                            Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
+                            Navigator.flightRoute.directTo(waypointDescriptionDialog.waypoint)
                             Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
                             addMenu.close()
                             waypointDescriptionDialog.close()
@@ -738,8 +736,7 @@ CenteringDialog {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            Navigator.flightRoute.clear()
-            Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
+            Navigator.flightRoute.directTo(waypointDescriptionDialog.waypoint)
             overwriteDialog.close()
             waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))

@@ -243,6 +243,12 @@ namespace Navigation
          */
         [[nodiscard]] Q_INVOKABLE qsizetype currentLeg(const Positioning::PositionInfo& pInfo) const;
 
+        /*! \brief Modifies the current route, to make 'target' the next waypoint
+         *
+         *  @param target Waypoint to be inserted
+         */
+        Q_INVOKABLE void directTo(const GeoMaps::Waypoint& target);
+
         /*! \brief Inserts a waypoint into the route
          *
          *  Inserts the waypoint into the route, at the place that minimizes the

@@ -272,6 +272,22 @@ qsizetype Navigation::FlightRoute::currentLeg(const Positioning::PositionInfo& p
     return -1;
 }
 
+void Navigation::FlightRoute::directTo(const GeoMaps::Waypoint& target)
+{
+#warning not implemented.
+    qWarning() << "NOT IMPLEMENTED";
+    qWarning() << "Direct to" << target.name();
+
+    if (m_waypoints.value().size() < 2)
+    {
+        m_waypoints = {target};
+#warning This should be automatic
+        updateLegs();
+        emit waypointsChanged();
+        return;
+    }
+}
+
 void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& waypoint)
 {
     if (!canInsert(waypoint))

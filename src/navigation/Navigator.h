@@ -216,7 +216,7 @@ private:
     Aircraft m_aircraft {};
 
     QPointer<FlightRoute> m_flightRoute {nullptr};
-    const QString m_flightRouteFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson"};
+    const QString m_flightRouteFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/flight route.geojson"_s};
 
     Weather::Wind m_wind {};
 

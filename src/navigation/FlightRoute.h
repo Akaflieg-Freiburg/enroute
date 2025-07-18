@@ -246,8 +246,10 @@ namespace Navigation
         /*! \brief Modifies the current route, to make 'target' the next waypoint
          *
          *  @param target Waypoint to be inserted
+         *
+         *  @param pInfo Current position of the own aircraft
          */
-        Q_INVOKABLE void directTo(const GeoMaps::Waypoint& target);
+        Q_INVOKABLE void directTo(const GeoMaps::Waypoint& target, const Positioning::PositionInfo& pInfo = {});
 
         /*! \brief Inserts a waypoint into the route
          *

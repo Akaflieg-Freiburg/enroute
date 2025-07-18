@@ -272,19 +272,36 @@ qsizetype Navigation::FlightRoute::currentLeg(const Positioning::PositionInfo& p
     return -1;
 }
 
-void Navigation::FlightRoute::directTo(const GeoMaps::Waypoint& target)
+void Navigation::FlightRoute::directTo(const GeoMaps::Waypoint& target, const Positioning::PositionInfo& pInfo)
 {
 #warning not implemented.
     qWarning() << "NOT IMPLEMENTED";
     qWarning() << "Direct to" << target.name();
 
-    if (m_waypoints.value().size() < 2)
+    // If there is not position info, or if there is no proper route set up, then simply
+    // set a route with one waypoint.
+    if (!pInfo.isValid() || (m_waypoints.value().size() < 2))
     {
         m_waypoints = {target};
 #warning This should be automatic
         updateLegs();
         emit waypointsChanged();
         return;
+    }
+
+
+    auto curLG = currentLeg(pInfo);
+    // Check if the waypoint appears in the list of future waypoints. If so, then simply delete all waypoints up to that one.
+    for(auto curWP = curLG+1; curWP < m_waypoints.value().size(); curWP++)
+    {
+        if (m_waypoints.value()[curWP].isNear(target))
+        {
+            m_waypoints = m_waypoints.value().sliced(curWP);
+#warning This should be automatic
+            updateLegs();
+            emit waypointsChanged();
+            return;
+        }
     }
 }
 
@@ -324,6 +341,7 @@ void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& waypoint)
 
     newWaypoints.insert(shortestIndex+1, waypoint);
     m_waypoints = newWaypoints;
+#warning This should be automatic
     updateLegs();
     emit waypointsChanged();
 }

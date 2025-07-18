@@ -28,6 +28,7 @@
 #include "navigation/FlightRoute.h"
 #include "navigation/RemainingRouteInfo.h"
 
+using namespace Qt::Literals::StringLiterals;
 
 namespace Navigation {
 

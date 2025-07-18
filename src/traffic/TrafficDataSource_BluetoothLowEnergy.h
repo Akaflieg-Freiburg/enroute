@@ -185,10 +185,14 @@ private:
     QBluetoothDeviceInfo m_info;
 
     QLowEnergyController* m_control {nullptr};
-    QLowEnergyService* m_nusService {nullptr};
 
-    QBluetoothUuid const nusServiceUuid {"6e400001-b5a3-f393-e0a9-e50e24dcca9e"};
-    QBluetoothUuid const txCharacteristicID {"6e400003-b5a3-f393-e0a9-e50e24dcca9e"};
+    QLowEnergyService* m_nordicUARTService {nullptr};
+    QBluetoothUuid const nordicUARTServiceUuid {"6e400001-b5a3-f393-e0a9-e50e24dcca9e"};
+    QBluetoothUuid const nordicUARTTxCharacteristicID {"6e400003-b5a3-f393-e0a9-e50e24dcca9e"};
+
+    QLowEnergyService* m_simpleUARTService {nullptr};
+    QBluetoothUuid const simpleUARTServiceUuid {"0000ffe0-0000-1000-8000-00805f9b34fb"};
+    QBluetoothUuid const simpleUARTCharacteristicID {"0000ffe1-0000-1000-8000-00805f9b34fb"};
 };
 
 } // namespace Traffic

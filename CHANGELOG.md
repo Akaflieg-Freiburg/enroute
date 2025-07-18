@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.34.2] - 2025-07-18
+
+### Fixed
+- Fixed infrequent freeze on startup in Android.
+
+### Added
+- Support more Bluetooth Low Energy UART characteristics. (#529)
+
+
 ## [2.34.0] - 2025-07-12
 
 ### Added

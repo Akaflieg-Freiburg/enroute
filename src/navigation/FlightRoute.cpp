@@ -289,14 +289,29 @@ void Navigation::FlightRoute::directTo(const GeoMaps::Waypoint& target, const Po
         return;
     }
 
-
+    //
+    // Delete all waypoints up to the current position. After this block, the list
+    // myWPs contains all future waypoints.
+    //
     auto curLG = currentLeg(pInfo);
-    // Check if the waypoint appears in the list of future waypoints. If so, then simply delete all waypoints up to that one.
-    for(auto curWP = curLG+1; curWP < m_waypoints.value().size(); curWP++)
+    // Paranoid safety check: ensure curLG+1 is a valid index of a waypoint
+    if (curLG+1 > m_waypoints.value().size()-1)
     {
-        if (m_waypoints.value()[curWP].isNear(target))
+        return;
+    }
+    auto myWPs = m_waypoints.value().sliced(curLG+1);
+
+    //
+    // If the target position is in the list of future waypoints, things are easy: To get the new route, delete all waypoints up to target
+    // position and prepend the current position.
+    //
+    for(auto i = 0; i < myWPs.size(); i++)
+    {
+        if (myWPs[i].isNear(target))
         {
-            m_waypoints = m_waypoints.value().sliced(curWP);
+            myWPs = myWPs.sliced(i);
+            myWPs.prepend(pInfo.coordinate());
+            m_waypoints = myWPs;
 #warning This should be automatic
             updateLegs();
             emit waypointsChanged();

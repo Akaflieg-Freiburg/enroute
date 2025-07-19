@@ -82,81 +82,80 @@ $(function() {
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">namespace </span>FileFormats</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="foldopen" id="foldopen00041" data-start="{" data-end="};">
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html">   41</a></span>  <span class="keyword">class </span><a class="code hl_function" href="classFileFormats_1_1MBTILES.html#ac2846c7e25bb5ebeaf7123f21ee5fc8f">MBTILES</a> : <span class="keyword">public</span> DataFileAbstract</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00046" data-start="{" data-end="};">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02">   46</a></span>    <span class="keyword">enum</span> <a class="code hl_enumeration" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02">Format</a> : quint8</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad2f0bc141a86b53ce6b78124c7472209">   49</a></span>      <a class="code hl_enumvalue" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad2f0bc141a86b53ce6b78124c7472209">Unknown</a>,</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02a6fa052506e219382c7338d3369435956">   52</a></span>      <a class="code hl_enumvalue" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02a6fa052506e219382c7338d3369435956">Vector</a>,</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad6f11ea40d58299d8064f8cebb244fbd">   55</a></span>      <a class="code hl_enumvalue" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad6f11ea40d58299d8064f8cebb244fbd">Raster</a>,</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    };</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="};">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html">   40</a></span>  <span class="keyword">class </span><a class="code hl_function" href="classFileFormats_1_1MBTILES.html#ac2846c7e25bb5ebeaf7123f21ee5fc8f">MBTILES</a> : <span class="keyword">public</span> DataFileAbstract</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="};">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02">   45</a></span>    <span class="keyword">enum</span> <a class="code hl_enumeration" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02">Format</a> : quint8</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad2f0bc141a86b53ce6b78124c7472209">   48</a></span>      <a class="code hl_enumvalue" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad2f0bc141a86b53ce6b78124c7472209">Unknown</a>,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02a6fa052506e219382c7338d3369435956">   51</a></span>      <a class="code hl_enumvalue" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02a6fa052506e219382c7338d3369435956">Vector</a>,</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad6f11ea40d58299d8064f8cebb244fbd">   54</a></span>      <a class="code hl_enumvalue" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad6f11ea40d58299d8064f8cebb244fbd">Raster</a>,</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    };</div>
 </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#ac2846c7e25bb5ebeaf7123f21ee5fc8f">   63</a></span>    <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#ac2846c7e25bb5ebeaf7123f21ee5fc8f">MBTILES</a>();</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a8c0b46a03ae83e21bdb79b4ef5ef1482">   72</a></span>    <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a8c0b46a03ae83e21bdb79b4ef5ef1482">MBTILES</a>(<span class="keyword">const</span> QString&amp; <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a615a6c5e0778f75f8f767ee7452c55b2">fileName</a>);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a8081f007a0d4abf587b81e1271d14d41">   75</a></span>    <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a8081f007a0d4abf587b81e1271d14d41">~MBTILES</a>();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a1a55a167ae280905a17d7e8ab9e57723">   82</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a1a55a167ae280905a17d7e8ab9e57723">attribution</a>();</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a55fb621a90c6c11b3c748799166fd4ee">   88</a></span>    [[nodiscard]] <a class="code hl_enumeration" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02">FileFormats::MBTILES::Format</a> <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a55fb621a90c6c11b3c748799166fd4ee">format</a>();</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a31738671f2f8e7ed75c0b7418d2cc0a1">   95</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a31738671f2f8e7ed75c0b7418d2cc0a1">info</a>();</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a019617052b4afde35f3dd8671e42b57f">  108</a></span>    [[nodiscard]] QByteArray <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a019617052b4afde35f3dd8671e42b57f">tile</a>(<span class="keywordtype">int</span> zoom, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span></div>
-<div class="foldopen" id="foldopen00117" data-start="{" data-end="}">
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a983ba48f664028baa90ee72c661d33ee">  117</a></span>    [[nodiscard]] QMap&lt;QString, QString&gt; <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a983ba48f664028baa90ee72c661d33ee">metaData</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keywordflow">return</span> m_metadata;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#ac2846c7e25bb5ebeaf7123f21ee5fc8f">   62</a></span>    <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#ac2846c7e25bb5ebeaf7123f21ee5fc8f">MBTILES</a>();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a8c0b46a03ae83e21bdb79b4ef5ef1482">   71</a></span>    <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a8c0b46a03ae83e21bdb79b4ef5ef1482">MBTILES</a>(<span class="keyword">const</span> QString&amp; <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a615a6c5e0778f75f8f767ee7452c55b2">fileName</a>);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a8081f007a0d4abf587b81e1271d14d41">   74</a></span>    <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a8081f007a0d4abf587b81e1271d14d41">~MBTILES</a>();</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a1a55a167ae280905a17d7e8ab9e57723">   81</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a1a55a167ae280905a17d7e8ab9e57723">attribution</a>();</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a55fb621a90c6c11b3c748799166fd4ee">   87</a></span>    [[nodiscard]] <a class="code hl_enumeration" href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02">FileFormats::MBTILES::Format</a> <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a55fb621a90c6c11b3c748799166fd4ee">format</a>();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a31738671f2f8e7ed75c0b7418d2cc0a1">   94</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a31738671f2f8e7ed75c0b7418d2cc0a1">info</a>();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a019617052b4afde35f3dd8671e42b57f">  107</a></span>    [[nodiscard]] QByteArray <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a019617052b4afde35f3dd8671e42b57f">tile</a>(<span class="keywordtype">int</span> zoom, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span></div>
+<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a983ba48f664028baa90ee72c661d33ee">  116</a></span>    [[nodiscard]] QMap&lt;QString, QString&gt; <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a983ba48f664028baa90ee72c661d33ee">metaData</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <span class="keywordflow">return</span> m_metadata;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    }</div>
 </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span></div>
-<div class="foldopen" id="foldopen00126" data-start="{" data-end="}">
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a615a6c5e0778f75f8f767ee7452c55b2">  126</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a615a6c5e0778f75f8f767ee7452c55b2">fileName</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      <span class="keywordflow">return</span> m_fileName;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span></div>
+<div class="foldopen" id="foldopen00125" data-start="{" data-end="}">
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="classFileFormats_1_1MBTILES.html#a615a6c5e0778f75f8f767ee7452c55b2">  125</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classFileFormats_1_1MBTILES.html#a615a6c5e0778f75f8f767ee7452c55b2">fileName</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>      <span class="keywordflow">return</span> m_fileName;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    }</div>
 </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_class" href="classFileFormats_1_1MBTILES.html">MBTILES</a>)</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="comment">// Name of the MBTILES file</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    QString m_fileName;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    QSharedPointer&lt;QFile&gt; m_file;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="comment">// Name of the data base connection. This name is unique to each instance of</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="comment">// this class, and should therefore not be copied.</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    QString m_databaseConnectionName;</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    QMap&lt;QString, QString&gt; m_metadata;</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  };</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_class" href="classFileFormats_1_1MBTILES.html">MBTILES</a>)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="comment">// Name of the MBTILES file</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    QString m_fileName;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    QSharedPointer&lt;QFile&gt; m_file;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="comment">// Name of the data base connection. This name is unique to each instance of</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="comment">// this class, and should therefore not be copied.</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    QString m_databaseConnectionName;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    QMap&lt;QString, QString&gt; m_metadata;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  };</div>
 </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>} <span class="comment">// namespace FileFormats</span></div>
-<div class="ttc" id="aclassFileFormats_1_1MBTILES_html"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html">FileFormats::MBTILES</a></div><div class="ttdoc">Utility class for databases in MBTILES format.</div><div class="ttdef"><b>Definition</b> <a href="#l00041">MBTILES.h:42</a></div></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>} <span class="comment">// namespace FileFormats</span></div>
+<div class="ttc" id="aclassFileFormats_1_1MBTILES_html"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html">FileFormats::MBTILES</a></div><div class="ttdoc">Utility class for databases in MBTILES format.</div><div class="ttdef"><b>Definition</b> <a href="#l00040">MBTILES.h:41</a></div></div>
 <div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a019617052b4afde35f3dd8671e42b57f"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a019617052b4afde35f3dd8671e42b57f">FileFormats::MBTILES::tile</a></div><div class="ttdeci">QByteArray tile(int zoom, int x, int y)</div><div class="ttdoc">Retrieve tile from an MBTILES file.</div></div>
 <div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a1a55a167ae280905a17d7e8ab9e57723"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a1a55a167ae280905a17d7e8ab9e57723">FileFormats::MBTILES::attribution</a></div><div class="ttdeci">QString attribution()</div><div class="ttdoc">Attribution of MBTILES file.</div></div>
 <div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a31738671f2f8e7ed75c0b7418d2cc0a1"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a31738671f2f8e7ed75c0b7418d2cc0a1">FileFormats::MBTILES::info</a></div><div class="ttdeci">QString info()</div><div class="ttdoc">Information about an MBTILES file.</div></div>
 <div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a55fb621a90c6c11b3c748799166fd4ee"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a55fb621a90c6c11b3c748799166fd4ee">FileFormats::MBTILES::format</a></div><div class="ttdeci">FileFormats::MBTILES::Format format()</div><div class="ttdoc">Determine type of data contained in an MBTILES file.</div></div>
-<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a5954267f8a23d295594d0e76f0dd6c02"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02">FileFormats::MBTILES::Format</a></div><div class="ttdeci">Format</div><div class="ttdoc">Format of data tiles.</div><div class="ttdef"><b>Definition</b> <a href="#l00046">MBTILES.h:47</a></div></div>
-<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a5954267f8a23d295594d0e76f0dd6c02a6fa052506e219382c7338d3369435956"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02a6fa052506e219382c7338d3369435956">FileFormats::MBTILES::Vector</a></div><div class="ttdeci">@ Vector</div><div class="ttdoc">Vector data in PBF format.</div><div class="ttdef"><b>Definition</b> <a href="#l00052">MBTILES.h:52</a></div></div>
-<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a5954267f8a23d295594d0e76f0dd6c02ad2f0bc141a86b53ce6b78124c7472209"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad2f0bc141a86b53ce6b78124c7472209">FileFormats::MBTILES::Unknown</a></div><div class="ttdeci">@ Unknown</div><div class="ttdoc">Unknown format.</div><div class="ttdef"><b>Definition</b> <a href="#l00049">MBTILES.h:49</a></div></div>
-<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a5954267f8a23d295594d0e76f0dd6c02ad6f11ea40d58299d8064f8cebb244fbd"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad6f11ea40d58299d8064f8cebb244fbd">FileFormats::MBTILES::Raster</a></div><div class="ttdeci">@ Raster</div><div class="ttdoc">Raster data in JPG, PNG or WEBP format.</div><div class="ttdef"><b>Definition</b> <a href="#l00055">MBTILES.h:55</a></div></div>
-<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a615a6c5e0778f75f8f767ee7452c55b2"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a615a6c5e0778f75f8f767ee7452c55b2">FileFormats::MBTILES::fileName</a></div><div class="ttdeci">QString fileName() const</div><div class="ttdoc">Retrieve name of the MBTILES file.</div><div class="ttdef"><b>Definition</b> <a href="#l00126">MBTILES.h:126</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a5954267f8a23d295594d0e76f0dd6c02"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02">FileFormats::MBTILES::Format</a></div><div class="ttdeci">Format</div><div class="ttdoc">Format of data tiles.</div><div class="ttdef"><b>Definition</b> <a href="#l00045">MBTILES.h:46</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a5954267f8a23d295594d0e76f0dd6c02a6fa052506e219382c7338d3369435956"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02a6fa052506e219382c7338d3369435956">FileFormats::MBTILES::Vector</a></div><div class="ttdeci">@ Vector</div><div class="ttdoc">Vector data in PBF format.</div><div class="ttdef"><b>Definition</b> <a href="#l00051">MBTILES.h:51</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a5954267f8a23d295594d0e76f0dd6c02ad2f0bc141a86b53ce6b78124c7472209"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad2f0bc141a86b53ce6b78124c7472209">FileFormats::MBTILES::Unknown</a></div><div class="ttdeci">@ Unknown</div><div class="ttdoc">Unknown format.</div><div class="ttdef"><b>Definition</b> <a href="#l00048">MBTILES.h:48</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a5954267f8a23d295594d0e76f0dd6c02ad6f11ea40d58299d8064f8cebb244fbd"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a5954267f8a23d295594d0e76f0dd6c02ad6f11ea40d58299d8064f8cebb244fbd">FileFormats::MBTILES::Raster</a></div><div class="ttdeci">@ Raster</div><div class="ttdoc">Raster data in JPG, PNG or WEBP format.</div><div class="ttdef"><b>Definition</b> <a href="#l00054">MBTILES.h:54</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a615a6c5e0778f75f8f767ee7452c55b2"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a615a6c5e0778f75f8f767ee7452c55b2">FileFormats::MBTILES::fileName</a></div><div class="ttdeci">QString fileName() const</div><div class="ttdoc">Retrieve name of the MBTILES file.</div><div class="ttdef"><b>Definition</b> <a href="#l00125">MBTILES.h:125</a></div></div>
 <div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a8081f007a0d4abf587b81e1271d14d41"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a8081f007a0d4abf587b81e1271d14d41">FileFormats::MBTILES::~MBTILES</a></div><div class="ttdeci">~MBTILES()</div><div class="ttdoc">Standard destructor.</div></div>
 <div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a8c0b46a03ae83e21bdb79b4ef5ef1482"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a8c0b46a03ae83e21bdb79b4ef5ef1482">FileFormats::MBTILES::MBTILES</a></div><div class="ttdeci">MBTILES(const QString &amp;fileName)</div><div class="ttdoc">Standard constructor.</div></div>
-<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a983ba48f664028baa90ee72c661d33ee"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a983ba48f664028baa90ee72c661d33ee">FileFormats::MBTILES::metaData</a></div><div class="ttdeci">QMap&lt; QString, QString &gt; metaData() const</div><div class="ttdoc">Retrieve metadata of the MBTILES file.</div><div class="ttdef"><b>Definition</b> <a href="#l00117">MBTILES.h:117</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1MBTILES_html_a983ba48f664028baa90ee72c661d33ee"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#a983ba48f664028baa90ee72c661d33ee">FileFormats::MBTILES::metaData</a></div><div class="ttdeci">QMap&lt; QString, QString &gt; metaData() const</div><div class="ttdoc">Retrieve metadata of the MBTILES file.</div><div class="ttdef"><b>Definition</b> <a href="#l00116">MBTILES.h:116</a></div></div>
 <div class="ttc" id="aclassFileFormats_1_1MBTILES_html_ac2846c7e25bb5ebeaf7123f21ee5fc8f"><div class="ttname"><a href="classFileFormats_1_1MBTILES.html#ac2846c7e25bb5ebeaf7123f21ee5fc8f">FileFormats::MBTILES::MBTILES</a></div><div class="ttdeci">MBTILES()</div><div class="ttdoc">Standard constructor.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

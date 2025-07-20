@@ -185,7 +185,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
                     flightMap->setProperty("zoomLevel", 11);
-                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+                    flightMap->setProperty("mapBearingPolicy", 1);
                     delay(8s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
@@ -199,7 +199,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     trafficSimulator->setTT( Units::Angle::fromDEG(158) );
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
                     flightMap->setProperty("zoomLevel", 12);
-                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+                    flightMap->setProperty("mapBearingPolicy", 1);
                     delay(10s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
@@ -215,7 +215,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     trafficSimulator->setGS( Units::Speed::fromKN(92) );
                     flightMap->setProperty("zoomLevel", 13);
                     flightMap->setProperty("followGPS", true);
-                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+                    flightMap->setProperty("mapBearingPolicy", 1);
                     QGeoCoordinate trafficPosition(48.0103, 7.8052, 540);
                     QGeoPositionInfo trafficInfo;
                     trafficInfo.setCoordinate(trafficPosition);

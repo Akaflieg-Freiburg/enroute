@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 import Qt5Compat.GraphicalEffects
+import QtCore
 import QtLocation
 import QtPositioning
 import QtQml
@@ -33,6 +34,21 @@ import "../dialogs"
 
 Item {
     id: page
+
+    enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
+    property int mapBearingPolicy: MFM.NUp
+    property int mapBearingRevertPolicy: MFM.NUp
+    onMapBearingPolicyChanged: {
+        if (mapBearingPolicy != MFM.UserDefinedBearingUp)
+        {
+            mapBearingRevertPolicy = mapBearingPolicy
+        }
+    }
+    Settings {
+        category: "MovingMap"
+        property alias mapBearingPolicy: page.mapBearingPolicy
+        property alias mapBearingRevertPolicy: page.mapBearingRevertPolicy
+    }
 
     Plugin {
         id: mapPlugin
@@ -88,7 +104,7 @@ Item {
 
                 if (flightMap.bearing === 0.0)
                 {
-                    GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
+                    page.mapBearingPolicy = MFM.NUp
                 }
             }
 
@@ -109,7 +125,7 @@ Item {
             onRotationChanged: (delta) => {
                                    pinch.rawBearing -= delta
 
-                                   if (GlobalSettings.mapBearingPolicy === GlobalSettings.UserDefinedBearingUp)
+                                   if (page.mapBearingPolicy === MFM.UserDefinedBearingUp)
                                    {
                                        // snap to 0° if we're close enough
                                        bearingBehavior.enabled = false
@@ -121,7 +137,7 @@ Item {
 
                                    if (Math.abs(pinch.rawBearing-pinch.startBearing) > 20)
                                    {
-                                       GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+                                       page.mapBearingPolicy = MFM.UserDefinedBearingUp
                                    }
                                }
         }
@@ -175,9 +191,9 @@ Item {
                 if (active)
                 {
                     flightMap.followGPS = false
-                    if (GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp)
+                    if (page.mapBearingPolicy === MFM.TTUp)
                     {
-                        GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+                        page.mapBearingPolicy = MFM.UserDefinedBearingUp
                     }
                 }
             }
@@ -200,14 +216,15 @@ Item {
         // PROPERTY "bearing"
         //
 
+
         // Initially, set the bearing to the last saved value
         bearing: 0
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Binding on bearing {
             restoreMode: Binding.RestoreNone
-            when: GlobalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp ? PositionProvider.lastValidTT.toDEG() : 0
+            when: page.mapBearingPolicy !== MFM.UserDefinedBearingUp
+            value: page.mapBearingPolicy === MFM.TTUp ? PositionProvider.lastValidTT.toDEG() : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -797,13 +814,19 @@ Item {
                 icon.source: "/icons/NorthArrow.svg"
 
                 onClicked: {
-                    if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
-                        GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
-                        toast.doToast(qsTr("Map Mode: Track Up"))
-                    } else {
-                        GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
+                    if (page.mapBearingPolicy === MFM.NUp) {
+                        page.mapBearingPolicy = MFM.TTUp
+                    }  else if (page.mapBearingPolicy === MFM.TTUp) {
+                        page.mapBearingPolicy = MFM.NUp
+                    } else
+                        page.mapBearingPolicy = page.mapBearingRevertPolicy
+
+                    if (page.mapBearingPolicy === MFM.NUp) {
                         toast.doToast(qsTr("Map Mode: North Up"))
-                    }
+                    } else if (page.mapBearingPolicy === MFM.TTUp) {
+                        toast.doToast(qsTr("Map Mode: Track Up"))
+                    } else
+                        toast.doToast(qsTr("Map Mode: User Defined Direction Up"))
                 }
             }
 

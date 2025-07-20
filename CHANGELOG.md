@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.34.3] - 2025-07-xx
+
+### Changed
+- Change behavior of "Direct To" in the waypoint description dialog to make it
+  more useful. (#325, #449)
+
+
 ## [2.34.2] - 2025-07-18
 
 ### Fixed

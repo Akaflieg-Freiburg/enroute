@@ -274,13 +274,16 @@ qsizetype Navigation::FlightRoute::currentLeg(const Positioning::PositionInfo& p
 
 void Navigation::FlightRoute::directTo(const GeoMaps::Waypoint& target, const Positioning::PositionInfo& pInfo)
 {
-#warning not implemented.
-    qWarning() << "NOT IMPLEMENTED";
-    qWarning() << "Direct to" << target.name();
+    // If there is no valid position info, then simply return;
+    if (!pInfo.isValid())
+    {
+        qWarning() << "Navigation::FlightRoute::directTo: No valid position info";
+        return;
+    }
 
-    // If there is not position info, or if there is no proper route set up, then simply
+    // If there is no position info, or if there is no proper route set up, then simply
     // set a route with one waypoint.
-    if (!pInfo.isValid() || (m_waypoints.value().size() < 2))
+    if (m_waypoints.value().size() < 2)
     {
         m_waypoints = {target};
 #warning This should be automatic
@@ -289,35 +292,55 @@ void Navigation::FlightRoute::directTo(const GeoMaps::Waypoint& target, const Po
         return;
     }
 
-    //
-    // Delete all waypoints up to the current position. After this block, the list
-    // myWPs contains all future waypoints.
-    //
     auto curLG = currentLeg(pInfo);
     // Paranoid safety check: ensure curLG+1 is a valid index of a waypoint
     if (curLG+1 > m_waypoints.value().size()-1)
     {
         return;
     }
-    auto myWPs = m_waypoints.value().sliced(curLG+1);
 
-    //
-    // If the target position is in the list of future waypoints, things are easy: To get the new route, delete all waypoints up to target
-    // position and prepend the current position.
-    //
-    for(auto i = 0; i < myWPs.size(); i++)
+    // Make a copy of the waypoint list, insert the current position
+    auto myWPs = m_waypoints.value();
+    auto curWP = curLG+1;
+    myWPs.insert(curWP, pInfo.coordinate());
+
+    // If the target position is in the list of future waypoints, things are easy: To get the new route,
+    // delete all future waypoints between the current position and the first instance of the target
+    // position.
+    for(auto i = curWP+1; i < myWPs.size(); i++)
     {
         if (myWPs[i].isNear(target))
         {
-            myWPs = myWPs.sliced(i);
-            myWPs.prepend(pInfo.coordinate());
-            m_waypoints = myWPs;
+            m_waypoints = myWPs.first(curWP+1) + myWPs.sliced(i);
 #warning This should be automatic
             updateLegs();
             emit waypointsChanged();
             return;
         }
     }
+
+    auto optimalPt = curWP+1;
+    auto optimalLn = 10e9;
+    for(auto insertPt=curWP+1; insertPt <= myWPs.size(); insertPt++)
+    {
+        auto newWPs = myWPs;
+        newWPs.insert(insertPt, target);
+        auto length = 0.0;
+        for(int i=0; i<newWPs.size()-1; i++)
+        {
+            length += newWPs[i].coordinate().distanceTo( newWPs[i+1].coordinate() );
+        }
+        if (length < optimalLn)
+        {
+            optimalLn = length;
+            optimalPt = insertPt;
+        }
+    }
+    myWPs.insert(optimalPt, target);
+    m_waypoints = myWPs.first(curWP+1) + myWPs.sliced(optimalPt);
+#warning This should be automatic
+    updateLegs();
+    emit waypointsChanged();
 }
 
 void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& waypoint)
@@ -654,4 +677,3 @@ void Navigation::FlightRoute::updateLegs()
         m_legs.append(Leg(m_waypoints.value().at(i), m_waypoints.value().at(i+1)));
     }
 }
-

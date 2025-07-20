@@ -522,16 +522,10 @@ CenteringDialog {
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        if (Navigator.flightRoute.size > 0) {
-                            addMenu.close()
-                            overwriteDialog.open()
-                        }
-                        else {
-                            Navigator.flightRoute.directTo(waypointDescriptionDialog.waypoint)
-                            Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
-                            addMenu.close()
-                            waypointDescriptionDialog.close()
-                        }
+                        Navigator.flightRoute.directTo(waypointDescriptionDialog.waypoint, PositionProvider.positionInfo)
+                        Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
+                        addMenu.close()
+                        waypointDescriptionDialog.close()
                     }
                 }
 
@@ -725,28 +719,6 @@ CenteringDialog {
         }
     }
 
-    LongTextDialog {
-        id: overwriteDialog
-
-        title: qsTr("Overwrite Current Flight Route?")
-        text: qsTr("Once overwritten, the current flight route cannot be restored.")
-
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
-        onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-            Navigator.flightRoute.directTo(waypointDescriptionDialog.waypoint)
-            overwriteDialog.close()
-            waypointDescriptionDialog.close()
-            Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
-        }
-        onRejected: {
-            PlatformAdaptor.vibrateBrief()
-            overwriteDialog.close()
-            waypointDescriptionDialog.open()
-        }
-    }
 
     WaypointEditor {
         id: wpEdit

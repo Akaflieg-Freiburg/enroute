@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -46,6 +46,7 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
 
     // Setup Bindings
     m_geoPath.setBinding([this]() {return this->computeGeoPath();});
+    m_legs.setBinding([this]() {return this->computeLegs();});
 
 }
 
@@ -80,21 +81,6 @@ auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
     return bbox;
 }
 
-QList<QGeoCoordinate> Navigation::FlightRoute::computeGeoPath()
-{
-    QList<QGeoCoordinate> result;
-    for(const auto& _waypoint : m_waypoints.value())
-    {
-        if (!_waypoint.isValid())
-        {
-            return {};
-        }
-        result.append(_waypoint.coordinate());
-    }
-
-    return result;
-}
-
 auto Navigation::FlightRoute::midFieldWaypoints() const -> QList<GeoMaps::Waypoint>
 {
     QList<GeoMaps::Waypoint> result;
@@ -112,8 +98,7 @@ auto Navigation::FlightRoute::midFieldWaypoints() const -> QList<GeoMaps::Waypoi
 
 auto Navigation::FlightRoute::summary() const -> QString
 {
-
-    if (m_legs.empty())
+    if (m_legs.value().empty())
     {
         return {};
     }
@@ -126,7 +111,7 @@ auto Navigation::FlightRoute::summary() const -> QString
     auto time = Units::Timespan::fromS(0.0);
     auto fuel = Units::Volume::fromL(0.0);
 
-    for(const auto& _leg : m_legs)
+    for(const auto& _leg : m_legs.value())
     {
         dist += _leg.distance();
         if (dist.toM() > 100)
@@ -175,7 +160,6 @@ auto Navigation::FlightRoute::summary() const -> QString
     }
 
     return result;
-
 }
 
 
@@ -189,9 +173,6 @@ void Navigation::FlightRoute::append(const GeoMaps::Waypoint& waypoint)
     auto newWaypoints = m_waypoints.value();
     newWaypoints.append(waypoint);
     m_waypoints = newWaypoints;
-
-    updateLegs();
-    emit waypointsChanged();
 }
 
 void Navigation::FlightRoute::append(const QGeoCoordinate& position)
@@ -228,9 +209,6 @@ auto Navigation::FlightRoute::canInsert(const GeoMaps::Waypoint &other) const ->
 void Navigation::FlightRoute::clear()
 {
     m_waypoints = QVector<GeoMaps::Waypoint>();
-
-    updateLegs();
-    emit waypointsChanged();
 }
 
 auto Navigation::FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const -> bool
@@ -252,18 +230,18 @@ auto Navigation::FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const 
 qsizetype Navigation::FlightRoute::currentLeg(const Positioning::PositionInfo& pInfo) const
 {
     // Take the last leg that we are following (if there is one)
-    for(auto i=m_legs.size()-1; i>=0; i--)
+    for(auto i=m_legs.value().size()-1; i>=0; i--)
     {
-        if (m_legs[i].isFollowing(pInfo))
+        if (m_legs.value()[i].isFollowing(pInfo))
         {
             return i;
         }
     }
 
     // Take the last leg that we are near to (if there is one)
-    for(auto i=m_legs.size()-1; i>=0; i--)
+    for(auto i=m_legs.value().size()-1; i>=0; i--)
     {
-        if (m_legs[i].isNear(pInfo))
+        if (m_legs.value()[i].isNear(pInfo))
         {
             return i;
         }
@@ -286,9 +264,6 @@ void Navigation::FlightRoute::directTo(const GeoMaps::Waypoint& target, const Po
     if (m_waypoints.value().size() < 2)
     {
         m_waypoints = {target};
-#warning This should be automatic
-        updateLegs();
-        emit waypointsChanged();
         return;
     }
 
@@ -312,9 +287,6 @@ void Navigation::FlightRoute::directTo(const GeoMaps::Waypoint& target, const Po
         if (myWPs[i].isNear(target))
         {
             m_waypoints = myWPs.first(curWP+1) + myWPs.sliced(i);
-#warning This should be automatic
-            updateLegs();
-            emit waypointsChanged();
             return;
         }
     }
@@ -338,9 +310,6 @@ void Navigation::FlightRoute::directTo(const GeoMaps::Waypoint& target, const Po
     }
     myWPs.insert(optimalPt, target);
     m_waypoints = myWPs.first(curWP+1) + myWPs.sliced(optimalPt);
-#warning This should be automatic
-    updateLegs();
-    emit waypointsChanged();
 }
 
 void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& waypoint)
@@ -379,9 +348,6 @@ void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& waypoint)
 
     newWaypoints.insert(shortestIndex+1, waypoint);
     m_waypoints = newWaypoints;
-#warning This should be automatic
-    updateLegs();
-    emit waypointsChanged();
 }
 
 auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) const -> qsizetype
@@ -463,9 +429,6 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
         }
     }
     m_waypoints = newWaypoints;
-
-    updateLegs();
-    emit waypointsChanged();
     return {};
 }
 
@@ -481,9 +444,6 @@ void Navigation::FlightRoute::moveDown(int idx)
 
     newWaypoints.move(idx, idx+1);
     m_waypoints = newWaypoints;
-
-    updateLegs();
-    emit waypointsChanged();
 }
 
 void Navigation::FlightRoute::moveUp(int idx)
@@ -498,9 +458,6 @@ void Navigation::FlightRoute::moveUp(int idx)
 
     newWaypoints.move(idx, idx-1);
     m_waypoints = newWaypoints;
-
-    updateLegs();
-    emit waypointsChanged();
 }
 
 void Navigation::FlightRoute::removeWaypoint(int idx)
@@ -515,8 +472,6 @@ void Navigation::FlightRoute::removeWaypoint(int idx)
 
     newWaypoints.removeAt(idx);
     m_waypoints = newWaypoints;
-    updateLegs();
-    emit waypointsChanged();
 }
 
 void Navigation::FlightRoute::replaceWaypoint(int idx, const GeoMaps::Waypoint& newWaypoint)
@@ -537,17 +492,13 @@ void Navigation::FlightRoute::replaceWaypoint(int idx, const GeoMaps::Waypoint& 
 
     newWaypoints[idx] = newWaypoint;
     m_waypoints = newWaypoints;
-    updateLegs();
-    emit waypointsChanged();
 }
 
 void Navigation::FlightRoute::reverse()
 {
-    QVector<GeoMaps::Waypoint> newWaypoints = m_waypoints.value();
+    auto newWaypoints = m_waypoints.value();
     std::reverse(newWaypoints.begin(), newWaypoints.end());
     m_waypoints = newWaypoints;
-    updateLegs();
-    emit waypointsChanged();
 }
 
 auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
@@ -668,12 +619,34 @@ auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
     return doc.toJson();
 }
 
-void Navigation::FlightRoute::updateLegs()
+
+
+//
+// Property Computing Methods
+//
+
+QList<QGeoCoordinate> Navigation::FlightRoute::computeGeoPath()
 {
-    m_legs.clear();
+    QList<QGeoCoordinate> result;
+    for(const auto& _waypoint : m_waypoints.value())
+    {
+        if (!_waypoint.isValid())
+        {
+            return {};
+        }
+        result.append(_waypoint.coordinate());
+    }
+
+    return result;
+}
+
+QVector<Navigation::Leg> Navigation::FlightRoute::computeLegs()
+{
+    QVector<Leg> result;
 
     for(int i=0; i<m_waypoints.value().size()-1; i++)
     {
-        m_legs.append(Leg(m_waypoints.value().at(i), m_waypoints.value().at(i+1)));
+        result.append(Leg(m_waypoints.value().at(i), m_waypoints.value().at(i+1)));
     }
+    return result;
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -108,7 +108,7 @@ namespace Navigation
          *
          * This property returns a list of all legs in the route.
          */
-        Q_PROPERTY(QList<Navigation::Leg> legs READ legs NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<Navigation::Leg> legs READ legs BINDABLE bindableLegs)
 
         /*! \brief Number of waypoints in the route */
         Q_PROPERTY(qsizetype size READ size NOTIFY waypointsChanged)
@@ -163,7 +163,13 @@ namespace Navigation
          *
          * @returns Property legs
          */
-        [[nodiscard]] auto legs() const -> QList<Navigation::Leg> { return m_legs; }
+        [[nodiscard]] QList<Navigation::Leg> legs() const { return m_legs.value(); }
+
+        /*! \brief Getter function for the property with the same name
+         *
+         * @returns Property legs
+         */
+        [[nodiscard]] QBindable<QList<Navigation::Leg>> bindableLegs() const { return &m_legs; }
 
         /*! \brief Getter function for the property with the same name
          *
@@ -374,21 +380,20 @@ namespace Navigation
         void summaryChanged();
 
     private slots:
-        void updateLegs();
 
     private:
         Q_DISABLE_COPY_MOVE(FlightRoute)
-
-        // Computer functions for bindings
-        QList<QGeoCoordinate> computeGeoPath();
 
         // Helper function for method toGPX
         [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
 
         QProperty<QList<QGeoCoordinate>> m_geoPath;
-        QProperty<QVector<GeoMaps::Waypoint>> m_waypoints;
+        QList<QGeoCoordinate> computeGeoPath();
 
-        QVector<Leg> m_legs;
+        Q_OBJECT_BINDABLE_PROPERTY(Navigation::FlightRoute, QVector<GeoMaps::Waypoint>, m_waypoints, &Navigation::FlightRoute::waypointsChanged);
+
+        QProperty<QVector<Leg>> m_legs;
+        QVector<Leg> computeLegs();
 
         QLocale myLocale;
     };

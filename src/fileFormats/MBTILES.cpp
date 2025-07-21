@@ -165,7 +165,6 @@ auto FileFormats::MBTILES::info() -> QString
     return result;
 }
 
-
 auto FileFormats::MBTILES::tile(int zoom, int x, int y) -> QByteArray
 {
     auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);

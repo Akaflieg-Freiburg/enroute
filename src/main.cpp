@@ -147,7 +147,7 @@ auto main(int argc, char *argv[]) -> int
                                     "Run simulator and generate screenshots for the manual"));
     parser.addOption(manualScreenshotOption);
     QCommandLineOption const extractStringOption(
-        "string",
+        u"string"_s,
         QCoreApplication::translate(
             "main", "look up string using Librarian::getStringFromRessource and print it to stdout"),
         QCoreApplication::translate("main", "string name"));
@@ -202,7 +202,7 @@ auto main(int argc, char *argv[]) -> int
     QQuickStyle::setStyle(u"Material"_s);
 
     auto* engine = new QQmlApplicationEngine();
-    engine->addImportPath(":/");
+    engine->addImportPath(u":/"_s);
 
 #if defined(Q_OS_IOS)
     engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), QCoreApplication::applicationDirPath()+"/manual/");

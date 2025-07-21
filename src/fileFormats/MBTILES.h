@@ -30,7 +30,6 @@
 
 namespace FileFormats
 {
-
   /*! \brief Utility class for databases in MBTILES format
    *
    *  MBTILES contain tiled map data. Internally, MBTILES are SQLite databases

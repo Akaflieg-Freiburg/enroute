@@ -141,7 +141,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
 <ul style="margin-left:-25px;">
   <li>Simple, elegant and functional</li>
-  <li>No ads, no commercical "pro" version</li>
+  <li>No ads, no commercial "pro" version</li>
   <li>No registration, no membership</li>
   <li>Does not spy on you</li>
   <li>100% Open Source, written without commercial interest</li>

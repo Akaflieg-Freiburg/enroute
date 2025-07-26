@@ -619,6 +619,85 @@ auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
     return doc.toJson();
 }
 
+auto Navigation::FlightRoute::toVfrFlightPlan() const -> QString
+{
+    if (m_waypoints.value().size() < 2)
+    {
+        // Need at least departure and destination
+        return {};
+    }
+    
+    QStringList routeElements;
+    
+    // Process all waypoints
+    for(const auto& waypoint : m_waypoints.value())
+    {
+        if (!waypoint.isValid())
+        {
+            continue;
+        }
+        
+        QString waypointString;
+        
+        // Use ICAO code only for airfields (AD) and navaids (NAV).
+        // Reporting points (WP with RP/MRP category) and user waypoints use coordinates.
+        auto waypointType = waypoint.type();
+        bool useIcaoCode = (waypointType == u"AD" || waypointType == u"NAV");
+        
+        if (useIcaoCode)
+        {
+            const QString icaoCode = waypoint.ICAOCode();
+            if (!icaoCode.isEmpty())
+            {
+                waypointString = icaoCode;
+            }
+            else
+            {
+                // Fallback to coordinates if ICAO code is empty
+                useIcaoCode = false;
+            }
+        }
+        
+        if (!useIcaoCode)
+        {
+            // Convert coordinates to VFR flight plan format (degrees and minutes)
+            // Format: "4620N07805W" (DDMMNDDDDMME) - 11 characters as per AIP
+            const QGeoCoordinate coord = waypoint.coordinate();
+            if (coord.isValid())
+            {
+                const double latitude = coord.latitude();
+                const double longitude = coord.longitude();
+                
+                // Extract degrees and minutes for latitude
+                const int latDeg = static_cast<int>(qAbs(latitude));
+                const int latMin = static_cast<int>((qAbs(latitude) - latDeg) * 60.0);
+                const QString latDir = (latitude >= 0) ? u"N"_s : u"S"_s;
+                
+                // Extract degrees and minutes for longitude
+                const int lonDeg = static_cast<int>(qAbs(longitude));
+                const int lonMin = static_cast<int>((qAbs(longitude) - lonDeg) * 60.0);
+                const QString lonDir = (longitude >= 0) ? u"E"_s : u"W"_s;
+                
+                waypointString = QString("%1%2%3%4%5%6")
+                    .arg(latDeg, 2, 10, QLatin1Char('0'))
+                    .arg(latMin, 2, 10, QLatin1Char('0'))
+                    .arg(latDir)
+                    .arg(lonDeg, 3, 10, QLatin1Char('0'))
+                    .arg(lonMin, 2, 10, QLatin1Char('0'))
+                    .arg(lonDir);
+            }
+        }
+        
+        if (!waypointString.isEmpty())
+        {
+            routeElements.append(waypointString);
+        }
+    }
+    
+    // Return single line with all waypoints connected by DCT
+    return routeElements.join(u" DCT ");
+}
+
 
 
 //

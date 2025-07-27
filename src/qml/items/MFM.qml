@@ -21,6 +21,7 @@
 import Qt5Compat.GraphicalEffects
 import QtLocation
 import QtPositioning
+import QtCore
 import QtQml
 import QtQuick
 import QtQuick.Controls
@@ -607,274 +608,291 @@ Item {
         }
     }
 
-    GridLayout {
+    Component.onCompleted: splitView.restoreState(settings.splitView)
+    Component.onDestruction: settings.splitView = splitView.saveState()
+
+    Settings {
+        id: settings
+        property var splitView
+    }
+
+    SplitView {
+        id: splitView
+
         anchors.fill: parent
-        columns: 3
+        orientation: Qt.Vertical
 
-        RemainingRouteBar {
-            id: remainingRoute
+        GridLayout {
+            SplitView.fillHeight: true
+            SplitView.minimumHeight: implicitHeight
 
-            Layout.columnSpan: 3
-            Layout.fillWidth: true
+            columns: 3
 
-            visible: !Global.currentVAC.isValid
-        }
+            RemainingRouteBar {
+                id: remainingRoute
 
-        // Column 1: Main Menu / Vertical Scale / ...
-        ColumnLayout {
-            Layout.fillHeight: true
-            Layout.leftMargin: SafeInsets.left
+                Layout.columnSpan: 3
+                Layout.fillWidth: true
 
-            MapButton {
-                id: menuButton
-
-                icon.source: "/icons/material/ic_menu.svg"
                 visible: !Global.currentVAC.isValid
+            }
 
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    drawer.open()
+            // Column 1: Main Menu / Vertical Scale / ...
+            ColumnLayout {
+                Layout.fillHeight: true
+                Layout.leftMargin: SafeInsets.left
+
+                MapButton {
+                    id: menuButton
+
+                    icon.source: "/icons/material/ic_menu.svg"
+                    visible: !Global.currentVAC.isValid
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        drawer.open()
+                    }
+                }
+
+                Item {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.fillHeight: true
+                    Layout.preferredWidth: 24
+
+                    Pane {
+                        opacity: GlobalSettings.nightMode ? 0.3 : 1.0
+                        visible: (!Global.currentVAC.isValid) && !scale.visible
+                        anchors.fill: parent
+
+                        contentItem: Scale {
+                            id: leftScale
+
+                            anchors.fill: parent
+                            color: Material.foreground
+
+                            pixelPer10km: flightMap.pixelPer10km
+                            vertical: true
+                        }
+                    }
+                }
+
+                MapButton {
+                    id: followGPSButton
+
+                    icon.source: "/icons/material/ic_my_location.svg"
+
+                    enabled: !flightMap.followGPS
+                    visible: enabled
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        flightMap.followGPS = true
+                        toast.doToast(qsTr("Map Mode: Autopan"))
+                    }
+                }
+
+                MapButton {
+                    id: trafficDataReceiverButton
+
+                    icon.source: "/icons/material/ic_airplanemode_active.svg"
+                    icon.color: "red"
+
+                    enabled: !TrafficDataProvider.receivingHeartbeat || TrafficDataProvider.currentSourceIsInternetService
+                    visible: enabled
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+                    }
                 }
             }
 
-            Item {
-                Layout.alignment: Qt.AlignHCenter
+            // Colmnn 2: Info Label / Center Item / Copyright / Horizontal Scale
+            ColumnLayout {
+                id: col2
+
                 Layout.fillHeight: true
-                Layout.preferredWidth: 24
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+
+                Label {
+                    id: airspaceAltLabel
+
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.maximumWidth: col2.width
+                    Layout.topMargin: 14
+
+                    visible: (!Global.currentVAC.isValid) && !DataManager.baseMapsRaster.hasFile && (text !== "")
+                    wrapMode: Text.WordWrap
+
+                    text: {
+                        var resultList = []
+
+                        if (GlobalSettings.airspaceAltitudeLimit.isFinite())
+                        {
+                            var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
+                            var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                            resultList.push(qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString))
+                        }
+                        if (DataManager.items.downloading)
+                            resultList.push(qsTr("Downloading Maps and Data"))
+                        if (NOTAMProvider.status !== "")
+                            resultList.push(NOTAMProvider.status)
+                        return resultList.join(" • ")
+                    }
+
+                    leftPadding: font.pixelSize/2.0
+                    rightPadding: font.pixelSize/2.0
+                    bottomPadding: font.pixelSize/4.0
+                    topPadding: font.pixelSize/4.0
+                    background: Pane { Material.elevation: 1 }
+                }
+
+                Item {
+                    id: centerItem
+
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
+
+                Label {
+                    id: noCopyrightInfo
+
+                    Layout.alignment: Qt.AlignRight
+
+                    visible: (!Global.currentVAC.isValid)
+                    text: "<font size='2'><a href='xx'>&nbsp;"+qsTr("ⓒ Map Data")+"&nbsp;</a></font>"
+                    opacity: 0.8
+
+                    //style: Text.Outline
+                    //styleColor: GlobalSettings.nightMode ? "black" : "white"
+                    background: Pane { opacity: GlobalSettings.nightMode ? 0.3 : 0.8 }
+                    onLinkActivated: {
+                        Global.dialogLoader.active = false
+                        Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
+                                                          text: GeoMapProvider.copyrightNotice,
+                                                          standardButtons: Dialog.Ok})
+                        Global.dialogLoader.active = true
+                    }
+                }
 
                 Pane {
+                    id: scale
+
+                    Material.elevation: 1
+                    Layout.bottomMargin: 14
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredHeight: 24
+
                     opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-                    visible: (!Global.currentVAC.isValid) && !scale.visible
-                    anchors.fill: parent
+                    visible: (!Global.currentVAC.isValid) && (page.height > page.width)
 
-                    contentItem: Scale {
-                        id: leftScale
-
-                        anchors.fill: parent
-                        color: Material.foreground
-
-                        pixelPer10km: flightMap.pixelPer10km
-                        vertical: true
-                    }
-                }
-            }
-
-            MapButton {
-                id: followGPSButton
-
-                icon.source: "/icons/material/ic_my_location.svg"
-
-                enabled: !flightMap.followGPS
-                visible: enabled
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    flightMap.followGPS = true
-                    toast.doToast(qsTr("Map Mode: Autopan"))
-                }
-            }
-
-            MapButton {
-                id: trafficDataReceiverButton
-
-                icon.source: "/icons/material/ic_airplanemode_active.svg"
-                icon.color: "red"
-
-                enabled: !TrafficDataProvider.receivingHeartbeat || TrafficDataProvider.currentSourceIsInternetService
-                visible: enabled
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    PlatformAdaptor.vibrateBrief()
-                    stackView.pop()
-                    stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
-                }
-            }
-        }
-
-        // Colmnn 2: Info Label / Center Item / Copyright / Horizontal Scale
-        ColumnLayout {
-            id: col2
-
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.minimumWidth: 0
-
-            Label {
-                id: airspaceAltLabel
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.maximumWidth: col2.width
-                Layout.topMargin: 14
-
-                visible: (!Global.currentVAC.isValid) && !DataManager.baseMapsRaster.hasFile && (text !== "")
-                wrapMode: Text.WordWrap
-
-                text: {
-                    var resultList = []
-
-                    if (GlobalSettings.airspaceAltitudeLimit.isFinite())
+                    contentItem: Scale
                     {
-                        var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
-                        var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
-                        resultList.push(qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString))
-                    }
-                    if (DataManager.items.downloading)
-                        resultList.push(qsTr("Downloading Maps and Data"))
-                    if (NOTAMProvider.status !== "")
-                        resultList.push(NOTAMProvider.status)
-                    return resultList.join(" • ")
-                }
+                        anchors.fill: parent
 
-                leftPadding: font.pixelSize/2.0
-                rightPadding: font.pixelSize/2.0
-                bottomPadding: font.pixelSize/4.0
-                topPadding: font.pixelSize/4.0
-                background: Pane { Material.elevation: 1 }
+                        color: Material.foreground
+                        pixelPer10km: flightMap.pixelPer10km
+                        vertical: false
+                    }
+                }
             }
 
-            Item {
-                id: centerItem
-
+            // Column 3: North Button / Spacer / Zoom In / Zoom Out
+            ColumnLayout {
                 Layout.fillHeight: true
-                Layout.fillWidth: true
-            }
+                Layout.rightMargin: SafeInsets.right
 
-            Label {
-                id: noCopyrightInfo
+                MapButton {
+                    id: northButton
 
-                Layout.alignment: Qt.AlignRight
+                    rotation: -flightMap.bearing
 
-                visible: (!Global.currentVAC.isValid)
-                text: "<font size='2'><a href='xx'>&nbsp;"+qsTr("ⓒ Map Data")+"&nbsp;</a></font>"
-                opacity: 0.8
+                    icon.source: "/icons/NorthArrow.svg"
 
-                //style: Text.Outline
-                //styleColor: GlobalSettings.nightMode ? "black" : "white"
-                background: Pane { opacity: GlobalSettings.nightMode ? 0.3 : 0.8 }
-                onLinkActivated: {
-                    Global.dialogLoader.active = false
-                    Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
-                                                      text: GeoMapProvider.copyrightNotice,
-                                                      standardButtons: Dialog.Ok})
-                    Global.dialogLoader.active = true
-                }
-            }
-
-            Pane {
-                id: scale
-
-                Material.elevation: 1
-                Layout.bottomMargin: 14
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-                Layout.preferredHeight: 24
-
-                opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-                visible: (!Global.currentVAC.isValid) && (page.height > page.width)
-
-                contentItem: Scale
-                {
-                    anchors.fill: parent
-
-                    color: Material.foreground
-                    pixelPer10km: flightMap.pixelPer10km
-                    vertical: false
-                }
-            }
-        }
-
-        // Column 3: North Button / Spacer / Zoom In / Zoom Out
-        ColumnLayout {
-            Layout.fillHeight: true
-            Layout.rightMargin: SafeInsets.right
-
-            MapButton {
-                id: northButton
-
-                rotation: -flightMap.bearing
-
-                icon.source: "/icons/NorthArrow.svg"
-
-                onClicked: {
-                    if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
-                        GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
-                        toast.doToast(qsTr("Map Mode: Track Up"))
-                    } else {
-                        GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
-                        toast.doToast(qsTr("Map Mode: North Up"))
+                    onClicked: {
+                        if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
+                            GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
+                            toast.doToast(qsTr("Map Mode: Track Up"))
+                        } else {
+                            GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
+                            toast.doToast(qsTr("Map Mode: North Up"))
+                        }
                     }
                 }
-            }
 
-            MapButton {
-                id: rasterMapButton
+                MapButton {
+                    id: rasterMapButton
 
-                icon.source: "/icons/material/ic_layers.svg"
-                visible: GeoMapProvider.availableRasterMaps.length !== 0
+                    icon.source: "/icons/material/ic_layers.svg"
+                    visible: GeoMapProvider.availableRasterMaps.length !== 0
 
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    rasterMenu.popup()
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        rasterMenu.popup()
 
-                }
+                    }
 
-                AutoSizingMenu {
-                    id: rasterMenu
-                    cascade: true
+                    AutoSizingMenu {
+                        id: rasterMenu
+                        cascade: true
 
-                    Instantiator {
-                        id: recentFilesInstantiator
-                        model: GeoMapProvider.availableRasterMaps
-                        delegate: CheckDelegate {
-                            checked: modelData === GeoMapProvider.currentRasterMap
-                            text: modelData
+                        Instantiator {
+                            id: recentFilesInstantiator
+                            model: GeoMapProvider.availableRasterMaps
+                            delegate: CheckDelegate {
+                                checked: modelData === GeoMapProvider.currentRasterMap
+                                text: modelData
 
-                            onClicked: {
-                                PlatformAdaptor.vibrateBrief()
-                                rasterMenu.close()
-                                GeoMapProvider.currentRasterMap = checked ? modelData : ""
-                                flightMap.clearData()
+                                onClicked: {
+                                    PlatformAdaptor.vibrateBrief()
+                                    rasterMenu.close()
+                                    GeoMapProvider.currentRasterMap = checked ? modelData : ""
+                                    flightMap.clearData()
+                                }
+
                             }
 
+                            onObjectAdded: (index, object) => rasterMenu.insertItem(index, object)
+                            onObjectRemoved: (index, object) => rasterMenu.removeItem(object)
                         }
 
-                        onObjectAdded: (index, object) => rasterMenu.insertItem(index, object)
-                        onObjectRemoved: (index, object) => rasterMenu.removeItem(object)
                     }
 
                 }
 
-            }
-
-            Item {
-                Layout.fillHeight: true
-            }
-
-            MapButton {
-                id: zoomIn
-
-                icon.source: "/icons/material/ic_add.svg"
-                enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
-                autoRepeat: true
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    flightMap.zoomLevel += 1
+                Item {
+                    Layout.fillHeight: true
                 }
-            }
 
-            MapButton {
-                id: zoomOut
+                MapButton {
+                    id: zoomIn
 
-                icon.source: "/icons/material/ic_remove.svg"
-                enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
-                autoRepeat: true
+                    icon.source: "/icons/material/ic_add.svg"
+                    enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
+                    autoRepeat: true
 
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
-                    flightMap.zoomLevel = newZoomLevel
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        flightMap.zoomLevel += 1
+                    }
+                }
+
+                MapButton {
+                    id: zoomOut
+
+                    icon.source: "/icons/material/ic_remove.svg"
+                    enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
+                    autoRepeat: true
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
+                        flightMap.zoomLevel = newZoomLevel
+                    }
                 }
             }
         }
@@ -882,11 +900,16 @@ Item {
         NavBar {
             id: navBar
 
-            Layout.fillWidth: true
-            Layout.columnSpan: 3
+            SplitView.minimumHeight: implicitHeight
+
+            DragHandler {
+                target: null
+
+                onActiveTranslationChanged: (delta) => navBar.SplitView.preferredHeight -= delta.y
+                onActiveChanged: if (active) navBar.SplitView.preferredHeight = navBar.height
+            }
         }
     }
-
 
     WaypointDescription {
         id: waypointDescription

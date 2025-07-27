@@ -26,33 +26,15 @@ import akaflieg_freiburg.enroute
 
 ColumnLayout {
 
-    DragHandler {
-        id: drag
-        target: null
-
-
-        onActiveTranslationChanged: (delta) =>
-                                    {
-                                        console.log(delta)
-                                    }
-
-        onActiveChanged: {
-            console.log(active)
-        }
-    }
-
-
-
     spacing: 0  // Set the spacing between children to 0
 
     SideView {
         Layout.fillWidth: true
-        Layout.preferredHeight: 100
+        Layout.fillHeight: true
     }
 
     Rectangle {
         id: grid
-
 
         Layout.fillWidth: true
 

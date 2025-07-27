@@ -49,6 +49,16 @@ QString Platform::PlatformAdaptor_Abstract::clipboardText()
 }
 
 
+void Platform::PlatformAdaptor_Abstract::setClipboardText(const QString& text)
+{
+    if (qGuiApp == nullptr)
+    {
+        return;
+    }
+    qGuiApp->clipboard()->setText(text);
+}
+
+
 void Platform::PlatformAdaptor_Abstract::openSatView(const QGeoCoordinate& coordinate)
 {
     auto url = u"https://www.google.com/maps/@?api=1&map_action=map&center="_s

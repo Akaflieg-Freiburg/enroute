@@ -25,12 +25,23 @@ import QtQuick.Layouts
 import akaflieg_freiburg.enroute
 
 ColumnLayout {
-    anchors.left: parent.left
-    anchors.right: parent.right
 
-    anchors.bottomMargin: SafeInsets.bottom
-    anchors.leftMargin: SafeInsets.left
-    anchors.rightMargin: SafeInsets.right
+    DragHandler {
+        id: drag
+        target: null
+
+
+        onActiveTranslationChanged: (delta) =>
+                                    {
+                                        console.log(delta)
+                                    }
+
+        onActiveChanged: {
+            console.log(active)
+        }
+    }
+
+
 
     spacing: 0  // Set the spacing between children to 0
 

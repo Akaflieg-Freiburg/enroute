@@ -134,6 +134,8 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><b>reverse</
 <tr class="memdesc:a30ee6879225c4314e21fb7a6f2c2ebb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports to route to GeoJSON.  <br /></td></tr>
 <tr class="memitem:ab1ad073b327824c9fe76fbe23bb20ea6" id="r_ab1ad073b327824c9fe76fbe23bb20ea6"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1ad073b327824c9fe76fbe23bb20ea6">toGpx</a> () const</td></tr>
 <tr class="memdesc:ab1ad073b327824c9fe76fbe23bb20ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports to route to GPX.  <br /></td></tr>
+<tr class="memitem:a9d47d3bae6d9795c95581925e79968b9" id="r_a9d47d3bae6d9795c95581925e79968b9"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d47d3bae6d9795c95581925e79968b9">toVfrFlightPlan</a> () const</td></tr>
+<tr class="memdesc:a9d47d3bae6d9795c95581925e79968b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports to route to VFR Flight Plan Format.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -964,6 +966,42 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>Exports to route to GPX. </p>
 <p>This method serialises the current flight route as a GPX document. The document conforms to the specification outlined <a href="https://www.topografix.com/gpx.asp">here</a></p>
 <dl class="section return"><dt>Returns</dt><dd>QByteArray containing GPX data describing the flight route </dd></dl>
+
+</div>
+</div>
+<a id="a9d47d3bae6d9795c95581925e79968b9" name="a9d47d3bae6d9795c95581925e79968b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d47d3bae6d9795c95581925e79968b9">&#9670;&#160;</a></span>toVfrFlightPlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString Navigation::FlightRoute::toVfrFlightPlan </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Exports to route to VFR Flight Plan Format. </p>
+<p>This method serialises the current flight route as a simplified VFR flight plan route string following standard aviation format:</p>
+<p>Format: [departure] DCT [waypoint1] DCT [waypoint2] DCT ... DCT [destination] Example: EDPC DCT EDDM DCT 4620N07805W DCT EDML DCT EDTF</p>
+<p>Waypoint formatting rules:</p><ul>
+<li>Airfields (type "AD"): Use ICAO codes (e.g., EDPC, EDDM, EDTF)</li>
+<li>Navigation Aids (type "NAV"): Use ICAO codes (e.g., VOR, NDB, DME)</li>
+<li>Reporting Points (type "WP"): Use coordinate format "4620N07805W" (degrees and minutes)</li>
+<li>User Waypoints (type "WP"): Use coordinate format "4620N07805W" (degrees and minutes)</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>QString containing the VFR flight plan route string </dd></dl>
 
 </div>
 </div>

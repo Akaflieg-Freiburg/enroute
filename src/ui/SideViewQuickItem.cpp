@@ -40,7 +40,7 @@ Ui::SideViewQuickItem::SideViewQuickItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &QQuickItem::update);
-    setRenderTarget(QQuickPaintedItem::FramebufferObject);
+    //setRenderTarget(QQuickPaintedItem::FramebufferObject);
 }
 
 void Ui::SideViewQuickItem::paint(QPainter *painter)

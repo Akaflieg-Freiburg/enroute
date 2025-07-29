@@ -49,13 +49,14 @@ QString Platform::PlatformAdaptor_Abstract::clipboardText()
 }
 
 
-void Platform::PlatformAdaptor_Abstract::setClipboardText(const QString& text)
+bool Platform::PlatformAdaptor_Abstract::setClipboardText(const QString& text)
 {
-    if (qGuiApp == nullptr)
+    if (qGuiApp && qGuiApp->clipboard())
     {
-        return;
+        qGuiApp->clipboard()->setText(text);
+        return true;
     }
-    qGuiApp->clipboard()->setText(text);
+    return false;
 }
 
 

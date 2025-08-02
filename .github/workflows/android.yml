@@ -2,7 +2,7 @@ name: Compile on Android
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ develop, main ]
     paths-ignore:
       - ".gitignore"
       - "README.md"
@@ -91,6 +91,16 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-maplibre-native-qt
         cmake --install build-maplibre-native-qt
+    - name: Determine build type and release target
+      id: build-config
+      run: |
+        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          echo "build_type=Release" >> $GITHUB_OUTPUT
+          echo "release_target=releaseBuilds" >> $GITHUB_OUTPUT
+        else
+          echo "build_type=Debug" >> $GITHUB_OUTPUT
+          echo "release_target=developerBuilds" >> $GITHUB_OUTPUT
+        fi
     - name: Compile Enroute
       run: |
         export QT_HOST_PATH="$(readlink -f "$QT_ROOT_DIR/../gcc_64")"
@@ -98,11 +108,16 @@ jobs:
           -S enroute \
           -B build-enroute\
           -G Ninja\
-          -DCMAKE_BUILD_TYPE:STRING=Debug
+          -DCMAKE_BUILD_TYPE:STRING=${{ steps.build-config.outputs.build_type }}
         cmake --build build-enroute
-    - name: Upload to developerBuilds
+    - name: Upload to release
       run: |
-        gh release upload --clobber developerBuilds ../build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk
+        if [ "${{ steps.build-config.outputs.build_type }}" = "Release" ]; then
+          APK_PATH="../build-enroute/src/android-build//build/outputs/apk/release/android-build-release.apk"
+        else
+          APK_PATH="../build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk"
+        fi
+        gh release upload --clobber ${{ steps.build-config.outputs.release_target }} $APK_PATH
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       working-directory: enroute

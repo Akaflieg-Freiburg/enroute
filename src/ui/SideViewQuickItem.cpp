@@ -50,13 +50,14 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
     auto info = GlobalObject::positionProvider()->positionInfo();
     auto track = info.trueTrack().toDEG();
+    qWarning() << pressureAltitude().toM() << track;
     if (!pressureAltitude().isFinite() || qIsNaN(track)) {
         drawNoTrackAvailable(painter);
         return;
     }
 
 
-    auto geoMapProvider = GlobalObject::geoMapProvider();
+    //auto geoMapProvider = GlobalObject::geoMapProvider();
     drawSky(painter);
 
     const float steps = 100;

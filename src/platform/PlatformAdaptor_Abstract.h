@@ -85,8 +85,9 @@ public:
     /*! \brief Set text content to ClipBoard
      *
      *  @param text Text to set in the clipboard
+     *  @returns True if the text was set, false if the clipboard is not available
      */
-    Q_INVOKABLE static void setClipboardText(const QString& text);
+    Q_INVOKABLE static bool setClipboardText(const QString& text);
 
     /*! \brief SSID of current Wi-Fi network
      *

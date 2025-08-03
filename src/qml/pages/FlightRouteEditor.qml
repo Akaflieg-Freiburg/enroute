@@ -406,8 +406,12 @@ Page {
 
                         var flightPlanText = Navigator.flightRoute.toVfrFlightPlan()
                         if (flightPlanText !== "") {
-                            PlatformAdaptor.setClipboardText(flightPlanText)
-                            toast.doToast(qsTr("Flight plan copied to clipboard"))
+                            var success = PlatformAdaptor.setClipboardText(flightPlanText)
+                            if (success) {
+                                toast.doToast(qsTr("Flight plan copied to clipboard"))
+                            } else {
+                                toast.doToast(qsTr("Failed to copy flight plan"))
+                            }
                         } else {
                             toast.doToast(qsTr("No flight route to copy"))
                         }

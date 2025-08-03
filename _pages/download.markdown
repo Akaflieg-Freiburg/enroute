@@ -16,9 +16,12 @@ permalink: /download/
 **Enroute Flight Navigation** is available for free download on [Google
 Play](https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute)
 and on the Apple [App
-Store](https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176).
+Store](https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176). 
 
-Users who wish to try the latest, experimental versions of the app are welcome
+- Binaries for Android are available for sideloading 
+[here](https://github.com/Akaflieg-Freiburg/enroute/releases/latest).
+
+- Users who wish to try the latest, experimental versions of the app are welcome
 to join our public beta-testing program.  Please have a look at the [Google
 beta-test program](https://support.google.com/googleplay/answer/7003180?hl=en)
 and [Apple TestFlight](https://testflight.apple.com/join/jqPSdGNX).
@@ -27,6 +30,12 @@ and [Apple TestFlight](https://testflight.apple.com/join/jqPSdGNX).
 <figure style="width: 130px" class="align-right">
   <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 </figure>
+
+
+### Mac Desktop
+
+**Enroute Flight Navigation** is available for Mac computers with Apple silicon on the Apple [App
+Store](https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176). 
 
 
 ### Linux Desktop

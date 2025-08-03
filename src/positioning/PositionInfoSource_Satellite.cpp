@@ -92,6 +92,9 @@ void Positioning::PositionInfoSource_Satellite::onPositionUpdated(const QGeoPosi
 #if defined(Q_OS_IOS)
     useCorrection = false;
 #endif
+#if defined(Q_OS_MACOS)
+    useCorrection = false;
+#endif
     if (useCorrection && info.coordinate().type() == QGeoCoordinate::Coordinate3D) {
         auto geoidCorrection = Geoid::separation(info.coordinate());
         if (geoidCorrection.isFinite()) {

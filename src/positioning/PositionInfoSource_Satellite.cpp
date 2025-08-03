@@ -89,10 +89,7 @@ void Positioning::PositionInfoSource_Satellite::onPositionUpdated(const QGeoPosi
     auto correctedInfo = info;
     auto useCorrection = true;
 
-#if defined(Q_OS_IOS)
-    useCorrection = false;
-#endif
-#if defined(Q_OS_MACOS)
+#if defined(Q_OS_IOS) || defined(Q_OS_MACOS)
     useCorrection = false;
 #endif
     if (useCorrection && info.coordinate().type() == QGeoCoordinate::Coordinate3D) {

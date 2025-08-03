@@ -41,11 +41,11 @@ Platform::PlatformAdaptor_Abstract::PlatformAdaptor_Abstract(QObject *parent)
 
 QString Platform::PlatformAdaptor_Abstract::clipboardText()
 {
-    if (qGuiApp == nullptr)
+    if (qGuiApp && qGuiApp->clipboard())
     {
-        return {};
+        return qGuiApp->clipboard()->text();
     }
-    return qGuiApp->clipboard()->text();
+    return {};
 }
 
 

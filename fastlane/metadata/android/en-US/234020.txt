@@ -1,0 +1,5 @@
+### Fixed
+- Fixed infrequent freeze on startup in Android.
+
+### Added
+- Support more Bluetooth Low Energy UART characteristics. (#529)

@@ -109,6 +109,9 @@ end
 
 desc "Create GitHub Release, using SSH authentication"
 lane :gitHubRelease do
+  # Build Android APK and AAB
+  sh("fastlane android build")
+
   # Extract version info from CHANGELOG.md
   matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
   latest_version, changelog_text = matches.first
@@ -136,8 +139,8 @@ lane :gitHubRelease do
   sh("gh release create #{current_tag} --title 'Version #{latest_version}' --notes-file #{notes_file}")
   
   # Add assets to the release
-  # UI.message("Uploading Android APK and AAB files")
-  # sh("gh release upload #{current_tag} ../build/enroute.apk ../build/enroute.aab")
+  UI.message("Uploading Android APK and AAB files")
+  sh("gh release upload #{current_tag} ../build/enroute.apk ../build/enroute.aab")
   
   # Clean up
   FileUtils.rm(notes_file)

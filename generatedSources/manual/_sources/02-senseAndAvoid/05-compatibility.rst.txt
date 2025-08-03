@@ -49,3 +49,11 @@ The author has tested the following receivers.
 Users reported success with the following traffic receiver hardware.
 
 - Classic FLARM and HC-06 Bluetooth Adaptor.
+
+
+Bluetooth LE Enabled Devices
+----------------------------
+
+Users reported success with the following traffic receiver hardware.
+
+- SoftRF `Badge Edition <https://github.com/lyusupov/SoftRF/wiki/Badge-Edition>`_.

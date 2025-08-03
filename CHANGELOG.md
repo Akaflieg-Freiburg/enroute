@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.34.3] - 2025-07-xx
+## [2.34.4] - 2025-08-03
 
 ### Changed
 - Changed behavior of "Direct To" in the waypoint description dialog to make it
@@ -8,6 +8,9 @@
 
 - Changed behavior of the "North Arrow" button in the moving map to make usage
   more intuitive.
+
+- Android binaries are now available for sideloading at GitHub
+  https://github.com/Akaflieg-Freiburg/enroute/releases/latest
 
 
 ## [2.34.2] - 2025-07-18

@@ -110,7 +110,7 @@ end
 desc "Create GitHub Release, using SSH authentication"
 lane :gitHubRelease do
   # Build Android APK and AAB
-  android:build
+  sh("fastlane android build")
 
   # Extract version info from CHANGELOG.md
   matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)

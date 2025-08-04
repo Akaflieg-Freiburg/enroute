@@ -41,21 +41,22 @@ Platform::PlatformAdaptor_Abstract::PlatformAdaptor_Abstract(QObject *parent)
 
 QString Platform::PlatformAdaptor_Abstract::clipboardText()
 {
-    if (qGuiApp == nullptr)
+    if (qGuiApp && qGuiApp->clipboard())
     {
-        return {};
+        return qGuiApp->clipboard()->text();
     }
-    return qGuiApp->clipboard()->text();
+    return {};
 }
 
 
-void Platform::PlatformAdaptor_Abstract::setClipboardText(const QString& text)
+bool Platform::PlatformAdaptor_Abstract::setClipboardText(const QString& text)
 {
-    if (qGuiApp == nullptr)
+    if (qGuiApp && qGuiApp->clipboard())
     {
-        return;
+        qGuiApp->clipboard()->setText(text);
+        return true;
     }
-    qGuiApp->clipboard()->setText(text);
+    return false;
 }
 
 

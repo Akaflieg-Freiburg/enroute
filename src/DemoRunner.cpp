@@ -390,7 +390,8 @@ void DemoRunner::generateManualScreenshots()
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
         flightMap->setProperty("zoomLevel", 11);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+#warning
+//        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("02-02-04-EnRoute.png"));
         GlobalObject::navigator()->flightRoute()->clear();
@@ -442,7 +443,8 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setGS( Units::Speed::fromKN(5) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
+#warning
+        //        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-01-ground.png"));
     }
@@ -455,7 +457,8 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setTT( Units::Angle::fromDEG(170) );
         trafficSimulator->setGS( Units::Speed::fromKN(90) );
         flightMap->setProperty("zoomLevel", 11);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+#warning
+        //        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-02-flight.png"));
     }
@@ -467,7 +470,8 @@ void DemoRunner::generateManualScreenshots()
         Q_ASSERT(waypoint.isValid());
         waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
         QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
+#warning
+        //        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-03-EDFEinfo.png"));
         QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
@@ -483,7 +487,8 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setGS( Units::Speed::fromKN(92) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+#warning
+        //        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
         QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
         QGeoPositionInfo trafficInfo;
         trafficInfo.setCoordinate(trafficPosition);
@@ -534,7 +539,8 @@ void DemoRunner::generateManualScreenshots()
         Q_ASSERT(QFile::exists(VACFileName));
         emit requestVAC(u"LFGA COLMAR HOUSSEN 2"_s);
         delay(2s);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
+#warning
+        //        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
         delay(2s);
         applicationWindow->grabWindow().save(QStringLiteral("03-03-VAC.png"));
         emit requestVAC(u""_s);

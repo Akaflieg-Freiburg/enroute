@@ -22,7 +22,6 @@ import Qt5Compat.GraphicalEffects
 import QtCore
 import QtLocation
 import QtPositioning
-import QtCore
 import QtQml
 import QtQuick
 import QtQuick.Controls
@@ -839,13 +838,19 @@ Item {
                     icon.source: "/icons/NorthArrow.svg"
 
                     onClicked: {
-                        if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
-                            GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
-                            toast.doToast(qsTr("Map Mode: Track Up"))
-                        } else {
-                            GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
+                        if (page.mapBearingPolicy === MFM.NUp) {
+                            page.mapBearingPolicy = MFM.TTUp
+                        }  else if (page.mapBearingPolicy === MFM.TTUp) {
+                            page.mapBearingPolicy = MFM.NUp
+                        } else
+                            page.mapBearingPolicy = page.mapBearingRevertPolicy
+
+                        if (page.mapBearingPolicy === MFM.NUp) {
                             toast.doToast(qsTr("Map Mode: North Up"))
-                        }
+                        } else if (page.mapBearingPolicy === MFM.TTUp) {
+                            toast.doToast(qsTr("Map Mode: Track Up"))
+                        } else
+                            toast.doToast(qsTr("Map Mode: User Defined Direction Up"))
                     }
                 }
 

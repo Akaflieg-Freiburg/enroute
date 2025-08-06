@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 import Qt5Compat.GraphicalEffects
+import QtCore
 import QtLocation
 import QtPositioning
 import QtCore
@@ -35,6 +36,30 @@ import "../dialogs"
 Item {
     id: page
 
+    enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
+    property int mapBearingPolicy: MFM.NUp
+    property int mapBearingRevertPolicy: MFM.NUp
+    onMapBearingPolicyChanged: {
+        if (mapBearingPolicy != MFM.UserDefinedBearingUp)
+        {
+            mapBearingRevertPolicy = mapBearingPolicy
+        }
+    }
+
+    Connections {
+        target: DemoRunner
+
+        function onRequestMapBearing(newBearing) {
+            mapBearingPolicy = newBearing
+        }
+    }
+
+    Settings {
+        category: "MovingMap"
+        property alias mapBearingPolicy: page.mapBearingPolicy
+        property alias mapBearingRevertPolicy: page.mapBearingRevertPolicy
+    }
+
     Plugin {
         id: mapPlugin
         name: "maplibre"
@@ -43,7 +68,6 @@ Item {
             name: "maplibre.map.styles"
             value: GeoMapProvider.styleFileURL
         }
-
     }
 
     FlightMap {
@@ -89,7 +113,7 @@ Item {
 
                 if (flightMap.bearing === 0.0)
                 {
-                    GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
+                    page.mapBearingPolicy = MFM.NUp
                 }
             }
 
@@ -110,7 +134,7 @@ Item {
             onRotationChanged: (delta) => {
                                    pinch.rawBearing -= delta
 
-                                   if (GlobalSettings.mapBearingPolicy === GlobalSettings.UserDefinedBearingUp)
+                                   if (page.mapBearingPolicy === MFM.UserDefinedBearingUp)
                                    {
                                        // snap to 0° if we're close enough
                                        bearingBehavior.enabled = false
@@ -122,7 +146,7 @@ Item {
 
                                    if (Math.abs(pinch.rawBearing-pinch.startBearing) > 20)
                                    {
-                                       GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+                                       page.mapBearingPolicy = MFM.UserDefinedBearingUp
                                    }
                                }
         }
@@ -176,9 +200,9 @@ Item {
                 if (active)
                 {
                     flightMap.followGPS = false
-                    if (GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp)
+                    if (page.mapBearingPolicy === MFM.TTUp)
                     {
-                        GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+                        page.mapBearingPolicy = MFM.UserDefinedBearingUp
                     }
                 }
             }
@@ -201,14 +225,15 @@ Item {
         // PROPERTY "bearing"
         //
 
+
         // Initially, set the bearing to the last saved value
         bearing: 0
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Binding on bearing {
             restoreMode: Binding.RestoreNone
-            when: GlobalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp ? PositionProvider.lastValidTT.toDEG() : 0
+            when: page.mapBearingPolicy !== MFM.UserDefinedBearingUp
+            value: page.mapBearingPolicy === MFM.TTUp ? PositionProvider.lastValidTT.toDEG() : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement

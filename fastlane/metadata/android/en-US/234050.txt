@@ -1,0 +1,4 @@
+### Changed
+
+- Changed behavior of the "North Arrow" button in the moving map to make usage
+  more intuitive.

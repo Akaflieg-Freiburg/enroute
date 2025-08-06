@@ -168,7 +168,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                 int count = 1;
 
                 // Generate directory
-                QDir dir;
+                const QDir dir;
                 dir.mkpath(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
 
                 // Enroute near EDSB
@@ -185,7 +185,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
                     flightMap->setProperty("zoomLevel", 11);
-                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+                    flightMap->setProperty("mapBearingPolicy", 1);
                     delay(8s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
@@ -199,7 +199,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     trafficSimulator->setTT( Units::Angle::fromDEG(158) );
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
                     flightMap->setProperty("zoomLevel", 12);
-                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+                    flightMap->setProperty("mapBearingPolicy", 1);
                     delay(10s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
@@ -208,15 +208,15 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                 {
                     qWarning() << "… EDTF Traffic";
 
-                    QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
+                    const QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
                     trafficSimulator->setCoordinate( ownPosition );
                     trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
                     trafficSimulator->setTT( Units::Angle::fromDEG(36) );
                     trafficSimulator->setGS( Units::Speed::fromKN(92) );
                     flightMap->setProperty("zoomLevel", 13);
                     flightMap->setProperty("followGPS", true);
-                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
-                    QGeoCoordinate trafficPosition(48.0103, 7.8052, 540);
+                    flightMap->setProperty("mapBearingPolicy", 1);
+                    const QGeoCoordinate trafficPosition(48.0103, 7.8052, 540);
                     QGeoPositionInfo trafficInfo;
                     trafficInfo.setCoordinate(trafficPosition);
                     trafficInfo.setAttribute(QGeoPositionInfo::Direction, 160);
@@ -265,7 +265,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
 
                     qWarning() << "… LFSB Weather Dialog";
                     auto *obs = new Weather::Observer(this);
-                    obs->setWaypoint( GlobalObject::geoMapProvider()->findByID("LFSB"));
+                    obs->setWaypoint( GlobalObject::geoMapProvider()->findByID(u"LFSB"_s));
                     emit requestOpenWeatherDialog(obs);
                     delay(4s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
@@ -390,7 +390,7 @@ void DemoRunner::generateManualScreenshots()
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
         flightMap->setProperty("zoomLevel", 11);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+        emit requestMapBearing(1); // TTUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("02-02-04-EnRoute.png"));
         GlobalObject::navigator()->flightRoute()->clear();
@@ -426,7 +426,7 @@ void DemoRunner::generateManualScreenshots()
     {
         qWarning() << "… Weather Dialog";
         auto *obs = new Weather::Observer(this);
-        obs->setWaypoint( GlobalObject::geoMapProvider()->findByID("EDSB"));
+        obs->setWaypoint( GlobalObject::geoMapProvider()->findByID(u"EDSB"_s));
         emit requestOpenWeatherDialog(obs);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("02-03-02-WeatherDialog.png"));
@@ -442,7 +442,7 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setGS( Units::Speed::fromKN(5) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
+        emit requestMapBearing(0); // NUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-01-ground.png"));
     }
@@ -455,7 +455,7 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setTT( Units::Angle::fromDEG(170) );
         trafficSimulator->setGS( Units::Speed::fromKN(90) );
         flightMap->setProperty("zoomLevel", 11);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
+        emit requestMapBearing(1); // TTUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-02-flight.png"));
     }
@@ -467,7 +467,7 @@ void DemoRunner::generateManualScreenshots()
         Q_ASSERT(waypoint.isValid());
         waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
         QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
+        emit requestMapBearing(0); // NUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-03-EDFEinfo.png"));
         QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
@@ -476,15 +476,15 @@ void DemoRunner::generateManualScreenshots()
     // Approaching EDTF w/ traffic
     {
         qWarning() << "… EDTF Traffic";
-        QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
+        const QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
         trafficSimulator->setCoordinate( ownPosition );
         trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
         trafficSimulator->setTT( Units::Angle::fromDEG(41) );
         trafficSimulator->setGS( Units::Speed::fromKN(92) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
-        QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
+        emit requestMapBearing(1); // TTUp
+        const QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
         QGeoPositionInfo trafficInfo;
         trafficInfo.setCoordinate(trafficPosition);
         trafficInfo.setAttribute(QGeoPositionInfo::Direction, 160);
@@ -525,8 +525,7 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setTT( Units::Angle::fromDEG(270) );
         trafficSimulator->setGS( Units::Speed::fromKN(89) );
 
-        auto VACFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-                              "/VAC/LFGA COLMAR HOUSSEN 2.webp";
+        auto VACFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC/LFGA COLMAR HOUSSEN 2.webp"_s;
         if (!QFile::exists(VACFileName))
         {
             qCritical() << "VAC does not exist" << VACFileName;
@@ -534,7 +533,7 @@ void DemoRunner::generateManualScreenshots()
         Q_ASSERT(QFile::exists(VACFileName));
         emit requestVAC(u"LFGA COLMAR HOUSSEN 2"_s);
         delay(2s);
-        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
+        emit requestMapBearing(0); // NUp
         delay(2s);
         applicationWindow->grabWindow().save(QStringLiteral("03-03-VAC.png"));
         emit requestVAC(u""_s);

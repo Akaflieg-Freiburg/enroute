@@ -49,16 +49,6 @@ class GlobalSettings : public QObject
     QML_SINGLETON
 
 public:
-    /*! \brief Possible map bearing policies */
-    enum MapBearingPolicy : quint8
-    {
-        NUp, /*!< North is up. */
-        TTUp, /*!< True Track is up.  */
-        UserDefinedBearingUp /*!< User-defined bearing is up. */
-    };
-    Q_ENUM(MapBearingPolicy)
-
-
     //
     // Constructor and destructor
     //
@@ -149,9 +139,6 @@ public:
      * shown or not.
      */
     Q_PROPERTY(Units::ByteSize lastWhatsNewInMapsHash READ lastWhatsNewInMapsHash WRITE setLastWhatsNewInMapsHash NOTIFY lastWhatsNewInMapsHashChanged)
-
-    /*! \brief Map bearing policy */
-    Q_PROPERTY(MapBearingPolicy mapBearingPolicy READ mapBearingPolicy WRITE setMapBearingPolicy NOTIFY mapBearingPolicyChanged)
 
     /*! \brief Night mode */
     Q_PROPERTY(bool nightMode READ nightMode WRITE setNightMode NOTIFY nightModeChanged)
@@ -246,12 +233,6 @@ public:
     {
         return m_settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).value<size_t>();
     }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property mapBearingPolicy
-     */
-    [[nodiscard]] auto mapBearingPolicy() const -> MapBearingPolicy;
 
     /*! \brief Getter function for property of the same name
      *
@@ -367,12 +348,6 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param policy Property mapBearingPolicy
-     */
-    void setMapBearingPolicy(MapBearingPolicy policy);
-
-    /*! \brief Setter function for property of the same name
-     *
      * @param newNightMode Property nightMode
      */
     void setNightMode(bool newNightMode);
@@ -439,9 +414,6 @@ signals:
 
     /*! \brief Notifier signal */
     void lastWhatsNewInMapsHashChanged();
-
-    /*! \brief Notifier signal */
-    void mapBearingPolicyChanged();
 
     /*! \brief Notifier signal */
     void nightModeChanged();

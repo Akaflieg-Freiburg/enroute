@@ -102,6 +102,7 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL(int elevation) const -> Units::Di
 
     if (AL.endsWith(u"msl"_s)) {
         AL.chop(3);
+#warning
         result = AL.simplified().toDouble(&ok);
     }
     if (AL.endsWith(u"agl"_s)) {
@@ -113,7 +114,7 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL(int elevation) const -> Units::Di
         AL.chop(2);
         AL = AL.simplified();
     }
-    if (AL.size() == 3 && AL.endsWith(u"gnd"_qs, Qt::CaseInsensitive)) { //TODO: This is ugly
+    if (AL.size() == 3 && AL.endsWith(u"gnd"_s, Qt::CaseInsensitive)) { //TODO: This is ugly
         return Units::Distance::fromFT((double)elevation);
     }
 
@@ -137,7 +138,7 @@ auto GeoMaps::Airspace::estimatedUpperBoundMSL(int elevation) const -> Units::Di
 
     QString AL = m_upperBound.simplified().toLower();
 
-    if (AL.startsWith(u"fl"_qs, Qt::CaseInsensitive)) {
+    if (AL.startsWith(u"fl"_s, Qt::CaseInsensitive)) {
         result = AL.remove(0, 2).toDouble(&ok);
         if (ok) {
             return Units::Distance::fromFT(100*result);
@@ -145,20 +146,21 @@ auto GeoMaps::Airspace::estimatedUpperBoundMSL(int elevation) const -> Units::Di
         return Units::Distance::fromFT(0.0);
     }
 
-    if (AL.endsWith(u"msl"_qs)) {
+    if (AL.endsWith(u"msl"_s)) {
         AL.chop(3);
+#warning
         result = AL.simplified().toDouble(&ok);
     }
-    if (AL.endsWith(u"agl"_qs)) {
+    if (AL.endsWith(u"agl"_s)) {
         AL.chop(3);
         result = AL.simplified().toDouble(&ok) + elevation;
         return Units::Distance::fromFT(result);
     }
-    if (AL.endsWith(u"ft"_qs)) {
+    if (AL.endsWith(u"ft"_s)) {
         AL.chop(2);
         AL = AL.simplified();
     }
-    if (AL.size() == 3 && AL.endsWith(u"gnd"_qs, Qt::CaseInsensitive)) { //TODO: This is ugly
+    if (AL.size() == 3 && AL.endsWith(u"gnd"_s, Qt::CaseInsensitive)) { //TODO: This is ugly
         return Units::Distance::fromFT((double)elevation);
     }
 

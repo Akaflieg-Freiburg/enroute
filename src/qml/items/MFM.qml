@@ -44,6 +44,15 @@ Item {
             mapBearingRevertPolicy = mapBearingPolicy
         }
     }
+
+    Connections {
+        target: DemoRunner
+
+        function onRequestMapBearing(newBearing) {
+            mapBearingPolicy = newBearing
+        }
+    }
+
     Settings {
         category: "MovingMap"
         property alias mapBearingPolicy: page.mapBearingPolicy
@@ -58,7 +67,6 @@ Item {
             name: "maplibre.map.styles"
             value: GeoMapProvider.styleFileURL
         }
-
     }
 
     FlightMap {

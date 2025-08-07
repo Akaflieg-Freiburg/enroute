@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.34.6] - 2025-08-07
+
+### Fixed
+
+- Fixed error where many data connections appear twice in the data connection dialog.
+
+
 ## [2.34.5] - 2025-08-05
 
 ### Changed

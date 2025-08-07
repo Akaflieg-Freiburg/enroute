@@ -1,0 +1,3 @@
+### Fixed
+
+- Fixed error where many data connections appear twice in the data connection dialog.

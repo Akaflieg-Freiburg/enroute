@@ -644,6 +644,8 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml
     SOURCES
+    ui/RawSideView.h
+    ui/RawSideView.cpp
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
     ui/SideViewQuickItem.h

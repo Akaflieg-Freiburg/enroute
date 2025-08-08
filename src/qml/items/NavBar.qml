@@ -21,12 +21,48 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
 
 ColumnLayout {
 
     spacing: 0  // Set the spacing between children to 0
+
+    RawSideView {
+
+        id: rawSideView
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+
+        Shape {
+            anchors.fill: parent
+
+            clip: true
+
+            ShapePath {
+                id: sky
+                fillColor: "lightblue"
+
+                startX: 0
+                startY: 0
+                PathLine { x: rawSideView.width+1; y: 0 }
+                PathLine { x: rawSideView.width+1; y: rawSideView.height }
+                PathLine { x: 0; y: rawSideView.height }
+
+            }
+
+            ShapePath {
+                id: terrain
+                strokeWidth: -1
+                strokeColor: "saddlebrown"
+                fillColor: "brown"
+
+                PathPolyline { path: rawSideView.terrain }
+            }
+        }
+    }
+
 
     SideView {
         Layout.fillWidth: true

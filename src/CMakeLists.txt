@@ -612,6 +612,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/NotificationButton.qml
     qml/items/PageHeader.qml
     qml/items/+Material/PageHeader.qml
+    qml/items/QSideView.qml
     qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml

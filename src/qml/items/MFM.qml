@@ -26,6 +26,7 @@ import QtQml
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
 
@@ -927,16 +928,37 @@ Item {
             }
         }
 
-        NavBar {
-            id: navBar
+        ColumnLayout {
+            id: cl
 
-            SplitView.minimumHeight: implicitHeight
+            SplitView.minimumHeight: navBar.implicitHeight
 
             DragHandler {
                 target: null
 
-                onActiveTranslationChanged: (delta) => navBar.SplitView.preferredHeight -= delta.y
-                onActiveChanged: if (active) navBar.SplitView.preferredHeight = navBar.height
+                onActiveTranslationChanged: (delta) => cl.SplitView.preferredHeight -= delta.y
+                //onActiveChanged: if (active) cl.SplitView.preferredHeight = navBar.implicitHeight
+            }
+
+            spacing: 0  // Set the spacing between children to 0
+
+            QSideView {
+                id: rawSideView
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                pixelPer10km: flightMap.pixelPer10km
+            }
+/*
+            SideView {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+*/
+            NavBar {
+                id: navBar
+
+                Layout.fillWidth: true
             }
         }
     }

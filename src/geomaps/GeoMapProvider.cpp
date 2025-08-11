@@ -319,8 +319,7 @@ Units::Distance GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordina
                 continue;
             }
             auto pix = tileImg->pixel(intraTileX, intraTileY);
-            double const elevation = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0)
-                                     - 32768.0;
+            double const elevation = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
             return Units::Distance::fromM(elevation);
         }
     }
@@ -357,8 +356,7 @@ Units::Distance GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordina
                 terrainTileCache.insert(key,tileImg);
 
                 auto pix = tileImg->pixel(intraTileX, intraTileY);
-                double const elevation = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0)
-                                         - 32768.0;
+                double const elevation = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
                 return Units::Distance::fromM(elevation);
             }
         }

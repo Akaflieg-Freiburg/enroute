@@ -184,7 +184,18 @@ namespace Units {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }
 
-        /*! \brief Scaling
+        /*! \brief Division
+         *
+         *  @param rhs Right hand side of the division
+         *
+         *  @returns Result of the division
+         */
+        [[nodiscard]] Q_INVOKABLE double operator/(Units::Distance rhs) const
+        {
+            return m_distanceInM / rhs.m_distanceInM;
+        }
+
+        /*! \brief Scaling / Right Multiplication
          *
          *  @param factor Factor of scaling
          *
@@ -275,6 +286,16 @@ namespace Units {
     };
 } // namespace Units
 
+/*! \brief Scaling / Left Multiplication
+ *
+ *  @param factor Factor of scaling
+ *
+ *  @returns Result of the scaling
+ */
+[[nodiscard]] Q_INVOKABLE inline Units::Distance operator*(double factor, const Units::Distance self)
+{
+    return self*factor;
+}
 
 /*! \brief Serialization */
 QDataStream& operator<<(QDataStream& stream, const Units::Distance& distance);

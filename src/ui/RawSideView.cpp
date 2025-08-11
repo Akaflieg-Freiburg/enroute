@@ -37,7 +37,7 @@
 Ui::RawSideView::RawSideView(QQuickItem *parent)
     : QQuickItem(parent)
 {
-    m_terrain.setBinding([this]() {return computeTerrain();});
+    //m_terrain.setBinding([this]() {return computeTerrain();});
 
     notifiers.push_back(bindableHeight().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(bindableWidth().addNotifier([this]() {updateProperties();}));
@@ -58,8 +58,10 @@ QPolygonF Ui::RawSideView::computeTerrain()
     auto track = GlobalObject::positionProvider()->lastValidTT().toDEG();
 
     QPolygonF polygon;
+
     int x = 0;
-    for(x = 0; x <= width()+10; x += 5)
+    int step = 5;
+    for(x = 0; x <= width()+step; x += step)
     {
         auto dist = 10000.0*(x-0.2*width())/(m_pixelPer10km.value());
         auto position = info.coordinate().atDistanceAndAzimuth(dist, track);
@@ -82,24 +84,93 @@ void Ui::RawSideView::updateProperties()
 
     m_fiveMinuteBar = {0, 0};
     m_ownshipPosition = {-100, -100};
-    //m_terrain = QPolygonF();
     m_track = QString();
     m_error = QString();
+    m_terrain = QPolygonF();
 
     if (!positionInfo.isValid())
     {
         m_error = tr("No valid position data.");
         return;
     }
+
+    Units::Distance ownShipAltitude = positionInfo.trueAltitudeAMSL();
+    if (!ownShipAltitude.isFinite())
+    {
+        m_error = tr("No valid altitude data.");
+        return;
+    }
+    if (ownShipAltitude < positionInfo.terrainElevationAMSL())
+    {
+        ownShipAltitude = positionInfo.terrainElevationAMSL();
+    }
+
     auto track = positionInfo.trueTrack();
     if (!track.isFinite())
     {
-        track = GlobalObject::positionProvider()->lastValidTT();
-        m_track = u"→ %1°"_s.arg(qRound(track.toDEG()));
-        return;
+        track = Positioning::PositionProvider::lastValidTT();
+        m_track = u"Direction → %1°"_s.arg(qRound(track.toDEG()));
     }
 
-    m_ownshipPosition = {width()*0.2, height() * (1 - positionInfo.trueAltitudeAMSL().toFeet()/10000)};
-    m_fiveMinuteBar = {m_pixelPer10km.value()*(positionInfo.groundSpeed().toMPS()*5*60)/10000, -height()*positionInfo.verticalSpeed().toFPM()*5.0/10000.0};
-    m_error = QString();
+    // Compute elevations
+    QVector<Units::Distance> elevations;
+    Units::Distance minElevation = ownShipAltitude;
+    Units::Distance maxElevation = ownShipAltitude;
+    const int step = 1;
+    elevations.reserve(qRound(width()/step)+1);
+    for(int x = 0; x <= width()+step; x += step)
+    {
+        auto dist = 10000.0*(x-0.2*width())/(m_pixelPer10km.value());
+        auto position = positionInfo.coordinate().atDistanceAndAzimuth(dist, track.toDEG());
+        auto elevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(position);
+        if (!elevation.isFinite())
+        {
+            elevation = Units::Distance::fromM(0.0);
+            m_error = tr("Incomplete terrain data. Pleas install the relevant terrain maps.");
+        }
+        elevations << elevation;
+        if (elevation < minElevation)
+        {
+            minElevation = elevation;
+        }
+        if (elevation > maxElevation)
+        {
+            maxElevation = elevation;
+        }
+    }
+
+    auto sideview_minAlt = qMax(ownShipAltitude - Units::Distance::fromFT(3000.0), minElevation - Units::Distance::fromFT(100) );
+    auto sideview_maxAlt = ownShipAltitude;
+    if (positionInfo.verticalSpeed().isFinite())
+    {
+        sideview_maxAlt += qMax(Units::Distance::fromFT(3000.0),
+                                Units::Distance::fromFT(positionInfo.verticalSpeed().toFPM()*7.5));
+    }
+    else
+    {
+        sideview_maxAlt += Units::Distance::fromFT(3000.0);
+    }
+
+    auto altToYCoordinate = [this, sideview_minAlt, sideview_maxAlt](Units::Distance alt)
+    {
+        return ((double)height())*(sideview_maxAlt - alt) / (sideview_maxAlt - sideview_minAlt);
+    };
+
+
+    m_ownshipPosition = {width()*0.2, altToYCoordinate(ownShipAltitude) };
+    qWarning() << m_ownshipPosition.value();
+
+    m_fiveMinuteBar = {m_pixelPer10km.value()*(positionInfo.groundSpeed().toMPS()*5*60)/10000, -height()*positionInfo.verticalSpeed().toFPM()*5.0/((sideview_maxAlt - sideview_minAlt).toFeet())};
+
+    // Compute Terrain
+    QPolygonF polygon;
+    polygon.reserve( elevations.size()+4 );
+    for(int i = 0; i < elevations.size(); i++)
+    {
+        auto elevation = elevations[i];
+        auto y = altToYCoordinate(elevation);
+        polygon << QPointF(i*step, y);
+    }
+    polygon  << QPointF(width(), height()+20) << QPointF(0, height()+20);
+    m_terrain = polygon;
 }

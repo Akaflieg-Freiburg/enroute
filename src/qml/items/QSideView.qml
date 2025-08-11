@@ -87,6 +87,34 @@ RawSideView {
         }
     }
 
+    Image {
+        id: imageOP
+
+        x: rawSideView.ownshipPosition.x-width/2.0
+        y: rawSideView.ownshipPosition.y-height/2.0
+        rotation: {
+            if (rawSideView.fiveMinuteBar.x > 2)
+            {
+                return 90 + 360*Math.atan( rawSideView.fiveMinuteBar.y/rawSideView.fiveMinuteBar.x )/(2*Math.PI)
+            }
+            return 90
+        }
+
+        source: {
+            var pInfo = PositionProvider.positionInfo
+            if (!pInfo.isValid()) {
+                return "/icons/self-noPosition.svg"
+            }
+            if (!pInfo.trueTrack().isFinite()) {
+                return "/icons/self-noDirection.svg"
+            }
+            return "/icons/self-withDirection.svg"
+        }
+
+        sourceSize.width: 25
+        sourceSize.height: 25
+    }
+
     Label {
         x: rawSideView.width*0.1
         text: rawSideView.track

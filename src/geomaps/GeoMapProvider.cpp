@@ -295,6 +295,7 @@ GeoMaps::Waypoint GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate positi
     return result;
 }
 
+
 Units::Distance GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordinate)
 {
     int const zoomMin = 6;
@@ -304,8 +305,8 @@ Units::Distance GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordina
     {
         auto tilex = (coordinate.longitude()+180.0)/360.0 * (1<<zoom);
         auto tiley = (1.0 - asinh(tan(qDegreesToRadians(coordinate.latitude())))/M_PI)/2.0 * (1<<zoom);
-        auto intraTileX = qRound(255.0*(tilex-floor(tilex)));
-        auto intraTileY = qRound(255.0*(tiley-floor(tiley)));
+        auto intraTileX = 255.0*(tilex-floor(tilex));
+        auto intraTileY = 255.0*(tiley-floor(tiley));
 
         qint64 const keyA = qFloor(tilex) & 0xFFFF;
         qint64 const keyB = qFloor(tiley) & 0xFFFF;
@@ -318,13 +319,27 @@ Units::Distance GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordina
             {
                 continue;
             }
-            auto pix = tileImg->pixel(intraTileX, intraTileY);
-            double const elevation = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
-            return Units::Distance::fromM(elevation);
+
+            auto t = intraTileX - qFloor(intraTileX);
+            auto u = intraTileY - qFloor(intraTileY);
+
+            auto pix = tileImg->pixel(qFloor(intraTileX), qFloor(intraTileY));
+            double const y1 = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
+
+            pix = tileImg->pixel(qCeil(intraTileX), qFloor(intraTileY));
+            double const y2 = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
+
+            pix = tileImg->pixel(qCeil(intraTileX), qCeil(intraTileY));
+            double const y3 = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
+
+            pix = tileImg->pixel(qFloor(intraTileX), qCeil(intraTileY));
+            double const y4 = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
+
+            return Units::Distance::fromM((1-t)*(1-u)*y1 + t*(1-u)*y2+t*u*y3+(1-t)*u*y4);
         }
     }
 
-
+    qWarning() << "Cache miss" << coordinate;
     foreach(auto mbtPtr, m_terrainMapTiles)
     {
         if (mbtPtr.isNull())

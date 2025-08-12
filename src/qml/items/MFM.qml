@@ -679,22 +679,24 @@ Item {
                     }
                 }
 
-                Item {
+                Control {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.fillHeight: true
-                    Layout.preferredWidth: 24
+                    Layout.preferredWidth: 26
 
                     Pane {
+                        Material.elevation: 1
+                        anchors.fill: parent
+                        anchors.bottomMargin: menuButton.bottomInset
+                        anchors.topMargin: menuButton.topInset
+
                         opacity: GlobalSettings.nightMode ? 0.3 : 1.0
                         visible: (!Global.currentVAC.isValid) && !scale.visible
-                        anchors.fill: parent
 
                         contentItem: Scale {
-                            id: leftScale
-
                             anchors.fill: parent
-                            color: Material.foreground
 
+                            color: Material.foreground
                             pixelPer10km: flightMap.pixelPer10km
                             vertical: true
                         }
@@ -949,7 +951,7 @@ Item {
 
                 pixelPer10km: flightMap.pixelPer10km
             }
-/*
+            /*
             SideView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true

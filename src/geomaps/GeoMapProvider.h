@@ -260,11 +260,11 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &position);
 
-    /*! \brief List of airspaces at a given location
+    /*! \brief List of airspaces at given locations
      *
      * @param positions List of Positions over which airspaces are searched for
      *
-     * @returns all airspaces that exist over a given position. For better
+     * @returns all airspaces that exist over one of the given positions. For better
      * cooperation with QML the list returns contains elements of type QObject*,
      * and not Airspace*.
      */
@@ -421,7 +421,7 @@ private:
     QCache<qint64,QImage> terrainTileCache {6}; // Hold 6 tiles, roughly 1.2MB
 
     // GeoJSON file
-    QString geoJSONCache {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviationData.json"};
+    QString geoJSONCache {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/aviationData.json"_s};
 };
 
 } // namespace GeoMaps

@@ -124,8 +124,11 @@ RawSideView {
     Label {
         anchors.centerIn: parent
 
-        text: rawSideView.error
+        text: qsTr("Unable to show side view.") + " " + rawSideView.error
         visible: rawSideView.error !== ""
+        width: 0.66*rawSideView.width
+        wrapMode: Text.WordWrap
+        horizontalAlignment: Text.AlignHCenter
 
         leftInset: -4
         rightInset: -4

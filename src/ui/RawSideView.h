@@ -20,8 +20,7 @@
 
 #pragma once
 
-#include <QQmlEngine>
-#include <QtQuick/QQuickPaintedItem>
+#include <QQuickItem>
 
 
 namespace Ui {
@@ -72,7 +71,6 @@ private:
 
     QProperty<QPointF> m_fiveMinuteBar;
 
-    QPolygonF computeTerrain();
     QProperty<QPolygonF> m_terrain;
 
     std::vector<QPropertyNotifier> notifiers;

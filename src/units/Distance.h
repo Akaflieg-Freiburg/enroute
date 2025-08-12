@@ -305,3 +305,4 @@ QDataStream& operator>>(QDataStream& stream, Units::Distance& distance);
 
 // Declare meta types
 Q_DECLARE_METATYPE(Units::Distance)
+Q_DECLARE_TYPEINFO(Units::Distance, Q_PRIMITIVE_TYPE);

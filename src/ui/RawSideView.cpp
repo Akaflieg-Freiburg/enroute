@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,62 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QPainter>
-#include <QElapsedTimer>
-#include <QFont>
-#include <QDebug>
-#include <QPen>
-#include <QRect>
-#include <QVector>
-#include <QtConcurrent>
-#include <QMutex>
-#include <QMutexLocker>
-
 #include "GeoMapProvider.h"
-#include "GlobalObject.h"
 #include "PositionProvider.h"
 #include "RawSideView.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 Ui::RawSideView::RawSideView(QQuickItem *parent)
     : QQuickItem(parent)
 {
-    //m_terrain.setBinding([this]() {return computeTerrain();});
-
     notifiers.push_back(bindableHeight().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(bindableWidth().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
     updateProperties();
-}
-
-
-QPolygonF Ui::RawSideView::computeTerrain()
-{
-    if (height() < 20)
-    {
-        return {};
-    }
-
-    auto info = GlobalObject::positionProvider()->positionInfo();
-    auto track = GlobalObject::positionProvider()->lastValidTT().toDEG();
-
-    QPolygonF polygon;
-
-    int x = 0;
-    int step = 5;
-    for(x = 0; x <= width()+step; x += step)
-    {
-        auto dist = 10000.0*(x-0.2*width())/(m_pixelPer10km.value());
-        auto position = info.coordinate().atDistanceAndAzimuth(dist, track);
-        auto elevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(position).toFeet();
-
-        auto y = height() * (1 - elevation/10000);
-
-        polygon << QPointF(x, y);
-    }
-
-    polygon  << QPointF(x, height()+20) << QPointF(0, height()+20);
-    return polygon;
 }
 
 void Ui::RawSideView::updateProperties()
@@ -126,7 +84,7 @@ void Ui::RawSideView::updateProperties()
         if (!elevation.isFinite())
         {
             elevation = Units::Distance::fromM(0.0);
-            m_error = tr("Incomplete terrain data. Pleas install the relevant terrain maps.");
+            m_error = tr("Incomplete terrain data. Please install the relevant terrain maps.");
         }
         elevations << elevation;
         if (elevation < minElevation)
@@ -139,28 +97,35 @@ void Ui::RawSideView::updateProperties()
         }
     }
 
-    auto sideview_minAlt = qMax(ownShipAltitude - Units::Distance::fromFT(3000.0), minElevation - Units::Distance::fromFT(100) );
+    auto sideview_minAlt = ownShipAltitude;
     auto sideview_maxAlt = ownShipAltitude;
     if (positionInfo.verticalSpeed().isFinite())
     {
         sideview_maxAlt += qMax(Units::Distance::fromFT(3000.0),
                                 Units::Distance::fromFT(positionInfo.verticalSpeed().toFPM()*7.5));
+        sideview_minAlt += qMin(Units::Distance::fromFT(-3000.0),
+                                Units::Distance::fromFT(positionInfo.verticalSpeed().toFPM()*7.5));
     }
     else
     {
         sideview_maxAlt += Units::Distance::fromFT(3000.0);
+        sideview_minAlt += Units::Distance::fromFT(-3000.0);
     }
+    sideview_minAlt = qMax(sideview_minAlt, minElevation - Units::Distance::fromFT(100) );
+
 
     auto altToYCoordinate = [this, sideview_minAlt, sideview_maxAlt](Units::Distance alt)
     {
         return ((double)height())*(sideview_maxAlt - alt) / (sideview_maxAlt - sideview_minAlt);
     };
 
-
     m_ownshipPosition = {width()*0.2, altToYCoordinate(ownShipAltitude) };
-    qWarning() << m_ownshipPosition.value();
 
-    m_fiveMinuteBar = {m_pixelPer10km.value()*(positionInfo.groundSpeed().toMPS()*5*60)/10000, -height()*positionInfo.verticalSpeed().toFPM()*5.0/((sideview_maxAlt - sideview_minAlt).toFeet())};
+    // Show 5-Minute-Bar, but only is groundspeed is known, and at least 10 kts
+    if (positionInfo.groundSpeed().isFinite() && (positionInfo.groundSpeed() > Units::Speed::fromKN(10)))
+    {
+        m_fiveMinuteBar = {m_pixelPer10km.value()*(positionInfo.groundSpeed().toMPS()*5*60)/10000, -height()*positionInfo.verticalSpeed().toFPM()*5.0/((sideview_maxAlt - sideview_minAlt).toFeet())};
+    }
 
     // Compute Terrain
     QPolygonF polygon;
@@ -173,4 +138,8 @@ void Ui::RawSideView::updateProperties()
     }
     polygon  << QPointF(width(), height()+20) << QPointF(0, height()+20);
     m_terrain = polygon;
+
+    //    m_error = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 }
+
+

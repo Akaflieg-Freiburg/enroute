@@ -665,19 +665,19 @@ Item {
             Item {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillHeight: true
-                Layout.preferredWidth: 24
+                Layout.preferredWidth: 26
 
                 Pane {
-                    opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-                    visible: (!Global.currentVAC.isValid) && !scale.visible
+                    Material.elevation: 1
                     anchors.fill: parent
 
+                    opacity: GlobalSettings.nightMode ? 0.3 : 1.0
+                    visible: (!Global.currentVAC.isValid) && !scale.visible
+
                     contentItem: Scale {
-                        id: leftScale
-
                         anchors.fill: parent
-                        color: Material.foreground
 
+                        color: Material.foreground
                         pixelPer10km: flightMap.pixelPer10km
                         vertical: true
                     }

@@ -71,7 +71,7 @@ void Ui::RawSideView::updateProperties()
     if (!track.isFinite())
     {
         track = Positioning::PositionProvider::lastValidTT();
-        m_track = u"Direction → %1°"_s.arg(qRound(track.toDEG()));
+        m_track = tr("Direction → %1°").arg(qRound(track.toDEG()));
     }
 
     // Compute elevations
@@ -143,7 +143,7 @@ void Ui::RawSideView::updateProperties()
     polygon  << QPointF(width(), height()+20) << QPointF(0, height()+20);
     m_terrain = polygon;
 
-    //    m_error = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    m_error = tr("Unable to compute vertical airspace boundaries because static pressure information is not available.");
 }
 
 

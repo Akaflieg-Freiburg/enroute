@@ -131,16 +131,12 @@ RawSideView {
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignHCenter
 
-        leftInset: -4
-        rightInset: -4
-        bottomInset: -1
-        topInset: -2
+        leftPadding: font.pixelSize/2.0
+        rightPadding: font.pixelSize/2.0
+        bottomPadding: font.pixelSize/4.0
+        topPadding: font.pixelSize/4.0
 
-        background: Rectangle {
-            border.color: "black"
-            border.width: 1
-            color: "white"
-        }
+        background: Pane { Material.elevation: 1 }
     }
 
 }

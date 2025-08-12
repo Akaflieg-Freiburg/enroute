@@ -38,14 +38,18 @@ void Ui::RawSideView::updateProperties()
 {
     const QScopedPropertyUpdateGroup updateLock;
 
-    auto positionInfo = GlobalObject::positionProvider()->positionInfo();
-
     m_fiveMinuteBar = {0, 0};
     m_ownshipPosition = {-100, -100};
     m_track = QString();
     m_error = QString();
     m_terrain = QPolygonF();
 
+    if (height() == 0.0)
+    {
+        return;
+    }
+
+    auto positionInfo = GlobalObject::positionProvider()->positionInfo();
     if (!positionInfo.isValid())
     {
         m_error = tr("No valid position data.");

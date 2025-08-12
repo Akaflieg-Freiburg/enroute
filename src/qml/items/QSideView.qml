@@ -37,6 +37,7 @@ RawSideView {
 
     Shape {
         preferredRendererType: Shape.CurveRenderer
+        asynchronous: true
 
         ShapePath {
             id: terrain

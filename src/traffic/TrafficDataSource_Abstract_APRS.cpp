@@ -82,15 +82,15 @@ void Traffic::TrafficDataSource_Abstract::processAPRS(const QString& data)
     QString callsign;
     if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM)
     {
-        callsign = GlobalObject::flarmnetDB()->getRegistration(QString(m_ognMessage.address));
+        callsign = GlobalObject::flarmnetDB()->getRegistration(QString(m_ognMessage.address.toString()));
     }
     else if (static_cast<int>(!m_ognMessage.flightnumber.empty()) != 0)
     {
-        callsign = QString(m_ognMessage.flightnumber);
+        callsign = QString(m_ognMessage.flightnumber.toString());
     }
     else if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::ICAO)
     {
-        callsign = transponderDB.getRegistration(QString(m_ognMessage.address));
+        callsign = transponderDB.getRegistration(QString(m_ognMessage.address.toString()));
     }
 #if OGN_SHOW_ADDRESSTYPE
     const QMetaEnum metaEnum = QMetaEnum::fromType<Traffic::Ogn::OgnAddressType>();

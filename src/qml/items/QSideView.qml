@@ -36,6 +36,8 @@ RawSideView {
     }
 
     Shape {
+        id: shp
+
         preferredRendererType: Shape.CurveRenderer
         asynchronous: true
 
@@ -48,6 +50,11 @@ RawSideView {
             PathPolyline { path: rawSideView.terrain }
         }
 
+        property double animatedFiveMinuteBarX: rawSideView.fiveMinuteBar.x
+        Behavior on animatedFiveMinuteBarX { NumberAnimation {duration: 1000} }
+        property double animatedFiveMinuteBarY: rawSideView.fiveMinuteBar.y
+        Behavior on animatedFiveMinuteBarY { NumberAnimation {duration: 1000} }
+
         ShapePath {
             id: fiveMinuteBar
             strokeWidth: 3
@@ -56,8 +63,8 @@ RawSideView {
             startX: rawSideView.ownshipPosition.x
             startY: rawSideView.ownshipPosition.y
             PathLine {
-                relativeX: rawSideView.fiveMinuteBar.x
-                relativeY: rawSideView.fiveMinuteBar.y
+                relativeX: shp.animatedFiveMinuteBarX
+                relativeY: shp.animatedFiveMinuteBarY
             }
         }
 
@@ -66,11 +73,11 @@ RawSideView {
             strokeWidth: 2
             strokeColor: "white"
 
-            startX: rawSideView.ownshipPosition.x + 0.2*rawSideView.fiveMinuteBar.x
-            startY: rawSideView.ownshipPosition.y + 0.2*rawSideView.fiveMinuteBar.y
+            startX: rawSideView.ownshipPosition.x + 0.2*shp.animatedFiveMinuteBarX
+            startY: rawSideView.ownshipPosition.y + 0.2*shp.animatedFiveMinuteBarY
             PathLine {
-                relativeX: 0.2*rawSideView.fiveMinuteBar.x
-                relativeY: 0.2*rawSideView.fiveMinuteBar.y
+                relativeX: 0.2*shp.animatedFiveMinuteBarX
+                relativeY: 0.2*shp.animatedFiveMinuteBarY
             }
         }
 
@@ -79,11 +86,11 @@ RawSideView {
             strokeWidth: 2
             strokeColor: "white"
 
-            startX: rawSideView.ownshipPosition.x + 0.6*rawSideView.fiveMinuteBar.x
-            startY: rawSideView.ownshipPosition.y + 0.6*rawSideView.fiveMinuteBar.y
+            startX: rawSideView.ownshipPosition.x + 0.6*shp.animatedFiveMinuteBarX
+            startY: rawSideView.ownshipPosition.y + 0.6*shp.animatedFiveMinuteBarY
             PathLine {
-                relativeX: 0.2*rawSideView.fiveMinuteBar.x
-                relativeY: 0.2*rawSideView.fiveMinuteBar.y
+                relativeX: 0.2*shp.animatedFiveMinuteBarX
+                relativeY: 0.2*shp.animatedFiveMinuteBarY
             }
         }
     }
@@ -94,9 +101,9 @@ RawSideView {
         x: rawSideView.ownshipPosition.x-width/2.0
         y: rawSideView.ownshipPosition.y-height/2.0
         rotation: {
-            if (rawSideView.fiveMinuteBar.x > 2)
+            if (shp.animatedFiveMinuteBarX > 2)
             {
-                return 90 + 360*Math.atan( rawSideView.fiveMinuteBar.y/rawSideView.fiveMinuteBar.x )/(2*Math.PI)
+                return 90 + 360*Math.atan( shp.animatedFiveMinuteBarY/shp.animatedFiveMinuteBarX )/(2*Math.PI)
             }
             return 90
         }

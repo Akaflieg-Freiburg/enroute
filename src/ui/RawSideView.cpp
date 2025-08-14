@@ -36,54 +36,94 @@ Ui::RawSideView::RawSideView(QQuickItem *parent)
 
 void Ui::RawSideView::updateProperties()
 {
+    //
+    // Set all properties to default values. We update those depending on the data we have available.
+    //
     const QScopedPropertyUpdateGroup updateLock;
-
     m_fiveMinuteBar = {0, 0};
     m_ownshipPosition = {-100, -100};
     m_track = QString();
     m_error = QString();
     m_terrain = QPolygonF();
 
-    if (height() == 0.0)
+    // If the side view is really small, safe CPU cycles by doing nothing
+    if (height() < 5.0)
     {
         return;
     }
 
-    auto positionInfo = GlobalObject::positionProvider()->positionInfo();
-    if (!positionInfo.isValid())
+    //
+    // Get data required in the drawing
+    //
+    auto ownshipCoordinate = Positioning::PositionProvider::lastValidCoordinate();
+    if (!ownshipCoordinate.isValid())
     {
         m_error = tr("No valid position data.");
         return;
     }
+    auto ownshipTerrainElevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(ownshipCoordinate);
+    if (!ownshipTerrainElevation.isFinite())
+    {
+        m_error = tr("No terrain data for current position. Please install the relevant terrain maps.");
+        return;
+    }
+    auto ownshipPositionInfo = GlobalObject::positionProvider()->positionInfo();
 
-    Units::Distance ownShipAltitude = positionInfo.trueAltitudeAMSL();
-    if (!ownShipAltitude.isFinite())
+    Units::Angle ownshipTrack;
+    if (ownshipPositionInfo.isValid() && ownshipPositionInfo.trueTrack().isFinite())
+    {
+        ownshipTrack = ownshipPositionInfo.trueTrack();
+    }
+    else
+    {
+        ownshipTrack = Positioning::PositionProvider::lastValidTT();
+        m_track = u"Direction → %1°"_s.arg( qRound(ownshipTrack.toDEG()));
+    }
+    if (!ownshipTrack.isFinite())
+    {
+        m_error = tr("No valid track data.");
+        m_track = QString();
+        return;
+    }
+    auto ownshipAltitude = Units::Distance::fromM(ownshipCoordinate.altitude());
+    if (!ownshipAltitude.isFinite())
     {
         m_error = tr("No valid altitude data.");
         return;
     }
-    if (ownShipAltitude < positionInfo.terrainElevationAMSL())
+    if (ownshipTerrainElevation.isFinite())
     {
-        ownShipAltitude = positionInfo.terrainElevationAMSL();
+        if (ownshipAltitude < ownshipTerrainElevation)
+        {
+            ownshipAltitude = ownshipTerrainElevation;
+        }
+    }
+    Units::Speed ownshipHSpeed;
+    Units::Speed ownshipVSpeed;
+    if (ownshipPositionInfo.isValid())
+    {
+        ownshipHSpeed = ownshipPositionInfo.groundSpeed();
+        ownshipVSpeed = ownshipPositionInfo.verticalSpeed();
+        if (!ownshipHSpeed.isFinite() || (ownshipHSpeed < Units::Speed::fromKN(10)))
+        {
+            // If horizontal speed is low, vertical speed info is typically too jittery to be
+            // useful. We just ignore it then.
+            ownshipVSpeed = {};
+        }
     }
 
-    auto track = positionInfo.trueTrack();
-    if (!track.isFinite())
-    {
-        track = Positioning::PositionProvider::lastValidTT();
-        m_track = tr("Direction → %1°").arg(qRound(track.toDEG()));
-    }
-
-    // Compute elevations
+    //
+    // Compute ground elevations
+    //
     QVector<Units::Distance> elevations;
-    Units::Distance minElevation = ownShipAltitude;
-    Units::Distance maxElevation = ownShipAltitude;
+    Units::Distance minElevation = ownshipTerrainElevation;
+    Units::Distance maxElevation = ownshipTerrainElevation;
     const int step = 1;
     elevations.reserve(qRound(width()/step)+1);
     for(int x = 0; x <= width()+step; x += step)
     {
         auto dist = 10000.0*(x-0.2*width())/(m_pixelPer10km.value());
-        auto position = positionInfo.coordinate().atDistanceAndAzimuth(dist, track.toDEG());
+        auto position = ownshipPositionInfo.coordinate().atDistanceAndAzimuth(dist, ownshipTrack.toDEG());
         auto elevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(position);
         if (!elevation.isFinite())
         {
@@ -101,37 +141,44 @@ void Ui::RawSideView::updateProperties()
         }
     }
 
-    auto sideview_minAlt = ownShipAltitude;
-    auto sideview_maxAlt = ownShipAltitude;
-    if (positionInfo.verticalSpeed().isFinite())
+    //
+    // Compute minimum and maximum altitude shown in the QML item,
+    // generate function altToYCoordinate() that computes pixel coordinate from altitude
+    //
+    auto sideview_minAlt = ownshipAltitude;
+    auto sideview_maxAlt = ownshipAltitude;
+    if (ownshipPositionInfo.verticalSpeed().isFinite())
     {
         sideview_maxAlt += qMax(Units::Distance::fromFT(3000.0),
-                                Units::Distance::fromFT(positionInfo.verticalSpeed().toFPM()*7.5));
+                                Units::Distance::fromFT(ownshipPositionInfo.verticalSpeed().toFPM()*7.5));
         sideview_minAlt += qMin(Units::Distance::fromFT(-3000.0),
-                                Units::Distance::fromFT(positionInfo.verticalSpeed().toFPM()*7.5));
+                                Units::Distance::fromFT(ownshipPositionInfo.verticalSpeed().toFPM()*7.5));
     }
     else
     {
         sideview_maxAlt += Units::Distance::fromFT(3000.0);
         sideview_minAlt += Units::Distance::fromFT(-3000.0);
     }
-    sideview_minAlt = qMax(sideview_minAlt, minElevation - Units::Distance::fromFT(100) );
-
-
+    sideview_minAlt = qMax(sideview_minAlt, minElevation - Units::Distance::fromFT(100));
     auto altToYCoordinate = [this, sideview_minAlt, sideview_maxAlt](Units::Distance alt)
     {
         return ((double)height())*(sideview_maxAlt - alt) / (sideview_maxAlt - sideview_minAlt);
     };
 
-    m_ownshipPosition = {width()*0.2, altToYCoordinate(ownShipAltitude) };
+    //
+    // Compute graphics data
+    //
 
-    // Show 5-Minute-Bar, but only if groundspeed is known and at least 10 kts
-    if (positionInfo.groundSpeed().isFinite() && (positionInfo.groundSpeed() > Units::Speed::fromKN(10)))
+    // Ownship position
+    m_ownshipPosition = {width()*0.2, altToYCoordinate(ownshipAltitude)};
+
+    // 5-Minute-Bar
+    if (ownshipVSpeed.isFinite() && ownshipHSpeed.isFinite())
     {
-        m_fiveMinuteBar = {m_pixelPer10km.value()*(positionInfo.groundSpeed().toMPS()*5*60)/10000, -height()*positionInfo.verticalSpeed().toFPM()*5.0/((sideview_maxAlt - sideview_minAlt).toFeet())};
+        m_fiveMinuteBar = {m_pixelPer10km.value()*(ownshipHSpeed.toMPS()*5*60)/10000, -height()*ownshipVSpeed.toFPM()*5.0/((sideview_maxAlt - sideview_minAlt).toFeet())};
     }
 
-    // Compute Terrain
+    // Terrain
     QPolygonF polygon;
     polygon.reserve( elevations.size()+4 );
     for(int i = 0; i < elevations.size(); i++)
@@ -143,7 +190,7 @@ void Ui::RawSideView::updateProperties()
     polygon  << QPointF(width(), height()+20) << QPointF(0, height()+20);
     m_terrain = polygon;
 
-    m_error = tr("Unable to compute vertical airspace boundaries because static pressure information is not available.");
+    //m_error = tr("Unable to compute vertical airspace boundaries because static pressure information is not available.");
 }
 
 

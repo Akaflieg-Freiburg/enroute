@@ -125,7 +125,7 @@ void Ui::RawSideView::updateProperties()
 
     m_ownshipPosition = {width()*0.2, altToYCoordinate(ownShipAltitude) };
 
-    // Show 5-Minute-Bar, but only is groundspeed is known, and at least 10 kts
+    // Show 5-Minute-Bar, but only if groundspeed is known and at least 10 kts
     if (positionInfo.groundSpeed().isFinite() && (positionInfo.groundSpeed() > Units::Speed::fromKN(10)))
     {
         m_fiveMinuteBar = {m_pixelPer10km.value()*(positionInfo.groundSpeed().toMPS()*5*60)/10000, -height()*positionInfo.verticalSpeed().toFPM()*5.0/((sideview_maxAlt - sideview_minAlt).toFeet())};

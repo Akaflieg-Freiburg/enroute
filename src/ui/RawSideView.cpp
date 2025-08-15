@@ -113,18 +113,36 @@ void Ui::RawSideView::updateProperties()
     }
 
     //
-    // Compute ground elevations
+    // Compute array of x-coordinates in pixels.
     //
-    QVector<Units::Distance> elevations;
-    Units::Distance minElevation = ownshipTerrainElevation;
-    Units::Distance maxElevation = ownshipTerrainElevation;
-    const int step = 1;
-    elevations.reserve(qRound(width()/step)+1);
-    for(int x = 0; x <= width()+step; x += step)
+    const int step = 5.0;
+    QList<int> xCoordinates;
+    xCoordinates.reserve( qRound((width()+20)/step) );
+    for(int x = -10; x <= width()+10; x += step)
+    {
+        xCoordinates << x;
+    }
+
+    //
+    // For each x-coordinate, compute the associated QGeoCoordinate
+    //
+    QList<QGeoCoordinate> geoCoordinates;
+    geoCoordinates.reserve(xCoordinates.size());
+    for(auto x : std::as_const(xCoordinates))
     {
         auto dist = 10000.0*(x-0.2*width())/(m_pixelPer10km.value());
-        auto position = ownshipPositionInfo.coordinate().atDistanceAndAzimuth(dist, ownshipTrack.toDEG());
-        auto elevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(position);
+        auto geoCoordinate = ownshipCoordinate.atDistanceAndAzimuth(dist, ownshipTrack.toDEG());
+        geoCoordinates << geoCoordinate;
+    }
+
+    // For each geoCoordinate, compute the elevation
+    QList<Units::Distance> elevations;
+    elevations.reserve(geoCoordinates.size());
+    Units::Distance minElevation = ownshipTerrainElevation;
+    Units::Distance maxElevation = ownshipTerrainElevation;
+    for(const auto& geoCoordinate : std::as_const(geoCoordinates))
+    {
+        auto elevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(geoCoordinate);
         if (!elevation.isFinite())
         {
             elevation = Units::Distance::fromM(0.0);
@@ -183,11 +201,9 @@ void Ui::RawSideView::updateProperties()
     polygon.reserve( elevations.size()+4 );
     for(int i = 0; i < elevations.size(); i++)
     {
-        auto elevation = elevations[i];
-        auto y = altToYCoordinate(elevation);
-        polygon << QPointF(i*step, y);
+        polygon << QPointF(xCoordinates[i], altToYCoordinate(elevations[i]));
     }
-    polygon  << QPointF(width(), height()+20) << QPointF(0, height()+20);
+    polygon  << QPointF(width(), height()+20) << QPointF(-20, height()+20);
     m_terrain = polygon;
 
     //m_error = tr("Unable to compute vertical airspace boundaries because static pressure information is not available.");

@@ -24,6 +24,9 @@
 
 using namespace Qt::Literals::StringLiterals;
 
+QStringList airspaceCategories = {"TMZ", "RMZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R", "P"};
+
+
 Ui::RawSideView::RawSideView(QQuickItem *parent)
     : QQuickItem(parent)
 {
@@ -45,6 +48,7 @@ void Ui::RawSideView::updateProperties()
     m_track = QString();
     m_error = QString();
     m_terrain = QPolygonF();
+    m_airspaces = QVector<QPolygonF>();
 
     // If the side view is really small, safe CPU cycles by doing nothing
     if (height() < 5.0)
@@ -115,7 +119,7 @@ void Ui::RawSideView::updateProperties()
     //
     // Compute array of x-coordinates in pixels.
     //
-    const int step = 5.0;
+    const int step = 2.0;
     QList<int> xCoordinates;
     xCoordinates.reserve( qRound((width()+20)/step) );
     for(int x = -10; x <= width()+10; x += step)
@@ -205,6 +209,44 @@ void Ui::RawSideView::updateProperties()
     }
     polygon  << QPointF(width(), height()+20) << QPointF(-20, height()+20);
     m_terrain = polygon;
+
+    // Airspaces
+    auto airspaces = GlobalObject::geoMapProvider()->airspaces();
+    QVector<QPolygonF> airspacePolygons;
+    QList<QPointF> upper;
+    QList<QPointF> lower;
+    for(const auto& airspace : std::as_const(airspaces))
+    {
+        if (!airspaceCategories.contains(airspace.CAT()))
+        {
+            continue;
+        }
+        auto airspacePolygon = airspace.polygon();
+        for(int i=0; i < xCoordinates.size(); i++)
+        {
+            auto x = xCoordinates[i];
+            auto geoCoordinate = geoCoordinates[i];
+            if ((i != xCoordinates.size()-1) && airspacePolygon.contains(geoCoordinate))
+            {
+                int ele = qRound(elevations[i].toFeet());
+                upper << QPointF(x, altToYCoordinate(airspace.estimatedUpperBoundMSL(ele)));
+                lower << QPointF(x, altToYCoordinate(airspace.estimatedLowerBoundMSL(ele)));
+            }
+            else
+            {
+                if (!upper.isEmpty())
+                {
+                    std::reverse(lower.begin(), lower.end());
+                    QPolygonF polygon(upper + lower);
+                    polygon << upper[0];
+                    airspacePolygons << polygon;
+                    upper.clear();
+                    lower.clear();
+                }
+            }
+        }
+    }
+    m_airspaces = airspacePolygons;
 
     //m_error = tr("Unable to compute vertical airspace boundaries because static pressure information is not available.");
 }

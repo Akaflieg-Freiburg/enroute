@@ -50,6 +50,15 @@ RawSideView {
             PathPolyline { path: rawSideView.terrain }
         }
 
+        ShapePath {
+            id: airspaces
+            strokeWidth: 1
+            strokeColor: "black"
+            fillColor: "transparent"
+
+            PathMultiline { paths: rawSideView.airspaces }
+        }
+
         property double animatedFiveMinuteBarX: rawSideView.fiveMinuteBar.x
         Behavior on animatedFiveMinuteBarX { NumberAnimation {duration: 1000} }
         property double animatedFiveMinuteBarY: rawSideView.fiveMinuteBar.y

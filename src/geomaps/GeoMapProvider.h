@@ -250,6 +250,9 @@ public:
     // Methods
     //
 
+#warning
+    [[nodiscard]] Q_INVOKABLE QList<Airspace> airspaces() {return _airspaces_;}
+
     /*! \brief List of airspaces at a given location
      *
      * @param position Position over which airspaces are searched for

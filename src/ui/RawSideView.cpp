@@ -48,7 +48,9 @@ void Ui::RawSideView::updateProperties()
     m_track = QString();
     m_error = QString();
     m_terrain = QPolygonF();
-    m_airspaces = QVector<QPolygonF>();
+    m_airspacesA = QVector<QPolygonF>();
+    m_airspacesCTR = QVector<QPolygonF>();
+    m_airspacesR = QVector<QPolygonF>();
 
     // If the side view is really small, safe CPU cycles by doing nothing
     if (height() < 5.0)
@@ -119,7 +121,7 @@ void Ui::RawSideView::updateProperties()
     //
     // Compute array of x-coordinates in pixels.
     //
-    const int step = 2.0;
+    const int step = 4.0;
     QList<int> xCoordinates;
     xCoordinates.reserve( qRound((width()+20)/step) );
     for(int x = -10; x <= width()+10; x += step)
@@ -212,7 +214,9 @@ void Ui::RawSideView::updateProperties()
 
     // Airspaces
     auto airspaces = GlobalObject::geoMapProvider()->airspaces();
-    QVector<QPolygonF> airspacePolygons;
+    QVector<QPolygonF> airspacePolygonsA;
+    QVector<QPolygonF> airspacePolygonsCTR;
+    QVector<QPolygonF> airspacePolygonsR;
     QList<QPointF> upper;
     QList<QPointF> lower;
     for(const auto& airspace : std::as_const(airspaces))
@@ -239,14 +243,27 @@ void Ui::RawSideView::updateProperties()
                     std::reverse(lower.begin(), lower.end());
                     QPolygonF polygon(upper + lower);
                     polygon << upper[0];
-                    airspacePolygons << polygon;
+                    if ((airspace.CAT() == "A") || (airspace.CAT() == "B") || (airspace.CAT() == "C") || (airspace.CAT() == "D"))
+                    {
+                        airspacePolygonsA << polygon;
+                    }
+                    if (airspace.CAT() == "CTR")
+                    {
+                        airspacePolygonsCTR << polygon;
+                    }
+                    if ((airspace.CAT() == "R") || (airspace.CAT() == "P") || (airspace.CAT() == "DNG"))
+                    {
+                        airspacePolygonsR << polygon;
+                    }
                     upper.clear();
                     lower.clear();
                 }
             }
         }
     }
-    m_airspaces = airspacePolygons;
+    m_airspacesA = airspacePolygonsA;
+    m_airspacesCTR = airspacePolygonsCTR;
+    m_airspacesR = airspacePolygonsR;
 
     //m_error = tr("Unable to compute vertical airspace boundaries because static pressure information is not available.");
 }

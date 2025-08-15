@@ -46,9 +46,17 @@ public:
     QPolygonF terrain() {return m_terrain.value();}
     QBindable<QPolygonF> bindableTerrain() {return &m_terrain;}
 
-    Q_PROPERTY(QVector<QPolygonF> airspaces READ airspaces BINDABLE bindableAirspaces)
-    QVector<QPolygonF> airspaces() {return m_airspaces.value();}
-    QBindable<QVector<QPolygonF>> bindableAirspaces() {return &m_airspaces;}
+    Q_PROPERTY(QVector<QPolygonF> airspacesCTR READ airspacesCTR BINDABLE bindableAirspacesCTR)
+    QVector<QPolygonF> airspacesCTR() {return m_airspacesCTR.value();}
+    QBindable<QVector<QPolygonF>> bindableAirspacesCTR() {return &m_airspacesCTR;}
+
+    Q_PROPERTY(QVector<QPolygonF> airspacesA READ airspacesA BINDABLE bindableAirspacesA)
+    QVector<QPolygonF> airspacesA() {return m_airspacesA.value();}
+    QBindable<QVector<QPolygonF>> bindableAirspacesA() {return &m_airspacesA;}
+
+    Q_PROPERTY(QVector<QPolygonF> airspacesR READ airspacesR BINDABLE bindableAirspacesR)
+    QVector<QPolygonF> airspacesR() {return m_airspacesR.value();}
+    QBindable<QVector<QPolygonF>> bindableAirspacesR() {return &m_airspacesR;}
 
     Q_PROPERTY(QPointF fiveMinuteBar READ fiveMinuteBar BINDABLE bindableFiveMinuteBar)
     QPointF fiveMinuteBar() {return m_fiveMinuteBar.value();}
@@ -77,7 +85,9 @@ private:
 
     QProperty<QPolygonF> m_terrain;
 
-    QProperty<QVector<QPolygonF>> m_airspaces;
+    QProperty<QVector<QPolygonF>> m_airspacesA;
+    QProperty<QVector<QPolygonF>> m_airspacesCTR;
+    QProperty<QVector<QPolygonF>> m_airspacesR;
 
     std::vector<QPropertyNotifier> notifiers;
 

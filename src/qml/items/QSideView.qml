@@ -51,12 +51,35 @@ RawSideView {
         }
 
         ShapePath {
-            id: airspaces
-            strokeWidth: 1
-            strokeColor: "black"
-            fillColor: "transparent"
+            id: airspacesA
+            strokeWidth: 2
+            strokeColor: "blue"
+            fillColor: "#330000FF"
+            fillRule: ShapePath.WindingFill
 
-            PathMultiline { paths: rawSideView.airspaces }
+            PathMultiline { paths: rawSideView.airspacesA }
+        }
+
+        ShapePath {
+            id: airspacesR
+            strokeWidth: 2
+            strokeColor: "red"
+            fillColor: "#33FF0000"
+            fillRule: ShapePath.WindingFill
+
+            PathMultiline { paths: rawSideView.airspacesR }
+        }
+
+        ShapePath {
+            id: airspacesCTR
+            strokeWidth: 2
+            strokeColor: "blue"
+            fillColor: "#33FF0000"
+            dashPattern: [4,3]
+            strokeStyle: ShapePath.DashLine
+            fillRule: ShapePath.WindingFill
+
+            PathMultiline { paths: rawSideView.airspacesCTR }
         }
 
         property double animatedFiveMinuteBarX: rawSideView.fiveMinuteBar.x

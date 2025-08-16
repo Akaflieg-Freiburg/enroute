@@ -58,6 +58,22 @@ public:
     QVector<QPolygonF> airspacesR() {return m_airspacesR.value();}
     QBindable<QVector<QPolygonF>> bindableAirspacesR() {return &m_airspacesR;}
 
+    Q_PROPERTY(QVector<QPolygonF> airspacesRMZ READ airspacesRMZ BINDABLE bindableAirspacesRMZ)
+    QVector<QPolygonF> airspacesRMZ() {return m_airspacesRMZ.value();}
+    QBindable<QVector<QPolygonF>> bindableAirspacesRMZ() {return &m_airspacesRMZ;}
+
+    Q_PROPERTY(QVector<QPolygonF> airspacesNRA READ airspacesNRA BINDABLE bindableAirspacesNRA)
+    QVector<QPolygonF> airspacesNRA() {return m_airspacesNRA.value();}
+    QBindable<QVector<QPolygonF>> bindableAirspacesNRA() {return &m_airspacesNRA;}
+
+    Q_PROPERTY(QVector<QPolygonF> airspacesPJE READ airspacesPJE BINDABLE bindableAirspacesPJE)
+    QVector<QPolygonF> airspacesPJE() {return m_airspacesPJE.value();}
+    QBindable<QVector<QPolygonF>> bindableAirspacesPJE() {return &m_airspacesPJE;}
+
+    Q_PROPERTY(QVector<QPolygonF> airspacesTMZ READ airspacesTMZ BINDABLE bindableAirspacesTMZ)
+    QVector<QPolygonF> airspacesTMZ() {return m_airspacesTMZ.value();}
+    QBindable<QVector<QPolygonF>> bindableAirspacesTMZ() {return &m_airspacesTMZ;}
+
     Q_PROPERTY(QPointF fiveMinuteBar READ fiveMinuteBar BINDABLE bindableFiveMinuteBar)
     QPointF fiveMinuteBar() {return m_fiveMinuteBar.value();}
     QBindable<QPointF> bindableFiveMinuteBar() {return &m_fiveMinuteBar;}
@@ -71,8 +87,9 @@ public:
     QBindable<double> bindablePixelPer10km() {return &m_pixelPer10km;}
     void setPixelPer10km(double newVal) {m_pixelPer10km = newVal;}
 
+    Q_INVOKABLE void updateProperties();
+
 private:
-    void updateProperties();
 
     QProperty<QString> m_error;
     QProperty<QString> m_track;
@@ -88,6 +105,10 @@ private:
     QProperty<QVector<QPolygonF>> m_airspacesA;
     QProperty<QVector<QPolygonF>> m_airspacesCTR;
     QProperty<QVector<QPolygonF>> m_airspacesR;
+    QProperty<QVector<QPolygonF>> m_airspacesRMZ;
+    QProperty<QVector<QPolygonF>> m_airspacesNRA;
+    QProperty<QVector<QPolygonF>> m_airspacesPJE;
+    QProperty<QVector<QPolygonF>> m_airspacesTMZ;
 
     std::vector<QPropertyNotifier> notifiers;
 

@@ -30,6 +30,9 @@ RawSideView {
     clip: true
     pixelPer10km: flightMap.pixelPer10km
 
+    onWidthChanged: Qt.callLater( updateProperties )
+    onHeightChanged: Qt.callLater( updateProperties )
+
     Rectangle {
         anchors.fill: parent
         color: "lightblue"
@@ -51,23 +54,95 @@ RawSideView {
         }
 
         ShapePath {
+            id: airspacesABorder
+            strokeWidth: 10
+            strokeColor: "#330000FF"
+            fillColor: "transparent"
+
+            PathMultiline { paths: rawSideView.airspacesA }
+        }
+
+        ShapePath {
             id: airspacesA
             strokeWidth: 2
             strokeColor: "blue"
-            fillColor: "#330000FF"
-            fillRule: ShapePath.WindingFill
+            fillColor: "transparent"
+            //fillColor: "#330000FF"
+            //fillRule: ShapePath.WindingFill
 
             PathMultiline { paths: rawSideView.airspacesA }
+        }
+
+        ShapePath {
+            id: airspacesRBorder
+            strokeWidth: 10
+            strokeColor: "#33FF0000"
+            fillColor: "transparent"
+            fillRule: ShapePath.WindingFill
+
+            PathMultiline { paths: rawSideView.airspacesR }
         }
 
         ShapePath {
             id: airspacesR
             strokeWidth: 2
             strokeColor: "red"
-            fillColor: "#33FF0000"
-            fillRule: ShapePath.WindingFill
+            fillColor: "transparent"
 
             PathMultiline { paths: rawSideView.airspacesR }
+        }
+
+        ShapePath {
+            id: airspacesPJE
+            strokeWidth: 2
+            strokeColor: "red"
+            fillColor: "transparent"
+            dashPattern: [4,3]
+            strokeStyle: ShapePath.DashLine
+
+            PathMultiline { paths: rawSideView.airspacesPJE }
+        }
+
+        ShapePath {
+            id: airspacesTMZ
+            strokeWidth: 2
+            strokeColor: "black"
+            fillColor: "transparent"
+            dashPattern: [4.0, 3.0, 0.5, 3.0]
+            strokeStyle: ShapePath.DashLine
+
+            PathMultiline { paths: rawSideView.airspacesTMZ }
+        }
+
+        ShapePath {
+            id: airspacesNRABorder
+            strokeWidth: 10
+            strokeColor: "#3300FF00"
+            fillColor: "transparent"
+            fillRule: ShapePath.WindingFill
+
+            PathMultiline { paths: rawSideView.airspacesNRA }
+        }
+
+        ShapePath {
+            id: airspacesNRA
+            strokeWidth: 2
+            strokeColor: "green"
+            fillColor: "transparent"
+
+            PathMultiline { paths: rawSideView.airspacesNRA }
+        }
+
+        ShapePath {
+            id: airspacesRMZ
+            strokeWidth: 2
+            strokeColor: "blue"
+            fillColor: "#330000FF"
+            dashPattern: [4,3]
+            strokeStyle: ShapePath.DashLine
+            fillRule: ShapePath.WindingFill
+
+            PathMultiline { paths: rawSideView.airspacesRMZ }
         }
 
         ShapePath {

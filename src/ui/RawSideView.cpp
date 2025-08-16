@@ -24,14 +24,12 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-QStringList airspaceCategories = {"TMZ", "RMZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R", "P"};
+QStringList airspaceCategories = {"TMZ", "RMZ", "TIA", "TIZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R", "P", "PJE"};
 
 
 Ui::RawSideView::RawSideView(QQuickItem *parent)
     : QQuickItem(parent)
 {
-    notifiers.push_back(bindableHeight().addNotifier([this]() {updateProperties();}));
-    notifiers.push_back(bindableWidth().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
     updateProperties();
@@ -51,6 +49,10 @@ void Ui::RawSideView::updateProperties()
     m_airspacesA = QVector<QPolygonF>();
     m_airspacesCTR = QVector<QPolygonF>();
     m_airspacesR = QVector<QPolygonF>();
+    m_airspacesRMZ = QVector<QPolygonF>();
+    m_airspacesNRA = QVector<QPolygonF>();
+    m_airspacesPJE = QVector<QPolygonF>();
+    m_airspacesTMZ = QVector<QPolygonF>();
 
     // If the side view is really small, safe CPU cycles by doing nothing
     if (height() < 5.0)
@@ -217,6 +219,10 @@ void Ui::RawSideView::updateProperties()
     QVector<QPolygonF> airspacePolygonsA;
     QVector<QPolygonF> airspacePolygonsCTR;
     QVector<QPolygonF> airspacePolygonsR;
+    QVector<QPolygonF> airspacePolygonsRMZ;
+    QVector<QPolygonF> airspacePolygonsNRA;
+    QVector<QPolygonF> airspacePolygonsPJE;
+    QVector<QPolygonF> airspacePolygonsTMZ;
     QList<QPointF> upper;
     QList<QPointF> lower;
     for(const auto& airspace : std::as_const(airspaces))
@@ -255,6 +261,22 @@ void Ui::RawSideView::updateProperties()
                     {
                         airspacePolygonsR << polygon;
                     }
+                    if ((airspace.CAT() == "RMZ") || (airspace.CAT() == "TIA") || (airspace.CAT() == "TIZ"))
+                    {
+                        airspacePolygonsRMZ << polygon;
+                    }
+                    if (airspace.CAT() == "NRA")
+                    {
+                        airspacePolygonsNRA << polygon;
+                    }
+                    if (airspace.CAT() == "PJE")
+                    {
+                        airspacePolygonsPJE << polygon;
+                    }
+                    if (airspace.CAT() == "TMZ")
+                    {
+                        airspacePolygonsTMZ << polygon;
+                    }
                     upper.clear();
                     lower.clear();
                 }
@@ -264,6 +286,10 @@ void Ui::RawSideView::updateProperties()
     m_airspacesA = airspacePolygonsA;
     m_airspacesCTR = airspacePolygonsCTR;
     m_airspacesR = airspacePolygonsR;
+    m_airspacesRMZ = airspacePolygonsRMZ;
+    m_airspacesNRA = airspacePolygonsNRA;
+    m_airspacesPJE = airspacePolygonsPJE;
+    m_airspacesTMZ = airspacePolygonsTMZ;
 
     //m_error = tr("Unable to compute vertical airspace boundaries because static pressure information is not available.");
 }

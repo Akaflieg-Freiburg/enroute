@@ -67,8 +67,6 @@ RawSideView {
             strokeWidth: 2
             strokeColor: "blue"
             fillColor: "transparent"
-            //fillColor: "#330000FF"
-            //fillRule: ShapePath.WindingFill
 
             PathMultiline { paths: rawSideView.airspacesA }
         }

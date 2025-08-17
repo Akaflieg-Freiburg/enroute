@@ -74,6 +74,10 @@ public:
     QVector<QPolygonF> airspacesTMZ() {return m_airspacesTMZ.value();}
     QBindable<QVector<QPolygonF>> bindableAirspacesTMZ() {return &m_airspacesTMZ;}
 
+    Q_PROPERTY(QVariantMap airspaces READ airspaces BINDABLE bindableAirspaces)
+    QVariantMap airspaces() {return m_airspaces.value();}
+    QBindable<QVariantMap> bindableAirspaces() {return &m_airspaces;}
+
     Q_PROPERTY(QPointF fiveMinuteBar READ fiveMinuteBar BINDABLE bindableFiveMinuteBar)
     QPointF fiveMinuteBar() {return m_fiveMinuteBar.value();}
     QBindable<QPointF> bindableFiveMinuteBar() {return &m_fiveMinuteBar;}
@@ -82,7 +86,7 @@ public:
     QPointF ownshipPosition() {return m_ownshipPosition.value();}
     QBindable<QPointF> bindableOwnshipPosition() {return &m_ownshipPosition;}
 
-    Q_PROPERTY(double pixelPer10km READ pixelPer10km WRITE setPixelPer10km BINDABLE bindablePixelPer10km)
+    Q_PROPERTY(double pixelPer10km READ pixelPer10km WRITE setPixelPer10km BINDABLE bindablePixelPer10km REQUIRED)
     double pixelPer10km() {return m_pixelPer10km.value();}
     QBindable<double> bindablePixelPer10km() {return &m_pixelPer10km;}
     void setPixelPer10km(double newVal) {m_pixelPer10km = newVal;}
@@ -90,7 +94,6 @@ public:
     Q_INVOKABLE void updateProperties();
 
 private:
-
     QProperty<QString> m_error;
     QProperty<QString> m_track;
 
@@ -109,6 +112,7 @@ private:
     QProperty<QVector<QPolygonF>> m_airspacesNRA;
     QProperty<QVector<QPolygonF>> m_airspacesPJE;
     QProperty<QVector<QPolygonF>> m_airspacesTMZ;
+    QProperty<QVariantMap> m_airspaces;
 
     std::vector<QPropertyNotifier> notifiers;
 

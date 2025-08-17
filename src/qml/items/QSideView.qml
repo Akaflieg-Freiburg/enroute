@@ -34,6 +34,7 @@ RawSideView {
     onHeightChanged: Qt.callLater( updateProperties )
 
     Rectangle {
+        id: sky
         anchors.fill: parent
         color: "lightblue"
     }
@@ -152,7 +153,7 @@ RawSideView {
             strokeStyle: ShapePath.DashLine
             fillRule: ShapePath.WindingFill
 
-            PathMultiline { paths: rawSideView.airspacesCTR }
+            PathMultiline { paths: rawSideView.airspaces['CTR'] }
         }
 
         property double animatedFiveMinuteBarX: rawSideView.fiveMinuteBar.x
@@ -201,7 +202,7 @@ RawSideView {
     }
 
     Image {
-        id: imageOP
+        id: ownShip
 
         x: rawSideView.ownshipPosition.x-width/2.0
         y: rawSideView.ownshipPosition.y-height/2.0
@@ -229,12 +230,16 @@ RawSideView {
     }
 
     Label {
+        id: trackLabel
+
         x: rawSideView.width*0.1
         text: rawSideView.track
         visible: rawSideView.track !== ""
     }
 
     Label {
+        id: errorLabel
+
         anchors.centerIn: parent
 
         text: qsTr("Unable to show side view.") + " " + rawSideView.error

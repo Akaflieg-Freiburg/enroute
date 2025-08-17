@@ -207,7 +207,7 @@ void Ui::RawSideView::updateProperties()
     // Terrain
     QPolygonF polygon;
     polygon.reserve( elevations.size()+4 );
-    for(int i = 0; i < elevations.size(); i++)
+    for(qsizetype i = 0; i < elevations.size(); i++)
     {
         polygon << QPointF(xCoordinates[i], altToYCoordinate(elevations[i]));
     }
@@ -290,6 +290,10 @@ void Ui::RawSideView::updateProperties()
     m_airspacesNRA = airspacePolygonsNRA;
     m_airspacesPJE = airspacePolygonsPJE;
     m_airspacesTMZ = airspacePolygonsTMZ;
+
+    QVariantMap newAirspaces;
+    newAirspaces["CTR"] = QVariant::fromValue(airspacePolygonsCTR);
+    m_airspaces = newAirspaces;
 
     //m_error = tr("Unable to compute vertical airspace boundaries because static pressure information is not available.");
 }

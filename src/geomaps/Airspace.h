@@ -50,53 +50,79 @@ public:
      */
     explicit Airspace(const QJsonObject &geoJSONObject);
 
-    /*! \brief Estimates the lower limit of the airspace, as a geometric altitude above MSL
+    /*! \brief Estimates the lower limit of the airspace, as a geometric
+     * altitude above MSL
      *
-     * This method estimates the lower limit of the airspace at a given point, as a geometric altitude above MSL. Since many airspace
-     * boundaries are defined as barometric altitudes (above standard or QNH pressure level), the method needs to know
-     * QNH and the ownship geometric and barometric altitude in order to provide an estimate that is good enough to judge
+     * This method estimates the lower limit of the airspace at a given point,
+     * as a geometric altitude above MSL. Since many airspace boundaries are
+     * defined as barometric altitudes (above standard or QNH pressure level),
+     * the method needs to know QNH and the ownship geometric and barometric
+     * altitude in order to provide an estimate that is good enough to judge
      * vertical distances to airspaces.
      *
-     * In cases where no precision is required, you can set ownshipGeometricAltitude and ownshipBarometricAltitude to Units::Distance::fromFT(0). Depending on weather,
-     * this will lead to an error of about 5-10%, but we have seen days when the error was larger than 15%.
+     * In cases where no precision is required, you can set
+     * ownshipGeometricAltitude and ownshipBarometricAltitude to
+     * Units::Distance::fromFT(0). Depending on weather, this will lead to an
+     * error of about 5-10%, but we have seen days when the error was larger
+     * than 15%.
      *
-     * @param terrainElevation Elevation of the terrain at the given point. This is used when the airspace limit is defined AGL.
+     * @param terrainElevation Elevation of the terrain at the given point. This
+     * is used when the airspace limit is defined AGL.
      *
-     * @param QNH. This datum is used when the airspace limit is defined as above QNH.
+     * @param QNH. This datum is used when the airspace limit is defined as
+     * above QNH.
      *
-     * @param ownshipGeometricAltitude Geometric altitude of the own aircraft. This datum is used when the airspace limit is defined as a flight level or above QNH, to ensure
-     * that the estimate is precise for airspaces limits close to the ownship.
+     * @param ownshipGeometricAltitude Geometric altitude of the own aircraft.
+     * This datum is used when the airspace limit is defined as a flight level
+     * or above QNH, to ensure that the estimate is precise for airspaces limits
+     * close to the ownship.
      *
-     * @param ownshipBarometricAltitude Barometric altitude of the own aircraft.  This datum is used when the airspace limit is defined as a flight level or above QNH, to ensure
-     * that the estimate is precise for airspaces limits close to the ownship.
+     * @param ownshipBarometricAltitude Barometric altitude of the own aircraft.
+     * This datum is used when the airspace limit is defined as a flight level
+     * or above QNH, to ensure that the estimate is precise for airspaces limits
+     * close to the ownship.
      *
-     * @returns Estimated lower bound of the airspace, as a geometric altitude above MSL. If no meaningful bound can be computed, a
-     * default-constructed distance is returned.
+     * @returns Estimated lower bound of the airspace, as a geometric altitude
+     * above MSL. If no meaningful bound can be computed, a default-constructed
+     * distance is returned.
      */
     [[nodiscard]] Units::Distance estimatedLowerBoundMSL(Units::Distance terrainElevation, Units::Pressure QNH, Units::Distance ownshipGeometricAltitude, Units::Distance ownshipBarometricAltitude) const;
 
-    /*! \brief Estimates the upper limit of the airspace, as a geometric altitude above MSL
+    /*! \brief Estimates the upper limit of the airspace, as a geometric
+     * altitude above MSL
      *
-     * This method estimates the upper limit of the airspace at a given point, as a geometric altitude above MSL. Since many airspace
-     * boundaries are defined as barometric altitudes (above standard or QNH pressure level), the method needs to know
-     * QNH and the ownship geometric and barometric altitude in order to provide an estimate that is good enough to judge
+     * This method estimates the upper limit of the airspace at a given point,
+     * as a geometric altitude above MSL. Since many airspace boundaries are
+     * defined as barometric altitudes (above standard or QNH pressure level),
+     * the method needs to know QNH and the ownship geometric and barometric
+     * altitude in order to provide an estimate that is good enough to judge
      * vertical distances to airspaces.
      *
-     * In cases where no precision is required, you can set ownshipGeometricAltitude and ownshipBarometricAltitude to Units::Distance::fromFT(0). Depending on weather,
-     * this will lead to an error of about 5-10%, but we have seen days when the error was larger than 15%.
+     * In cases where no precision is required, you can set
+     * ownshipGeometricAltitude and ownshipBarometricAltitude to
+     * Units::Distance::fromFT(0). Depending on weather, this will lead to an
+     * error of about 5-10%, but we have seen days when the error was larger
+     * than 15%.
      *
-     * @param terrainElevation Elevation of the terrain at the given point. This is used when the airspace limit is defined AGL.
+     * @param terrainElevation Elevation of the terrain at the given point. This
+     * is used when the airspace limit is defined AGL.
      *
-     * @param QNH. This datum is used when the airspace limit is defined as above QNH.
+     * @param QNH. This datum is used when the airspace limit is defined as
+     * above QNH.
      *
-     * @param ownshipGeometricAltitude Geometric altitude of the own aircraft. This datum is used when the airspace limit is defined as a flight level or above QNH, to ensure
-     * that the estimate is precise for airspaces limits close to the ownship.
+     * @param ownshipGeometricAltitude Geometric altitude of the own aircraft.
+     * This datum is used when the airspace limit is defined as a flight level
+     * or above QNH, to ensure that the estimate is precise for airspaces limits
+     * close to the ownship.
      *
-     * @param ownshipBarometricAltitude Barometric altitude of the own aircraft.  This datum is used when the airspace limit is defined as a flight level or above QNH, to ensure
-     * that the estimate is precise for airspaces limits close to the ownship.
+     * @param ownshipBarometricAltitude Barometric altitude of the own aircraft.
+     * This datum is used when the airspace limit is defined as a flight level
+     * or above QNH, to ensure that the estimate is precise for airspaces limits
+     * close to the ownship.
      *
-     * @returns Estimated lower bound of the airspace, as a geometric altitude above MSL. If no meaningful bound can be computed, a
-     * default-constructed distance is returned.
+     * @returns Estimated lower bound of the airspace, as a geometric altitude
+     * above MSL. If no meaningful bound can be computed, a default-constructed
+     * distance is returned.
      */
     [[nodiscard]] Units::Distance estimatedUpperBoundMSL(Units::Distance terrainElevation, Units::Pressure QNH, Units::Distance ownshipGeometricAltitude, Units::Distance ownshipBarometricAltitude) const;
 
@@ -192,8 +218,9 @@ public:
     [[nodiscard]] auto upperBoundMetric() const -> QString { return makeMetric(m_upperBound); }
 
 private:
-    // Transforms a height string such as "4500", "1500 GND" or "FL 130" into a string that describes the height
-    // in meters. If the height string cannot be parsed, returns the original string
+    // Transforms a height string such as "4500", "1500 GND" or "FL 130" into a
+    // string that describes the height in meters. If the height string cannot
+    // be parsed, returns the original string
     [[nodiscard]] static auto makeMetric(const QString& standard) -> QString;
 
     // Function used by estimatedLowerBoundMSL() and estimatedUpperBoundMSL()

@@ -239,8 +239,8 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace2D> Ui::SideViewQuickItem::merg
             int xStart = static_cast<int>((airspace2d.firstStep / steps) * widgetWidth());
             int xEnd = static_cast<int>((airspace2d.lastStep / steps) * widgetWidth());
 
-            int lowerY = yCoordinate(airspace.estimatedLowerBoundMSL().toFeet(), highestElevation, 0);
-            int upperY = qMax(yCoordinate(airspace.estimatedUpperBoundMSL().toFeet(), highestElevation, 0), 0);
+            int lowerY = yCoordinate(airspace.estimatedLowerBoundMSL(Units::Distance::fromFT(0)).toFeet(), highestElevation, 0);
+            int upperY = qMax(yCoordinate(airspace.estimatedUpperBoundMSL(0).toFeet(), highestElevation, 0), 0);
 
             polygons.push_back(QPoint(xStart, lowerY));
             polygons.push_back(QPoint(xStart, upperY));

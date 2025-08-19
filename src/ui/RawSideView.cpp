@@ -21,6 +21,8 @@
 #include "GeoMapProvider.h"
 #include "PositionProvider.h"
 #include "RawSideView.h"
+#include "traffic/TrafficDataProvider.h"
+#include "weather/WeatherDataProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -93,17 +95,29 @@ void Ui::RawSideView::updateProperties()
         m_track = QString();
         return;
     }
-    auto ownshipAltitude = Units::Distance::fromM(ownshipCoordinate.altitude());
-    if (!ownshipAltitude.isFinite())
+    auto ownshipGeometricAltitude = Units::Distance::fromM(ownshipCoordinate.altitude());
+    if (!ownshipGeometricAltitude.isFinite())
     {
         m_error = tr("No valid altitude data.");
         return;
     }
+    auto ownshipBarometricAltitude = GlobalObject::trafficDataProvider()->pressureAltitude();
+    if (!ownshipBarometricAltitude.isFinite())
+    {
+        m_error = tr("Unable to compute vertical airspace boundaries because barometric altitude information is not available.");
+        return;
+    }
+    auto QNH = GlobalObject::weatherDataProvider()->QNH();
+    if (!QNH.isFinite())
+    {
+        m_error = tr("Unable to compute vertical airspace boundaries because the QNH is not available.");
+        return;
+    }
     if (ownshipTerrainElevation.isFinite())
     {
-        if (ownshipAltitude < ownshipTerrainElevation)
+        if (ownshipGeometricAltitude < ownshipTerrainElevation)
         {
-            ownshipAltitude = ownshipTerrainElevation;
+            ownshipGeometricAltitude = ownshipTerrainElevation;
         }
     }
     Units::Speed ownshipHSpeed;
@@ -171,8 +185,8 @@ void Ui::RawSideView::updateProperties()
     // Compute minimum and maximum altitude shown in the QML item,
     // generate function altToYCoordinate() that computes pixel coordinate from altitude
     //
-    auto sideview_minAlt = ownshipAltitude;
-    auto sideview_maxAlt = ownshipAltitude;
+    auto sideview_minAlt = ownshipGeometricAltitude;
+    auto sideview_maxAlt = ownshipGeometricAltitude;
     if (ownshipPositionInfo.verticalSpeed().isFinite())
     {
         sideview_maxAlt += qMax(Units::Distance::fromFT(3000.0),
@@ -196,7 +210,7 @@ void Ui::RawSideView::updateProperties()
     //
 
     // Ownship position
-    m_ownshipPosition = {width()*0.2, altToYCoordinate(ownshipAltitude)};
+    m_ownshipPosition = {width()*0.2, altToYCoordinate(ownshipGeometricAltitude)};
 
     // 5-Minute-Bar
     if (ownshipVSpeed.isFinite() && ownshipHSpeed.isFinite())
@@ -214,7 +228,6 @@ void Ui::RawSideView::updateProperties()
     polygon  << QPointF(width(), height()+20) << QPointF(-20, height()+20);
     m_terrain = polygon;
 
-    // Airspaces
     auto airspaces = GlobalObject::geoMapProvider()->airspaces();
     QVector<QPolygonF> airspacePolygonsA;
     QVector<QPolygonF> airspacePolygonsCTR;
@@ -235,12 +248,11 @@ void Ui::RawSideView::updateProperties()
         for(int i=0; i < xCoordinates.size(); i++)
         {
             auto x = xCoordinates[i];
-            auto geoCoordinate = geoCoordinates[i];
+            const auto& geoCoordinate = geoCoordinates[i];
             if ((i != xCoordinates.size()-1) && airspacePolygon.contains(geoCoordinate))
             {
-                int ele = qRound(elevations[i].toFeet());
-                upper << QPointF(x, altToYCoordinate(airspace.estimatedUpperBoundMSL(ele)));
-                lower << QPointF(x, altToYCoordinate(airspace.estimatedLowerBoundMSL(ele)));
+                upper << QPointF(x, altToYCoordinate(airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipBarometricAltitude)));
+                lower << QPointF(x, altToYCoordinate(airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipBarometricAltitude)));
             }
             else
             {
@@ -294,8 +306,6 @@ void Ui::RawSideView::updateProperties()
     QVariantMap newAirspaces;
     newAirspaces["CTR"] = QVariant::fromValue(airspacePolygonsCTR);
     m_airspaces = newAirspaces;
-
-    //m_error = tr("Unable to compute vertical airspace boundaries because static pressure information is not available.");
 }
 
 

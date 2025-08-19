@@ -649,8 +649,6 @@ qt_add_qml_module(${PROJECT_NAME}
     ui/RawSideView.cpp
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
-    ui/SideViewQuickItem.h
-    ui/SideViewQuickItem.cpp
     traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
 

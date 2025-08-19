@@ -21,6 +21,7 @@
 #include <QJsonArray>
 
 #include "Airspace.h"
+#include "navigation/Atmosphere.h"
 #include "units/Distance.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -81,95 +82,18 @@ GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
     m_lowerBound = properties[QStringLiteral("BOT")].toString();
 }
 
-auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
+
+Units::Distance GeoMaps::Airspace::estimatedLowerBoundMSL(Units::Distance terrainElevation, Units::Pressure QNH, Units::Distance ownshipGeometricAltitude, Units::Distance ownshipBarometricAltitude) const
 {
-    return estimatedLowerBoundMSL(0);
-}
-auto GeoMaps::Airspace::estimatedLowerBoundMSL(int elevation) const -> Units::Distance
-{
-    double result = 0.0;
-    bool ok = false;
-
-    QString AL = m_lowerBound.simplified().toLower();
-
-    if (AL.startsWith(u"fl"_s, Qt::CaseInsensitive)) {
-        result = AL.remove(0, 2).toDouble(&ok);
-        if (ok) {
-            return Units::Distance::fromFT(100*result);
-        }
-        return Units::Distance::fromFT(0.0);
-    }
-
-    if (AL.endsWith(u"msl"_s)) {
-        AL.chop(3);
-#warning
-        result = AL.simplified().toDouble(&ok);
-    }
-    if (AL.endsWith(u"agl"_s)) {
-        AL.chop(3);
-        result = AL.simplified().toDouble(&ok) + elevation;
-        return Units::Distance::fromFT(result);
-    }
-    if (AL.endsWith(u"ft"_s)) {
-        AL.chop(2);
-        AL = AL.simplified();
-    }
-    if (AL.size() == 3 && AL.endsWith(u"gnd"_s, Qt::CaseInsensitive)) { //TODO: This is ugly
-        return Units::Distance::fromFT((double)elevation);
-    }
-
-    result = AL.toDouble(&ok);
-    if (ok) {
-        return Units::Distance::fromFT(result);
-    }
-    return Units::Distance::fromFT(0.0);
+    return estimateBoundMSL(m_lowerBound, terrainElevation, QNH, ownshipGeometricAltitude, ownshipBarometricAltitude);
 }
 
 
-auto GeoMaps::Airspace::estimatedUpperBoundMSL() const -> Units::Distance
+Units::Distance GeoMaps::Airspace::estimatedUpperBoundMSL(Units::Distance terrainElevation, Units::Pressure QNH, Units::Distance ownshipGeometricAltitude, Units::Distance ownshipBarometricAltitude) const
 {
-    return estimatedUpperBoundMSL(0);
+    return estimateBoundMSL(m_upperBound, terrainElevation, QNH, ownshipGeometricAltitude, ownshipBarometricAltitude);
 }
 
-auto GeoMaps::Airspace::estimatedUpperBoundMSL(int elevation) const -> Units::Distance
-{
-    double result = 0.0;
-    bool ok = false;
-
-    QString AL = m_upperBound.simplified().toLower();
-
-    if (AL.startsWith(u"fl"_s, Qt::CaseInsensitive)) {
-        result = AL.remove(0, 2).toDouble(&ok);
-        if (ok) {
-            return Units::Distance::fromFT(100*result);
-        }
-        return Units::Distance::fromFT(0.0);
-    }
-
-    if (AL.endsWith(u"msl"_s)) {
-        AL.chop(3);
-#warning
-        result = AL.simplified().toDouble(&ok);
-    }
-    if (AL.endsWith(u"agl"_s)) {
-        AL.chop(3);
-        result = AL.simplified().toDouble(&ok) + elevation;
-        return Units::Distance::fromFT(result);
-    }
-    if (AL.endsWith(u"ft"_s)) {
-        AL.chop(2);
-        AL = AL.simplified();
-    }
-    if (AL.size() == 3 && AL.endsWith(u"gnd"_s, Qt::CaseInsensitive)) { //TODO: This is ugly
-        return Units::Distance::fromFT((double)elevation);
-    }
-
-    result = AL.toDouble(&ok);
-    if (ok) {
-        return Units::Distance::fromFT(result);
-    }
-    return Units::Distance::fromFT(0.0);
-}
 
 auto GeoMaps::Airspace::makeMetric(const QString& standard) -> QString
 {
@@ -201,7 +125,51 @@ auto GeoMaps::Airspace::makeMetric(const QString& standard) -> QString
 }
 
 
-auto GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B) -> bool
+Units::Distance GeoMaps::Airspace::estimateBoundMSL(const QString& boundString, Units::Distance terrainElevation, Units::Pressure QNH, Units::Distance ownshipGeometricAltitude, Units::Distance ownshipBarometricAltitude)
+{
+    bool ok = false;
+    QString AL = boundString.simplified();
+
+    // Bound given as flight level
+    if (AL.startsWith(u"FL"_s, Qt::CaseInsensitive))
+    {
+        auto result = AL.remove(0, 2).toDouble(&ok);
+        if (ok)
+        {
+            return Units::Distance::fromFT(100*result) + ownshipBarometricAltitude - ownshipGeometricAltitude;
+        }
+        return {};
+    }
+
+    // Bound given above terrain
+    if (AL.endsWith(u"AGL"_s))
+    {
+        AL.chop(3);
+        auto result = AL.simplified().toDouble(&ok);
+        if (ok)
+        {
+            return Units::Distance::fromFT(result) + terrainElevation;
+        }
+        return {};
+    }
+
+    // Bound given as terrain level
+    if (AL.endsWith(u"GND"_s))
+    {
+        return terrainElevation;
+    }
+
+    // Bound given above QNH
+    auto result = AL.toDouble(&ok);
+    if (ok)
+    {
+        return Units::Distance::fromFT(result) - Navigation::Atmosphere::height(QNH) + ownshipBarometricAltitude - ownshipGeometricAltitude;
+    }
+    return {};
+}
+
+
+bool GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
 {
     return ((A.m_name == B.m_name) &&
             (A.m_CAT == B.m_CAT) &&
@@ -211,7 +179,7 @@ auto GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
 }
 
 
-auto GeoMaps::qHash(const GeoMaps::Airspace& A) -> size_t
+size_t GeoMaps::qHash(const GeoMaps::Airspace& A)
 {
     auto result = qHash(A.name());
     result += qHash(A.CAT());

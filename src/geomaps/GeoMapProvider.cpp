@@ -187,7 +187,15 @@ QVariantList GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position)
     }
 
     // Sort airspaces according to lower boundary
-    std::sort(result.begin(), result.end(), [](const Airspace& first, const Airspace& second) {return (first.estimatedLowerBoundMSL() > second.estimatedLowerBoundMSL()); });
+    std::sort(result.begin(), result.end(), [](const Airspace& first, const Airspace& second) {
+        auto firstLB = first.estimatedLowerBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0));
+        auto secondLB = second.estimatedLowerBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0));
+        if (firstLB != secondLB)
+        {
+            return (firstLB > secondLB);
+        }
+        return (first.estimatedUpperBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0)) > second.estimatedUpperBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0)));
+    });
 
     QVariantList final;
     foreach(auto airspace, result)
@@ -723,11 +731,11 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
 
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
-    for(const auto& object : objectVector)
+    for(const auto& object : std::as_const(objectVector))
     {
         // Ignore all objects that are airspaces and that begin above the airspaceAltitudeLimit.
         Airspace const airspaceTest(object);
-        if (airspaceAltitudeLimit.isFinite() && (airspaceTest.estimatedLowerBoundMSL() > airspaceAltitudeLimit))
+        if (airspaceAltitudeLimit.isFinite() && (airspaceTest.estimatedLowerBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0)) > airspaceAltitudeLimit))
         {
             continue;
         }

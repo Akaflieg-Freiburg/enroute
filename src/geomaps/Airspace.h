@@ -69,7 +69,7 @@ public:
      * @param terrainElevation Elevation of the terrain at the given point. This
      * is used when the airspace limit is defined AGL.
      *
-     * @param QNH. This datum is used when the airspace limit is defined as
+     * @param QNH This datum is used when the airspace limit is defined as
      * above QNH.
      *
      * @param ownshipGeometricAltitude Geometric altitude of the own aircraft.
@@ -107,7 +107,7 @@ public:
      * @param terrainElevation Elevation of the terrain at the given point. This
      * is used when the airspace limit is defined AGL.
      *
-     * @param QNH. This datum is used when the airspace limit is defined as
+     * @param QNH This datum is used when the airspace limit is defined as
      * above QNH.
      *
      * @param ownshipGeometricAltitude Geometric altitude of the own aircraft.

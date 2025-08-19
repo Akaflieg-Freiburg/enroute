@@ -205,45 +205,6 @@ QVariantList GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position)
 }
 
 
-QVector<QVariantList> GeoMaps::GeoMapProvider::airspaces(const QVector<QGeoCoordinate>& positions, const  QSet<QString>& relevantCategories)
-{
-    // Lock data
-    QMutexLocker const lock(&_aviationDataMutex);
-
-    QVector<QVariantList> result(positions.size());
-
-    foreach(const auto& airspace, _airspaces_)
-    {
-        if (!relevantCategories.contains(airspace.CAT()))
-        {
-            continue; // No relevant category
-        }
-    
-        // Get the bounding box once per airspace
-        auto boundingBox = airspace.polygon().boundingGeoRectangle();
-
-        for (int i = 0; i < positions.size(); ++i)
-        {
-            const auto& position = positions[i];
-            const QPointF point(position.longitude(), position.latitude());
-            
-            // Check if the point is within the bounding box
-            if (!boundingBox.contains(position))
-            {
-                continue;
-            }
-
-            // Check if the polygon contains the position
-            if (airspace.polygon().contains(position))
-            {
-                result[i].append(QVariant::fromValue(airspace));
-            }
-        }
-    }
-    return result;
-}
-
-
 GeoMaps::Waypoint GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition)
 {
     position.setAltitude(qQNaN());

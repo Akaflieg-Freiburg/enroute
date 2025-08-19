@@ -263,16 +263,6 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &position);
 
-    /*! \brief List of airspaces at given locations
-     *
-     * @param positions List of Positions over which airspaces are searched for
-     *
-     * @returns all airspaces that exist over one of the given positions. For better
-     * cooperation with QML the list returns contains elements of type QObject*,
-     * and not Airspace*.
-     */
-    [[nodiscard]] Q_INVOKABLE QVector<QVariantList> airspaces(const QVector<QGeoCoordinate>& positions, const QSet<QString>& relevantCategories);
-
     /*! \brief Find closest waypoint to a given position
      *
      * @param position Position near which waypoints are searched for

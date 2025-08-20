@@ -171,7 +171,7 @@ public:
      *
      *  @returns Property pixelPer10km
      */
-    QBindable<double> bindablePixelPer10km() const {return &m_pixelPer10km;}
+    QBindable<double> bindablePixelPer10km() {return &m_pixelPer10km;}
 
     /*! \brief Getter method for property with the same name
      *

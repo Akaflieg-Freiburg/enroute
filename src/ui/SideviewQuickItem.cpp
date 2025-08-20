@@ -20,7 +20,7 @@
 
 #include "GeoMapProvider.h"
 #include "PositionProvider.h"
-#include "RawSideView.h"
+#include "SideviewQuickItem.h"
 #include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
 
@@ -29,7 +29,7 @@ using namespace Qt::Literals::StringLiterals;
 QStringList airspaceCategories = {"TMZ", "RMZ", "TIA", "TIZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R", "P", "PJE"};
 
 
-Ui::RawSideView::RawSideView(QQuickItem *parent)
+Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     : QQuickItem(parent)
 {
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
@@ -37,7 +37,7 @@ Ui::RawSideView::RawSideView(QQuickItem *parent)
     updateProperties();
 }
 
-void Ui::RawSideView::updateProperties()
+void Ui::SideviewQuickItem::updateProperties()
 {
     //
     // Set all properties to default values. We update those depending on the data we have available.
@@ -48,13 +48,17 @@ void Ui::RawSideView::updateProperties()
     m_track = QString();
     m_error = QString();
     m_terrain = QPolygonF();
-    m_airspacesA = QVector<QPolygonF>();
-    m_airspacesCTR = QVector<QPolygonF>();
-    m_airspacesR = QVector<QPolygonF>();
-    m_airspacesRMZ = QVector<QPolygonF>();
-    m_airspacesNRA = QVector<QPolygonF>();
-    m_airspacesPJE = QVector<QPolygonF>();
-    m_airspacesTMZ = QVector<QPolygonF>();
+
+    QVariantMap newAirspaces;
+    const QVector<QPolygonF> empty;
+    newAirspaces[u"A"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"CTR"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"R"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"RMZ"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"NRA"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"PJE"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"TMZ"_s] = QVariant::fromValue(empty);
+    m_airspaces = newAirspaces;
 
     // If the side view is really small, safe CPU cycles by doing nothing
     if (height() < 5.0)
@@ -68,13 +72,13 @@ void Ui::RawSideView::updateProperties()
     auto ownshipCoordinate = Positioning::PositionProvider::lastValidCoordinate();
     if (!ownshipCoordinate.isValid())
     {
-        m_error = tr("No valid position data.");
+        m_error = tr("Unable to show side view: No valid position data.");
         return;
     }
     auto ownshipTerrainElevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(ownshipCoordinate);
     if (!ownshipTerrainElevation.isFinite())
     {
-        m_error = tr("No terrain data for current position. Please install the relevant terrain maps.");
+        m_error = tr("Unable to show side view: No terrain data for current position. Please install the relevant terrain maps.");
         return;
     }
     auto ownshipPositionInfo = GlobalObject::positionProvider()->positionInfo();
@@ -91,26 +95,26 @@ void Ui::RawSideView::updateProperties()
     }
     if (!ownshipTrack.isFinite())
     {
-        m_error = tr("No valid track data.");
+        m_error = tr("Unable to show side view: No valid track data.");
         m_track = QString();
         return;
     }
     auto ownshipGeometricAltitude = Units::Distance::fromM(ownshipCoordinate.altitude());
     if (!ownshipGeometricAltitude.isFinite())
     {
-        m_error = tr("No valid altitude data.");
+        m_error = tr("Unable to show side view: No valid altitude data.");
         return;
     }
     auto ownshipBarometricAltitude = GlobalObject::trafficDataProvider()->pressureAltitude();
     if (!ownshipBarometricAltitude.isFinite())
     {
-        m_error = tr("Unable to compute vertical airspace boundaries because barometric altitude information is not available.");
-        return;
+        ownshipBarometricAltitude = ownshipGeometricAltitude;
+        m_error = tr("Unable to compute sufficiently precise vertical airspace boundaries because barometric altitude information is not available. <a href='xx'>Click here</a> for more information.");
     }
     auto QNH = GlobalObject::weatherDataProvider()->QNH();
     if (!QNH.isFinite())
     {
-        m_error = tr("Unable to compute vertical airspace boundaries because the QNH is not available.");
+        m_error = tr("Unable to compute sufficiently precise vertical airspace boundaries because the QNH is not available. Please wait while QNH information is downloaded from the internet.");
         return;
     }
     if (ownshipTerrainElevation.isFinite())
@@ -261,31 +265,31 @@ void Ui::RawSideView::updateProperties()
                     std::reverse(lower.begin(), lower.end());
                     QPolygonF polygon(upper + lower);
                     polygon << upper[0];
-                    if ((airspace.CAT() == "A") || (airspace.CAT() == "B") || (airspace.CAT() == "C") || (airspace.CAT() == "D"))
+                    if ((airspace.CAT() == u"A"_s) || (airspace.CAT() == u"B"_s) || (airspace.CAT() == u"C"_s) || (airspace.CAT() == u"D"_s))
                     {
                         airspacePolygonsA << polygon;
                     }
-                    if (airspace.CAT() == "CTR")
+                    if (airspace.CAT() == u"CTR"_s)
                     {
                         airspacePolygonsCTR << polygon;
                     }
-                    if ((airspace.CAT() == "R") || (airspace.CAT() == "P") || (airspace.CAT() == "DNG"))
+                    if ((airspace.CAT() == u"R"_s) || (airspace.CAT() == u"P"_s) || (airspace.CAT() == u"DNG"_s))
                     {
                         airspacePolygonsR << polygon;
                     }
-                    if ((airspace.CAT() == "RMZ") || (airspace.CAT() == "TIA") || (airspace.CAT() == "TIZ"))
+                    if ((airspace.CAT() == u"RMZ"_s) || (airspace.CAT() == u"TIA"_s) || (airspace.CAT() == u"TIZ"_s))
                     {
                         airspacePolygonsRMZ << polygon;
                     }
-                    if (airspace.CAT() == "NRA")
+                    if (airspace.CAT() == u"NRA"_s)
                     {
                         airspacePolygonsNRA << polygon;
                     }
-                    if (airspace.CAT() == "PJE")
+                    if (airspace.CAT() == u"PJE"_s)
                     {
                         airspacePolygonsPJE << polygon;
                     }
-                    if (airspace.CAT() == "TMZ")
+                    if (airspace.CAT() == u"TMZ"_s)
                     {
                         airspacePolygonsTMZ << polygon;
                     }
@@ -295,16 +299,15 @@ void Ui::RawSideView::updateProperties()
             }
         }
     }
-    m_airspacesA = airspacePolygonsA;
-    m_airspacesCTR = airspacePolygonsCTR;
-    m_airspacesR = airspacePolygonsR;
-    m_airspacesRMZ = airspacePolygonsRMZ;
-    m_airspacesNRA = airspacePolygonsNRA;
-    m_airspacesPJE = airspacePolygonsPJE;
-    m_airspacesTMZ = airspacePolygonsTMZ;
 
-    QVariantMap newAirspaces;
-    newAirspaces["CTR"] = QVariant::fromValue(airspacePolygonsCTR);
+    newAirspaces[u"A"_s] = QVariant::fromValue(airspacePolygonsA);
+    newAirspaces[u"CTR"_s] = QVariant::fromValue(airspacePolygonsCTR);
+    newAirspaces[u"R"_s] = QVariant::fromValue(airspacePolygonsR);
+    newAirspaces[u"RMZ"_s] = QVariant::fromValue(airspacePolygonsRMZ);
+    newAirspaces[u"NRA"_s] = QVariant::fromValue(airspacePolygonsNRA);
+    newAirspaces[u"PJE"_s] = QVariant::fromValue(airspacePolygonsPJE);
+    newAirspaces[u"TMZ"_s] = QVariant::fromValue(airspacePolygonsTMZ);
+
     m_airspaces = newAirspaces;
 }
 

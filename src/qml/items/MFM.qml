@@ -554,6 +554,9 @@ Item {
             // We used to use a MouseArea instead of a tap handler, but that
             // triggered a host of bugs in Qt 6.4.2…
             onDoubleTapped: {
+                if (!gridView.contains(point.position))
+                    return
+
                 PlatformAdaptor.vibrateBrief()
                 var pos = point.position
                 var posTr = Qt.point(pos.x+25,pos.y)
@@ -567,6 +570,9 @@ Item {
             }
 
             onLongPressed: {
+                if (!gridView.contains(point.position))
+                    return
+
                 PlatformAdaptor.vibrateBrief()
                 var pos = point.position
                 var posTr = Qt.point(pos.x+25,pos.y)
@@ -648,6 +654,8 @@ Item {
         orientation: Qt.Vertical
 
         GridLayout {
+            id: gridView
+
             SplitView.fillHeight: true
             SplitView.minimumHeight: implicitHeight
 
@@ -944,19 +952,14 @@ Item {
 
             spacing: 0  // Set the spacing between children to 0
 
-            QSideView {
+            Sideview {
                 id: rawSideView
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
                 pixelPer10km: flightMap.pixelPer10km
             }
-            /*
-            SideView {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
-*/
+
             NavBar {
                 id: navBar
 

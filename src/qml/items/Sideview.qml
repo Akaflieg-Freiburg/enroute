@@ -24,7 +24,7 @@ import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
 
-RawSideView {
+SideviewQuickItem {
     id: rawSideView
 
     clip: true
@@ -60,7 +60,7 @@ RawSideView {
             strokeColor: "#330000FF"
             fillColor: "transparent"
 
-            PathMultiline { paths: rawSideView.airspacesA }
+            PathMultiline { paths: rawSideView.airspaces["A"] }
         }
 
         ShapePath {
@@ -69,7 +69,7 @@ RawSideView {
             strokeColor: "blue"
             fillColor: "transparent"
 
-            PathMultiline { paths: rawSideView.airspacesA }
+            PathMultiline { paths: rawSideView.airspaces["A"] }
         }
 
         ShapePath {
@@ -79,7 +79,7 @@ RawSideView {
             fillColor: "transparent"
             fillRule: ShapePath.WindingFill
 
-            PathMultiline { paths: rawSideView.airspacesR }
+            PathMultiline { paths: rawSideView.airspaces["R"] }
         }
 
         ShapePath {
@@ -88,7 +88,7 @@ RawSideView {
             strokeColor: "red"
             fillColor: "transparent"
 
-            PathMultiline { paths: rawSideView.airspacesR }
+            PathMultiline { paths: rawSideView.airspaces["R"] }
         }
 
         ShapePath {
@@ -99,7 +99,7 @@ RawSideView {
             dashPattern: [4,3]
             strokeStyle: ShapePath.DashLine
 
-            PathMultiline { paths: rawSideView.airspacesPJE }
+            PathMultiline { paths: rawSideView.airspaces["PJE"] }
         }
 
         ShapePath {
@@ -110,7 +110,7 @@ RawSideView {
             dashPattern: [4.0, 3.0, 0.5, 3.0]
             strokeStyle: ShapePath.DashLine
 
-            PathMultiline { paths: rawSideView.airspacesTMZ }
+            PathMultiline { paths: rawSideView.airspaces["TMZ"] }
         }
 
         ShapePath {
@@ -120,7 +120,7 @@ RawSideView {
             fillColor: "transparent"
             fillRule: ShapePath.WindingFill
 
-            PathMultiline { paths: rawSideView.airspacesNRA }
+            PathMultiline { paths: rawSideView.airspaces["NRA"] }
         }
 
         ShapePath {
@@ -129,7 +129,7 @@ RawSideView {
             strokeColor: "green"
             fillColor: "transparent"
 
-            PathMultiline { paths: rawSideView.airspacesNRA }
+            PathMultiline { paths: rawSideView.airspaces["NRA"] }
         }
 
         ShapePath {
@@ -141,7 +141,7 @@ RawSideView {
             strokeStyle: ShapePath.DashLine
             fillRule: ShapePath.WindingFill
 
-            PathMultiline { paths: rawSideView.airspacesRMZ }
+            PathMultiline { paths: rawSideView.airspaces["RMZ"] }
         }
 
         ShapePath {
@@ -153,7 +153,7 @@ RawSideView {
             strokeStyle: ShapePath.DashLine
             fillRule: ShapePath.WindingFill
 
-            PathMultiline { paths: rawSideView.airspaces['CTR'] }
+            PathMultiline { paths: rawSideView.airspaces["CTR"] }
         }
 
         property double animatedFiveMinuteBarX: rawSideView.fiveMinuteBar.x
@@ -242,7 +242,7 @@ RawSideView {
 
         anchors.centerIn: parent
 
-        text: qsTr("Unable to show side view.") + " " + rawSideView.error
+        text: rawSideView.error
         visible: rawSideView.error !== ""
         width: 0.66*rawSideView.width
         wrapMode: Text.WordWrap
@@ -254,6 +254,8 @@ RawSideView {
         topPadding: font.pixelSize/4.0
 
         background: Pane { Material.elevation: 1 }
+
+        onLinkActivated: Qt.openUrlExternally("https://www.faa.gov/air_traffic/publications/atpubs/aip_html/part2_enr_section_1.7.html")
     }
 
 }

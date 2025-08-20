@@ -612,8 +612,8 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/NotificationButton.qml
     qml/items/PageHeader.qml
     qml/items/+Material/PageHeader.qml
-    qml/items/QSideView.qml
     qml/items/RemainingRouteBar.qml
+    qml/items/Sideview.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml
     qml/items/Traffic.qml
@@ -645,10 +645,10 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml
     SOURCES
-    ui/RawSideView.h
-    ui/RawSideView.cpp
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
+    ui/SideviewQuickItem.h
+    ui/SideviewQuickItem.cpp
     traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
 

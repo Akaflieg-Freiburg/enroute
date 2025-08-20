@@ -310,5 +310,3 @@ void Ui::SideviewQuickItem::updateProperties()
 
     m_airspaces = newAirspaces;
 }
-
-

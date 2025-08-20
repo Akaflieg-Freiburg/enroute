@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2025 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025 by Simon Schneider, Stefan Kebekus                 *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,7 +25,13 @@
 
 namespace Ui {
 
-
+/*! \brief QML base class for lateral airspace view
+ *
+ * This class is the base class for the QML type "Sideview", which provides a lateral airspace view. It provides the polygons
+ * used by Sideview to draw terrain, airspaces, the position of the own aircraft, and the 5-minute bar.
+ *
+ * Compiling the polygons is rather expensive. To keep the GUI responsive, the class limits the update frequency to one update every 700msec.
+ */
 class SideviewQuickItem : public QQuickItem
 {
     Q_OBJECT
@@ -69,14 +75,14 @@ public:
     /*! \brief 5-Minute-Bar
      *
      * This property holds the x- and y-extension of the 5-Minute-Bar, in pixel
-     * coordinates of the this QQuickItem.
+     * coordinates of this QQuickItem.
      */
     Q_PROPERTY(QPointF fiveMinuteBar READ fiveMinuteBar BINDABLE bindableFiveMinuteBar)
 
     /*! \brief Position of the own aircraft
      *
      * This property holds the position of the own aircraft, in pixel
-     * coordinates of the this QQuickItem.
+     * coordinates of this QQuickItem.
      */
     Q_PROPERTY(QPointF ownshipPosition READ ownshipPosition BINDABLE bindableOwnshipPosition)
 
@@ -87,6 +93,13 @@ public:
      */
     Q_PROPERTY(double pixelPer10km READ pixelPer10km WRITE setPixelPer10km BINDABLE bindablePixelPer10km REQUIRED)
 
+    /*! \brief Terrain polygons
+     *
+     * This property holds polygons that can be used with the QML class "Shape"
+     * in order to draw a the terrain in the lateral view of the airspace situation.
+     */
+    Q_PROPERTY(QPolygonF terrain READ terrain BINDABLE bindableTerrain)
+
     /*! \brief Track string
      *
      * If the own aircraft is not moving sufficiently fast, this property holds
@@ -96,29 +109,101 @@ public:
     Q_PROPERTY(QString track READ track BINDABLE bindableTrack)
 
 
-    QString error() {return m_error.value();}
-    QBindable<QString> bindableError() {return &m_error;}
+    //
+    // Getter and Setter Methods
+    //
 
-    QString track() {return m_track.value();}
-    QBindable<QString> bindableTrack() {return &m_track;}
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property airspaces
+     */
+    QVariantMap airspaces() const {return m_airspaces.value();}
 
-    Q_PROPERTY(QPolygonF terrain READ terrain BINDABLE bindableTerrain)
-    QPolygonF terrain() {return m_terrain.value();}
-    QBindable<QPolygonF> bindableTerrain() {return &m_terrain;}
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property airspaces
+     */
+    QBindable<QVariantMap> bindableAirspaces() const {return &m_airspaces;}
 
-    QVariantMap airspaces() {return m_airspaces.value();}
-    QBindable<QVariantMap> bindableAirspaces() {return &m_airspaces;}
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property error
+     */
+    QString error() const {return m_error.value();}
 
-    QPointF fiveMinuteBar() {return m_fiveMinuteBar.value();}
-    QBindable<QPointF> bindableFiveMinuteBar() {return &m_fiveMinuteBar;}
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property error
+     */
+    QBindable<QString> bindableError() const {return &m_error;}
 
-    QPointF ownshipPosition() {return m_ownshipPosition.value();}
-    QBindable<QPointF> bindableOwnshipPosition() {return &m_ownshipPosition;}
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property fiveMinuteBar
+     */
+    QPointF fiveMinuteBar() const {return m_fiveMinuteBar.value();}
 
-    double pixelPer10km() {return m_pixelPer10km.value();}
-    QBindable<double> bindablePixelPer10km() {return &m_pixelPer10km;}
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property fiveMinuteBar
+     */
+    QBindable<QPointF> bindableFiveMinuteBar() const {return &m_fiveMinuteBar;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property ownshipPosition
+     */
+    QPointF ownshipPosition() const {return m_ownshipPosition.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property ownshipPosition
+     */
+    QBindable<QPointF> bindableOwnshipPosition() const {return &m_ownshipPosition;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property pixelPer10km
+     */
+    double pixelPer10km() const {return m_pixelPer10km.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property pixelPer10km
+     */
+    QBindable<double> bindablePixelPer10km() const {return &m_pixelPer10km;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @param newVal Property pixelPer10km
+     */
     void setPixelPer10km(double newVal) {m_pixelPer10km = newVal;}
 
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property track
+     */
+    QString track() const {return m_track.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property track
+     */
+    QBindable<QString> bindableTrack() const {return &m_track;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property terrain
+     */
+    QPolygonF terrain() const {return m_terrain.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property terrain
+     */
+    QBindable<QPolygonF> bindableTerrain() const {return &m_terrain;}
+
+#warning
     Q_INVOKABLE void updateProperties();
 
 private:

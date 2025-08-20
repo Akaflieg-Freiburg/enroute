@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2025 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025 by Simon Schneider, Stefan Kebekus                 *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

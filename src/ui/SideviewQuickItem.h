@@ -42,8 +42,10 @@ public:
 
     /*! \brief Airspace polygons
      *
-     * This property holds polygons that can be used with the QML class "Shape" in order to draw a lateral view of the
-     * airspace situation. The size and position of the polygons is adjusted to the current size of the QML item. The polygons are sorted by drawing style. The following keys are used:
+     * This property holds polygons that can be used with the QML class "Shape"
+     * in order to draw a lateral view of the airspace situation. The size and
+     * position of the polygons is adjusted to the current size of the QML item.
+     * The polygons are sorted by drawing style. The following keys are used:
      *
      * - "A"   … for airspaces with CAT equal to A, B, C or D.
      * - "CTR" … for airspaces with CAT equal to CTR.
@@ -57,34 +59,39 @@ public:
 
     /*! \brief Error string
      *
-     * If no sideview can be shown (or if it can be shown only partially), this property holds a human-readable, translated error message that should be shown
-     * prominently on top of the sideview, in order to hide partially drawn data underneath.
+     * If no sideview can be shown (or if it can be shown only partially), this
+     * property holds a human-readable, translated error message that should be
+     * shown prominently on top of the sideview, in order to hide partially
+     * drawn data underneath.
      */
     Q_PROPERTY(QString error READ error BINDABLE bindableError)
 
     /*! \brief 5-Minute-Bar
      *
-     * This property holds the x- and y-extension of the 5-Minute-Bar, in pixel coordinates of the this QQuickItem.
+     * This property holds the x- and y-extension of the 5-Minute-Bar, in pixel
+     * coordinates of the this QQuickItem.
      */
     Q_PROPERTY(QPointF fiveMinuteBar READ fiveMinuteBar BINDABLE bindableFiveMinuteBar)
 
     /*! \brief Position of the own aircraft
      *
-     * This property holds the position of the own aircraft, in pixel coordinates of the this QQuickItem.
+     * This property holds the position of the own aircraft, in pixel
+     * coordinates of the this QQuickItem.
      */
     Q_PROPERTY(QPointF ownshipPosition READ ownshipPosition BINDABLE bindableOwnshipPosition)
 
     /*! \brief Map scale
      *
-     * This property defines the scale of the side view. Copy the datum from a flightmap in order to
-     * synchronize the scales.
+     * This property defines the scale of the side view. Copy the datum from a
+     * flightmap in order to synchronize the scales.
      */
     Q_PROPERTY(double pixelPer10km READ pixelPer10km WRITE setPixelPer10km BINDABLE bindablePixelPer10km REQUIRED)
 
     /*! \brief Track string
      *
-     * If the own aircraft is not moving sufficiently fast, this property holds a human-readable, translated
-     * string of the form "Direction → 210°". Otherwise, this property holds an empty string.
+     * If the own aircraft is not moving sufficiently fast, this property holds
+     * a human-readable, translated string of the form "Direction → 210°".
+     * Otherwise, this property holds an empty string.
      */
     Q_PROPERTY(QString track READ track BINDABLE bindableTrack)
 
@@ -132,7 +139,6 @@ private:
     QProperty<QVariantMap> m_airspaces;
 
     std::vector<QPropertyNotifier> notifiers;
-
 };
 
 } // namespace Ui

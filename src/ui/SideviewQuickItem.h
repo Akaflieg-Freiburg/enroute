@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QQuickItem>
+#include <QTimer>
 
 
 namespace Ui {
@@ -203,11 +204,15 @@ public:
      */
     QBindable<QPolygonF> bindableTerrain() const {return &m_terrain;}
 
-#warning
-    Q_INVOKABLE void updateProperties();
 
 private:
     Q_DISABLE_COPY_MOVE(SideviewQuickItem)
+
+#warning
+    QElapsedTimer m_elapsedTimer;
+    QTimer m_timer;
+    void updateProperties();
+
 
     QProperty<QString> m_error;
 

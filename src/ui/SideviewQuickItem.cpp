@@ -32,6 +32,11 @@ QStringList airspaceCategories = {"TMZ", "RMZ", "TIA", "TIZ", "NRA", "DNG", "D",
 Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     : QQuickItem(parent)
 {
+    m_timer.setSingleShot(true);
+    connect(&m_timer, &QTimer::timeout, this, &Ui::SideviewQuickItem::updateProperties);
+
+    notifiers.push_back(bindableHeight().addNotifier([this]() {updateProperties();}));
+    notifiers.push_back(bindableWidth().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
     updateProperties();
@@ -39,6 +44,21 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
 
 void Ui::SideviewQuickItem::updateProperties()
 {
+    if (m_timer.isActive())
+    {
+        return;
+    }
+    if (m_elapsedTimer.isValid())
+    {
+        auto elapsed = (int)m_elapsedTimer.elapsed();
+        if (elapsed < 700)
+        {
+            m_timer.start(710-elapsed);
+            return;
+        }
+    }
+    m_elapsedTimer.start();
+
     //
     // Set all properties to default values. We update those depending on the data we have available.
     //
@@ -63,6 +83,13 @@ void Ui::SideviewQuickItem::updateProperties()
     // If the side view is really small, safe CPU cycles by doing nothing
     if (height() < 5.0)
     {
+        return;
+    }
+
+    // If zoom is totally out of range, then exit
+    if (!qIsFinite(m_pixelPer10km) || (m_pixelPer10km < 5.0))
+    {
+        m_error = tr("Unable to show side view: Zoom value out of range.");
         return;
     }
 
@@ -309,4 +336,5 @@ void Ui::SideviewQuickItem::updateProperties()
     newAirspaces[u"TMZ"_s] = QVariant::fromValue(airspacePolygonsTMZ);
 
     m_airspaces = newAirspaces;
+    qWarning() << "SideviewQuickItem" << m_elapsedTimer.elapsed();
 }

@@ -402,6 +402,7 @@ QString Weather::WeatherDataProvider::sunInfo()
 
 Units::Pressure Weather::WeatherDataProvider::QNH() const
 {
+#warning Turn this into a bindable property
     // Paranoid safety checks
     auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr)

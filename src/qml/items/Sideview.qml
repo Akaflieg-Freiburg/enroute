@@ -30,9 +30,6 @@ SideviewQuickItem {
     clip: true
     pixelPer10km: flightMap.pixelPer10km
 
-    onWidthChanged: Qt.callLater( updateProperties )
-    onHeightChanged: Qt.callLater( updateProperties )
-
     Rectangle {
         id: sky
         anchors.fill: parent

@@ -215,7 +215,7 @@ void Ui::SideviewQuickItem::updateProperties()
 
     //
     // Compute minimum and maximum altitude shown in the QML item,
-    // generate function altToYCoordinate() that computes pixel coordinate from altitude
+    // generate function altToYCoordinate() that computes pixel the coordinate from the altitude.
     //
     auto sideview_minAlt = ownshipGeometricAltitude;
     auto sideview_maxAlt = ownshipGeometricAltitude;
@@ -261,6 +261,7 @@ void Ui::SideviewQuickItem::updateProperties()
     m_terrain = polygon;
     qWarning() << "SideviewQuickItem terrain" << m_elapsedTimer.elapsed();
 
+    // Airspaces
     auto airspaces = GlobalObject::geoMapProvider()->airspaces();
     QVector<QPolygonF> airspacePolygonsA;
     QVector<QPolygonF> airspacePolygonsCTR;

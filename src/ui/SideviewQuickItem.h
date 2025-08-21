@@ -208,9 +208,13 @@ public:
 private:
     Q_DISABLE_COPY_MOVE(SideviewQuickItem)
 
-#warning
+    // Timers used for rate-limiting, used to ensure that the expensive method
+    // updateProperties() runs at most every minimumUpdateInterval_ms.
     QElapsedTimer m_elapsedTimer;
     QTimer m_timer;
+    static constexpr int minimumUpdateInterval_ms = 700;
+
+    // Compute
     void updateProperties();
 
 

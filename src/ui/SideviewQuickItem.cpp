@@ -44,6 +44,7 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
 
 void Ui::SideviewQuickItem::updateProperties()
 {
+    // Rate-limiting code. Ensure that this expensive method runs at most every minimumUpdateInterval_ms and not more often.
     if (m_timer.isActive())
     {
         return;
@@ -51,9 +52,9 @@ void Ui::SideviewQuickItem::updateProperties()
     if (m_elapsedTimer.isValid())
     {
         auto elapsed = (int)m_elapsedTimer.elapsed();
-        if (elapsed < 700)
+        if (elapsed < minimumUpdateInterval_ms)
         {
-            m_timer.start(710-elapsed);
+            m_timer.start((minimumUpdateInterval_ms + 10) - elapsed);
             return;
         }
     }
@@ -256,8 +257,9 @@ void Ui::SideviewQuickItem::updateProperties()
     {
         polygon << QPointF(xCoordinates[i], altToYCoordinate(elevations[i]));
     }
-    polygon  << QPointF(width(), height()+20) << QPointF(-20, height()+20);
+    polygon  << QPointF(width(), height()+2000) << QPointF(-20, height()+2000);
     m_terrain = polygon;
+    qWarning() << "SideviewQuickItem terrain" << m_elapsedTimer.elapsed();
 
     auto airspaces = GlobalObject::geoMapProvider()->airspaces();
     QVector<QPolygonF> airspacePolygonsA;
@@ -336,5 +338,5 @@ void Ui::SideviewQuickItem::updateProperties()
     newAirspaces[u"TMZ"_s] = QVariant::fromValue(airspacePolygonsTMZ);
 
     m_airspaces = newAirspaces;
-    qWarning() << "SideviewQuickItem" << m_elapsedTimer.elapsed();
+    qWarning() << "SideviewQuickItem full" << m_elapsedTimer.elapsed();
 }

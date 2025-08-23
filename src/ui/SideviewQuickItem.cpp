@@ -34,6 +34,7 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
 {
     m_timer.setSingleShot(true);
     connect(&m_timer, &QTimer::timeout, this, &Ui::SideviewQuickItem::updateProperties);
+    connect(GlobalObject::weatherDataProvider(), &Weather::WeatherDataProvider::QNHInfoChanged, this, &Ui::SideviewQuickItem::updateProperties);
 
     notifiers.push_back(bindableHeight().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(bindableWidth().addNotifier([this]() {updateProperties();}));

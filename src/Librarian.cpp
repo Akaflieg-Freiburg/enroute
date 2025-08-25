@@ -194,7 +194,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/privacy.html"_s)
     {
-        return  "<p>" +
+        return  u"<p>"_s +
                tr("This Privacy Policy outlines the data handling practices for the app <strong>Enroute Flight Navigation</strong>.") + " " +
                tr("We prioritize your privacy and do not collect or store personally identifiable information.") + " " +
                tr("However, for the app to function properly, it must communicate with certain servers on the Internet.") + " " +
@@ -286,8 +286,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
                "<ul style='margin-left:-25px;'>" +
                "<li>" + tr("<strong>Embedded Browser Windows</strong>: Clicking a hyperlink is considered authorization to open the external site.") + "</li>"
-               "<li>" + tr("<strong>Outside Embedded Browser Windows</strong>: The app will ask for explicit user authorization before opening any external site or app.") + "</li>"
-               "</ul>" +
+                                                                                                                                                       "<li>" + tr("<strong>Outside Embedded Browser Windows</strong>: The app will ask for explicit user authorization before opening any external site or app.") + "</li>"
+                                                                                                                                                                      "</ul>" +
 
                "<h3>" +
                tr("Responsible") +
@@ -296,6 +296,19 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                "<p>" +
                "Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany" +
                "</p>";
+    }
+
+    if (name == u"sideView"_s)
+    {
+        return  u"<p>"_s +
+               tr("Vertical airspace boundaries are defined as barometric altitudes, either over QNH or over the standard pressure level.") + u" "_s +
+               tr("As a consequence, the geometric altitude of airspaces changes with the weather: Airspaces are typically much lower on cold winter days than they are in summer.") + u" "_s +
+               u"</p><p>"_s +
+               tr("In order to show your aircraft in relation to airspaces, Enroute Flight Navigation therefore needs to know the barometric altitudes of your aircraft, or equivalently, the static pressure.") + u" "_s +
+               tr("This data is currently not available.") + u" "_s +
+               u"</p><p>"_s +
+               tr("<a href='https://xx.de'>Consult the manual</a> for more information and for possible solutions.") +
+               u"</p>"_s;
     }
 
     if (name == u":text/whatsnew.html"_s)

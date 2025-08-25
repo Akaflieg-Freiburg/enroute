@@ -252,7 +252,16 @@ SideviewQuickItem {
 
         background: Pane { Material.elevation: 1 }
 
-        onLinkActivated: Qt.openUrlExternally("https://www.faa.gov/air_traffic/publications/atpubs/aip_html/part2_enr_section_1.7.html")
+        onLinkActivated: {
+            dialogLoader.active = false
+            dialogLoader.setSource("../dialogs/LongTextDialog.qml",
+                                   {
+                                       title: qsTr("Static Pressure Unavailable"),
+                                       text: Librarian.getStringFromRessource("sideView"),
+                                       standardButtons: Dialog.Ok
+                                   }
+                                   )
+            dialogLoader.active = true
+        }
     }
-
 }

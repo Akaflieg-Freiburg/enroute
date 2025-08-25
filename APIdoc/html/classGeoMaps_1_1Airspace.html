@@ -68,8 +68,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae1ee9a8821a186548dc8750be7311ee2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an invalid airspace. <br /></td></tr>
 <tr class="memitem:afbdf3892b8bd9dd827dfcd79401d7a5a" id="r_afbdf3892b8bd9dd827dfcd79401d7a5a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbdf3892b8bd9dd827dfcd79401d7a5a">Airspace</a> (const QJsonObject &amp;geoJSONObject)</td></tr>
 <tr class="memdesc:afbdf3892b8bd9dd827dfcd79401d7a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an airspace from a <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> object.  <br /></td></tr>
-<tr class="memitem:a0222e533e364f0fb3ef7bdc75c2f63c4" id="r_a0222e533e364f0fb3ef7bdc75c2f63c4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0222e533e364f0fb3ef7bdc75c2f63c4">estimatedLowerBoundMSL</a> () const -&gt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td></tr>
-<tr class="memdesc:a0222e533e364f0fb3ef7bdc75c2f63c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates the lower limit of the airspace above MSL.  <br /></td></tr>
+<tr class="memitem:a8ec7f52c72636bebe1b5412da150a212" id="r_a8ec7f52c72636bebe1b5412da150a212"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ec7f52c72636bebe1b5412da150a212">estimatedLowerBoundMSL</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> terrainElevation, <a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a> QNH, <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> ownshipGeometricAltitude, <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> ownshipBarometricAltitude) const</td></tr>
+<tr class="memdesc:a8ec7f52c72636bebe1b5412da150a212"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates the lower limit of the airspace, as a geometric altitude above MSL.  <br /></td></tr>
+<tr class="memitem:ace7fdf391f294a5ae5b034dd831801d7" id="r_ace7fdf391f294a5ae5b034dd831801d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace7fdf391f294a5ae5b034dd831801d7">estimatedUpperBoundMSL</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> terrainElevation, <a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a> QNH, <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> ownshipGeometricAltitude, <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> ownshipBarometricAltitude) const</td></tr>
+<tr class="memdesc:ace7fdf391f294a5ae5b034dd831801d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates the upper limit of the airspace, as a geometric altitude above MSL.  <br /></td></tr>
 <tr class="memitem:aa10cdbd0c2633925681e2cb9d7990eea" id="r_aa10cdbd0c2633925681e2cb9d7990eea"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa10cdbd0c2633925681e2cb9d7990eea">isValid</a> () const -&gt; bool</td></tr>
 <tr class="memdesc:aa10cdbd0c2633925681e2cb9d7990eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
 <tr class="memitem:a71b9688efd4393b448c7bb18e4e4c877" id="r_a71b9688efd4393b448c7bb18e4e4c877"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71b9688efd4393b448c7bb18e4e4c877">lowerBound</a> () const -&gt; QString</td></tr>
@@ -113,7 +115,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A very simple class that describes an airspace. </p>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00032">32</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00033">33</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afbdf3892b8bd9dd827dfcd79401d7a5a" name="afbdf3892b8bd9dd827dfcd79401d7a5a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afbdf3892b8bd9dd827dfcd79401d7a5a">&#9670;&#160;</a></span>Airspace()</h2>
@@ -176,12 +178,12 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property CAT </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00128">128</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00194">194</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
-<a id="a0222e533e364f0fb3ef7bdc75c2f63c4" name="a0222e533e364f0fb3ef7bdc75c2f63c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0222e533e364f0fb3ef7bdc75c2f63c4">&#9670;&#160;</a></span>estimatedLowerBoundMSL()</h2>
+<a id="a8ec7f52c72636bebe1b5412da150a212" name="a8ec7f52c72636bebe1b5412da150a212"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ec7f52c72636bebe1b5412da150a212">&#9670;&#160;</a></span>estimatedLowerBoundMSL()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,10 +192,24 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto GeoMaps::Airspace::estimatedLowerBoundMSL </td>
+          <td class="memname"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> GeoMaps::Airspace::estimatedLowerBoundMSL </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt;  <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td>          <td class="paramname"><span class="paramname"><em>terrainElevation</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a></td>          <td class="paramname"><span class="paramname"><em>QNH</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td>          <td class="paramname"><span class="paramname"><em>ownshipGeometricAltitude</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td>          <td class="paramname"><span class="paramname"><em>ownshipBarometricAltitude</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -203,9 +219,72 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 </table>
 </div><div class="memdoc">
 
-<p>Estimates the lower limit of the airspace above MSL. </p>
-<p>This method gives a rought estimate for the lower limit of the airspace. The result is not reliable enough for aviation purposes but can be used to sort the airspaces in the GUI.</p>
-<dl class="section return"><dt>Returns</dt><dd>Estimated lower bound of the airspace, above main sea level </dd></dl>
+<p>Estimates the lower limit of the airspace, as a geometric altitude above MSL. </p>
+<p>This method estimates the lower limit of the airspace at a given point, as a geometric altitude above MSL. Since many airspace boundaries are defined as barometric altitudes (above standard or QNH pressure level), the method needs to know QNH and the ownship geometric and barometric altitude in order to provide an estimate that is good enough to judge vertical distances to airspaces.</p>
+<p>In cases where no precision is required, you can set ownshipGeometricAltitude and ownshipBarometricAltitude to Units::Distance::fromFT(0). Depending on weather, this will lead to an error of about 5-10%, but we have seen days when the error was larger than 15%.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">terrainElevation</td><td>Elevation of the terrain at the given point. This is used when the airspace limit is defined AGL.</td></tr>
+    <tr><td class="paramname">QNH</td><td>This datum is used when the airspace limit is defined as above QNH.</td></tr>
+    <tr><td class="paramname">ownshipGeometricAltitude</td><td>Geometric altitude of the own aircraft. This datum is used when the airspace limit is defined as a flight level or above QNH, to ensure that the estimate is precise for airspaces limits close to the ownship.</td></tr>
+    <tr><td class="paramname">ownshipBarometricAltitude</td><td>Barometric altitude of the own aircraft. This datum is used when the airspace limit is defined as a flight level or above QNH, to ensure that the estimate is precise for airspaces limits close to the ownship.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Estimated lower bound of the airspace, as a geometric altitude above MSL. If no meaningful bound can be computed, a default-constructed distance is returned. </dd></dl>
+
+</div>
+</div>
+<a id="ace7fdf391f294a5ae5b034dd831801d7" name="ace7fdf391f294a5ae5b034dd831801d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace7fdf391f294a5ae5b034dd831801d7">&#9670;&#160;</a></span>estimatedUpperBoundMSL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> GeoMaps::Airspace::estimatedUpperBoundMSL </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td>          <td class="paramname"><span class="paramname"><em>terrainElevation</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a></td>          <td class="paramname"><span class="paramname"><em>QNH</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td>          <td class="paramname"><span class="paramname"><em>ownshipGeometricAltitude</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td>          <td class="paramname"><span class="paramname"><em>ownshipBarometricAltitude</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Estimates the upper limit of the airspace, as a geometric altitude above MSL. </p>
+<p>This method estimates the upper limit of the airspace at a given point, as a geometric altitude above MSL. Since many airspace boundaries are defined as barometric altitudes (above standard or QNH pressure level), the method needs to know QNH and the ownship geometric and barometric altitude in order to provide an estimate that is good enough to judge vertical distances to airspaces.</p>
+<p>In cases where no precision is required, you can set ownshipGeometricAltitude and ownshipBarometricAltitude to Units::Distance::fromFT(0). Depending on weather, this will lead to an error of about 5-10%, but we have seen days when the error was larger than 15%.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">terrainElevation</td><td>Elevation of the terrain at the given point. This is used when the airspace limit is defined AGL.</td></tr>
+    <tr><td class="paramname">QNH</td><td>This datum is used when the airspace limit is defined as above QNH.</td></tr>
+    <tr><td class="paramname">ownshipGeometricAltitude</td><td>Geometric altitude of the own aircraft. This datum is used when the airspace limit is defined as a flight level or above QNH, to ensure that the estimate is precise for airspaces limits close to the ownship.</td></tr>
+    <tr><td class="paramname">ownshipBarometricAltitude</td><td>Barometric altitude of the own aircraft. This datum is used when the airspace limit is defined as a flight level or above QNH, to ensure that the estimate is precise for airspaces limits close to the ownship.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Estimated lower bound of the airspace, as a geometric altitude above MSL. If no meaningful bound can be computed, a default-constructed distance is returned. </dd></dl>
 
 </div>
 </div>
@@ -235,7 +314,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property isValid </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00070">70</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00136">136</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -265,7 +344,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lowerBound </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00084">84</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00150">150</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -295,7 +374,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lowerBoundMetric </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00096">96</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00162">162</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -325,7 +404,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00105">105</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00171">171</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -355,7 +434,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property polygon </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00114">114</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00180">180</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +464,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property upperBound </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00140">140</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00206">206</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -415,7 +494,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property upperBoundMetric </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00152">152</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00218">218</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -444,7 +523,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>A string that describes the lower bound of the airspace</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#aaf33383272ae13062e87e03c1911d886" title="Upper limit of the airspace.">upperBound</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00078">78</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00144">144</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -471,7 +550,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Lower limit of the airspace. </p>
 <p>A string that describes the lower bound of the airspace in metric terms </p>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00090">90</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00156">156</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -498,7 +577,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Upper limit of the airspace. </p>
 <p>A string that describes the upper bound of the airspace </p>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00134">134</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00200">200</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>
@@ -525,7 +604,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 <p>Upper limit of the airspace. </p>
 <p>A string that describes the upper bound of the airspace in metric terms </p>
 
-<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00146">146</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Airspace_8h_source.html#l00212">212</a> of file <a class="el" href="Airspace_8h_source.html">Airspace.h</a>.</p>
 
 </div>
 </div>

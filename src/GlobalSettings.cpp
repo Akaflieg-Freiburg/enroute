@@ -84,19 +84,6 @@ auto GlobalSettings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
 }
 
 
-auto GlobalSettings::mapBearingPolicy() const -> GlobalSettings::MapBearingPolicy
-{
-    auto intVal = m_settings.value(QStringLiteral("Map/bearingPolicy"), 0).toInt();
-    if (intVal == 0) {
-        return NUp;
-    }
-    if (intVal == 1) {
-        return TTUp;
-    }
-    return UserDefinedBearingUp;
-}
-
-
 //
 // Setter Methods
 //
@@ -220,28 +207,6 @@ void GlobalSettings::setPrivacyHash(Units::ByteSize newHash)
     }
     m_settings.setValue(QStringLiteral("privacyHash"), QVariant::fromValue((size_t)newHash));
     emit privacyHashChanged();
-}
-
-
-void GlobalSettings::setMapBearingPolicy(MapBearingPolicy policy)
-{
-    if (policy == mapBearingPolicy())
-    {
-        return;
-    }
-
-    switch(policy){
-    case NUp:
-        m_settings.setValue(QStringLiteral("Map/bearingPolicy"), 0);
-        break;
-    case TTUp:
-        m_settings.setValue(QStringLiteral("Map/bearingPolicy"), 1);
-        break;
-    default:
-        m_settings.setValue(QStringLiteral("Map/bearingPolicy"), 2);
-        break;
-    }
-    emit mapBearingPolicyChanged();
 }
 
 

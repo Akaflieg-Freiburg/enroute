@@ -26,6 +26,12 @@ Installation on Mobile Devices
   <https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute>`_
   and on the `App Store
   <https://apps.apple.com/us/app/enroute-flight-navigation/id6448892176>`_.
+  Binaries for Android are available for sideloading `here 
+  <https://github.com/Akaflieg-Freiburg/enroute/releases/latest>`_.
+  
+Installation on Mac Computers with Apple Silicon
+  **Enroute Flight Navigation** is available for free on the `App Store
+  <https://apps.apple.com/us/app/enroute-flight-navigation/id6448892176>`_.
   
 Installation on Linux Desktop Machines
   **Enroute Flight Navigation** is available for free on `flathub.org

@@ -54,7 +54,7 @@ public:
      *
      * @param info QGeoPositionInfo this is copied into this class
      *
-     * @param source Name of the source that generated with instance
+     * @param source Name of the source that generated this instance
      */
     explicit PositionInfo(const QGeoPositionInfo& info, const QString& source);
 

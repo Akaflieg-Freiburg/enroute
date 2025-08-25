@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -93,42 +93,42 @@ QString GeoMaps::GeoMapProvider::copyrightNotice()
     QString result;
     if (GlobalObject::dataManager()->aviationMaps()->hasFile())
     {
-        result += "<h4>"+tr("Aviation Maps")+"</h4>\n";
-        result += "<p>"+tr("The aeronautical maps are compiled from databases provided by the "
-                           "<a href='http://openaip.net'>openAIP</a> and "
-                           "<a href='https://www.openflightmaps.org/'>open flightmaps</a> "
-                           "projects.")+"</p>\n";
+        result += u"<h4>"_s + tr("Aviation Maps") + u"</h4>\n"_s;
+        result += u"<p>"_s + tr("The aeronautical maps are compiled from databases provided by the "
+                                "<a href='http://openaip.net'>openAIP</a> and "
+                                "<a href='https://www.openflightmaps.org/'>open flightmaps</a> "
+                                "projects.") + u"</p>\n"_s;
         result += QStringLiteral("<a href='https://openAIP.net'>© openAIP</a><br>"
                                  "<a href='https://openflightmaps.org'>© open flightmaps</a>");
     }
 
     if (GlobalObject::dataManager()->baseMaps()->hasFile())
     {
-        result += "<h4>"+tr("Base Maps")+"</h4>\n";
-        result += "<p>"+tr("The base maps are generated from "
-                           "<a href='https://www.openstreetmap.org'>Open Streetmap</a> data.")+"</p>\n";
+        result += u"<h4>"_s + tr("Base Maps") + u"</h4>\n"_s;
+        result += u"<p>"_s + tr("The base maps are generated from "
+                                "<a href='https://www.openstreetmap.org'>Open Streetmap</a> data.") + u"</p>\n"_s;
         result += QStringLiteral("<a href='https://www.openstreetmap.org/about'>© OpenStreetMap contributors</a>");
     }
 
     if (GlobalObject::dataManager()->terrainMaps()->hasFile())
     {
-        result += "<h4>"+tr("Terrain Maps")+"</h4>\n";
-        result += "<p>"+tr("The terrain maps are derived from the "
-                           "<a href='https://registry.opendata.aws/terrain-tiles/'>Terrain "
-                           "Tiles Open Dataset on Amazon AWS</a>.") + "</p>" +
-                "<ul style='margin-left:-25px;'>"
-                "<li><p>ArcticDEM terrain data DEM(s) were created from DigitalGlobe, Inc., imagery and funded under National Science Foundation awards 1043681, 1559691, and 1542736</p>"
-                "<li><p>Australia terrain data © Commonwealth of Australia (Geoscience Australia) 2017</p>"
-                "<li><p>Austria terrain data © offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich</p>"
-                "<li><p>Canada terrain data contains information licensed under the Open Government Licence – Canada</p>"
-                "<li><p>Europe terrain data produced using Copernicus data and information funded by the European Union - EU-DEM layers</p>"
-                "<li><p>Global ETOPO1 terrain data U.S. National Oceanic and Atmospheric Administration</p>"
-                "<li><p>Mexico terrain data source: INEGI, Continental relief, 2016</p>"
-                "<li><p>New Zealand terrain data Copyright 2011 Crown copyright (c) Land Information New Zealand and the New Zealand Government (All rights reserved)</p>"
-                "<li><p>Norway terrain data © Kartverket</p>"
-                "<li><p>United Kingdom terrain data © Environment Agency copyright and/or database right 2015. All rights reserved</p>"
-                "<li><p>United States 3DEP (formerly NED) and global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological Survey.</p>"
-                "</ul>";
+        result += u"<h4>"_s + tr("Terrain Maps") + u"</h4>\n"_s;
+        result += u"<p>"_s + tr("The terrain maps are derived from the "
+                                "<a href='https://registry.opendata.aws/terrain-tiles/'>Terrain "
+                                "Tiles Open Dataset on Amazon AWS</a>.") + u"</p>"_s +
+                  u"<ul style='margin-left:-25px;'>"
+                                "<li><p>ArcticDEM terrain data DEM(s) were created from DigitalGlobe, Inc., imagery and funded under National Science Foundation awards 1043681, 1559691, and 1542736</p>"
+                                "<li><p>Australia terrain data © Commonwealth of Australia (Geoscience Australia) 2017</p>"
+                                "<li><p>Austria terrain data © offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich</p>"
+                                "<li><p>Canada terrain data contains information licensed under the Open Government Licence – Canada</p>"
+                                "<li><p>Europe terrain data produced using Copernicus data and information funded by the European Union - EU-DEM layers</p>"
+                                "<li><p>Global ETOPO1 terrain data U.S. National Oceanic and Atmospheric Administration</p>"
+                                "<li><p>Mexico terrain data source: INEGI, Continental relief, 2016</p>"
+                                "<li><p>New Zealand terrain data Copyright 2011 Crown copyright (c) Land Information New Zealand and the New Zealand Government (All rights reserved)</p>"
+                                "<li><p>Norway terrain data © Kartverket</p>"
+                                "<li><p>United Kingdom terrain data © Environment Agency copyright and/or database right 2015. All rights reserved</p>"
+                                "<li><p>United States 3DEP (formerly NED) and global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological Survey.</p>"
+                                "</ul>"_s;
     }
 
     return result;
@@ -156,8 +156,8 @@ QString GeoMaps::GeoMapProvider::styleFileURL()
 
         file.open(QIODevice::ReadOnly);
         QByteArray data = file.readAll();
-        data.replace("%URL%", (m_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
-        data.replace("%URLT%", (m_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
+        data.replace("%URL%", (m_tileServer.serverUrl() + u"/"_s + _currentBaseMapPath).toLatin1());
+        data.replace("%URLT%", (m_tileServer.serverUrl() + u"/"_s + _currentTerrainMapPath).toLatin1());
         data.replace("%URL2%", m_tileServer.serverUrl().toLatin1());
 
         m_styleFile = new QTemporaryFile(this);
@@ -165,7 +165,7 @@ QString GeoMaps::GeoMapProvider::styleFileURL()
         m_styleFile->write(data);
         m_styleFile->close();
     }
-    return "file://"+m_styleFile->fileName();
+    return u"file://"_s + m_styleFile->fileName();
 }
 
 
@@ -187,7 +187,15 @@ QVariantList GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position)
     }
 
     // Sort airspaces according to lower boundary
-    std::sort(result.begin(), result.end(), [](const Airspace& first, const Airspace& second) {return (first.estimatedLowerBoundMSL() > second.estimatedLowerBoundMSL()); });
+    std::sort(result.begin(), result.end(), [](const Airspace& first, const Airspace& second) {
+        auto firstLB = first.estimatedLowerBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0));
+        auto secondLB = second.estimatedLowerBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0));
+        if (firstLB != secondLB)
+        {
+            return (firstLB > secondLB);
+        }
+        return (first.estimatedUpperBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0)) > second.estimatedUpperBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0)));
+    });
 
     QVariantList final;
     foreach(auto airspace, result)
@@ -195,6 +203,7 @@ QVariantList GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position)
 
     return final;
 }
+
 
 GeoMaps::Waypoint GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition)
 {
@@ -255,74 +264,83 @@ GeoMaps::Waypoint GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate positi
     return result;
 }
 
+Units::Distance decodeImageData(const QImage* image, double intraTileX, double intraTileY)
+{
+    if ((image == nullptr) || (intraTileX < 0.0) || (intraTileX > 1.0) || (intraTileY < 0.0) || (intraTileY > 1.0) || image->isNull())
+    {
+        return {};
+    }
+    intraTileX *= image->width()-1;
+    intraTileY *= image->height()-1;
+    auto t = intraTileX - qFloor(intraTileX);
+    auto u = intraTileY - qFloor(intraTileY);
+
+    auto pix = image->pixel(qFloor(intraTileX), qFloor(intraTileY));
+    double const y1 = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
+
+    pix = image->pixel(qCeil(intraTileX), qFloor(intraTileY));
+    double const y2 = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
+
+    pix = image->pixel(qCeil(intraTileX), qCeil(intraTileY));
+    double const y3 = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
+
+    pix = image->pixel(qFloor(intraTileX), qCeil(intraTileY));
+    double const y4 = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
+
+    return Units::Distance::fromM((1-t)*(1-u)*y1 + t*(1-u)*y2+t*u*y3+(1-t)*u*y4);
+}
+
 Units::Distance GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordinate)
 {
-    int const zoomMin = 6;
-    int const zoomMax = 10;
+    const int zoomMin = 6;
+    const int zoomMax = 10;
 
     for(int zoom = zoomMax; zoom >= zoomMin; zoom--)
     {
         auto tilex = (coordinate.longitude()+180.0)/360.0 * (1<<zoom);
         auto tiley = (1.0 - asinh(tan(qDegreesToRadians(coordinate.latitude())))/M_PI)/2.0 * (1<<zoom);
-        auto intraTileX = qRound(255.0*(tilex-floor(tilex)));
-        auto intraTileY = qRound(255.0*(tiley-floor(tiley)));
+        auto intraTileX = tilex-floor(tilex);
+        auto intraTileY = tiley-floor(tiley);
 
-        qint64 const keyA = qFloor(tilex) & 0xFFFF;
-        qint64 const keyB = qFloor(tiley) & 0xFFFF;
-        qint64 const key = (keyA << 32) + (keyB << 16) + zoom;
+        const qint64 keyA = qFloor(tilex) & 0xFFFF;
+        const qint64 keyB = qFloor(tiley) & 0xFFFF;
+        const qint64 key = (keyA << 32) + (keyB << 16) + zoom;
 
         if (terrainTileCache.contains(key))
         {
             auto* tileImg = terrainTileCache.object(key);
-            if (tileImg->isNull())
+            if (!tileImg->isNull())
+            {
+                return decodeImageData(tileImg, intraTileX, intraTileY);
+            }
+        }
+
+        foreach(auto mbtPtr, m_terrainMapTiles)
+        {
+            if (mbtPtr.isNull())
             {
                 continue;
             }
-            auto pix = tileImg->pixel(intraTileX, intraTileY);
-            double const elevation = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0)
-                                     - 32768.0;
-            return Units::Distance::fromM(elevation);
-        }
-    }
-
-
-    foreach(auto mbtPtr, m_terrainMapTiles)
-    {
-        if (mbtPtr.isNull())
-        {
-            continue;
-        }
-
-        for(int zoom = zoomMax; zoom >= zoomMin; zoom--)
-        {
-            auto tilex = (coordinate.longitude()+180.0)/360.0 * (1<<zoom);
-            auto tiley = (1.0 - asinh(tan(qDegreesToRadians(coordinate.latitude())))/M_PI)/2.0 * (1<<zoom);
-            auto intraTileX = qRound(255.0*(tilex-floor(tilex)));
-            auto intraTileY = qRound(255.0*(tiley-floor(tiley)));
-
-            qint64 const keyA = qFloor(tilex) & 0xFFFF;
-            qint64 const keyB = qFloor(tiley) & 0xFFFF;
-            qint64 const key = (keyA << 32) + (keyB << 16) + zoom;
 
             auto tileData = mbtPtr->tile(zoom, qFloor(tilex), qFloor(tiley));
-            if (!tileData.isEmpty())
+            if (tileData.isEmpty())
             {
-                auto* tileImg = new QImage();
-                tileImg->loadFromData(tileData);
-                if (tileImg->isNull())
-                {
-                    delete tileImg;
-                    continue;
-                }
-                terrainTileCache.insert(key,tileImg);
-
-                auto pix = tileImg->pixel(intraTileX, intraTileY);
-                double const elevation = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0)
-                                         - 32768.0;
-                return Units::Distance::fromM(elevation);
+                continue;
             }
+
+            auto* tileImg = new QImage();
+            tileImg->loadFromData(tileData);
+            if (tileImg->isNull())
+            {
+                delete tileImg;
+                continue;
+            }
+
+            terrainTileCache.insert(key, tileImg);
+            return decodeImageData(tileImg, intraTileX, intraTileY);
         }
     }
+
     return {};
 }
 
@@ -398,7 +416,7 @@ GeoMaps::Waypoint GeoMaps::GeoMapProvider::findByID(const QString& icaoID)
 {
     auto wps = waypoints();
 
-    for(auto wayppoint : wps)
+    for(auto wayppoint : std::as_const(wps))
     {
         if (!wayppoint.isValid())
         {
@@ -430,7 +448,7 @@ QList<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoor
     }
 
     auto wpsLib = GlobalObject::waypointLibrary()->waypoints();
-    for(const auto& waypoint : wpsLib)
+    for(const auto& waypoint : std::as_const(wpsLib))
     {
         if (!waypoint.isValid())
         {
@@ -629,7 +647,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         for(const auto& JSONFileName : JSONFileNames)
         {
             // Read the lock file
-            QLockFile lockFile(JSONFileName+".lock");
+            QLockFile lockFile(JSONFileName + u".lock"_s);
             lockFile.lock();
             QFile file(JSONFileName);
             file.open(QIODevice::ReadOnly);
@@ -653,7 +671,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
     // Create vectors of airspaces and waypoints
     QVector<Airspace> newAirspaces;
     QVector<Waypoint> newWaypoints;
-    for(const auto& object : objectVector)
+    for(const auto& object : std::as_const(objectVector))
     {
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         Waypoint const waypoint(object);
@@ -674,11 +692,11 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
 
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
-    for(const auto& object : objectVector)
+    for(const auto& object : std::as_const(objectVector))
     {
         // Ignore all objects that are airspaces and that begin above the airspaceAltitudeLimit.
         Airspace const airspaceTest(object);
-        if (airspaceAltitudeLimit.isFinite() && (airspaceTest.estimatedLowerBoundMSL() > airspaceAltitudeLimit))
+        if (airspaceAltitudeLimit.isFinite() && (airspaceTest.estimatedLowerBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0)) > airspaceAltitudeLimit))
         {
             continue;
         }

@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.34.6] - 2025-08-07
+
+### Fixed
+
+- Fixed error where many data connections appear twice in the data connection dialog.
+
+
+## [2.34.5] - 2025-08-05
+
+### Changed
+
+- Changed behavior of the "North Arrow" button in the moving map to make usage
+  more intuitive.
+
+
+## [2.34.4] - 2025-08-03
+
+### Changed
+- Changed behavior of "Direct To" in the waypoint description dialog to make it
+  more useful. (#325, #449)
+
+- Android binaries are now available for sideloading at GitHub
+  https://github.com/Akaflieg-Freiburg/enroute/releases/latest
+
+
+## [2.34.2] - 2025-07-18
+
+### Fixed
+- Fixed infrequent freeze on startup in Android.
+
+### Added
+- Support more Bluetooth Low Energy UART characteristics. (#529)
+
+
 ## [2.34.0] - 2025-07-12
 
 ### Added

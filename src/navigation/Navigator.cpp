@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -202,16 +202,6 @@ void Navigation::Navigator::updateFlightStatus()
 }
 
 
-void Navigation::Navigator::setRemainingRouteInfo(const Navigation::RemainingRouteInfo& rrInfo)
-{
-    if (rrInfo == m_remainingRouteInfo) {
-        return;
-    }
-    m_remainingRouteInfo = rrInfo;
-    emit remainingRouteInfoChanged();
-}
-
-
 void Navigation::Navigator::updateRemainingRouteInfo()
 {
     auto info = GlobalObject::positionProvider()->positionInfo();
@@ -222,7 +212,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     {
         RemainingRouteInfo rrInfo;
         rrInfo.status = RemainingRouteInfo::NoRoute;
-        setRemainingRouteInfo(rrInfo);
+        m_remainingRouteInfo = rrInfo;
         return;
     }
 
@@ -231,7 +221,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     {
         RemainingRouteInfo rrInfo;
         rrInfo.status = RemainingRouteInfo::PositionUnknown;
-        setRemainingRouteInfo(rrInfo);
+        m_remainingRouteInfo = rrInfo;
         return;
     }
 
@@ -241,7 +231,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     {
         RemainingRouteInfo rrInfo;
         rrInfo.status = RemainingRouteInfo::NearDestination;
-        setRemainingRouteInfo(rrInfo);
+        m_remainingRouteInfo = rrInfo;
         return;
     }
 
@@ -288,7 +278,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     {
         RemainingRouteInfo rrInfo;
         rrInfo.status = RemainingRouteInfo::OffRoute;
-        setRemainingRouteInfo(rrInfo);
+        m_remainingRouteInfo = rrInfo;
         return;
     }
 
@@ -361,5 +351,5 @@ void Navigation::Navigator::updateRemainingRouteInfo()
         rri.note = tr("Computation incomplete. %1").arg(complaints.join(QStringLiteral(" ")));
     }
 
-    setRemainingRouteInfo(rri);
+    m_remainingRouteInfo = rri;
 }

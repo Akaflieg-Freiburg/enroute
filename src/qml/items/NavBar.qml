@@ -24,13 +24,14 @@ import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
 
+
 Rectangle {
     id: grid
-    
+
     color: "#AA000000"
 
     implicitHeight: trueAltitude.implicitHeight + SafeInsets.bottom
-    
+
     // Dummy control. Used to glean the font size.
     Control {
         id: dummy

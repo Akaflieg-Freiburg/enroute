@@ -396,6 +396,28 @@ Page {
 
                 }
 
+                MenuItem {
+                    text: qsTr("Copy as Flight Plan")
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+
+                        var flightPlanText = Navigator.flightRoute.toVfrFlightPlan()
+                        if (flightPlanText !== "") {
+                            var success = PlatformAdaptor.setClipboardText(flightPlanText)
+                            if (success) {
+                                toast.doToast(qsTr("Flight plan copied to clipboard"))
+                            } else {
+                                toast.doToast(qsTr("Failed to copy flight plan"))
+                            }
+                        } else {
+                            toast.doToast(qsTr("No flight route to copy"))
+                        }
+                    }
+                }
+
                 MenuSeparator { }
 
                 MenuItem {

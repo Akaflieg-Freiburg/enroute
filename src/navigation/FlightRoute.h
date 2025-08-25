@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -108,7 +108,7 @@ namespace Navigation
          *
          * This property returns a list of all legs in the route.
          */
-        Q_PROPERTY(QList<Navigation::Leg> legs READ legs NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<Navigation::Leg> legs READ legs BINDABLE bindableLegs)
 
         /*! \brief Number of waypoints in the route */
         Q_PROPERTY(qsizetype size READ size NOTIFY waypointsChanged)
@@ -145,7 +145,12 @@ namespace Navigation
          *
          *  @returns Property geoPath
          */
-        [[nodiscard]] QList<QGeoCoordinate> geoPath() const {return {m_geoPath};}
+        [[nodiscard]] QList<QGeoCoordinate> geoPath() const {return m_geoPath.value();}
+
+        /*! \brief Getter function for the property with the same name
+         *
+         *  @returns Property geoPath
+         */
         [[nodiscard]] QBindable<QList<QGeoCoordinate>> bindableGeoPath() const {return &m_geoPath;}
 
         /*! \brief Getter function for the property with the same name
@@ -158,7 +163,13 @@ namespace Navigation
          *
          * @returns Property legs
          */
-        [[nodiscard]] auto legs() const -> QList<Navigation::Leg> { return m_legs; }
+        [[nodiscard]] QList<Navigation::Leg> legs() const { return m_legs.value(); }
+
+        /*! \brief Getter function for the property with the same name
+         *
+         * @returns Property legs
+         */
+        [[nodiscard]] QBindable<QList<Navigation::Leg>> bindableLegs() const { return &m_legs; }
 
         /*! \brief Getter function for the property with the same name
          *
@@ -226,6 +237,25 @@ namespace Navigation
          * waypoint in the route
          */
         [[nodiscard]] Q_INVOKABLE bool contains(const GeoMaps::Waypoint& waypoint) const;
+
+        /*! \brief Determines current leg
+         *
+         * @param pInfo Position Info
+         *
+         * This method determines the current leg of the flight route by analyzing a position info. The current leg is the last leg in
+         * the flight route that we are following, or (failing that) the last leg that we are near to.
+         *
+         * @returns Index of the current leg in legs(), or -1 if no current leg can be determined.
+         */
+        [[nodiscard]] Q_INVOKABLE qsizetype currentLeg(const Positioning::PositionInfo& pInfo) const;
+
+        /*! \brief Modifies the current route, to make 'target' the next waypoint
+         *
+         *  @param target Waypoint to be inserted
+         *
+         *  @param pInfo Current position of the own aircraft
+         */
+        Q_INVOKABLE void directTo(const GeoMaps::Waypoint& target, const Positioning::PositionInfo& pInfo = {});
 
         /*! \brief Inserts a waypoint into the route
          *
@@ -342,6 +372,24 @@ namespace Navigation
          */
         [[nodiscard]] Q_INVOKABLE QByteArray toGpx() const;
 
+        /*! \brief Exports to route to VFR Flight Plan Format.
+         *
+         * This method serialises the current flight route as a simplified VFR flight plan
+         * route string following standard aviation format:
+         * 
+         * Format: [departure] DCT [waypoint1] DCT [waypoint2] DCT ... DCT [destination]
+         * Example: EDPC DCT EDDM DCT 4620N07805W DCT EDML DCT EDTF
+         * 
+         * Waypoint formatting rules:
+         * - Airfields (type "AD"): Use ICAO codes (e.g., EDPC, EDDM, EDTF)
+         * - Navigation Aids (type "NAV"): Use ICAO codes (e.g., VOR, NDB, DME)
+         * - Reporting Points (type "WP"): Use coordinate format "4620N07805W" (degrees and minutes)
+         * - User Waypoints (type "WP"): Use coordinate format "4620N07805W" (degrees and minutes)
+         * 
+         * @returns QString containing the VFR flight plan route string
+         */
+        [[nodiscard]] Q_INVOKABLE QString toVfrFlightPlan() const;
+
     signals:
         /*! \brief Notification signal for the property with the same name */
         void waypointsChanged();
@@ -350,21 +398,20 @@ namespace Navigation
         void summaryChanged();
 
     private slots:
-        void updateLegs();
 
     private:
         Q_DISABLE_COPY_MOVE(FlightRoute)
-
-        // Computer functions for bindings
-        QList<QGeoCoordinate> computeGeoPath();
 
         // Helper function for method toGPX
         [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
 
         QProperty<QList<QGeoCoordinate>> m_geoPath;
-        QProperty<QVector<GeoMaps::Waypoint>> m_waypoints;
+        QList<QGeoCoordinate> computeGeoPath();
 
-        QVector<Leg> m_legs;
+        Q_OBJECT_BINDABLE_PROPERTY(Navigation::FlightRoute, QVector<GeoMaps::Waypoint>, m_waypoints, &Navigation::FlightRoute::waypointsChanged);
+
+        QProperty<QVector<Leg>> m_legs;
+        QVector<Leg> computeLegs();
 
         QLocale myLocale;
     };

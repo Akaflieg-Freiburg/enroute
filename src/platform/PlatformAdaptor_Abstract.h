@@ -82,6 +82,13 @@ public:
      */
     Q_INVOKABLE static QString clipboardText();
 
+    /*! \brief Set text content to ClipBoard
+     *
+     *  @param text Text to set in the clipboard
+     *  @returns True if the text was set, false if the clipboard is not available
+     */
+    Q_INVOKABLE static bool setClipboardText(const QString& text);
+
     /*! \brief SSID of current Wi-Fi network
      *
      * @returns The SSID of the current Wi-Fi networks, an empty string if the

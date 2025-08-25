@@ -110,6 +110,12 @@ signals:
      */
     void requestVAC(QString vacName);
 
+    /*! \brief Emitted to indicate that the GUI should set a map bearing
+     *
+     *  @param bearing New bearing policy
+     */
+    void requestMapBearing(int bearing);
+
 private:
     Q_DISABLE_COPY_MOVE(DemoRunner)
 

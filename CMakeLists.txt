@@ -14,7 +14,7 @@ option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.34.0)
+project(enroute VERSION 2.34.50)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
@@ -52,7 +52,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(Qt6 6.9 COMPONENTS WebView)
 endif()
 
-qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de es fr it pl)
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES cs de es fr it pl)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(QT_QML_GENERATE_QMLLS_INI ON)

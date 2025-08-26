@@ -85,20 +85,10 @@ FlightGear
 ^^^^^^^^^^
 
 FlightGear works well, even though position information is only broadcast when
-the simulated aircraft is moving.  The following two parameters in the text
-field of the settings dialog need to be set::
-
-  --generic=socket,out,1,255.255.255.255,49002,udp,foreflight-xgps
-  --httpd=8080
-
-The figure :ref:`flightGear-img` shows settings window.
-
-.. _flightGear-img:
-.. figure:: FlightGear.png
-   :scale: 50 %
-   :align: center
-
-   FlightGear Settings
+the simulated aircraft is moving.  Follow the instructions on `this website
+<https://wiki.flightgear.org/Howto:Using_FlightGear_with_an_EFB>`__ to configure
+FlightGear. **Enroute Flight Navigation** will then work automatically, without
+any specific configuration.
 
   
 MS Flight Simulator

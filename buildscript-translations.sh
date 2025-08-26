@@ -19,5 +19,5 @@ lupdate-qt6 src -ts 3rdParty/enrouteText/assets/enroute_pl.ts
 
 cd 3rdParty/enrouteText
 git commit -a -m "Update translations"
-git push origin HEAD:master
+git push git@github.com:Akaflieg-Freiburg/enrouteText.git HEAD:master
 cd ../..

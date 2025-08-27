@@ -118,6 +118,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0fd49cf9b31e0176a296feedde059dcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:ae7d12ecda2c466a84a363224262b8038" id="r_ae7d12ecda2c466a84a363224262b8038"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7d12ecda2c466a84a363224262b8038">setCurrentRasterMap</a> (const QString &amp;mapName)</td></tr>
 <tr class="memdesc:ae7d12ecda2c466a84a363224262b8038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a4db79c0362b5869747c0c2a0d06639c8" id="r_a4db79c0362b5869747c0c2a0d06639c8"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QList&lt; <a class="el" href="classGeoMaps_1_1Airspace.html">GeoMaps::Airspace</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4db79c0362b5869747c0c2a0d06639c8">airspaces</a> ()</td></tr>
+<tr class="memdesc:a4db79c0362b5869747c0c2a0d06639c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all airspaces known to Enroute Flight Navigation.  <br /></td></tr>
 <tr class="memitem:a0cee1fd088c20e2ef4b9afb8640a8d98" id="r_a0cee1fd088c20e2ef4b9afb8640a8d98"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QVariantList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0cee1fd088c20e2ef4b9afb8640a8d98">airspaces</a> (const QGeoCoordinate &amp;position)</td></tr>
 <tr class="memdesc:a0cee1fd088c20e2ef4b9afb8640a8d98"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of airspaces at a given location.  <br /></td></tr>
 <tr class="memitem:afc75ee5b84f9ae1c5056037ac7875c02" id="r_afc75ee5b84f9ae1c5056037ac7875c02"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc75ee5b84f9ae1c5056037ac7875c02">closestWaypoint</a> (QGeoCoordinate position, const QGeoCoordinate &amp;distPosition)</td></tr>
@@ -255,8 +257,36 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a4db79c0362b5869747c0c2a0d06639c8" name="a4db79c0362b5869747c0c2a0d06639c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4db79c0362b5869747c0c2a0d06639c8">&#9670;&#160;</a></span>airspaces() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QList&lt; <a class="el" href="classGeoMaps_1_1Airspace.html">GeoMaps::Airspace</a> &gt; GeoMaps::GeoMapProvider::airspaces </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>List of all airspaces known to Enroute Flight Navigation. </p>
+<dl class="section return"><dt>Returns</dt><dd>List of all airspaces known to Enroute Flight Navigation </dd></dl>
+
+</div>
+</div>
 <a id="a0cee1fd088c20e2ef4b9afb8640a8d98" name="a0cee1fd088c20e2ef4b9afb8640a8d98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cee1fd088c20e2ef4b9afb8640a8d98">&#9670;&#160;</a></span>airspaces()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cee1fd088c20e2ef4b9afb8640a8d98">&#9670;&#160;</a></span>airspaces() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -473,7 +503,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>This is a helper method for QML, where creation of waypoint objects is difficult.</p>
 <dl class="section return"><dt>Returns</dt><dd>An invalid waypoint </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00287">287</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00290">290</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>

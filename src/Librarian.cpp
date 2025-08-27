@@ -315,14 +315,14 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += u"<p>"_s
+                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.")
+                  + u" This feature is currently in beta test. We would love to hear your feedback."_s
+                  + u"</p>"_s;
+        result += u"<p>"_s
                   + tr("Enroute Flight Navigation is now able to display traffic data provided by the Open Glider Network. "
                        "Flight routes can now be copied to the clipboard in ICAO flight plan format. "
                        "We thank Christian Engelhardt for the implementation of these features. "
                        "Consult the manual for more information.")
-                  + u"</p>"_s;
-        result += u"<p>"_s
-                  + tr("Enroute Flight Navigation is now available on Mac computers with Apple Silcon processor (M1 or newer). "
-                       "Download it on the App Store.")
                   + u"</p>"_s;
 #if !defined(Q_OS_IOS)
 /*

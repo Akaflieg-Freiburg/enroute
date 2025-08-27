@@ -136,7 +136,7 @@ QString GeoMaps::GeoMapProvider::copyrightNotice()
 
 QByteArray GeoMaps::GeoMapProvider::geoJSON()
 {
-    QMutexLocker const lock(&_aviationDataMutex);
+    QMutexLocker const lock(&m_aviationDataMutex);
     return _combinedGeoJSON_;
 }
 
@@ -173,10 +173,17 @@ QString GeoMaps::GeoMapProvider::styleFileURL()
 // Methods
 //
 
+QList<GeoMaps::Airspace> GeoMaps::GeoMapProvider::airspaces()
+{
+    // Lock data
+    QMutexLocker const lock(&m_aviationDataMutex);
+    return _airspaces_;
+}
+
 QVariantList GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position)
 {
     // Lock data
-    QMutexLocker const lock(&_aviationDataMutex);
+    QMutexLocker const lock(&m_aviationDataMutex);
 
     QVector<Airspace> result;
     result.reserve(10);
@@ -468,7 +475,7 @@ QList<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoor
 
 QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::waypoints()
 {
-    QMutexLocker const locker(&_aviationDataMutex);
+    QMutexLocker const locker(&m_aviationDataMutex);
     return _waypoints_;
 }
 
@@ -728,7 +735,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
     // Sort waypoints by name
     std::sort(newWaypoints.begin(), newWaypoints.end(), [](const Waypoint& first, const Waypoint& second) {return first.name() < second.name(); });
 
-    _aviationDataMutex.lock();
+    m_aviationDataMutex.lock();
     _airspaces_ = newAirspaces;
     if (_waypointsChanged)
     {
@@ -742,7 +749,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         geoJSONCacheFile.write(_combinedGeoJSON_);
         geoJSONCacheFile.close();
     }
-    _aviationDataMutex.unlock();
+    m_aviationDataMutex.unlock();
 
     if (_waypointsChanged)
     {

@@ -250,8 +250,11 @@ public:
     // Methods
     //
 
-#warning
-    [[nodiscard]] Q_INVOKABLE QList<Airspace> airspaces() {return _airspaces_;}
+    /*! \brief List of all airspaces known to Enroute Flight Navigation
+     *
+     * @returns List of all airspaces known to Enroute Flight Navigation
+     */
+    [[nodiscard]] Q_INVOKABLE QList<GeoMaps::Airspace> airspaces();
 
     /*! \brief List of airspaces at a given location
      *
@@ -405,7 +408,7 @@ private:
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by
     // this mutex.
-    QMutex _aviationDataMutex;
+    QMutex m_aviationDataMutex;
     QByteArray _combinedGeoJSON_;  // Cache: GeoJSON
     QList<Waypoint> _waypoints_; // Cache: Waypoints
     QList<Airspace> _airspaces_; // Cache: Airspaces

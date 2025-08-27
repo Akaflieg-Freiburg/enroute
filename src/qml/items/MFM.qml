@@ -305,6 +305,12 @@ Item {
             NumberAnimation { duration: 400 }
         }
 
+        onZoomLevelChanged:  {
+            if (!flightMap.followGPS)
+                return
+            alignMapToCenter()
+        }
+
 
         //
         // Connections
@@ -823,7 +829,7 @@ Item {
                     Layout.preferredHeight: 24
 
                     opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-                    visible: (!Global.currentVAC.isValid) && (page.height > page.width)
+                    visible: (!Global.currentVAC.isValid) && (gridView.height > gridView.width)
 
                     contentItem: Scale
                     {

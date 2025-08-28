@@ -43,7 +43,7 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
     updateProperties();
 
-    auto baroCache = new Navigation::BaroCache(this);
+    auto* baroCache = new Navigation::BaroCache(this);
 }
 
 void Ui::SideviewQuickItem::updateProperties()

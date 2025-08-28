@@ -50,6 +50,10 @@ void Navigation::BaroCache::addIncomingBaroCacheData()
     qWarning() << m_incomingPressureAltitudeTimestamp << m_incomingPressureAltitude.toM() << m_incomingGeometricAltitude.toM();
     auto FL = qRound(m_incomingPressureAltitude.toFeet()/100.0);
     m_altitudeElementsByFlightLevel[FL] = {m_incomingPressureAltitudeTimestamp, m_incomingPressureAltitude, m_incomingGeometricAltitude};
+    m_incomingGeometricAltitude = {};
+    m_incomingGeometricAltitudeTimestamp = {};
+    m_incomingPressureAltitude = {};
+    m_incomingPressureAltitudeTimestamp = {};
 }
 
 

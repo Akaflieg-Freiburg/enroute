@@ -21,6 +21,7 @@
 #include "GeoMapProvider.h"
 #include "PositionProvider.h"
 #include "SideviewQuickItem.h"
+#include "navigation/BaroCache.h"
 #include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
 
@@ -41,6 +42,8 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
     updateProperties();
+
+    auto baroCache = new Navigation::BaroCache(this);
 }
 
 void Ui::SideviewQuickItem::updateProperties()

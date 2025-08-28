@@ -228,7 +228,7 @@ signals:
     void approximateLastValidCoordinateChanged();
 
     // Notifier signal
-    void positionInfoChanged();
+    void positionInfoChanged(const Positioning::PositionInfo& info);
 
     // Notifier signal
     void receivingPositionInfoChanged(bool);

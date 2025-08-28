@@ -131,7 +131,7 @@ void Ui::SideviewQuickItem::updateProperties()
     auto ownshipGeometricAltitude = Units::Distance::fromM(ownshipCoordinate.altitude());
     if (!ownshipGeometricAltitude.isFinite())
     {
-        m_error = tr("Unable to show side view: No valid altitude data.");
+        m_error = tr("Unable to show side view: No valid altitude data for own aircraft.");
         return;
     }
     auto ownshipBarometricAltitude = GlobalObject::trafficDataProvider()->pressureAltitude();

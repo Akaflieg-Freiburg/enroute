@@ -227,6 +227,25 @@ Page {
                     id: addMenu
 
                     Action {
+                        text: qsTr("Network/TCP")
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addTCPDialog.open()
+                            addMenu.close()
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("Network/UDP")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addUDPDialog.open()
+                            addMenu.close()
+                        }
+                    }
+
+                    Action {
                         text: qsTr("Bluetooth")
                         enabled: (Qt.platform.os !== "ios")
                         onTriggered: {
@@ -239,7 +258,7 @@ Page {
                     }
 
                     Action {
-                        text: qsTr("Serial Port Connection")
+                        text: qsTr("Serial Port")
                         enabled: (Qt.platform.os !== "ios") && (Qt.platform.os !== "android")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
@@ -248,27 +267,8 @@ Page {
                         }
                     }
 
-                    Action {
-                        text: qsTr("TCP Connection")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            addTCPDialog.open()
-                            addMenu.close()
-                        }
-                    }
-
-                    Action {
-                        text: qsTr("UDP Connection")
-
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            addUDPDialog.open()
-                            addMenu.close()
-                        }
-                    }
-
-                    Action {
-                        text: qsTr("OGN glidernet.org Connection")
+                   Action {
+                        text: qsTr("Open Glider Network")
                         enabled: !TrafficDataProvider.currentSourceIsInternetService
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()

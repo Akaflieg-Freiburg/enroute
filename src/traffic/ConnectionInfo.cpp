@@ -154,10 +154,12 @@ Traffic::ConnectionInfo::ConnectionInfo(const QString& host, quint16 port, bool 
     m_icon = u"/icons/material/ic_wifi.svg"_s;
 }
 
+
 Traffic::ConnectionInfo::ConnectionInfo(const OgnInfo& info)
-    : m_canConnect(true), m_canonical(false), m_type(Traffic::ConnectionInfo::OGN)
+    : m_canConnect(true), m_type(Traffic::ConnectionInfo::OGN)
 {
-    m_name = QObject::tr("OGN glidernet.org APRS-IS connection", "Traffic::ConnectionInfo");
+    Q_UNUSED(info)
+    m_name = QObject::tr("Open Glider Network Connection", "Traffic::ConnectionInfo");
     m_icon = u"/icons/material/ic_wifi.svg"_s;
 }
 
@@ -285,7 +287,6 @@ QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionI
         stream << connectionInfo.m_host;
         break;
     case Traffic::ConnectionInfo::FLARMFile:
-        break;
     case Traffic::ConnectionInfo::OGN:
         break;
     }
@@ -339,7 +340,6 @@ QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& c
         stream >> connectionInfo.m_host;
         break;
     case Traffic::ConnectionInfo::FLARMFile:
-        break;
     case Traffic::ConnectionInfo::OGN:
         break;
     }

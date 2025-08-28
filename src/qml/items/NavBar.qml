@@ -28,7 +28,7 @@ import akaflieg_freiburg.enroute
 Rectangle {
     id: grid
 
-    color: "#AA000000"
+    color: "#303030"
 
     implicitHeight: trueAltitude.implicitHeight + SafeInsets.bottom
 
@@ -230,4 +230,4 @@ Rectangle {
 
     }
 
-} // Rectangle
+}

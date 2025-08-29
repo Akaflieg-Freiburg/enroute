@@ -73,10 +73,16 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                + "<strong>" + tr("Programming") + ":</strong> " + tr("Heinz Blöchinger has helped us with file import functionality. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.")
                + "</li>"
                + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an Embedded SW Engineer.")
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an embedded software Engineer.")
                + "</li>"
                + "<li>"
                + "<strong>" + tr("Programming") + ":</strong> " + tr("Tom Linz completed height density calculation. He received his PPL license in late 2024. Tom works as a development engineer for safety systems.")
+               + "</li>"
+               + "<li>"
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Markus Marks helped to implement the side view.")
+               + "</li>"
+               + "<li>"
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Simon Schneider implemented the first working version of the side view.")
                + "</li>"
                + "</ul>"
                + tr(R"html(

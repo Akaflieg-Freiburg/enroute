@@ -21,7 +21,6 @@
 #include "GeoMapProvider.h"
 #include "PositionProvider.h"
 #include "SideviewQuickItem.h"
-#include "navigation/BaroCache.h"
 #include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
 
@@ -31,7 +30,7 @@ QStringList airspaceCategories = {"TMZ", "RMZ", "TIA", "TIZ", "NRA", "DNG", "D",
 
 
 Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
-    : QQuickItem(parent)
+    : QQuickItem(parent), m_baroCache(new Navigation::BaroCache(this))
 {
     m_timer.setSingleShot(true);
     connect(&m_timer, &QTimer::timeout, this, &Ui::SideviewQuickItem::updateProperties);
@@ -41,9 +40,7 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     notifiers.push_back(bindableWidth().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
-    updateProperties();
-
-    auto* baroCache = new Navigation::BaroCache(this);
+    updateProperties();   
 }
 
 void Ui::SideviewQuickItem::updateProperties()

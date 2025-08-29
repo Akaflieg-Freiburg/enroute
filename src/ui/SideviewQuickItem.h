@@ -23,6 +23,8 @@
 #include <QQuickItem>
 #include <QTimer>
 
+#include "navigation/BaroCache.h"
+
 
 namespace Ui {
 
@@ -232,7 +234,10 @@ private:
 
     QProperty<QVariantMap> m_airspaces;
 
+    Navigation::BaroCache* m_baroCache;
+
     std::vector<QPropertyNotifier> notifiers;
+
 };
 
 } // namespace Ui

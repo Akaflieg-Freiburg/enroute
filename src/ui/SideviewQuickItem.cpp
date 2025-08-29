@@ -134,10 +134,10 @@ void Ui::SideviewQuickItem::updateProperties()
         m_error = tr("Unable to show side view: No valid altitude data for own aircraft.");
         return;
     }
-    auto ownshipBarometricAltitude = GlobalObject::trafficDataProvider()->pressureAltitude();
-    if (!ownshipBarometricAltitude.isFinite())
+    auto ownshipPressureAltitude = m_baroCache->estimatedPressureAltitude(ownshipGeometricAltitude);
+    if (!ownshipPressureAltitude.isFinite())
     {
-        ownshipBarometricAltitude = ownshipGeometricAltitude;
+        ownshipPressureAltitude = ownshipGeometricAltitude;
         m_error = tr("Unable to compute sufficiently precise vertical airspace boundaries because barometric altitude information is not available. <a href='xx'>Click here</a> for more information.");
     }
     auto QNH = GlobalObject::weatherDataProvider()->QNH();
@@ -286,8 +286,8 @@ void Ui::SideviewQuickItem::updateProperties()
             const auto& geoCoordinate = geoCoordinates[i];
             if ((i != xCoordinates.size()-1) && airspacePolygon.contains(geoCoordinate))
             {
-                upper << QPointF(x, altToYCoordinate(airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipBarometricAltitude)));
-                lower << QPointF(x, altToYCoordinate(airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipBarometricAltitude)));
+                upper << QPointF(x, altToYCoordinate(airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude)));
+                lower << QPointF(x, altToYCoordinate(airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude)));
             }
             else
             {

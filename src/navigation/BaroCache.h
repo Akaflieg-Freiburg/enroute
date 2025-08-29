@@ -33,12 +33,15 @@ namespace Navigation
 
 /*! \brief Cache relating geometric and barometric altitude information
  *
- * This class collects geometric and barometric altitude information of the own aircraft. If sufficient data is available, it uses this data to
- * estimate geometric altitudes from barometric altitudes and vice versa. This functionality is used, for instance, to estimate the geometric
- * altitude of airspace boundaries (which are defined as geometric altitudes).
+ * This class collects geometric and barometric altitude information of the own
+ * aircraft. If sufficient data is available, it uses this data to estimate
+ * geometric altitudes from barometric altitudes and vice versa. This
+ * functionality is used, for instance, to estimate the geometric altitude of
+ * airspace boundaries (which are defined as geometric altitudes).
  *
- * For clarity: We use the term "barometric altitude" to refer to the baromatric altitude over the standard level. This is the altitude shown
- * by an aircraft altimeter when set to 1013.2 hPa.
+ * For clarity: We use the term "barometric altitude" to refer to the baromatric
+ * altitude over the standard level. This is the altitude shown by an aircraft
+ * altimeter when set to 1013.2 hPa.
  */
 class BaroCache : public QObject
 {
@@ -55,20 +58,22 @@ public:
     ~BaroCache() override = default;
 
 
-
     //
     // Methods
     //
 
     /*! \brief Estimate pressure altitude for a given geometric altitude
      *
-     *  This method queries the cache, in order to estimate the pressure altitude for a given geometric altitude.
-     *  It will return an invalid Distance unless there exists a cache entry whose geometric
-     *  altitude is within +/- 500ft from the geometricAltitude parameter.
+     *  This method queries the cache, in order to estimate the pressure
+     *  altitude for a given geometric altitude. It will return an invalid
+     *  Distance unless there exists a cache entry whose geometric altitude is
+     *  within +/- 500ft from the geometricAltitude parameter.
      *
-     *  Remember: pressure altitude is the barometric altitude above the 1013.2 hPa pressure surface
+     *  Remember: pressure altitude is the barometric altitude above the 1013.2
+     *  hPa pressure surface
      *
-     *  @param geometricAltitude Geometric altitude whose associated pressure altitude is to be estimated
+     *  @param geometricAltitude Geometric altitude whose associated pressure
+     *  altitude is to be estimated
      *
      *  @returns Estimated pressure altitude
      */

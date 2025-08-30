@@ -21,8 +21,11 @@
 #include <QQmlEngine>
 #include <QTimer>
 
-#include "navigation/Atmosphere.h"
 #include "Sensors.h"
+#include "navigation/Atmosphere.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -39,7 +42,7 @@ Sensors::Sensors(QObject *parent) : GlobalObject(parent)
 
     auto* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Sensors::updateSensorReadings);
-    timer->setInterval(1000);
+    timer->setInterval(1s);
     timer->setSingleShot(false);
     timer->start();
 
@@ -103,11 +106,11 @@ void Sensors::updateStatusString()
     auto types = QPressureSensor::sensorTypes();
     if (types.contains("QPressureSensor"))
     {
-        sensorNames += "<li>" + tr("Pressure sensor available") + "</li>";
+        sensorNames += u"<li>"_s + tr("Pressure sensor available") + u"</li>"_s;
     }
     if (types.contains("QAmbientTemperatureSensor"))
     {
-        sensorNames += "<li>" + tr("Temperature sensor available") + "</li>";
+        sensorNames += u"<li>"_s + tr("Temperature sensor available") + u"</li>"_s;
     }
 #else
     const QStringList sensorNames;
@@ -118,7 +121,7 @@ void Sensors::updateStatusString()
     }
     else
     {
-        newStatus = "<ul style='margin-left:-25px;'>" + sensorNames.join(u""_s) + "</ul>";
+        newStatus = u"<ul style='margin-left:-25px;'>"_s + sensorNames.join(u""_s) + u"</ul>"_s;
     }
 
     if (newStatus != m_statusString)

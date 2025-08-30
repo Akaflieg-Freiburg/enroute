@@ -21,6 +21,7 @@
 #include <QQmlEngine>
 #include <QTimer>
 
+#include "navigation/Atmosphere.h"
 #include "Sensors.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -74,6 +75,7 @@ void Sensors::updateSensorReadings()
     if (new_ambientPressure != m_ambientPressure)
     {
         m_ambientPressure = new_ambientPressure;
+        m_pressureAltitude = Navigation::Atmosphere::height(new_ambientPressure);
         emit ambientPressureChanged();
     }
 

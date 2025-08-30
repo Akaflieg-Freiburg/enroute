@@ -233,7 +233,7 @@ signals:
     // Notifier signal
     void receivingPositionInfoChanged(bool);
 
-private slots:   
+private slots:
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.
     void deferredInitialization();

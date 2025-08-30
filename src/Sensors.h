@@ -75,7 +75,7 @@ public:
     //
     // PROPERTIES
     //
-
+#warning make bindable
     /*! \brief Ambient pressure
      *
      *  This property holds the ambient pressure recorded by the device sensor (if any).

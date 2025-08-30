@@ -43,19 +43,21 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 
     // Restore aircraft
     QFile file(m_aircraftFileName);
+    Navigation::Aircraft newAircraft;
     if (file.open(QIODevice::ReadOnly))
     {
-        (void)m_aircraft.loadFromJSON(file.readAll());
+        (void)newAircraft.loadFromJSON(file.readAll());
     }
     else
     {
         auto cruiseSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/cruiseSpeedInKTS"), 0.0).toDouble());
         auto descentSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/descentSpeedInKTS"), 0.0).toDouble());
         auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value(QStringLiteral("Aircraft/fuelConsumptionInLPH"), 0.0).toDouble());
-        m_aircraft.setCruiseSpeed(cruiseSpeed);
-        m_aircraft.setDescentSpeed(descentSpeed);
-        m_aircraft.setFuelConsumption(fuelConsumption);
+        newAircraft.setCruiseSpeed(cruiseSpeed);
+        newAircraft.setDescentSpeed(descentSpeed);
+        newAircraft.setFuelConsumption(fuelConsumption);
     }
+    m_aircraft = newAircraft;
 }
 
 
@@ -176,7 +178,7 @@ void Navigation::Navigator::updateFlightStatus()
 
     // Get ground speed and aircraft minimum speed
     auto GS = info.groundSpeed();
-    auto aircraftMinSpeed = m_aircraft.minimumSpeed();
+    auto aircraftMinSpeed = m_aircraft.value().minimumSpeed();
     if (!GS.isFinite() || !aircraftMinSpeed.isFinite())
     {
         setFlightStatus(Unknown);
@@ -334,7 +336,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     }
 
     QStringList complaints;
-    if (!m_aircraft.cruiseSpeed().isFinite())
+    if (!m_aircraft.value().cruiseSpeed().isFinite())
     {
         complaints += tr("Cruise speed not specified.");
     }

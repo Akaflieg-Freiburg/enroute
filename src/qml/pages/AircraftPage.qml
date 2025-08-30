@@ -144,7 +144,7 @@ Page {
                 Layout.preferredHeight: acftTab.font.pixelSize
             }
             Label {
-                text: qsTr("Name")
+                text: qsTr("Aircraft")
                 Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
@@ -168,6 +168,16 @@ Page {
                     horizontalUOM.focus = true
                 }
                 text: Navigator.aircraft.name
+            }
+
+            Item { }
+            CheckBox {
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+
+                checked: Navigator.aircraft.cabinPressureEqualsStaticPressure
+                text: qsTr("Cabin pressure equals static pressure.")
+                onCheckedChanged: Navigator.aircraft.cabinPressureEqualsStaticPressure = checked
             }
 
             Label { Layout.fillHeight: true }

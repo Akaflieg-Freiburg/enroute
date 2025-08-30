@@ -205,7 +205,7 @@ auto Navigation::Aircraft::loadFromJSON(const QString& fileName) -> QString
 }
 
 
-auto Navigation::Aircraft::loadFromJSON(const QByteArray &JSON) -> QString
+QString Navigation::Aircraft::loadFromJSON(const QByteArray &JSON)
 {
     QJsonParseError parseError{};
     auto document = QJsonDocument::fromJson(JSON, &parseError);
@@ -222,6 +222,7 @@ auto Navigation::Aircraft::loadFromJSON(const QByteArray &JSON) -> QString
         return QObject::tr("JSON document does not describe an aircraft.");
     }
 
+    setCabinPressureEqualsStaticPressure( content[QStringLiteral("cabinPressureEqualsStaticPressure")].toBool(false) );
     setCruiseSpeed( Units::Speed::fromMPS( content[QStringLiteral("cruiseSpeed_mps")].toDouble(NAN) ));
     setDescentSpeed( Units::Speed::fromMPS( content[QStringLiteral("descentSpeed_mps")].toDouble(NAN) ));
     setFuelConsumption( Units::VolumeFlow::fromLPH( content[QStringLiteral("fuelConsumption_lph")].toDouble(NAN) ));
@@ -238,13 +239,14 @@ auto Navigation::Aircraft::loadFromJSON(const QByteArray &JSON) -> QString
 auto Navigation::Aircraft::operator==(const Navigation::Aircraft& other) const -> bool
 {
     return (m_cruiseSpeed == other.m_cruiseSpeed) &&
-            (m_descentSpeed == other.m_descentSpeed) &&
-            (m_fuelConsumption == other.m_fuelConsumption) &&
-            (m_fuelConsumptionUnit == other.m_fuelConsumptionUnit) &&
-            (m_horizontalDistanceUnit == other.m_horizontalDistanceUnit) &&
-            (m_minimumSpeed == other.m_minimumSpeed) &&
-            (m_name == other.m_name) &&
-            (m_verticalDistanceUnit == other.m_verticalDistanceUnit);
+           (m_descentSpeed == other.m_descentSpeed) &&
+           (m_fuelConsumption == other.m_fuelConsumption) &&
+           (m_fuelConsumptionUnit == other.m_fuelConsumptionUnit) &&
+           (m_horizontalDistanceUnit == other.m_horizontalDistanceUnit) &&
+           (m_minimumSpeed == other.m_minimumSpeed) &&
+           (m_name == other.m_name) &&
+           (m_verticalDistanceUnit == other.m_verticalDistanceUnit) &&
+           (m_cabinPressureEqualsStaticPressure == other.m_cabinPressureEqualsStaticPressure);
 }
 
 
@@ -274,6 +276,7 @@ auto Navigation::Aircraft::toJSON() const -> QByteArray
     QJsonObject jsonObj;
     jsonObj.insert(QStringLiteral("content"), "aircraft");
 
+    jsonObj.insert(QStringLiteral("cabinPressureEqualsStaticPressure"), m_cabinPressureEqualsStaticPressure);
     jsonObj.insert(QStringLiteral("cruiseSpeed_mps"), m_cruiseSpeed.toMPS());
     jsonObj.insert(QStringLiteral("descentSpeed_mps"), m_descentSpeed.toMPS());
     jsonObj.insert(QStringLiteral("fuelConsumption_lph"), m_fuelConsumption.toLPH());
@@ -282,7 +285,6 @@ auto Navigation::Aircraft::toJSON() const -> QByteArray
     jsonObj.insert(QStringLiteral("minimumSpeed_mps"), m_minimumSpeed.toMPS());
     jsonObj.insert(QStringLiteral("name"), m_name);
     jsonObj.insert(QStringLiteral("verticalDistanceUnit"), m_verticalDistanceUnit);
-
 
     QJsonDocument doc;
     doc.setObject(jsonObj);

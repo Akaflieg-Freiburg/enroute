@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,13 +20,13 @@
 
 #pragma once
 
-#include <QQmlEngine>
-
 #include "GlobalObject.h"
-#include "navigation/Atmosphere.h"
+#include "units/Distance.h"
 #include "units/Pressure.h"
 #include "units/Temperature.h"
 
+#include <QProperty>
+#include <QQmlEngine>
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
 #include <QAmbientTemperatureSensor>
 #include <QPressureSensor>
@@ -93,7 +93,7 @@ public:
      *  This property holds the pressure altitude for the ambient pressure measured by the device sensor.
      *  In most practical setups, this will be the cabin altitude
      */
-    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY ambientPressureChanged)
+    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude NOTIFY ambientPressureChanged)
 
     /*! \brief Status string */
     Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
@@ -119,7 +119,13 @@ public:
      *
      *  @returns Property pressureAltitude
      */
-    [[nodiscard]] Units::Distance pressureAltitude() const { return Navigation::Atmosphere::height(m_ambientPressure); }
+    [[nodiscard]] Units::Distance pressureAltitude() const { return m_pressureAltitude.value(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() { return &m_pressureAltitude; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -159,6 +165,7 @@ private:
 #endif
 
     Units::Pressure m_ambientPressure;
+    QProperty<Units::Distance> m_pressureAltitude;
     Units::Temperature m_ambientTemperature;
     QString m_statusString;
 };

@@ -68,7 +68,7 @@ Page {
                 Layout.rightMargin: 4
                 Layout.columnSpan: 3
 
-                text: TrafficDataProvider.pressureAltitude.isFinite() ? qsTr("Receiving static pressure data from traffic receiver") : qsTr("Not connected to a traffic receiver that provides static pressure data")
+                text: TrafficDataProvider.pressureAltitude.isFinite() ? qsTr("Receiving static pressure data.") : qsTr("Not receiving static pressure data.")
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -95,7 +95,14 @@ Page {
                 Layout.rightMargin: 4
                 Layout.columnSpan: 3
 
-                text: Sensors.statusString
+                text: {
+                    var result = Sensors.statusString
+                    if (!Sensors.pressureAltitude.isFinite())
+                        return result;
+                    if (Navigator.aircraft.cabinPressureEqualsStaticPressure)
+                        return result + "<p>" + qsTr("The current aircraft is configured to use the device pressure sensor to estimate pressure altitude and vertical distance to airspaces, if no data from any traffic data receiver is available.") + "</p>";
+                    return result + "<p>" + qsTr("The current aircraft is configured to not use the device pressure sensor to estimate pressure altitude and vertical distance to airspaces.") + "</p>";
+                }
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText

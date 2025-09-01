@@ -135,9 +135,6 @@ public:
 
 signals:
     /*! \brief Notifier signal */
-    void ambientDensityChanged();
-
-    /*! \brief Notifier signal */
     void ambientPressureChanged();
 
     /*! \brief Notifier signal */

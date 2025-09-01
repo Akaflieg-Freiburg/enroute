@@ -175,9 +175,11 @@ Page {
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
 
+                enabled: Sensors.pressureAltitude.isFinite()
                 checked: Navigator.aircraft.cabinPressureEqualsStaticPressure
-                text: qsTr("Cabin pressure equals static pressure.")
+                text: qsTr("Use device pressure sensor to determine pressure altitude.")
                 onCheckedChanged: Navigator.aircraft.cabinPressureEqualsStaticPressure = checked
+                Component.onCompleted: contentItem.wrapMode = Text.WordWrap
             }
 
             Label { Layout.fillHeight: true }

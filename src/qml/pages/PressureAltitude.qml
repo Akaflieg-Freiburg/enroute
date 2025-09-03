@@ -29,7 +29,7 @@ import "../items"
 
 Page {
     id: barometricPage
-    title: qsTr("Barometric Data")
+    title: qsTr("Device Sensors")
 
     header: StandardHeader {}
 
@@ -68,33 +68,6 @@ Page {
                 Layout.rightMargin: 4
                 Layout.columnSpan: 3
 
-                text: TrafficDataProvider.pressureAltitude.isFinite() ? qsTr("Receiving static pressure data from traffic receiver") : qsTr("Not connected to a traffic receiver that provides static pressure data")
-
-                wrapMode: Text.WordWrap
-                textFormat: Text.RichText
-
-                bottomPadding: 0.6*font.pixelSize
-                topPadding: 0.6*font.pixelSize
-                leftPadding: 0.2*font.pixelSize
-                rightPadding: 0.2*font.pixelSize
-
-                leftInset: -4
-                rightInset: -4
-
-                background: Rectangle {
-                    border.color: "black"
-                    color: TrafficDataProvider.pressureAltitude.isFinite() ? "green" : "red"
-                    opacity: 0.2
-                    radius: 4
-                }
-            }
-
-            Label { // Status
-                Layout.fillWidth: true
-                Layout.leftMargin: 4
-                Layout.rightMargin: 4
-                Layout.columnSpan: 3
-
                 text: Sensors.statusString
 
                 wrapMode: Text.WordWrap
@@ -117,9 +90,8 @@ Page {
             }
 
             Label {
-                Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: qsTr("Barometric Altitudes")
+                text: qsTr("Sensor Data")
                 font.pixelSize: barometricPage.font.pixelSize*1.2
                 font.bold: true
             }
@@ -127,38 +99,18 @@ Page {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    helpDialog.title = qsTr("Altitudes")
-                    helpDialog.text = "<p>"+qsTr("Pressure altitude is the value shown by your altimeter when set to the standard value 1013.2 hPa. The pressure altitude is used to define airspace boundaries and vertical aircraft position above the transition altitude.")+"</p>"
-                            +"<p>"+qsTr("Altitude is the value shown by your altimeter when set to QNH. The altitude is used to define airspace boundaries and vertical aircraft position below the transition level.")+"</p>"
-                            +"<p>"+qsTr("Density altitude is the altitude at which an aircraft flying in the ICAO standard atmosphere experiences an air density equal to the density measured by the ambient pressure/temperature sensors of your device.")+"</p>"
+                    helpDialog.title = qsTr("Sensor Data")
+                    helpDialog.text = "<p>"+qsTr("Cabin pressure is the air pressure measured by your device.")+"</p>"
                             +"<p>"+qsTr("Cabin altitude is the altitude at which an aircraft flying in the ICAO standard atmosphere experiences a static pressure equal to the pressure in the cabin of your aircraft.")+"</p>"
+                            +"<p>"+qsTr("Cabin temperature is the temperature measured by your device.")+"</p>"
                     helpDialog.open()
                 }
             }
 
-            Label {
-                text: qsTr("Pressure Altitude") }
-            Label {
-                Layout.fillWidth: true
-                text: TrafficDataProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(TrafficDataProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
-                wrapMode: Text.Wrap
-            }
-            Item { }
-
-            Label { text: qsTr("Altitude") }
+            Label { text: qsTr("Cabin Pressure") }
             Label {
                 Layout.fillWidth: true
-                text: {
-                    var pAlt = TrafficDataProvider.pressureAltitude
-                    if (!pAlt.isFinite())
-                        return "-"
-                    var qnhpAlt = WeatherDataProvider.QNHPressureAltitude
-                    if (!qnhpAlt.isFinite())
-                        return "-"
-
-                    var a = pAlt.subtract(qnhpAlt)
-                    return Navigator.aircraft.verticalDistanceToString(a)
-                }
+                text: Sensors.ambientPressure.isFinite() ? Math.round(Sensors.ambientPressure.toHPa()*10.0)/10.0 + " hPa"  : "-"
                 wrapMode: Text.Wrap
             }
             Item { }
@@ -171,23 +123,7 @@ Page {
             }
             Item { }
 
-            Label {
-                Layout.columnSpan: 2
-                text: qsTr("Device Sensors")
-                font.pixelSize: barometricPage.font.pixelSize*1.2
-                font.bold: true
-            }
-            ToolButton { enabled: false }
-
-            Label { text: qsTr("Pressure") }
-            Label {
-                Layout.fillWidth: true
-                text: Sensors.ambientPressure.isFinite() ? Math.round(Sensors.ambientPressure.toHPa()*10.0)/10.0 + " hPa"  : "-"
-                wrapMode: Text.Wrap
-            }
-            Item { }
-
-            Label { text: qsTr("Temperature") }
+            Label { text: qsTr("Cabin Temperature") }
             Label {
                 Layout.fillWidth: true
                 text: Sensors.ambientTemperature.isFinite() ? Math.round(Sensors.ambientTemperature.toDegreeCelsius()) + " °C" : "-"
@@ -196,20 +132,10 @@ Page {
             Item { }
 
             Label {
-                Layout.columnSpan: 2
-                text: qsTr("Other")
-                font.pixelSize: barometricPage.font.pixelSize*1.2
-                font.bold: true
-            }
-            ToolButton { enabled: false }
-
-            Label {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("QNH")
-            }
+                text: qsTr("Pressure Altitude") }
             Label {
                 Layout.fillWidth: true
-                text: WeatherDataProvider.QNHInfo === "" ? "-" : WeatherDataProvider.QNHInfo
+                text: TrafficDataProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(TrafficDataProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
                 wrapMode: Text.Wrap
             }
             Item { }

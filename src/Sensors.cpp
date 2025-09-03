@@ -68,30 +68,22 @@ void Sensors::updateSensorReadings()
 {
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
     Units::Pressure new_ambientPressure;
-    Units::Temperature new_ambientTemperature;
-
     auto* pressureReading = m_pressureSensor.reading();
     if (pressureReading != nullptr)
     {
         new_ambientPressure = Units::Pressure::fromPa(pressureReading->pressure());
     }
-    if (new_ambientPressure != m_ambientPressure)
-    {
-        m_ambientPressure = new_ambientPressure;
-        m_pressureAltitude = Navigation::Atmosphere::height(new_ambientPressure);
-        emit ambientPressureChanged();
-    }
 
+    m_ambientPressure = new_ambientPressure;
+    m_pressureAltitude = Navigation::Atmosphere::height(new_ambientPressure);
+
+    Units::Temperature new_ambientTemperature;
     auto* temperatureReading = m_temperatureSensor.reading();
     if (temperatureReading != nullptr)
     {
         new_ambientTemperature = Units::Temperature::fromDegreeCelsius(temperatureReading->temperature());
     }
-    if (new_ambientTemperature != m_ambientTemperature)
-    {
-        m_ambientTemperature = new_ambientTemperature;
-        emit ambientTemperatureChanged();
-    }
+    m_ambientTemperature = new_ambientTemperature;
 #endif
 
 }
@@ -124,9 +116,5 @@ void Sensors::updateStatusString()
         newStatus = u"<ul style='margin-left:-25px;'>"_s + sensorNames.join(u""_s) + u"</ul>"_s;
     }
 
-    if (newStatus != m_statusString)
-    {
-        m_statusString = newStatus;
-        emit statusStringChanged();
-    }
+    m_statusString = newStatus;
 }

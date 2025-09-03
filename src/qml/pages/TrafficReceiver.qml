@@ -236,6 +236,22 @@ Page {
                 Layout.fillWidth: true
                 visible: TrafficDataProvider.receivingHeartbeat
 
+                text: qsTr("Pressure Altitude")
+                font.pixelSize: sView.font.pixelSize*1.2
+                font.bold: true
+            }
+
+            Label {
+                Layout.fillWidth: true
+                visible: TrafficDataProvider.receivingHeartbeat
+
+                text: qsTr("Pressure Altitude: ---")
+            }
+
+            Label {
+                Layout.fillWidth: true
+                visible: TrafficDataProvider.receivingHeartbeat
+
                 text: qsTr("Traffic")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true

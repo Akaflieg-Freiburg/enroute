@@ -98,18 +98,18 @@ void Sensors::updateStatusString()
     auto types = QPressureSensor::sensorTypes();
     if (types.contains("QPressureSensor"))
     {
-        sensorNames += u"<li>"_s + tr("Pressure sensor available") + u"</li>"_s;
+        sensorNames += u"<li>"_s + tr("Pressure sensor available.") + u"</li>"_s;
     }
     if (types.contains("QAmbientTemperatureSensor"))
     {
-        sensorNames += u"<li>"_s + tr("Temperature sensor available") + u"</li>"_s;
+        sensorNames += u"<li>"_s + tr("Temperature sensor available.") + u"</li>"_s;
     }
 #else
     const QStringList sensorNames;
 #endif
     if (sensorNames.isEmpty())
     {
-        newStatus = tr("No ambient pressure/temperature sensor available");
+        newStatus = tr("No ambient pressure/temperature sensor available.");
     }
     else
     {

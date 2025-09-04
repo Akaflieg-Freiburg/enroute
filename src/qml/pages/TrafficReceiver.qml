@@ -143,21 +143,33 @@ Page {
         rightPadding: font.pixelSize + SafeInsets.right
         topPadding: font.pixelSize
 
-        ColumnLayout {
+        GridLayout {
             width: sView.availableWidth
+            columns: 3
 
             Label {
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
 
                 text: qsTr("Connection Status")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Connection Status")
+                    helpDialog.text = "<p>"+qsTr("The field 'Connection Status' indicates whether Enroute revices a traffic receiver heartbeat signal through any of the configured connections.")+"</p>"
+                    helpDialog.open()
+                }
             }
 
             Label { // Status
                 Layout.fillWidth: true
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
+                Layout.columnSpan: 3
 
                 text: TrafficDataProvider.statusString
 
@@ -188,11 +200,21 @@ Page {
 
             Label {
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
                 visible: TrafficDataProvider.receivingHeartbeat
 
                 text: qsTr("Traffic Data Receiver Status")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Traffic Data Receiver Status")
+                    helpDialog.text = "<p>"+qsTr("The field 'Traffic Data Receiver Status' indicates whether the current traffic data receiver reports problems, such as missing SatNav signals or outdated firmware.")+"</p>"
+                    helpDialog.open()
+                }
             }
 
             Label {
@@ -201,6 +223,7 @@ Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
+                Layout.columnSpan: 3
 
                 visible: TrafficDataProvider.receivingHeartbeat
 
@@ -234,11 +257,21 @@ Page {
 
             Label {
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
                 visible: TrafficDataProvider.receivingHeartbeat
 
                 text: qsTr("Pressure Altitude")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Pressure Altitude")
+                    helpDialog.text = "<p>"+qsTr("The field 'Traffic Data Receiver Status' indicates whether the current traffic data receiver reports problems, such as missing SatNav signals or outdated firmware.")+"</p>"
+                    helpDialog.open()
+                }
             }
 
             Label {
@@ -368,4 +401,13 @@ Page {
             }
         }
     }
+
+    LongTextDialog {
+        id: helpDialog
+
+        modal: true
+
+        standardButtons: Dialog.Ok
+    }
+
 }

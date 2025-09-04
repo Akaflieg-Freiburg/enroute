@@ -208,7 +208,6 @@ Page {
             Label { text: PositionProvider.positionInfo.isValid() ? PositionProvider.positionInfo.timestampString() : "-" }
             Item {}
 
-
         } // GridLayout
 
     }

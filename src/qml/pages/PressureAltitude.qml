@@ -131,15 +131,6 @@ Page {
             }
             Item { }
 
-            Label {
-                text: qsTr("Pressure Altitude") }
-            Label {
-                Layout.fillWidth: true
-                text: TrafficDataProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(TrafficDataProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
-                wrapMode: Text.Wrap
-            }
-            Item { }
-
         } // GridLayout
 
     }

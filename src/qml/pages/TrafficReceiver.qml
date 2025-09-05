@@ -161,7 +161,11 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Connection Status")
-                    helpDialog.text = "<p>"+qsTr("This text field indicates whether Enroute revices a traffic receiver heartbeat signal through any of the configured connections.")+"</p>"
+                    helpDialog.text = "<p>" +
+                            qsTr("To ensure reliable operation, traffic receivers emit 'heartbeat messages' at frequent intervals.") + " " +
+                            qsTr("This text field shows whether heartbeat messages are received through any of the configured data channels.") + " " +
+                            qsTr("If yes, it shows the data connection currently used and lists the types of data presently received.") +
+                            "</p>"
                     helpDialog.open()
                 }
             }
@@ -215,8 +219,9 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Traffic Data Receiver Status")
-                    helpDialog.text = "<p>"+qsTr("This text field indicates whether the current traffic data receiver reports problems.")
-                    + " " + qsTr("Typical problems include poor satellite reception or outdated firmware.")+"</p>"
+                    helpDialog.text = "<p>" +
+                            qsTr("This field shows status messages reported by the traffic data receiver, including results of internal self-tests of the traffic data receiver hardware.") +
+                            "</p>"
                     helpDialog.open()
                 }
             }
@@ -269,7 +274,15 @@ Page {
             }
             ToolButton {
                 visible: TrafficDataProvider.positionInfo.isValid()
-                enabled: false
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Position")
+                    helpDialog.text = "<p>" +
+                            qsTr("This section shows the position reported by the traffic data receiver.") +
+                            "</p>"
+                    helpDialog.open()
+                }
             }
 
             Label {
@@ -380,9 +393,14 @@ Page {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    helpDialog.title = qsTr("Altitudes")
-                    helpDialog.text = "<p>"+qsTr("True altitude AGL or AMSL is the vertical distance from the aircraft to the terrain or to the main sea level, respectively.")+"</p>"
-                            +"<p>"+qsTr("<strong>Warning:</strong> Vertical airspace limits are defined in terms of barometric altitude. Depending on weather, true altitude and barometric altitude may differ substantially. <strong>Never use true altitude to judge the vertical distance from your aircraft to an airspace boundary.</strong>")+"</p>"
+                    helpDialog.title = qsTr("True Altitude")
+                    helpDialog.text = "<p>" +
+                            qsTr("This section shows the true altitude reported by the traffic data receiver.") +
+                            "</p><p>" +
+                            qsTr("True altitude AGL or AMSL is the vertical distance from the aircraft to the terrain or to the main sea level, respectively.") + "</p>" +
+                            "<p>" +
+                            qsTr("<strong>Warning:</strong> Vertical airspace limits are defined in terms of barometric altitude. Depending on weather, true altitude and barometric altitude may differ substantially. <strong>Never use true altitude to judge the vertical distance from your aircraft to an airspace boundary.</strong>") +
+                            "</p>"
                     helpDialog.open()
                 }
             }
@@ -446,7 +464,19 @@ Page {
             }
             ToolButton {
                 visible: TrafficDataProvider.pressureAltitude.isFinite()
-                enabled: false
+
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Pressure Altitude")
+                    helpDialog.text = "<p>" +
+                            qsTr("This section shows the pressure altitude reported by the traffic data receiver.") +
+                            "</p><p>" +
+                            qsTr("Pressure altitude is the altitude in the standard atmosphere at which the pressure is equal to the current atmospheric pressure.") + " " +
+                            qsTr("TThis is the altitude displayed on the aircraft's altimeter when set to the standard pressure of 1013.2hPa. This is also the altitude shown on the transponder.")
+                            "</p>"
+                    helpDialog.open()
+                }
             }
 
             Label {
@@ -480,8 +510,12 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Traffic")
-                    helpDialog.text = "<p>"+qsTr("True altitude AGL or AMSL, is the vertical distance from the aircraft to the terrain or main sea level.")+"</p>"
-                            +"<p>"+qsTr("<strong>Warning:</strong> Vertical airspace limits are defined in terms of barometric altitude. Depending on weather, true altitude and barometric altitude may differ substantially. <strong>Never use true altitude to judge the vertical distance from your aircraft to an airspace boundary.</strong>")+"</p>"
+                    helpDialog.text = "<p>" +
+                            qsTr("This section lists all the traffic reported by the traffic data receiver, sorted in order of importance.") +
+                            "</p><p>" +
+                            qsTr("Traffic opponents are classified as 'Relevant Traffic' and 'Irrelevant Traffic'.") + " " +
+                            qsTr("Traffic is considered relevant if the vertical distance to the traffic opponent is less than 1,500 m and the horizontal distance is less than 20 NM.") +
+                            "</p>"
                     helpDialog.open()
                 }
             }

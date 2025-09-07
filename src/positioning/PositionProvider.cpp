@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,6 +23,8 @@
 
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
+#include "Sensors.h"
+#include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include "Units.h"
@@ -61,7 +63,8 @@ Positioning::PositionProvider::PositionProvider(QObject* parent)
 
 void Positioning::PositionProvider::deferredInitialization()
 {
-    // Binding for updateStatusString
+    // Setup bindings that refer to other global objects
+    m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
     m_statusString.setBinding([this]() {return computeStatusString();});
     m_incomingPositionInfo.setBinding([this]() {return computeIncomingPositionInfo();});
     m_incomingPositionInfoNotifier = m_incomingPositionInfo.addNotifier([this]() {return onIncomingPositionInfoUpdated();});
@@ -215,4 +218,15 @@ Positioning::PositionInfo Positioning::PositionProvider::computeIncomingPosition
         }
     }
     return newInfo;
+}
+
+Units::Distance Positioning::PositionProvider::computePressureAltitude()
+{
+    auto pAlt = GlobalObject::trafficDataProvider()->pressureAltitude();
+    if (pAlt.isFinite() || !GlobalObject::navigator()->aircraft().cabinPressureEqualsStaticPressure())
+    {
+        return pAlt;
+    }
+
+    return GlobalObject::sensors()->pressureAltitude();
 }

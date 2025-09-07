@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -170,15 +170,22 @@ Page {
                 text: Navigator.aircraft.name
             }
 
-            Item { }
             CheckBox {
-                Layout.columnSpan: 2
+                id: pressureCheckBox
+
+                Layout.columnSpan: 3
                 Layout.fillWidth: true
 
                 enabled: Sensors.pressureAltitude.isFinite()
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    if (checked)
+                        pressureWarning.open()
+                    else
+                        Navigator.aircraft.cabinPressureEqualsStaticPressure = false
+                }
                 checked: Navigator.aircraft.cabinPressureEqualsStaticPressure
-                text: qsTr("Use device pressure sensor to determine pressure altitude.")
-                onCheckedChanged: Navigator.aircraft.cabinPressureEqualsStaticPressure = checked
+                text: qsTr("Use cabin pressure instead of static pressure for pressure altitude calculation.")
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap
             }
 
@@ -844,4 +851,40 @@ Page {
             item.open()
         }
     }
+
+    LongTextDialog {
+        id: pressureWarning
+
+        modal: true
+        title: qsTr("Flight Safety Warning!")
+        text: "<p>"
+              + "<strong>" + qsTr("Know what you are doing!") + " </strong>"
+              + qsTr("If you enable this option, Enroute Flight Navigation will use the pressure sensor of your mobile device to determine pressure altitude and vertical distances to airspaces.") + " "
+              + qsTr("This is safety critical.") + " "
+              + "</p>"
+              + "<p><ul style='margin-left:-25px;'>"
+              + "<li>" + qsTr("The pressure sensor of your device is probably not certified for use in aviation.") + "</li>"
+              + "<li>" + qsTr("In typical GA aircraft, cabin pressure is not equal to static pressure.") + " "
+              + qsTr("The precise difference depend on factors such as airspeed and configuration of ventilation and heating.") + "</li>"
+              + "</ul></p><p>"
+              + qsTr("Do not enable this option unless you convinced yourself that the data provided by your sensor is good enough for the intended use.") + " "
+              + qsTr("Do not rely on data shown in this app.") + " "
+              + qsTr("Always use an approved altimeter to judge vertical distance to airspaces.") + " "
+              + "</p>"
+              + "<p>"
+              + qsTr("We strongly recommend to connect Enroute Flight Navigation to a proper traffic data receiver, such as a FLARM or ADS-B device, that provides static pressure data.")
+              + "</p>"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            Navigator.aircraft.cabinPressureEqualsStaticPressure = true
+        }
+
+        onRejected: {
+            PlatformAdaptor.vibrateBrief()
+            pressureCheckBox.checked = false
+        }
+    }
+
 } // Page

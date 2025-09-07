@@ -21,7 +21,6 @@
 #include "GeoMapProvider.h"
 #include "PositionProvider.h"
 #include "SideviewQuickItem.h"
-#include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -134,6 +133,7 @@ void Ui::SideviewQuickItem::updateProperties()
         m_error = tr("Unable to show side view: No valid altitude data for own aircraft.");
         return;
     }
+#warning We have no info here when/if the baroCache gets filled
     auto ownshipPressureAltitude = m_baroCache->estimatedPressureAltitude(ownshipGeometricAltitude);
     if (!ownshipPressureAltitude.isFinite())
     {

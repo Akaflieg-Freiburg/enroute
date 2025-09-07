@@ -92,7 +92,6 @@ public:
      *  The aircraft returned here is owned by this class and must not be deleted.
      *  QML ownership has been set to QQmlEngine::CppOwnership.
      */
-#warning remove signal
     Q_PROPERTY(Navigation::Aircraft aircraft READ aircraft BINDABLE bindableAircraft WRITE setAircraft NOTIFY aircraftChanged)
 
     /*! \brief Current flight route

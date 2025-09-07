@@ -289,7 +289,7 @@ Page {
               + qsTr("You are about to add an internet connection to the 'Open Glider Network' as a traffic data source.") + " "
               + qsTr("While OGN data can be useful in certain scenarios, we recommend against using traffic data from internet services in real flight.")
               + "</p>"
-              + "<p><ul>"
+              + "<p><ul style='margin-left:-25px;'>"
               + "<li>" + qsTr("Internet connectivity is not reliable in flight. Even when flying over populated areas, expect the internet connection to fail for about half of the time.") + "</li>"
               + "<li>" + qsTr("Experience shows that data is frequently laggy and often outdated.") + "</li>"
               + "<li>" + qsTr("You will not be visible to others.") + "</li>"

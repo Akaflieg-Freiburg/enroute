@@ -20,7 +20,6 @@
 
 #include "BaroCache.h"
 #include "positioning/PositionProvider.h"
-#include "traffic/TrafficDataProvider.h"
 
 Navigation::BaroCache::BaroCache(QObject* parent)
     : QObject(parent)
@@ -38,8 +37,8 @@ Navigation::BaroCache::BaroCache(QObject* parent)
         m_incomingGeometricAltitudeTimestamp = QDateTime::currentDateTime();
         addIncomingBaroCacheData();
     }));
-    notifiers.push_back(GlobalObject::trafficDataProvider()->bindablePressureAltitude().addNotifier([this]() {
-        const auto pressureAltitude = GlobalObject::trafficDataProvider()->pressureAltitude();
+    notifiers.push_back(GlobalObject::positionProvider()->bindablePressureAltitude().addNotifier([this]() {
+        const auto pressureAltitude = GlobalObject::positionProvider()->pressureAltitude();
         qWarning() << "Pressure Altitude Received" << pressureAltitude.toM();
         if (!pressureAltitude.isFinite() || (pressureAltitude.toM() < -1000) || (pressureAltitude.toM() > 10000))
         {

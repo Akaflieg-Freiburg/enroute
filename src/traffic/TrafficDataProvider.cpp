@@ -21,7 +21,6 @@
 #include <QCoreApplication>
 #include <QFile>
 
-#include "navigation/Navigator.h"
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 #if __has_include(<QSerialPort>)
@@ -30,7 +29,6 @@
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
 #include "traffic/TrafficDataSource_Ogn.h"
-#include "Sensors.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -582,11 +580,6 @@ Units::Distance Traffic::TrafficDataProvider::computePressureAltitude()
         {
             return pAlt;
         }
-    }
-
-    if (GlobalObject::navigator()->aircraft().cabinPressureEqualsStaticPressure())
-    {
-        return GlobalObject::sensors()->pressureAltitude();
     }
     return {};
 }

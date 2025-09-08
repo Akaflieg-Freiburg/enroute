@@ -38,6 +38,7 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     notifiers.push_back(bindableHeight().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(bindableWidth().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
+    notifiers.push_back(GlobalObject::positionProvider()->bindablePressureAltitude().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
     updateProperties();   
 }
@@ -133,8 +134,11 @@ void Ui::SideviewQuickItem::updateProperties()
         m_error = tr("Unable to show side view: No valid altitude data for own aircraft.");
         return;
     }
-#warning We have no info here when/if the baroCache gets filled
-    auto ownshipPressureAltitude = m_baroCache->estimatedPressureAltitude(ownshipGeometricAltitude);
+    auto ownshipPressureAltitude = GlobalObject::positionProvider()->pressureAltitude();
+    if (!ownshipPressureAltitude.isFinite())
+    {
+        ownshipPressureAltitude = m_baroCache->estimatedPressureAltitude(ownshipGeometricAltitude);
+    }
     if (!ownshipPressureAltitude.isFinite())
     {
         ownshipPressureAltitude = ownshipGeometricAltitude;

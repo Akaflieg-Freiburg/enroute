@@ -1,5 +1,15 @@
 # Changelog
 
+
+## [2.34.xx] - 2025-yy
+
+### Added
+- Added side view of the airspace situation. (#345)
+
+- Added option to use cabin pressure as static pressure, in order to compute pressure altitude and vertical distance to airspaces (#546, #454)
+
+
+
 ## [2.34.6] - 2025-08-07
 
 ### Fixed

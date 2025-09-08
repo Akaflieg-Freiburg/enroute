@@ -18,6 +18,8 @@ platform :android do
     cmake_config_cmd = [
       "#{qt6_android_dir}_x86_64/bin/qt-cmake",
       '-DCMAKE_BUILD_TYPE:STRING=Release',
+      '-DCMAKE_C_COMPILER_LAUNCHER=ccache',
+      '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache',
       '-DQT_ANDROID_BUILD_ALL_ABIS=ON',
       '-DQT_ANDROID_SIGN_APK=ON',
       '-DQT_ANDROID_SIGN_AAB=ON',

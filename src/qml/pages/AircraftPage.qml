@@ -139,17 +139,16 @@ Page {
 
             columns: 3
 
-            Rectangle {
-                Layout.columnSpan: 3
-                Layout.preferredHeight: acftTab.font.pixelSize
-            }
+            // Aircraft
             Label {
                 text: qsTr("Aircraft")
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
             }
-
+            ToolButton {
+                enabled: false
+            }
 
             Label {
                 text: qsTr("Name")
@@ -189,12 +188,15 @@ Page {
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap
             }
 
-            Label { Layout.fillHeight: true }
+            // Units
             Label {
                 text: qsTr("Units")
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
+            }
+            ToolButton {
+                enabled: false
             }
 
             WordWrappingItemDelegate {
@@ -516,12 +518,15 @@ Page {
                 model: [ qsTr("Liters"), qsTr("U.S. Gallons") ]
             }
 
-            Label { Layout.fillHeight: true }
+            // True Airspeed
             Label {
                 text: qsTr("True Airspeed")
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
+            }
+            ToolButton {
+                enabled: false
             }
 
             Label {
@@ -758,12 +763,15 @@ Page {
                 }
             }
 
-            Label { Layout.fillHeight: true }
+            // Fuel Consumption
             Label {
                 text: qsTr("Fuel Consumption")
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
+            }
+            ToolButton {
+                enabled: false
             }
 
             Label {

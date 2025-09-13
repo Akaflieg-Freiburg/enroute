@@ -25,7 +25,7 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-QStringList airspaceCategories = {"TMZ", "RMZ", "TIA", "TIZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R", "P", "PJE"};
+QStringList airspaceCategories = {"ATZ", "TMZ", "RMZ", "TIA", "TIZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R", "P", "PJE", "SUA"};
 
 
 Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
@@ -312,7 +312,7 @@ void Ui::SideviewQuickItem::updateProperties()
                     {
                         airspacePolygonsR << polygon;
                     }
-                    if ((airspace.CAT() == u"RMZ"_s) || (airspace.CAT() == u"TIA"_s) || (airspace.CAT() == u"TIZ"_s))
+                    if ((airspace.CAT() == u"ATZ"_s) || (airspace.CAT() == u"RMZ"_s) || (airspace.CAT() == u"TIA"_s) || (airspace.CAT() == u"TIZ"_s))
                     {
                         airspacePolygonsRMZ << polygon;
                     }
@@ -320,7 +320,7 @@ void Ui::SideviewQuickItem::updateProperties()
                     {
                         airspacePolygonsNRA << polygon;
                     }
-                    if (airspace.CAT() == u"PJE"_s)
+                    if ((airspace.CAT() == u"PJE"_s) || (airspace.CAT() == u"SUA"_s))
                     {
                         airspacePolygonsPJE << polygon;
                     }

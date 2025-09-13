@@ -44,7 +44,6 @@ $(function() {
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classSensors-members.html">List of all members</a>  </div>
@@ -66,21 +65,6 @@ Inheritance diagram for Sensors:</div>
   </map>
 </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-signals" class="groupheader"><a id="signals" name="signals"></a>
-Signals</h2></td></tr>
-<tr class="memitem:ace290a83f404703ac5aa3fafa80472b2" id="r_ace290a83f404703ac5aa3fafa80472b2"><td class="memItemLeft" align="right" valign="top"><a id="ace290a83f404703ac5aa3fafa80472b2" name="ace290a83f404703ac5aa3fafa80472b2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ambientDensityChanged</b> ()</td></tr>
-<tr class="memdesc:ace290a83f404703ac5aa3fafa80472b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="memitem:a2720a231f3bbe8430b891e2e37ee1767" id="r_a2720a231f3bbe8430b891e2e37ee1767"><td class="memItemLeft" align="right" valign="top"><a id="a2720a231f3bbe8430b891e2e37ee1767" name="a2720a231f3bbe8430b891e2e37ee1767"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ambientPressureChanged</b> ()</td></tr>
-<tr class="memdesc:a2720a231f3bbe8430b891e2e37ee1767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="memitem:a1684d58c129c37af9bfd72240529a15e" id="r_a1684d58c129c37af9bfd72240529a15e"><td class="memItemLeft" align="right" valign="top"><a id="a1684d58c129c37af9bfd72240529a15e" name="a1684d58c129c37af9bfd72240529a15e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ambientTemperatureChanged</b> ()</td></tr>
-<tr class="memdesc:a1684d58c129c37af9bfd72240529a15e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="memitem:a85e57fbd4f614b86217ba8bdb1dac8d6" id="r_a85e57fbd4f614b86217ba8bdb1dac8d6"><td class="memItemLeft" align="right" valign="top"><a id="a85e57fbd4f614b86217ba8bdb1dac8d6" name="a85e57fbd4f614b86217ba8bdb1dac8d6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>statusStringChanged</b> ()</td></tr>
-<tr class="memdesc:a85e57fbd4f614b86217ba8bdb1dac8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad629186293e8b68dd553c9a7bcff7ee4" id="r_ad629186293e8b68dd553c9a7bcff7ee4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad629186293e8b68dd553c9a7bcff7ee4">Sensors</a> (QObject *parent=nullptr)</td></tr>
@@ -92,12 +76,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a52769bd0b6485975ed2a2090aa78b11a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard destructor. <br /></td></tr>
 <tr class="memitem:ac02055299495ef30630491d3a2281883" id="r_ac02055299495ef30630491d3a2281883"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac02055299495ef30630491d3a2281883">ambientPressure</a> () const</td></tr>
 <tr class="memdesc:ac02055299495ef30630491d3a2281883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a492ba9e65c617da3f54193d088c8a11c" id="r_a492ba9e65c617da3f54193d088c8a11c"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a492ba9e65c617da3f54193d088c8a11c">bindableAmbientPressure</a> ()</td></tr>
+<tr class="memdesc:a492ba9e65c617da3f54193d088c8a11c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a8a48910b0d20872db2d887f3295c23f9" id="r_a8a48910b0d20872db2d887f3295c23f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Temperature.html">Units::Temperature</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a48910b0d20872db2d887f3295c23f9">ambientTemperature</a> () const</td></tr>
 <tr class="memdesc:a8a48910b0d20872db2d887f3295c23f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a2075cc25c8eb1873e12b036ac8366d34" id="r_a2075cc25c8eb1873e12b036ac8366d34"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classUnits_1_1Temperature.html">Units::Temperature</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2075cc25c8eb1873e12b036ac8366d34">bindableAmbientTemperature</a> ()</td></tr>
+<tr class="memdesc:a2075cc25c8eb1873e12b036ac8366d34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:aadb8410d35f8dbbbdd08a04d89e384ca" id="r_aadb8410d35f8dbbbdd08a04d89e384ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aadb8410d35f8dbbbdd08a04d89e384ca">pressureAltitude</a> () const</td></tr>
 <tr class="memdesc:aadb8410d35f8dbbbdd08a04d89e384ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a2d2e48d4f4bdc1a25679d102f0ecac9c" id="r_a2d2e48d4f4bdc1a25679d102f0ecac9c"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d2e48d4f4bdc1a25679d102f0ecac9c">bindablePressureAltitude</a> ()</td></tr>
+<tr class="memdesc:a2d2e48d4f4bdc1a25679d102f0ecac9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a1f15ac1a94879409f70cb7600daf25ef" id="r_a1f15ac1a94879409f70cb7600daf25ef"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f15ac1a94879409f70cb7600daf25ef">statusString</a> () const</td></tr>
 <tr class="memdesc:a1f15ac1a94879409f70cb7600daf25ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a087d14fa713e4ca1b7c23a7ada470c53" id="r_a087d14fa713e4ca1b7c23a7ada470c53"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a087d14fa713e4ca1b7c23a7ada470c53">bindableStatusString</a> ()</td></tr>
+<tr class="memdesc:a087d14fa713e4ca1b7c23a7ada470c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="inherit_header pub_methods_classGlobalObject"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classGlobalObject')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
 <tr class="memitem:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject" id="r_ac8dfa53c492975de42fa7972e77abbc1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
@@ -230,7 +222,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property ambientPressure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00110">110</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00109">109</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
 
 </div>
 </div>
@@ -260,7 +252,127 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property ambientPressure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00116">116</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00121">121</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+
+</div>
+</div>
+<a id="a492ba9e65c617da3f54193d088c8a11c" name="a492ba9e65c617da3f54193d088c8a11c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a492ba9e65c617da3f54193d088c8a11c">&#9670;&#160;</a></span>bindableAmbientPressure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QBindable&lt; <a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a> &gt; Sensors::bindableAmbientPressure </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property ambientPressure </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00115">115</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+
+</div>
+</div>
+<a id="a2075cc25c8eb1873e12b036ac8366d34" name="a2075cc25c8eb1873e12b036ac8366d34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2075cc25c8eb1873e12b036ac8366d34">&#9670;&#160;</a></span>bindableAmbientTemperature()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QBindable&lt; <a class="el" href="classUnits_1_1Temperature.html">Units::Temperature</a> &gt; Sensors::bindableAmbientTemperature </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property ambientPressure </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00127">127</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+
+</div>
+</div>
+<a id="a2d2e48d4f4bdc1a25679d102f0ecac9c" name="a2d2e48d4f4bdc1a25679d102f0ecac9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d2e48d4f4bdc1a25679d102f0ecac9c">&#9670;&#160;</a></span>bindablePressureAltitude()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QBindable&lt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> &gt; Sensors::bindablePressureAltitude </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property pressureAltitude </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00139">139</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+
+</div>
+</div>
+<a id="a087d14fa713e4ca1b7c23a7ada470c53" name="a087d14fa713e4ca1b7c23a7ada470c53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a087d14fa713e4ca1b7c23a7ada470c53">&#9670;&#160;</a></span>bindableStatusString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QBindable&lt; QString &gt; Sensors::bindableStatusString </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property statusString </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00151">151</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
 
 </div>
 </div>
@@ -320,7 +432,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property pressureAltitude </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00122">122</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00133">133</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
 
 </div>
 </div>
@@ -350,7 +462,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property statusString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00128">128</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00145">145</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
 
 </div>
 </div>
@@ -378,7 +490,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Ambient pressure. </p>
 <p>This property holds the ambient pressure recorded by the device sensor (if any). </p>
 
-<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00083">83</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00082">82</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
 
 </div>
 </div>
@@ -405,7 +517,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Ambient temperature. </p>
 <p>This property holds the ambient temperature recorded by the device sensor (if any). </p>
 
-<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00089">89</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00088">88</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
 
 </div>
 </div>
@@ -432,7 +544,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Pressure altitude. </p>
 <p>This property holds the pressure altitude for the ambient pressure measured by the device sensor. In most practical setups, this will be the cabin altitude </p>
 
-<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00096">96</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Sensors_8h_source.html#l00095">95</a> of file <a class="el" href="Sensors_8h_source.html">Sensors.h</a>.</p>
 
 </div>
 </div>

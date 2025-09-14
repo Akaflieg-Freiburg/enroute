@@ -277,12 +277,19 @@ void Ui::SideviewQuickItem::updateProperties()
     QVector<QPolygonF> airspacePolygonsTMZ;
     QList<QPointF> upper;
     QList<QPointF> lower;
+    QGeoRectangle const viewBBox(QList({geoCoordinates.constFirst(), geoCoordinates.constLast()}));
     for(const auto& airspace : std::as_const(airspaces))
     {
         if (!airspaceCategories.contains(airspace.CAT()))
         {
             continue;
         }
+        auto bbox = airspace.polygon().boundingGeoRectangle();
+        if (!bbox.intersects(viewBBox))
+        {
+            continue;
+        }
+
         auto airspacePolygon = airspace.polygon();
         for(int i=0; i < xCoordinates.size(); i++)
         {

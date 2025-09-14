@@ -24,11 +24,8 @@
 Navigation::BaroCache::BaroCache(QObject* parent)
     : QObject(parent)
 {
-    qWarning() << "BaroCache constructor";
-
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {
         const auto geometricAltitude = GlobalObject::positionProvider()->positionInfo().trueAltitudeAMSL();
-        qWarning() << "Geometric Altitude Received" << geometricAltitude.toM();
         if (!geometricAltitude.isFinite() || (geometricAltitude.toM() < -1000) || (geometricAltitude.toM() > 10000))
         {
             return;
@@ -39,7 +36,6 @@ Navigation::BaroCache::BaroCache(QObject* parent)
     }));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePressureAltitude().addNotifier([this]() {
         const auto pressureAltitude = GlobalObject::positionProvider()->pressureAltitude();
-        qWarning() << "Pressure Altitude Received" << pressureAltitude.toM();
         if (!pressureAltitude.isFinite() || (pressureAltitude.toM() < -1000) || (pressureAltitude.toM() > 10000))
         {
             return;
@@ -70,7 +66,6 @@ Navigation::BaroCache::BaroCache(QObject* parent)
 
 void Navigation::BaroCache::addIncomingBaroCacheData()
 {
-    qWarning() << "addIncomingBaroCacheData";
     // Update data
     if (!m_incomingPressureAltitude.isFinite() || !m_incomingGeometricAltitudeTimestamp.isValid()
         || !m_incomingGeometricAltitude.isFinite() || !m_incomingGeometricAltitudeTimestamp.isValid()
@@ -79,7 +74,6 @@ void Navigation::BaroCache::addIncomingBaroCacheData()
         return;
     }
 
-    qWarning() << m_incomingPressureAltitudeTimestamp << m_incomingPressureAltitude.toM() << m_incomingGeometricAltitude.toM();
     auto FL = qRound(m_incomingPressureAltitude.toFeet()/100.0);
     m_altitudeElementsByFlightLevel[FL] = {m_incomingPressureAltitudeTimestamp, m_incomingPressureAltitude, m_incomingGeometricAltitude};
     m_incomingGeometricAltitude = {};

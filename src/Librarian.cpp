@@ -321,8 +321,13 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += u"<p>"_s
-                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.")
-                  + u" This feature is currently in beta test. We would love to hear your feedback."_s
+                  + tr("Welcome to version 3.0.0 of Enroute Flight Navigation.")
+                  + u"</p>"_s;
+        result += u"<p>"_s
+                  + tr("<strong>New Feature</strong>: ")
+                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.") + " "
+                  + tr("We thank Simon Schneider and Markus Marks for help with the implementation. "
+                       "Consult the manual for more information.")
                   + u"</p>"_s;
         result += u"<p>"_s
                   + tr("Enroute Flight Navigation is now able to display traffic data provided by the Open Glider Network. "

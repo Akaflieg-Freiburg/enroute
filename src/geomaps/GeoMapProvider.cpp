@@ -167,7 +167,7 @@ QString GeoMaps::GeoMapProvider::styleFileURL()
 // Methods
 //
 
-QVariantList GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position)
+QVariantList GeoMaps::GeoMapProvider::airspacesAtPosition(const QGeoCoordinate& position)
 {
     QVector<Airspace> result;
     result.reserve(10);

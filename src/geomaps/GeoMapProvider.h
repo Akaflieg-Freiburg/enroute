@@ -274,7 +274,7 @@ public:
     // Methods
     //
 
-    /*! \brief List of airspaces at a given location
+    /*! \brief List of airspaces at a given position
      *
      * @param position Position over which airspaces are searched for
      *
@@ -282,7 +282,7 @@ public:
      * cooperation with QML the list returns contains elements of type QObject*,
      * and not Airspace*.
      */
-    [[nodiscard]] Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &position);
+    [[nodiscard]] Q_INVOKABLE QVariantList airspacesAtPosition(const QGeoCoordinate &position);
 
     /*! \brief Find closest waypoint to a given position
      *

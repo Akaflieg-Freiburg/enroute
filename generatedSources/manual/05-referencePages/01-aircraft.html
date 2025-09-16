@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aircraft &mdash; Enroute Flight Navigation  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=7a5cd723" />
+
+  
+    <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Settings" href="02-settings.html" />
+    <link rel="prev" title="Main Page and Moving Map" href="01-mainPage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Enroute Flight Navigation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../01-gettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-senseAndAvoid.html">Sense and Avoid</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-additionalSoftware.html">Additional Software</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../05-referencePages.html">User Interface: Pages</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-mainPage.html">Main Page and Moving Map</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Aircraft</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#page-header">Page Header</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#page-body">Page Body</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Aircraft</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units">Units</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#true-airspeed">True airspeed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fuel-consumption">Fuel Consumption</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="02-settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-settingsDataConnections.html">Settings: Data Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-infoSatNav.html">Information/SatNav Positioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-infoTraffic.html">Information/Traffic Data Receiver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-infoSensors.html">Information/Device Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-about.html">Information/About</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceDialogs.html">User Interface: Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceItems.html">User Interface: Other Elements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-referenceWorkflow.html">User Interface: Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-referenceTechnology.html">Technology</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/00-troubleshooting.html">Known Issues and Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/01-dataSources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/02-license.html">Software and Data Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/03-privacy.html">Privacy Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/04-authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/05-awards.html">Awards</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Enroute Flight Navigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../05-referencePages.html">User Interface: Pages</a></li>
+      <li class="breadcrumb-item active">Aircraft</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/05-referencePages/01-aircraft.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aircraft">
+<span id="aircraftpage"></span><h1>Aircraft<a class="headerlink" href="#aircraft" title="Link to this heading"></a></h1>
+<p>The Aircraft Page is used to configure the settings that depend on your
+aircraft. For convenience, you can save the current settings as a new aircraft
+in the aircraft library, and you can select an aircraft from the library to load
+its settings.</p>
+<section id="page-header">
+<h2>Page Header<a class="headerlink" href="#page-header" title="Link to this heading"></a></h2>
+<p>The three-dot-menu in the top right corner of the page header opens a menu with
+the following functions.</p>
+<dl class="simple">
+<dt>View Library…</dt><dd><p>Open the Aircraft Library Page, where you can select an aircraft from the
+library.</p>
+</dd>
+<dt>Save to library…</dt><dd><p>Save the current aircraft settings as a new aircraft in the aircraft library.</p>
+</dd>
+</dl>
+</section>
+<section id="page-body">
+<h2>Page Body<a class="headerlink" href="#page-body" title="Link to this heading"></a></h2>
+<p>The body of the page contains the data entry fields described below.</p>
+<section id="id1">
+<h3>Aircraft<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>Name</dt><dd><p>Enter a name for your aircraft.</p>
+</dd>
+<dt>Use cabin pressure…</dt><dd><p>If this option is checked, Enroute Flight Navigation will use the pressure
+sensor of your mobile device to measure the pressure altitude and determine
+vertical distances to airspaces. This option is only available if your device
+has a pressure sensor.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If available, Enroute Flight Navigation will always use the pressure altitude
+provided by an external traffic data receiver instead of the pressure altitude
+calculated from the pressure sensor of your mobile device.</p>
+</div>
+<p>Precise measurement of pressure altitude is safety critical. Consider the
+following before you decide to enable the option “Use cabin pressure…”.</p>
+<ul class="simple">
+<li><p>The pressure sensor of your device is probably not certified for use in
+aviation.</p></li>
+<li><p>In typical GA aircraft, static pressure and cabin pressure do not necessarily
+agree, with an error depending on airspeed and on the configuration of the
+heating and ventilation systems.</p></li>
+<li><p>Do not enable this option unless you convinced yourself that the data provided
+by your sensor is good enough for the intended use.</p></li>
+<li><p>Do not rely on data shown in this app.</p></li>
+<li><p>Always use an approved altimeter to judge vertical distance to airspaces.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>We strongly recommend connecting <strong>Enroute Flight Navigation</strong> to a
+proper traffic data receiver.  While option “Use cabin pressure…” might have
+its use for pilots flying balloons, paragliders or gyrocopters, think twice
+before using it in a motorized plane or glider.</p>
+</div>
+</section>
+<section id="units">
+<h3>Units<a class="headerlink" href="#units" title="Link to this heading"></a></h3>
+<p>Select the units you want to use for horizontal and vertical distances, and fuel
+volume.</p>
+</section>
+<section id="true-airspeed">
+<h3>True airspeed<a class="headerlink" href="#true-airspeed" title="Link to this heading"></a></h3>
+<p>Enter typical values for the aircraft’s true airspeed.</p>
+<dl class="simple">
+<dt>Cruise</dt><dd><p>This speed is used to calculate estimated time enroute (ETE) and estimated
+time of arrival (ETA) for your route.</p>
+</dd>
+<dt>Descent</dt><dd><p>This speed is currently not used. It will be used in future versions to
+improve the accuracy of ETE and ETA calculations.</p>
+</dd>
+<dt>Minimum</dt><dd><p>This speed is used to determine whether your aircraft is flying or not.</p>
+</dd>
+</dl>
+</section>
+<section id="fuel-consumption">
+<h3>Fuel Consumption<a class="headerlink" href="#fuel-consumption" title="Link to this heading"></a></h3>
+<p>Enter a typical value for the aircraft’s fuel consumption. This value is used to
+calculate a very rough estimate of the fuel required for your route.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="01-mainPage.html" class="btn btn-neutral float-left" title="Main Page and Moving Map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="02-settings.html" class="btn btn-neutral float-right" title="Settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stefan Kebekus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

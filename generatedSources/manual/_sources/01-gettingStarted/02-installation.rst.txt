@@ -75,9 +75,11 @@ aircraft before you fly.
 
    Aircraft specifics
 
-Please fill in the relevant data. While not every data item is used in the
-present version of **Enroute Flight Navigation**, we expect that future versions
-of the app will use all the data that is requested on this page.
+Please fill in the relevant data. We recommend that you do not activate the 
+option "Use cabin pressure..." for now, as checking option changes 
+the way that **Enroute Flight Navigation** determines
+pressure altitude.  Check the section :ref:`aircraftPage` in the reference part 
+of the manual for a detailed description of all the settings.
 
 Tap or click on the arrow symbol '←' or use the Android 'Back' button to leave
 the map page and return to the main screen.

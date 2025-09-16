@@ -52,6 +52,12 @@ Item {
         function onRequestMapBearing(newBearing) {
             mapBearingPolicy = newBearing
         }
+        function onRequestShowSideView(show) {
+            if (show)
+                cl.SplitView.preferredHeight = page.height/3
+            else
+                cl.SplitView.preferredHeight = 0
+        }
     }
 
     Settings {

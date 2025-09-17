@@ -264,7 +264,7 @@ void Ui::SideviewQuickItem::updateProperties()
     }
     polygon  << QPointF(width(), height()+2000) << QPointF(-20, height()+2000);
     m_terrain = polygon;
-    qWarning() << "SideviewQuickItem terrain" << m_elapsedTimer.elapsed();
+    //qWarning() << "SideviewQuickItem terrain" << m_elapsedTimer.elapsed();
 
     // Airspaces
     auto airspaces = GlobalObject::geoMapProvider()->airspaces();
@@ -351,5 +351,5 @@ void Ui::SideviewQuickItem::updateProperties()
     newAirspaces[u"TMZ"_s] = QVariant::fromValue(airspacePolygonsTMZ);
 
     m_airspaces = newAirspaces;
-    qWarning() << "SideviewQuickItem full" << m_elapsedTimer.elapsed();
+    //qWarning() << "SideviewQuickItem full" << m_elapsedTimer.elapsed();
 }

@@ -313,7 +313,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                tr("In order to show your aircraft in relation to airspaces, Enroute Flight Navigation therefore needs to know the barometric altitudes of your aircraft, or equivalently, the static pressure.") + u" "_s +
                tr("This data is currently not available.") + u" "_s +
                u"</p><p>"_s +
-               tr("<a href='https://akaflieg-freiburg.github.io/enrouteManual/07-referenceTechnology/03-altitude.html#airspace-side-view'>Consult the manual</a> for more information and for possible solutions.") +
+               tr("<a href='https://akaflieg-freiburg.github.io/enrouteManual/05-referencePages/01-mainPage.html#dependence-on-static-pressure-information'>Consult the manual</a> for more information and for possible solutions.") +
                u"</p>"_s;
     }
 

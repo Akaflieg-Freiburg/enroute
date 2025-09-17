@@ -107,6 +107,7 @@ public slots:
     void setCoordinate(const QGeoCoordinate& coordinate)
     {
         geoInfo.setCoordinate(coordinate);
+        geoInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, 0.0);
     }
 
     /*! \brief Set speed that is to be reported by this class as the ground speed of ownship

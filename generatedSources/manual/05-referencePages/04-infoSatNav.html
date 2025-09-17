@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Information/Traffic Data Receiver &mdash; Enroute Flight Navigation  documentation</title>
+  <title>Information/SatNav Positioning &mdash; Enroute Flight Navigation  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=7a5cd723" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Information/Device Sensors" href="04-infoSensors.html" />
-    <link rel="prev" title="Information/SatNav Positioning" href="04-infoSatNav.html" /> 
+    <link rel="next" title="Information/Traffic Data Receiver" href="04-infoTraffic.html" />
+    <link rel="prev" title="Settings: Data Connections" href="03-settingsDataConnections.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,22 +60,14 @@
 <li class="toctree-l2"><a class="reference internal" href="01-aircraft.html">Aircraft</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02-settings.html">Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03-settingsDataConnections.html">Settings: Data Connections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04-infoSatNav.html">Information/SatNav Positioning</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Information/Traffic Data Receiver</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#connection-status">Connection Status</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#traffic-data-receiver-status">Traffic Data Receiver Status</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Information/SatNav Positioning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#status">Status</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#position">Position</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#true-altitude">True Altitude</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pressure-altitude">Pressure Altitude</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#traffic">Traffic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#help">Help</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#page-footer">Page Footer</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#reconnect">Reconnect</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configure-data-connections">Configure Data Connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other">Other</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="04-infoTraffic.html">Information/Traffic Data Receiver</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04-infoSensors.html">Information/Device Sensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04-about.html">Information/About</a></li>
 </ul>
@@ -110,9 +102,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../05-referencePages.html">User Interface: Pages</a></li>
-      <li class="breadcrumb-item active">Information/Traffic Data Receiver</li>
+      <li class="breadcrumb-item active">Information/SatNav Positioning</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/05-referencePages/04-infoTraffic.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/05-referencePages/04-infoSatNav.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -120,39 +112,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="information-traffic-data-receiver">
-<span id="infotrafficpage"></span><h1>Information/Traffic Data Receiver<a class="headerlink" href="#information-traffic-data-receiver" title="Link to this heading"></a></h1>
-<p>The page <strong>Traffic Data Receiver</strong> provides status information on the data
-connection between <strong>Enroute Flight Navigation</strong> and your traffic data receiver.
-To access the page, open the main menu and choose “Information/Traffic Data
-Receiver.”</p>
-<section id="connection-status">
-<h2>Connection Status<a class="headerlink" href="#connection-status" title="Link to this heading"></a></h2>
-<p>To ensure reliable operation, traffic receivers emit “heartbeat messages” at
-frequent intervals. The text field “Connection Status” shows if heartbeat
-messages are received through any of the configured data channels. If yes, this
-field shows the data connection currently used and lists the types of data
+  <section id="information-satnav-positioning">
+<span id="infosatnav"></span><h1>Information/SatNav Positioning<a class="headerlink" href="#information-satnav-positioning" title="Link to this heading"></a></h1>
+<p>The page <strong>SatNav Positioning</strong> provides status information on the satellite
+positioning system. To access the page, open the main menu and choose
+“Information/SatNav Positioning.”</p>
+<section id="status">
+<h2>Status<a class="headerlink" href="#status" title="Link to this heading"></a></h2>
+<p>This field shows the data connection currently used and lists the types of data
 presently received.</p>
-</section>
-<section id="traffic-data-receiver-status">
-<h2>Traffic Data Receiver Status<a class="headerlink" href="#traffic-data-receiver-status" title="Link to this heading"></a></h2>
-<p>If heartbeat messages are received, this field shows status messages reported by
-the traffic data receiver, including results of internal self-tests of the
-traffic data receiver hardware. If no heartbeat messages are received, this
-field is invisible.</p>
 </section>
 <section id="position">
 <h2>Position<a class="headerlink" href="#position" title="Link to this heading"></a></h2>
-<p>If your traffic data receiver provides its own SatNavS position, this field
-shows the position reported by the traffic data receiver. If no heartbeat
-messages are received, or if the traffic data receiver does not provide its own
-SatNav position, this field is invisible.</p>
+<p>This field shows the position reported by the satellite navigation system.</p>
 </section>
 <section id="true-altitude">
 <h2>True Altitude<a class="headerlink" href="#true-altitude" title="Link to this heading"></a></h2>
-<p>If your traffic data receiver provides its own altitude information, this field
-shows the true altitude reported by the traffic data receiver. Otherwise, this
-field is invisible.</p>
+<p>This field shows the true altitude reported by the satellite navigation system.</p>
 <p>True altitude AGL or AMSL is the vertical distance from the aircraft to the
 terrain or to the main sea level, respectively.</p>
 <div class="admonition warning">
@@ -164,49 +140,10 @@ altitude to judge the vertical distance from your aircraft to an airspace
 boundary.</p>
 </div>
 </section>
-<section id="pressure-altitude">
-<h2>Pressure Altitude<a class="headerlink" href="#pressure-altitude" title="Link to this heading"></a></h2>
-<p>If your traffic data receiver provides its own pressure altitude information,
-this field shows the pressure altitude reported by the traffic data receiver.
-Otherwise, this field is invisible.</p>
-<p>Pressure altitude is the altitude in the standard atmosphere at which the
-pressure is equal to the current atmospheric pressure. This is the altitude
-displayed on the aircraft’s altimeter when set to the standard pressure of
-1013.2hPa. This is also the altitude shown on the transponder.</p>
-</section>
-<section id="traffic">
-<h2>Traffic<a class="headerlink" href="#traffic" title="Link to this heading"></a></h2>
-<p>If heartbeat messages are received, this field lists all the traffic reported by
-the traffic data receiver, sorted in order of importance. If no heartbeat
-messages are received, this field is not shown.</p>
-<p>Traffic opponents are classified as “Relevant Traffic” and “Irrelevant Traffic”.
-Traffic is considered relevant if the vertical distance to the traffic opponent
-is less than 1,500 m and the horizontal distance is less than 20 NM. Only
-relevant traffic is shown in the moving map.</p>
-</section>
-<section id="help">
-<h2>Help<a class="headerlink" href="#help" title="Link to this heading"></a></h2>
-<p>If no heartbeat is received from any traffic receiver, two buttons “Connect to a
-traffic receiver” and “Connect to a flight simulator” will become visible. A
-click on any of these buttons will open the appropriate page of the manual.</p>
-</section>
-<section id="page-footer">
-<h2>Page Footer<a class="headerlink" href="#page-footer" title="Link to this heading"></a></h2>
-<p>The page footer shows one or two additional buttons.</p>
-<section id="reconnect">
-<h3>Reconnect<a class="headerlink" href="#reconnect" title="Link to this heading"></a></h3>
-<p>This button is visible if no heartbeat is received from any traffic receiver.
-After a click on this button will disconnect all configured data connections and
-attempt to reconnect.  This can be useful if <strong>Enroute Flight Navigation</strong> did
-not automatically connect, or if you do not wish to wait for the next automatic
-reconnection attempt.</p>
-</section>
-<section id="configure-data-connections">
-<h3>Configure Data Connections<a class="headerlink" href="#configure-data-connections" title="Link to this heading"></a></h3>
-<p>A click on this button will open the page “Data Connections”, described in the
-section <a class="reference internal" href="03-settingsDataConnections.html#settingsdataconnectionspage"><span class="std std-ref">Settings: Data Connections</span></a>. There, you can view the status of
-every single data connection, and configure new connections if required.</p>
-</section>
+<section id="other">
+<h2>Other<a class="headerlink" href="#other" title="Link to this heading"></a></h2>
+<p>The last field on the page shows the timestamp of the last position report. If
+available, it also shows the magnetic variation for your current position.</p>
 </section>
 </section>
 
@@ -214,8 +151,8 @@ every single data connection, and configure new connections if required.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="04-infoSatNav.html" class="btn btn-neutral float-left" title="Information/SatNav Positioning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="04-infoSensors.html" class="btn btn-neutral float-right" title="Information/Device Sensors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="03-settingsDataConnections.html" class="btn btn-neutral float-left" title="Settings: Data Connections" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="04-infoTraffic.html" class="btn btn-neutral float-right" title="Information/Traffic Data Receiver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

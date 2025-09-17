@@ -41,11 +41,11 @@ using namespace Qt::Literals::StringLiterals;
 GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     : GlobalObject(parent)
 {
-    _combinedGeoJSON_ = emptyGeoJSON();
+    m_combinedGeoJSON = emptyGeoJSON();
 
     QFile geoJSONCacheFile(geoJSONCache);
     geoJSONCacheFile.open(QFile::ReadOnly);
-    _combinedGeoJSON_ = geoJSONCacheFile.readAll();
+    m_combinedGeoJSON = geoJSONCacheFile.readAll();
     geoJSONCacheFile.close();
 
     // Pass signal through when the tile server changes its URL
@@ -134,12 +134,6 @@ QString GeoMaps::GeoMapProvider::copyrightNotice()
     return result;
 }
 
-QByteArray GeoMaps::GeoMapProvider::geoJSON()
-{
-    QMutexLocker const lock(&_aviationDataMutex);
-    return _combinedGeoJSON_;
-}
-
 QString GeoMaps::GeoMapProvider::styleFileURL()
 {
     if (m_styleFile.isNull())
@@ -173,14 +167,11 @@ QString GeoMaps::GeoMapProvider::styleFileURL()
 // Methods
 //
 
-QVariantList GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position)
+QVariantList GeoMaps::GeoMapProvider::airspacesAtPosition(const QGeoCoordinate& position)
 {
-    // Lock data
-    QMutexLocker const lock(&_aviationDataMutex);
-
     QVector<Airspace> result;
     result.reserve(10);
-    foreach(auto airspace, _airspaces_) {
+    foreach(auto airspace, m_airspaces.value()) {
         if (airspace.polygon().contains(position)) {
             result.append(airspace);
         }
@@ -203,7 +194,6 @@ QVariantList GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position)
 
     return final;
 }
-
 
 GeoMaps::Waypoint GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition)
 {
@@ -468,7 +458,6 @@ QList<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoor
 
 QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::waypoints()
 {
-    QMutexLocker const locker(&_aviationDataMutex);
     return _waypoints_;
 }
 
@@ -553,6 +542,19 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
     }
 
     _aviationDataCacheFuture = QtConcurrent::run(&GeoMaps::GeoMapProvider::fillAviationDataCache, this, JSONFileNames, GlobalObject::globalSettings()->airspaceAltitudeLimit(), GlobalObject::globalSettings()->hideGlidingSectors());
+    _aviationDataCacheFuture.then(this, [this](GeoMaps::GeoMapProvider::aviationDataCacheResult result) {
+        m_airspaces = result.airspaces;
+        if (_waypoints_ != result.waypoints)
+        {
+            _waypoints_ = result.waypoints;
+            emit waypointsChanged();
+        }
+        m_combinedGeoJSON = result.combinedGeoJSON;
+        QFile geoJSONCacheFile(geoJSONCache);
+        geoJSONCacheFile.open(QFile::WriteOnly);
+        geoJSONCacheFile.write(m_combinedGeoJSON);
+        geoJSONCacheFile.close();
+    });
 }
 
 void GeoMaps::GeoMapProvider::onMBTILESChanged()
@@ -625,7 +627,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     emit styleFileURLChanged();
 }
 
-void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)
+GeoMaps::GeoMapProvider::aviationDataCacheResult GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)
 {
     // Avoid rounding errors
     airspaceAltitudeLimit = airspaceAltitudeLimit-Units::Distance::fromFT(1);
@@ -722,35 +724,9 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         QJsonDocument const geoDoc(resultObject);
         newGeoJSON = geoDoc.toJson();
     }
-    auto _geoJSONChanged = (newGeoJSON != _combinedGeoJSON_);
-    auto _waypointsChanged = (newWaypoints != _waypoints_);
 
     // Sort waypoints by name
     std::sort(newWaypoints.begin(), newWaypoints.end(), [](const Waypoint& first, const Waypoint& second) {return first.name() < second.name(); });
 
-    _aviationDataMutex.lock();
-    _airspaces_ = newAirspaces;
-    if (_waypointsChanged)
-    {
-        _waypoints_ = newWaypoints;
-    }
-    if (_geoJSONChanged)
-    {
-        _combinedGeoJSON_ = newGeoJSON;
-        QFile geoJSONCacheFile(geoJSONCache);
-        geoJSONCacheFile.open(QFile::WriteOnly);
-        geoJSONCacheFile.write(_combinedGeoJSON_);
-        geoJSONCacheFile.close();
-    }
-    _aviationDataMutex.unlock();
-
-    if (_waypointsChanged)
-    {
-        emit waypointsChanged();
-    }
-    if (_geoJSONChanged)
-    {
-        emit geoJSONChanged();
-    }
-
+    return {newWaypoints, newAirspaces, newGeoJSON};
 }

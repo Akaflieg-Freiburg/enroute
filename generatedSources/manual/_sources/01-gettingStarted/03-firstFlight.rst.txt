@@ -82,6 +82,24 @@ Flight level and current time are hidden if the display is not wide enough.
    airspaces.**
 
 
+Airspace Side View
+------------------
+
+Starting with version 3.0.0, **Enroute Flight Navigation** is able to show a
+side view of the airspace and the terrain.  You can open the side view by
+swiping upwards from the Navigation Bar at the bottom of the page.  At present,
+you will probably see a warning: "Unable to compute sufficiently precise
+vertical airspace boundaries because barometric altitude information is not
+available."
+
+We recommend ignoring the side view for now. The warning will go away once you
+follow the steps outlined in the subsequent section :ref:`traffic` to establish
+a data connection between **Enroute Flight Navigation** and your traffic data
+receiver. The section :ref:`sideView` in the reference part of this manual
+explains why barometric altitude information (=static pressure) is needed, and
+lists ways to provide the data.
+
+
 Interactive Controls
 --------------------
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -91,11 +91,8 @@ public:
 
     /*! \brief Pressure altitude
      *
-     *  This property holds information about the pressure altitude, that is,
-     *  the altitude that you would read off your altimeter if the altimeter is
-     *  set to 1013.2 hPa. To ensure that the data is up-to-date, the position
-     *  information will be set to "invalid" when no data has arrived for more
-     *  than the time specified in PositionInfo::lifetime.
+     *  This property holds information about the pressure altitude reported by
+     *  the traffic data receiver.
      */
     Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
 

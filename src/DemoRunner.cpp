@@ -79,7 +79,6 @@ auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) ->
     return nullptr;
 }
 
-
 void DemoRunner::generateIosScreenshots()
 {
     generateScreenshotsForDevices({"ios_Device"}, true);
@@ -142,9 +141,11 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
     //
 
     {
-
         foreach(auto device, devices)
         {
+            emit requestMapBearing(1);
+            emit requestShowSideView(false);
+
             auto language = QLocale::system().name().replace(u"_"_s,u"-"_s);
             {
                 if (device == u"phone"_s)
@@ -172,6 +173,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                 dir.mkpath(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
 
                 // Enroute near EDSB
+                emit requestShowSideView(true);
                 {
                     qWarning() << "… En route near EDSB";
                     trafficSimulator->setCoordinate( {48.8442094, 8.45, Units::Distance::fromFT(7512).toM()} );
@@ -203,6 +205,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     delay(10s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
+                emit requestShowSideView(false);
 
                 // Approaching EDTF w/ traffic
                 {
@@ -289,7 +292,6 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
     QGuiApplication::exit();
 #endif
 }
-
 
 void DemoRunner::generateManualScreenshots()
 {

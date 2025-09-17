@@ -97,6 +97,12 @@ public:
     // Properties
     //
 
+    /*! \brief Available Airspaces
+     *
+     *  This property holds all airspaces known to Enroute Flight Navigation
+     */
+    Q_PROPERTY(QList<GeoMaps::Airspace> airspaces READ airspaces BINDABLE bindableAirspaces)
+
     /*! \brief Available Raster Maps
      *
      *  This property holds the names of raster maps that can be set with setCurrentRasterMap.
@@ -126,7 +132,7 @@ public:
      * This property holds all installed aviation maps in GeoJSON format,
      * combined into one GeoJSON document.
      */
-    Q_PROPERTY(QByteArray geoJSON READ geoJSON NOTIFY geoJSONChanged)
+    Q_PROPERTY(QByteArray geoJSON READ geoJSON BINDABLE bindableGeoJSON)
 
     /*! \brief URL under which this server is presently reachable
      *
@@ -162,6 +168,18 @@ public:
     //
     // Getter Methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property airspaces
+     */
+    [[nodiscard]] QList<GeoMaps::Airspace> airspaces() const {return m_airspaces.value();}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property airspaces
+     */
+    [[nodiscard]] QBindable<QList<GeoMaps::Airspace>> bindableAirspaces() {return &m_airspaces;}
 
     /*! \brief Getter function for the property with the same name
      *
@@ -203,7 +221,13 @@ public:
      *
      * @returns Property geoJSON
      */
-    [[nodiscard]] QByteArray geoJSON();
+    [[nodiscard]] QByteArray geoJSON() const {return m_combinedGeoJSON.value();}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property geoJSON
+     */
+    [[nodiscard]] QBindable<QByteArray> bindableGeoJSON() {return &m_combinedGeoJSON;}
 
     /*! \brief Getter function for the property with the same name
      *
@@ -250,10 +274,7 @@ public:
     // Methods
     //
 
-#warning
-    [[nodiscard]] Q_INVOKABLE QList<Airspace> airspaces() {return _airspaces_;}
-
-    /*! \brief List of airspaces at a given location
+    /*! \brief List of airspaces at a given position
      *
      * @param position Position over which airspaces are searched for
      *
@@ -261,7 +282,7 @@ public:
      * cooperation with QML the list returns contains elements of type QObject*,
      * and not Airspace*.
      */
-    [[nodiscard]] Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &position);
+    [[nodiscard]] Q_INVOKABLE QVariantList airspacesAtPosition(const QGeoCoordinate &position);
 
     /*! \brief Find closest waypoint to a given position
      *
@@ -365,7 +386,12 @@ private:
     // Interal function that does most of the work for aviationMapsChanged()
     // emits geoJSONChanged() when done. This function is meant to be run in a
     // separate thread.
-    void fillAviationDataCache(QStringList JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors);
+    struct aviationDataCacheResult {
+        QList<Waypoint> waypoints;
+        QList<Airspace> airspaces;
+        QByteArray combinedGeoJSON;
+    };
+    aviationDataCacheResult fillAviationDataCache(QStringList JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors);
 
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars{QStringLiteral("[^a-zA-Z0-9]")};
@@ -386,7 +412,7 @@ private:
     //
     // Aviation Data Cache
     //
-    QFuture<void> _aviationDataCacheFuture; // Future; indicates if fillAviationDataCache() is currently running
+    QFuture<GeoMaps::GeoMapProvider::aviationDataCacheResult> _aviationDataCacheFuture; // Future; indicates if fillAviationDataCache() is currently running
     QTimer _aviationDataCacheTimer;         // Timer used to start another run of fillAviationDataCache()
 
     //
@@ -402,13 +428,9 @@ private:
     QProperty<QString> m_currentRasterMap {u"non-empty place holder"_s};
     QPropertyNotifier m_currentRasterMapNotifier; // Used to save the currentRasterMap
 
-    // The data in this group is accessed by several threads. The following
-    // classes (whose names ends in an underscore) are therefore protected by
-    // this mutex.
-    QMutex _aviationDataMutex;
-    QByteArray _combinedGeoJSON_;  // Cache: GeoJSON
+    Q_OBJECT_BINDABLE_PROPERTY(GeoMaps::GeoMapProvider, QByteArray, m_combinedGeoJSON, &GeoMaps::GeoMapProvider::geoJSONChanged)
     QList<Waypoint> _waypoints_; // Cache: Waypoints
-    QList<Airspace> _airspaces_; // Cache: Airspaces
+    QProperty<QList<Airspace>> m_airspaces; // Cache: Airspaces
 
     // TerrainImageCache
     QCache<qint64,QImage> terrainTileCache {6}; // Hold 6 tiles, roughly 1.2MB

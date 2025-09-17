@@ -297,6 +297,17 @@ namespace Units {
     return self*factor;
 }
 
+/*! \brief Absolute value
+ *
+ *  @param d Distance
+ *
+ *  @returns Absolute value of d
+ */
+[[nodiscard]] Q_INVOKABLE inline Units::Distance qAbs(Units::Distance d)
+{
+    return Units::Distance::fromM( qAbs(d.toM()) );
+}
+
 /*! \brief Serialization */
 QDataStream& operator<<(QDataStream& stream, const Units::Distance& distance);
 

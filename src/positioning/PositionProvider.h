@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -110,6 +110,16 @@ public:
      */
     Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo BINDABLE bindablePositionInfo NOTIFY positionInfoChanged)
 
+    /*! \brief Pressure altitude
+     *
+     *  This property holds information about the pressure altitude. If the
+     *  traffic data provider provides pressure altitude, then this is reported
+     *  here. If the traffic data provider does not report pressure altitude
+     *  AND the current aircraft is configured to use cabin pressure for
+     *  pressure altitude, then cabin pressure is reported here.
+     */
+    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
+
     /*! \brief Indicator that position information is being received
      *
      *  This is a shortcut for positionInfo().isValid. This property exists
@@ -181,6 +191,18 @@ public:
 
     /*! \brief Getter method for property with the same name
      *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] Units::Distance pressureAltitude() const {return m_pressureAltitude.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() const {return &m_pressureAltitude;}
+
+    /*! \brief Getter method for property with the same name
+     *
      *  @returns Property receivingPositionInfo
      */
     [[nodiscard]] bool receivingPositionInfo() const {return m_receivingPositionInfo.value();}
@@ -228,12 +250,12 @@ signals:
     void approximateLastValidCoordinateChanged();
 
     // Notifier signal
-    void positionInfoChanged();
+    void positionInfoChanged(const Positioning::PositionInfo& info);
 
     // Notifier signal
     void receivingPositionInfoChanged(bool);
 
-private slots:   
+private slots:
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.
     void deferredInitialization();
@@ -277,6 +299,8 @@ private:
     Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, bool, m_receivingPositionInfo, &Positioning::PositionProvider::receivingPositionInfoChanged);
     QProperty<QString> m_statusString;
 
+    QProperty<Units::Distance> m_pressureAltitude;
+    Units::Distance computePressureAltitude();
 };
 
 } // namespace Positioning

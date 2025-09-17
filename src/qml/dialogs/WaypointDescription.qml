@@ -67,7 +67,7 @@ CenteringDialog {
             waypointPropertyDelegate.createObject(co, {text: pro[j]});
 
         // Create airspace description items
-        var asl = GeoMapProvider.airspaces(waypoint.coordinate)
+        var asl = GeoMapProvider.airspacesAtPosition(waypoint.coordinate)
         for (i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
 

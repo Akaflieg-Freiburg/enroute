@@ -73,10 +73,16 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                + "<strong>" + tr("Programming") + ":</strong> " + tr("Heinz Blöchinger has helped us with file import functionality. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.")
                + "</li>"
                + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an Embedded SW Engineer.")
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an embedded software Engineer.")
                + "</li>"
                + "<li>"
                + "<strong>" + tr("Programming") + ":</strong> " + tr("Tom Linz completed height density calculation. He received his PPL license in late 2024. Tom works as a development engineer for safety systems.")
+               + "</li>"
+               + "<li>"
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Markus Marks helped to implement the side view.")
+               + "</li>"
+               + "<li>"
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Simon Schneider implemented the first working version of the side view.")
                + "</li>"
                + "</ul>"
                + tr(R"html(
@@ -315,14 +321,19 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += u"<p>"_s
+                  + tr("Welcome to version 3.0.0 of Enroute Flight Navigation.")
+                  + u"</p>"_s;
+        result += u"<p>"_s
+                  + tr("<strong>New Feature</strong>: ")
+                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.") + " "
+                  + tr("We thank Simon Schneider and Markus Marks for help with the implementation. "
+                       "Consult the manual for more information.")
+                  + u"</p>"_s;
+        result += u"<p>"_s
                   + tr("Enroute Flight Navigation is now able to display traffic data provided by the Open Glider Network. "
                        "Flight routes can now be copied to the clipboard in ICAO flight plan format. "
                        "We thank Christian Engelhardt for the implementation of these features. "
                        "Consult the manual for more information.")
-                  + u"</p>"_s;
-        result += u"<p>"_s
-                  + tr("Enroute Flight Navigation is now available on Mac computers with Apple Silcon processor (M1 or newer). "
-                       "Download it on the App Store.")
                   + u"</p>"_s;
 #if !defined(Q_OS_IOS)
 /*

@@ -92,7 +92,7 @@ public:
      *  The aircraft returned here is owned by this class and must not be deleted.
      *  QML ownership has been set to QQmlEngine::CppOwnership.
      */
-    Q_PROPERTY(Navigation::Aircraft aircraft READ aircraft WRITE setAircraft NOTIFY aircraftChanged)
+    Q_PROPERTY(Navigation::Aircraft aircraft READ aircraft BINDABLE bindableAircraft WRITE setAircraft NOTIFY aircraftChanged)
 
     /*! \brief Current flight route
      *
@@ -123,7 +123,13 @@ public:
      *
      *  @returns Property aircraft
      */
-    [[nodiscard]] auto aircraft() const -> Navigation::Aircraft { return m_aircraft; }
+    [[nodiscard]] Navigation::Aircraft aircraft() const { return m_aircraft.value(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property aircraft
+     */
+    [[nodiscard]] QBindable<Navigation::Aircraft> bindableAircraft() { return &m_aircraft; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -214,7 +220,7 @@ private:
 
     FlightStatus m_flightStatus {Unknown};
 
-    Aircraft m_aircraft {};
+    QProperty<Aircraft> m_aircraft {};
 
     QPointer<FlightRoute> m_flightRoute {nullptr};
     const QString m_flightRouteFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/flight route.geojson"_s};

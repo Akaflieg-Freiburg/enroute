@@ -22,6 +22,10 @@
 #include <QTimer>
 
 #include "Sensors.h"
+#include "navigation/Atmosphere.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -38,7 +42,7 @@ Sensors::Sensors(QObject *parent) : GlobalObject(parent)
 
     auto* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Sensors::updateSensorReadings);
-    timer->setInterval(1000);
+    timer->setInterval(1s);
     timer->setSingleShot(false);
     timer->start();
 
@@ -64,29 +68,22 @@ void Sensors::updateSensorReadings()
 {
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
     Units::Pressure new_ambientPressure;
-    Units::Temperature new_ambientTemperature;
-
     auto* pressureReading = m_pressureSensor.reading();
     if (pressureReading != nullptr)
     {
         new_ambientPressure = Units::Pressure::fromPa(pressureReading->pressure());
     }
-    if (new_ambientPressure != m_ambientPressure)
-    {
-        m_ambientPressure = new_ambientPressure;
-        emit ambientPressureChanged();
-    }
 
+    m_ambientPressure = new_ambientPressure;
+    m_pressureAltitude = Navigation::Atmosphere::height(new_ambientPressure);
+
+    Units::Temperature new_ambientTemperature;
     auto* temperatureReading = m_temperatureSensor.reading();
     if (temperatureReading != nullptr)
     {
         new_ambientTemperature = Units::Temperature::fromDegreeCelsius(temperatureReading->temperature());
     }
-    if (new_ambientTemperature != m_ambientTemperature)
-    {
-        m_ambientTemperature = new_ambientTemperature;
-        emit ambientTemperatureChanged();
-    }
+    m_ambientTemperature = new_ambientTemperature;
 #endif
 
 }
@@ -101,27 +98,23 @@ void Sensors::updateStatusString()
     auto types = QPressureSensor::sensorTypes();
     if (types.contains("QPressureSensor"))
     {
-        sensorNames += "<li>" + tr("Pressure sensor available") + "</li>";
+        sensorNames += u"<li>"_s + tr("Pressure sensor available.") + u"</li>"_s;
     }
     if (types.contains("QAmbientTemperatureSensor"))
     {
-        sensorNames += "<li>" + tr("Temperature sensor available") + "</li>";
+        sensorNames += u"<li>"_s + tr("Temperature sensor available.") + u"</li>"_s;
     }
 #else
     const QStringList sensorNames;
 #endif
     if (sensorNames.isEmpty())
     {
-        newStatus = tr("No ambient pressure/temperature sensor available");
+        newStatus = tr("No ambient pressure/temperature sensor available.");
     }
     else
     {
-        newStatus = "<ul style='margin-left:-25px;'>" + sensorNames.join(u""_s) + "</ul>";
+        newStatus = u"<ul style='margin-left:-25px;'>"_s + sensorNames.join(u""_s) + u"</ul>"_s;
     }
 
-    if (newStatus != m_statusString)
-    {
-        m_statusString = newStatus;
-        emit statusStringChanged();
-    }
+    m_statusString = newStatus;
 }

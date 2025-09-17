@@ -68,6 +68,7 @@ set(SOURCES
     Sensors.h
     navigation/Aircraft.h
     navigation/Atmosphere.h
+    navigation/BaroCache.h
     navigation/Clock.h
     navigation/FlightRoute.h
     navigation/Leg.h
@@ -170,6 +171,7 @@ set(SOURCES
     main.cpp
     navigation/Aircraft.cpp
     navigation/Atmosphere.cpp
+    navigation/BaroCache.cpp
     navigation/Clock.cpp
     navigation/FlightRoute.cpp
     navigation/FlightRoute_GPX.cpp

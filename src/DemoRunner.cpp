@@ -193,7 +193,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     GlobalObject::navigator()->flightRoute()->clear();
                 }
 
-                // Approaching EDDS
+                // Approaching EDDS with side view
                 {
                     qWarning() << "… Approaching EDDS";
                     trafficSimulator->setCoordinate( {48.45, 9.1744, Units::Distance::fromFT(4000).toM()} );
@@ -357,6 +357,22 @@ void DemoRunner::generateManualScreenshots()
 
     // Clear flight route
     GlobalObject::navigator()->flightRoute()->clear();
+
+    // Approaching EDDS with side view
+    {
+        qWarning() << "… Approaching EDDS";
+        trafficSimulator->setCoordinate( {48.45, 9.1744, Units::Distance::fromFT(4000).toM()} );
+        trafficSimulator->setBarometricHeight( Units::Distance::fromFT(4000) );
+        trafficSimulator->setTT( Units::Angle::fromDEG(30) );
+        trafficSimulator->setGS( Units::Speed::fromKN(120) );
+        trafficSimulator->setVSpeed( Units::Speed::fromFPM(-300) );
+        flightMap->setProperty("zoomLevel", 10);
+        flightMap->setProperty("mapBearingPolicy", 1);
+        emit requestShowSideView(true);
+        delay(10s);
+        applicationWindow->grabWindow().save(QStringLiteral("05-01-01-SideView.png"));
+        emit requestShowSideView(false);
+    }
 
     // Route page
     {

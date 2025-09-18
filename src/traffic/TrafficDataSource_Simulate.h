@@ -142,6 +142,15 @@ public slots:
         }
     }
 
+    /*! \brief Set speed that is to be reported by this class as the vertical speed of ownship
+     *
+     *  @param GS Ground speed of simulated ownship
+     */
+    void setVSpeed(Units::Speed vSpeed)
+    {
+        geoInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS());
+    }
+
     /*! \brief Add a traffic factor that is to be reported by this class
      *
      *  @param factor Traffic factor to be added. The pointer must be valid. The

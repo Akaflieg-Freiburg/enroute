@@ -17,13 +17,19 @@ Contributions
 -  **Programming:** Heinz Blöchinger has helped us with file import
    functionality. After 15 years of alpine gliding, Heinz has fulfilled
    a big dream and now flies helicopters.
--  **Programming:** Christian Engelhardt started the implementation of
+-  **Programming:** Christian Engelhardt implemented the OGN network
+   connection, flight plan export and started the implementation of
    height density calculation. Christian is a PPL pilot in southern
-   Germany, studied electrical engineering and working as an Embedded SW
-   Engineer.
+   Germany, studied electrical engineering and working as an embedded
+   software Engineer.
 -  **Programming:** Tom Linz completed height density calculation. He
    received his PPL license in late 2024. Tom works as a development
    engineer for safety systems.
+-  **Programming:** Markus Marks helped to implement the side view.
+   Based in southern Germany, Markus is an enthusiastic glider pilot
+   software developer working in embedded systems.
+-  **Programming:** Simon Schneider implemented the first working
+   version of the side view.
 
 Translations
 ~~~~~~~~~~~~

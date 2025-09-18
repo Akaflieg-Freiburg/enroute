@@ -67,7 +67,7 @@ void Positioning::PositionProvider::deferredInitialization()
     m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
     m_statusString.setBinding([this]() {return computeStatusString();});
     m_incomingPositionInfo.setBinding([this]() {return computeIncomingPositionInfo();});
-    m_incomingPositionInfoNotifier = m_incomingPositionInfo.addNotifier([this]() {return onIncomingPositionInfoUpdated();});
+    m_incomingPositionInfoNotifier = m_incomingPositionInfo.addNotifier([this]() {onIncomingPositionInfoUpdated();});
     onIncomingPositionInfoUpdated();
 }
 

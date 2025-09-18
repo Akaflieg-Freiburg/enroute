@@ -173,13 +173,13 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                 dir.mkpath(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
 
                 // Enroute near EDSB
-                emit requestShowSideView(true);
                 {
                     qWarning() << "… En route near EDSB";
                     trafficSimulator->setCoordinate( {48.8442094, 8.45, Units::Distance::fromFT(7512).toM()} );
                     trafficSimulator->setBarometricHeight( Units::Distance::fromFT(7480) );
                     trafficSimulator->setTT( Units::Angle::fromDEG(30) );
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
+                    trafficSimulator->setVSpeed( Units::Speed::fromFPM(-300) );
 
                     GlobalObject::navigator()->flightRoute()->clear();
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTL")) );
@@ -191,6 +191,22 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     delay(8s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
+                }
+
+                // Approaching EDDS with side view
+                {
+                    qWarning() << "… Approaching EDDS";
+                    trafficSimulator->setCoordinate( {48.45, 9.1744, Units::Distance::fromFT(4000).toM()} );
+                    trafficSimulator->setBarometricHeight( Units::Distance::fromFT(4000) );
+                    trafficSimulator->setTT( Units::Angle::fromDEG(30) );
+                    trafficSimulator->setGS( Units::Speed::fromKN(120) );
+                    trafficSimulator->setVSpeed( Units::Speed::fromFPM(-300) );
+                    flightMap->setProperty("zoomLevel", 10);
+                    flightMap->setProperty("mapBearingPolicy", 1);
+                    emit requestShowSideView(true);
+                    delay(10s);
+                    saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    emit requestShowSideView(false);
                 }
 
                 // Approaching EDDR
@@ -205,12 +221,10 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     delay(10s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
-                emit requestShowSideView(false);
 
                 // Approaching EDTF w/ traffic
                 {
                     qWarning() << "… EDTF Traffic";
-
                     const QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
                     trafficSimulator->setCoordinate( ownPosition );
                     trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
@@ -234,15 +248,6 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     trafficFactor1->setHDist( Units::Distance::fromM(1000) );
                     trafficFactor1->setVDist( Units::Distance::fromM(17) );
                     trafficSimulator->addTraffic(trafficFactor1);
-
-                    auto* trafficFactor2 = new Traffic::TrafficFactor_DistanceOnly(this);
-                    trafficFactor2->setAlarmLevel(1);
-                    trafficFactor2->setID(QStringLiteral("newID"));
-                    trafficFactor2->setHDist( Units::Distance::fromM(1000) );
-                    trafficFactor2->setType( Traffic::Aircraft );
-                    trafficFactor2->setCallSign({});
-                    trafficFactor2->setCoordinate(ownPosition);
-                    trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
                     delay(8s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
@@ -352,6 +357,22 @@ void DemoRunner::generateManualScreenshots()
 
     // Clear flight route
     GlobalObject::navigator()->flightRoute()->clear();
+
+    // Approaching EDDS with side view
+    {
+        qWarning() << "… Approaching EDDS";
+        trafficSimulator->setCoordinate( {48.45, 9.1744, Units::Distance::fromFT(4000).toM()} );
+        trafficSimulator->setBarometricHeight( Units::Distance::fromFT(4000) );
+        trafficSimulator->setTT( Units::Angle::fromDEG(30) );
+        trafficSimulator->setGS( Units::Speed::fromKN(120) );
+        trafficSimulator->setVSpeed( Units::Speed::fromFPM(-300) );
+        flightMap->setProperty("zoomLevel", 10);
+        flightMap->setProperty("mapBearingPolicy", 1);
+        emit requestShowSideView(true);
+        delay(10s);
+        applicationWindow->grabWindow().save(QStringLiteral("05-01-01-SideView.png"));
+        emit requestShowSideView(false);
+    }
 
     // Route page
     {

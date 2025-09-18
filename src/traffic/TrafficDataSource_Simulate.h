@@ -144,7 +144,7 @@ public slots:
 
     /*! \brief Set speed that is to be reported by this class as the vertical speed of ownship
      *
-     *  @param GS Ground speed of simulated ownship
+     *  @param vSpeed Vertical speed of simulated ownship
      */
     void setVSpeed(Units::Speed vSpeed)
     {

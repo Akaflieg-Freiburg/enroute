@@ -83,14 +83,26 @@ public slots:
     void generateManualScreenshots();
 
 signals:
-    /*! \brief Emitted to indicate that the GUI should open the "Add Waypoint" dialog */
-    void requestOpenFlightRouteAddWPDialog();
+    /*! \brief Emitted to indicate that the GUI return to the main page */
+    void requestClosePages();
+
+    /*! \brief Emitted to indicate that the GUI should set a map bearing
+     *
+     *  @param bearing New bearing policy
+     */
+    void requestMapBearing(int bearing);
 
     /*! \brief Emitted to indicate that the GUI should open the "Aircraft" page */
     void requestOpenAircraftPage();
 
+    /*! \brief Emitted to indicate that the GUI should open the "Add Waypoint" dialog */
+    void requestOpenFlightRouteAddWPDialog();
+
     /*! \brief Emitted to indicate that the GUI should open the "Nearby" page */
     void requestOpenNearbyPage();
+
+    /*! \brief Emitted to indicate that the GUI should open the "Route & Wind" page */
+    void requestOpenRoutePage();
 
     /*! \brief Emitted to indicate that the GUI should open the "Weather" page */
     void requestOpenWeatherDialog(Weather::Observer* obs);
@@ -98,23 +110,17 @@ signals:
     /*! \brief Emitted to indicate that the GUI should open the "Weather" page */
     void requestOpenWeatherPage();
 
-    /*! \brief Emitted to indicate that the GUI should open the "Route & Wind" page */
-    void requestOpenRoutePage();
-
-    /*! \brief Emitted to indicate that the GUI return to the main page */
-    void requestClosePages();
+    /*! \brief Emitted to indicate that the GUI should show the aircraft side view
+     *
+     *  @param show Indicator if the side view should be shown or hidden
+     */
+    void requestShowSideView(bool show);
 
     /*! \brief Emitted to indicate that the GUI should set a VAC
      *
      *  @param vacName Name of the VAC
      */
     void requestVAC(QString vacName);
-
-    /*! \brief Emitted to indicate that the GUI should set a map bearing
-     *
-     *  @param bearing New bearing policy
-     */
-    void requestMapBearing(int bearing);
 
 private:
     Q_DISABLE_COPY_MOVE(DemoRunner)

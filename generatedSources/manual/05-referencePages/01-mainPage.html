@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Settings" href="02-settings.html" />
+    <link rel="next" title="Aircraft" href="01-aircraft.html" />
     <link rel="prev" title="User Interface: Pages" href="../05-referencePages.html" /> 
 </head>
 
@@ -73,11 +73,21 @@
 <li class="toctree-l4"><a class="reference internal" href="#procedures-and-traffic-circuits">Procedures and Traffic Circuits</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#airspace-side-view">Airspace Side View</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependence-on-static-pressure-information">Dependence on Static Pressure Information</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scale">Scale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#side-view-features">Side View Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#airspaces">Airspaces</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="01-aircraft.html">Aircraft</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02-settings.html">Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03-settingsDataConnections.html">Settings: Data Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-infoSatNav.html">Information/SatNav Positioning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04-infoTraffic.html">Information/Traffic Data Receiver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-infoSensors.html">Information/Device Sensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04-about.html">Information/About</a></li>
 </ul>
 </li>
@@ -127,7 +137,7 @@
 page that opens when you start the app. The following image shows the Main Page
 in a typical flight situation.</p>
 <figure class="align-center" id="id1">
-<span id="movingmapflt"></span><a class="reference internal image-reference" href="../_images/02-02-04-EnRoute.png"><img alt="Flight route window, route set" src="../_images/02-02-04-EnRoute.png" style="width: 120.0px; height: 180.0px;" />
+<span id="movingmapflt"></span><a class="reference internal image-reference" href="../_images/02-02-04-EnRoute.png"><img alt="Flight route window, route set" src="../_images/02-02-04-EnRoute.png" style="width: 240.0px; height: 360.0px;" />
 </a>
 <figcaption>
 <p><span class="caption-text">The Main Page of <strong>Enroute Flight Navigation</strong></span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
@@ -334,7 +344,7 @@ The figure <a class="reference internal" href="#wpinfo2"><span class="std std-re
 <li><p><strong>Double Tap Gesture:</strong> The double tap gesture is equivalent to tap-and-hold.</p></li>
 </ul>
 <figure class="align-center" id="id2">
-<span id="wpinfo2"></span><a class="reference internal image-reference" href="../_images/01-03-03-EDFEinfo.png"><img alt="Information about EDFE Airport" src="../_images/01-03-03-EDFEinfo.png" style="width: 120.0px; height: 180.0px;" />
+<span id="wpinfo2"></span><a class="reference internal image-reference" href="../_images/01-03-03-EDFEinfo.png"><img alt="Information about EDFE Airport" src="../_images/01-03-03-EDFEinfo.png" style="width: 240.0px; height: 360.0px;" />
 </a>
 <figcaption>
 <p><span class="caption-text">Information about EDFE Airport</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
@@ -342,7 +352,7 @@ The figure <a class="reference internal" href="#wpinfo2"><span class="std std-re
 </figure>
 </section>
 <section id="ownship-position">
-<h3>Ownship Position<a class="headerlink" href="#ownship-position" title="Link to this heading"></a></h3>
+<span id="movingmapownshipposition"></span><h3>Ownship Position<a class="headerlink" href="#ownship-position" title="Link to this heading"></a></h3>
 <p>The ownship position is shown prominently in the moving map, using one of the
 following symbols.</p>
 <table class="docutils align-default">
@@ -384,7 +394,7 @@ white segments corresponds to one minute.</p>
 section <a class="reference internal" href="../02-senseAndAvoid.html#traffic"><span class="std std-ref">Sense and Avoid</span></a> explains how to establish the connection. The figure
 <a class="reference internal" href="#edtftraffic2"><span class="std std-ref">Approaching EDTF with traffic</span></a> shows a typical situation.</p>
 <figure class="align-center" id="id4">
-<span id="edtftraffic2"></span><a class="reference internal image-reference" href="../_images/02-01-01-traffic1.png"><img alt="Approaching EDTF with traffic" src="../_images/02-01-01-traffic1.png" style="width: 120.0px; height: 180.0px;" />
+<span id="edtftraffic2"></span><a class="reference internal image-reference" href="../_images/02-01-01-traffic1.png"><img alt="Approaching EDTF with traffic" src="../_images/02-01-01-traffic1.png" style="width: 240.0px; height: 360.0px;" />
 </a>
 <figcaption>
 <p><span class="caption-text">Approaching EDTF with traffic</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
@@ -616,6 +626,99 @@ available.</p>
 are shown as solid blue lines. Exit routes are shown as dashed blue lines.</p>
 </section>
 </section>
+<section id="airspace-side-view">
+<span id="sideview"></span><h2>Airspace Side View<a class="headerlink" href="#airspace-side-view" title="Link to this heading"></a></h2>
+<p>Starting with version 3.0.0, <strong>Enroute Flight Navigation</strong> is able to show a
+side view of the airspace and the terrain.  To open the side view, swipe upwards
+from the Navigation Bar at the bottom of the page.</p>
+<figure class="align-center" id="id5">
+<span id="sideviewimg"></span><a class="reference internal image-reference" href="../_images/05-01-01-SideView.png"><img alt="Side View of the Airspace while Approaching EDDS" src="../_images/05-01-01-SideView.png" style="width: 240.0px; height: 360.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Side View of the Airspace while Approaching EDDS</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="dependence-on-static-pressure-information">
+<h3>Dependence on Static Pressure Information<a class="headerlink" href="#dependence-on-static-pressure-information" title="Link to this heading"></a></h3>
+<p>The side view is only available if <strong>Enroute Flight Navigation</strong> has access to
+static pressure information.  If static pressure information is not available,
+<strong>Enroute Flight Navigation</strong> will show a prominent warning.</p>
+<p>Why does <strong>Enroute Flight Navigation</strong> need static pressure for the airspace side view?</p>
+<blockquote>
+<div><p>Vertical airspace boundaries are defined as barometric altitudes, either over
+QNH or over the standard pressure level.  As a consequence, the geometric
+altitude of airspaces changes with the weather: Airspaces are typically much
+lower on cold winter days than they are in summer. In order to show your
+aircraft in relation to airspaces, <strong>Enroute Flight Navigation</strong> therefore
+needs to know the barometric altitudes of your aircraft, or equivalently, the
+static pressure.</p>
+</div></blockquote>
+<p>How can I provide static pressure data?</p>
+<blockquote>
+<div><p>Follow the steps outlined in chapter <a class="reference internal" href="../02-senseAndAvoid.html#traffic"><span class="std std-ref">Sense and Avoid</span></a> to connect <strong>Enroute
+Flight Navigation</strong> to a traffic data receiver that provides static pressure
+data. Since ADS-B data uses barometric altitudes, any traffic data receiver
+that receives ADS-B will most likely be suitable. In particular, all
+PowerFLARM devices provide the necessary data.</p>
+<p>If your mobile device is equipped with a high-precision pressure sensor
+<strong>and</strong> if you fly an aircraft where static pressure and cabin pressure agree,
+you use the option “Use cabin pressure…” on the page <a class="reference internal" href="01-aircraft.html#aircraftpage"><span class="std std-ref">Aircraft</span></a> to
+enable the use of cabin pressure data.  However, please read the warnings and
+notes on the page <a class="reference internal" href="01-aircraft.html#aircraftpage"><span class="std std-ref">Aircraft</span></a> carefully before you enable this option.</p>
+</div></blockquote>
+<p>But other apps show side views without static pressure data!</p>
+<blockquote>
+<div><p>We do not know the internal workings of other apps.  However, we do not see
+how sufficiently reliable information can possibly be provided without static
+pressure data.</p>
+<p>We fly general aviation aircraft in Germany and Switzerland, where vertical
+separation between jet aircraft and airspace limits is sometimes no more than
+500ft.  In view of the extremely severe consequences of airspace violations,
+we decided against showing questionable data.</p>
+</div></blockquote>
+</section>
+<section id="scale">
+<h3>Scale<a class="headerlink" href="#scale" title="Link to this heading"></a></h3>
+<p>To provide the most relevant data at a glance, <strong>Enroute Flight Navigation</strong>
+uses different map scales for horizontal and vertical directions. In most
+scenarios, vertical distances are greatly exaggerated.</p>
+<ul class="simple">
+<li><p>In horizontal direction, the scale of the Side View follows the scale used in
+the moving map.</p></li>
+<li><p>In vertical direction, <strong>Enroute Flight Navigation</strong> chooses a scale to
+guarantee that the current position, the flight path for the next 7.5 minutes
+and a height hand of 6,000ft are visible.</p></li>
+</ul>
+</section>
+<section id="side-view-features">
+<h3>Side View Features<a class="headerlink" href="#side-view-features" title="Link to this heading"></a></h3>
+<p>The side view shows the ownship position and the flight path vector using the
+same symbols as in the moving map; we refer the reader to the Section
+<a class="reference internal" href="#movingmapownshipposition"><span class="std std-ref">Ownship Position</span></a> for a detailed description. If the aircraft is
+not moving at sufficiently high speed for a flight path vector to show, the
+direction corresponding to “right” is shown in a text field at the top of the
+view.</p>
+</section>
+<section id="airspaces">
+<h3>Airspaces<a class="headerlink" href="#airspaces" title="Link to this heading"></a></h3>
+<p>For clarity, the side view does not show all the airspaces that you can see in
+the moving map. The following airspaces are shown.</p>
+<ul class="simple">
+<li><p>Airspaces of class “A”, “B”, “C” and “D”: Outlined with a solid blue line,
+with light blue border.</p></li>
+<li><p>Control Zones: Outlined with a dashed blue line, filled in light red.</p></li>
+<li><p>Danger Zones, Restricted and Prohibited Airspaces: Outlined with a dashed red
+line, with light red border.</p></li>
+<li><p>Nature Preserve Areas: Outlined with a dashed green line, with light green
+border.</p></li>
+<li><p>Radio Mandatory Zones, Traffic Information Areas, Traffic Information Zones,
+Aerodrome Traffic Zone: Outlined with a dashed blue line, filled in light
+blue.</p></li>
+<li><p>Parachute Jumping Exercise Areas, Special Use Airspaces: Outlined with a
+dashed red line.</p></li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -623,7 +726,7 @@ are shown as solid blue lines. Exit routes are shown as dashed blue lines.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../05-referencePages.html" class="btn btn-neutral float-left" title="User Interface: Pages" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="02-settings.html" class="btn btn-neutral float-right" title="Settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="01-aircraft.html" class="btn btn-neutral float-right" title="Aircraft" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

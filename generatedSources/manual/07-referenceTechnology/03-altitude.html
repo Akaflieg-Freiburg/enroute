@@ -69,12 +69,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#density-altitude">Density Altitude</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#airspace-side-view">Airspace Side View</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#why-does-enroute-need-static-pressure-for-the-airspace-side-view">Why does <strong>Enroute</strong> need static pressure for the airspace side view?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-can-i-provide-static-pressure-data">How can I provide static pressure data?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#but-other-apps-show-side-views-without-static-pressure-data">But other apps show side views without static pressure data!</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -175,55 +169,6 @@ standard atmosphere experiences an air density equal to the density measured by
 the ambient pressure/temperature sensors of your device.</p>
 <p><strong>Enroute Flight Navigation</strong> computes the density altitude from METAR data, but
 only for airfields reporting the necessary data.</p>
-</section>
-</section>
-<section id="airspace-side-view">
-<h2>Airspace Side View<a class="headerlink" href="#airspace-side-view" title="Link to this heading"></a></h2>
-<p id="sideviewstaticpressure">Starting with version 3.0.0, <strong>Enroute Flight Navigation</strong> is able to show a
-sideways view of the airspace. However, the side view is only available if
-<strong>Enroute Flight Navigation</strong> has access to static pressure information.  This
-section of the manual explains why.</p>
-<section id="why-does-enroute-need-static-pressure-for-the-airspace-side-view">
-<h3>Why does <strong>Enroute</strong> need static pressure for the airspace side view?<a class="headerlink" href="#why-does-enroute-need-static-pressure-for-the-airspace-side-view" title="Link to this heading"></a></h3>
-<p>Vertical airspace boundaries are defined as barometric altitudes, either over
-QNH or over the standard pressure level.  As a consequence, the geometric
-altitude of airspaces changes with the weather: Airspaces are typically much
-lower on cold winter days than they are in summer. In order to show your
-aircraft in relation to airspaces, <strong>Enroute Flight Navigation</strong> therefore needs
-to know the barometric altitudes of your aircraft, or equivalently, the static
-pressure.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Never use true altitude to judge vertical distances to airspaces.</p>
-</div>
-</section>
-<section id="how-can-i-provide-static-pressure-data">
-<h3>How can I provide static pressure data?<a class="headerlink" href="#how-can-i-provide-static-pressure-data" title="Link to this heading"></a></h3>
-<p>Follow the steps outlined in chapter <a class="reference internal" href="../02-senseAndAvoid.html#traffic"><span class="std std-ref">Sense and Avoid</span></a> to connect <strong>Enroute Flight
-Navigation</strong> to a traffic data receiver that provides static pressure data.</p>
-<p>If you fly an aircraft where static pressure and cabin pressure agree, you can
-run the additional app <a class="reference external" href="https://ccas.aero/">CCAS</a>, which runs in the
-background, uses pressure sensors in your mobile device and reports the pressure
-as static pressure to <strong>Enroute Flight Navigation</strong>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>We strongly recommend connecting <strong>Enroute Flight Navigation</strong> to a
-proper traffic data receiver.  While CCAS might have its use for pilots flying
-balloons, paragliders or gyrocopters, think twice before using CCAS in a
-motorized plane or glider. In typical GA aircraft, static pressure and cabin
-pressure do not necessarily agree.  The precise error typically depends on
-airspeed and on the configuration of the heating and ventilation systems.</p>
-</div>
-</section>
-<section id="but-other-apps-show-side-views-without-static-pressure-data">
-<h3>But other apps show side views without static pressure data!<a class="headerlink" href="#but-other-apps-show-side-views-without-static-pressure-data" title="Link to this heading"></a></h3>
-<p>We do not know the internal workings of other apps.  However, we do not see how
-sufficiently reliable information can possibly be provided without static
-pressure data.</p>
-<p>We fly general aviation aircraft in Germany and Switzerland, where vertical
-separation between jet aircraft and airspace limits is sometimes no more than
-500ft.  In view of the extremely severe consequences of airspace violations, we
-decided against showing questionable data.</p>
 </section>
 </section>
 </section>

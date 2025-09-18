@@ -342,27 +342,6 @@ AppWindow {
                             }
                         }
 
-                        ItemDelegate { // PressureAltitude
-                            text: qsTr("Barometric Data")
-                                  +`<br><font color="#606060" size="2">`
-                                  + (TrafficDataProvider.pressureAltitude.isFinite() ? qsTr("Receiving pressure altitude.") : qsTr("Not receiving pressure altitude."))
-                                  + `</font>`
-                            icon.source: "/icons/material/ic_speed.svg"
-                            Layout.fillWidth: true
-                            onClicked: {
-                                PlatformAdaptor.vibrateBrief()
-                                stackView.pop()
-                                stackView.push("pages/PressureAltitude.qml")
-                                aboutMenu.close()
-                                drawer.close()
-                            }
-                            background: Rectangle {
-                                anchors.fill: parent
-                                color: TrafficDataProvider.pressureAltitude.isFinite() ? "green" : "red"
-                                opacity: 0.2
-                            }
-                        }
-
                         ItemDelegate { // FLARM Status
                             Layout.fillWidth: true
 
@@ -388,6 +367,19 @@ AppWindow {
                                     return "green"
                                 }
                                 opacity: 0.2
+                            }
+                        }
+
+                        ItemDelegate { // PressureAltitude
+                            text: qsTr("Device Sensors")
+                            icon.source: "/icons/material/ic_speed.svg"
+                            Layout.fillWidth: true
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                stackView.pop()
+                                stackView.push("pages/PressureAltitude.qml")
+                                aboutMenu.close()
+                                drawer.close()
                             }
                         }
 

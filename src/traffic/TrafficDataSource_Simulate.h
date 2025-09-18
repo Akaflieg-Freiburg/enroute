@@ -107,6 +107,7 @@ public slots:
     void setCoordinate(const QGeoCoordinate& coordinate)
     {
         geoInfo.setCoordinate(coordinate);
+        geoInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, 0.0);
     }
 
     /*! \brief Set speed that is to be reported by this class as the ground speed of ownship
@@ -139,6 +140,15 @@ public slots:
             factor->setParent( this );
             trafficFactor_DistanceOnly = factor;
         }
+    }
+
+    /*! \brief Set speed that is to be reported by this class as the vertical speed of ownship
+     *
+     *  @param vSpeed Vertical speed of simulated ownship
+     */
+    void setVSpeed(Units::Speed vSpeed)
+    {
+        geoInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS());
     }
 
     /*! \brief Add a traffic factor that is to be reported by this class

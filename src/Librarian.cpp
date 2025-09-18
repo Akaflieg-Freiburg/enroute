@@ -73,10 +73,16 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                + "<strong>" + tr("Programming") + ":</strong> " + tr("Heinz Blöchinger has helped us with file import functionality. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.")
                + "</li>"
                + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an Embedded SW Engineer.")
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an embedded software Engineer.")
                + "</li>"
                + "<li>"
                + "<strong>" + tr("Programming") + ":</strong> " + tr("Tom Linz completed height density calculation. He received his PPL license in late 2024. Tom works as a development engineer for safety systems.")
+               + "</li>"
+               + "<li>"
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Markus Marks helped to implement the side view. Based in southern Germany, Markus is an enthusiastic glider pilot software developer working in embedded systems.")
+               + "</li>"
+               + "<li>"
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Simon Schneider implemented the first working version of the side view.")
                + "</li>"
                + "</ul>"
                + tr(R"html(
@@ -307,7 +313,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                tr("In order to show your aircraft in relation to airspaces, Enroute Flight Navigation therefore needs to know the barometric altitudes of your aircraft, or equivalently, the static pressure.") + u" "_s +
                tr("This data is currently not available.") + u" "_s +
                u"</p><p>"_s +
-               tr("<a href='https://akaflieg-freiburg.github.io/enrouteManual/07-referenceTechnology/03-altitude.html#airspace-side-view'>Consult the manual</a> for more information and for possible solutions.") +
+               tr("<a href='https://akaflieg-freiburg.github.io/enrouteManual/05-referencePages/01-mainPage.html#dependence-on-static-pressure-information'>Consult the manual</a> for more information and for possible solutions.") +
                u"</p>"_s;
     }
 
@@ -315,8 +321,13 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += u"<p>"_s
-                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.")
-                  + u" This feature is currently in beta test. We would love to hear your feedback."_s
+                  + tr("Welcome to version 3.0.0 of Enroute Flight Navigation.")
+                  + u"</p>"_s;
+        result += u"<p>"_s
+                  + tr("<strong>New Feature</strong>: ")
+                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.") + " "
+                  + tr("We thank Simon Schneider and Markus Marks for help with the implementation. "
+                       "Consult the manual for more information.")
                   + u"</p>"_s;
         result += u"<p>"_s
                   + tr("Enroute Flight Navigation is now able to display traffic data provided by the Open Glider Network. "

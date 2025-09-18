@@ -75,6 +75,9 @@ public:
     // Properties
     //
 
+    /*! \brief Preferred units of measurement for vertical distances */
+    Q_PROPERTY(bool cabinPressureEqualsStaticPressure READ cabinPressureEqualsStaticPressure WRITE setCabinPressureEqualsStaticPressure)
+
     /*! \brief Cruise Speed
      *
      * This property holds the cruise speed of the aircraft. This lies in the interval [minAircraftSpeed,
@@ -139,6 +142,12 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @returns Property cabinPressureEqualsStaticPressure
+     */
+    [[nodiscard]] bool cabinPressureEqualsStaticPressure() const { return m_cabinPressureEqualsStaticPressure; }
+
+    /*! \brief Getter function for property of the same name
+     *
      * @returns Property cruise speed
      */
     [[nodiscard]] auto cruiseSpeed() const -> Units::Speed { return m_cruiseSpeed; }
@@ -192,7 +201,13 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * This method saves the new value in a QSetting object. If speedInKT is
+     * @param newCabinPressureEqualsStaticPressure Property cabinPressureEqualsStaticPressure
+     */
+    void setCabinPressureEqualsStaticPressure(bool newCabinPressureEqualsStaticPressure) { m_cabinPressureEqualsStaticPressure = newCabinPressureEqualsStaticPressure; }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * If newSpeed is
      * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
      * property will be set to NaN.
      *
@@ -380,6 +395,7 @@ private:
     static constexpr Units::VolumeFlow minValidFuelConsumption = Units::VolumeFlow::fromLPH(0.0);
     static constexpr Units::VolumeFlow maxValidFuelConsumption = Units::VolumeFlow::fromLPH(300.0);
 
+    bool m_cabinPressureEqualsStaticPressure {false};
     Units::Speed m_cruiseSpeed {};
     Units::Speed m_descentSpeed {};
     Units::VolumeFlow m_fuelConsumption {};

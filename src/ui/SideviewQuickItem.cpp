@@ -21,16 +21,15 @@
 #include "GeoMapProvider.h"
 #include "PositionProvider.h"
 #include "SideviewQuickItem.h"
-#include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
 
-QStringList airspaceCategories = {"TMZ", "RMZ", "TIA", "TIZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R", "P", "PJE"};
+QStringList airspaceCategories = {"ATZ", "TMZ", "RMZ", "TIA", "TIZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R", "P", "PJE", "SUA"};
 
 
 Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
-    : QQuickItem(parent)
+    : QQuickItem(parent), m_baroCache(new Navigation::BaroCache(this))
 {
     m_timer.setSingleShot(true);
     connect(&m_timer, &QTimer::timeout, this, &Ui::SideviewQuickItem::updateProperties);
@@ -39,8 +38,9 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     notifiers.push_back(bindableHeight().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(bindableWidth().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
+    notifiers.push_back(GlobalObject::positionProvider()->bindablePressureAltitude().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
-    updateProperties();
+    updateProperties();   
 }
 
 void Ui::SideviewQuickItem::updateProperties()
@@ -131,13 +131,17 @@ void Ui::SideviewQuickItem::updateProperties()
     auto ownshipGeometricAltitude = Units::Distance::fromM(ownshipCoordinate.altitude());
     if (!ownshipGeometricAltitude.isFinite())
     {
-        m_error = tr("Unable to show side view: No valid altitude data.");
+        m_error = tr("Unable to show side view: No valid altitude data for own aircraft.");
         return;
     }
-    auto ownshipBarometricAltitude = GlobalObject::trafficDataProvider()->pressureAltitude();
-    if (!ownshipBarometricAltitude.isFinite())
+    auto ownshipPressureAltitude = GlobalObject::positionProvider()->pressureAltitude();
+    if (!ownshipPressureAltitude.isFinite())
     {
-        ownshipBarometricAltitude = ownshipGeometricAltitude;
+        ownshipPressureAltitude = m_baroCache->estimatedPressureAltitude(ownshipGeometricAltitude);
+    }
+    if (!ownshipPressureAltitude.isFinite())
+    {
+        ownshipPressureAltitude = ownshipGeometricAltitude;
         m_error = tr("Unable to compute sufficiently precise vertical airspace boundaries because barometric altitude information is not available. <a href='xx'>Click here</a> for more information.");
     }
     auto QNH = GlobalObject::weatherDataProvider()->QNH();
@@ -260,7 +264,7 @@ void Ui::SideviewQuickItem::updateProperties()
     }
     polygon  << QPointF(width(), height()+2000) << QPointF(-20, height()+2000);
     m_terrain = polygon;
-    qWarning() << "SideviewQuickItem terrain" << m_elapsedTimer.elapsed();
+    //qWarning() << "SideviewQuickItem terrain" << m_elapsedTimer.elapsed();
 
     // Airspaces
     auto airspaces = GlobalObject::geoMapProvider()->airspaces();
@@ -273,12 +277,19 @@ void Ui::SideviewQuickItem::updateProperties()
     QVector<QPolygonF> airspacePolygonsTMZ;
     QList<QPointF> upper;
     QList<QPointF> lower;
+    QGeoRectangle const viewBBox(QList({geoCoordinates.constFirst(), geoCoordinates.constLast()}));
     for(const auto& airspace : std::as_const(airspaces))
     {
         if (!airspaceCategories.contains(airspace.CAT()))
         {
             continue;
         }
+        auto bbox = airspace.polygon().boundingGeoRectangle();
+        if (!bbox.intersects(viewBBox))
+        {
+            continue;
+        }
+
         auto airspacePolygon = airspace.polygon();
         for(int i=0; i < xCoordinates.size(); i++)
         {
@@ -286,8 +297,8 @@ void Ui::SideviewQuickItem::updateProperties()
             const auto& geoCoordinate = geoCoordinates[i];
             if ((i != xCoordinates.size()-1) && airspacePolygon.contains(geoCoordinate))
             {
-                upper << QPointF(x, altToYCoordinate(airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipBarometricAltitude)));
-                lower << QPointF(x, altToYCoordinate(airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipBarometricAltitude)));
+                upper << QPointF(x, altToYCoordinate(airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude)));
+                lower << QPointF(x, altToYCoordinate(airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude)));
             }
             else
             {
@@ -308,7 +319,7 @@ void Ui::SideviewQuickItem::updateProperties()
                     {
                         airspacePolygonsR << polygon;
                     }
-                    if ((airspace.CAT() == u"RMZ"_s) || (airspace.CAT() == u"TIA"_s) || (airspace.CAT() == u"TIZ"_s))
+                    if ((airspace.CAT() == u"ATZ"_s) || (airspace.CAT() == u"RMZ"_s) || (airspace.CAT() == u"TIA"_s) || (airspace.CAT() == u"TIZ"_s))
                     {
                         airspacePolygonsRMZ << polygon;
                     }
@@ -316,7 +327,7 @@ void Ui::SideviewQuickItem::updateProperties()
                     {
                         airspacePolygonsNRA << polygon;
                     }
-                    if (airspace.CAT() == u"PJE"_s)
+                    if ((airspace.CAT() == u"PJE"_s) || (airspace.CAT() == u"SUA"_s))
                     {
                         airspacePolygonsPJE << polygon;
                     }
@@ -340,5 +351,5 @@ void Ui::SideviewQuickItem::updateProperties()
     newAirspaces[u"TMZ"_s] = QVariant::fromValue(airspacePolygonsTMZ);
 
     m_airspaces = newAirspaces;
-    qWarning() << "SideviewQuickItem full" << m_elapsedTimer.elapsed();
+    //qWarning() << "SideviewQuickItem full" << m_elapsedTimer.elapsed();
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,13 +20,13 @@
 
 #pragma once
 
-#include <QQmlEngine>
-
 #include "GlobalObject.h"
-#include "navigation/Atmosphere.h"
+#include "units/Distance.h"
 #include "units/Pressure.h"
 #include "units/Temperature.h"
 
+#include <QProperty>
+#include <QQmlEngine>
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
 #include <QAmbientTemperatureSensor>
 #include <QPressureSensor>
@@ -75,28 +75,27 @@ public:
     //
     // PROPERTIES
     //
-
     /*! \brief Ambient pressure
      *
      *  This property holds the ambient pressure recorded by the device sensor (if any).
      */
-    Q_PROPERTY(Units::Pressure ambientPressure READ ambientPressure NOTIFY ambientPressureChanged)
+    Q_PROPERTY(Units::Pressure ambientPressure READ ambientPressure BINDABLE bindableAmbientPressure)
 
     /*! \brief Ambient temperature
      *
      *  This property holds the ambient temperature recorded by the device sensor (if any).
      */
-    Q_PROPERTY(Units::Temperature ambientTemperature READ ambientTemperature NOTIFY ambientTemperatureChanged)
+    Q_PROPERTY(Units::Temperature ambientTemperature READ ambientTemperature BINDABLE bindableAmbientTemperature)
 
     /*! \brief Pressure altitude
      *
      *  This property holds the pressure altitude for the ambient pressure measured by the device sensor.
      *  In most practical setups, this will be the cabin altitude
      */
-    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY ambientPressureChanged)
+    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
 
     /*! \brief Status string */
-    Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
+    Q_PROPERTY(QString statusString READ statusString BINDABLE bindableStatusString)
 
 
     //
@@ -107,38 +106,49 @@ public:
      *
      *  @returns Property ambientPressure
      */
-    [[nodiscard]] Units::Pressure ambientPressure() const { return m_ambientPressure; }
+    [[nodiscard]] Units::Pressure ambientPressure() const { return m_ambientPressure.value(); }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property ambientPressure
      */
-    [[nodiscard]] Units::Temperature ambientTemperature() const { return m_ambientTemperature; }
+    [[nodiscard]] QBindable<Units::Pressure> bindableAmbientPressure() { return &m_ambientPressure; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property ambientPressure
+     */
+    [[nodiscard]] Units::Temperature ambientTemperature() const { return m_ambientTemperature.value(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property ambientPressure
+     */
+    [[nodiscard]] QBindable<Units::Temperature> bindableAmbientTemperature() { return &m_ambientTemperature; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property pressureAltitude
      */
-    [[nodiscard]] Units::Distance pressureAltitude() const { return Navigation::Atmosphere::height(m_ambientPressure); }
+    [[nodiscard]] Units::Distance pressureAltitude() const { return m_pressureAltitude.value(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() { return &m_pressureAltitude; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property statusString
      */
-    [[nodiscard]] QString statusString() const { return m_statusString; }
+    [[nodiscard]] QString statusString() const { return m_statusString.value(); }
 
-signals:
-    /*! \brief Notifier signal */
-    void ambientDensityChanged();
-
-    /*! \brief Notifier signal */
-    void ambientPressureChanged();
-
-    /*! \brief Notifier signal */
-    void ambientTemperatureChanged();
-
-    /*! \brief Notifier signal */
-    void statusStringChanged();
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property statusString
+     */
+    [[nodiscard]] QBindable<QString> bindableStatusString() { return &m_statusString; }
 
 private slots:
     // Update sensor readings. For performance reasons, we poll sensors.
@@ -158,7 +168,8 @@ private:
     QPressureSensor m_pressureSensor;
 #endif
 
-    Units::Pressure m_ambientPressure;
-    Units::Temperature m_ambientTemperature;
-    QString m_statusString;
+    QProperty<Units::Pressure> m_ambientPressure;
+    QProperty<Units::Distance> m_pressureAltitude;
+    QProperty<Units::Temperature> m_ambientTemperature;
+    QProperty<QString> m_statusString;
 };

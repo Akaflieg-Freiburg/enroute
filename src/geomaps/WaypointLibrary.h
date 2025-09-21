@@ -229,6 +229,10 @@ namespace GeoMaps
         /*! \brief Notification signal for the property with the same name */
         void waypointsChanged();
 
+    protected:
+        void deferredInitialization() override;
+
+
     private:
         Q_DISABLE_COPY_MOVE(WaypointLibrary)
 

@@ -196,8 +196,8 @@ add_custom_target(screenshots4GooglePlay
     COMMAND QT_QPA_PLATFORM=xcb LC_ALL=fr-FR ${CMAKE_BINARY_DIR}/src/enroute --sg
     COMMAND QT_QPA_PLATFORM=xcb LC_ALL=it-IT ${CMAKE_BINARY_DIR}/src/enroute --sg
     COMMAND QT_QPA_PLATFORM=xcb LC_ALL=pl-PL ${CMAKE_BINARY_DIR}/src/enroute --sg
-    COMMAND cp -prdv fastlane/metadata/* ../../generatedSources/fastlane/metadata/
-    COMMENT "Generated sources: screenshots for google play"
+    COMMAND cp -prdv fastlane/metadata/* ${CMAKE_SOURCE_DIR}/fastlane/metadata/
+    COMMENT "Generated sources: screenshots for Google Play"
     DEPENDS ${PROJECT_NAME}
   )
 add_custom_target(screenshots4Manual

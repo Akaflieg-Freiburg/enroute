@@ -39,7 +39,6 @@ GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
 
 void GeoMaps::WaypointLibrary::deferredInitialization()
 {
-    qWarning() << "GeoMaps::WaypointLibrary::deferredInitialization()";
     (void)loadFromGeoJSON();
     connect(this, &GeoMaps::WaypointLibrary::waypointsChanged, this, [this]() { (void)save(); });
 }

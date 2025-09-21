@@ -300,13 +300,6 @@ void Traffic::TrafficDataProvider::deferredInitialization()
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
 
     // Real data sources in order of preference, preferred sources first
-    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("10.10.10.10"), 2000, this));
-    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.1.1"), 2000, this));
-    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.4.1"), 2000, this));
-    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.10.1"), 2000, this) );
-    addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.42.1"), 2000, this) );
-    addDataSource( new Traffic::TrafficDataSource_Udp(true, 4000, this) );
-    addDataSource( new Traffic::TrafficDataSource_Udp(true, 49002, this));
     loadConnectionInfos();
 
     // Bindings for saving

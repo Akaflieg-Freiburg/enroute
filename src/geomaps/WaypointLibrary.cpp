@@ -34,9 +34,14 @@
 GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
     : GlobalObject(parent)
 {
+}
+
+
+void GeoMaps::WaypointLibrary::deferredInitialization()
+{
+    qWarning() << "GeoMaps::WaypointLibrary::deferredInitialization()";
     (void)loadFromGeoJSON();
-    connect(this, &GeoMaps::WaypointLibrary::waypointsChanged, this, [this]()
-    { (void)save(); });
+    connect(this, &GeoMaps::WaypointLibrary::waypointsChanged, this, [this]() { (void)save(); });
 }
 
 

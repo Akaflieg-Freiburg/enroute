@@ -68,6 +68,7 @@ set(SOURCES
     Sensors.h
     navigation/Aircraft.h
     navigation/Atmosphere.h
+    navigation/BaroCache.h
     navigation/Clock.h
     navigation/FlightRoute.h
     navigation/Leg.h
@@ -170,6 +171,7 @@ set(SOURCES
     main.cpp
     navigation/Aircraft.cpp
     navigation/Atmosphere.cpp
+    navigation/BaroCache.cpp
     navigation/Clock.cpp
     navigation/FlightRoute.cpp
     navigation/FlightRoute_GPX.cpp
@@ -613,6 +615,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/PageHeader.qml
     qml/items/+Material/PageHeader.qml
     qml/items/RemainingRouteBar.qml
+    qml/items/Sideview.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml
     qml/items/Traffic.qml
@@ -646,6 +649,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
+    ui/SideviewQuickItem.h
+    ui/SideviewQuickItem.cpp
     traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
 
@@ -655,6 +660,7 @@ qt_add_qml_module(${PROJECT_NAME}
 
 qt_add_lrelease(
     TS_FILES
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cs.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
@@ -686,11 +692,13 @@ qt_add_resources(${PROJECT_NAME} translations_qt
     PREFIX
     i18n
     FILES
+    ${Qt6_TRANSLATION_DIR}/qtbase_cs.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_de.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_es.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_fr.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_it.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_pl.qm
+    #${Qt6_TRANSLATION_DIR}/qtdeclarative_cs.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_de.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_es.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_fr.qm

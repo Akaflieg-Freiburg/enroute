@@ -38,7 +38,7 @@ Rectangle {
     // True course is only visible if display is wide enough
     property bool tcVisible: baseRect.width > 25*dummyControl.font.pixelSize
 
-    color: "#AA000000"
+    color: "#404040"
 
     // Dummy control, used to glean the font size
     Control {

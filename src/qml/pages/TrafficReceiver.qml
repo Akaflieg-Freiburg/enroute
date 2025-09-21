@@ -143,21 +143,38 @@ Page {
         rightPadding: font.pixelSize + SafeInsets.right
         topPadding: font.pixelSize
 
-        ColumnLayout {
+        GridLayout {
             width: sView.availableWidth
+            columns: 3
 
+            // Connection Status
             Label {
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
 
                 text: qsTr("Connection Status")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Connection Status")
+                    helpDialog.text = "<p>" +
+                            qsTr("To ensure reliable operation, traffic receivers emit 'heartbeat messages' at frequent intervals.") + " " +
+                            qsTr("This text field shows whether heartbeat messages are received through any of the configured data channels.") + " " +
+                            qsTr("If yes, it shows the data connection currently used and lists the types of data presently received.") +
+                            "</p>"
+                    helpDialog.open()
+                }
+            }
 
-            Label { // Status
+            Label {
                 Layout.fillWidth: true
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
+                Layout.columnSpan: 3
 
                 text: TrafficDataProvider.statusString
 
@@ -186,21 +203,35 @@ Page {
                 }
             }
 
+            // Traffic Data Receiver Status
             Label {
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
                 visible: TrafficDataProvider.receivingHeartbeat
 
                 text: qsTr("Traffic Data Receiver Status")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
             }
-
+            ToolButton {
+                visible: TrafficDataProvider.receivingHeartbeat
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Traffic Data Receiver Status")
+                    helpDialog.text = "<p>" +
+                            qsTr("This field shows status messages reported by the traffic data receiver, including results of internal self-tests of the traffic data receiver hardware.") +
+                            "</p>"
+                    helpDialog.open()
+                }
+            }
             Label {
                 id: problemStatus
 
                 Layout.fillWidth: true
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
+                Layout.columnSpan: 3
 
                 visible: TrafficDataProvider.receivingHeartbeat
 
@@ -232,25 +263,275 @@ Page {
 
             }
 
+            // Position
+            Label {
+                Layout.columnSpan: 2
+                visible: TrafficDataProvider.positionInfo.isValid()
+
+                text: qsTr("Position")
+                font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
+                font.bold: true
+            }
+            ToolButton {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Position")
+                    helpDialog.text = "<p>" +
+                            qsTr("This section shows the position reported by the traffic data receiver.") +
+                            "</p>"
+                    helpDialog.open()
+                }
+            }
+
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: qsTr("Latitude")
+            }
             Label {
                 Layout.fillWidth: true
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: {
+                    if (!TrafficDataProvider.positionInfo.isValid())
+                        return "-"
+                    const lat = TrafficDataProvider.positionInfo.coordinate().toString().split(",")[0]
+                    if (lat === "")
+                        return "-"
+                    return lat
+                }
+            }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: qsTr("Longitude")
+            }
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: {
+                    if (!TrafficDataProvider.positionInfo.isValid())
+                        return "-"
+                    const lon = TrafficDataProvider.positionInfo.coordinate().toString().split(",")[1].trim()
+                    if (lon === "")
+                        return "-"
+                    return lon
+                }
+            }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: qsTr("Error (horizontal)")
+            }
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: {
+                    const posError = TrafficDataProvider.positionInfo.positionErrorEstimate();
+                    return posError.isFinite() ? "±" + Math.round(posError.toM()) + " m" : "-"
+                }
+            }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: qsTr("Ground Speed") }
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: Navigator.aircraft.horizontalSpeedToString( TrafficDataProvider.positionInfo.groundSpeed() ) }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: qsTr("True Track")
+            }
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: {
+                    const tt = TrafficDataProvider.positionInfo.trueTrack();
+                    return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
+                }
+            }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: qsTr("Error (True Track)") }
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: {
+                    const tt = TrafficDataProvider.positionInfo.trueTrackErrorEstimate();
+                    return tt.isFinite() ? "±" + Math.round(tt.toDEG()) + "°" : "-"
+                }
+            }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            // True Altitude
+            Label {
+                Layout.columnSpan: 2
+                visible: TrafficDataProvider.positionInfo.isValid()
+
+                text: qsTr("True Altitude")
+                font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
+                font.bold: true
+            }
+            ToolButton {
+                visible: TrafficDataProvider.positionInfo.isValid()
+
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("True Altitude")
+                    helpDialog.text = "<p>" +
+                            qsTr("This section shows the true altitude reported by the traffic data receiver.") +
+                            "</p><p>" +
+                            qsTr("True altitude AGL or AMSL is the vertical distance from the aircraft to the terrain or to the main sea level, respectively.") + "</p>" +
+                            "<p>" +
+                            qsTr("<strong>Warning:</strong> Vertical airspace limits are defined in terms of barometric altitude. Depending on weather, true altitude and barometric altitude may differ substantially. <strong>Never use true altitude to judge the vertical distance from your aircraft to an airspace boundary.</strong>") +
+                            "</p>"
+                    helpDialog.open()
+                }
+            }
+
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: qsTr("True Altitude")
+            }
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: TrafficDataProvider.positionInfo.trueAltitudeAMSL().isFinite() ? Navigator.aircraft.verticalDistanceToString( TrafficDataProvider.positionInfo.trueAltitudeAMSL() ) + " AMSL" : "-"
+            }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: TrafficDataProvider.positionInfo.trueAltitudeAGL().isFinite() ? Navigator.aircraft.verticalDistanceToString( TrafficDataProvider.positionInfo.trueAltitudeAGL() ) + " AGL" : "-"
+            }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: qsTr("Error (vertical)")
+            }
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: Navigator.aircraft.verticalDistanceToString( TrafficDataProvider.positionInfo.trueAltitudeErrorEstimate() )
+            }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: qsTr("Vertical Speed")
+            }
+            Label {
+                visible: TrafficDataProvider.positionInfo.isValid()
+                text: Navigator.aircraft.verticalSpeedToString( TrafficDataProvider.positionInfo.verticalSpeed() )
+            }
+            Item {
+                visible: TrafficDataProvider.positionInfo.isValid()
+            }
+
+            // Pressure Altitude
+            Label {
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
+                visible: TrafficDataProvider.pressureAltitude.isFinite()
+
+                text: qsTr("Pressure Altitude")
+                font.pixelSize: sView.font.pixelSize*1.2
+                font.bold: true
+            }
+            ToolButton {
+                visible: TrafficDataProvider.pressureAltitude.isFinite()
+
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Pressure Altitude")
+                    helpDialog.text = "<p>" +
+                            qsTr("This section shows the pressure altitude reported by the traffic data receiver.") +
+                            "</p><p>" +
+                            qsTr("Pressure altitude is the altitude in the standard atmosphere at which the pressure is equal to the current atmospheric pressure.") + " " +
+                            qsTr("TThis is the altitude displayed on the aircraft's altimeter when set to the standard pressure of 1013.2hPa. This is also the altitude shown on the transponder.")
+                            "</p>"
+                    helpDialog.open()
+                }
+            }
+
+            Label {
+                visible: TrafficDataProvider.pressureAltitude.isFinite()
+                text: qsTr("Pressure Altitude")
+            }
+            Label {
+                Layout.fillWidth: true
+                visible: TrafficDataProvider.pressureAltitude.isFinite()
+                text: TrafficDataProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(TrafficDataProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
+            }
+            Item {
+                visible: TrafficDataProvider.pressureAltitude.isFinite()
+
+            }
+
+            // Traffic
+            Label {
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
                 visible: TrafficDataProvider.receivingHeartbeat
 
                 text: qsTr("Traffic")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
             }
+            ToolButton {
+                visible: TrafficDataProvider.receivingHeartbeat
+
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Traffic")
+                    helpDialog.text = "<p>" +
+                            qsTr("This section lists all the traffic reported by the traffic data receiver, sorted in order of importance.") +
+                            "</p><p>" +
+                            qsTr("Traffic opponents are classified as 'Relevant Traffic' and 'Irrelevant Traffic'.") + " " +
+                            qsTr("Traffic is considered relevant if the vertical distance to the traffic opponent is less than 1,500 m and the horizontal distance is less than 20 NM.") +
+                            "</p>"
+                    helpDialog.open()
+                }
+            }
 
             Label {
                 Layout.fillWidth: true
+                Layout.columnSpan: 3
                 visible: TrafficDataProvider.receivingHeartbeat && !trafficObserver.hasTraffic
 
-                text: qsTr("Currently No Traffic")
+                text: qsTr("Currently no reported traffic.")
             }
 
             ListView {
                 Layout.fillWidth: true
                 Layout.preferredHeight: contentHeight
+                Layout.columnSpan: 3
                 clip: true
 
                 model: trafficObserver.traffic
@@ -276,8 +557,10 @@ Page {
                 }
             }
 
+            // Help
             Label {
                 Layout.fillWidth: true
+                Layout.columnSpan: 3
                 visible: !TrafficDataProvider.receivingHeartbeat
 
                 text: qsTr("Help")
@@ -287,6 +570,7 @@ Page {
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
+                Layout.columnSpan: 3
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
@@ -295,6 +579,7 @@ Page {
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
+                Layout.columnSpan: 3
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a flight simulator…")
@@ -352,4 +637,13 @@ Page {
             }
         }
     }
+
+    LongTextDialog {
+        id: helpDialog
+
+        modal: true
+
+        standardButtons: Dialog.Ok
+    }
+
 }

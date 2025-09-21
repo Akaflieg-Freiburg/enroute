@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +23,6 @@
 
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
-
 #if __has_include(<QSerialPort>)
 #include "traffic/TrafficDataSource_SerialPort.h"
 #endif
@@ -73,7 +72,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
 
     // Setup Bindings
     m_currentSource.setBinding([this]() {return computeCurrentSource();});
-    m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
     m_receivingHeartbeat.setBinding([this]() {return computeReceivingHeartbeat();});
     m_statusString.setBinding([this]() {return computeStatusString();});
     m_currentSourceIsInternetService.setBinding([this]() {
@@ -296,6 +294,9 @@ QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSo
 
 void Traffic::TrafficDataProvider::deferredInitialization()
 {
+    // Setup bindings that refer to other global objects
+    m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
+
     // Try to (re)connect whenever the network situation changes
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
 

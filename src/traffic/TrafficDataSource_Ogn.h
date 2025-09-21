@@ -119,7 +119,7 @@ public:
      */
     [[nodiscard]] auto sourceName() const -> QString override
     {
-        return tr("OGN glidernet.org APRS-IS connection");
+        return tr("Open Glider Network-Connection");
     }
 
     /*! \brief Getter function for the property with the same name

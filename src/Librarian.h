@@ -26,6 +26,7 @@
 #include <QSettings>
 
 #include "GlobalObject.h"
+#include "navigation/Aircraft.h"
 #include "units/ByteSize.h"
 
 
@@ -70,6 +71,14 @@ public:
     };
     Q_ENUM(Library)
 
+
+    /*! \brief Check if an object exists in the library
+     *
+     *  @param acft Aircraft object
+     *
+     *  @returns True if the aircraft exists in the library.
+     */
+    [[nodiscard]] Q_INVOKABLE static bool contains(const Navigation::Aircraft& acft);
 
     /*! \brief Check if an object exists in the library
      *

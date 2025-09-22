@@ -362,6 +362,36 @@ Units::ByteSize Librarian::getStringHashFromRessource(const QString &name)
 }
 
 
+bool Librarian::contains(const Navigation::Aircraft& acft)
+{
+    const QDir dir(directory(Library::Aircraft));
+
+    // Check if directory exists
+    if (!dir.exists())
+    {
+        return false;
+    }
+
+    // Get all files in the directory (no subdirectories)
+    const QFileInfoList fileList = dir.entryInfoList(QDir::Files);
+    Navigation::Aircraft test;
+    for (const QFileInfo& fileInfo : fileList)
+    {
+        auto res = test.loadFromJSON(fileInfo.absoluteFilePath());
+        if (!res.isEmpty())
+        {
+            continue;
+        }
+        if (test == acft)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 bool Librarian::contains(QObject* obj)
 {
     auto* route = qobject_cast<Navigation::FlightRoute*>(obj);

@@ -88,58 +88,58 @@ Page {
                     icon.source: "/icons/material/ic_airplanemode_active.svg"
 
                     onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    finalFileName = modelData
-                    if (Navigator.flightRoute.size > 0)
-                        overwriteDialog.open()
-                    else
-                        openFromLibrary()
-                }
+                        PlatformAdaptor.vibrateBrief()
+                        finalFileName = modelData
+                        if (!Librarian.contains(Navigator.aircraft))
+                            overwriteDialog.open()
+                        else
+                            openFromLibrary()
+                    }
 
                     swipe.onCompleted: {
-                    PlatformAdaptor.vibrateBrief()
-                    finalFileName = modelData
-                    removeDialog.open()
-                }
+                        PlatformAdaptor.vibrateBrief()
+                        finalFileName = modelData
+                        removeDialog.open()
+                    }
                 }
 
                 ToolButton {
-                id: cptMenuButton
+                    id: cptMenuButton
 
-                icon.source: "/icons/material/ic_more_horiz.svg"
+                    icon.source: "/icons/material/ic_more_horiz.svg"
 
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    cptMenu.open()
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        cptMenu.open()
+                    }
+
+                    AutoSizingMenu {
+                        id: cptMenu
+
+                        Action {
+                            id: renameAction
+                            text: qsTr("Rename…")
+                            onTriggered: {
+                                PlatformAdaptor.vibrateBrief()
+                                finalFileName = modelData
+                                renameName.text = modelData
+                                renameDialog.open()
+                            }
+
+                        } // renameAction
+
+                        Action {
+                            id: removeAction
+                            text: qsTr("Remove…")
+                            onTriggered: {
+                                PlatformAdaptor.vibrateBrief()
+                                finalFileName = modelData
+                                removeDialog.open()
+                            }
+                        } // removeAction
+                    } // AutoSizingMenu
+
                 }
-
-                AutoSizingMenu {
-                    id: cptMenu
-
-                    Action {
-                        id: renameAction
-                        text: qsTr("Rename…")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            finalFileName = modelData
-                            renameName.text = modelData
-                            renameDialog.open()
-                        }
-
-                    } // renameAction
-
-                    Action {
-                        id: removeAction
-                        text: qsTr("Remove…")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            finalFileName = modelData
-                            removeDialog.open()
-                        }
-                    } // removeAction
-                } // AutoSizingMenu
-
-            }
             }
         }
 

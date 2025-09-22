@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include <QTimer>
-#include <chrono>
 #include <utility>
 
 #include "notification/Notification.h"

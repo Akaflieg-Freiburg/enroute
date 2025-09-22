@@ -427,9 +427,12 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        clearDialog.open()
+                        if (Librarian.contains(Navigator.flightRoute)) {
+                            Navigator.flightRoute.clear()
+                            toast.doToast(qsTr("Flight route cleared"))
+                        } else
+                            clearDialog.open()
                     }
-
                 }
 
                 MenuItem {

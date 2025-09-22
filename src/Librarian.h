@@ -70,6 +70,17 @@ public:
     };
     Q_ENUM(Library)
 
+
+    /*! \brief Check if an object exists in the library
+     *
+     *  At the moment, only flight routes are supported.
+     *
+     *  @param object Pointer to an object
+     *
+     *  @returns True if the object is of type Navigation::FlightRoute and exists in the library.
+     */
+    [[nodiscard]] Q_INVOKABLE static bool contains(QObject* route);
+
     /*! \brief Name of the directory containing the given
      *
      *  @param library The library that is accessed

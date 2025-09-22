@@ -362,6 +362,43 @@ Units::ByteSize Librarian::getStringHashFromRessource(const QString &name)
 }
 
 
+bool Librarian::contains(QObject* obj)
+{
+    auto* route = qobject_cast<Navigation::FlightRoute*>(obj);
+    if (route == nullptr)
+    {
+        return false;
+    }
+
+
+    QDir dir(directory(Library::Routes));
+
+    // Check if directory exists
+    if (!dir.exists())
+    {
+        return false;
+    }
+
+    // Get all files in the directory (no subdirectories)
+    const QFileInfoList fileList = dir.entryInfoList(QDir::Files);
+    Navigation::FlightRoute test;
+    for (const QFileInfo& fileInfo : fileList)
+    {
+        auto res = test.load(fileInfo.absoluteFilePath());
+        if (!res.isEmpty())
+        {
+            continue;
+        }
+        if (test == *route)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 auto Librarian::exists(Librarian::Library library, const QString &baseName) -> bool
 {
     return QFile::exists(fullPath(library, baseName));

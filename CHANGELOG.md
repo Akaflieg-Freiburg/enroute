@@ -1,7 +1,13 @@
 # Changelog
 
+## [3.0.1] - 2025-09-xx
 
-## [3.0.0] - 2025-yy
+### Changed
+- Reduce number of warnings when opening aircraft of routes from the library
+  (#444)
+
+
+## [3.0.0] - 2025-09-21
 
 ### Added
 - Added side view of the airspace situation. (#345)

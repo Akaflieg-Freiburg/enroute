@@ -86,7 +86,8 @@ public:
      *
      *  @param object Pointer to an object
      *
-     *  @returns True if the object is of type Navigation::FlightRoute and exists in the library.
+     *  @returns True if the object is of type Navigation::FlightRoute and
+     *  exists in the library.
      */
     [[nodiscard]] Q_INVOKABLE static bool contains(QObject* route);
 

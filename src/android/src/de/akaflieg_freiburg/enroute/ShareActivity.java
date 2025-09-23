@@ -143,7 +143,7 @@ public class ShareActivity extends QtActivity {
      *
      * In our case onActivityResult() will be called to handle the
      * ACTION_OPEN_DOCUMENT
-     * or ACTION_CREATE_DOCUMENT intents which wer launched from IntentLauncher to
+     * or ACTION_CREATE_DOCUMENT intents which we launched from IntentLauncher to
      * open
      * or to save to a file URL.
      * We extract the file URL from the intent and process it with setUriReceived().
@@ -159,7 +159,8 @@ public class ShareActivity extends QtActivity {
                if (requestCode == ShareUtils.getOpenRequestCode())
                {
                     setUriReceived(intent.getData().toString());
-                    } else if (requestCode == ShareUtils.getSaveRequestCode())
+                    }
+               else if (requestCode == ShareUtils.getSaveRequestCode())
                {
                     copyContent(ShareUtils.getShareUri(), intent.getData());
                     }

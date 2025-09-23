@@ -124,7 +124,7 @@ Rectangle {
                     if (!PositionProvider.pressureAltitude.isFinite())
                         return "-"
                     if (PositionProvider.pressureAltitude.isNegative())
-                        return "FL---"
+                        return "-"
                     return "FL" + ("000" + Math.round(PositionProvider.pressureAltitude.toFeet()/100.0)).slice(-3)
                 }
                 font.weight: Font.Bold

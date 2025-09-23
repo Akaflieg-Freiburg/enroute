@@ -122,7 +122,7 @@ Page {
                     if (!Sensors.pressureAltitude.isFinite())
                         return "-"
                     if (Sensors.pressureAltitude.isNegative())
-                        return "FL---"
+                        return "-"
                     return "FL" + ("000" + Math.round(Sensors.pressureAltitude.toFeet()/100.0)).slice(-3)
                 }
                 wrapMode: Text.Wrap

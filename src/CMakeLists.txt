@@ -245,12 +245,17 @@ set(SOURCES
 #
 # We use this macro here to avoid creating extremely large C++ files with binary content
 #
-
-qt_add_big_resources(SOURCES
-    ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
-    ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
-)
-
+if (IOS)
+    qt_add_resources(SOURCES
+        ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
+        ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
+    )
+else()
+    qt_add_big_resources(SOURCES
+        ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
+        ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
+    )
+endif()
 
 #
 # Generate Android executable
@@ -503,6 +508,9 @@ target_link_libraries(${PROJECT_NAME}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE true
+    MACOSX_BUNDLE_GUI_IDENTIFIER ${PRODUCT_BUNDLE_IDENTIFIER}
+    XCODE_GENERATE_SCHEME ON
+    XCODE_SCHEME_LAUNCH_CONFIGURATION "Release"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
 )
 set_source_files_properties(

@@ -724,7 +724,11 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAE(const QString
     // Emit results of self-test
     if ((severity == u"2") || (severity == u"3"))
     {
-        setTrafficReceiverSelfTestError(result);
+        m_trafficReceiverSelfTestError = result;
+    }
+    else
+    {
+        m_trafficReceiverSelfTestError = QString();
     }
 }
 
@@ -766,7 +770,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAU(const QString
     {
         results += tr("Under- or Overvoltage");
     }
-    setTrafficReceiverRuntimeError(results.join(QStringLiteral(" • ")));
+    m_trafficReceiverRuntimeError = results.join(QStringLiteral(" • "));
 
     const auto &AlarmLevel = arguments[4];
     const auto &RelativeBearing = arguments[5];

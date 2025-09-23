@@ -415,12 +415,6 @@ private slots:
     // Called if one of the sources reports traffic (position known)
     void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly& factor);
 
-    // Called if one of the sources reports or clears an error string
-    void onTrafficReceiverSelfTestError();
-
-    // Called if one of the sources reports or clears an error string
-    void onTrafficReceiverRuntimeError();
-
     // Resetter method
     void resetWarning();
 
@@ -459,8 +453,12 @@ private:
     // Property cache
     Traffic::Warning m_Warning;
     QTimer m_WarningTimer;
-    QString m_trafficReceiverRuntimeError;
-    QString m_trafficReceiverSelfTestError;
+
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, QString, m_trafficReceiverRuntimeError, &Traffic::TrafficDataProvider::trafficReceiverRuntimeErrorChanged);
+    QString computeTrafficReceiverRuntimeError();
+
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, QString, m_trafficReceiverSelfTestError, &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged);
+    QString computeTrafficReceiverSelfTestError();
 
     QProperty<Units::Distance> m_pressureAltitude;
     Units::Distance computePressureAltitude();

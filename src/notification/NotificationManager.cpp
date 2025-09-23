@@ -339,6 +339,7 @@ void Notifications::NotificationManager::onTrafficReceiverRuntimeError()
         return;
     }
     auto* notification = new Notifications::Notification(tr("Traffic data receiver problem"), Notifications::Notification::Warning);
+    connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverRuntimeErrorChanged, notification, &QObject::deleteLater);
     notification->setText(error);
     notification->setTextBodyAction(Notifications::Notification::OpenTrafficReceiverPage);
     connect(GlobalObject::trafficDataProvider(),
@@ -356,6 +357,7 @@ void Notifications::NotificationManager::onTrafficReceiverSelfTestError()
         return;
     }
     auto* notification = new Notifications::Notification(tr("Traffic data receiver self test error"), Notifications::Notification::Warning);
+    connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged, notification, &QObject::deleteLater);
     notification->setText(error);
     notification->setTextBodyAction(Notifications::Notification::OpenTrafficReceiverPage);
     connect(GlobalObject::trafficDataProvider(),

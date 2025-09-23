@@ -6,6 +6,11 @@
 - Reduce number of warnings when opening aircraft of routes from the library
   (#444)
 
+- Hide warnings on traffic data receiver errors once the errors are gone (#406)
+
+- Give meaningful error message when users try to import more than one file at a
+  time. (#371)
+
 
 ## [3.0.0] - 2025-09-21
 

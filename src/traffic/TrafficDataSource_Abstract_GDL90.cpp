@@ -179,7 +179,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     // Do some trivial consistency checks
     //
 
-    if (rawMessage.size() < 3) {
+    if (rawMessage.size() < 3)
+    {
         return;
     }
 
@@ -191,12 +192,15 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     {
         message.reserve(rawMessage.size());
         bool isEscaped = false;
-        foreach(auto byte, rawMessage) {
-            if (byte == 0x7d) {
+        foreach(auto byte, rawMessage)
+        {
+            if (byte == 0x7d)
+            {
                 isEscaped = true;
                 continue;
             }
-            if (isEscaped) {
+            if (isEscaped)
+            {
                 message.append( static_cast<char>(static_cast<quint8>(byte) ^ static_cast<quint8>('\x20')) );
                 isEscaped = false;
                 continue;
@@ -214,7 +218,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     //
     {
         quint16 crc = 0;
-        foreach(auto byte, message.chopped(2)) {
+        foreach(auto byte, message.chopped(2))
+        {
             crc = Crc16Table.at(crc >> 8U) ^ (crc << 8U) ^ static_cast<quint8>(byte);
         }
 
@@ -222,7 +227,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         quint16 savedCRC = 0;
         savedCRC += static_cast<quint8>( message.at(message.size()-1) );
         savedCRC = (savedCRC << 8U) + static_cast<quint8>( message.at(message.size()-2) );
-        if (crc != savedCRC) {
+        if (crc != savedCRC)
+        {
             return;
         }
     }
@@ -239,39 +245,47 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     //
 
     // Heartbeat message
-    if (messageID == 0) {
-        if (message.length() < 3) {
+    if (messageID == 0)
+    {
+        if (message.length() < 3)
+        {
             return;
         }
 
         // Handle runtime errors
         QStringList results;
         auto status = static_cast<quint8>(message.at(0));
-        if ((status & 1<<7) == 0) {
+        if ((status & 1<<7) == 0)
+        {
             results += tr("No GPS reception");
         }
-        if ((status & 1<<6) != 0) {
+        if ((status & 1<<6) != 0)
+        {
             results += tr("Maintenance required");
         }
-        if ((status & 1<<3) != 0) {
+        if ((status & 1<<3) != 0)
+        {
             results += tr("GPS Battery low voltage");
         }
-        setTrafficReceiverRuntimeError(results.join(QStringLiteral(" • ")));
+        m_trafficReceiverRuntimeError = results.join(QStringLiteral(" • "));
 
         setReceivingHeartbeat(true);
         return;
     }
 
     // Ownship report
-    if (messageID == 10) {
+    if (messageID == 10)
+    {
         // Get position info w/o altitude information
         auto pInfo = pInfoFromOwnshipReport(message);
-        if (!pInfo.isValid()) {
+        if (!pInfo.isValid())
+        {
             return;
         }
 
         // Copy true altitude into pInfo, if known
-        if (m_trueAltitudeTimer.isActive()) {
+        if (m_trueAltitudeTimer.isActive())
+        {
             auto coordinate = pInfo.coordinate();
             coordinate.setAltitude(m_trueAltitude.toM());
             pInfo.setCoordinate(coordinate);
@@ -282,10 +296,13 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         auto dd0 = static_cast<quint8>(message.at(10));
         auto dd1 = static_cast<quint8>(message.at(11));
         quint32 const ddTmp = (dd0 << 4) + (dd1 >> 4);
-        if (ddTmp != 0xFFF) {
+        if (ddTmp != 0xFFF)
+        {
             m_pressureAltitude = Units::Distance::fromFT(25.0*ddTmp - 1000.0);
             m_pressureAltitudeTimer.start();
-        } else {
+        }
+        else
+        {
             m_pressureAltitude = Units::Distance::fromM( qQNaN() );
             m_pressureAltitudeTimer.stop();
         }
@@ -297,17 +314,20 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     }
 
     // Ownship geometric altitude
-    if (messageID == 11) {
+    if (messageID == 11)
+    {
         // Find geometric alt and apply geoid correction
         auto dd0 = static_cast<quint8>(message.at(0));
         auto dd1 = static_cast<quint8>(message.at(1));
         qint32 ddInt = (dd0 << 8) + dd1;
-        if (ddInt > 32767) {
+        if (ddInt > 32767)
+        {
             ddInt -= 65536;
         }
         m_trueAltitude = Units::Distance::fromFT(ddInt*5.0);
         auto geoidCorrection = Positioning::Geoid::separation( Positioning::PositionProvider::lastValidCoordinate() );
-        if (geoidCorrection.isFinite()) {
+        if (geoidCorrection.isFinite())
+        {
             m_trueAltitude = m_trueAltitude-geoidCorrection;
         }
 
@@ -320,11 +340,12 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     }
 
     // Traffic report
-    if (messageID == 20) {
-
+    if (messageID == 20)
+    {
         // Get position info w/o altitude information
         auto pInfo = pInfoFromOwnshipReport(message);
-        if (!pInfo.isValid()) {
+        if (!pInfo.isValid())
+        {
             return;
         }
 
@@ -342,7 +363,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         // Traffic type
         auto ee = static_cast<quint8>(message.at(17));
         auto type = Traffic::unknown;
-        switch(ee) {
+        switch(ee)
+        {
         case 1:
         case 2:
         case 3:
@@ -378,16 +400,19 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         // Compute true altitude and altitude distance of traffic if
         // a recent pressure altitude reading for owncraft exists.
         Units::Distance vDist {};
-        if (m_pressureAltitudeTimer.isActive()) {
+        if (m_pressureAltitudeTimer.isActive())
+        {
             auto dd0 = static_cast<quint8>(message.at(10));
             auto dd1 = static_cast<quint8>(message.at(11));
             quint32 const ddTmp = (dd0 << 4) + (dd1 >> 4);
-            if (ddTmp != 0xFFF) {
+            if (ddTmp != 0xFFF)
+            {
                 auto trafficPressureAltitude = Units::Distance::fromFT(25.0*ddTmp - 1000.0);
                 vDist = trafficPressureAltitude - m_pressureAltitude;
 
                 // Compute true altitude of traffic if possible
-                if (m_trueAltitudeTimer.isActive()) {
+                if (m_trueAltitudeTimer.isActive())
+                {
                     auto trafficTrueAltitude = m_trueAltitude + vDist;
                     auto coordinate = pInfo.coordinate();
                     coordinate.setAltitude(trafficTrueAltitude.toM());
@@ -400,10 +425,12 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         // is known.
         Units::Distance hDist {};
         auto* positionProviderPtr = GlobalObject::positionProvider();
-        if (positionProviderPtr != nullptr) {
+        if (positionProviderPtr != nullptr)
+        {
             auto ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
             auto trafficCoordinate = pInfo.coordinate();
-            if (ownShipCoordinate.isValid() && trafficCoordinate.isValid()) {
+            if (ownShipCoordinate.isValid() && trafficCoordinate.isValid())
+            {
                 hDist = Units::Distance::fromM( ownShipCoordinate.distanceTo(trafficCoordinate) );
             }
         }
@@ -412,7 +439,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         auto callSign = QString::fromLatin1(message.mid(18,8)).simplified();
 
         // Expose data
-        if ((callSign.compare(u"MODE S"_s, Qt::CaseInsensitive) == 0) || (callSign.compare(u"MODE-S"_s, Qt::CaseInsensitive) == 0)) {
+        if ((callSign.compare(u"MODE S"_s, Qt::CaseInsensitive) == 0) || (callSign.compare(u"MODE-S"_s, Qt::CaseInsensitive) == 0))
+        {
             m_factorDistanceOnly.setAlarmLevel(alert);
             m_factorDistanceOnly.setCallSign(callSign);
             m_factorDistanceOnly.setCoordinate(Positioning::PositionProvider::lastValidCoordinate());
@@ -422,7 +450,9 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
             m_factorDistanceOnly.setVDist(vDist);
             m_factorDistanceOnly.startLiveTime();
             emit factorWithoutPosition(m_factorDistanceOnly);
-        } else {
+        }
+        else
+        {
             m_factor.setAlarmLevel(alert);
             m_factor.setCallSign(callSign);
             m_factor.setHDist(hDist);

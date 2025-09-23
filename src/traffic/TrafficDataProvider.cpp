@@ -26,9 +26,9 @@
 #if __has_include(<QSerialPort>)
 #include "traffic/TrafficDataSource_SerialPort.h"
 #endif
+#include "traffic/TrafficDataSource_Ogn.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
-#include "traffic/TrafficDataSource_Ogn.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -107,8 +107,6 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
 
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordRequest, this, &Traffic::TrafficDataProvider::passwordRequest);
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordStorageRequest, this, &Traffic::TrafficDataProvider::passwordStorageRequest);
-    connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError);
-    connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError);
 
     auto tmp = m_dataSources.value();
     tmp.append(source);
@@ -296,6 +294,8 @@ void Traffic::TrafficDataProvider::deferredInitialization()
 {
     // Setup bindings that refer to other global objects
     m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
+    m_trafficReceiverRuntimeError.setBinding([this]() {return computeTrafficReceiverRuntimeError();});
+    m_trafficReceiverSelfTestError.setBinding([this]() {return computeTrafficReceiverSelfTestError();});
 
     // Try to (re)connect whenever the network situation changes
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
@@ -387,7 +387,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor)
 {
     // Check if the traffic is one of the known factors.
-    for(auto* target : m_trafficObjects)
+    for(auto* target : std::as_const(m_trafficObjects))
     {
         if (factor.ID() == target->ID())
         {
@@ -400,7 +400,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
     }
 
     auto* lowestPriObject = m_trafficObjects.at(0);
-    for(auto* target : m_trafficObjects)
+    for(auto* target : std::as_const(m_trafficObjects))
     {
         if (lowestPriObject->hasHigherPriorityThan(*target))
         {
@@ -415,7 +415,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
     }
 }
 
-void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError()
+QString Traffic::TrafficDataProvider::computeTrafficReceiverRuntimeError()
 {
     QString result;
     foreach(auto dataSource, m_dataSources.value())
@@ -427,19 +427,13 @@ void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError()
         result = dataSource->trafficReceiverRuntimeError();
         if (!result.isEmpty())
         {
-            break;
+            return dataSource->sourceName() + u": "_s + result;
         }
     }
-
-    if (m_trafficReceiverRuntimeError == result)
-    {
-        return;
-    }
-    m_trafficReceiverRuntimeError = result;
-    emit trafficReceiverRuntimeErrorChanged();
+    return {};
 }
 
-void Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError()
+QString Traffic::TrafficDataProvider::computeTrafficReceiverSelfTestError()
 {
     QString result;
     foreach(auto dataSource, m_dataSources.value())
@@ -451,16 +445,10 @@ void Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError()
         result = dataSource->trafficReceiverSelfTestError();
         if (!result.isEmpty())
         {
-            break;
+            return dataSource->sourceName() + u": "_s + result;
         }
     }
-
-    if (m_trafficReceiverSelfTestError == result)
-    {
-        return;
-    }
-    m_trafficReceiverSelfTestError = result;
-    emit trafficReceiverSelfTestErrorChanged();
+    return {};
 }
 
 void Traffic::TrafficDataProvider::removeDataSource(Traffic::TrafficDataSource_Abstract* source)

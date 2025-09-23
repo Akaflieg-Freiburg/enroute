@@ -29,6 +29,8 @@
 
 #include "platform/FileExchange_Android.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 Platform::FileExchange::FileExchange(QObject *parent)
     : Platform::FileExchange_Abstract(parent)
@@ -100,7 +102,7 @@ QString Platform::FileExchange::shareContent(const QByteArray& content, const QS
     QMimeDatabase const db;
     QMimeType const mime = db.mimeTypeForName(mimeType);
 
-    auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1."+mime.preferredSuffix());
+    auto tmpPath = contentToTempFile(content, fileNameTemplate + u"-%1."_s + mime.preferredSuffix());
     bool const success = outgoingIntent(QStringLiteral("sendFile"), tmpPath, mimeType);
     if (success)
     {

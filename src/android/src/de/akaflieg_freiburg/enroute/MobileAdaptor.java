@@ -455,7 +455,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	 * @param mimeType the mime type of the file to select.
 	 * 
 	 */
-    public void openFilePicker(String mimeType) {
+	public void openFilePicker(String mimeType) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         if (!mimeType.isEmpty()) {

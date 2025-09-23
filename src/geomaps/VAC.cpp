@@ -90,7 +90,7 @@ QString GeoMaps::VAC::infoText() const
     QFileInfo const info(fileName);
     if (info.exists())
     {
-        result += " • " + QLocale::system().formattedDataSize(info.size(), 1, QLocale::DataSizeSIFormat);
+        result += u" • "_s + QLocale::system().formattedDataSize(info.size(), 1, QLocale::DataSizeSIFormat);
     }
     return result;
 }

@@ -203,7 +203,7 @@ void FileFormats::TripKit::readVACs()
 {
     foreach (auto path, m_zip.fileNames())
     {
-        auto vac = GeoMaps::VAC(path);
+        auto vac = GeoMaps::VAC(path, {});
         if (!vac.isValid())
         {
             continue;

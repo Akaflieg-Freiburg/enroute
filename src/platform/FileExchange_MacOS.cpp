@@ -44,7 +44,7 @@ void Platform::FileExchange::importContent()
     auto fileNameX = QFileDialog::getOpenFileName(nullptr, tr("Import data"), QDir::homePath(), tr("All files (*)"));
     if (!fileNameX.isEmpty())
     {
-        processFileOpenRequest(fileNameX);
+        processFileOpenRequest(fileNameX, {});
     }
 }
 

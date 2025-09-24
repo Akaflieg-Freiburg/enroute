@@ -54,12 +54,14 @@ Platform::FileExchange_Abstract::FileExchange_Abstract(QObject *parent)
 
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& path)
 {
-    processFileOpenRequest(QString::fromUtf8(path).simplified());
+    processFileOpenRequest(QString::fromUtf8(path).simplified(), {});
 }
 
 
-void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path)
+void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path, const QString& unmingledFilename)
 {
+    qWarning() << "XX" << unmingledFilename;
+
     /*
      * Check for location MapURLs
      */
@@ -162,12 +164,15 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     // VAC
     if (GeoMaps::VAC::mimeTypes().contains(mimeType.name()))
     {
-        GeoMaps::VAC const vac(myPath);
+        qWarning() << "AA" << myPath << unmingledFilename;
+        GeoMaps::VAC const vac(myPath, unmingledFilename);
         if (vac.isValid())
         {
+            qWarning() << "BB";
             emit openFileRequest(path, vac.name, VAC);
             return;
         }
+        qWarning() << "CC";
     }
 
     // Image

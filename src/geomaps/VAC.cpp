@@ -28,9 +28,14 @@
 using namespace Qt::Literals::StringLiterals;
 
 
-GeoMaps::VAC::VAC(const QString& fName)
-    : fileName(fName)
+GeoMaps::VAC::VAC(const QString& fName, const QString& unmingledFName)
 {
+    if (!unmingledFName.isEmpty())
+        fileName = unmingledFName;
+    else
+        fileName = fName;
+
+
     // Check if file is a GeoTIFF file. If so, extract information from there.
     FileFormats::GeoTIFF const geoTIFF(fileName);
     if (geoTIFF.isValid())
@@ -97,8 +102,9 @@ QString GeoMaps::VAC::infoText() const
 
 bool GeoMaps::VAC::isValid() const
 {
+#warning
     return hasValidCoordinates()
-           && QFile::exists(fileName)
+//           && QFile::exists(fileName)
            && !name.isEmpty();
 }
 
@@ -110,21 +116,27 @@ bool GeoMaps::VAC::isValid() const
 
 void GeoMaps::VAC::getCoordsFromFileName()
 {
+
+    qWarning() << "A1";
     if (fileName.size() <= 5)
     {
         return;
     }
+    qWarning() << "A2";
     auto idx = fileName.lastIndexOf('.');
     if (idx == -1)
     {
         return;
     }
+    qWarning() << "A3";
 
     auto list = fileName.left(idx).split('_');
     if (list.size() < 4)
     {
         return;
     }
+    qWarning() << "A4" << list;
+
     list = list.last(4);
 
     auto top = list[1].toDouble();

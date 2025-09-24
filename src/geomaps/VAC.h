@@ -61,16 +61,19 @@ public:
      *  - The image file is a GeoTIFF file with embedded georeferencing
      *    information.
      *
-     *  - The file name is of the form
+     *  - The (unmingled) file name is of the form
      *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
      *
      *  It attempt to extract the map name from the image file (if the image
      *  file is a GeoTIFF), or else from the file name.  The raster data is not
      *  read, so that this constructor is rather lightweight.
      *
-     *  \param fName File name of a georeferenced raster image file
+     *  @param fName File name of a georeferenced raster image file
+     *
+     *  @param unmingledFName "real" file name, used in case fName points
+     *  to a temporary file (e.g. because of compression, for Android content URI)
      */
-    VAC(const QString& fName);
+    VAC(const QString& fName, const QString& unmingledFName);
 
     //
     // Properties
@@ -151,7 +154,6 @@ public:
      * @returns Property boundingBox
      */
     [[nodiscard]] QGeoRectangle boundingBox() const {return QGeoRectangle({topLeft, topRight, bottomLeft, bottomRight});}
-
 
     /*! \brief Getter function for property of the same name
      *

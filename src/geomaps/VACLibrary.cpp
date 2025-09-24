@@ -163,7 +163,7 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& n
     {
         return tr("Input file <strong>%1</strong> does not exist.").arg(_fileName);
     }
-    GeoMaps::VAC vac(_fileName);
+    GeoMaps::VAC vac(_fileName, {});
     if (!vac.isValid())
     {
         return tr("Input file <strong>%1</strong> does not contain a valid chart.").arg(_fileName);

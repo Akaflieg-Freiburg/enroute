@@ -51,7 +51,7 @@ public class ShareActivity extends QtActivity {
      /**
      * native method to send file data to Qt - implemented in Cpp via JNI.
      */
-     public static native void setFileReceived(String fileName);
+     public static native void setFileReceived(String fileName, String unmingled);
      public static native void setTextReceived(String text);
 
      private static boolean isIntentPending = false;
@@ -158,7 +158,7 @@ public class ShareActivity extends QtActivity {
           {
                if (requestCode == ShareUtils.getOpenRequestCode())
                {
-                    setUriReceived(intent.getData().toString());
+                    setFileReceived(intent.getData().toString(), "");
                     }
                else if (requestCode == ShareUtils.getSaveRequestCode())
                {
@@ -212,9 +212,7 @@ public class ShareActivity extends QtActivity {
                intentUri = intent.getData();
 
                DocumentFile docFile = DocumentFile.fromSingleUri(this, intentUri);
-               Log.d(TAG, docFile.getName());
-
-               setUriReceived(intentUri.toString());
+               setFileReceived(intentUri.toString(), docFile.getName());
                return;
                }
 
@@ -222,7 +220,7 @@ public class ShareActivity extends QtActivity {
           {
                if (intent.getStringExtra(Intent.EXTRA_STREAM) != null)
                {
-                    setUriReceived(intent.getStringExtra(Intent.EXTRA_STREAM));
+                    setFileReceived(intent.getStringExtra(Intent.EXTRA_STREAM), "");
                     return;
                     }
 
@@ -237,23 +235,6 @@ public class ShareActivity extends QtActivity {
           // could be for example
           // action:anroid.intent.action.MAIN
           return;
-          }
-
-     /**
-     * copy received URI to temporary file in cache directory and
-     * send the file name to c++ by setFileReceived().
-     *
-     * Extract intent URL from intent and process it further
-     * in setUriReceived().
-     */
-     private void setUriReceived(String src) {
-          // Safety check
-          if (src == null) {
-               Log.d(TAG, "setUriReceived called with argument=null");
-               return;
-               }
-
-          setFileReceived(src);
           }
 
      /**

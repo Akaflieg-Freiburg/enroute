@@ -134,9 +134,17 @@ public slots:
      * app is asked to open a file.  It will look at the file, determine the
      * file function and emit the signal openFileRequest() as appropriate.
      *
+     * There are settings where path points to a temporary file. In these cases,
+     * the parameter unmingledFilename can be used to let the system know
+     * about the original name of the file. This is useful, e.g., when importing
+     * VACs, where the boundary rectangle coordinates are often contained
+     * in the file name.
+     *
      * @param path File name
+     *
+     * @param unmigledFilename Unmingled filename
      */
-    virtual void processFileOpenRequest(const QString& path);
+    virtual void processFileOpenRequest(const QString& path, const QString& unmingledFilename);
 
     /*! \brief Determine file function and emit openFileRequest()
      *

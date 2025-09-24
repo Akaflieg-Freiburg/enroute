@@ -101,7 +101,7 @@ public slots:
     void onGUISetupCompleted() override;
 
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
-    void processFileOpenRequest(const QString& path) override;
+    void processFileOpenRequest(const QString& path, const QString& unmingledFilename) override;
 
 
 protected:
@@ -125,6 +125,7 @@ private:
 
     bool receiveOpenFileRequestsStarted {false};
     QString pendingReceiveOpenFileRequest;
+    QString pendingReceiveOpenFileRequestUnmingledName;
 };
 
 } // namespace Platform

@@ -119,10 +119,11 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
               tmp.end(),
               [](const Traffic::TrafficDataSource_Abstract* first, const Traffic::TrafficDataSource_Abstract* second)
               {
-                  if ((qobject_cast<const TrafficDataSource_Ogn*>(first) != nullptr) &&
-                      (qobject_cast<const TrafficDataSource_Ogn*>(second) == nullptr))
+                  bool aIsOgn = qobject_cast<const TrafficDataSource_Ogn*>(first) != nullptr;
+                  bool bIsOgn = qobject_cast<const TrafficDataSource_Ogn*>(second) != nullptr;
+                  if (aIsOgn != bIsOgn)
                   {
-                      return false;
+                      return !aIsOgn && bIsOgn;;
                   }
                   return first->sourceName() < second->sourceName();
               });

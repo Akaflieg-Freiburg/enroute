@@ -90,7 +90,7 @@ void Platform::FileExchange::handleFileUrlReceived(const QUrl &url)
     // … then check if File exists
     QFileInfo const fileInfo = QFileInfo(myUrl);
     if(fileInfo.exists()) {
-        Platform::FileExchange_Abstract::processFileOpenRequest(myUrl);
+        Platform::FileExchange_Abstract::processFileOpenRequest(myUrl, {});
     } else {
         //TODO: Missing translation
         emit GlobalObject::platformAdaptor()->error(tr("Could not find file ") + myUrl);

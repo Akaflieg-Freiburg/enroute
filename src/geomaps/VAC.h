@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -70,7 +70,7 @@ public:
      *
      *  @param fName File name of a georeferenced raster image file
      *
-     *  @param unmingledFName "real" file name, used in case fName points
+     *  @param unmingledFName A "real" file name, used in case fName points
      *  to a temporary file (e.g. because of compression, for Android content URI)
      */
     VAC(const QString& fName, const QString& unmingledFName);
@@ -233,10 +233,10 @@ public:
 
 private:
     // Obtain values for topLeft etc by looking at the file name
-    void getCoordsFromFileName(const QString& unmingledFilename);
+    void getCoordsFromUnmingledFileName(const QString& unmingledFilename);
 
     // Obtain value name by looking at the file name
-    void getNameFromFileName(const QString& unmingledFilename);
+    void getNameFromUnmingledFileName(const QString& unmingledFilename);
 
     // Check if all geo coordinates are valid
     [[nodiscard]] bool hasValidCoordinates() const;

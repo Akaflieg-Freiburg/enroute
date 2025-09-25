@@ -154,7 +154,6 @@ QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
 
 QString GeoMaps::VACLibrary::importVAC(GeoMaps::VAC vac)
 {
-    qWarning() << "importVAC" << vac.fileName;
     // Download content URL if necessary, get name of the downloaded file
     auto _file = FileFormats::DataFileAbstract::openFileURL(vac.fileName);
     auto _fileName = _file->fileName();

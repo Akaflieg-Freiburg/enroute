@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,7 +31,6 @@ using namespace Qt::Literals::StringLiterals;
 GeoMaps::VAC::VAC(const QString& fName, const QString& unmingledFName) :
     fileName(fName)
 {
-    qWarning() << "VAC::VAC" << fName << unmingledFName;
     QString unmingledFileName;
     if (!unmingledFName.isEmpty())
     {
@@ -59,13 +58,13 @@ GeoMaps::VAC::VAC(const QString& fName, const QString& unmingledFName) :
     // If no baseName is known, try to extract a base name from the file name
     if (name.isEmpty())
     {
-        getNameFromFileName(unmingledFileName);
+        getNameFromUnmingledFileName(unmingledFileName);
     }
 
     // If coordinates are not valid, try to extract coordinates from the file name
     if (!hasValidCoordinates())
     {
-        getCoordsFromFileName(unmingledFileName);
+        getCoordsFromUnmingledFileName(unmingledFileName);
     }
 }
 
@@ -119,28 +118,23 @@ bool GeoMaps::VAC::isValid() const
 // Private Methods
 //
 
-void GeoMaps::VAC::getCoordsFromFileName(const QString& unmingledFilename)
+void GeoMaps::VAC::getCoordsFromUnmingledFileName(const QString& unmingledFilename)
 {
-
-    qWarning() << "A1";
     if (unmingledFilename.size() <= 5)
     {
         return;
     }
-    qWarning() << "A2";
     auto idx = unmingledFilename.lastIndexOf('.');
     if (idx == -1)
     {
         return;
     }
-    qWarning() << "A3";
 
     auto list = unmingledFilename.left(idx).split('_');
     if (list.size() < 4)
     {
         return;
     }
-    qWarning() << "A4" << list;
 
     list = list.last(4);
 
@@ -155,7 +149,7 @@ void GeoMaps::VAC::getCoordsFromFileName(const QString& unmingledFilename)
     bottomRight = {bottom, right};
 }
 
-void GeoMaps::VAC::getNameFromFileName(const QString& unmingledFilename)
+void GeoMaps::VAC::getNameFromUnmingledFileName(const QString& unmingledFilename)
 {
     QFileInfo const fileInfo(unmingledFilename);
     auto baseName = fileInfo.fileName();

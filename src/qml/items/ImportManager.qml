@@ -31,7 +31,6 @@ Item {
     id: importManager
 
     property string filePath: ""
-    property string unclutteredFileName: ""
     property int fileFunction: FileExchange.UnknownFunction
 
     required property var stackView
@@ -49,10 +48,7 @@ Item {
             importManager.view.raise()
             importManager.view.requestActivate()
 
-            console.log("onOpenFileRequest", fileName, info)
-
             importManager.filePath = fileName
-            importManager.unclutteredFileName = info
             importManager.fileFunction = fileFunction
             if (fileName === "")
                 return
@@ -78,11 +74,6 @@ Item {
                     importFlightRouteDialog.open()
                 else
                     importFlightRouteDialog.onAccepted()
-                return
-            }
-            if (fileFunction === FileExchange.VAC) {
-                mapNameVAC.text = "";
-                importVACDialog.open()
                 return
             }
             if (fileFunction === FileExchange.Image) {
@@ -114,17 +105,9 @@ Item {
             importManager.view.raise()
             importManager.view.requestActivate()
 
-            console.log("onOpenVACRequest")
             importVACDialog.vac = vac
             mapNameVAC.text = vac.name
             importVACDialog.open()
-            console.log("Request to open VAC")
-/*            if (fileFunction === FileExchange.VAC) {
-                mapNameVAC.text = "";
-                importVACDialog.open()
-                return
-            }
-  */
         }
 
         function onOpenWaypointRequest(waypoint) {

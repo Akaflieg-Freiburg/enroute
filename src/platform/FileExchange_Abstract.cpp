@@ -60,8 +60,6 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& p
 
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path, const QString& unmingledFilename)
 {
-    qWarning() << "XX" << unmingledFilename;
-
     /*
      * Check for location MapURLs
      */
@@ -82,7 +80,6 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
 
     QMimeDatabase const dataBase;
     auto mimeType = dataBase.mimeTypeForData(file.data());
-    qWarning() << path << myPath << mimeType;
 
 
     /*
@@ -164,15 +161,12 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     // VAC
     if (GeoMaps::VAC::mimeTypes().contains(mimeType.name()))
     {
-        qWarning() << "AA" << myPath << unmingledFilename;
-        GeoMaps::VAC vac(path, unmingledFilename);
+        const GeoMaps::VAC vac(path, unmingledFilename);
         if (vac.isValid())
         {
-            qWarning() << "BB";
             emit openVACRequest(vac);
             return;
         }
-        qWarning() << "CC";
     }
 
     // Image

@@ -3,8 +3,8 @@
 ## [3.0.1] - 2025-09-xx
 
 ### Changed
-- Android: Allow import of VACs where bounding box coordinates are specified as
-  part of the file name (#398)
+- Android: Allow import of image files containing VACs, where bounding box
+  coordinates are specified as part of the file name (#398)
 
 - Reduce number of warnings when opening aircraft or routes from the library
   (#444)

@@ -28,13 +28,19 @@
 using namespace Qt::Literals::StringLiterals;
 
 
-GeoMaps::VAC::VAC(const QString& fName, const QString& unmingledFName)
+GeoMaps::VAC::VAC(const QString& fName, const QString& unmingledFName) :
+    fileName(fName)
 {
+    qWarning() << "VAC::VAC" << fName << unmingledFName;
+    QString unmingledFileName;
     if (!unmingledFName.isEmpty())
-        fileName = unmingledFName;
+    {
+        unmingledFileName = unmingledFName;
+    }
     else
-        fileName = fName;
-
+    {
+        unmingledFileName = fName;
+    }
 
     // Check if file is a GeoTIFF file. If so, extract information from there.
     FileFormats::GeoTIFF const geoTIFF(fileName);
@@ -53,13 +59,13 @@ GeoMaps::VAC::VAC(const QString& fName, const QString& unmingledFName)
     // If no baseName is known, try to extract a base name from the file name
     if (name.isEmpty())
     {
-        getNameFromFileName();
+        getNameFromFileName(unmingledFileName);
     }
 
     // If coordinates are not valid, try to extract coordinates from the file name
     if (!hasValidCoordinates())
     {
-        getCoordsFromFileName();
+        getCoordsFromFileName(unmingledFileName);
     }
 }
 
@@ -102,9 +108,8 @@ QString GeoMaps::VAC::infoText() const
 
 bool GeoMaps::VAC::isValid() const
 {
-#warning
     return hasValidCoordinates()
-//           && QFile::exists(fileName)
+           && QFile::exists(fileName)
            && !name.isEmpty();
 }
 
@@ -114,23 +119,23 @@ bool GeoMaps::VAC::isValid() const
 // Private Methods
 //
 
-void GeoMaps::VAC::getCoordsFromFileName()
+void GeoMaps::VAC::getCoordsFromFileName(const QString& unmingledFilename)
 {
 
     qWarning() << "A1";
-    if (fileName.size() <= 5)
+    if (unmingledFilename.size() <= 5)
     {
         return;
     }
     qWarning() << "A2";
-    auto idx = fileName.lastIndexOf('.');
+    auto idx = unmingledFilename.lastIndexOf('.');
     if (idx == -1)
     {
         return;
     }
     qWarning() << "A3";
 
-    auto list = fileName.left(idx).split('_');
+    auto list = unmingledFilename.left(idx).split('_');
     if (list.size() < 4)
     {
         return;
@@ -150,9 +155,9 @@ void GeoMaps::VAC::getCoordsFromFileName()
     bottomRight = {bottom, right};
 }
 
-void GeoMaps::VAC::getNameFromFileName()
+void GeoMaps::VAC::getNameFromFileName(const QString& unmingledFilename)
 {
-    QFileInfo const fileInfo(fileName);
+    QFileInfo const fileInfo(unmingledFilename);
     auto baseName = fileInfo.fileName();
     auto idx = baseName.lastIndexOf(u"."_s);
     if (idx != -1)

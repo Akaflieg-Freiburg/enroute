@@ -165,11 +165,11 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     if (GeoMaps::VAC::mimeTypes().contains(mimeType.name()))
     {
         qWarning() << "AA" << myPath << unmingledFilename;
-        GeoMaps::VAC const vac(myPath, unmingledFilename);
+        GeoMaps::VAC vac(path, unmingledFilename);
         if (vac.isValid())
         {
             qWarning() << "BB";
-            emit openFileRequest(path, vac.name, VAC);
+            emit openVACRequest(vac);
             return;
         }
         qWarning() << "CC";

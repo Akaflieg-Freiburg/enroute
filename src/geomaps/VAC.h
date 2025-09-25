@@ -233,10 +233,10 @@ public:
 
 private:
     // Obtain values for topLeft etc by looking at the file name
-    void getCoordsFromFileName();
+    void getCoordsFromFileName(const QString& unmingledFilename);
 
     // Obtain value name by looking at the file name
-    void getNameFromFileName();
+    void getNameFromFileName(const QString& unmingledFilename);
 
     // Check if all geo coordinates are valid
     [[nodiscard]] bool hasValidCoordinates() const;

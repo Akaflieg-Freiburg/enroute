@@ -23,6 +23,7 @@
 #include <QQmlEngine>
 #include "GlobalObject.h"
 #include "geomaps/Waypoint.h"
+#include "geomaps/VAC.h"
 
 namespace Platform {
 
@@ -178,6 +179,15 @@ signals:
      * @param fileFunction Function and file type.
      */
     void openFileRequest(QString fileName, QString info, Platform::FileExchange_Abstract::FileFunction fileFunction);
+
+    /*! \brief Emitted when platform asks this app to open a VAC
+     *
+     * This signal is emitted whenever the platform-dependent code receives
+     * information that enroute is requested to open a file containing a VAC.
+     *
+     * @param vac VAC.
+     */
+    void openVACRequest(GeoMaps::VAC vac);
 
     /*! \brief Emitted when platform asks this app to show a waypoint
      *

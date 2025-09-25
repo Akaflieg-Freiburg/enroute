@@ -31,6 +31,7 @@ Item {
     id: importManager
 
     property string filePath: ""
+    property string unclutteredFileName: ""
     property int fileFunction: FileExchange.UnknownFunction
 
     required property var stackView
@@ -48,7 +49,10 @@ Item {
             importManager.view.raise()
             importManager.view.requestActivate()
 
+            console.log("onOpenFileRequest", fileName, info)
+
             importManager.filePath = fileName
+            importManager.unclutteredFileName = info
             importManager.fileFunction = fileFunction
             if (fileName === "")
                 return
@@ -77,7 +81,7 @@ Item {
                 return
             }
             if (fileFunction === FileExchange.VAC) {
-                mapNameVAC.text = info;
+                mapNameVAC.text = "";
                 importVACDialog.open()
                 return
             }
@@ -104,6 +108,23 @@ Item {
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
             return
+        }
+
+        function onOpenVACRequest(vac) {
+            importManager.view.raise()
+            importManager.view.requestActivate()
+
+            console.log("onOpenVACRequest")
+            importVACDialog.vac = vac
+            mapNameVAC.text = vac.name
+            importVACDialog.open()
+            console.log("Request to open VAC")
+/*            if (fileFunction === FileExchange.VAC) {
+                mapNameVAC.text = "";
+                importVACDialog.open()
+                return
+            }
+  */
         }
 
         function onOpenWaypointRequest(waypoint) {
@@ -247,6 +268,8 @@ Item {
         standardButtons: Dialog.Ok | Dialog.Cancel
         modal: true
 
+        property var vac
+
         ColumnLayout {
             anchors.fill: parent
 
@@ -276,7 +299,6 @@ Item {
                     importVACDialog.accept()
                 }
             }
-
         }
 
         onAboutToShow: importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
@@ -284,7 +306,8 @@ Item {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
 
-            var errorString = VACLibrary.importVAC(importManager.filePath, mapNameVAC.text)
+            vac.name = mapNameVAC.text
+            var errorString = VACLibrary.importVAC(vac)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

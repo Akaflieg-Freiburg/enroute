@@ -187,37 +187,5 @@ Page {
         }
     }
 
-    footer: Footer {
-        visible: (sunLabel.text !== "") || (qnhLabel.text !== "")
-
-        GridLayout {
-            anchors.fill: parent
-            columns: 2
-
-            Icon {
-                visible: qnhLabel.text !== ""
-                source: "/icons/material/ic_speed.svg"
-            }
-            Label {
-                id: qnhLabel
-                visible: qnhLabel.text !== ""
-                Layout.fillWidth: true
-                text: WeatherDataProvider.QNHInfo
-            }
-
-            Icon {
-                visible: sunLabel.text !== ""
-                source: "/icons/material/ic_wb_sunny.svg"
-            }
-            Label {
-                id: sunLabel
-                visible: sunLabel.text !== ""
-                Layout.fillWidth: true
-                text: WeatherDataProvider.sunInfo
-            }
-
-        }
-
-    }
 
 } // Page

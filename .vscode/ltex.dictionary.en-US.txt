@@ -1,0 +1,8 @@
+VACs
+openAIR
+GeoJSON
+METAR
+DMEs
+Enroute
+ANRs
+airspaces

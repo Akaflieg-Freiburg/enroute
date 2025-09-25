@@ -3,15 +3,16 @@
 ## [3.0.1] - 2025-09-xx
 
 ### Changed
-- Android: Allow import of VACs where bounding box coordinates are specified as part of the file name (#398)
+- Android: Allow import of VACs where bounding box coordinates are specified as
+  part of the file name (#398)
 
-- Reduce number of warnings when opening aircraft of routes from the library
+- Reduce number of warnings when opening aircraft or routes from the library
   (#444)
 
 - Hide warnings on traffic data receiver errors once the errors are gone (#406)
 
 - Give meaningful error message when users try to import more than one file at a
-  time. (#371)
+  time via drag-and-drop. (#371)
 
 
 ## [3.0.0] - 2025-09-21

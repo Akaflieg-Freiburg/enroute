@@ -1,0 +1,6 @@
+{"rule":"ENGLISH_WORD_REPEAT_RULE","sentence":"^\\QFixed\nFixed minor typo in the manual.\\E$"}
+{"rule":"DATE_NEW_YEAR","sentence":"^\\Q2.32.2 - 2024-11-26\\E$"}
+{"rule":"DATE_NEW_YEAR","sentence":"^\\Q2.32.1 - 2024-11-21\\E$"}
+{"rule":"DATE_NEW_YEAR","sentence":"^\\Q2.32.0 - 2024-11-11\\E$"}
+{"rule":"DATE_NEW_YEAR","sentence":"^\\Q2.31.15 - 2024-10-27\\E$"}
+{"rule":"DATE_NEW_YEAR","sentence":"^\\Q2.31.14 - 2024-10-22\\E$"}

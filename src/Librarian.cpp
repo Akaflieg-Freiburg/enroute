@@ -392,9 +392,9 @@ bool Librarian::contains(const Navigation::Aircraft& acft)
 }
 
 
-bool Librarian::contains(QObject* obj)
+bool Librarian::contains(const QObject* obj)
 {
-    auto* route = qobject_cast<Navigation::FlightRoute*>(obj);
+    auto* route = qobject_cast<const Navigation::FlightRoute*>(obj);
     if (route == nullptr)
     {
         return false;

@@ -142,7 +142,7 @@ public slots:
      *
      * @param path File name
      *
-     * @param unmigledFilename Unmingled filename
+     * @param unmingledFilename Unmingled filename
      */
     virtual void processFileOpenRequest(const QString& path, const QString& unmingledFilename);
 

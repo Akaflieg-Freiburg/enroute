@@ -390,21 +390,11 @@ namespace Navigation
          */
         [[nodiscard]] Q_INVOKABLE QString toVfrFlightPlan() const;
 
-        /*! \brief Exports to route to VFR Flight Plan Format.
+        /*! \brief Check for equality
          *
-         * This method serialises the current flight route as a simplified VFR flight plan
-         * route string following standard aviation format:
+         * @param other Flight route to compare with
          *
-         * Format: [departure] DCT [waypoint1] DCT [waypoint2] DCT ... DCT [destination]
-         * Example: EDPC DCT EDDM DCT 4620N07805W DCT EDML DCT EDTF
-         *
-         * Waypoint formatting rules:
-         * - Airfields (type "AD"): Use ICAO codes (e.g., EDPC, EDDM, EDTF)
-         * - Navigation Aids (type "NAV"): Use ICAO codes (e.g., VOR, NDB, DME)
-         * - Reporting Points (type "WP"): Use coordinate format "4620N07805W" (degrees and minutes)
-         * - User Waypoints (type "WP"): Use coordinate format "4620N07805W" (degrees and minutes)
-         *
-         * @returns QString containing the VFR flight plan route string
+         * @returns True on equality
          */
         [[nodiscard]] Q_INVOKABLE bool operator==(const Navigation::FlightRoute& other) const
         {

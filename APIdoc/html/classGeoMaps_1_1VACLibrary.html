@@ -86,8 +86,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1aff765f4f51f2e4e4f60b6c2acac204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain VACs from the library.  <br /></td></tr>
 <tr class="memitem:ae96ea1ac6e89c09a7f9ebdf39ff1ecb2" id="r_ae96ea1ac6e89c09a7f9ebdf39ff1ecb2"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae96ea1ac6e89c09a7f9ebdf39ff1ecb2">importTripKit</a> (const QString &amp;fileName)</td></tr>
 <tr class="memdesc:ae96ea1ac6e89c09a7f9ebdf39ff1ecb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import trip kit.  <br /></td></tr>
-<tr class="memitem:a9af9cc708f57f32feea18020e1ea96fd" id="r_a9af9cc708f57f32feea18020e1ea96fd"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9af9cc708f57f32feea18020e1ea96fd">importVAC</a> (const QString &amp;fileName, const QString &amp;name={})</td></tr>
-<tr class="memdesc:a9af9cc708f57f32feea18020e1ea96fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a>.  <br /></td></tr>
+<tr class="memitem:a2cfd6abe1b3ba1a3e89a9ac52a1f1075" id="r_a2cfd6abe1b3ba1a3e89a9ac52a1f1075"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2cfd6abe1b3ba1a3e89a9ac52a1f1075">importVAC</a> (<a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> vac)</td></tr>
+<tr class="memdesc:a2cfd6abe1b3ba1a3e89a9ac52a1f1075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a>.  <br /></td></tr>
 <tr class="memitem:a1c85f944148edc2fd500121be5b6c302" id="r_a1c85f944148edc2fd500121be5b6c302"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c85f944148edc2fd500121be5b6c302">remove</a> (const QString &amp;name)</td></tr>
 <tr class="memdesc:a1c85f944148edc2fd500121be5b6c302"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove one VACs.  <br /></td></tr>
 <tr class="memitem:ae228d118883c75c7af215060d784b709" id="r_ae228d118883c75c7af215060d784b709"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae228d118883c75c7af215060d784b709">rename</a> (const QString &amp;oldName, const QString &amp;newName)</td></tr>
@@ -259,8 +259,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEmpty</b></td></tr>
 
 </div>
 </div>
-<a id="a9af9cc708f57f32feea18020e1ea96fd" name="a9af9cc708f57f32feea18020e1ea96fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9af9cc708f57f32feea18020e1ea96fd">&#9670;&#160;</a></span>importVAC()</h2>
+<a id="a2cfd6abe1b3ba1a3e89a9ac52a1f1075" name="a2cfd6abe1b3ba1a3e89a9ac52a1f1075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cfd6abe1b3ba1a3e89a9ac52a1f1075">&#9670;&#160;</a></span>importVAC()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,12 +271,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEmpty</b></td></tr>
         <tr>
           <td class="memname">Q_INVOKABLE QString GeoMaps::VACLibrary::importVAC </td>
           <td>(</td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>fileName</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a></td>          <td class="paramname"><span class="paramname"><em>vac</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -290,8 +286,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEmpty</b></td></tr>
 <p>This method copies the file 'fileName' to the library directory. It does not take ownership of the file, and does not delete the file.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fileName</td><td>Name of a graphics file</td></tr>
-    <tr><td class="paramname">name</td><td>Name under which the <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> is available in the library. If left empty, a default name is assigned.</td></tr>
+    <tr><td class="paramname">vac</td><td><a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> to be imported</td></tr>
   </table>
   </dd>
 </dl>

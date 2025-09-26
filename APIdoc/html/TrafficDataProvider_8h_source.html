@@ -261,68 +261,66 @@ $(function() {
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>    <span class="comment">// Called if one of the sources reports traffic (position known)</span></div>
 <div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    <span class="keywordtype">void</span> onTrafficFactorWithoutPosition(<span class="keyword">const</span> <a class="code hl_class" href="classTraffic_1_1TrafficFactor__DistanceOnly.html">Traffic::TrafficFactor_DistanceOnly</a>&amp; factor);</div>
 <div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span> </div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    <span class="comment">// Called if one of the sources reports or clears an error string</span></div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    <span class="keywordtype">void</span> onTrafficReceiverSelfTestError();</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    <span class="comment">// Resetter method</span></div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    <span class="keywordtype">void</span> resetWarning();</div>
 <div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span> </div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    <span class="comment">// Called if one of the sources reports or clears an error string</span></div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>    <span class="keywordtype">void</span> onTrafficReceiverRuntimeError();</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    <span class="comment">// Save connection infos to file</span></div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>    <span class="keywordtype">void</span> saveConnectionInfos();</div>
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span> </div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>    <span class="comment">// Resetter method</span></div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    <span class="keywordtype">void</span> resetWarning();</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>    <span class="comment">// Setter method</span></div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    <span class="keywordtype">void</span> setWarning(<span class="keyword">const</span> <a class="code hl_class" href="classTraffic_1_1Warning.html">Traffic::Warning</a>&amp; <a class="code hl_property" href="classTraffic_1_1TrafficDataProvider.html#a50b75ddc25749fb4a0f552f9fd049c33">warning</a>);</div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span> </div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>    <span class="comment">// Save connection infos to file</span></div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    <span class="keywordtype">void</span> saveConnectionInfos();</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span> </div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>    <span class="comment">// Setter method</span></div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>    <span class="keywordtype">void</span> setWarning(<span class="keyword">const</span> <a class="code hl_class" href="classTraffic_1_1Warning.html">Traffic::Warning</a>&amp; <a class="code hl_property" href="classTraffic_1_1TrafficDataProvider.html#a50b75ddc25749fb4a0f552f9fd049c33">warning</a>);</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span> </div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>    <span class="comment">// Compute Methods</span></div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span> </div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>    QString computeStatusString();</div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span> </div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>    <span class="comment">// UDP Socket for ForeFlight Broadcast messages.</span></div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>    <span class="comment">// See https://www.foreflight.com/connect/spec/</span></div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>    QNetworkDatagram foreFlightBroadcastDatagram {R<span class="stringliteral">&quot;({&quot;App&quot;:&quot;Enroute Flight Navigation&quot;,&quot;GDL90&quot;:{&quot;port&quot;:4000}})&quot;, QHostAddress::Broadcast, 63093};</span></div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span><span class="stringliteral">    QUdpSocket foreFlightBroadcastSocket;</span></div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span><span class="stringliteral">    QTimer foreFlightBroadcastTimer;</span></div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span><span class="stringliteral">    </span><span class="comment">// Targets</span></div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    QList&lt;Traffic::TrafficFactor_WithPosition *&gt; m_trafficObjects;</div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>    QPointer&lt;Traffic::TrafficFactor_DistanceOnly&gt; m_trafficObjectWithoutPosition;</div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span> </div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>    <span class="comment">// TrafficData Sources</span></div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>    QProperty&lt;QList&lt;QPointer&lt;Traffic::TrafficDataSource_Abstract&gt;&gt;&gt; m_dataSources;</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>    <span class="comment">// Compute Methods</span></div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span> </div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>    QString computeStatusString();</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span> </div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    <span class="comment">// UDP Socket for ForeFlight Broadcast messages.</span></div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>    <span class="comment">// See https://www.foreflight.com/connect/spec/</span></div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>    QNetworkDatagram foreFlightBroadcastDatagram {R<span class="stringliteral">&quot;({&quot;App&quot;:&quot;Enroute Flight Navigation&quot;,&quot;GDL90&quot;:{&quot;port&quot;:4000}})&quot;, QHostAddress::Broadcast, 63093};</span></div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="stringliteral">    QUdpSocket foreFlightBroadcastSocket;</span></div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span><span class="stringliteral">    QTimer foreFlightBroadcastTimer;</span></div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span><span class="stringliteral">    </span><span class="comment">// Targets</span></div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>    QList&lt;Traffic::TrafficFactor_WithPosition *&gt; m_trafficObjects;</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>    QPointer&lt;Traffic::TrafficFactor_DistanceOnly&gt; m_trafficObjectWithoutPosition;</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span> </div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>    <span class="comment">// TrafficData Sources</span></div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>    QProperty&lt;QList&lt;QPointer&lt;Traffic::TrafficDataSource_Abstract&gt;&gt;&gt; m_dataSources;</div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    QProperty&lt;QPointer&lt;Traffic::TrafficDataSource_Abstract&gt;&gt; m_currentSource;</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>    QPropertyNotifier m_currentSourceNotifier;</div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>    QPointer&lt;Traffic::TrafficDataSource_Abstract&gt; computeCurrentSource();</div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span> </div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>    QProperty&lt;bool&gt; m_currentSourceIsInternetService;</div>
 <div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span> </div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    QProperty&lt;QPointer&lt;Traffic::TrafficDataSource_Abstract&gt;&gt; m_currentSource;</div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>    QPropertyNotifier m_currentSourceNotifier;</div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    QPointer&lt;Traffic::TrafficDataSource_Abstract&gt; computeCurrentSource();</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    <span class="comment">// Property cache</span></div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>    <a class="code hl_class" href="classTraffic_1_1Warning.html">Traffic::Warning</a> m_Warning;</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    QTimer m_WarningTimer;</div>
 <div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span> </div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    QProperty&lt;bool&gt; m_currentSourceIsInternetService;</div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span> </div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>    <span class="comment">// Property cache</span></div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>    <a class="code hl_class" href="classTraffic_1_1Warning.html">Traffic::Warning</a> m_Warning;</div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>    QTimer m_WarningTimer;</div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>    QString m_trafficReceiverRuntimeError;</div>
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>    QString m_trafficReceiverSelfTestError;</div>
-<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span> </div>
-<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>    QProperty&lt;Units::Distance&gt; m_pressureAltitude;</div>
-<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> computePressureAltitude();</div>
-<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span> </div>
-<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>    <span class="comment">// Reconnect</span></div>
-<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>    QTimer reconnectionTimer;</div>
-<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span> </div>
-<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>    Q_OBJECT_BINDABLE_PROPERTY(<a class="code hl_class" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a>, <span class="keywordtype">bool</span>, m_receivingHeartbeat, &amp;<a class="code hl_signal" href="classTraffic_1_1TrafficDataProvider.html#a8796a7dbddef7fc552eaa22bc59da504">Traffic::TrafficDataProvider::receivingHeartbeatChanged</a>);</div>
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>    <span class="keywordtype">bool</span> computeReceivingHeartbeat();</div>
-<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span> </div>
-<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>    <span class="comment">// Standard file name for saveConnectionInfos()</span></div>
-<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span>    QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u<span class="stringliteral">&quot;/connectionInfos.data&quot;</span>_s};</div>
-<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>};</div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    Q_OBJECT_BINDABLE_PROPERTY(<a class="code hl_class" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a>, QString, m_trafficReceiverRuntimeError, &amp;<a class="code hl_signal" href="classTraffic_1_1TrafficDataProvider.html#a90a0bb083db2826a1d8985043b6ffa0e">Traffic::TrafficDataProvider::trafficReceiverRuntimeErrorChanged</a>);</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>    QString computeTrafficReceiverRuntimeError();</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span> </div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>    Q_OBJECT_BINDABLE_PROPERTY(<a class="code hl_class" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a>, QString, m_trafficReceiverSelfTestError, &amp;<a class="code hl_signal" href="classTraffic_1_1TrafficDataProvider.html#aa6222633bf59ee4bfef9bdabd9f4f56a">Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged</a>);</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>    QString computeTrafficReceiverSelfTestError();</div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span> </div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>    QProperty&lt;Units::Distance&gt; m_pressureAltitude;</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> computePressureAltitude();</div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span> </div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>    <span class="comment">// Reconnect</span></div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>    QTimer reconnectionTimer;</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span> </div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>    Q_OBJECT_BINDABLE_PROPERTY(<a class="code hl_class" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a>, <span class="keywordtype">bool</span>, m_receivingHeartbeat, &amp;<a class="code hl_signal" href="classTraffic_1_1TrafficDataProvider.html#a8796a7dbddef7fc552eaa22bc59da504">Traffic::TrafficDataProvider::receivingHeartbeatChanged</a>);</div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>    <span class="keywordtype">bool</span> computeReceivingHeartbeat();</div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span> </div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>    <span class="comment">// Standard file name for saveConnectionInfos()</span></div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>    QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u<span class="stringliteral">&quot;/connectionInfos.data&quot;</span>_s};</div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>};</div>
 </div>
-<div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span> </div>
-<div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span>} <span class="comment">// namespace Traffic</span></div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span> </div>
+<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>} <span class="comment">// namespace Traffic</span></div>
 <div class="ttc" id="aclassGlobalObject_html_acc3b67374f1eac467da729151c31aff6"><div class="ttname"><a href="classGlobalObject.html#acc3b67374f1eac467da729151c31aff6">GlobalObject::trafficDataProvider</a></div><div class="ttdeci">static Q_INVOKABLE Traffic::TrafficDataProvider * trafficDataProvider()</div><div class="ttdoc">Pointer to appplication-wide static TrafficDataProvider instance.</div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfoSource__Abstract_html"><div class="ttname"><a href="classPositioning_1_1PositionInfoSource__Abstract.html">Positioning::PositionInfoSource_Abstract</a></div><div class="ttdoc">Abstract base class for all classes that provide geographic position information.</div><div class="ttdef"><b>Definition</b> <a href="PositionInfoSource__Abstract_8h_source.html#l00040">PositionInfoSource_Abstract.h:40</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1ConnectionInfo_html"><div class="ttname"><a href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a></div><div class="ttdoc">Connection to a traffic data receiver.</div><div class="ttdef"><b>Definition</b> <a href="ConnectionInfo_8h_source.html#l00041">ConnectionInfo.h:41</a></div></div>

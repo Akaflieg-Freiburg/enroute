@@ -86,8 +86,8 @@ Public Types</h2></td></tr>
 Public Slots</h2></td></tr>
 <tr class="memitem:af6ec076a319bd8976bb1917968bf1a6a" id="r_af6ec076a319bd8976bb1917968bf1a6a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6ec076a319bd8976bb1917968bf1a6a">onGUISetupCompleted</a> ()=0</td></tr>
 <tr class="memdesc:af6ec076a319bd8976bb1917968bf1a6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">GUI setup completed.  <br /></td></tr>
-<tr class="memitem:a50d02cafa04ea8b25d00d78e39a80a57" id="r_a50d02cafa04ea8b25d00d78e39a80a57"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50d02cafa04ea8b25d00d78e39a80a57">processFileOpenRequest</a> (const QString &amp;path)</td></tr>
-<tr class="memdesc:a50d02cafa04ea8b25d00d78e39a80a57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine file function and emit <a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a>  <br /></td></tr>
+<tr class="memitem:a35f38983f675f8f465c2b9de66613ec0" id="r_a35f38983f675f8f465c2b9de66613ec0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35f38983f675f8f465c2b9de66613ec0">processFileOpenRequest</a> (const QString &amp;path, const QString &amp;unmingledFilename)</td></tr>
+<tr class="memdesc:a35f38983f675f8f465c2b9de66613ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine file function and emit <a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a>  <br /></td></tr>
 <tr class="memitem:aa84c47181a3261bd9fbea4fc3c7893fd" id="r_aa84c47181a3261bd9fbea4fc3c7893fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa84c47181a3261bd9fbea4fc3c7893fd">processFileOpenRequest</a> (const QByteArray &amp;path)</td></tr>
 <tr class="memdesc:aa84c47181a3261bd9fbea4fc3c7893fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine file function and emit <a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a>  <br /></td></tr>
 <tr class="memitem:a6b9fac2ca1c369812a302324d7b92a96" id="r_a6b9fac2ca1c369812a302324d7b92a96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b9fac2ca1c369812a302324d7b92a96">processText</a> (const QString &amp;text)</td></tr>
@@ -97,6 +97,8 @@ Public Slots</h2></td></tr>
 Signals</h2></td></tr>
 <tr class="memitem:af73cbaa9a94c84ca492ac8529bf8de8d" id="r_af73cbaa9a94c84ca492ac8529bf8de8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d">openFileRequest</a> (QString fileName, QString info, <a class="el" href="#a651d41093fbf8c2243fad937496c2870">Platform::FileExchange_Abstract::FileFunction</a> fileFunction)</td></tr>
 <tr class="memdesc:af73cbaa9a94c84ca492ac8529bf8de8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to open a file.  <br /></td></tr>
+<tr class="memitem:a38d058427b83b88006d7047c81000efc" id="r_a38d058427b83b88006d7047c81000efc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38d058427b83b88006d7047c81000efc">openVACRequest</a> (<a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> vac)</td></tr>
+<tr class="memdesc:a38d058427b83b88006d7047c81000efc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to open a VAC.  <br /></td></tr>
 <tr class="memitem:a43fe09eaac43a11140d6104a756fcae6" id="r_a43fe09eaac43a11140d6104a756fcae6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43fe09eaac43a11140d6104a756fcae6">openWaypointRequest</a> (<a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> waypoint)</td></tr>
 <tr class="memdesc:a43fe09eaac43a11140d6104a756fcae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to show a waypoint.  <br /></td></tr>
 <tr class="memitem:a110558b15f0c233665b5cdc3a1fdfb93" id="r_a110558b15f0c233665b5cdc3a1fdfb93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a110558b15f0c233665b5cdc3a1fdfb93">resolveURL</a> (QString url, QString site)</td></tr>
@@ -177,7 +179,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This pure virtual class is an interface to file exchange functionality that need platform-specific code to operate. The files FileExchange_XXX.(h|cpp) implement a child class <a class="el" href="classPlatform_1_1FileExchange.html" title="Implementation of FileExchange for Android devices.">FileExchange</a> that contains the actual implementation.</p>
 <p>If supported by the platform, child classes need to react to requests by the platform to open a file (e.g. a GeoJSON file containing a flight route). Once a request is received, the method processFileRequest() should be called. </p>
 
-<p class="definition">Definition at line <a class="el" href="FileExchange__Abstract_8h_source.html#l00040">40</a> of file <a class="el" href="FileExchange__Abstract_8h_source.html">FileExchange_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FileExchange__Abstract_8h_source.html#l00041">41</a> of file <a class="el" href="FileExchange__Abstract_8h_source.html">FileExchange_Abstract.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab1c9d0044f727d2d69c075ec4a590030" name="ab1c9d0044f727d2d69c075ec4a590030"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab1c9d0044f727d2d69c075ec4a590030">&#9670;&#160;</a></span>FileExchange_Abstract()</h2>
@@ -316,6 +318,40 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a38d058427b83b88006d7047c81000efc" name="a38d058427b83b88006d7047c81000efc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38d058427b83b88006d7047c81000efc">&#9670;&#160;</a></span>openVACRequest</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Platform::FileExchange_Abstract::openVACRequest </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a></td>          <td class="paramname"><span class="paramname"><em>vac</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted when platform asks this app to open a VAC. </p>
+<p>This signal is emitted whenever the platform-dependent code receives information that enroute is requested to open a file containing a VAC.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vac</td><td>VAC. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a43fe09eaac43a11140d6104a756fcae6" name="a43fe09eaac43a11140d6104a756fcae6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a43fe09eaac43a11140d6104a756fcae6">&#9670;&#160;</a></span>openWaypointRequest</h2>
 
@@ -384,8 +420,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a50d02cafa04ea8b25d00d78e39a80a57" name="a50d02cafa04ea8b25d00d78e39a80a57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50d02cafa04ea8b25d00d78e39a80a57">&#9670;&#160;</a></span>processFileOpenRequest <span class="overload">[2/2]</span></h2>
+<a id="a35f38983f675f8f465c2b9de66613ec0" name="a35f38983f675f8f465c2b9de66613ec0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35f38983f675f8f465c2b9de66613ec0">&#9670;&#160;</a></span>processFileOpenRequest <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -396,8 +432,12 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">virtual void Platform::FileExchange_Abstract::processFileOpenRequest </td>
           <td>(</td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span></td><td>)</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>unmingledFilename</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -409,9 +449,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Determine file function and emit <a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a> </p>
 <p>This helper function is called by platform-dependent code whenever the app is asked to open a file. It will look at the file, determine the file function and emit the signal <a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a> as appropriate.</p>
+<p>There are settings where path points to a temporary file. In these cases, the parameter unmingledFilename can be used to let the system know about the original name of the file. This is useful, e.g., when importing VACs, where the boundary rectangle coordinates are often contained in the file name.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">path</td><td>File name </td></tr>
+    <tr><td class="paramname">path</td><td>File name</td></tr>
+    <tr><td class="paramname">unmingledFilename</td><td>Unmingled filename </td></tr>
   </table>
   </dd>
 </dl>

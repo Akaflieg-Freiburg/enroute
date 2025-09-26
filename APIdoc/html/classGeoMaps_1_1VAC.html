@@ -67,8 +67,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6a4307ee8c45b39626caa665613a9ec0" id="r_a6a4307ee8c45b39626caa665613a9ec0"><td class="memItemLeft" align="right" valign="top"><a id="a6a4307ee8c45b39626caa665613a9ec0" name="a6a4307ee8c45b39626caa665613a9ec0"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VAC</b> ()=default</td></tr>
 <tr class="memdesc:a6a4307ee8c45b39626caa665613a9ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor, creates an invalid <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a>. <br /></td></tr>
-<tr class="memitem:abf6b845a2783a0628c60dfb1ffb658bd" id="r_abf6b845a2783a0628c60dfb1ffb658bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf6b845a2783a0628c60dfb1ffb658bd">VAC</a> (const QString &amp;fName)</td></tr>
-<tr class="memdesc:abf6b845a2783a0628c60dfb1ffb658bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="memitem:a60959f946d4e8d1700d523f40a72c430" id="r_a60959f946d4e8d1700d523f40a72c430"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60959f946d4e8d1700d523f40a72c430">VAC</a> (const QString &amp;fName, const QString &amp;unmingledFName)</td></tr>
+<tr class="memdesc:a60959f946d4e8d1700d523f40a72c430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="memitem:a2a07dd7c6b5c52e26ad89f7eb78e1ae0" id="r_a2a07dd7c6b5c52e26ad89f7eb78e1ae0"><td class="memItemLeft" align="right" valign="top">QGeoRectangle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a07dd7c6b5c52e26ad89f7eb78e1ae0">boundingBox</a> () const</td></tr>
 <tr class="memdesc:a2a07dd7c6b5c52e26ad89f7eb78e1ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
 <tr class="memitem:ab3aa0785e95cab22f89c64f3a3d97fbd" id="r_ab3aa0785e95cab22f89c64f3a3d97fbd"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3aa0785e95cab22f89c64f3a3d97fbd">center</a> () const</td></tr>
@@ -132,8 +132,8 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 
 <p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00044">44</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abf6b845a2783a0628c60dfb1ffb658bd" name="abf6b845a2783a0628c60dfb1ffb658bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf6b845a2783a0628c60dfb1ffb658bd">&#9670;&#160;</a></span>VAC()</h2>
+<a id="a60959f946d4e8d1700d523f40a72c430" name="a60959f946d4e8d1700d523f40a72c430"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60959f946d4e8d1700d523f40a72c430">&#9670;&#160;</a></span>VAC()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,8 +141,12 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
         <tr>
           <td class="memname">GeoMaps::VAC::VAC </td>
           <td>(</td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>fName</em></span></td><td>)</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>fName</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>unmingledFName</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -151,12 +155,13 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>This class reads a georeferenced image file, where geographic data is encoded in one of the following two forms.</p>
 <ul>
 <li>The image file is a GeoTIFF file with embedded georeferencing information.</li>
-<li>The file name is of the form "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"</li>
+<li>The (unmingled) file name is of the form "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"</li>
 </ul>
 <p>It attempt to extract the map name from the image file (if the image file is a GeoTIFF), or else from the file name. The raster data is not read, so that this constructor is rather lightweight.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fName</td><td>File name of a georeferenced raster image file </td></tr>
+    <tr><td class="paramname">fName</td><td>File name of a georeferenced raster image file</td></tr>
+    <tr><td class="paramname">unmingledFName</td><td>A "real" file name, used in case fName points to a temporary file (e.g. because of compression, for Android content URI) </td></tr>
   </table>
   </dd>
 </dl>
@@ -190,7 +195,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property boundingBox </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00153">153</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00156">156</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -332,7 +337,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Mime type for files that can be opened by this class. </p>
 <dl class="section return"><dt>Returns</dt><dd>Name of mime type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00198">198</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00200">200</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -387,7 +392,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Member variable for property of the same name.</p>
 <p>This coordinate might be invalid. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00083">83</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00086">86</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -407,7 +412,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Member variable for property of the same name.</p>
 <p>This coordinate might be invalid. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00089">89</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00092">92</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -434,7 +439,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Bounding box. </p>
 <p>The bounding box will be invalid if the coordinates are invalid. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00095">95</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00098">98</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -461,7 +466,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Center coordinate. </p>
 <p>This property holds the geographic coordinate of the raster image center, or an invalid coordinate if no valid corner coordinates are available. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00102">102</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00105">105</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -488,7 +493,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Describe installed file(s) </p>
 <p>This property contains a description of the locally installed file(s), localized and in HTML format. If no description is available, then the property contains an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00110">110</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00113">113</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -507,7 +512,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Name of raster image file. </p>
 <p>Member variable for property of the same name. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00142">142</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00145">145</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -534,7 +539,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Short info text. </p>
 <p>The text is typically one lines "manually installed • 203 kB", translated to the local language. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00117">117</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00120">120</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -561,7 +566,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Validity. </p>
 <p>The <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> is considered valid if all corner coordinate are valid, the file 'fileName' exists and the name is not empty. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00124">124</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00127">127</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -580,7 +585,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Name of the <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a>. </p>
 <p>Member variable for property of the same name. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00127">127</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00130">130</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -600,7 +605,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Member variable for property of the same name.</p>
 <p>This coordinate might be invalid. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00133">133</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00136">136</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>
@@ -620,7 +625,7 @@ QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator
 <p>Member variable for property of the same name.</p>
 <p>This coordinate might be invalid. </p>
 
-<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00139">139</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VAC_8h_source.html#l00142">142</a> of file <a class="el" href="VAC_8h_source.html">VAC.h</a>.</p>
 
 </div>
 </div>

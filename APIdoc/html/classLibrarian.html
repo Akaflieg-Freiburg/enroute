@@ -77,6 +77,10 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7ed53478439695f8e0395617b6199e08" id="r_a7ed53478439695f8e0395617b6199e08"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ed53478439695f8e0395617b6199e08">contains</a> (const <a class="el" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a> &amp;acft)</td></tr>
+<tr class="memdesc:a7ed53478439695f8e0395617b6199e08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if an object exists in the library.  <br /></td></tr>
+<tr class="memitem:a392d6694c669b76d33d01d2fdd81b505" id="r_a392d6694c669b76d33d01d2fdd81b505"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a392d6694c669b76d33d01d2fdd81b505">contains</a> (const QObject *route)</td></tr>
+<tr class="memdesc:a392d6694c669b76d33d01d2fdd81b505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a flight route exists in the library.  <br /></td></tr>
 <tr class="memitem:a3502ea43c67a61919781d03a542a9e0d" id="r_a3502ea43c67a61919781d03a542a9e0d"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3502ea43c67a61919781d03a542a9e0d">directory</a> (<a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a> library)</td></tr>
 <tr class="memdesc:a3502ea43c67a61919781d03a542a9e0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the directory containing the given.  <br /></td></tr>
 <tr class="memitem:aef06b896f9fd0d63b86c6a4f7153ab98" id="r_aef06b896f9fd0d63b86c6a4f7153ab98"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef06b896f9fd0d63b86c6a4f7153ab98">exists</a> (<a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a> library, const QString &amp;baseName)</td></tr>
@@ -100,7 +104,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Manage libraries and text assets. </p>
 <p>This class manages libraries of aircrafts and routes, as well as text assets, and exposes these objects to QML. </p>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00038">38</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00039">39</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 </div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Member Enumeration Documentation</h2>
 <a id="aade57a59b2c1aaccee483f968aae4694" name="aade57a59b2c1aaccee483f968aae4694"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aade57a59b2c1aaccee483f968aae4694">&#9670;&#160;</a></span>Library</h2>
@@ -122,7 +126,7 @@ Static Public Member Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00064">64</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00065">65</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 
 </div>
 </div>
@@ -161,6 +165,75 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a7ed53478439695f8e0395617b6199e08" name="a7ed53478439695f8e0395617b6199e08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ed53478439695f8e0395617b6199e08">&#9670;&#160;</a></span>contains() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool Librarian::contains </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>acft</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if an object exists in the library. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">acft</td><td>Aircraft object</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the aircraft exists in the library. </dd></dl>
+
+</div>
+</div>
+<a id="a392d6694c669b76d33d01d2fdd81b505" name="a392d6694c669b76d33d01d2fdd81b505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a392d6694c669b76d33d01d2fdd81b505">&#9670;&#160;</a></span>contains() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool Librarian::contains </td>
+          <td>(</td>
+          <td class="paramtype">const QObject *</td>          <td class="paramname"><span class="paramname"><em>route</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if a flight route exists in the library. </p>
+<p>At the moment, only flight routes are supported.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">route</td><td>Pointer to the route</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the object is of type <a class="el" href="classNavigation_1_1FlightRoute.html" title="Intended flight route.">Navigation::FlightRoute</a> and exists in the library. </dd></dl>
+
+</div>
+</div>
 <a id="a3502ea43c67a61919781d03a542a9e0d" name="a3502ea43c67a61919781d03a542a9e0d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3502ea43c67a61919781d03a542a9e0d">&#9670;&#160;</a></span>directory()</h2>
 

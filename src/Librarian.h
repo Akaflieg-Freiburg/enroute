@@ -26,6 +26,7 @@
 #include <QSettings>
 
 #include "GlobalObject.h"
+#include "navigation/Aircraft.h"
 #include "units/ByteSize.h"
 
 
@@ -69,6 +70,26 @@ public:
         Routes
     };
     Q_ENUM(Library)
+
+
+    /*! \brief Check if an object exists in the library
+     *
+     *  @param acft Aircraft object
+     *
+     *  @returns True if the aircraft exists in the library.
+     */
+    [[nodiscard]] Q_INVOKABLE static bool contains(const Navigation::Aircraft& acft);
+
+    /*! \brief Check if a flight route exists in the library
+     *
+     *  At the moment, only flight routes are supported.
+     *
+     *  @param route Pointer to the route
+     *
+     *  @returns True if the object is of type Navigation::FlightRoute and
+     *  exists in the library.
+     */
+    [[nodiscard]] Q_INVOKABLE static bool contains(const QObject* route);
 
     /*! \brief Name of the directory containing the given
      *

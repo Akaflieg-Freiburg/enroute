@@ -50,6 +50,7 @@ import android.view.*;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.WindowCompat;
+import androidx.documentfile.provider.DocumentFile;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -448,7 +449,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	 * @param mimeType the mime type of the file to select.
 	 * 
 	 */
-    public void openFilePicker(String mimeType) {
+	public void openFilePicker(String mimeType) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         if (!mimeType.isEmpty()) {
@@ -461,14 +462,15 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
 	/** Result of file picking
 	 */ 
-	public static native void setFileReceived(String fileName);
+	public static native void setFileReceived(String fileName, String unmingled);
 
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             if (uri != null) {
-                setFileReceived(uri.toString());
+		    DocumentFile docFile = DocumentFile.fromSingleUri(this, uri);
+		    setFileReceived(uri.toString(), docFile.getName());
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

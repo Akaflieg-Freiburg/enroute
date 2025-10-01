@@ -213,7 +213,7 @@ Page {
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
                         finalFileName = modelData
-                        if (Navigator.flightRoute.size > 0)
+                        if ((Navigator.flightRoute.size > 0) && !Librarian.contains(Navigator.flightRoute))
                             overwriteDialog.open()
                         else
                             openFromLibrary()

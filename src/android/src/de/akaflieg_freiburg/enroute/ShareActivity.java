@@ -1,21 +1,21 @@
 /*!
- * Copyright (C) 2020 by Johannes Zellner, johannes@zellner.org
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the
- * Free Software Foundation, Inc.,
- * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
+* Copyright (C) 2020 by Johannes Zellner, johannes@zellner.org
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the
+* Free Software Foundation, Inc.,
+* 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
 
 package de.akaflieg_freiburg.enroute;
 
@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.qtproject.qt.android.QtNative;
 import org.qtproject.qt.android.bindings.QtActivity;
@@ -39,63 +40,63 @@ import java.io.IOException;
 import java.lang.String;
 
 /**
- * This class handles different sorts of "incoming" intents
- * with "file URL's" whose data is then sent back to Qt using
- * the static native method setDataReceived().
- *
- * This class should be used as main activity class.
- */
+* This class handles different sorts of "incoming" intents
+* with "file URL's" whose data is then sent back to Qt using
+* the static native method setDataReceived().
+*
+* This class should be used as main activity class.
+*/
 public class ShareActivity extends QtActivity {
 
-    /**
+     /**
      * native method to send file data to Qt - implemented in Cpp via JNI.
      */
-    public static native void setFileReceived(String fileName);
-    public static native void setTextReceived(String text);
+     public static native void setFileReceived(String fileName, String unmingled);
+     public static native void setTextReceived(String text);
 
-    private static boolean isIntentPending = false;
-    private static boolean isInitialized = false;
-    private static String TAG = "ShareActivity";
+     private static boolean isIntentPending = false;
+     private static boolean isInitialized = false;
+     private static String TAG = "ShareActivity";
 
-    private static File tmpDir;
+     private static File tmpDir;
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
+     @Override
+     public void onDestroy() {
+          super.onDestroy();
+          }
 
-    /**
+     /**
      * Called when the activity is starting.
      *
      * This is where most initialization should go.
      * We don't process any intent here as the app may
      * not be fully initialized yet.
      */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
+     @Override
+     public void onCreate(Bundle savedInstanceState) {
+          Log.d(TAG, "onCreate");
 
-        super.onCreate(savedInstanceState);
+          super.onCreate(savedInstanceState);
 
-        // check if the App was started from
-        // another Android App via Intent
-        //
-        Intent theIntent = getIntent();
+          // check if the App was started from
+          // another Android App via Intent
+          //
+          Intent theIntent = getIntent();
 
-        if (theIntent != null) {
+          if (theIntent != null) {
 
-            String theAction = theIntent.getAction();
+               String theAction = theIntent.getAction();
 
-            if (theAction != null) {
+               if (theAction != null) {
 
-                // QML UI not ready yet
-                // delay processIntent();
-                isIntentPending = true;
-            }
-        }
-    }
+                    // QML UI not ready yet
+                    // delay processIntent();
+                    isIntentPending = true;
+                    }
+               }
+          }
 
-    /**
+     /**
      * Called when the activity is brought into foreground.
      *
      * When the activity is re-launched while at the top of the activity stack
@@ -109,30 +110,30 @@ public class ShareActivity extends QtActivity {
      * In our case onNewIntent() will be called to handle the SEND and VIEW intents
      * from other apps e.g. if other apps want to SEND us or open their gpx content.
      */
-    // if we are opened from other apps:
-    @Override
-    public void onNewIntent(Intent intent) {
-        Log.d(TAG, "onNewIntent");
+     // if we are opened from other apps:
+     @Override
+     public void onNewIntent(Intent intent) {
+          Log.d(TAG, "onNewIntent");
 
-        super.onNewIntent(intent);
-        setIntent(intent);
+          super.onNewIntent(intent);
+          setIntent(intent);
 
-        if (isInitialized) {
+          if (isInitialized) {
 
-            // process intent if all is initialized and Qt / QML can handle results
-            //
-            processIntent();
+               // process intent if all is initialized and Qt / QML can handle results
+               //
+               processIntent();
 
-        } else {
+               } else {
 
-            // postpone processing of intent until checkPendingIntents() is
-            // called from main app (which signals that the main app is ready)
-            //
-            isIntentPending = true;
-        }
-    }
+               // postpone processing of intent until checkPendingIntents() is
+               // called from main app (which signals that the main app is ready)
+               //
+               isIntentPending = true;
+               }
+          }
 
-    /**
+     /**
      * Called when an activity _we_ launched ourselves from IntentLauncher exits,
      * giving us the requestCode we started it with, a resultCode and any additional
      * data from it.
@@ -142,139 +143,125 @@ public class ShareActivity extends QtActivity {
      *
      * In our case onActivityResult() will be called to handle the
      * ACTION_OPEN_DOCUMENT
-     * or ACTION_CREATE_DOCUMENT intents which wer launched from IntentLauncher to
+     * or ACTION_CREATE_DOCUMENT intents which we launched from IntentLauncher to
      * open
      * or to save to a file URL.
      * We extract the file URL from the intent and process it with setUriReceived().
      */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        Log.d(TAG, "onActivityResult");
+     @Override
+     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+          Log.d(TAG, "onActivityResult");
 
-        super.onActivityResult(requestCode, resultCode, intent);
+          super.onActivityResult(requestCode, resultCode, intent);
 
-        if (resultCode == RESULT_OK) 
-        {
-            if (requestCode == ShareUtils.getOpenRequestCode()) 
-            {
-                setUriReceived(intent.getData().toString());
-            } else if (requestCode == ShareUtils.getSaveRequestCode())
-            {
-                copyContent(ShareUtils.getShareUri(), intent.getData());
-            }
-        }
-    }
+          if (resultCode == RESULT_OK)
+          {
+               if (requestCode == ShareUtils.getOpenRequestCode())
+               {
+                    setFileReceived(intent.getData().toString(), "");
+                    }
+               else if (requestCode == ShareUtils.getSaveRequestCode())
+               {
+                    copyContent(ShareUtils.getShareUri(), intent.getData());
+                    }
+               }
+          }
 
-    /**
+     /**
      * Called from c++ to process pending intents.
      *
      * Calling this method from c++ indicates that QML/Qt is initialized
      * and ready for getting results from processIntent().
      * Check if intents are pending and process them.
      */
-    public void checkPendingIntents(String tmpDir) {
-        Log.d(TAG, "checkPendingIntents");
+     public void checkPendingIntents(String tmpDir) {
+          Log.d(TAG, "checkPendingIntents");
 
-        isInitialized = true;
-        this.tmpDir = new File(tmpDir);
+          isInitialized = true;
+          this.tmpDir = new File(tmpDir);
 
-        if (isIntentPending) {
-            isIntentPending = false;
-            processIntent();
-        }
-    }
+          if (isIntentPending) {
+               isIntentPending = false;
+               processIntent();
+               }
+          }
 
-    /**
+     /**
      * process the (pending) Intent if Action is SEND or VIEW.
      *
      * Extract intent URL from intent and process it further
      * in setUriReceived().
      */
-    private void processIntent() {
-        Log.d(TAG, "processIntent()");
+     private void processIntent() {
+          Log.d(TAG, "processIntent()");
 
-        Intent intent = getIntent();
+          Intent intent = getIntent();
 
-        Uri intentUri;
-        if (intent.getAction() == null) 
-        {
-            Log.d(TAG, "processIntent intent.getAction() == null");
-            return;
-        }
+          Uri intentUri;
+          if (intent.getAction() == null)
+          {
+               Log.d(TAG, "processIntent intent.getAction() == null");
+               return;
+               }
 
-        Log.d(TAG, "processIntent() " + intent.getAction());
+          Log.d(TAG, "processIntent() " + intent.getAction());
 
-        // we are listening to android.intent.action.SEND or VIEW (see Manifest)
-        if (intent.getAction().equals("android.intent.action.VIEW")) 
-        {
-            intentUri = intent.getData();
-            setUriReceived(intentUri.toString());
-            return;
-        }
-        
-        if (intent.getAction().equals("android.intent.action.SEND")) 
-        {
-            if (intent.getStringExtra(Intent.EXTRA_STREAM) != null)
-            {
-                setUriReceived(intent.getStringExtra(Intent.EXTRA_STREAM));
-                return;
-            }
+          // we are listening to android.intent.action.SEND or VIEW (see Manifest)
+          if (intent.getAction().equals("android.intent.action.VIEW"))
+          {
+               intentUri = intent.getData();
 
-            if (intent.getStringExtra(Intent.EXTRA_TEXT) != null)
-            {
-                setTextReceived(intent.getStringExtra(Intent.EXTRA_TEXT));
-                return;
-            }
+               DocumentFile docFile = DocumentFile.fromSingleUri(this, intentUri);
+               setFileReceived(intentUri.toString(), docFile.getName());
+               return;
+               }
 
-        }
+          if (intent.getAction().equals("android.intent.action.SEND"))
+          {
+               if (intent.getStringExtra(Intent.EXTRA_STREAM) != null)
+               {
+                    setFileReceived(intent.getStringExtra(Intent.EXTRA_STREAM), "");
+                    return;
+                    }
 
-        // could be for example
-        // action:anroid.intent.action.MAIN
-        return;
-    }
+               if (intent.getStringExtra(Intent.EXTRA_TEXT) != null)
+               {
+                    setTextReceived(intent.getStringExtra(Intent.EXTRA_TEXT));
+                    return;
+                    }
 
-    /**
-     * copy received URI to temporary file in cache directory and
-     * send the file name to c++ by setFileReceived().
-     *
-     * Extract intent URL from intent and process it further
-     * in setUriReceived().
-     */
-    private void setUriReceived(String src) {
-        // Safety check
-        if (src == null)
-        {
-            Log.d(TAG, "setUriReceived called with argument=null");
-            return;
-        }
-        setFileReceived(src);
-    }
+               }
 
-    /**
+          // could be for example
+          // action:anroid.intent.action.MAIN
+          return;
+          }
+
+     /**
      * copy src URI to dst URI.
      */
-    private void copyContent(Uri src, Uri dst) {
-        Log.d(TAG, "copyContent");
+     private void copyContent(Uri src, Uri dst) {
+          Log.d(TAG, "copyContent");
 
-        // Log.d(TAG, "ShareActivity.copyContent " + src + " --> " + dst);
+          // Log.d(TAG, "ShareActivity.copyContent " + src + " --> " + dst);
 
-        try {
-            InputStream istream = getContentResolver().openInputStream(src);
-            OutputStream ostream = getContentResolver().openOutputStream(dst);
+          try {
+               InputStream istream = getContentResolver().openInputStream(src);
+               OutputStream ostream = getContentResolver().openOutputStream(dst);
 
-            int nRead;
-            byte[] data = new byte[0x10000];
-            while ((nRead = istream.read(data, 0, data.length)) != -1) {
-                ostream.write(data, 0, nRead);
-            }
+               int nRead;
+               byte[] data = new byte[0x10000];
+               while ((nRead = istream.read(data, 0, data.length)) != -1) {
+                    ostream.write(data, 0, nRead);
+                    }
 
-            ostream.close();
-            istream.close();
+               ostream.close();
+               istream.close();
 
-        } catch (FileNotFoundException exception) {
-            Log.d(TAG, exception.getMessage());
-        } catch (IOException exception) {
-            Log.d(TAG, exception.getMessage());
-        }
-    }
-}
+               } catch (FileNotFoundException exception) {
+               Log.d(TAG, exception.getMessage());
+               } catch (IOException exception) {
+               Log.d(TAG, exception.getMessage());
+               }
+          }
+     }

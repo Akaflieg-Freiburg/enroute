@@ -186,7 +186,7 @@ auto main(int argc, char *argv[]) -> int
     GlobalObject::platformAdaptor()->disableScreenSaver();
     if (positionalArguments.length() == 1)
     {
-        GlobalObject::fileExchange()->processFileOpenRequest(positionalArguments[0]);
+        GlobalObject::fileExchange()->processFileOpenRequest(positionalArguments[0], {});
     }
 
 #if !defined(Q_OS_ANDROID) and !defined(Q_OS_IOS)

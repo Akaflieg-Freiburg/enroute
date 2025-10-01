@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -61,16 +61,19 @@ public:
      *  - The image file is a GeoTIFF file with embedded georeferencing
      *    information.
      *
-     *  - The file name is of the form
+     *  - The (unmingled) file name is of the form
      *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
      *
      *  It attempt to extract the map name from the image file (if the image
      *  file is a GeoTIFF), or else from the file name.  The raster data is not
      *  read, so that this constructor is rather lightweight.
      *
-     *  \param fName File name of a georeferenced raster image file
+     *  @param fName File name of a georeferenced raster image file
+     *
+     *  @param unmingledFName A "real" file name, used in case fName points
+     *  to a temporary file (e.g. because of compression, for Android content URI)
      */
-    VAC(const QString& fName);
+    VAC(const QString& fName, const QString& unmingledFName);
 
     //
     // Properties
@@ -152,7 +155,6 @@ public:
      */
     [[nodiscard]] QGeoRectangle boundingBox() const {return QGeoRectangle({topLeft, topRight, bottomLeft, bottomRight});}
 
-
     /*! \brief Getter function for property of the same name
      *
      * @returns Property center
@@ -231,10 +233,10 @@ public:
 
 private:
     // Obtain values for topLeft etc by looking at the file name
-    void getCoordsFromFileName();
+    void getCoordsFromUnmingledFileName(const QString& unmingledFilename);
 
     // Obtain value name by looking at the file name
-    void getNameFromFileName();
+    void getNameFromUnmingledFileName(const QString& unmingledFilename);
 
     // Check if all geo coordinates are valid
     [[nodiscard]] bool hasValidCoordinates() const;

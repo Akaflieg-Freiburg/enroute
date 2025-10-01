@@ -390,6 +390,17 @@ namespace Navigation
          */
         [[nodiscard]] Q_INVOKABLE QString toVfrFlightPlan() const;
 
+        /*! \brief Check for equality
+         *
+         * @param other Flight route to compare with
+         *
+         * @returns True on equality
+         */
+        [[nodiscard]] Q_INVOKABLE bool operator==(const Navigation::FlightRoute& other) const
+        {
+            return m_geoPath.value() == other.m_geoPath.value();
+        }
+
     signals:
         /*! \brief Notification signal for the property with the same name */
         void waypointsChanged();

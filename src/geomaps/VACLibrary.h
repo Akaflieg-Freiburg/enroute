@@ -116,14 +116,11 @@ public:
      *  This method copies the file 'fileName' to the library directory. It does
      *  not take ownership of the file, and does not delete the file.
      *
-     *  @param fileName Name of a graphics file
-     *
-     *  @param name Name under which the VAC is available in the library. If
-     *  left empty, a default name is assigned.
+     *  @param vac VAC to be imported
      *
      *  @returns A localized error message, or an empty string on success
      */
-    [[nodiscard]] Q_INVOKABLE QString importVAC(const QString& fileName, const QString& name = {});
+    [[nodiscard]] Q_INVOKABLE QString importVAC(GeoMaps::VAC vac);
 
     /*! \brief Remove one VACs
      *
@@ -193,12 +190,12 @@ private:
 
     // This method returns the absolute path of a given VAC. Needed for iOS
     // after App Update. See GeoMaps::VACLibrary::janitor
-    QString absolutePathForVac(GeoMaps::VAC);
+    QString absolutePathForVac(const GeoMaps::VAC&);
     QString absolutePathForVac(const QString& name);
 
     QVector<GeoMaps::VAC> m_vacs;
-    QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};
-    QFile m_dataFile {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC.data"};
+    QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC"_s};
+    QFile m_dataFile {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC.data"_s};
 
 };
 

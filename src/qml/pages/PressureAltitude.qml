@@ -118,7 +118,13 @@ Page {
             Label { text: qsTr("Cabin Altitude") }
             Label {
                 Layout.fillWidth: true
-                text: Sensors.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(Sensors.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
+                text: {
+                    if (!Sensors.pressureAltitude.isFinite())
+                        return "-"
+                    if (Sensors.pressureAltitude.isNegative())
+                        return "-"
+                    return "FL" + ("000" + Math.round(Sensors.pressureAltitude.toFeet()/100.0)).slice(-3)
+                }
                 wrapMode: Text.Wrap
             }
             Item { }

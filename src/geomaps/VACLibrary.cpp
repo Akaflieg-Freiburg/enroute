@@ -152,10 +152,10 @@ QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
     return {};
 }
 
-QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& newName)
+QString GeoMaps::VACLibrary::importVAC(GeoMaps::VAC vac)
 {
     // Download content URL if necessary, get name of the downloaded file
-    auto _file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    auto _file = FileFormats::DataFileAbstract::openFileURL(vac.fileName);
     auto _fileName = _file->fileName();
 
     // Check input data
@@ -163,7 +163,6 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& n
     {
         return tr("Input file <strong>%1</strong> does not exist.").arg(_fileName);
     }
-    GeoMaps::VAC vac(_fileName);
     if (!vac.isValid())
     {
         return tr("Input file <strong>%1</strong> does not contain a valid chart.").arg(_fileName);
@@ -174,20 +173,8 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& n
         return tr("Unable to read raster image data from the input file <strong>%1</strong>.").arg(_fileName);
     }
 
-    // Get new name of VAC, either by taking the newName specified in the argument
-    // or the name gleaned from the filename.
-    auto _newName = newName;
-    if (_newName.isEmpty())
-    {
-        _newName = vac.name;
-    }
-    else
-    {
-        vac.name = _newName;
-    }
-
     // Delete all existing VACs with the new name
-    remove(_newName);
+    remove(vac.name);
 
     // Copy file to VAC directory
     QDir const dir;
@@ -388,7 +375,8 @@ void GeoMaps::VACLibrary::janitor()
     // Failing that, delete those files.
     foreach(auto fInfo, imageFilesWithVAC)
     {
-        if (importVAC(fInfo.fileName()).isEmpty())
+        GeoMaps::VAC vac(fInfo.fileName(), {});
+        if (importVAC(vac).isEmpty())
         {
             hasChange = true;
         }
@@ -411,7 +399,7 @@ void GeoMaps::VACLibrary::save()
     m_dataFile.close();
 }
 
-QString GeoMaps::VACLibrary::absolutePathForVac(GeoMaps::VAC vac)
+QString GeoMaps::VACLibrary::absolutePathForVac(const GeoMaps::VAC& vac)
 {
     return absolutePathForVac(vac.name);
 }

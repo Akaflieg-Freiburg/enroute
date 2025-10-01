@@ -120,7 +120,13 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: PositionProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(PositionProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
+                text: {
+                    if (!PositionProvider.pressureAltitude.isFinite())
+                        return "-"
+                    if (PositionProvider.pressureAltitude.isNegative())
+                        return "-"
+                    return "FL" + ("000" + Math.round(PositionProvider.pressureAltitude.toFeet()/100.0)).slice(-3)
+                }
                 font.weight: Font.Bold
                 font.pixelSize: dummy.font.pixelSize*1.3
                 color: "white"
@@ -131,7 +137,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 color: "white"
-                text: "FL"
+                text: "P.ALT"
                 font.pixelSize: dummy.font.pixelSize*0.9
 
             }

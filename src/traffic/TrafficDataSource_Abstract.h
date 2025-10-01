@@ -141,7 +141,7 @@ public:
      *  there is not error.  The string is cleared when a new connection attempt
      *  is started.
      */
-    Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError WRITE setTrafficReceiverRuntimeError NOTIFY trafficReceiverRuntimeErrorChanged)
+    Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError BINDABLE bindableTrafficReceiverRuntimeError)
 
     /*! \brief String describing the last traffic data receiver self-test error
      *
@@ -150,7 +150,7 @@ public:
      *  string when there is not error.  The string is cleared when a new
      *  connection attempt is started.
      */
-    Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError WRITE setTrafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
+    Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError BINDABLE bindableTrafficReceiverSelfTestError)
 
 
 
@@ -244,11 +244,20 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property errorString
+     * @returns Property trafficReceiverRuntimeError
      */
     [[nodiscard]] QString trafficReceiverRuntimeError() const
     {
-        return m_trafficReceiverRuntimeError;
+        return m_trafficReceiverRuntimeError.value();
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property trafficReceiverRuntimeError
+     */
+    [[nodiscard]] QBindable<QString> bindableTrafficReceiverRuntimeError()
+    {
+        return &m_trafficReceiverRuntimeError;
     }
 
     /*! \brief Getter function for the property with the same name
@@ -257,7 +266,16 @@ public:
      */
     [[nodiscard]] QString trafficReceiverSelfTestError() const
     {
-        return m_trafficReceiverSelfTestError;
+        return m_trafficReceiverSelfTestError.value();
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    [[nodiscard]] QBindable<QString> bindableTrafficReceiverSelfTestError()
+    {
+        return &m_trafficReceiverSelfTestError;
     }
 
 
@@ -313,12 +331,6 @@ signals:
 
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
-
-    /*! \brief Notifier signal */
-    void trafficReceiverRuntimeErrorChanged();
-
-    /*! \brief Notifier signal */
-    void trafficReceiverSelfTestErrorChanged();
 
     /*! \brief Traffic receiver hardware version
      *
@@ -469,17 +481,8 @@ protected:
      */
     void setReceivingHeartbeat(bool newReceivingHeartbeat);
 
-    /*! \brief Setter function for the property with the same name
-     *
-     *  @param newErrorString Property errorString
-     */
-    void setTrafficReceiverRuntimeError(const QString& newErrorString);
-
-    /*! \brief Setter function for the property with the same name
-     *
-     *  @param newErrorString Property errorString
-     */
-    void setTrafficReceiverSelfTestError(const QString& newErrorString);
+    QProperty<QString> m_trafficReceiverRuntimeError;
+    QProperty<QString> m_trafficReceiverSelfTestError;
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_Abstract)
@@ -507,8 +510,6 @@ private:
     bool m_canonical {false};
     QString m_connectivityStatus;
     QString m_errorString;
-    QString m_trafficReceiverRuntimeError;
-    QString m_trafficReceiverSelfTestError;
 
     // True altitude of own aircraft. We store these values because the
     // necessary information to compile a PositionInfo class does not always

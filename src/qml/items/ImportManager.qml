@@ -76,11 +76,6 @@ Item {
                     importFlightRouteDialog.onAccepted()
                 return
             }
-            if (fileFunction === FileExchange.VAC) {
-                mapNameVAC.text = info;
-                importVACDialog.open()
-                return
-            }
             if (fileFunction === FileExchange.Image) {
                 errLbl.text = qsTr("The file <strong>%1</strong> seems to contain an image without georeferencing information.").arg(fileName)
                 errorDialog.open()
@@ -104,6 +99,15 @@ Item {
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
             return
+        }
+
+        function onOpenVACRequest(vac) {
+            importManager.view.raise()
+            importManager.view.requestActivate()
+
+            importVACDialog.vac = vac
+            mapNameVAC.text = vac.name
+            importVACDialog.open()
         }
 
         function onOpenWaypointRequest(waypoint) {
@@ -247,6 +251,8 @@ Item {
         standardButtons: Dialog.Ok | Dialog.Cancel
         modal: true
 
+        property var vac
+
         ColumnLayout {
             anchors.fill: parent
 
@@ -276,7 +282,6 @@ Item {
                     importVACDialog.accept()
                 }
             }
-
         }
 
         onAboutToShow: importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
@@ -284,7 +289,8 @@ Item {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
 
-            var errorString = VACLibrary.importVAC(importManager.filePath, mapNameVAC.text)
+            vac.name = mapNameVAC.text
+            var errorString = VACLibrary.importVAC(vac)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

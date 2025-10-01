@@ -211,7 +211,6 @@ void Traffic::TrafficDataSource_File::updateProperties()
     }
 
     // Clear traffic receiver error message
-    setTrafficReceiverRuntimeError({});
-    setTrafficReceiverSelfTestError({});
-
+    m_trafficReceiverRuntimeError = QString();
+    m_trafficReceiverSelfTestError = QString();
 }

@@ -122,7 +122,6 @@ void Traffic::TrafficDataSource_AbstractSocket::onReceivingHeartbeatChanged(bool
 
 void Traffic::TrafficDataSource_AbstractSocket::onStateChanged(QAbstractSocket::SocketState socketState)
 {
-
     // Compute new status
     switch( socketState ) {
     case QAbstractSocket::HostLookupState:
@@ -146,8 +145,7 @@ void Traffic::TrafficDataSource_AbstractSocket::onStateChanged(QAbstractSocket::
     }
 
     // Clear traffic receiver error message
-    setTrafficReceiverRuntimeError({});
-    setTrafficReceiverSelfTestError({});
-
+    m_trafficReceiverRuntimeError = QString();
+    m_trafficReceiverSelfTestError = QString();
 }
 

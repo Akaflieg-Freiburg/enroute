@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,6 +23,7 @@
 #include <QQmlEngine>
 #include "GlobalObject.h"
 #include "geomaps/Waypoint.h"
+#include "geomaps/VAC.h"
 
 namespace Platform {
 
@@ -52,7 +53,6 @@ public:
         RasterMap, /*< File contains a raster map. */
         WaypointLibrary, /*< Waypoint library in CUP or GeoJSON format */
         OpenAir, /*< Airspace data in openAir format */
-        VAC, /*< Visual Approach Chart */
         Image, /*< Image without georeferencing information */
         TripKit, /*< Trip Kit */
         ZipFile /*< Zip File */
@@ -134,9 +134,17 @@ public slots:
      * app is asked to open a file.  It will look at the file, determine the
      * file function and emit the signal openFileRequest() as appropriate.
      *
+     * There are settings where path points to a temporary file. In these cases,
+     * the parameter unmingledFilename can be used to let the system know
+     * about the original name of the file. This is useful, e.g., when importing
+     * VACs, where the boundary rectangle coordinates are often contained
+     * in the file name.
+     *
      * @param path File name
+     *
+     * @param unmingledFilename Unmingled filename
      */
-    virtual void processFileOpenRequest(const QString& path);
+    virtual void processFileOpenRequest(const QString& path, const QString& unmingledFilename);
 
     /*! \brief Determine file function and emit openFileRequest()
      *
@@ -170,6 +178,15 @@ signals:
      * @param fileFunction Function and file type.
      */
     void openFileRequest(QString fileName, QString info, Platform::FileExchange_Abstract::FileFunction fileFunction);
+
+    /*! \brief Emitted when platform asks this app to open a VAC
+     *
+     * This signal is emitted whenever the platform-dependent code receives
+     * information that enroute is requested to open a file containing a VAC.
+     *
+     * @param vac VAC.
+     */
+    void openVACRequest(GeoMaps::VAC vac);
 
     /*! \brief Emitted when platform asks this app to show a waypoint
      *

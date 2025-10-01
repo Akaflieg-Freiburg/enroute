@@ -362,6 +362,73 @@ Units::ByteSize Librarian::getStringHashFromRessource(const QString &name)
 }
 
 
+bool Librarian::contains(const Navigation::Aircraft& acft)
+{
+    const QDir dir(directory(Library::Aircraft));
+
+    // Check if directory exists
+    if (!dir.exists())
+    {
+        return false;
+    }
+
+    // Get all files in the directory (no subdirectories)
+    const QFileInfoList fileList = dir.entryInfoList(QDir::Files);
+    Navigation::Aircraft test;
+    for (const QFileInfo& fileInfo : fileList)
+    {
+        auto res = test.loadFromJSON(fileInfo.absoluteFilePath());
+        if (!res.isEmpty())
+        {
+            continue;
+        }
+        if (test == acft)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+bool Librarian::contains(const QObject* obj)
+{
+    auto* route = qobject_cast<const Navigation::FlightRoute*>(obj);
+    if (route == nullptr)
+    {
+        return false;
+    }
+
+
+    QDir dir(directory(Library::Routes));
+
+    // Check if directory exists
+    if (!dir.exists())
+    {
+        return false;
+    }
+
+    // Get all files in the directory (no subdirectories)
+    const QFileInfoList fileList = dir.entryInfoList(QDir::Files);
+    Navigation::FlightRoute test;
+    for (const QFileInfo& fileInfo : fileList)
+    {
+        auto res = test.load(fileInfo.absoluteFilePath());
+        if (!res.isEmpty())
+        {
+            continue;
+        }
+        if (test == *route)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 auto Librarian::exists(Librarian::Library library, const QString &baseName) -> bool
 {
     return QFile::exists(fullPath(library, baseName));

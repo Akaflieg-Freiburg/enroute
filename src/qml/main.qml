@@ -760,7 +760,21 @@ AppWindow {
 
     DropArea {
         anchors.fill: stackView
-        onDropped: (drop) => FileExchange.processFileOpenRequest(drop.text)
+        onDropped: (drop) => {
+                       if (drop.urls.length === 1) {
+                           FileExchange.processFileOpenRequest(drop.text)
+                           return
+                       }
+                       dialogLoader.active = false
+                       dialogLoader.setSource("dialogs/LongTextDialog.qml",
+                                              {
+                                                  title: qsTr("Error!"),
+                                                  text: qsTr("Unable to import more than one file at once. Please import only one file at a time."),
+                                                  standardButtons: Dialog.Ok
+                                              }
+                                              )
+                       dialogLoader.active = true
+                   }
     }
 
     Label {

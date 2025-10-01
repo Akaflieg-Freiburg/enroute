@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,11 +54,11 @@ Platform::FileExchange_Abstract::FileExchange_Abstract(QObject *parent)
 
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& path)
 {
-    processFileOpenRequest(QString::fromUtf8(path).simplified());
+    processFileOpenRequest(QString::fromUtf8(path).simplified(), {});
 }
 
 
-void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path)
+void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path, const QString& unmingledFilename)
 {
     /*
      * Check for location MapURLs
@@ -80,7 +80,6 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
 
     QMimeDatabase const dataBase;
     auto mimeType = dataBase.mimeTypeForData(file.data());
-    qWarning() << path << myPath << mimeType;
 
 
     /*
@@ -162,10 +161,10 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     // VAC
     if (GeoMaps::VAC::mimeTypes().contains(mimeType.name()))
     {
-        GeoMaps::VAC const vac(myPath);
+        const GeoMaps::VAC vac(path, unmingledFilename);
         if (vac.isValid())
         {
-            emit openFileRequest(path, vac.name, VAC);
+            emit openVACRequest(vac);
             return;
         }
     }

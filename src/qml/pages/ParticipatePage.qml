@@ -66,16 +66,8 @@ required.</p>
 
 <p>If you are fluent in C++ and if you would like to help
 with the programming, please get in touch with us by
-opening a GitHub issue. We are also struggling with power
-management on Android and would be grateful for any help
-that we could get.</p>
-
-<h3>Port to iOS</h3>
-
-<p>This app should run fine on Apple devices. If you would
-like to port the app to iOS and if you have development
-experience with C++/Qt programming and with Apple systems,
-please get in touch with us by opening a GitHub issue.</p>
+opening a GitHub issue. We are grateful for any help we
+can get.</p>
 ")
                 width: sView.availableWidth
                 wrapMode: Text.Wrap

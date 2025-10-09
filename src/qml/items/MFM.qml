@@ -955,6 +955,17 @@ Item {
                                 flightMap.zoomLevel = newZoomLevel
                             }
                         }
+                        MapButton {
+                            id: showSideView
+
+                            icon.source: "/icons/material/ic_keyboard_arrow_up.svg"
+                            visible: cl.SplitView.preferredHeight < 100
+                            autoRepeat: true
+
+                            onClicked: {
+                                cl.SplitView.preferredHeight = 170
+                            }
+                        }
                     }
                 }
             }

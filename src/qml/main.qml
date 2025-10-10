@@ -33,7 +33,12 @@ AppWindow {
     objectName: "applicationWindow"
 
     flags: ((Qt.platform.os === "android") || (Qt.platform.os === "ios")) ? Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint | Qt.Window : Qt.Window
+
     topPadding: 0
+    leftPadding: 0
+    rightPadding: 0
+    bottomPadding: 0
+
     font.pixelSize: GlobalSettings.fontSize
     font.letterSpacing: GlobalSettings.fontSize > 15 ? 0.5 : 0.25
 

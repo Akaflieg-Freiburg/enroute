@@ -856,7 +856,7 @@ Item {
                         }
                     }
 
-                    // Column 3: North Button / Spacer / Zoom In / Zoom Out
+                    // Column 3: North Button / Spacer / Zoom In / Zoom Out / Show Sideview
                     ColumnLayout {
                         Layout.fillHeight: true
                         Layout.rightMargin: SafeInsets.right
@@ -955,6 +955,7 @@ Item {
                                 flightMap.zoomLevel = newZoomLevel
                             }
                         }
+
                         MapButton {
                             id: showSideView
 
@@ -963,8 +964,18 @@ Item {
                             autoRepeat: true
 
                             onClicked: {
-                                cl.SplitView.preferredHeight = 170
+                                PlatformAdaptor.vibrateBrief()
+                                openSideViewAnimation.running = true
                             }
+
+                            NumberAnimation {
+                                id: openSideViewAnimation
+                                target: cl
+                                property: "SplitView.preferredHeight"
+                                to: 170
+                                duration: 200
+                            }
+
                         }
                     }
                 }
@@ -974,6 +985,7 @@ Item {
                 id: cl
 
                 SplitView.minimumHeight: navBar.implicitHeight
+
 
                 DragHandler {
                     target: null

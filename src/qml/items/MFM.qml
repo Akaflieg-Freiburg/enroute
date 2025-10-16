@@ -986,7 +986,6 @@ Item {
 
                 SplitView.minimumHeight: navBar.implicitHeight
 
-
                 DragHandler {
                     target: null
 

@@ -972,7 +972,7 @@ Item {
                                 id: openSideViewAnimation
                                 target: cl
                                 property: "SplitView.preferredHeight"
-                                to: 170
+                                to: 200
                                 duration: 200
                             }
 

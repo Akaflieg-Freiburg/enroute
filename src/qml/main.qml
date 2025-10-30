@@ -75,7 +75,6 @@ AppWindow {
                     rightPadding: 16
                     topPadding: 16+SafeInsets.top
 
-                    Component.onCompleted: console.log(view.SafeArea.margins)
                     text: "Enroute Flight Navigation"
                     color: "white"
                     font.pixelSize: 20

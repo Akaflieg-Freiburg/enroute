@@ -40,7 +40,7 @@ jobs:
       uses: jurplel/install-qt-action@v4
       with:
         cache: 'true'
-        version: '6.8.*'
+        version: '6.9.3'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2

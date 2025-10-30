@@ -74,7 +74,7 @@ The bottom of the display shows a little panel with the following information.
 Code   Meaning
 ====== ==============
 T.ALT  True altitude (=geometric altitude).
-FL     Flight level.
+P.ALT  Pressure altitude, in flight level format.
 GS     Ground speed.
 TT     True track.
 UTC    Current time.
@@ -85,7 +85,7 @@ UTC    Current time.
   indicated with the standard abbreviation "AMSL" or "AGL".
 - The units for the altitude display are chosen according to the settings on the
   Aircraft Page.
-- The flight level is only available if your device is connected to a traffic
+- The pressure altitude is only available if your device is connected to a traffic
   receiver (such as a PowerFLARM device) that reports the pressure altitude.
 - The units for the ground speed display are chosen according to the settings on
   the Aircraft Page.
@@ -113,6 +113,7 @@ Symbol                                                     Function
 .. image:: ../01-gettingStarted/ic_my_location.png         Set autopan mode to "on".
 .. image:: ../01-gettingStarted/ic_add.png                 Zoom in.
 .. image:: ../01-gettingStarted/ic_remove.png              Zoom out.
+.. image:: ../01-gettingStarted/ic_keyboard_arrow_up.png   Open airspace side view.
 .. image:: ../01-gettingStarted/ic_airplanemode_active.png Open the traffic receiver status page. Only visible when the app is not connected to a traffic data receiver. 
 ========================================================== ========
 

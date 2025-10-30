@@ -115,9 +115,9 @@ Symbol                                                     Function
 .. image:: ../01-gettingStarted/ic_my_location.png         Set autopan mode to "on".
 .. image:: ../01-gettingStarted/ic_add.png                 Zoom in.
 .. image:: ../01-gettingStarted/ic_remove.png              Zoom out.
+.. image:: ../01-gettingStarted/ic_keyboard_arrow_up.png   Open airspace side view.
 .. image:: ../01-gettingStarted/ic_airplanemode_active.png Open the traffic receiver status page. Only visible when the app is not connected to a traffic data receiver. 
 ========================================================== ========
-
 
 .. _firstFlightWaypointInfo:
 

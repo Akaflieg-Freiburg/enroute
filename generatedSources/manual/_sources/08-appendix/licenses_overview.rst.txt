@@ -32,7 +32,7 @@
 - `JavaScriptCore Macro Assembler <https://trac.webkit.org/wiki/JavaScriptCore>`_. BSD 2-clause "Simplified" License.
 - `jQuery <https://github.com/jquery/jquery>`_. MIT License.
 - `KDAB's helper class for single-instance policy applications <https://github.com/KDAB/KDSingleApplication>`_. MIT License.
-- `KWin <https://www.kde.org/>`_. BSD-3-Clause.
+- `KWin <https://www.kde.org/>`_. BSD 3-Clause "New" or "Revised" License.
 - `libdus-1 headers <https://www.freedesktop.org/wiki/Software/dbus/>`_. Academic Free License v2.1, or GNU General Public License v2.0 or later.
 - `LibJPEG-turbo <http://libjpeg-turbo.virtualgl.org/>`_. Independent JPEG Group License and BSD 3-Clause "New" or "Revised" License.
 - `LibPNG <http://www.libpng.org/pub/png/libpng.html>`_. libpng License and PNG Reference Library version 2.

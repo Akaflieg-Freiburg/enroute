@@ -856,7 +856,7 @@ Item {
                         }
                     }
 
-                    // Column 3: North Button / Spacer / Zoom In / Zoom Out
+                    // Column 3: North Button / Spacer / Zoom In / Zoom Out / Show Sideview
                     ColumnLayout {
                         Layout.fillHeight: true
                         Layout.rightMargin: SafeInsets.right
@@ -954,6 +954,28 @@ Item {
                                 var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
                                 flightMap.zoomLevel = newZoomLevel
                             }
+                        }
+
+                        MapButton {
+                            id: showSideView
+
+                            icon.source: "/icons/material/ic_keyboard_arrow_up.svg"
+                            visible: cl.SplitView.preferredHeight < 100
+                            autoRepeat: true
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                openSideViewAnimation.running = true
+                            }
+
+                            NumberAnimation {
+                                id: openSideViewAnimation
+                                target: cl
+                                property: "SplitView.preferredHeight"
+                                to: 200
+                                duration: 200
+                            }
+
                         }
                     }
                 }

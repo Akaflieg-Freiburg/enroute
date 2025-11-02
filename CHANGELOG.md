@@ -1,6 +1,12 @@
 # Changelog
 
-## [3.0.1] - 2025-09-xx
+## [3.0.3] - 2025-11-02
+
+### Changed
+- Add button to simplify opening the side view.
+
+
+## [3.0.1] - 2025-09-27
 
 ### Changed
 - Android: Allow import of image files containing VACs, where bounding box

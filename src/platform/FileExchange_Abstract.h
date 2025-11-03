@@ -101,7 +101,7 @@ public:
      * @returns Empty string on success, the string "abort" on abort, and a
      * translated error message otherwise
      */
-    Q_INVOKABLE virtual QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
+    Q_INVOKABLE virtual QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate) = 0;
 
     /*! \brief View content
      *
@@ -117,7 +117,7 @@ public:
      *
      * @returns Empty string on success, a translated error message otherwise
      */
-    Q_INVOKABLE virtual QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
+    Q_INVOKABLE virtual QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate) = 0;
 
 public slots:
     /*! \brief GUI setup completed

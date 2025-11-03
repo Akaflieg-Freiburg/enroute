@@ -314,7 +314,7 @@ Page {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", Navigator.flightRoute.suggestedFilename())
+                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "geojson", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -338,7 +338,7 @@ Page {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", Navigator.flightRoute.suggestedFilename())
+                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -368,7 +368,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "geojson", "FlightRoute")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -385,7 +385,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", "FlightRoute")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()

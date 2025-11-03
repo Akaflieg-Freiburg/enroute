@@ -98,12 +98,12 @@ void Platform::FileExchange::processFileOpenRequest(const QString& path, const Q
 }
 
 
-QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
+QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate)
 {
     QMimeDatabase const db;
     QMimeType const mime = db.mimeTypeForName(mimeType);
 
-    auto tmpPath = contentToTempFile(content, fileNameTemplate + u"-%1."_s + mime.preferredSuffix());
+    auto tmpPath = contentToTempFile(content, fileNameTemplate + u"."_s + fileNameSuffix);
     bool const success = outgoingIntent(QStringLiteral("sendFile"), tmpPath, mimeType);
     if (success)
     {
@@ -113,9 +113,9 @@ QString Platform::FileExchange::shareContent(const QByteArray& content, const QS
 }
 
 
-QString Platform::FileExchange::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
+QString Platform::FileExchange::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate)
 {
-    QString const tmpPath = contentToTempFile(content, fileNameTemplate);
+    QString const tmpPath = contentToTempFile(content, fileNameTemplate + u"."_s + fileNameSuffix);
     bool const success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
     if (success)
     {

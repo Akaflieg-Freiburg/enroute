@@ -49,7 +49,7 @@ void Platform::FileExchange::importContent()
 }
 
 
-auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate) -> QString
 {
     QMimeDatabase const mimeDataBase;
     QMimeType const mime = mimeDataBase.mimeTypeForName(mimeType);
@@ -74,7 +74,7 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
 }
 
 
-auto Platform::FileExchange::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameTemplate) -> QString
+auto Platform::FileExchange::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameSuffix, const QString& fileNameTemplate) -> QString
 {
     QTemporaryFile tmpFile(fileNameTemplate.arg(QStringLiteral("XXXXXX")));
     tmpFile.setAutoRemove(false);

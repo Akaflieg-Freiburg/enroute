@@ -251,7 +251,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
+                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "geojson", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
                                     if (errorString === "abort") {
                                         toast.doToast(qsTr("Aborted"))
                                         return
@@ -276,7 +276,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
+                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "gpx", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
                                     if (errorString === "abort") {
                                         toast.doToast(qsTr("Aborted"))
                                         return
@@ -306,7 +306,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "geojson", "FlightRoute-%1.geojson")
                                     if (errorString !== "") {
                                         shareErrorDialog.text = errorString
                                         shareErrorDialog.open()
@@ -323,7 +323,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "gpx", "FlightRoute-%1.gpx")
                                     if (errorString !== "") {
                                         shareErrorDialog.text = errorString
                                         shareErrorDialog.open()

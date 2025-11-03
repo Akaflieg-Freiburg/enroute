@@ -59,20 +59,20 @@ void Platform::FileExchange::importContent()
 }
 
 
-auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate) -> QString
 {
     // Share file content
 
     QMimeDatabase const db;
     QMimeType const mime = db.mimeTypeForName(mimeType);
-    QString const fileExtension = mime.preferredSuffix();
 
-    ObjCAdapter::shareContent(content, mimeType, fileNameTemplate, fileExtension);
+    ObjCAdapter::shareContent(content, mimeType, fileNameTemplate, fileNameSuffix);
     return {};
 }
 
 auto Platform::FileExchange::viewContent(const QByteArray & /*content*/,
                                          const QString & /*mimeType*/,
+                                         const QString& /*fileNameSuffix*/,
                                          const QString & /*fileNameTemplate*/) -> QString
 {
     // View file content

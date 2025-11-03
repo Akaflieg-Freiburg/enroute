@@ -150,7 +150,7 @@ Page {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = FileExchange.shareContent(WaypointLibrary.GeoJSON, "application/geo+json", qsTr("Waypoint Library"))
+                            var errorString = FileExchange.shareContent(WaypointLibrary.GeoJSON, "application/geo+json", "geojson", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -174,7 +174,7 @@ Page {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = FileExchange.shareContent(WaypointLibrary.toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
+                            var errorString = FileExchange.shareContent(WaypointLibrary.toGpx(), "application/gpx+xml", "gpx", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -204,7 +204,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = FileExchange.viewContent(WaypointLibrary.GeoJSON, "application/geo+json", "WaypointLibrary-%1.geojson")
+                            var errorString = FileExchange.viewContent(WaypointLibrary.GeoJSON, "application/geo+json", "geojson", "WaypointLibrary-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
@@ -221,7 +221,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = FileExchange.viewContent(WaypointLibrary.toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
+                            var errorString = FileExchange.viewContent(WaypointLibrary.toGpx(), "application/gpx+xml", "gpx", "WaypointLibrary-%1.gpx")
                             if (errorString !== "") {
                                 shareErrorDialog.text = errorString
                                 shareErrorDialog.open()

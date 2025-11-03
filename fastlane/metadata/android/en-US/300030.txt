@@ -1,0 +1,2 @@
+### Changed
+- Add button to simplify opening the side view.

@@ -1,13 +1,9 @@
 # Changelog
 
-## [3.0.2] - 2025-10-29
+## [3.0.3] - 2025-11-02
 
 ### Changed
 - Added button to the moving map that can be used to open the side view.
-
-#### Fixed
-- Fixes problem with geoid correction for GPS altitude data on some devices
-running Android 15 or newer. (#549)
 
 
 ## [3.0.1] - 2025-09-27

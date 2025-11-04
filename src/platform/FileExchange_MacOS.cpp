@@ -76,7 +76,7 @@ QString Platform::FileExchange::shareContent(const QByteArray& content, const QS
 
 QString Platform::FileExchange::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameSuffix, const QString& fileNameTemplate)
 {
-    QTemporaryFile tmpFile(fileNameTemplate+u".XXXXXX."_s+fileNameSuffix);
+    QTemporaryFile tmpFile( QDir::tempPath() + u"/"_s + fileNameTemplate+ u".XXXXXX."_s + fileNameSuffix);
     tmpFile.setAutoRemove(false);
     if (!tmpFile.open()) {
         return tr("Unable to open temporary file.");

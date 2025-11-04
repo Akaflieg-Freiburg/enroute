@@ -49,7 +49,7 @@ void Platform::FileExchange::importContent()
 }
 
 
-auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate) -> QString
+QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& /*fileNameSuffix*/, const QString& fileNameTemplate)
 {
     QMimeDatabase const mimeDataBase;
     QMimeType const mime = mimeDataBase.mimeTypeForName(mimeType);
@@ -74,9 +74,9 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
 }
 
 
-auto Platform::FileExchange::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameSuffix, const QString& fileNameTemplate) -> QString
+QString Platform::FileExchange::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameSuffix, const QString& fileNameTemplate)
 {
-    QTemporaryFile tmpFile(fileNameTemplate.arg(QStringLiteral("XXXXXX")));
+    QTemporaryFile tmpFile( QDir::tempPath() + u"/"_s + fileNameTemplate+ u".XXXXXX."_s + fileNameSuffix);
     tmpFile.setAutoRemove(false);
     if (!tmpFile.open()) {
         return tr("Unable to open temporary file.");

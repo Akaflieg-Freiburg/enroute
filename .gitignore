@@ -21,6 +21,7 @@ CMakeLists_ios.txt
 .project
 CMakeLists.txt.user
 **/.qmlls.ini
+.idea/
 
 # Mac
 **/.DS_Store

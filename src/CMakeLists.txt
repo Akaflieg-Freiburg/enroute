@@ -417,6 +417,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     # qt_add_executable(photosurfaceexample MACOSX_BUNDLE main.cpp ${app_icon_macos})
 
     list(APPEND SOURCES
+        macos/ObjCAdapterMac.h
+        macos/ObjCAdapterMac.mm
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
         platform/PlatformAdaptor_MacOS.h

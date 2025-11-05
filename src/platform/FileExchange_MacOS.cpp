@@ -24,6 +24,7 @@
 #include <QMimeDatabase>
 #include <QTemporaryFile>
 
+#include "macos/ObjCAdapterMac.h"
 #include "platform/FileExchange_MacOS.h"
 
 
@@ -54,7 +55,11 @@ QString Platform::FileExchange::shareContent(const QByteArray& content, const QS
     QMimeDatabase const mimeDataBase;
     QMimeType const mime = mimeDataBase.mimeTypeForName(mimeType);
 
-    auto fileNameX = QFileDialog::getSaveFileName(nullptr, tr("Export Data"), QDir::homePath()+u"/"_s+fileNameTemplate+u"."_s+fileNameSuffix, tr("%1 (*.%2);;All files (*)").arg(mime.comment(), fileNameSuffix));
+    auto fileNameX = QFileDialog::getSaveFileName(
+        nullptr,
+        tr("Export Data"),
+        QDir::homePath() + "/"+fileNameTemplate + "." + fileNameSuffix, tr("%1 (*.%2);;All files (*)").arg(mime.comment(), fileNameSuffix)
+        );
     if (fileNameX.isEmpty())
     {
         return QStringLiteral("abort");
@@ -74,22 +79,12 @@ QString Platform::FileExchange::shareContent(const QByteArray& content, const QS
 }
 
 
-QString Platform::FileExchange::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameSuffix, const QString& fileNameTemplate)
+QString Platform::FileExchange::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate)
 {
-    QTemporaryFile tmpFile( QDir::tempPath() + u"/"_s + fileNameTemplate+ u".XXXXXX."_s + fileNameSuffix);
-    tmpFile.setAutoRemove(false);
-    if (!tmpFile.open()) {
-        return tr("Unable to open temporary file.");
-    }
-    tmpFile.write(content);
-    tmpFile.close();
+    // Share file content
 
-#warning Not sure this actually works.
-    bool const success = QDesktopServices::openUrl(
-        QUrl(u"file://"_s + tmpFile.fileName(), QUrl::TolerantMode));
-    if (success)
-    {
-        return {};
-    }
-    return tr("Unable to open data in other app.");
+    QMimeDatabase const db;
+    QMimeType const mime = db.mimeTypeForName(mimeType);
+
+    return ObjCAdapterMac::shareContent(content, mimeType, fileNameTemplate, fileNameSuffix);
 }

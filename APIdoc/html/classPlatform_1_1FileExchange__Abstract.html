@@ -113,10 +113,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab1c9d0044f727d2d69c075ec4a590030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
 <tr class="memitem:acac26971d30dcda4d7be83f176da6b7a" id="r_acac26971d30dcda4d7be83f176da6b7a"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acac26971d30dcda4d7be83f176da6b7a">importContent</a> ()=0</td></tr>
 <tr class="memdesc:acac26971d30dcda4d7be83f176da6b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import content from file.  <br /></td></tr>
-<tr class="memitem:a1d7bc29efba49cdf97038d5e4536b93b" id="r_a1d7bc29efba49cdf97038d5e4536b93b"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d7bc29efba49cdf97038d5e4536b93b">shareContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate)=0</td></tr>
-<tr class="memdesc:a1d7bc29efba49cdf97038d5e4536b93b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classShare.html" title="The Share class provides synchronous and asynchronous communication between the android native share ...">Share</a> content.  <br /></td></tr>
-<tr class="memitem:a0fc5c782285934ae3041d8912e282f63" id="r_a0fc5c782285934ae3041d8912e282f63"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fc5c782285934ae3041d8912e282f63">viewContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate)=0</td></tr>
-<tr class="memdesc:a0fc5c782285934ae3041d8912e282f63"><td class="mdescLeft">&#160;</td><td class="mdescRight">View content.  <br /></td></tr>
+<tr class="memitem:a2a1cfcf25de17f7295611815888178a7" id="r_a2a1cfcf25de17f7295611815888178a7"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a1cfcf25de17f7295611815888178a7">shareContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameSuffix, const QString &amp;fileNameTemplate)=0</td></tr>
+<tr class="memdesc:a2a1cfcf25de17f7295611815888178a7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classShare.html" title="The Share class provides synchronous and asynchronous communication between the android native share ...">Share</a> content.  <br /></td></tr>
+<tr class="memitem:ada1d76549c47c389a2b9f76eca67b3ba" id="r_ada1d76549c47c389a2b9f76eca67b3ba"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada1d76549c47c389a2b9f76eca67b3ba">viewContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameSuffix, const QString &amp;fileNameTemplate)=0</td></tr>
+<tr class="memdesc:ada1d76549c47c389a2b9f76eca67b3ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">View content.  <br /></td></tr>
 <tr class="inherit_header pub_methods_classGlobalObject"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classGlobalObject')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
 <tr class="memitem:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject" id="r_ac8dfa53c492975de42fa7972e77abbc1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
@@ -526,8 +526,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a1d7bc29efba49cdf97038d5e4536b93b" name="a1d7bc29efba49cdf97038d5e4536b93b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d7bc29efba49cdf97038d5e4536b93b">&#9670;&#160;</a></span>shareContent()</h2>
+<a id="a2a1cfcf25de17f7295611815888178a7" name="a2a1cfcf25de17f7295611815888178a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a1cfcf25de17f7295611815888178a7">&#9670;&#160;</a></span>shareContent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -548,6 +548,11 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>fileNameSuffix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>fileNameTemplate</em></span>&#160;)</td>
         </tr>
       </table>
@@ -564,18 +569,19 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">content</td><td>File content</td></tr>
     <tr><td class="paramname">mimeType</td><td>the mimeType of the content</td></tr>
+    <tr><td class="paramname">fileNameSuffix</td><td>File name suffix (e.g. "geojson"), used when saving the file, or adding it as a e-mail attachement.</td></tr>
     <tr><td class="paramname">fileNameTemplate</td><td>A string of the form "EDTF - EDTG", without suffix of path. This can be used, e.g. as the name of the attachment when sending files by e-mail.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Empty string on success, the string "abort" on abort, and a translated error message otherwise </dd></dl>
 
-<p>Implemented in <a class="el" href="classPlatform_1_1FileExchange.html#a5555bbc0bd6bcbe5c92a7a065dfb8098">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a5555bbc0bd6bcbe5c92a7a065dfb8098">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a5555bbc0bd6bcbe5c92a7a065dfb8098">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a5555bbc0bd6bcbe5c92a7a065dfb8098">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a5555bbc0bd6bcbe5c92a7a065dfb8098">Platform::FileExchange</a>, and <a class="el" href="classPlatform_1_1FileExchange.html#a5555bbc0bd6bcbe5c92a7a065dfb8098">Platform::FileExchange</a>.</p>
+<p>Implemented in <a class="el" href="classPlatform_1_1FileExchange.html#a93956219ed27bff7696f05d9cc14a9ea">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a93956219ed27bff7696f05d9cc14a9ea">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a93956219ed27bff7696f05d9cc14a9ea">Platform::FileExchange</a>, and <a class="el" href="classPlatform_1_1FileExchange.html#a93956219ed27bff7696f05d9cc14a9ea">Platform::FileExchange</a>.</p>
 
 </div>
 </div>
-<a id="a0fc5c782285934ae3041d8912e282f63" name="a0fc5c782285934ae3041d8912e282f63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fc5c782285934ae3041d8912e282f63">&#9670;&#160;</a></span>viewContent()</h2>
+<a id="ada1d76549c47c389a2b9f76eca67b3ba" name="ada1d76549c47c389a2b9f76eca67b3ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada1d76549c47c389a2b9f76eca67b3ba">&#9670;&#160;</a></span>viewContent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -596,6 +602,11 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>fileNameSuffix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>fileNameTemplate</em></span>&#160;)</td>
         </tr>
       </table>
@@ -612,13 +623,14 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">content</td><td>content text</td></tr>
     <tr><td class="paramname">mimeType</td><td>the mimeType of the content</td></tr>
+    <tr><td class="paramname">fileNameSuffix</td><td>File name suffix (e.g. "geojson"), used when saving the file, or adding it as a e-mail attachement.</td></tr>
     <tr><td class="paramname">fileNameTemplate</td><td>A string of the form "FlightRoute-%1.geojson".</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Empty string on success, a translated error message otherwise </dd></dl>
 
-<p>Implemented in <a class="el" href="classPlatform_1_1FileExchange.html#a1fa0ead3a5497777d371be14c2d53073">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a1fa0ead3a5497777d371be14c2d53073">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a1fa0ead3a5497777d371be14c2d53073">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a1fa0ead3a5497777d371be14c2d53073">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a1fa0ead3a5497777d371be14c2d53073">Platform::FileExchange</a>, and <a class="el" href="classPlatform_1_1FileExchange.html#a1fa0ead3a5497777d371be14c2d53073">Platform::FileExchange</a>.</p>
+<p>Implemented in <a class="el" href="classPlatform_1_1FileExchange.html#a6c629e829bfa47fdf6a8c1dc1e13281b">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a6c629e829bfa47fdf6a8c1dc1e13281b">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a6c629e829bfa47fdf6a8c1dc1e13281b">Platform::FileExchange</a>, and <a class="el" href="classPlatform_1_1FileExchange.html#a6c629e829bfa47fdf6a8c1dc1e13281b">Platform::FileExchange</a>.</p>
 
 </div>
 </div>

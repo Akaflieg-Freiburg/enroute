@@ -65,6 +65,8 @@ public:
      *
      *  @param mimeType see documentation for FileExchange_Abstract
      *
+     *  @param fileNameSuffix see documentation for FileExchange_Abstract
+     *
      *  @param fileNameTemplate see documentation for FileExchange_Abstract
      *
      *  @returns see documentation for FileExchange_Abstract
@@ -76,6 +78,8 @@ public:
      *  @param content see documentation for FileExchange_Abstract
      *
      *  @param mimeType see documentation for FileExchange_Abstract
+     *
+     *  @param fileNameSuffix see documentation for FileExchange_Abstract
      *
      *  @param fileNameTemplate see documentation for FileExchange_Abstract
      *

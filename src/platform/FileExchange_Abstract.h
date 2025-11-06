@@ -94,6 +94,9 @@ public:
      *
      * @param mimeType the mimeType of the content
      *
+     * @param fileNameSuffix File name suffix (e.g. "geojson"), used when saving the
+     * file, or adding it as a e-mail attachement.
+     *
      * @param fileNameTemplate A string of the form "EDTF - EDTG", without
      * suffix of path. This can be used, e.g. as the name of the attachment when
      * sending files by e-mail.
@@ -112,6 +115,9 @@ public:
      * @param content content text
      *
      * @param mimeType the mimeType of the content
+     *
+     * @param fileNameSuffix File name suffix (e.g. "geojson"), used when saving the
+     * file, or adding it as a e-mail attachement.
      *
      * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson".
      *

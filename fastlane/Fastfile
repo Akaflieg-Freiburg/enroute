@@ -82,7 +82,7 @@ platform :android do
 end
 
 platform :mac do
-  desc "Build macOS Bundle"
+  desc "Build MacOS Bundle (unsigned, unnotarized, and without provisioning profile)"
   lane :build do
     # Clean up previous builds
     FileUtils.rm_rf('../build/build-macos-release')
@@ -90,21 +90,47 @@ platform :mac do
 
     UI.message('Configuring CMake build...')
     qt6_macos_dir = ENV['Qt6_DIR_MACOS']
+    # Removed to avoid problems  '-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64',
     sh("#{qt6_macos_dir}/bin/qt-cmake",
       '-G Ninja',
       '-DCMAKE_BUILD_TYPE:STRING=Release',
-      '-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64',
+      '-DCMAKE_C_COMPILER_LAUNCHER=ccache',
+      '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache',
       '-DCMAKE_INSTALL_PREFIX=../build/',
       '-DQTDEPLOY=ON',
       '-S ..',
       '-B ../build/build-macos-release'
     )
 
-    UI.message('Building macOS Binary...')
+    UI.message('Building MacOS Binary...')
     sh('cmake --build ../build/build-macos-release')
 
     UI.message('Compile MacOS Bundle and Sign ...')
     sh('cmake --build ../build/build-macos-release --target install')
+    # The bundle might contain extended attributes that interfere with upload to the App Store. Remove them first.
+    sh("xattr -cr ../build/enroute.app")
+  end
+
+  desc "Upload to TestFlight"
+  lane :TestFlight do
+    build
+    # Add provisioning profile to the bundle
+    #sh("cp ../src/macos/addhoursandminutes_for_Mac_App_Store.provisionprofile ../build/addhoursandminutes.app/Contents/embedded.provisionprofile")
+    # The bundle might contain extended attributes that interfere with upload to the App Store. Remove them first.
+    sh("xattr -cr ../build/addhoursandminutes.app")
+    # Sign the app and specify entitlements
+    #sh("codesign --deep --force --verify --options runtime --entitlements ../src/macos/addhoursandminutes.entitlements --sign \"Apple Distribution: Akademische Fliegergruppe Freiburg i. Br. e. V. (9DX97T4PBT)\" ../build/addhoursandminutes.app")
+    sh("codesign --deep --force --verify --options runtime --sign \"Apple Distribution: Akademische Fliegergruppe Freiburg i. Br. e. V. (9DX97T4PBT)\" ../build/addhoursandminutes.app")
+    # Create the pkg installer for upload (Note: this installer cannot be used to actually install the app)
+    #sh("xcrun productbuild --sign \"Akademische Fliegergruppe Freiburg i. Br. e. V.\" --component ../build/addhoursandminutes.app /Applications ../build/addhoursandminutes.pkg")
+    # Remove the app, which is signed with a key that makes it unusable outside our precise use case
+    #FileUtils.rm_rf('../build/addhoursandminutes.app')
+    ## Validate the package for upload to the App Store
+    #sh("xcrun altool --validate-app --file ../build/addhoursandminutes.pkg --platform macos")
+    #upload_to_testflight(
+    #  app_identifier: "de.akafliegfreiburg.addhoursandminutes",
+    #  pkg: "build/addhoursandminutes.pkg"
+    #)
   end
 
 end

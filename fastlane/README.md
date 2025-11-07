@@ -85,7 +85,15 @@ Promote Beta to Release
 [bundle exec] fastlane mac build
 ```
 
-Build macOS Bundle
+Build MacOS Bundle (unsigned, unnotarized, and without provisioning profile)
+
+### mac TestFlight
+
+```sh
+[bundle exec] fastlane mac TestFlight
+```
+
+Upload to TestFlight
 
 ----
 

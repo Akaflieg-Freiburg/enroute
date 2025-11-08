@@ -436,6 +436,7 @@ add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
 set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE true
+    MACOSX_BUNDLE_GUI_IDENTIFIER "de.akafliegfreiburg.enroute"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
     MACOSX_BUNDLE_ICON_FILE enroute.icns
     MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"

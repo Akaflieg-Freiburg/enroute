@@ -119,20 +119,17 @@ platform :mac do
     # The bundle might contain extended attributes that interfere with upload to the App Store. Remove them first.
     sh("xattr -cr ../build/enroute.app")
     # Sign the app and specify entitlements
-    #sh("codesign --deep --force --verify --options runtime --entitlements ../src/macos/enroute.entitlements --sign \"Apple Distribution: Akademische Fliegergruppe Freiburg i. Br. e. V. (9DX97T4PBT)\" ../build/enroute.app")
-    sh("codesign --deep --force --verify --options runtime --sign \"Apple Distribution: Akademische Fliegergruppe Freiburg i. Br. e. V. (9DX97T4PBT)\" ../build/enroute.app")
+    sh("codesign --deep --force --verify --options runtime --entitlements ../src/macos/enroute.entitlements --sign \"Apple Distribution: Akademische Fliegergruppe Freiburg i. Br. e. V. (9DX97T4PBT)\" ../build/enroute.app")
     # Create the pkg installer for upload (Note: this installer cannot be used to actually install the app)
     sh("xcrun productbuild --sign \"Akademische Fliegergruppe Freiburg i. Br. e. V.\" --component ../build/enroute.app /Applications ../build/enroute.pkg")
     # Remove the app, which is signed with a key that makes it unusable outside our precise use case
     FileUtils.rm_rf('../build/enroute.app')
     ## Validate the package for upload to the App Store
-    #sh("xcrun altool --validate-app --file ../build/enroute.pkg --platform macos")
-    #upload_to_testflight(
-    #  app_identifier: "de.akafliegfreiburg.enroute",
-    #  pkg: "build/enroute.pkg"
-    #)
+    upload_to_testflight(
+      app_identifier: "de.akafliegfreiburg.enroute",
+      pkg: "build/enroute.pkg"
+    )
   end
-
 end
 
 desc "Create GitHub Release, using SSH authentication"

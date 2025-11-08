@@ -29,7 +29,7 @@
         <string>pl</string>
     </array>
     <key>LSMinimumSystemVersion</key>
-    <string>10.13</string>
+    <string>${CMAKE_OSX_DEPLOYMENT_TARGET}</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.navigation</string>
     <key>NSLocationUsageDescription</key>

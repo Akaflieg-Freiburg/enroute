@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.4] - ??
+
+### Fixed
+- Fixed problem with export of flight routes or waypoints (#565)
+
+
 ## [3.0.3] - 2025-11-02
 
 ### Changed

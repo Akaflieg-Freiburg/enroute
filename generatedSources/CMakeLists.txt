@@ -267,6 +267,22 @@ add_custom_target(manualText
 # Manual
 #
 
+set(SPHINX_SOURCE ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual)
+set(SPHINX_BUILD ${CMAKE_CURRENT_BINARY_DIR}/manual)
+set(SPHINX_INDEX_FILE ${SPHINX_BUILD}/index.html)
+file(GLOB_RECURSE DOC_SOURCES ${SPHINX_SOURCE}/*.rst)
+add_custom_command(OUTPUT ${SPHINX_INDEX_FILE}
+  COMMAND
+    sphinx-build -b html
+    -Dbreathe_projects.MyProject=${CMAKE_CURRENT_BINARY_DIR}/xml
+    ${SPHINX_SOURCE} ${SPHINX_BUILD}
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  DEPENDS ${DOC_SOURCES}
+  MAIN_DEPENDENCY ${SPHINX_SOURCE}/conf.py
+  COMMENT "Generating documentation with Sphinx"
+)
+add_custom_target(sphinxdocs DEPENDS ${SPHINX_INDEX_FILE})
+
 add_custom_target(manual
   DEPENDS attributions
   DEPENDS waypointIcons4manual

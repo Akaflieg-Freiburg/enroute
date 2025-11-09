@@ -68,10 +68,9 @@ qt_policy(SET QTP0004 NEW)
 # External Packages
 #
 
-find_package(libzip REQUIRED)
 find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
-
+find_package(libzip REQUIRED)
 
 if(IOS)
     set(QT_USE_RISKY_DSYM_ARCHIVING_WORKAROUND ON)

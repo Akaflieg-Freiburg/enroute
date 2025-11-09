@@ -286,60 +286,60 @@ if(ANDROID)
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
     )
 
-    # Copy files into the Android directories
-    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
-    file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
+# Copy files into the Android directories
+file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
+file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
-    # Configure files
-    configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
+# Configure files
+configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
 
-    # The android target require a few additional variables
-    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
+# The android target require a few additional variables
+set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
 
-    qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
-    qt_import_plugins(${PROJECT_NAME}
-        INCLUDE_BY_TYPE imageformats Qt::QSvgPlugin Qt::QJpegPlugin Qt::QWebpPlugin  Qt::QTiffPlugin Qt::QPngPlugin
-        INCLUDE_BY_TYPE geoservices QMapLibre::PluginGeoServices
-        EXCLUDE_BY_TYPE platforminputcontexts qmltooling
-    )
-    target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
-        Qt6::Sensors
-        Qt6::SerialPort
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
-        Qt6::WebView
-        QMapLibre::Location
-        libzip::zip
-    )
-    qmaplibre_location_setup_plugins(${PROJECT_NAME})
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
-        QT_ANDROID_TARGET_SDK_VERSION 35
-        QT_ANDROID_MIN_SDK_VERSION 28
-    )
+qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
+qt_import_plugins(${PROJECT_NAME}
+    INCLUDE_BY_TYPE imageformats Qt::QSvgPlugin Qt::QJpegPlugin Qt::QWebpPlugin  Qt::QTiffPlugin Qt::QPngPlugin
+    INCLUDE_BY_TYPE geoservices QMapLibre::PluginGeoServices
+    EXCLUDE_BY_TYPE platforminputcontexts qmltooling
+)
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    Qt6::Bluetooth
+    Qt6::Concurrent
+    Qt6::Core
+    Qt6::Core5Compat
+    Qt6::HttpServer
+    Qt6::Positioning
+    Qt6::Quick
+    Qt6::QuickControls2
+    Qt6::Sensors
+    Qt6::SerialPort
+    Qt6::Sql
+    Qt6::Svg
+    Qt6::TextToSpeech
+    Qt6::WebView
+    QMapLibre::Location
+    libzip::zip
+)
+qmaplibre_location_setup_plugins(${PROJECT_NAME})
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
+    QT_ANDROID_TARGET_SDK_VERSION 35
+    QT_ANDROID_MIN_SDK_VERSION 28
+)
 
-    # Include manual in HTML form
-    add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/android/assets"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/generatedSources/manual" "${CMAKE_CURRENT_BINARY_DIR}/android/assets/manual"
-        COMMENT "Copying manual in HTML form to Android assets"
-    )
-    add_dependencies(${PROJECT_NAME} sphinxdocs)
+# Include manual in HTML form
+add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/android/assets"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/generatedSources/manual" "${CMAKE_CURRENT_BINARY_DIR}/android/assets/manual"
+    COMMENT "Copying manual in HTML form to Android assets"
+)
+add_dependencies(${PROJECT_NAME} sphinxdocs)
 
-    # Include SSL Libraries
-    set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
+# Include SSL Libraries
+set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
 endif()
 
 
@@ -535,13 +535,15 @@ set(bundle_resources
     "ios/fr.lproj"
     "ios/it.lproj"
     "ios/pl.lproj"
-    ${CMAKE_SOURCE_DIR}/generatedSources/manual
+    ${CMAKE_BINARY_DIR}/generatedSources/manual
 )
 target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
 set_source_files_properties(${bundle_resources} PROPERTIES
     MACOSX_PACKAGE_LOCATION "Resources"
 )
 source_group("Resources" FILES ${bundle_resources})
+add_dependencies(${PROJECT_NAME} sphinxdocs)
+
 
 #Launchscreen
 set_target_properties(${PROJECT_NAME} PROPERTIES QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
@@ -742,7 +744,7 @@ if ( QTDEPLOY )
         "-sign-for-notarization=Stefan Kebekus"
     )
 
-    # Call the deployment script on "cmake --install".
-    install(SCRIPT ${deploy_script})
+# Call the deployment script on "cmake --install".
+install(SCRIPT ${deploy_script})
 
 endif()

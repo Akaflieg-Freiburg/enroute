@@ -83,6 +83,7 @@ find_program(SPHINX_EXECUTABLE
     ${CMAKE_SOURCE_DIR}/.venv/bin
     ${_macos_user_sphinx_paths}     # automatically handles all Python versions
     $ENV{HOME}/.local/bin           # Linux/Unix user installs
+    /usr/local/bin
     /usr/bin
     /opt/homebrew/bin
     /usr/local/opt/sphinx/bin

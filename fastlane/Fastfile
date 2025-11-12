@@ -111,6 +111,16 @@ platform :mac do
     sh("xattr -cr ../build/enroute.app")
   end
 
+  lane :executable do
+    build
+    # Add provisioning profile to the bundle
+    sh("cp ../src/macos/enroute_for_Mac_App_Store.provisionprofile ../build/enroute.app/Contents/embedded.provisionprofile")
+    # The bundle might contain extended attributes that interfere with upload to the App Store. Remove them first.
+    sh("xattr -cr ../build/enroute.app")
+    # Sign the app and specify entitlements
+    #sh("codesign --deep --force --verify --options runtime --entitlements ../src/macos/enroute.entitlements --sign \"Apple Development: Stefan Kebekus\" ../build/enroute.app")
+  end
+
   desc "Upload to TestFlight"
   lane :TestFlight do
     build

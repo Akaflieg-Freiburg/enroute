@@ -72,6 +72,28 @@ find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
 find_package(libzip REQUIRED)
 
+# Find "sphinx-build"
+file(GLOB _macos_user_sphinx_paths
+     "$ENV{HOME}/Library/Python/[0-9]*.[0-9]*/bin")
+find_program(SPHINX_EXECUTABLE
+  NAMES sphinx-build
+  HINTS
+    $ENV{SPHINX_DIR}
+    ${CMAKE_SOURCE_DIR}/venv/bin
+    ${CMAKE_SOURCE_DIR}/.venv/bin
+    ${_macos_user_sphinx_paths}     # automatically handles all Python versions
+    $ENV{HOME}/.local/bin           # Linux/Unix user installs
+    /usr/bin
+    /opt/homebrew/bin
+    /usr/local/opt/sphinx/bin
+  DOC "Path to sphinx-build executable"
+)
+if(NOT SPHINX_EXECUTABLE)
+  message(FATAL_ERROR "sphinx-build not found. Please install Sphinx (e.g. 'pip install sphinx').")
+else()
+  message(STATUS "Found sphinx-build: ${SPHINX_EXECUTABLE}")
+endif()
+
 if(IOS)
     set(QT_USE_RISKY_DSYM_ARCHIVING_WORKAROUND ON)
     set(XCODE_ATTRIBUTE_DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT "YES")

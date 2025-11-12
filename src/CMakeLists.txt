@@ -1,4 +1,3 @@
-
 #
 # Configure files
 #
@@ -286,7 +285,7 @@ if(ANDROID)
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
     )
 
-# Copy files into the Android directories
+    # Copy files into the Android directories
 file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
 file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
@@ -335,7 +334,6 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/generatedSources/manual" "${CMAKE_CURRENT_BINARY_DIR}/android/assets/manual"
     COMMENT "Copying manual in HTML form to Android assets"
 )
-add_dependencies(${PROJECT_NAME} sphinxdocs)
 
 # Include SSL Libraries
 set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
@@ -359,45 +357,45 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         traffic/TrafficDataSource_SerialPort.cpp
     )
 
-# Compile definitions
-add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
-# Add executable and libraries
-qt_add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-    Qt6::Bluetooth
-    Qt6::Concurrent
-    Qt6::Core
-    Qt6::Core5Compat
-    Qt6::DBus
-    Qt6::HttpServer
-    Qt6::Positioning
-    Qt6::Quick
-    Qt6::QuickControls2
-    Qt6::SerialPort
-    Qt6::Sql
-    Qt6::Svg
-    Qt6::TextToSpeech
-    Qt6::Widgets
-    QMapLibre::Location
-    libzip::zip
-)
-if (TARGET Qt6::WebView)
-    message(STATUS "QtWebView found.")
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        Qt6::WebView
+        Qt6::Bluetooth
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::DBus
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::QuickControls2
+        Qt6::SerialPort
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::TextToSpeech
+        Qt6::Widgets
+        QMapLibre::Location
+        libzip::zip
     )
-endif()
-target_precompile_headers(${PROJECT_NAME}
-    PUBLIC
-    <QQmlEngine>
-)
+    if (TARGET Qt6::WebView)
+        message(STATUS "QtWebView found.")
+        target_link_libraries(${PROJECT_NAME}
+            PRIVATE
+            Qt6::WebView
+        )
+    endif()
+    target_precompile_headers(${PROJECT_NAME}
+        PUBLIC
+        <QQmlEngine>
+    )
 
-# Install
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+    # Install
+    install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 
@@ -427,37 +425,37 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         traffic/TrafficDataSource_SerialPort.cpp
     )
 
-# Compile definitions
-add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
-# Add executable and libraries
-qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    MACOSX_BUNDLE true
-    MACOSX_BUNDLE_GUI_IDENTIFIER "de.akafliegfreiburg.enroute"
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
-    MACOSX_BUNDLE_ICON_FILE enroute.icns
-    MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"
-)
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-    Qt6::Bluetooth
-    Qt6::Concurrent
-    Qt6::Core
-    Qt6::Core5Compat
-    Qt6::HttpServer
-    Qt6::Positioning
-    Qt6::Quick
-    Qt6::QuickControls2
-    Qt6::SerialPort
-    Qt6::Sql
-    Qt6::Svg
-    Qt6::TextToSpeech
-    Qt6::WebView
-    Qt6::Widgets
-    QMapLibre::Location
-    libzip::zip
-)
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_GUI_IDENTIFIER "de.akafliegfreiburg.enroute"
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
+        MACOSX_BUNDLE_ICON_FILE enroute.icns
+        MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"
+    )
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Bluetooth
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::QuickControls2
+        Qt6::SerialPort
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::TextToSpeech
+        Qt6::WebView
+        Qt6::Widgets
+        QMapLibre::Location
+        libzip::zip
+    )
 endif()
 
 
@@ -481,77 +479,87 @@ if (IOS)
         ios/SafeAreaService.m
     )
 
-# Compile definitions
-add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
-# Add executable and libraries
-qt_add_executable(${PROJECT_NAME} ${SOURCES})
-set(CMAKE_MACOSX_RPATH OFF)
-qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-    Qt6::Bluetooth
-    Qt6::Concurrent
-    Qt6::Core
-    Qt6::Core5Compat
-    Qt6::HttpServer
-    Qt6::Location
-    Qt6::Positioning
-    Qt6::Quick
-    Qt6::QuickControls2
-    Qt6::Sensors
-    Qt6::Sql
-    Qt6::Svg
-    Qt6::TextToSpeech
-    Qt6::WebView
-    QMapLibre::Location
-    libzip::zip
-)
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    MACOSX_BUNDLE true
-    MACOSX_BUNDLE_GUI_IDENTIFIER ${PRODUCT_BUNDLE_IDENTIFIER}
-    XCODE_GENERATE_SCHEME ON
-    XCODE_SCHEME_LAUNCH_CONFIGURATION "Release"
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
-)
-set_source_files_properties(
-    PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-qmaplibre_location_setup_plugins(${PROJECT_NAME})
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-    ios/mapLibreDependencies
-    ios/mapLibreDependencies/optional
-    ios/mapLibreDependencies/csscolorparser
-    ios/mapLibreDependencies/parsedate
-    ios/mapLibreDependencies/nunicode/include
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    set(CMAKE_MACOSX_RPATH OFF)
+    qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Bluetooth
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Location
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::QuickControls2
+        Qt6::Sensors
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::TextToSpeech
+        Qt6::WebView
+        QMapLibre::Location
+        libzip::zip
+    )
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_GUI_IDENTIFIER ${PRODUCT_BUNDLE_IDENTIFIER}
+        XCODE_GENERATE_SCHEME ON
+        XCODE_SCHEME_LAUNCH_CONFIGURATION "Release"
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+    )
+    set_source_files_properties(
+        PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    qmaplibre_location_setup_plugins(${PROJECT_NAME})
+    target_include_directories(${PROJECT_NAME}
+        PUBLIC
+        ios/mapLibreDependencies
+        ios/mapLibreDependencies/optional
+        ios/mapLibreDependencies/csscolorparser
+        ios/mapLibreDependencies/parsedate
+        ios/mapLibreDependencies/nunicode/include
+    )
+
+    # Resources
+    set(bundle_resources
+        "ios/Assets.xcassets"
+        "ios/de.lproj"
+        "ios/en.lproj"
+        "ios/es.lproj"
+        "ios/fr.lproj"
+        "ios/it.lproj"
+        "ios/pl.lproj"
+    )
+    target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
+    set_source_files_properties(${bundle_resources} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources"
+    )
+    source_group("Resources" FILES ${bundle_resources})
+
+    # Launchscreen
+    set_target_properties(${PROJECT_NAME} PROPERTIES QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
+
+    # Privacy Manifest
+    set(privacy_manifest "${CMAKE_CURRENT_SOURCE_DIR}/ios/PrivacyInfo.xcprivacy")
+    target_sources("${PROJECT_NAME}" PRIVATE "${privacy_manifest}")
+    set_property(TARGET "${PROJECT_NAME}" APPEND PROPERTY RESOURCE "${privacy_manifest}")
+
+    if(CMAKE_GENERATOR STREQUAL "Xcode")
+        set(APP_BUNDLE_PATH "${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}")
+    else()
+        set(APP_BUNDLE_PATH "$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>")
+    endif()
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E echo "${CMAKE_BINARY_DIR}/generatedSources/manual" "${APP_BUNDLE_PATH}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/generatedSources/manual" "${APP_BUNDLE_PATH}"
+        COMMENT "Embedding Sphinx documentation into the output bundle"
 )
 
-#Resources
-set(bundle_resources
-    "ios/Assets.xcassets"
-    "ios/de.lproj"
-    "ios/en.lproj"
-    "ios/es.lproj"
-    "ios/fr.lproj"
-    "ios/it.lproj"
-    "ios/pl.lproj"
-    ${CMAKE_BINARY_DIR}/generatedSources/manual
-)
-target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
-set_source_files_properties(${bundle_resources} PROPERTIES
-    MACOSX_PACKAGE_LOCATION "Resources"
-)
-source_group("Resources" FILES ${bundle_resources})
-add_dependencies(${PROJECT_NAME} sphinxdocs)
-
-
-#Launchscreen
-set_target_properties(${PROJECT_NAME} PROPERTIES QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
-
-#Privacy Manifest
-set(privacy_manifest "${CMAKE_CURRENT_SOURCE_DIR}/ios/PrivacyInfo.xcprivacy")
-target_sources("${PROJECT_NAME}" PRIVATE "${privacy_manifest}")
-set_property(TARGET "${PROJECT_NAME}" APPEND PROPERTY RESOURCE "${privacy_manifest}")
 endif()
 
 target_include_directories(${PROJECT_NAME}
@@ -574,6 +582,10 @@ target_include_directories(${PROJECT_NAME}
     nunicode/include
 )
 
+# Manual
+add_dependencies(${PROJECT_NAME} sphinxdocs)
+
+# QML
 set_source_files_properties(qml/items/Global.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute

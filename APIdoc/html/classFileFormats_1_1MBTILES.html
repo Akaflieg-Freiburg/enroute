@@ -94,6 +94,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a31738671f2f8e7ed75c0b7418d2cc0a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information about an <a class="el" href="classFileFormats_1_1MBTILES.html" title="Utility class for databases in MBTILES format.">MBTILES</a> file.  <br /></td></tr>
 <tr class="memitem:a019617052b4afde35f3dd8671e42b57f" id="r_a019617052b4afde35f3dd8671e42b57f"><td class="memItemLeft" align="right" valign="top">QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a019617052b4afde35f3dd8671e42b57f">tile</a> (int zoom, int x, int y)</td></tr>
 <tr class="memdesc:a019617052b4afde35f3dd8671e42b57f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve tile from an <a class="el" href="classFileFormats_1_1MBTILES.html" title="Utility class for databases in MBTILES format.">MBTILES</a> file.  <br /></td></tr>
+<tr class="memitem:aa5fc41df1ec739371aaa109299af4074" id="r_aa5fc41df1ec739371aaa109299af4074"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5fc41df1ec739371aaa109299af4074">tileSize</a> ()</td></tr>
+<tr class="memdesc:aa5fc41df1ec739371aaa109299af4074"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve tile size from an <a class="el" href="classFileFormats_1_1MBTILES.html" title="Utility class for databases in MBTILES format.">MBTILES</a> file in raster format.  <br /></td></tr>
 <tr class="memitem:a983ba48f664028baa90ee72c661d33ee" id="r_a983ba48f664028baa90ee72c661d33ee"><td class="memItemLeft" align="right" valign="top">QMap&lt; QString, QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a983ba48f664028baa90ee72c661d33ee">metaData</a> () const</td></tr>
 <tr class="memdesc:a983ba48f664028baa90ee72c661d33ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve metadata of the <a class="el" href="classFileFormats_1_1MBTILES.html" title="Utility class for databases in MBTILES format.">MBTILES</a> file.  <br /></td></tr>
 <tr class="memitem:a615a6c5e0778f75f8f767ee7452c55b2" id="r_a615a6c5e0778f75f8f767ee7452c55b2"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a615a6c5e0778f75f8f767ee7452c55b2">fileName</a> () const</td></tr>
@@ -246,7 +248,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Retrieve name of the <a class="el" href="classFileFormats_1_1MBTILES.html" title="Utility class for databases in MBTILES format.">MBTILES</a> file. </p>
 <dl class="section return"><dt>Returns</dt><dd>Filename, as given in the constructor </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="MBTILES_8h_source.html#l00125">125</a> of file <a class="el" href="MBTILES_8h_source.html">MBTILES.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MBTILES_8h_source.html#l00135">135</a> of file <a class="el" href="MBTILES_8h_source.html">MBTILES.h</a>.</p>
 
 </div>
 </div>
@@ -333,7 +335,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classFileFormats_1_1MBTILES.html" title="Utility class for databases in MBTILES format.">MBTILES</a> files contain metadata, in the form of a list of key/value pairs.</p>
 <dl class="section return"><dt>Returns</dt><dd>A QMap containing the metadata, or an empty QMap on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="MBTILES_8h_source.html#l00116">116</a> of file <a class="el" href="MBTILES_8h_source.html">MBTILES.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MBTILES_8h_source.html#l00126">126</a> of file <a class="el" href="MBTILES_8h_source.html">MBTILES.h</a>.</p>
 
 </div>
 </div>
@@ -379,6 +381,35 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A QByteArray with the tile data, or an empty QByteArray on error. </dd></dl>
+
+</div>
+</div>
+<a id="aa5fc41df1ec739371aaa109299af4074" name="aa5fc41df1ec739371aaa109299af4074"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5fc41df1ec739371aaa109299af4074">&#9670;&#160;</a></span>tileSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int FileFormats::MBTILES::tileSize </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve tile size from an <a class="el" href="classFileFormats_1_1MBTILES.html" title="Utility class for databases in MBTILES format.">MBTILES</a> file in raster format. </p>
+<p>This method finds the size of the raster tiles in an <a class="el" href="classFileFormats_1_1MBTILES.html" title="Utility class for databases in MBTILES format.">MBTILES</a> file.</p>
+<dl class="section return"><dt>Returns</dt><dd>A tile size (typically 256 or 512), or the default value 512 if the data is not available. The value returned is never negative. </dd></dl>
 
 </div>
 </div>

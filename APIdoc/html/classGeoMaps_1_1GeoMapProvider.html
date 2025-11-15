@@ -110,6 +110,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a40a449b331dae6b2802726b9b3c04e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a08fe4c8ffd97668a2eb3f5e151f100c9" id="r_a08fe4c8ffd97668a2eb3f5e151f100c9"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08fe4c8ffd97668a2eb3f5e151f100c9">bindableCurrentRasterMap</a> () const</td></tr>
 <tr class="memdesc:a08fe4c8ffd97668a2eb3f5e151f100c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:ae0597a1f208ceb301e431b5b44b3d390" id="r_ae0597a1f208ceb301e431b5b44b3d390"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0597a1f208ceb301e431b5b44b3d390">currentRasterMapTileSize</a> () const</td></tr>
+<tr class="memdesc:ae0597a1f208ceb301e431b5b44b3d390"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a878d310615ecbd0bd56a780cf2ff4981" id="r_a878d310615ecbd0bd56a780cf2ff4981"><td class="memItemLeft" align="right" valign="top">QBindable&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a878d310615ecbd0bd56a780cf2ff4981">bindableCurrentRasterMapTileSize</a> () const</td></tr>
+<tr class="memdesc:a878d310615ecbd0bd56a780cf2ff4981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:ac1ff8f6c322c5afa75d7deb33ee6a6b7" id="r_ac1ff8f6c322c5afa75d7deb33ee6a6b7"><td class="memItemLeft" align="right" valign="top">QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1ff8f6c322c5afa75d7deb33ee6a6b7">geoJSON</a> () const</td></tr>
 <tr class="memdesc:ac1ff8f6c322c5afa75d7deb33ee6a6b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a20fc3e94088789ab585f7d410708b9c9" id="r_a20fc3e94088789ab585f7d410708b9c9"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QByteArray &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20fc3e94088789ab585f7d410708b9c9">bindableGeoJSON</a> ()</td></tr>
@@ -204,6 +208,8 @@ Properties</h2></td></tr>
 <tr class="memdesc:a8c10e32b9b38a7174e632475c1dc2002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copyright notice for the map.  <br /></td></tr>
 <tr class="memitem:a3f8aaf53a4a825f1c9c949611f88a9e5" id="r_a3f8aaf53a4a825f1c9c949611f88a9e5"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f8aaf53a4a825f1c9c949611f88a9e5">currentRasterMap</a></td></tr>
 <tr class="memdesc:a3f8aaf53a4a825f1c9c949611f88a9e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current Raster Map.  <br /></td></tr>
+<tr class="memitem:ad344fa8a8e4939fa1dec1e3ac74f4bb0" id="r_ad344fa8a8e4939fa1dec1e3ac74f4bb0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad344fa8a8e4939fa1dec1e3ac74f4bb0">currentRasterMapTileSize</a></td></tr>
+<tr class="memdesc:ad344fa8a8e4939fa1dec1e3ac74f4bb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current Raster Map Tile Size.  <br /></td></tr>
 <tr class="memitem:a54c3286040d622453e26e5580a7f5898" id="r_a54c3286040d622453e26e5580a7f5898"><td class="memItemLeft" align="right" valign="top">QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54c3286040d622453e26e5580a7f5898">geoJSON</a></td></tr>
 <tr class="memdesc:a54c3286040d622453e26e5580a7f5898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Union of all aviation maps in <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> format.  <br /></td></tr>
 <tr class="memitem:a754b883456da51aff8f881407f8f5b3e" id="r_a754b883456da51aff8f881407f8f5b3e"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a754b883456da51aff8f881407f8f5b3e">serverUrl</a></td></tr>
@@ -289,7 +295,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property airspaces </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00176">176</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00183">183</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -353,7 +359,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property availableRasterMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00188">188</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00195">195</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -383,7 +389,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property airspaces </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00182">182</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00189">189</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -413,7 +419,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property availableRasterMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00197">197</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00204">204</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -443,7 +449,37 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property currentRasterMap </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00218">218</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00225">225</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a878d310615ecbd0bd56a780cf2ff4981" name="a878d310615ecbd0bd56a780cf2ff4981"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a878d310615ecbd0bd56a780cf2ff4981">&#9670;&#160;</a></span>bindableCurrentRasterMapTileSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QBindable&lt; int &gt; GeoMaps::GeoMapProvider::bindableCurrentRasterMapTileSize </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property currentRasterMapTileSize </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00237">237</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -473,7 +509,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property geoJSON </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00230">230</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00249">249</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -571,7 +607,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>This is a helper method for QML, where creation of waypoint objects is difficult.</p>
 <dl class="section return"><dt>Returns</dt><dd>An invalid waypoint </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00308">308</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00327">327</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -601,7 +637,37 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property currentRasterMap </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00212">212</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00219">219</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="ae0597a1f208ceb301e431b5b44b3d390" name="ae0597a1f208ceb301e431b5b44b3d390"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0597a1f208ceb301e431b5b44b3d390">&#9670;&#160;</a></span>currentRasterMapTileSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int GeoMaps::GeoMapProvider::currentRasterMapTileSize </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property currentRasterMapTileSize </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00231">231</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -756,7 +822,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property geoJSON </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00224">224</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00243">243</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -824,7 +890,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property serverUrl </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00236">236</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00255">255</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -941,7 +1007,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property terrainMapTiles </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00248">248</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00267">267</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1084,6 +1150,33 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 
 </div>
 </div>
+<a id="ad344fa8a8e4939fa1dec1e3ac74f4bb0" name="ad344fa8a8e4939fa1dec1e3ac74f4bb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad344fa8a8e4939fa1dec1e3ac74f4bb0">&#9670;&#160;</a></span>currentRasterMapTileSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int GeoMaps::GeoMapProvider::currentRasterMapTileSize</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel read">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current Raster Map Tile Size. </p>
+<p>This property holds the tile size name of the current raster map, or the default value 512. </p>
+
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00135">135</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+
+</div>
+</div>
 <a id="a54c3286040d622453e26e5580a7f5898" name="a54c3286040d622453e26e5580a7f5898"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a54c3286040d622453e26e5580a7f5898">&#9670;&#160;</a></span>geoJSON</h2>
 
@@ -1107,7 +1200,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Union of all aviation maps in <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> format. </p>
 <p>This property holds all installed aviation maps in <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> format, combined into one <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> document. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00135">135</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00142">142</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1134,7 +1227,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>URL under which this server is presently reachable. </p>
 <p>The property holds returns the Url where the server is listening to incoming connections. This is typically string of the form "http://127.0.0.1:3470". If the server is not listening to incoming connections, the string is empty. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00143">143</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00150">150</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1161,7 +1254,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>URL where a style file for the base map can be retrieved. </p>
 <p>This property holds a URL where a mapbox style file for the base map can be retrieved. The style file is adjusted, so that its source element points to the local <a class="el" href="classGeoMaps_1_1TileServer.html" title="HTTP server for mapbox&#39; MBTiles files.">TileServer</a> URL where the base map is served. Whenever the base map changes (e.g. because new maps have been downloaded or removed), the style file is deleted, a new style file is generated and a notification signal is emitted. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00154">154</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00161">161</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1188,7 +1281,7 @@ QListQSharedPointer&lt; <a class="el" href="classFileFormats_1_1MBTILES.html">Fi
 <p>Waypoints. </p>
 <p>A list of all waypoints known to this <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Provides geographic information.">GeoMapProvider</a> (that is, the union of all waypoints in any of the installed maps) </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00164">164</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00171">171</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>

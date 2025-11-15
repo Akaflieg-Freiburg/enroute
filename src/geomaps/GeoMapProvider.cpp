@@ -483,10 +483,12 @@ void GeoMaps::GeoMapProvider::setCurrentRasterMap(const QString& mapName)
         }
     }
 
+    const QScopedPropertyUpdateGroup guard;
     m_tileServer.removeMbtilesFileSet(u"rasterMap"_s);
     const QVector<QSharedPointer<FileFormats::MBTILES>> single {newRasterMap};
     m_tileServer.addMbtilesFileSet(u"rasterMap"_s, single);
     m_currentRasterMap = newRasterMapName;
+    m_currentRasterMapTileSize = newRasterMap->tileSize();
     emit styleFileURLChanged();
 }
 

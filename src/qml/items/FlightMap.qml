@@ -117,6 +117,8 @@ Map {
             styleId: "rasterTiles"
             type: "raster"
             property string url: GeoMapProvider.serverUrl + "/rasterMap/"
+            property int tileSize: GeoMapProvider.currentRasterMapTileSize
+
         }
 
 
@@ -350,7 +352,8 @@ Map {
             property string source: "rasterTiles"
 
             layout: {
-                "visibility": 'visible' // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
+                "visibility": 'visible', // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
+                "raster-resampling": 'linear'
             }
         }
 

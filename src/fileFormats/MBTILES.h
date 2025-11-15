@@ -106,6 +106,16 @@ namespace FileFormats
      */
     [[nodiscard]] QByteArray tile(int zoom, int x, int y);
 
+    /*! \brief Retrieve tile size from an MBTILES file in raster format
+     *
+     *  This method finds the size of the raster tiles in an MBTILES file.
+     *
+     *  @returns A tile size (typically 256 or 512), or the default value
+     *  512 if the data is not available. The value returned is never
+     *  negative.
+     */
+    [[nodiscard]] int tileSize();
+
     /*! \brief Retrieve metadata of the MBTILES file
      *
      *  MBTILES files contain metadata, in the form of a list of key/value

@@ -1,9 +1,15 @@
 # Changelog
 
-## [3.0.4] - ??
+## [3.0.5] - ??
 
 ### Fixed
 - Fixed problem with export of flight routes or waypoints (#565)
+
+
+## [3.0.4] - 2025-11-15
+
+### Fixed
+- Fixed blurred display of raster maps with tiles of size 256x256 (#566)
 
 
 ## [3.0.3] - 2025-11-02

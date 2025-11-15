@@ -105,7 +105,8 @@ public:
 
     /*! \brief Available Raster Maps
      *
-     *  This property holds the names of raster maps that can be set with setCurrentRasterMap.
+     *  This property holds the names of raster maps that can be set with
+     *  setCurrentRasterMap.
      */
     Q_PROPERTY(QStringList availableRasterMaps READ availableRasterMaps BINDABLE bindableAvailableRasterMaps)
 
@@ -118,8 +119,8 @@ public:
 
     /*! \brief Current Raster Map
      *
-     *  This property holds the name of the current raster map, or an empty string if
-     *  no map has been set. The raster map is exposed via the URL
+     *  This property holds the name of the current raster map, or an empty
+     *  string if no map has been set. The raster map is exposed via the URL
      *
      *  GeoMapProvider.serverUrl() + "/rasterMap/"
      *
@@ -129,8 +130,8 @@ public:
 
     /*! \brief Current Raster Map Tile Size
      *
-     *  This property holds the tile size name of the current raster map, or
-     *  the default value 512.
+     *  This property holds the tile size name of the current raster map, or the
+     *  default value 512.
      */
     Q_PROPERTY(int currentRasterMapTileSize READ currentRasterMapTileSize BINDABLE bindableCurrentRasterMapTileSize)
 
@@ -143,9 +144,10 @@ public:
 
     /*! \brief URL under which this server is presently reachable
      *
-     *  The property holds returns the Url where the server is listening to incoming
-     *  connections. This is typically string of the form "http://127.0.0.1:3470".
-     *  If the server is not listening to incoming connections, the string is empty.
+     *  The property holds returns the Url where the server is listening to
+     *  incoming connections. This is typically string of the form
+     *  "http://127.0.0.1:3470". If the server is not listening to incoming
+     *  connections, the string is empty.
      */
     Q_PROPERTY(QString serverUrl READ serverUrl NOTIFY serverUrlChanged)
 
@@ -319,8 +321,8 @@ public:
 
     /*! \brief Create invalid waypoint
      *
-     *  This is a helper method for QML, where creation of waypoint objects
-     *  is difficult.
+     *  This is a helper method for QML, where creation of waypoint objects is
+     *  difficult.
      *
      *  @returns An invalid waypoint
      */
@@ -333,8 +335,8 @@ public:
      *
      *  @param coordinate Coordinate
      *
-     *  @return Elevation of the terrain at coordinate over MSP, or
-     *  NaN if the terrain elevation is unknown
+     *  @return Elevation of the terrain at coordinate over MSP, or NaN if the
+     *  terrain elevation is unknown
      */
     [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
 
@@ -416,7 +418,7 @@ private:
     QRegularExpression specialChars{QStringLiteral("[^a-zA-Z0-9]")};
     QHash<QString, QString> simplifySpecialChars_cache;
 
-    // This is the path under which map tiles are available on the _tileServer.
+    // This is the path under which map tiles are available on the m_tileServer.
     // This is set to a random number that changes every time the set of MBTile
     // files changes
     QString _currentBaseMapPath;

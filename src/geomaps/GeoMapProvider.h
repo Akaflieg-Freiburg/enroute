@@ -127,6 +127,13 @@ public:
      */
     Q_PROPERTY(QString currentRasterMap READ currentRasterMap WRITE setCurrentRasterMap BINDABLE bindableCurrentRasterMap)
 
+    /*! \brief Current Raster Map Tile Size
+     *
+     *  This property holds the tile size name of the current raster map, or
+     *  the default value 512.
+     */
+    Q_PROPERTY(int currentRasterMapTileSize READ currentRasterMapTileSize BINDABLE bindableCurrentRasterMapTileSize)
+
     /*! \brief Union of all aviation maps in GeoJSON format
      *
      * This property holds all installed aviation maps in GeoJSON format,
@@ -216,6 +223,18 @@ public:
      * @returns Property currentRasterMap
      */
     [[nodiscard]] QBindable<QString> bindableCurrentRasterMap() const {return &m_currentRasterMap;}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property currentRasterMapTileSize
+     */
+    [[nodiscard]] int currentRasterMapTileSize() const {return m_currentRasterMapTileSize.value();}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property currentRasterMapTileSize
+     */
+    [[nodiscard]] QBindable<int> bindableCurrentRasterMapTileSize() const {return &m_currentRasterMapTileSize;}
 
     /*! \brief Getter function for the property with the same name
      *
@@ -427,6 +446,7 @@ private:
 
     QProperty<QString> m_currentRasterMap {u"non-empty place holder"_s};
     QPropertyNotifier m_currentRasterMapNotifier; // Used to save the currentRasterMap
+    QProperty<int> m_currentRasterMapTileSize {512};
 
     Q_OBJECT_BINDABLE_PROPERTY(GeoMaps::GeoMapProvider, QByteArray, m_combinedGeoJSON, &GeoMaps::GeoMapProvider::geoJSONChanged)
     QList<Waypoint> _waypoints_; // Cache: Waypoints

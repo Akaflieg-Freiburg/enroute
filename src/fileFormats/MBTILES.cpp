@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QImage>
 #include <QRandomGenerator>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -185,3 +186,50 @@ auto FileFormats::MBTILES::tile(int zoom, int x, int y) -> QByteArray
 
     return {};
 }
+
+int FileFormats::MBTILES::tileSize()
+{
+    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
+    if (!m_dataBase.open())
+    {
+        return 512;
+    }
+
+    // First, try to get tileSize from metadata table
+    QSqlQuery query(m_dataBase);
+    query.prepare(u"SELECT value FROM metadata WHERE name = 'tileSize'"_s);
+
+    if (query.exec() && query.next())
+    {
+        bool ok = false;
+        const int tileSize = query.value(0).toInt(&ok);
+        if (ok && tileSize > 0)
+        {
+            return tileSize;
+        }
+    }
+
+    // If not in metadata, read actual tile dimensions
+    // Get any tile from the database
+    query.prepare(u"SELECT tile_data FROM tiles LIMIT 1"_s);
+
+    if (query.exec() && query.next())
+    {
+        const QByteArray tileData = query.value(0).toByteArray();
+
+        // Load the image to get its dimensions
+        QImage image;
+        if (image.loadFromData(tileData))
+        {
+            // Tiles should be square, but check both dimensions
+            if (image.width() == image.height())
+            {
+                return image.width();
+            }
+        }
+    }
+
+    // Default fallback for raster tiles
+    return 512;
+}
+

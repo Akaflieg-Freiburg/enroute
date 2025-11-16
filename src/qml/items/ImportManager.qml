@@ -332,15 +332,6 @@ Item {
                     importRasterMapDialog.accept()
                 }
             }
-
-            Label {
-                Layout.fillWidth: true
-                visible: DataManager.baseMapsVector.hasFile
-                text: qsTr("To avoid conflicts, vector maps will be not be shown while raster maps are installed.")
-
-                wrapMode: Text.Wrap
-                textFormat: Text.StyledText
-            }
         }
 
         onAboutToShow: {

@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.5] - 2025-11-17
+
+### Fixed
+- Issues in side view of airspaces with fault vertical borders (#568)
+
+
 ## [3.0.4] - 2025-11-15
 
 ### Fixed

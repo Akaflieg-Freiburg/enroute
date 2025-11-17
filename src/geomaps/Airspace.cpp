@@ -136,7 +136,7 @@ Units::Distance GeoMaps::Airspace::estimateBoundMSL(const QString& boundString, 
         auto result = AL.remove(0, 2).toDouble(&ok);
         if (ok)
         {
-            return Units::Distance::fromFT(100*result) + ownshipBarometricAltitude - ownshipGeometricAltitude;
+            return qMax(terrainElevation, Units::Distance::fromFT(100*result) + ownshipBarometricAltitude - ownshipGeometricAltitude);
         }
         return {};
     }
@@ -163,7 +163,7 @@ Units::Distance GeoMaps::Airspace::estimateBoundMSL(const QString& boundString, 
     auto result = AL.toDouble(&ok);
     if (ok)
     {
-        return Units::Distance::fromFT(result) - Navigation::Atmosphere::height(QNH) + ownshipBarometricAltitude - ownshipGeometricAltitude;
+        return qMax(terrainElevation, Units::Distance::fromFT(result) - Navigation::Atmosphere::height(QNH) + ownshipBarometricAltitude - ownshipGeometricAltitude);
     }
     return {};
 }

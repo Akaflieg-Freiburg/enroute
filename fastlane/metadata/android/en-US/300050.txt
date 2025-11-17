@@ -1,0 +1,2 @@
+### Fixed
+- Issues in side view of airspaces with fault vertical borders (#568)

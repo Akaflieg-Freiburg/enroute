@@ -297,47 +297,51 @@ void Ui::SideviewQuickItem::updateProperties()
             const auto& geoCoordinate = geoCoordinates[i];
             if ((i != xCoordinates.size()-1) && airspacePolygon.contains(geoCoordinate))
             {
-                upper << QPointF(x, altToYCoordinate(airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude)));
-                lower << QPointF(x, altToYCoordinate(airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude)));
-            }
-            else
-            {
-                if (!upper.isEmpty())
+                auto u = airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude);
+                auto l = airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude);
+                if (l < u)
                 {
-                    std::reverse(lower.begin(), lower.end());
-                    QPolygonF polygon(upper + lower);
-                    polygon << upper[0];
-                    if ((airspace.CAT() == u"A"_s) || (airspace.CAT() == u"B"_s) || (airspace.CAT() == u"C"_s) || (airspace.CAT() == u"D"_s))
-                    {
-                        airspacePolygonsA << polygon;
-                    }
-                    if (airspace.CAT() == u"CTR"_s)
-                    {
-                        airspacePolygonsCTR << polygon;
-                    }
-                    if ((airspace.CAT() == u"R"_s) || (airspace.CAT() == u"P"_s) || (airspace.CAT() == u"DNG"_s))
-                    {
-                        airspacePolygonsR << polygon;
-                    }
-                    if ((airspace.CAT() == u"ATZ"_s) || (airspace.CAT() == u"RMZ"_s) || (airspace.CAT() == u"TIA"_s) || (airspace.CAT() == u"TIZ"_s))
-                    {
-                        airspacePolygonsRMZ << polygon;
-                    }
-                    if (airspace.CAT() == u"NRA"_s)
-                    {
-                        airspacePolygonsNRA << polygon;
-                    }
-                    if ((airspace.CAT() == u"PJE"_s) || (airspace.CAT() == u"SUA"_s))
-                    {
-                        airspacePolygonsPJE << polygon;
-                    }
-                    if (airspace.CAT() == u"TMZ"_s)
-                    {
-                        airspacePolygonsTMZ << polygon;
-                    }
-                    upper.clear();
-                    lower.clear();
+                    upper << QPointF(x, altToYCoordinate(u));
+                    lower << QPointF(x, altToYCoordinate(l));
+                    continue;
                 }
+            }
+
+            if (!upper.isEmpty())
+            {
+                std::reverse(lower.begin(), lower.end());
+                QPolygonF polygon(upper + lower);
+                polygon << upper[0];
+                if ((airspace.CAT() == u"A"_s) || (airspace.CAT() == u"B"_s) || (airspace.CAT() == u"C"_s) || (airspace.CAT() == u"D"_s))
+                {
+                    airspacePolygonsA << polygon;
+                }
+                if (airspace.CAT() == u"CTR"_s)
+                {
+                    airspacePolygonsCTR << polygon;
+                }
+                if ((airspace.CAT() == u"R"_s) || (airspace.CAT() == u"P"_s) || (airspace.CAT() == u"DNG"_s))
+                {
+                    airspacePolygonsR << polygon;
+                }
+                if ((airspace.CAT() == u"ATZ"_s) || (airspace.CAT() == u"RMZ"_s) || (airspace.CAT() == u"TIA"_s) || (airspace.CAT() == u"TIZ"_s))
+                {
+                    airspacePolygonsRMZ << polygon;
+                }
+                if (airspace.CAT() == u"NRA"_s)
+                {
+                    airspacePolygonsNRA << polygon;
+                }
+                if ((airspace.CAT() == u"PJE"_s) || (airspace.CAT() == u"SUA"_s))
+                {
+                    airspacePolygonsPJE << polygon;
+                }
+                if (airspace.CAT() == u"TMZ"_s)
+                {
+                    airspacePolygonsTMZ << polygon;
+                }
+                upper.clear();
+                lower.clear();
             }
         }
     }

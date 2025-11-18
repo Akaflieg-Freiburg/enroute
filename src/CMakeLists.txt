@@ -434,6 +434,8 @@ add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
 # Add executable and libraries
 qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
+set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
+set(MACOSX_BUNDLE_BUNDLE_VERSION 2) #MacOS Build Number -> increment manually
 set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE true
     MACOSX_BUNDLE_GUI_IDENTIFIER "de.akafliegfreiburg.enroute"

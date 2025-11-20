@@ -25,7 +25,6 @@
 #include <QPermissions>
 #include <QProcess>
 #include <QScreen>
-#include <QtCore/private/qandroidextras_p.h>
 
 #include "platform/PlatformAdaptor_Android.h"
 

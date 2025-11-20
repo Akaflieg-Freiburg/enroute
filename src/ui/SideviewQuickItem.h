@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QElapsedTimer>
 #include <QQuickItem>
 #include <QTimer>
 

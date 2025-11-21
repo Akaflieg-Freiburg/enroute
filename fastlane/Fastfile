@@ -23,6 +23,7 @@ platform :android do
       '-DQT_ANDROID_BUILD_ALL_ABIS=ON',
       '-DQT_ANDROID_SIGN_APK=ON',
       '-DQT_ANDROID_SIGN_AAB=ON',
+      '-GNinja',
       '-S ..',
       '-B ../build/build-android-release'
     ].join(' ')

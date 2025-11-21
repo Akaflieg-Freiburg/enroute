@@ -34,6 +34,10 @@ AppWindow {
 
     flags: ((Qt.platform.os === "android") || (Qt.platform.os === "ios")) ? Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint | Qt.Window : Qt.Window
 
+    Component.onCompleted: {
+        Application.styleHints.colorScheme = Qt.ColorScheme.Dark
+    }
+
     topPadding: 0
     leftPadding: 0
     rightPadding: 0
@@ -885,7 +889,7 @@ AppWindow {
     }
 
     Shortcut {
-        sequence: StandardKey.Quit
+        sequences: [StandardKey.Quit]
         onActivated: Qt.quit()
     }
 

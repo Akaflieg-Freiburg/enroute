@@ -248,13 +248,13 @@ Item {
 
                     Shortcut {
                         enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
-                        sequence: StandardKey.ZoomIn
+                        sequences: [StandardKey.ZoomIn]
                         onActivated: flightMap.zoomLevel = Math.round(flightMap.zoomLevel + 1)
                     }
 
                     Shortcut {
                         enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
-                        sequence: StandardKey.ZoomOut
+                        sequences: [StandardKey.ZoomOut]
                         onActivated: flightMap.zoomLevel = Math.round(flightMap.zoomLevel - 1)
                     }
 

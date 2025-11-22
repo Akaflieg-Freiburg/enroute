@@ -1,0 +1,4 @@
+### Fixed
+- No File Extension when exporting files (#565)
+
+- GPS Height off in some Android devices (#549)

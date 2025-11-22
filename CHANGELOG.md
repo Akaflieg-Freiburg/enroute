@@ -1,9 +1,11 @@
 # Changelog
 
-## [3.0.6] - ??
+## [3.0.6] - 2025-11-22
 
 ### Fixed
-- Fixed problem with export of flight routes or waypoints (#565)
+- No File Extension when exporting files (#565)
+
+- GPS Height off in some Android devices (#549)
 
 
 ## [3.0.5] - 2025-11-17

@@ -65,6 +65,7 @@ void Navigation::Navigator::deferredInitialization()
 {
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
+
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
     connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(); });
@@ -102,8 +103,10 @@ void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
 
     // Save aircraft
     QFile file(m_aircraftFileName);
-    file.open(QIODevice::WriteOnly);
-    file.write(newAircraft.toJSON());
+    if (file.open(QIODevice::WriteOnly))
+    {
+        file.write(newAircraft.toJSON());
+    }
 
     // Set new aircraft
     m_aircraft = newAircraft;

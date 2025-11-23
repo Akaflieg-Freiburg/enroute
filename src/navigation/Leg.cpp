@@ -20,9 +20,6 @@
 
 #include "Leg.h"
 
-#include "GlobalObject.h"
-#include "GlobalSettings.h"
-#include "navigation/Navigator.h"
 #include <utility>
 
 
@@ -30,12 +27,10 @@
 // Constructors and destructors
 //
 
-Navigation::Leg::Leg(GeoMaps::Waypoint  start, GeoMaps::Waypoint  end) :
-    m_start(std::move(start)), m_end(std::move(end))
+Navigation::Leg::Leg(GeoMaps::Waypoint start, GeoMaps::Waypoint end) :
+    m_start(std::move(start)), m_end(std::move(end)),
+    m_geoPath({m_start.coordinate(), m_end.coordinate()}, 2.0*nearThreshold.toM())
 {
-    m_geoPath.addCoordinate(m_start.coordinate());
-    m_geoPath.addCoordinate(m_end.coordinate());
-    m_geoPath.setWidth( 2.0*nearThreshold.toM() );
 }
 
 
@@ -136,16 +131,18 @@ auto Navigation::Leg::isFollowing(const Positioning::PositionInfo& positionInfo)
 }
 
 
-auto Navigation::Leg::isNear(const Positioning::PositionInfo& positionInfo) const -> bool
+bool Navigation::Leg::isNear(const Positioning::PositionInfo& positionInfo) const
 {
     if (!isValid() || !positionInfo.isValid()) {
         return false;
     }
 
-    if (m_start.coordinate().distanceTo(positionInfo.coordinate()) < nearThreshold.toM()) {
+    if (m_start.coordinate().distanceTo(positionInfo.coordinate()) < nearThreshold.toM())
+    {
         return true;
     }
-    if (m_end.coordinate().distanceTo(positionInfo.coordinate()) < nearThreshold.toM()) {
+    if (m_end.coordinate().distanceTo(positionInfo.coordinate()) < nearThreshold.toM())
+    {
         return true;
     }
     return m_geoPath.contains(positionInfo.coordinate());

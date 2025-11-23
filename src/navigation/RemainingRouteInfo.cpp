@@ -25,18 +25,4 @@
 // Methods
 //
 
-auto Navigation::operator==(const Navigation::RemainingRouteInfo& A, const Navigation::RemainingRouteInfo& B) -> bool
-{
-    return ((A.status == B.status) &&
-            (A.note == B.note) &&
-
-            (A.nextWP == B.nextWP) &&
-            (A.nextWP_DIST == B.nextWP_DIST) &&
-            (A.nextWP_ETE == B.nextWP_ETE) &&
-            (A.nextWP_ETA == B.nextWP_ETA) &&
-
-            (A.finalWP == B.finalWP) &&
-            (A.finalWP_DIST == B.finalWP_DIST) &&
-            (A.finalWP_ETE == B.finalWP_ETE) &&
-            (A.finalWP_ETA == B.finalWP_ETA));
-}
+//bool Navigation::operator==(const Navigation::RemainingRouteInfo& A, const Navigation::RemainingRouteInfo& B) = default;

@@ -41,7 +41,7 @@ jobs:
       with:
         cache: 'true'
         cache-key-prefix: 'install-qt-action-macOS-host'
-        version: '6.9.3'
+        version: '6.10.1'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
     - name: Set QT_HOST_PATH
       run: |
@@ -52,7 +52,7 @@ jobs:
         cache: 'true'
         cache-key-prefix: 'install-qt-action-iOS'
         target: 'ios'
-        version: '6.9.3'
+        version: '6.10.1'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtsensors qtspeech qtwebsockets qtwebview'
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
@@ -103,7 +103,7 @@ jobs:
     - name: Compile and Install maplibre-native-qt
       run: |
         $QT_ROOT_DIR/bin/qt-cmake \
-          -S enrouteDependencies/maplibre-native-qt \
+          -S enrouteDependencies/maplibre-native-qt-flat \
           -B build-maplibre-native-qt \
           -G Ninja \
           -DBUILD_TESTING=OFF \

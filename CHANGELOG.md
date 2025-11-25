@@ -3,6 +3,8 @@
 ## [3.0.7] - 2025-11-25
 
 ### Fixed
+- Ownship symbol too close to edge of screen (#573)
+
 - No File Extension when exporting files (#565)
 
 - GPS Height off in some Android devices (#549)

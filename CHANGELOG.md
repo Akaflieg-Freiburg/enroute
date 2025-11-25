@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.6] - 2025-11-22
+## [3.0.7] - 2025-11-25
 
 ### Fixed
 - No File Extension when exporting files (#565)

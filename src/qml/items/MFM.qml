@@ -96,7 +96,10 @@ Item {
 
             Item {
                 SplitView.fillHeight: true
-                SplitView.minimumHeight: gridView.implicitHeight
+                // WARNING: The following line is a workaround against a bug in Qt 6.10.1:
+                // as soon as a page header is shown, the implicitHeight of gridView does
+                // not update anymore :-(
+                SplitView.minimumHeight: followGPSButton.height*5
 
                 Plugin {
                     id: mapPlugin
@@ -299,7 +302,7 @@ Item {
                         // of the aircraft. The following lines find a good radius for that
                         // circle, which ensures that the circle does not collide with any of the
                         // GUI elements.
-                        const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0)
+                        const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0 - 2*font.pixelSize)
                         const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
                         return ownPosition.coordinate.atDistanceAndAzimuth(radiusInM, animatedTrack)

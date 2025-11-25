@@ -334,7 +334,7 @@ Page {
             delegate: MapSet {}
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            section.property: "modelData.section"
+            section.property: "section"
             section.delegate: sectionHeading
 
             // Refresh list of maps on overscroll
@@ -365,7 +365,7 @@ Page {
             delegate: vacDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            section.property: "modelData.section"
+            section.property: "section"
             section.delegate: sectionHeading
 
             // Refresh list of maps on overscroll
@@ -409,7 +409,7 @@ Page {
             delegate: MapSet {}
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            section.property: "modelData.section"
+            section.property: "section"
             section.delegate: sectionHeading
 
             // Refresh list of maps on overscroll

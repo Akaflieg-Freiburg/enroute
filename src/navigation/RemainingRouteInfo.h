@@ -47,7 +47,7 @@ class RemainingRouteInfo {
     QML_VALUE_TYPE(remainingRouteInfo)
 
     /*! \brief Comparison */
-    friend auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) -> bool;
+    friend bool operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) = default;
     friend class Navigation::Navigator;
 
 public:
@@ -159,9 +159,6 @@ private:
     Units::Timespan finalWP_ETE {};
     QDateTime finalWP_ETA;
 };
-
-/*! \brief Comparison */
-auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) -> bool;
 
 
 } // namespace Navigation

@@ -36,13 +36,19 @@ Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
 
 void Ui::ScaleQuickItem::paint(QPainter* painter)
 {
+
     // Safety check. Continue only if data provided is sane
-    if (m_pixelPer10km < 2) {
+    if (qIsNaN(m_pixelPer10km))
+    {
+        return;
+    }
+    if (m_pixelPer10km < 2)
+    {
         return;
     }
 
     // Pre-compute a few numbers that will be used when drawing
-    qreal pixelPerUnit   = NAN;
+    qreal pixelPerUnit = NAN;
     switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
     {
     case Navigation::Aircraft::Kilometer:
@@ -55,11 +61,22 @@ void Ui::ScaleQuickItem::paint(QPainter* painter)
         pixelPerUnit = m_pixelPer10km * 0.1852;
         break;
     }
-    qreal const scaleSizeInUnit = m_vertical ? (height() - 10.0) / pixelPerUnit
-                                            : (width() - 10.0) / pixelPerUnit;
+    if (qIsNaN(pixelPerUnit))
+    {
+        return;
+    }
+    qreal const scaleSizeInUnit = m_vertical ? (height() - 10.0) / pixelPerUnit : (width() - 10.0) / pixelPerUnit;
     qreal const ScaleUnitInUnit = pow(10.0, floor(log10(scaleSizeInUnit)));
+    if (qIsNaN(ScaleUnitInUnit))
+    {
+        return;
+    }
     int const sizeOfUnitInPix = qRound(ScaleUnitInUnit * pixelPerUnit);
     qreal const sizeOfScaleInUnit = floor(scaleSizeInUnit / ScaleUnitInUnit) * ScaleUnitInUnit;
+    if (qIsNaN(sizeOfScaleInUnit))
+    {
+        return;
+    }
     int const sizeOfScaleInPix = qRound(sizeOfScaleInUnit * pixelPerUnit);
 
     // Compute size of text. Set font to somewhat smaller than standard size.

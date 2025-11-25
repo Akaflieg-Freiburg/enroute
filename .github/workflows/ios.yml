@@ -68,7 +68,7 @@ jobs:
           -DENABLE_DOCS=OFF \
           -DENABLE_SHARED_LIB=OFF \
           -DENABLE_STATIC_LIB=ON \
-          -DCMAKE_OSX_ARCHITECTURES="arm64" \
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
           -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-bzip2-iOS
         cmake --install build-bzip2-iOS
@@ -78,7 +78,7 @@ jobs:
           -G Ninja  \
           -S enrouteDependencies/zlib \
           -B build-zlib-iOS \
-          -DCMAKE_OSX_ARCHITECTURES="arm64" \
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
           -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-zlib-iOS
         cmake --install build-zlib-iOS
@@ -96,7 +96,7 @@ jobs:
           -DENABLE_BZIP2=OFF \
           -DENABLE_LZMA=OFF \
           -DENABLE_ZSTD=OFF \
-          -DCMAKE_OSX_ARCHITECTURES="arm64" \
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
           -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-libzip
         cmake --install build-libzip
@@ -109,7 +109,7 @@ jobs:
           -DBUILD_TESTING=OFF \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
-          -DCMAKE_OSX_ARCHITECTURES="arm64" \
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
           -DCMAKE_PREFIX_PATH=$QT_ROOT_DIR \
           -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-maplibre-native-qt
@@ -130,7 +130,9 @@ jobs:
         create-dmg enroute-iphonesimulator.dmg build-enroute/src/Debug-iphonesimulator
     - name: Upload to developerBuilds
       run: |
-        gh release upload --clobber developerBuilds ../enroute-iphonesimulator.dmg
+        echo "Skip Uploading developer build because of size reasons..."
+        ls -lah ../enroute-iphonesimulator.dmg
+        #gh release upload --clobber developerBuilds ../enroute-iphonesimulator.dmg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       working-directory: enroute

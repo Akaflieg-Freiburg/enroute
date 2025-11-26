@@ -23,13 +23,67 @@
 #include <utility>
 
 
+namespace {
+
+double deg2rad(double deg)
+{
+    return deg * M_PI / 180.0;
+}
+
+double haversine(double lat1, double lon1, double lat2, double lon2)
+{
+    const double R = 6371000.0; // Earth radius (meters)
+    const double dLat = lat2 - lat1;
+    const double dLon = lon2 - lon1;
+    const double a = sin(dLat/2)*sin(dLat/2) + cos(lat1)*cos(lat2)*sin(dLon/2)*sin(dLon/2);
+    return 2 * R * atan2(sqrt(a), sqrt(1-a));
+}
+
+double bearing(double lat1, double lon1, double lat2, double lon2)
+{
+    const double y = sin(lon2-lon1) * cos(lat2);
+    const double x = cos(lat1)*sin(lat2) - sin(lat1)*cos(lat2)*cos(lon2-lon1);
+    return atan2(y, x);
+}
+
+Units::Distance distancePointToSegment(const QGeoCoordinate& segmentStart, const QGeoCoordinate& segmentEnd, const QGeoCoordinate& P)
+{
+    const double R = 6371000.0;
+
+    const double lat1 = deg2rad(segmentStart.latitude());
+    const double lon1 = deg2rad(segmentStart.longitude());
+    const double lat2 = deg2rad(segmentEnd.latitude());
+    const double lon2 = deg2rad(segmentEnd.longitude());
+    const double latP = deg2rad(P.latitude());
+    const double lonP = deg2rad(P.longitude());
+
+    const double d13 = haversine(lat1, lon1, latP, lonP) / R;
+    const double d12 = haversine(lat1, lon1, lat2, lon2) / R;
+    const double brg13 = bearing(lat1, lon1, latP, lonP);
+    const double brg12 = bearing(lat1, lon1, lat2, lon2);
+
+    const double dxt = asin(sin(d13) * sin(brg13 - brg12)); // radians
+
+    // Check if projection lies outside the segment
+    const double dat = acos( cos(d13) / cos(dxt) );  // along-track distance
+    if (dat < 0)
+        return Units::Distance::fromM(haversine(latP, lonP, lat1, lon1)); // closest to A
+    if (dat > d12)
+        return Units::Distance::fromM(haversine(latP, lonP, lat2, lon2)); // closest to B
+
+    return Units::Distance::fromM(fabs(dxt) * R); // perpendicular distance
+}
+
+} // namespace
+
+
+
 //
 // Constructors and destructors
 //
 
 Navigation::Leg::Leg(GeoMaps::Waypoint start, GeoMaps::Waypoint end) :
-    m_start(std::move(start)), m_end(std::move(end)),
-    m_geoPath({m_start.coordinate(), m_end.coordinate()}, 2.0*nearThreshold.toM())
+    m_start(std::move(start)), m_end(std::move(end))
 {
 }
 
@@ -133,19 +187,14 @@ auto Navigation::Leg::isFollowing(const Positioning::PositionInfo& positionInfo)
 
 bool Navigation::Leg::isNear(const Positioning::PositionInfo& positionInfo) const
 {
-    if (!isValid() || !positionInfo.isValid()) {
+    if (!isValid() || !positionInfo.isValid())
+    {
         return false;
     }
 
-    if (m_start.coordinate().distanceTo(positionInfo.coordinate()) < nearThreshold.toM())
-    {
-        return true;
-    }
-    if (m_end.coordinate().distanceTo(positionInfo.coordinate()) < nearThreshold.toM())
-    {
-        return true;
-    }
-    return m_geoPath.contains(positionInfo.coordinate());
+    auto dp2s = distancePointToSegment(m_start.coordinate(), m_end.coordinate(), positionInfo.coordinate());
+    qWarning() << "Distance to path segment" << dp2s.toM() << "m";
+    return dp2s <= nearThreshold;
 }
 
 

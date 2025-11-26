@@ -230,7 +230,6 @@ private:
 
     GeoMaps::Waypoint m_start;
     GeoMaps::Waypoint m_end;
-    QGeoPath m_geoPath;
 };
 
 } // namespace Navigation

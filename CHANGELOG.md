@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.8] - 2025-
+
+### Fixed
+- Erraneous "off route" messages (#572)
+
+
 ## [3.0.7] - 2025-11-25
 
 ### Fixed

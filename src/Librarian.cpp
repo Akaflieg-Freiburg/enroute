@@ -325,7 +325,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                   + u"</p>"_s;
         result += u"<p>"_s
                   + tr("<strong>New Feature</strong>: ")
-                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.") + " "
+                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.") + u" "_s
                   + tr("We thank Simon Schneider and Markus Marks for help with the implementation. "
                        "Consult the manual for more information.")
                   + u"</p>"_s;

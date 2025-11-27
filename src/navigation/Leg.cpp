@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -187,13 +187,17 @@ auto Navigation::Leg::isFollowing(const Positioning::PositionInfo& positionInfo)
 
 bool Navigation::Leg::isNear(const Positioning::PositionInfo& positionInfo) const
 {
-    if (!isValid() || !positionInfo.isValid())
+    if (!isValid() || !positionInfo.isValid() || !m_start.isValid() || !m_end.isValid())
     {
         return false;
     }
 
     auto dp2s = distancePointToSegment(m_start.coordinate(), m_end.coordinate(), positionInfo.coordinate());
-    qWarning() << "Distance to path segment" << dp2s.toM() << "m";
+    if (!dp2s.isFinite())
+    {
+        return false;
+    }
+
     return dp2s <= nearThreshold;
 }
 

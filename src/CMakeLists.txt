@@ -558,6 +558,7 @@ endif()
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
+    ${Boost_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/3rdParty/KDSingleApplication/src
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include

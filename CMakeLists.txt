@@ -2,7 +2,7 @@
 # Set up cmake
 #
 
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.30)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -68,6 +68,7 @@ qt_policy(SET QTP0004 NEW)
 # External Packages
 #
 
+find_package(Boost REQUIRED)
 find_package(libzip REQUIRED)
 find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)

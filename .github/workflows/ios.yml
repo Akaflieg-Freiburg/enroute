@@ -132,7 +132,6 @@ jobs:
     - name: Upload to developerBuilds
       run: |
         echo "Skip uploading developer build because of size reasons..."
-        ls -lah ../enroute-iphonesimulator.dmg
         #gh release upload --clobber developerBuilds ../enroute-iphonesimulator.dmg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

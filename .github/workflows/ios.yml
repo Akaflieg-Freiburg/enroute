@@ -126,11 +126,12 @@ jobs:
         cmake --build build-enroute -- -sdk iphonesimulator
     - name: Package
       run: |
-        brew install create-dmg
-        create-dmg enroute-iphonesimulator.dmg build-enroute/src/Debug-iphonesimulator
+        echo "Skip packaging build because of size reasons..."
+        #brew install create-dmg
+        #create-dmg enroute-iphonesimulator.dmg build-enroute/src/Debug-iphonesimulator
     - name: Upload to developerBuilds
       run: |
-        echo "Skip Uploading developer build because of size reasons..."
+        echo "Skip uploading developer build because of size reasons..."
         ls -lah ../enroute-iphonesimulator.dmg
         #gh release upload --clobber developerBuilds ../enroute-iphonesimulator.dmg
       env:

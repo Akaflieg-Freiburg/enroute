@@ -22,9 +22,6 @@
 
 #include <QGeoPath>
 #include <QQmlEngine>
-#include <boost/geometry.hpp>
-#include <boost/geometry/geometries/point.hpp>
-#include <boost/geometry/geometries/segment.hpp>
 
 #include "geomaps/Waypoint.h"
 #include "navigation/Aircraft.h"
@@ -32,10 +29,6 @@
 #include "units/Angle.h"
 #include "units/Units.h"
 #include "weather/Wind.h"
-
-using boostGeoCoordinate = boost::geometry::model::point<double,2, boost::geometry::cs::geographic<boost::geometry::degree>>; // Geographic coordinates (lon,lat) in degrees
-using boostGeoPath = boost::geometry::model::segment<boostGeoCoordinate>;
-
 
 namespace Navigation {
 
@@ -237,7 +230,6 @@ private:
 
     GeoMaps::Waypoint m_start;
     GeoMaps::Waypoint m_end;
-    boostGeoPath boost_path;
 };
 
 } // namespace Navigation

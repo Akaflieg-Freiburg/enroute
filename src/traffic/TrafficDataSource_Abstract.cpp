@@ -41,7 +41,7 @@ Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(bool isCanonical
     m_pressureAltitudeTimer.setSingleShot(true);
     connect(&m_pressureAltitudeTimer, &QTimer::timeout, this, [this]() {m_pressureAltitude = Units::Distance();});
 
-    // Setup other times
+    // Setup other timers
     m_pressureAltitudeTimer.setSingleShot(true);
     m_trueAltitudeTimer.setInterval(5s);
     m_trueAltitudeTimer.setSingleShot(true);

@@ -227,7 +227,7 @@ public:
      */
     [[nodiscard]] QString trafficReceiverRuntimeError() const
     {
-        return m_trafficReceiverRuntimeError;
+        return m_trafficReceiverRuntimeError.value();
     }
 
     /*! \brief Getter function for the property with the same name
@@ -236,7 +236,7 @@ public:
      */
     [[nodiscard]] QString trafficReceiverSelfTestError() const
     {
-        return m_trafficReceiverSelfTestError;
+        return m_trafficReceiverSelfTestError.value();
     }
 
     /*! \brief Getter method for property with the same name

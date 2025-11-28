@@ -217,20 +217,13 @@ public:
      *
      *  @returns Property statusString
      */
-    [[nodiscard]] QString statusString() const
-    {
-        return m_statusString.value();
-    }
+    [[nodiscard]] QString statusString() const {return m_statusString.value();}
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property statusString
      */
-    [[nodiscard]] QBindable<QString> bindableStatusString() const
-    {
-        return &m_statusString;
-    }
-
+    [[nodiscard]] QBindable<QString> bindableStatusString() const {return &m_statusString;}
 
 
     //

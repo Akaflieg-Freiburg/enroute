@@ -117,8 +117,8 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
               tmp.end(),
               [](const Traffic::TrafficDataSource_Abstract* first, const Traffic::TrafficDataSource_Abstract* second)
               {
-                  bool aIsOgn = qobject_cast<const TrafficDataSource_Ogn*>(first) != nullptr;
-                  bool bIsOgn = qobject_cast<const TrafficDataSource_Ogn*>(second) != nullptr;
+                  const bool aIsOgn = qobject_cast<const TrafficDataSource_Ogn*>(first) != nullptr;
+                  const bool bIsOgn = qobject_cast<const TrafficDataSource_Ogn*>(second) != nullptr;
                   if (aIsOgn != bIsOgn)
                   {
                       return !aIsOgn && bIsOgn;;
@@ -368,7 +368,6 @@ void Traffic::TrafficDataProvider::onCurrentSourceChanged()
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor)
 {
-
     if (factor.ID() == m_trafficObjectWithoutPosition->ID())
     {
         m_trafficObjectWithoutPosition->setAnimate(true);
@@ -382,7 +381,6 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
         m_trafficObjectWithoutPosition->copyFrom(factor);
         m_trafficObjectWithoutPosition->startLiveTime();
     }
-
 }
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor)

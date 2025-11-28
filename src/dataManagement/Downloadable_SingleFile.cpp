@@ -129,7 +129,7 @@ auto DataManagement::Downloadable_SingleFile::description() -> QString
     // Extract infomation from GeoJSON
     if (m_fileName.endsWith(u".geojson"))
     {
-        QLockFile lockFile(m_fileName + ".lock");
+        QLockFile lockFile(m_fileName + u".lock"_s);
         lockFile.lock();
         QFile file(m_fileName);
         file.open(QIODevice::ReadOnly);
@@ -139,10 +139,10 @@ auto DataManagement::Downloadable_SingleFile::description() -> QString
         QString const concatInfoString = document.object()[QStringLiteral("info")].toString();
         if (!concatInfoString.isEmpty())
         {
-            result += "<p>" + tr("The map data was compiled from the following sources.") + "</p><ul>";
+            result += u"<p>"_s + tr("The map data was compiled from the following sources.") + u"</p><ul>"_s;
             auto infoStrings = concatInfoString.split(QStringLiteral(";"));
             foreach (auto infoString, infoStrings)
-                result += "<li>" + infoString + "</li>";
+                result += u"<li>"_s + infoString + u"</li>"_s;
             result += u"</ul>";
         }
     }
@@ -151,7 +151,7 @@ auto DataManagement::Downloadable_SingleFile::description() -> QString
     if (m_fileName.endsWith(u".mbtiles") || m_fileName.endsWith(u".raster") || m_fileName.endsWith(u".terrain"))
     {
         FileFormats::MBTILES mbtiles(m_fileName);
-        result += "<p>" + mbtiles.info() + "</p>";
+        result += u"<p>"_s + mbtiles.info() + u"</p>"_s;
     }
 
     // Extract infomation from text file - this is simply the first line

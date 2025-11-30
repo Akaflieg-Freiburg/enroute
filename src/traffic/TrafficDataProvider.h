@@ -25,7 +25,6 @@
 #include <QUdpSocket>
 
 #include "GlobalObject.h"
-#include "positioning/PositionInfoSource_Abstract.h"
 #include "traffic/ConnectionInfo.h"
 #include "traffic/TrafficDataSource_Abstract.h"
 
@@ -50,7 +49,7 @@ namespace Traffic {
  *  running in the foreground. This message allows devices to discover Enroute’s
  *  IP address, which can be used as the target of UDP unicast messages.
  */
-class TrafficDataProvider : public Positioning::PositionInfoSource_Abstract {
+class TrafficDataProvider : public QObject {
     Q_OBJECT
     QML_ELEMENT
     QML_SINGLETON
@@ -89,6 +88,15 @@ public:
      */
     Q_PROPERTY(QList<Traffic::TrafficDataSource_Abstract*> dataSources READ dataSources NOTIFY dataSourcesChanged)
 
+    /*! \brief Position information
+     *
+     *  This property holds information about the device position. To ensure
+     *  that the data is up-to-date, the position information will be set to an
+     *  invalid positionInfo when no data has arrived for more than the time
+     *  specified in PositionInfo::lifetime.
+     */
+    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo BINDABLE bindablePositionInfo)
+
     /*! \brief Pressure altitude
      *
      *  This property holds information about the pressure altitude reported by
@@ -104,6 +112,14 @@ public:
      *  receives heartbeat messages from at least one of the known receivers.
      */
     Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat BINDABLE bindableReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
+
+    /*! \brief Source status
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the status of the positionInfo source. This could typically be a string
+     *  of the form "OK" or "Insufficient permission to access position info"
+     */
+    Q_PROPERTY(QString statusString READ statusString BINDABLE bindableStatusString)
 
     /*! \brief Traffic objects whose position is known
      *
@@ -175,6 +191,24 @@ public:
 
     /*! \brief Getter method for property with the same name
      *
+     *  @returns Property positionInfo
+     */
+    [[nodiscard]] Positioning::PositionInfo positionInfo() const
+    {
+        return m_positionInfo.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    [[nodiscard]] QBindable<Positioning::PositionInfo> bindablePositionInfo() const
+    {
+        return &m_positionInfo;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
      *  @returns Property pressureAltitude
      */
     [[nodiscard]] Units::Distance pressureAltitude() const {return m_pressureAltitude.value();}
@@ -201,6 +235,24 @@ public:
     [[nodiscard]] QBindable<bool> bindableReceivingHeartbeat() const
     {
         return &m_receivingHeartbeat;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property statusString
+     */
+    [[nodiscard]] QString statusString() const
+    {
+        return m_statusString.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property statusString
+     */
+    [[nodiscard]] QBindable<QString> bindableStatusString() const
+    {
+        return &m_statusString;
     }
 
     /*! \brief Getter method for property with the same name
@@ -429,6 +481,8 @@ private:
     // Compute Methods
     //
 
+
+    QProperty<QString> m_statusString;
     QString computeStatusString();
 
     // UDP Socket for ForeFlight Broadcast messages.
@@ -459,6 +513,9 @@ private:
 
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, QString, m_trafficReceiverSelfTestError, &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged);
     QString computeTrafficReceiverSelfTestError();
+
+    QProperty<Positioning::PositionInfo> m_positionInfo;
+    Positioning::PositionInfo computePositionInfo();
 
     QProperty<Units::Distance> m_pressureAltitude;
     Units::Distance computePressureAltitude();

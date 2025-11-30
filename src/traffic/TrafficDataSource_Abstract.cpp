@@ -41,12 +41,16 @@ Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(bool isCanonical
     m_pressureAltitudeTimer.setSingleShot(true);
     connect(&m_pressureAltitudeTimer, &QTimer::timeout, this, [this]() {m_pressureAltitude = Units::Distance();});
 
+    // Setup timer for positionInfo
+    m_positionInfoTimer.setInterval( Positioning::PositionInfo::lifetime );
+    m_positionInfoTimer.setSingleShot(true);
+    connect(&m_positionInfoTimer, &QTimer::timeout, this, [this]() {setPositionInfo({});});
+
     // Setup other timers
     m_pressureAltitudeTimer.setSingleShot(true);
     m_trueAltitudeTimer.setInterval(5s);
     m_trueAltitudeTimer.setSingleShot(true);
 }
-
 
 void Traffic::TrafficDataSource_Abstract::setConnectivityStatus(const QString& newConnectivityStatus)
 {
@@ -58,7 +62,6 @@ void Traffic::TrafficDataSource_Abstract::setConnectivityStatus(const QString& n
     emit connectivityStatusChanged(m_connectivityStatus);
 }
 
-
 void Traffic::TrafficDataSource_Abstract::setErrorString(const QString& newErrorString)
 {
     if (m_errorString == newErrorString) {
@@ -67,6 +70,15 @@ void Traffic::TrafficDataSource_Abstract::setErrorString(const QString& newError
 
     m_errorString = newErrorString;
     emit errorStringChanged(m_errorString);
+}
+
+void Traffic::TrafficDataSource_Abstract::setPositionInfo(const Positioning::PositionInfo& info)
+{
+    if (info.isValid())
+    {
+        m_positionInfoTimer.start();
+    }
+    m_positionInfo = info;
 }
 
 void Traffic::TrafficDataSource_Abstract::setPressureAltitude(Units::Distance newPressureAltitude)

@@ -104,6 +104,15 @@ public:
     /*! \brief Icon that can be used to represent the connection in a GUI */
     Q_PROPERTY(QString icon READ icon CONSTANT)
 
+    /*! \brief Position information
+     *
+     *  This property holds information about the device position. To ensure
+     *  that the data is up-to-date, the position information will be set to an
+     *  invalid positionInfo when no data has arrived for more than the time
+     *  specified in PositionInfo::lifetime.
+     */
+    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo BINDABLE bindablePositionInfo)
+
     /*! \brief Pressure altitude
      *
      *  This property holds information about the pressure altitude, that is,
@@ -202,6 +211,24 @@ public:
      * @returns Property icon
      */
     [[nodiscard]] virtual QString icon() const = 0;
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    [[nodiscard]] Positioning::PositionInfo positionInfo() const
+    {
+        return m_positionInfo.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    [[nodiscard]] QBindable<Positioning::PositionInfo> bindablePositionInfo() const
+    {
+        return &m_positionInfo;
+    }
 
     /*! \brief Getter method for property with the same name
      *
@@ -321,13 +348,6 @@ signals:
      *  @param SSID Name of the WiFi network that is was used in use.
      */
     void passwordStorageRequest(const QString& SSID, const QString& password);
-
-    /*! \brief Position info
-     *
-     *  If this class received position information from a connected traffic
-     *  receiver, this information is emitted here.
-     */
-    void positionUpdated(Positioning::PositionInfo pInfo);
 
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
@@ -464,6 +484,16 @@ protected:
 
     /*! \brief Setter function for the property with the same name
      *
+     *  This method must be used by child classes to update the position info.
+     *  The class uses a timer internally to reset the position info to "invalid"
+     *  after the time specified in PositionInfo::lifetime seconds.
+     *
+     *  @param info Property positionInfo
+     */
+    void setPositionInfo(const Positioning::PositionInfo& info);
+
+    /*! \brief Setter function for the property with the same name
+     *
      *  This method must be used by child classes to update the pressure altitude
      *  The class uses a timer internally to reset the position info to "invalid"
      *  after the time specified in PositionInfo::lifetime seconds.
@@ -527,12 +557,16 @@ private:
     QTimer m_pressureAltitudeTimer;
 
     // Heartbeat timer
-    QTimer m_heartbeatTimer;
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficDataSource_Abstract, bool, m_receivingHeartbeat, false, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged);
+    QTimer m_heartbeatTimer;
 
     // Targets
     Traffic::TrafficFactor_WithPosition m_factor;
     Traffic::TrafficFactor_DistanceOnly m_factorDistanceOnly;
+
+    // Position Info for ownship
+    QProperty<Positioning::PositionInfo> m_positionInfo;
+    QTimer m_positionInfoTimer;
 };
 
 } // namespace Traffic

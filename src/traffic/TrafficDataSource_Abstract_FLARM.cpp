@@ -221,6 +221,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& se
         processFLARMMessagePXCV(arguments);
         return;
     }
+
+    qWarning() << "Unknown/unhandled FLARM/NMEA Message Type" << messageType;
 }
 
 
@@ -340,7 +342,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPRMC(const QString
         pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
     }
 
-    emit positionUpdated( Positioning::PositionInfo(pInfo, sourceName()) );
+    setPositionInfo(Positioning::PositionInfo(pInfo, sourceName()));
 }
 
 

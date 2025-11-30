@@ -24,10 +24,10 @@
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "Sensors.h"
+#include "Units.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
-#include "Units.h"
 
 
 using namespace Qt::Literals::StringLiterals;

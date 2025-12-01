@@ -353,8 +353,6 @@ void Traffic::TrafficDataProvider::onCurrentSourceChanged()
     {
         connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
         connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
-#warning
-        // connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
         connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
     }
     else

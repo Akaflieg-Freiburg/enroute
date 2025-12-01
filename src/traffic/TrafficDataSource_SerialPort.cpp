@@ -32,6 +32,7 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
     m_errorChangeHandler = m_port.bindableError().addNotifier([&]{onErrorOccurred(m_port.error());});
 }
 
+
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 {
     // Do not do anything if the traffic receiver is connected and is receiving.
@@ -56,6 +57,7 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
     }
 }
 
+
 void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 {
     if (m_port.isOpen())
@@ -75,6 +77,7 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
     {
     case QSerialPort::NoError:
         setErrorString("");
+        break;
     case QSerialPort::DeviceNotFoundError:
         setErrorString( tr("Non-existing device") );
         break;
@@ -108,6 +111,7 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
     }
 }
 
+
 void Traffic::TrafficDataSource_SerialPort::onReadyRead()
 {
     QString sentence;
@@ -116,6 +120,7 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
         processFLARMData(sentence);
     }
 }
+
 
 QString Traffic::TrafficDataSource_SerialPort::sourceName() const
 {

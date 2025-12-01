@@ -7,7 +7,7 @@
   "base-version": "6.9",
   "command": "enroute",
   "finish-args": [
-    "--device=dri",
+    "--device=all",
     "--env=QML_IMPORT_PATH=/app/qml",
     "--env=QT_PLUGIN_PATH=/app/plugins",
     "--filesystem=host",

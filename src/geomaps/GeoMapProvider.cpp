@@ -44,8 +44,10 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     m_combinedGeoJSON = emptyGeoJSON();
 
     QFile geoJSONCacheFile(geoJSONCache);
-    geoJSONCacheFile.open(QFile::ReadOnly);
-    m_combinedGeoJSON = geoJSONCacheFile.readAll();
+    if (geoJSONCacheFile.open(QFile::ReadOnly))
+    {
+        m_combinedGeoJSON = geoJSONCacheFile.readAll();
+    }
     geoJSONCacheFile.close();
 
     // Pass signal through when the tile server changes its URL
@@ -148,16 +150,22 @@ QString GeoMaps::GeoMapProvider::styleFileURL()
             file.setFileName(QStringLiteral(":/flightMap/empty.json"));
         }
 
-        file.open(QIODevice::ReadOnly);
-        QByteArray data = file.readAll();
-        data.replace("%URL%", (m_tileServer.serverUrl() + u"/"_s + _currentBaseMapPath).toLatin1());
-        data.replace("%URLT%", (m_tileServer.serverUrl() + u"/"_s + _currentTerrainMapPath).toLatin1());
-        data.replace("%URL2%", m_tileServer.serverUrl().toLatin1());
+        QByteArray data;
+        if (file.open(QIODevice::ReadOnly))
+        {
+            data = file.readAll();
+            data.replace("%URL%", (m_tileServer.serverUrl() + u"/"_s + _currentBaseMapPath).toLatin1());
+            data.replace("%URLT%", (m_tileServer.serverUrl() + u"/"_s + _currentTerrainMapPath).toLatin1());
+            data.replace("%URL2%", m_tileServer.serverUrl().toLatin1());
+            file.close();
+        }
 
         m_styleFile = new QTemporaryFile(this);
-        m_styleFile->open();
-        m_styleFile->write(data);
-        m_styleFile->close();
+        if (m_styleFile->open())
+        {
+            m_styleFile->write(data);
+            m_styleFile->close();
+        }
     }
     return u"file://"_s + m_styleFile->fileName();
 }
@@ -553,9 +561,11 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
         }
         m_combinedGeoJSON = result.combinedGeoJSON;
         QFile geoJSONCacheFile(geoJSONCache);
-        geoJSONCacheFile.open(QFile::WriteOnly);
-        geoJSONCacheFile.write(m_combinedGeoJSON);
-        geoJSONCacheFile.close();
+        if (geoJSONCacheFile.open(QFile::WriteOnly))
+        {
+            geoJSONCacheFile.write(m_combinedGeoJSON);
+            geoJSONCacheFile.close();
+        }
     });
 }
 
@@ -654,9 +664,12 @@ GeoMaps::GeoMapProvider::aviationDataCacheResult GeoMaps::GeoMapProvider::fillAv
             QLockFile lockFile(JSONFileName + u".lock"_s);
             lockFile.lock();
             QFile file(JSONFileName);
-            file.open(QIODevice::ReadOnly);
-            auto document = QJsonDocument::fromJson(file.readAll());
-            file.close();
+            QJsonDocument document;
+            if (file.open(QIODevice::ReadOnly))
+            {
+                document = QJsonDocument::fromJson(file.readAll());
+                file.close();
+            }
             lockFile.unlock();
 
             for(const auto& value : document.object()[QStringLiteral("features")].toArray())

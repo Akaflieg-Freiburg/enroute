@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -62,34 +62,32 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/authors.html"_s)
     {
-        return "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
-               + "<p><strong>"+tr("Address")+"</strong>: Stefan Kebekus, Wintererstraße 77, 79104 Freiburg, Germany · <a href='mailto:stefan.kebekus@gmail.com'>stefan.kebekus@gmail.com</a></p>"
-               + "<h3>" + tr("Contributions") + "</h3>"
-               + "<ul style='margin-left:-25px;'>"
-               + "<li>"
-               + "<strong>" + tr("iOS Version") + ":</strong> " + tr("The app has been ported to iOS by Simon Schneider, who also maintains the iOS port. Simon received his PPL license in 2024. Like Stefan, he is a member of the Akaflieg Freiburg flight club.")
-               + "</li>"
-               + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Heinz Blöchinger has helped us with file import functionality. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.")
-               + "</li>"
-               + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an embedded software Engineer.")
-               + "</li>"
-               + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Tom Linz completed height density calculation. He received his PPL license in late 2024. Tom works as a development engineer for safety systems.")
-               + "</li>"
-               + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Markus Marks helped to implement the side view. Based in southern Germany, Markus is an enthusiastic glider pilot software developer working in embedded systems.")
-               + "</li>"
-               + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Simon Schneider implemented the first working version of the side view.")
-               + "</li>"
-               + "</ul>"
+        return u"<p>"_s + tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.") + u"</p>"_s
+               + u"<p><strong>"_s + tr("Address") + u"</strong>: Stefan Kebekus, Wintererstraße 77, 79104 Freiburg, Germany · <a href='mailto:stefan.kebekus@gmail.com'>stefan.kebekus@gmail.com</a></p>"_s
+               + u"<h3>"_s + tr("Contributions") + u"</h3>"_s
+               + u"<ul style='margin-left:-25px;'>"_s
+               + u"<li>"_s
+               + u"<strong>"_s + tr("iOS Version") + u":</strong> "_s + tr("The app has been ported to iOS by Simon Schneider, who also maintains the iOS port. Simon received his PPL license in 2024. Like Stefan, he is a member of the Akaflieg Freiburg flight club.")
+               + u"</li>"_s
+               + u"<li>"_s
+               + u"<strong>"_s + tr("Programming") + u":</strong> "_s + tr("Heinz Blöchinger has helped us with file import functionality. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.")
+               + u"</li>"_s
+               + u"<li>"_s
+               + u"<strong>"_s + tr("Programming") + u":</strong> "_s + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an embedded software Engineer.")
+               + u"</li>"_s
+               + u"<li>"_s
+               + u"<strong>"_s + tr("Programming") + u":</strong> "_s + tr("Tom Linz completed height density calculation. He received his PPL license in late 2024. Tom works as a development engineer for safety systems.")
+               + u"</li>"_s
+               + u"<li>"_s
+               + u"<strong>"_s + tr("Programming") + u":</strong> "_s + tr("Markus Marks helped to implement the side view. Based in southern Germany, Markus is an enthusiastic glider pilot software developer working in embedded systems.")
+               + u"</li>"_s
+               + u"<li>"_s
+               + u"<strong>"_s + tr("Programming") + u":</strong> "_s + tr("Simon Schneider implemented the first working version of the side view.")
+               + u"</li>"_s
+               + u"</ul>"_s
                + tr(R"html(
 <h3>Translations</h3>
-)html") + (R"html(
-<ul style="margin-left:-25px;">
-)html") + tr(R"html(
+)html") + u"<ul style='margin-left:-25px;'>"_s + tr(R"html(
 <li><strong>French:</strong> Adrien Crovato and Luca Riva. Both are private pilots and aerospace engineers. Luca is also doing aerobatics.</li>
 )html") + tr(R"html(
 <li><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</li>
@@ -97,29 +95,23 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <li><strong>Italian:</strong> Ivan Battistella and Antonio Fardella.  Antonio is an ultralight pilot with a passion for everything challenging.</li>
 )html") + tr(R"html(
 <li><strong>Polish:</strong> Sławek Mikuła.</li>
-)html") + (R"html(
+)html") + tr(R"html(
 <li><strong>Spanish:</strong> Luca Riva.</li>
-)html") + (R"html(
-</ul>
-)html") + tr(R"html(
+)html") + u"</ul>"_s + tr(R"html(
 <h3>Alumni</h3>
-)html") + (R"html(
-<ul style="margin-left:-25px;">
-)html") + tr(R"html(
+)html") + u"<ul style='margin-left:-25px;'>"_s + tr(R"html(
 <li>Luca Bertoncello (Italian translation)</li>
 )html") + tr(R"html(
 <li>Adrien Crovato (Integration of weather information)</li>
 )html")
-               + "<li>Michael Horbaschk (" + tr("Manual") + ")</li>"
+               + u"<li>Michael Horbaschk ("_s + tr("Manual") + u")</li>"_s
                + tr(R"html(
 <li>Szymon Kocur (Polish translation)</li>
 )html") + tr(R"html(
 <li>Heiner Tholen (User interface)</li>
 )html") + tr(R"html(
 <li>Johannes Zellner (Geoid correction for altitude)</li>
-)html") + (R"html(
-</ul>
-<p></p>)html");
+)html") + u"</ul><p></p>"_s;
     }
 
     if (name == u":text/aviationMapMissing.html"_s)
@@ -168,10 +160,12 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/info_license.html"_s)
     {
+        QString content;
         QFile file(QStringLiteral(":license_overview.html"));
-        file.open(QIODevice::ReadOnly);
-        auto content = QString::fromUtf8(file.readAll());
-
+        if (file.open(QIODevice::ReadOnly))
+        {
+            content = QString::fromUtf8(file.readAll());
+        }
         return tr(R"html(
 <h3>License</h3>
 
@@ -200,108 +194,108 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/privacy.html"_s)
     {
-        return  u"<p>"_s +
-               tr("This Privacy Policy outlines the data handling practices for the app <strong>Enroute Flight Navigation</strong>.") + " " +
-               tr("We prioritize your privacy and do not collect or store personally identifiable information.") + " " +
-               tr("However, for the app to function properly, it must communicate with certain servers on the Internet.") + " " +
-               tr("The following sections list the servers that <strong>Enroute Flight Navigation</strong> communicates with and explain the communication purposes.") + " " +
-               "</p>" +
+        return u"<p>"_s +
+               tr("This Privacy Policy outlines the data handling practices for the app <strong>Enroute Flight Navigation</strong>.") + u" "_s +
+               tr("We prioritize your privacy and do not collect or store personally identifiable information.") + u" "_s +
+               tr("However, for the app to function properly, it must communicate with certain servers on the Internet.") + u" "_s +
+               tr("The following sections list the servers that <strong>Enroute Flight Navigation</strong> communicates with and explain the communication purposes.") + u" "_s +
+               u"</p>"_s +
 
-               "<p>" +
-               tr("By using Enroute Flight Navigation, you agree to this Privacy Policy.") + " " +
+               u"<p>"_s +
+               tr("By using Enroute Flight Navigation, you agree to this Privacy Policy.") + u" "_s +
                tr("We may update this policy periodically, and any changes will be posted within the app.") +
-               "</p>" +
+               u"</p>"_s +
 
-               "<h3>" +
+               u"<h3>"_s +
                tr("1. Data and Anonymization Server (enroute-data)") +
-               "</h3>" +
+               u"</h3>"_s +
 
-               "<p>" +
-               tr("<strong>Enroute Flight Navigation</strong> regularly communicates with the server <strong>enroute-data.akaflieg-freiburg.de</strong> (referred to as <strong>enroute-data</strong>), operated by Hetzner Online GmbH on behalf of Akaflieg Freiburg.") + " " +
-               tr("The server's primary role is to facilitate the app's functionality while maintaining user privacy.") + " " +
-               "</p>" +
+               u"<p>"_s +
+               tr("<strong>Enroute Flight Navigation</strong> regularly communicates with the server <strong>enroute-data.akaflieg-freiburg.de</strong> (referred to as <strong>enroute-data</strong>), operated by Hetzner Online GmbH on behalf of Akaflieg Freiburg.") + u" "_s +
+               tr("The server's primary role is to facilitate the app's functionality while maintaining user privacy.") + u" "_s +
+               u"</p>"_s +
 
-               "<h4>" +
+               u"<h4>"_s +
                tr("1.1. Data Collected") +
-               "</h4>" +
+               u"</h4>"_s +
 
-               "<p>" +
-               tr("In every communication with <strong>enroute-data</strong>, your device's IP address is transmitted to the server.") + " " +
+               u"<p>"_s +
+               tr("In every communication with <strong>enroute-data</strong>, your device's IP address is transmitted to the server.") + u" "_s +
                tr("The server needs to know the IP address to respond.") +
-               "</p>" +
+               u"</p>"_s +
 
-               "<p>" +
+               u"<p>"_s +
                tr("The server stores the following data items in its log files.") +
-               "</p>" +
+               u"</p>"_s +
 
-               "<ul style='margin-left:-25px;'>" +
-               "<li>" + tr("<strong>Pseudonymized IP Address</strong>: The last byte of your IP address is replaced with a random number, ensuring it cannot identify you.") + "</li>" +
-               "<li>" + tr("<strong>Access Data</strong>: Date and time of access, error codes, and data sent.") + "</li>" +
-               "<li>" + tr("<strong>Software Information</strong>: The name of the web browser or software in use if the visitor’s software provides this information to the server.") + " " +
-               tr("<strong>Enroute Flight Navigation</strong> does not provide this information and sends a standard text ('Mozilla/5.0') instead.") + "</li>" +
-               "<li>" + tr("<strong>Operating System:</strong> The operating system's name if the visitor’s software provides this information to the server.") + " " +
-               tr("<strong>Enroute Flight Navigation</strong> does not provide this information. ") + "</li>" +
-               "</ul>" +
+               u"<ul style='margin-left:-25px;'>"_s +
+               u"<li>"_s + tr("<strong>Pseudonymized IP Address</strong>: The last byte of your IP address is replaced with a random number, ensuring it cannot identify you.") + u"</li>"_s +
+               u"<li>"_s + tr("<strong>Access Data</strong>: Date and time of access, error codes, and data sent.") + u"</li>"_s +
+               u"<li>"_s + tr("<strong>Software Information</strong>: The name of the web browser or software in use if the visitor’s software provides this information to the server.") + u" "_s +
+               tr("<strong>Enroute Flight Navigation</strong> does not provide this information and sends a standard text ('Mozilla/5.0') instead.") + u"</li>"_s +
+               u"<li>"_s + tr("<strong>Operating System:</strong> The operating system's name if the visitor’s software provides this information to the server.") + u" "_s +
+               tr("<strong>Enroute Flight Navigation</strong> does not provide this information. ") + u"</li>"_s +
+               u"</ul>"_s +
 
-               "<h4>" +
+               u"<h4>"_s +
                tr("1.2. Communication: Data Download") +
-               "</h4>" +
+               u"</h4>"_s +
 
-               "<p>" +
-               tr("The app checks for updates and downloads data from <strong>enroute-data</strong> to provide current maps and aviation data.") + " " +
+               u"<p>"_s +
+               tr("The app checks for updates and downloads data from <strong>enroute-data</strong> to provide current maps and aviation data.") + u" "_s +
                tr("Your IP address is transmitted in the process.") +
-               "</p>" +
+               u"</p>"_s +
 
-               "<h4>" +
-               tr("1.3. Communication: NOTAM, METAR and TAF ") + " " +
-               "</h4>" +
+               u"<h4>"_s +
+               tr("1.3. Communication: NOTAM, METAR and TAF ") + u" "_s +
+               u"</h4>"_s +
 
-               "<p>" +
-               tr("<strong>Enroute Flight Navigation</strong> shows NOTAMs, METARs, and TAFs for airfields near your current location and your currently planned route.") + " " +
-               tr("It also shows NOTAMs, METARs, and TAFs for all waypoints you open in the app.") + " " +
-               tr("To provide this functionality, requests are transmitted to the server <strong>enroute-data</strong> at regular intervals and whenever new data is requested.") + " " +
-               tr("In addition to your device's IP address, the following data items will be sent.") + " " +
-               "</p>" +
+               u"<p>"_s +
+               tr("<strong>Enroute Flight Navigation</strong> shows NOTAMs, METARs, and TAFs for airfields near your current location and your currently planned route.") + u" "_s +
+               tr("It also shows NOTAMs, METARs, and TAFs for all waypoints you open in the app.") + u" "_s +
+               tr("To provide this functionality, requests are transmitted to the server <strong>enroute-data</strong> at regular intervals and whenever new data is requested.") + u" "_s +
+               tr("In addition to your device's IP address, the following data items will be sent.") + u" "_s +
+               u"</p>"_s +
 
-               "<ul style='margin-left:-25px;'>" +
-               "<li>" + tr("Your current location") + "</li>" +
-               "<li>" + tr("The currently planned route") + "</li>" +
-               "<li>" + tr("Waypoint coordinates") + "</li>" +
-               "</ul>" +
+               u"<ul style='margin-left:-25px;'>"_s +
+               u"<li>"_s + tr("Your current location") + u"</li>"_s +
+               u"<li>"_s + tr("The currently planned route") + u"</li>"_s +
+               u"<li>"_s + tr("Waypoint coordinates") + u"</li>"_s +
+               u"</ul>"_s +
 
-               "<p>" +
-               tr("The server forwards requests for NOTAMs to a Federal Aviation Administration web service but hides your IP address, so the service will never see it.") + " " +
-               tr("The Federal Aviation Administration's web services are operated by the US government.") + " " +
-               tr("We do not control the data handling practices of these external services.") + " " +
+               u"<p>"_s +
+               tr("The server forwards requests for NOTAMs to a Federal Aviation Administration web service but hides your IP address, so the service will never see it.") + u" "_s +
+               tr("The Federal Aviation Administration's web services are operated by the US government.") + u" "_s +
+               tr("We do not control the data handling practices of these external services.") + u" "_s +
                tr("Detailed information can be found at <strong>api.faa.gov</strong>.") +
-               "</p>" +
+               u"</p>"_s +
 
-               "<h3>" +
+               u"<h3>"_s +
                tr("Other Servers ") +
-               "</h3>" +
+               u"</h3>"_s +
 
-               "<p>" +
-               tr("At the user's request, <strong>Enroute Flight Navigation</strong> may display external websites in an embedded browser window or ask the operating system to open external apps such as Google Maps.") + " " +
+               u"<p>"_s +
+               tr("At the user's request, <strong>Enroute Flight Navigation</strong> may display external websites in an embedded browser window or ask the operating system to open external apps such as Google Maps.") + u" "_s +
                tr("These external sites and apps are beyond our control and may collect their own data.") +
-               "</p>" +
+               u"</p>"_s +
 
-               "<p>" +
-               tr("Users expect web browsers to follow hyperlinks immediately but may not expect the same behavior elsewhere in the app.") + " " +
+               u"<p>"_s +
+               tr("Users expect web browsers to follow hyperlinks immediately but may not expect the same behavior elsewhere in the app.") + u" "_s +
                tr("To account for these expectations, <strong>Enroute Flight Navigation</strong> operates as follows.") +
-               "</p>" +
+               u"</p>"_s +
 
-               "<ul style='margin-left:-25px;'>" +
-               "<li>" + tr("<strong>Embedded Browser Windows</strong>: Clicking a hyperlink is considered authorization to open the external site.") + "</li>"
-                                                                                                                                                       "<li>" + tr("<strong>Outside Embedded Browser Windows</strong>: The app will ask for explicit user authorization before opening any external site or app.") + "</li>"
-                                                                                                                                                                      "</ul>" +
+               u"<ul style='margin-left:-25px;'>"_s +
+               u"<li>"_s + tr("<strong>Embedded Browser Windows</strong>: Clicking a hyperlink is considered authorization to open the external site.") + u"</li>"_s
+               u"<li>"_s + tr("<strong>Outside Embedded Browser Windows</strong>: The app will ask for explicit user authorization before opening any external site or app.") + u"</li>"_s
+               u"</ul>"_s +
 
-               "<h3>" +
+               u"<h3>"_s +
                tr("Responsible") +
-               "</h3> " +
+               u"</h3>"_s +
 
-               "<p>" +
-               "Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany" +
-               "</p>";
+               u"<p>"_s +
+               u"Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany"_s +
+               u"</p>"_s;
     }
 
     if (name == u"sideView"_s)
@@ -350,9 +344,12 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     QFile file(name);
-    file.open(QIODevice::ReadOnly);
-    auto content = file.readAll();
-    return QString::fromUtf8(content);
+    if (file.open(QIODevice::ReadOnly))
+    {
+        auto content = file.readAll();
+        return QString::fromUtf8(content);
+    }
+    return {};
 }
 
 
@@ -394,14 +391,14 @@ bool Librarian::contains(const Navigation::Aircraft& acft)
 
 bool Librarian::contains(const QObject* obj)
 {
-    auto* route = qobject_cast<const Navigation::FlightRoute*>(obj);
+    const auto* route = qobject_cast<const Navigation::FlightRoute*>(obj);
     if (route == nullptr)
     {
         return false;
     }
 
 
-    QDir dir(directory(Library::Routes));
+    const QDir dir(directory(Library::Routes));
 
     // Check if directory exists
     if (!dir.exists())

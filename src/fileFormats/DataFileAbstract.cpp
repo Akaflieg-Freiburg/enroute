@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,13 +36,16 @@ QSharedPointer<QFile> FileFormats::DataFileAbstract::openFileURL(const QString& 
     if (fileName.startsWith(u"content://"_s))
     {
         auto* file = new QTemporaryFile();
-        file->open();
-
-        QFile contentFile(fileName);
-        contentFile.open(QIODeviceBase::ReadOnly);
-        auto buffer = contentFile.readAll();
-        file->write(buffer);
-        file->close();
+        if (file->open())
+        {
+            QFile contentFile(fileName);
+            if (contentFile.open(QIODeviceBase::ReadOnly))
+            {
+                auto buffer = contentFile.readAll();
+                file->write(buffer);
+            }
+            file->close();
+        }
         return QSharedPointer<QFile>(file);
     }
 

@@ -129,20 +129,23 @@ auto DataManagement::Downloadable_SingleFile::description() -> QString
     // Extract infomation from GeoJSON
     if (m_fileName.endsWith(u".geojson"))
     {
-        QLockFile lockFile(m_fileName + ".lock");
+        QLockFile lockFile(m_fileName + u".lock"_s);
         lockFile.lock();
+        QJsonDocument document;
         QFile file(m_fileName);
-        file.open(QIODevice::ReadOnly);
-        auto document = QJsonDocument::fromJson(file.readAll());
-        file.close();
+        if (file.open(QIODevice::ReadOnly))
+        {
+            document = QJsonDocument::fromJson(file.readAll());
+            file.close();
+        }
         lockFile.unlock();
         QString const concatInfoString = document.object()[QStringLiteral("info")].toString();
         if (!concatInfoString.isEmpty())
         {
-            result += "<p>" + tr("The map data was compiled from the following sources.") + "</p><ul>";
+            result += u"<p>"_s + tr("The map data was compiled from the following sources.") + u"</p><ul>"_s;
             auto infoStrings = concatInfoString.split(QStringLiteral(";"));
             foreach (auto infoString, infoStrings)
-                result += "<li>" + infoString + "</li>";
+                result += u"<li>"_s + infoString + u"</li>"_s;
             result += u"</ul>";
         }
     }
@@ -151,7 +154,7 @@ auto DataManagement::Downloadable_SingleFile::description() -> QString
     if (m_fileName.endsWith(u".mbtiles") || m_fileName.endsWith(u".raster") || m_fileName.endsWith(u".terrain"))
     {
         FileFormats::MBTILES mbtiles(m_fileName);
-        result += "<p>" + mbtiles.info() + "</p>";
+        result += u"<p>"_s + mbtiles.info() + u"</p>"_s;
     }
 
     // Extract infomation from text file - this is simply the first line
@@ -159,9 +162,11 @@ auto DataManagement::Downloadable_SingleFile::description() -> QString
     {
         // Open file and read first line
         QFile dataFile(m_fileName);
-        dataFile.open(QIODevice::ReadOnly);
-        auto description = dataFile.readLine();
-        result += QStringLiteral("<p>%1</p>").arg(QString::fromLatin1(description));
+        if (dataFile.open(QIODevice::ReadOnly))
+        {
+            auto description = dataFile.readLine();
+            result += QStringLiteral("<p>%1</p>").arg(QString::fromLatin1(description));
+        }
     }
 
     return result;
@@ -179,11 +184,14 @@ auto DataManagement::Downloadable_SingleFile::fileContent() const -> QByteArray
         return {};
     }
 
+    QByteArray result;
     QLockFile lockFile(m_fileName + ".lock");
     lockFile.lock();
-    file.open(QIODevice::ReadOnly);
-    QByteArray result = file.readAll();
-    file.close();
+    if (file.open(QIODevice::ReadOnly))
+    {
+        result = file.readAll();
+        file.close();
+    }
     lockFile.unlock();
 
     return result;
@@ -217,11 +225,11 @@ auto DataManagement::Downloadable_SingleFile::infoText() -> QString
 
         if (updateSize() != 0)
         {
-            displayText += " • " + tr("update available");
+            displayText += u" • "_s + tr("update available");
         }
         if (!url().isValid())
         {
-            displayText += " • " + tr("manually imported");
+            displayText += u" • "_s + tr("manually imported");
         }
     }
     else
@@ -334,7 +342,7 @@ void DataManagement::Downloadable_SingleFile::deleteFiles()
     auto oldUpdateSize = updateSize();
 
     emit aboutToChangeFile(m_fileName);
-    QLockFile lockFile(m_fileName + ".lock");
+    QLockFile lockFile(m_fileName + u".lock"_s);
     lockFile.lock();
     QFile::remove(m_fileName);
     lockFile.unlock();
@@ -375,7 +383,7 @@ void DataManagement::Downloadable_SingleFile::startDownload()
 
     // Copy the temporary file to the local file
     m_saveFile = new QSaveFile(m_fileName, this);
-    m_saveFile->open(QIODevice::WriteOnly);
+    (void)m_saveFile->open(QIODevice::WriteOnly);
 
     // Start download
     QNetworkRequest const request(m_url);
@@ -671,7 +679,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished()
 
     // Copy the temporary file to the local file
     emit aboutToChangeFile(m_fileName);
-    QLockFile lockFile(m_fileName + ".lock");
+    QLockFile lockFile(m_fileName + u".lock"_s);
     lockFile.lock();
     m_saveFile->commit();
     lockFile.unlock();

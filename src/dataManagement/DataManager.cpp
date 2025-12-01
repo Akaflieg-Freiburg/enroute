@@ -154,8 +154,8 @@ QString DataManagement::DataManager::import(const QString& fileName, const QStri
 {
     auto localFile = FileFormats::DataFileAbstract::openFileURL(fileName);
 
-    auto path = m_dataDirectory+"/Unsupported";
-    auto newFileName = path + "/" + newName;
+    auto path = m_dataDirectory + u"/Unsupported"_s;
+    auto newFileName = path + u"/"_s + newName;
 
     FileFormats::MBTILES mbtiles(localFile->fileName());
     switch(mbtiles.format())
@@ -191,8 +191,8 @@ QString DataManagement::DataManager::import(const QString& fileName, const QStri
 QString DataManagement::DataManager::importOpenAir(const QString& fileName, const QString& newName)
 {
 
-    auto path = m_dataDirectory+"/Unsupported";
-    auto newFileName = path + "/" + newName;
+    auto path = m_dataDirectory + u"/Unsupported"_s;
+    auto newFileName = path + u"/"_s + newName;
 
     QStringList errors;
     QStringList warnings;
@@ -218,9 +218,11 @@ QString DataManagement::DataManager::importOpenAir(const QString& fileName, cons
     newFileName = newFileName+u".geojson"_s;
     QFile::remove(newFileName);
     QFile file(newFileName);
-    file.open(QIODeviceBase::WriteOnly);
-    file.write(json.toJson());
-    file.close();
+    if (file.open(QIODeviceBase::WriteOnly))
+    {
+        file.write(json.toJson());
+        file.close();
+    }
     if (file.error() != QFileDevice::NoError)
     {
         QFile::remove(newFileName);
@@ -293,7 +295,7 @@ DataManagement::Downloadable_SingleFile* DataManagement::DataManager::createOrRe
         else
         {
             // The noops tag "<a name>" guarantees that this section will come first alphabetically
-            downloadable->setSection("<a name>"+tr("Manually Imported"));
+            downloadable->setSection(u"<a name>"_s + tr("Manually Imported"));
         }
 
         bool hasMapSet = false;
@@ -428,8 +430,8 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         {
             auto obj = map.toObject();
             auto mapFileName = obj.value(QStringLiteral("path")).toString();
-            auto localFileName = m_dataDirectory + "/" + mapFileName;
-            auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
+            auto localFileName = m_dataDirectory + u"/"_s + mapFileName;
+            auto mapUrlName = baseURL + u"/"_s + obj.value(QStringLiteral("path")).toString();
             QUrl const mapUrl(mapUrlName);
             auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
             qint64 const fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());

@@ -52,15 +52,18 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     // Find correct downloadable. We do this only if a QCoreApplication
     // exists, in order to avoid calling GlobalObject::mapManager during shutdown.
     QPointer<DataManagement::Downloadable_SingleFile> newFlarmnetDBDownloadable;
-    if (QCoreApplication::instance() != nullptr) {
+    if (QCoreApplication::instance() != nullptr)
+    {
         auto downloadables = GlobalObject::dataManager()->databases()->downloadables();
-        foreach(auto downloadableX, downloadables) {
+        foreach(auto downloadableX, downloadables)
+        {
             auto *downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
             if (downloadable == nullptr)
             {
                 continue;
             }
-            if (downloadable->objectName().contains(u"Flarm"_s)) {
+            if (downloadable->objectName().contains(u"Flarm"_s))
+            {
                 newFlarmnetDBDownloadable = downloadable;
                 break;
             }
@@ -68,27 +71,33 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     }
 
 
-    if (flarmnetDBDownloadable == newFlarmnetDBDownloadable) {
+    if (flarmnetDBDownloadable == newFlarmnetDBDownloadable)
+    {
         return;
     }
 
-    if (flarmnetDBDownloadable != nullptr) {
+    if (flarmnetDBDownloadable != nullptr)
+    {
         disconnect(flarmnetDBDownloadable, &DataManagement::Downloadable_Abstract::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
     }
 
     flarmnetDBDownloadable = newFlarmnetDBDownloadable;
-    if (flarmnetDBDownloadable != nullptr) {
+    if (flarmnetDBDownloadable != nullptr)
+    {
         connect(flarmnetDBDownloadable, &DataManagement::Downloadable_Abstract::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
 
         // Create an empty file, if no file exists. We set the FileModificationTime
         // to a point in the past, so that it will automatically be updated at the
         // next convenience.
-        if (!QFile::exists(flarmnetDBDownloadable->fileName())) {
+        if (!QFile::exists(flarmnetDBDownloadable->fileName()))
+        {
             QFile dataFile(flarmnetDBDownloadable->fileName());
-            dataFile.open(QIODevice::WriteOnly);
-            dataFile.write(tr("Placeholder file.").toLatin1());
-            dataFile.flush();
-            dataFile.setFileTime(QDateTime( QDate(2021, 8, 21), QTime(13, 0)), QFileDevice::FileModificationTime);
+            if (dataFile.open(QIODevice::WriteOnly))
+            {
+                dataFile.write(tr("Placeholder file.").toLatin1());
+                dataFile.flush();
+                dataFile.setFileTime(QDateTime( QDate(2021, 8, 21), QTime(13, 0)), QFileDevice::FileModificationTime);
+            }
         }
 
     }
@@ -120,16 +129,20 @@ auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
 {
 
     // If not in the cache, try to find the values in the file.
-    if (flarmnetDBDownloadable == nullptr) {
+    if (flarmnetDBDownloadable == nullptr)
+    {
         return {};
     }
 
     QFile dataFile(flarmnetDBDownloadable->fileName());
-    if (!dataFile.open(QIODevice::ReadOnly)) {
-        dataFile.open(QIODevice::WriteOnly);
-        dataFile.write(tr("Placeholder file.").toLatin1());
-        dataFile.flush();
-        dataFile.setFileTime(QDateTime( QDate(2021, 8, 21), QTime(13, 0)), QFileDevice::FileModificationTime);
+    if (!dataFile.open(QIODevice::ReadOnly))
+    {
+        if (dataFile.open(QIODevice::WriteOnly))
+        {
+            dataFile.write(tr("Placeholder file.").toLatin1());
+            dataFile.flush();
+            dataFile.setFileTime(QDateTime( QDate(2021, 8, 21), QTime(13, 0)), QFileDevice::FileModificationTime);
+        }
         return {};
     }
     dataFile.readLine();
@@ -139,11 +152,13 @@ auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
     qint64 const firstEntry = dataFile.pos();
     qint64 const numEntries = (dataFile.size() - firstEntry) / lineSize;
 
-    auto getKey = [firstEntry, lineSize](QFile& dataFile, qint64 entry) {
+    auto getKey = [firstEntry, lineSize](QFile& dataFile, qint64 entry)
+    {
         dataFile.seek(firstEntry + entry*lineSize);
         return QString::fromLatin1(dataFile.readLine(7));
     };
-    auto getVal = [firstEntry, lineSize](QFile& dataFile, qint64 entry) {
+    auto getVal = [firstEntry, lineSize](QFile& dataFile, qint64 entry)
+    {
         dataFile.seek(firstEntry + entry*lineSize + 7);
         return QString::fromLatin1(dataFile.readLine(16)).simplified();
     };
@@ -151,21 +166,27 @@ auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
     qint64 startIndex = 0;
     qint64 endIndex   = numEntries-1;
     do{
-        if (getKey(dataFile, startIndex) == key) {
+        if (getKey(dataFile, startIndex) == key)
+        {
             auto value = getVal(dataFile, startIndex);
             return value;
         }
-        if (getKey(dataFile, endIndex) == key) {
+        if (getKey(dataFile, endIndex) == key)
+        {
             auto value = getVal(dataFile, endIndex);
             return value;
         }
         qint64 const midIndex = (startIndex + endIndex) / 2;
-        if (midIndex == startIndex) {
+        if (midIndex == startIndex)
+        {
             return {};
         }
-        if (getKey(dataFile, midIndex) > key) {
+        if (getKey(dataFile, midIndex) > key)
+        {
             endIndex = midIndex;
-        } else {
+        }
+        else
+        {
             startIndex = midIndex;
         }
     }while(startIndex != endIndex);

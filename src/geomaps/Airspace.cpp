@@ -95,29 +95,33 @@ Units::Distance GeoMaps::Airspace::estimatedUpperBoundMSL(Units::Distance terrai
 }
 
 
-auto GeoMaps::Airspace::makeMetric(const QString& standard) -> QString
+QString GeoMaps::Airspace::makeMetric(const QString& standard)
 {
     QStringList list = standard.split(' ', Qt::SkipEmptyParts);
     if (list.isEmpty()) {
         return standard;
     }
 
-    if (list[0] == u"FL") {
-        if (list.size() < 2) {
+    if (list[0] == u"FL")
+    {
+        if (list.size() < 2)
+        {
             return standard;
         }
         bool ok = false;
         auto feetHeight = 100*list[1].toInt(&ok);
-        if (!ok) {
+        if (!ok)
+        {
             return standard;
         }
-        list[1] =QStringLiteral("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
+        list[1] = QStringLiteral("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
         return list.join(' ');
     }
 
     bool ok = false;
     auto feetHeight = list[0].toInt(&ok);
-    if (!ok) {
+    if (!ok)
+    {
         return standard;
     }
     list[0] = QStringLiteral("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));

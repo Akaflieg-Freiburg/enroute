@@ -1,9 +1,5 @@
 # Appearances of qRound
 
-dataManagement/DataManager.cpp:            qint64 const fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
-dataManagement/Downloadable_SingleFile.cpp:        m_downloadProgress = qRound((100.0 * static_cast<double>(bytesReceived)) / static_cast<double>(bytesTotal));
-geomaps/Airspace.cpp:        list[1] =QStringLiteral("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
-geomaps/Airspace.cpp:    list[0] = QStringLiteral("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
 navigation/Aircraft.cpp:    auto QUJ = qRound(from.azimuthTo(to));
 navigation/Aircraft.cpp:                    result += QStringLiteral("E %1").arg(qRound(E));
 navigation/Aircraft.cpp:        return QStringLiteral("%L1 kn").arg(qRound( speed.toKN() ));
@@ -15,11 +11,6 @@ navigation/Aircraft.cpp:        return QStringLiteral("%L1 ft/min").arg(qRound( 
 navigation/Aircraft.cpp:        return QStringLiteral("%L1 m/s").arg(qRound( speed.toMPS() ));
 navigation/Aircraft.cpp:        return QStringLiteral("%L1 l").arg(qRound( volume.toL() ));
 navigation/Aircraft.cpp:        return QStringLiteral("%L1 gal").arg(qRound( volume.toGAL() ));
-navigation/BaroCache.cpp:    auto FL = qRound(m_incomingPressureAltitude.toFeet()/100.0);
-navigation/Clock.cpp:    auto minutes = qRound( ((double)QDateTime::currentDateTime().secsTo(pointInTime))/60.0);
-navigation/Clock.cpp:    auto minutes = qRound( ((double)currentTime.secsTo(pointInTime))/60.0);
-navigation/Leg.cpp:        result += QStringLiteral(" • TC %1°").arg(qRound(TCInDEG));
-navigation/Leg.cpp:        result += QStringLiteral(" • TH %1°").arg(qRound(THInDEG));
 navigation/Navigator.cpp:        rri.nextWP_ETA = QDateTime::currentDateTimeUtc().addSecs( qRound64(rri.nextWP_ETE.toS()) );
 navigation/Navigator.cpp:            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( qRound64(rri.finalWP_ETE.toS()) ).toUTC();
 notam/NOTAMProvider.cpp:    const QGeoCoordinate coordinateRounded( qRound(coordinate.latitude()), qRound(coordinate.longitude()) );
@@ -39,15 +30,6 @@ ui/ScaleQuickItem.cpp:                                : qRound(height()) - 8;
 ui/ScaleQuickItem.cpp:        painter->drawText(-qRound(height()/2.0)-textWidth/2, baseX+textHeight, text);
 ui/SideviewQuickItem.cpp:        m_track = u"Direction → %1°"_s.arg( qRound(ownshipTrack.toDEG()));
 ui/SideviewQuickItem.cpp:    xCoordinates.reserve( qRound((width()+20)/step) );
-units/Angle.cpp:    int result = qRound(toDEG()/30.0);
-units/Distance.cpp:        roundedDist = qRound(toFeet());
-units/Distance.cpp:        roundedDist = qRound(toM());
-units/Distance.cpp:        roundedDist = qRound(toKM()*10.0)/10.0;
-units/Distance.cpp:        roundedDist = qRound(toMIL()*10.0)/10.0;
-units/Distance.cpp:        roundedDist = qRound(toNM()*10.0)/10.0;
-units/Distance.cpp:            roundedDist = qRound(roundedDist/100.0)*100.0;
-units/Distance.cpp:            roundedDist = qRound(roundedDist/10.0)*10.0;
-units/Timespan.cpp:    auto minutes = qRound(qAbs(toM()));
 weather/Decoder.cpp:                    results << QStringLiteral("%1 m").arg(qRound(*d));
 weather/Decoder.cpp:            results << QString::number(qRound(*d));
 weather/Decoder.cpp:                results << QStringLiteral("(%1 m)").arg(qRound(*d));

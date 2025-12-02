@@ -27,14 +27,16 @@ using namespace Qt::Literals::StringLiterals;
 
 auto Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBigNumbers, bool forceSign) const -> QString
 {
-    if (!isFinite()) {
+    if (!isFinite())
+    {
         return {};
     }
 
     double roundedDist = NAN;
     QString unit;
 
-    switch (units) {
+    switch (units)
+    {
     case Feet:
         roundedDist = qRound(toFeet());
         unit = QStringLiteral("ft");
@@ -58,19 +60,24 @@ auto Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBi
     }
 
     // Round value to reasonable numbers
-    if (roundBigNumbers) {
-        if (qAbs(roundedDist) > 1000.0) {
+    if (roundBigNumbers)
+    {
+        if (qAbs(roundedDist) > 1000.0)
+        {
             roundedDist = qRound(roundedDist/100.0)*100.0;
-        } else if (qAbs(roundedDist) > 100.0) {
+        }
+        else if (qAbs(roundedDist) > 100.0)
+        {
             roundedDist = qRound(roundedDist/10.0)*10.0;
         }
     }
 
     QString signString;
-    if (forceSign && roundedDist > 0.0) {
+    if (forceSign && roundedDist > 0.0)
+    {
         signString += u"+"_s;
     }
-    return signString + QString::number(roundedDist) + " " + unit;
+    return signString + QString::number(roundedDist) + u" "_s + unit;
 }
 
 

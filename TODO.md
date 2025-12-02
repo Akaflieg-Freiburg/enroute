@@ -1,16 +1,5 @@
 # Appearances of qRound
 
-navigation/Aircraft.cpp:    auto QUJ = qRound(from.azimuthTo(to));
-navigation/Aircraft.cpp:                    result += QStringLiteral("E %1").arg(qRound(E));
-navigation/Aircraft.cpp:        return QStringLiteral("%L1 kn").arg(qRound( speed.toKN() ));
-navigation/Aircraft.cpp:        return QStringLiteral("%L1 km/h").arg(qRound( speed.toKMH() ));
-navigation/Aircraft.cpp:        return QStringLiteral("%L1 mph").arg(qRound( speed.toMPH() ));
-navigation/Aircraft.cpp:        return signString+QStringLiteral("%L1 ft").arg(qRound(distance.toFeet()));
-navigation/Aircraft.cpp:        return signString+QStringLiteral("%L1 m").arg(qRound(distance.toM()));
-navigation/Aircraft.cpp:        return QStringLiteral("%L1 ft/min").arg(qRound( speed.toFPM() ));
-navigation/Aircraft.cpp:        return QStringLiteral("%L1 m/s").arg(qRound( speed.toMPS() ));
-navigation/Aircraft.cpp:        return QStringLiteral("%L1 l").arg(qRound( volume.toL() ));
-navigation/Aircraft.cpp:        return QStringLiteral("%L1 gal").arg(qRound( volume.toGAL() ));
 navigation/Navigator.cpp:        rri.nextWP_ETA = QDateTime::currentDateTimeUtc().addSecs( qRound64(rri.nextWP_ETE.toS()) );
 navigation/Navigator.cpp:            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( qRound64(rri.finalWP_ETE.toS()) ).toUTC();
 notam/NOTAMProvider.cpp:    const QGeoCoordinate coordinateRounded( qRound(coordinate.latitude()), qRound(coordinate.longitude()) );

@@ -101,13 +101,15 @@ void Navigation::Aircraft::setVerticalDistanceUnit(VerticalDistanceUnit newUnit)
 // Methods
 //
 
-auto Navigation::Aircraft::describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to) const -> QString
+QString Navigation::Aircraft::describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to) const
 {
     // Paranoid safety checks
-    if (!from.isValid()) {
+    if (!from.isValid())
+    {
         return {};
     }
-    if (!to.isValid()) {
+    if (!to.isValid())
+    {
         return {};
     }
 
@@ -124,7 +126,7 @@ auto Navigation::Aircraft::describeWay(const QGeoCoordinate &from, const QGeoCoo
         auto hDistM = from.distanceTo(to);
         auto vDistM = from.altitude() - to.altitude() - 300;
 
-        if (hDistM > 1000.0)
+        if (!qIsNaN(hDistM) && !qIsNaN(vDistM) &&(hDistM > 1000.0))
         {
             if (vDistM < 1)
             {
@@ -133,7 +135,7 @@ auto Navigation::Aircraft::describeWay(const QGeoCoordinate &from, const QGeoCoo
             else
             {
                 auto E = hDistM/vDistM;
-                if (E > 100)
+                if (!qIsNaN(E) && (E > 100))
                 {
                     result += QStringLiteral("E ∞");
                 }
@@ -177,13 +179,15 @@ auto Navigation::Aircraft::horizontalDistanceToString(Units::Distance distance) 
 }
 
 
-auto Navigation::Aircraft::horizontalSpeedToString(Units::Speed speed) const -> QString
+QString Navigation::Aircraft::horizontalSpeedToString(Units::Speed speed) const
 {
-    if (!speed.isFinite()) {
+    if (!speed.isFinite())
+    {
         return QStringLiteral("-");
     }
 
-    switch(m_horizontalDistanceUnit) {
+    switch(m_horizontalDistanceUnit)
+    {
     case Navigation::Aircraft::NauticalMile:
         return QStringLiteral("%L1 kn").arg(qRound( speed.toKN() ));
     case Navigation::Aircraft::Kilometer:
@@ -292,16 +296,19 @@ auto Navigation::Aircraft::toJSON() const -> QByteArray
 }
 
 
-auto Navigation::Aircraft::verticalDistanceToString(Units::Distance distance, bool forceSign) const -> QString
+QString Navigation::Aircraft::verticalDistanceToString(Units::Distance distance, bool forceSign) const
 {
-    if (!distance.isFinite()) {
+    if (!distance.isFinite())
+    {
         return QStringLiteral("-");
     }
     QString signString;
-    if (forceSign && (distance.toM() >= 0.0)) {
+    if (forceSign && (distance.toM() >= 0.0))
+    {
         signString = QStringLiteral("+");
     }
-    switch(m_verticalDistanceUnit) {
+    switch(m_verticalDistanceUnit)
+    {
     case Navigation::Aircraft::Feet:
         return signString+QStringLiteral("%L1 ft").arg(qRound(distance.toFeet()));
     case Navigation::Aircraft::Meters:
@@ -311,12 +318,14 @@ auto Navigation::Aircraft::verticalDistanceToString(Units::Distance distance, bo
 }
 
 
-auto Navigation::Aircraft::verticalSpeedToString(Units::Speed speed) const -> QString
+QString Navigation::Aircraft::verticalSpeedToString(Units::Speed speed) const
 {
-    if (!speed.isFinite()) {
+    if (!speed.isFinite())
+    {
         return QStringLiteral("-");
     }
-    switch(m_verticalDistanceUnit) {
+    switch(m_verticalDistanceUnit)
+    {
     case Navigation::Aircraft::Feet:
         return QStringLiteral("%L1 ft/min").arg(qRound( speed.toFPM() ));
     case Navigation::Aircraft::Meters:
@@ -326,19 +335,23 @@ auto Navigation::Aircraft::verticalSpeedToString(Units::Speed speed) const -> QS
 }
 
 
-auto Navigation::Aircraft::volumeToString(Units::Volume volume) const -> QString
+QString Navigation::Aircraft::volumeToString(Units::Volume volume) const
 {
-    if (!volume.isFinite()) {
+    if (!volume.isFinite())
+    {
         return QStringLiteral("-");
     }
-    switch(m_fuelConsumptionUnit) {
+    switch(m_fuelConsumptionUnit)
+    {
     case Navigation::Aircraft::LiterPerHour:
-        if (volume.toL() < 10.0) {
+        if (volume.toL() < 10.0)
+        {
             return QStringLiteral("%L1 l").arg(volume.toL(), 0, 'f', 1);
         }
         return QStringLiteral("%L1 l").arg(qRound( volume.toL() ));
     case Navigation::Aircraft::GallonPerHour:
-        if (volume.toGAL() < 10.0) {
+        if (volume.toGAL() < 10.0)
+        {
             return QStringLiteral("%L1 gal").arg(volume.toGAL(), 0, 'f', 1);
         }
         return QStringLiteral("%L1 gal").arg(qRound( volume.toGAL() ));

@@ -264,7 +264,9 @@ GeoMaps::Waypoint GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate positi
 
 Units::Distance decodeImageData(const QImage* image, double intraTileX, double intraTileY)
 {
-    if ((image == nullptr) || (intraTileX < 0.0) || (intraTileX > 1.0) || (intraTileY < 0.0) || (intraTileY > 1.0) || image->isNull())
+    if ((image == nullptr) || !qIsFinite(intraTileX) || !qIsFinite(intraTileY) ||
+        (intraTileX < 0.0) || (intraTileX > 1.0) || (intraTileY < 0.0) || (intraTileY > 1.0) ||
+        image->isNull())
     {
         return {};
     }
@@ -290,6 +292,11 @@ Units::Distance decodeImageData(const QImage* image, double intraTileX, double i
 
 Units::Distance GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordinate)
 {
+    if (!coordinate.isValid())
+    {
+        return {};
+    }
+
     const int zoomMin = 6;
     const int zoomMax = 10;
 

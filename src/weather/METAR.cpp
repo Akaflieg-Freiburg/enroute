@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -337,30 +337,30 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool s
         // Estimate 7.5% decrease in climb rate per 1000ft density height
         auto rateOfClimbDecreasePercentage = 0.0075 * densityAltitudeInFt;
 
-        if (takeoffDistIncPercentage > 25)
+        if (qIsFinite(takeoffDistIncPercentage) && (takeoffDistIncPercentage > 25))
         {
             performanceWarningsShown = true;
-            items += "<strong>"
+            items += u"<strong>"_s
                      + tr("Performance")
-                     + ":</strong> "
+                     + u":</strong> "_s
                      + tr("Expect %1\% increase in takeoff distance").arg(qRound(takeoffDistIncPercentage));
         }
 
         if (rateOfClimbDecreasePercentage > 25)
         {
             performanceWarningsShown = true;
-            if (rateOfClimbDecreasePercentage <= 90)
+            if (qIsFinite(rateOfClimbDecreasePercentage) && (rateOfClimbDecreasePercentage <= 90))
             {
-                items += "<strong>"
+                items += u"<strong>"_s
                          + tr("Performance")
-                         + ":</strong> "
+                         + u":</strong> "_s
                          + tr("Expect %1\% decrease in climb rate").arg(qRound(rateOfClimbDecreasePercentage));
             }
             else
             {
-                items += "<strong>"
+                items += u"<strong>"_s
                          + tr("Performance")
-                         + ":</strong> "
+                         + u":</strong> "_s
                          + tr("Expect drastic decrease in climb rate. Flying might be inadvisable.");
             }
         }

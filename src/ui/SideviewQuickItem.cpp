@@ -120,7 +120,14 @@ void Ui::SideviewQuickItem::updateProperties()
     else
     {
         ownshipTrack = Positioning::PositionProvider::lastValidTT();
-        m_track = u"Direction → %1°"_s.arg( qRound(ownshipTrack.toDEG()));
+        if (ownshipTrack.isFinite())
+        {
+            m_track = u"Direction → %1°"_s.arg( qRound(ownshipTrack.toDEG()));
+        }
+        else
+        {
+            m_track = QString();
+        }
     }
     if (!ownshipTrack.isFinite())
     {

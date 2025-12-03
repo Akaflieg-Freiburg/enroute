@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -88,32 +88,37 @@ Traffic::Warning::Warning(
 }
 
 
-auto Traffic::Warning::description() const -> QString
+QString Traffic::Warning::description() const
 {
     QStringList result;
 
     // Alarm type
-    if (m_alarmType == 2) {
+    if (m_alarmType == 2)
+    {
         result << QCoreApplication::translate("Traffic::Warning", "Traffic");
     }
-    if (m_alarmType == 3) {
+    if (m_alarmType == 3)
+    {
         result << QCoreApplication::translate("Traffic::Warning", "Obstacle");
     }
-    if (m_alarmType == 4) {
+    if (m_alarmType == 4)
+    {
         result << QCoreApplication::translate("Traffic::Warning", "Traffic advisory");
     }
 
 
     // Relative bearing
-    if (m_relativeBearing.isFinite()) {
+    if (m_relativeBearing.isFinite())
+    {
         result << QCoreApplication::translate("Traffic::Warning", "%1 position").arg(m_relativeBearing.toClock());
     }
 
 
     // Horizontal distance
-    if (m_hDist.isFinite() && !m_hDist.isNegative()) {
-
-        switch(GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
+    if (m_hDist.isFinite() && !m_hDist.isNegative())
+    {
+        switch(GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
+        {
         case Navigation::Aircraft::Kilometer:
             result << QCoreApplication::translate("Traffic::Warning", "Distance %1 km").arg(qRound(m_hDist.toKM()*10.0)/10.0);
             break;
@@ -128,16 +133,23 @@ auto Traffic::Warning::description() const -> QString
     }
 
     // Vertical distance
-    if (m_vDist.isFinite()) {
+    if (m_vDist.isFinite())
+    {
         QString const vDistString
             = GlobalObject::navigator()->aircraft().verticalDistanceToString(m_vDist, true);
 
-        if (qAbs(m_vDist.toFeet()) < 100) {
+        if (qAbs(m_vDist.toFeet()) < 100)
+        {
             result << QCoreApplication::translate("Traffic::Warning", "Same altitude");
-        } else {
-            if (m_vDist.isNegative()) {
+        }
+        else
+        {
+            if (m_vDist.isNegative())
+            {
                 result << QCoreApplication::translate("Traffic::Warning", "%1 below").arg(vDistString);
-            } else {
+            }
+            else
+            {
                 result << QCoreApplication::translate("Traffic::Warning", "%1 above").arg(vDistString);
             }
         }

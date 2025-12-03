@@ -34,7 +34,7 @@
 
 Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 {
-    m_aircraftFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft.json";
+    m_aircraftFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/aircraft.json"_s;
 
     // Restore wind
     QSettings const settings;

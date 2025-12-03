@@ -434,7 +434,14 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
             auto mapUrlName = baseURL + u"/"_s + obj.value(QStringLiteral("path")).toString();
             QUrl const mapUrl(mapUrlName);
             auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
-            qint64 const fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
+            qint64 fileSize = 0;
+            {
+                auto size = obj.value(QStringLiteral("size")).toDouble();
+                if (!qIsNaN(size))
+                {
+                    fileSize = qRound64(size);
+                }
+            }
 
             QGeoRectangle bbox;
             if (obj.contains(u"bbox"_s))

@@ -74,17 +74,20 @@ void Positioning::Geoid::readEGM()
 // points according to Numerical Recipies in C++ 3.6 "Interpolation in Two or
 // More Dimensions".
 //
-auto Positioning::Geoid::separation(const QGeoCoordinate& coord) -> Units::Distance
+Units::Distance Positioning::Geoid::separation(const QGeoCoordinate& coord)
 {
     // Paranoid safety checks
-    if (!coord.isValid()) {
+    if (!coord.isValid())
+    {
         return Units::Distance::fromM( qQNaN() );
     }
 
     // Read EGM vector if this has not been done already
-    if (egm.empty()) {
+    if (egm.empty())
+    {
         readEGM();
-        if (egm.empty()) {
+        if (egm.empty())
+        {
             return Units::Distance::fromM( qQNaN() );
         }
     }
@@ -92,7 +95,8 @@ auto Positioning::Geoid::separation(const QGeoCoordinate& coord) -> Units::Dista
     // Get lat/long
     auto latitude = coord.latitude();
     auto longitude = coord.longitude();
-    while (longitude < 0) {
+    while (longitude < 0)
+    {
         longitude += 360.;
     }
 
@@ -124,8 +128,10 @@ auto Positioning::Geoid::separation(const QGeoCoordinate& coord) -> Units::Dista
     double interpolated = 0;
     double row_dist = row(latitude) - north;
     double col_dist = col(longitude) - qFloor(col(longitude));
-    for (int const irow : {north, south}) {
-        for (int const icol : {west, east}) {
+    for (int const irow : {north, south})
+    {
+        for (int const icol : {west, east})
+        {
             interpolated += geoid(irow, icol) * (1 - row_dist) * (1 - col_dist);
             col_dist = 1 - col_dist;
         }

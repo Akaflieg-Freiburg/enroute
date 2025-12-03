@@ -36,7 +36,6 @@ Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
 
 void Ui::ScaleQuickItem::paint(QPainter* painter)
 {
-
     // Safety check. Continue only if data provided is sane
     if (qIsNaN(m_pixelPer10km))
     {

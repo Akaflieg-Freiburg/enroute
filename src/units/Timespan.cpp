@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,9 +23,11 @@
 using namespace Qt::Literals::StringLiterals;
 
 
-auto Units::Timespan::toHoursAndMinutes() const -> QString {
+QString Units::Timespan::toHoursAndMinutes() const
+{
     // Paranoid safety checks
-    if (!isFinite()) {
+    if (!isFinite())
+    {
         return QStringLiteral("-:--");
     }
 
@@ -34,7 +36,8 @@ auto Units::Timespan::toHoursAndMinutes() const -> QString {
     minutes = minutes % 60;
 
     QString result;
-    if (isNegative()) {
+    if (isNegative())
+    {
         result += u"-"_s;
     }
     result += QStringLiteral("%1:%2").arg(hours, 1, 10, QChar(u'0')).arg(minutes, 2, 10, QChar(u'0'));

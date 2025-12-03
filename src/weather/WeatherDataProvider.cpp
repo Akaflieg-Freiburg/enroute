@@ -43,7 +43,7 @@ Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(par
 void Weather::WeatherDataProvider::deferredInitialization()
 {
     // Read METAR/TAF from "weather.dat".
-    bool const success = load();
+    load();
 
     // Request METAR/TAF data every updateIntervalNormal_ms
     connect(&m_updateTimer, &QTimer::timeout, this, &Weather::WeatherDataProvider::requestUpdate);
@@ -55,7 +55,7 @@ void Weather::WeatherDataProvider::deferredInitialization()
     QTimer::singleShot(15s, this, &Weather::WeatherDataProvider::requestUpdate);
     connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &Weather::WeatherDataProvider::requestUpdate);
     connect(qGuiApp, &QGuiApplication::applicationStateChanged, [this](Qt::ApplicationState state) {
-        if ((state | Qt::ApplicationActive) != 0)
+        if ((state & Qt::ApplicationActive) != 0)
         {
             QTimer::singleShot(0, this, &Weather::WeatherDataProvider::requestUpdate);
         }
@@ -136,7 +136,7 @@ void Weather::WeatherDataProvider::downloadFinished()
 
     // Read all replies and store the data in respective maps
     bool hasError = false;
-    for(const auto& networkReply : m_networkReplies)
+    for(const auto& networkReply : std::as_const(m_networkReplies))
     {
         // Paranoid safety checks
         if (networkReply.isNull())
@@ -185,20 +185,20 @@ void Weather::WeatherDataProvider::downloadFinished()
         }
 
         auto tmpMETARs = m_METARs.value();
-        for(const auto& newMETAR : newMETARs)
+        for(const auto& newMETAR : std::as_const(newMETARs))
         {
             tmpMETARs[newMETAR.ICAOCode()] = newMETAR;
         }
         m_METARs = tmpMETARs;
 
         auto tmpTAFs = m_TAFs.value();
-        for(const auto& newTAF : newTAFs)
+        for(const auto& newTAF : std::as_const(newTAFs))
         {
             tmpTAFs[newTAF.ICAOCode()] = newTAF;
         }
         m_TAFs = tmpTAFs;
 
-        updateLogEntry le = {QDateTime::currentDateTimeUtc(), networkReply->property("bBox").value<QGeoRectangle>()};
+        const updateLogEntry le = {QDateTime::currentDateTimeUtc(), networkReply->property("bBox").value<QGeoRectangle>()};
         if (le.m_bBox.isValid() && le.m_time.isValid())
         {
             updateLog << le;
@@ -233,10 +233,10 @@ void Weather::WeatherDataProvider::downloadFinished()
 
 bool Weather::WeatherDataProvider::load()
 {
-    auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
+    auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/weather.dat"_s;
 
     // Use LockFile. If lock could not be obtained, do nothing.
-    QLockFile lockFile(stdFileName+".lock");
+    QLockFile lockFile(stdFileName + u".lock"_s);
     if (!lockFile.tryLock())
     {
         return false;
@@ -291,10 +291,10 @@ bool Weather::WeatherDataProvider::load()
 
 void Weather::WeatherDataProvider::save()
 {
-    auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
+    auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/weather.dat"_s;
 
     // Use LockFile. If lock could not be obtained, do nothing.
-    QLockFile lockFile(stdFileName+".lock");
+    QLockFile lockFile(stdFileName + u".lock"_s);
     if (!lockFile.tryLock())
     {
         return;
@@ -481,7 +481,7 @@ QString Weather::WeatherDataProvider::QNHInfo() const
         }
     }
 
-    if (closestMETARWithQNH.isValid())
+    if (closestMETARWithQNH.isValid() && qIsFinite(closestMETARWithQNH.QNH().toHPa()))
     {
         return tr("%1 hPa in %2, %3").arg(qRound(closestMETARWithQNH.QNH().toHPa()))
         .arg(closestMETARWithQNH.ICAOCode(),
@@ -545,8 +545,8 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& _bBox)
 
     // Check if bounding box is already covered
     updateLog.removeIf([](const updateLogEntry& ule) {return !ule.m_bBox.isValid() || !ule.m_time.isValid();});
-    updateLog.removeIf([](const updateLogEntry& ule) {return ule.m_time.addSecs(5*60) < QDateTime::currentDateTimeUtc();});
-    for(const auto& ule : updateLog)
+    updateLog.removeIf([](const updateLogEntry& ule) {return ule.m_time.addSecs(qint64(5*60)) < QDateTime::currentDateTimeUtc();});
+    for(const auto& ule : std::as_const(updateLog))
     {
         if (ule.m_bBox.contains(bBox))
         {
@@ -554,7 +554,7 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& _bBox)
         }
     }
     m_networkReplies.removeAll(nullptr);
-    for(const auto& nwr : m_networkReplies)
+    for(const auto& nwr : std::as_const(m_networkReplies))
     {
         if (!nwr->isRunning())
         {

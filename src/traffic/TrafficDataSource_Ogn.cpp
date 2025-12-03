@@ -47,6 +47,11 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
 
     // Once the socket connects, send a login string
     connect(&m_socket, &QTcpSocket::connected, this, [this]() {
+        if (!m_receiveRadius.isFinite())
+        {
+            return;
+        }
+
         // Send login string, e.g. "user ENR12345 pass 1234 vers 1.0.0 1.0 filter r/-48.0000/7.8512/99 t/o"
         auto approximatelastValidCoordinate = Positioning::PositionProvider::lastValidCoordinate();
         // Calculate the password based on the call sign
@@ -84,10 +89,15 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
     // Set up periodic update timer
     auto* periodicUpdateTimer = new QTimer(this);
     connect(periodicUpdateTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Ogn::periodicUpdate);
-    periodicUpdateTimer->start(60 * 1000); // 1 minute interval
+    periodicUpdateTimer->start(1min); // 1 minute interval
 
     // Whenever the approximate position changes, update the window for which traffic data is received.
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::approximateLastValidCoordinateChanged, this, [this]() {
+        if (!m_receiveRadius.isFinite())
+        {
+            return;
+        }
+
         auto approximatelastValidCoordinate = GlobalObject::positionProvider()->approximateLastValidCoordinate();
         m_textStream << u"# filter r/%1/%2/%3 t/o"_s
                             .arg(approximatelastValidCoordinate.latitude(), 1, 'f', 4)
@@ -113,10 +123,10 @@ void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
 
     // set Proxy
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    QString proxyUrl = env.value("HTTP_PROXY");
+    const QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    const QString proxyUrl = env.value(u"HTTP_PROXY"_s);
     if (!proxyUrl.isEmpty()) {
-        QUrl url(proxyUrl);
+        const QUrl url(proxyUrl);
         QNetworkProxy proxy;
         proxy.setType(QNetworkProxy::HttpProxy);
         proxy.setHostName(url.host());

@@ -67,10 +67,13 @@ Units::Distance distancePointToSegment(const QGeoCoordinate& segmentStart, const
     // Check if projection lies outside the segment
     const double dat = acos( cos(d13) / cos(dxt) );  // along-track distance
     if (dat < 0)
+    {
         return Units::Distance::fromM(haversine(latP, lonP, lat1, lon1)); // closest to A
+    }
     if (dat > d12)
+    {
         return Units::Distance::fromM(haversine(latP, lonP, lat2, lon2)); // closest to B
-
+    }
     return Units::Distance::fromM(fabs(dxt) * R); // perpendicular distance
 }
 
@@ -231,11 +234,13 @@ auto Navigation::Leg::description(Weather::Wind wind, const Navigation::Aircraft
         result += QStringLiteral(" • ETE %1 h").arg(_time.toHoursAndMinutes());
     }
     auto TCInDEG = TC().toDEG();
-    if (qIsFinite(TCInDEG)) {
+    if (qIsFinite(TCInDEG))
+    {
         result += QStringLiteral(" • TC %1°").arg(qRound(TCInDEG));
     }
     double const THInDEG = TH(wind, aircraft).toDEG();
-    if (qIsFinite(THInDEG)) {
+    if (qIsFinite(THInDEG))
+    {
         result += QStringLiteral(" • TH %1°").arg(qRound(THInDEG));
     }
 

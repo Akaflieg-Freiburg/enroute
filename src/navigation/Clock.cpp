@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -49,28 +49,42 @@ Navigation::Clock::Clock(QObject *parent) : GlobalObject(parent)
 
 QString Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime)
 {
-    auto minutes = qRound( ((double)QDateTime::currentDateTime().secsTo(pointInTime))/60.0);
+    auto roundedMinutes = 0;
+    {
+        auto minutes = ((double)QDateTime::currentDateTime().secsTo(pointInTime))/60.0;
+        if (!qIsNaN(minutes))
+        {
+            roundedMinutes = qRound(minutes);
+        }
+    }
 
-    bool const past = minutes < 0;
-    minutes = qAbs(minutes);
+    bool const past = roundedMinutes < 0;
+    roundedMinutes = qAbs(roundedMinutes);
 
-    if (minutes == 0) {
+    if (roundedMinutes == 0)
+    {
         return tr("just now");
     }
 
-    auto hours = minutes/60;
-    minutes = minutes%60;
+    auto hours = roundedMinutes/60;
+    roundedMinutes = roundedMinutes%60;
 
     QString result;
-    if (hours == 0) {
-        result = QStringLiteral("%1 min").arg(minutes);
-    } else {
-        result = QStringLiteral("%1:%2 h").arg(hours).arg(minutes, 2, 10, QChar('0'));
+    if (hours == 0)
+    {
+        result = QStringLiteral("%1 min").arg(roundedMinutes);
+    }
+    else
+    {
+        result = QStringLiteral("%1:%2 h").arg(hours).arg(roundedMinutes, 2, 10, QChar('0'));
     }
 
-    if (past) {
+    if (past)
+    {
         result = tr("%1 ago").arg(result);
-    } else {
+    }
+    else
+    {
         result = tr("in %1").arg(result);
     }
 
@@ -80,28 +94,42 @@ QString Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime)
 
 QString Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime, const QDateTime& currentTime)
 {
-    auto minutes = qRound( ((double)currentTime.secsTo(pointInTime))/60.0);
+    auto roundedMinutes = 0;
+    {
+        auto minutes = ((double)currentTime.secsTo(pointInTime))/60.0;
+        if (!qIsNaN(minutes))
+        {
+            roundedMinutes = qRound(minutes);
+        }
+    }
 
-    bool const past = minutes < 0;
-    minutes = qAbs(minutes);
+    bool const past = roundedMinutes < 0;
+    roundedMinutes = qAbs(roundedMinutes);
 
-    if (minutes == 0) {
+    if (roundedMinutes == 0)
+    {
         return tr("just now");
     }
 
-    auto hours = minutes/60;
-    minutes = minutes%60;
+    auto hours = roundedMinutes/60;
+    roundedMinutes = roundedMinutes%60;
 
     QString result;
-    if (hours == 0) {
-        result = QStringLiteral("%1 min").arg(minutes);
-    } else {
-        result = QStringLiteral("%1:%2 h").arg(hours).arg(minutes, 2, 10, QChar('0'));
+    if (hours == 0)
+    {
+        result = QStringLiteral("%1 min").arg(roundedMinutes);
+    }
+    else
+    {
+        result = QStringLiteral("%1:%2 h").arg(hours).arg(roundedMinutes, 2, 10, QChar('0'));
     }
 
-    if (past) {
+    if (past)
+    {
         result = tr("%1 ago").arg(result);
-    } else {
+    }
+    else
+    {
         result = tr("in %1").arg(result);
     }
 

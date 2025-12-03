@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,11 +54,11 @@ QString Weather::Decoder::decodedText(const Navigation::Aircraft& act, const QDa
         auto decodedString = visit(groupInfo);
         if (decodedString.contains(u"<strong>"_s))
         {
-            decodedStrings << listEnd+"<li>"+decodedString+"</li>"+listStart;
+            decodedStrings << listEnd + u"<li>"_s + decodedString + u"</li>"_s + listStart;
         }
         else
         {
-            decodedStrings << "<li>"+decodedString+"</li>";
+            decodedStrings << u"<li>"_s + decodedString + u"</li>"_s;
         }
     }
 
@@ -74,13 +74,13 @@ QString Weather::Decoder::explainCloudType(const metaf::CloudType &ct)
     if (h.isReported())
     {
         return tr("Cloud cover %1/8, %2, base height %3")
-                .arg(ct.okta())
-                .arg(cloudTypeToString(ct.type()),
-                     explainDistance_FT(ct.height()));
+        .arg(ct.okta())
+            .arg(cloudTypeToString(ct.type()),
+                 explainDistance_FT(ct.height()));
     }
     return tr("Cloud cover %1/8, %2")
-            .arg(ct.okta())
-            .arg(cloudTypeToString(ct.type()));
+        .arg(ct.okta())
+        .arg(cloudTypeToString(ct.type()));
 }
 
 QString Weather::Decoder::explainDirection(metaf::Direction direction, bool trueCardinalDirections)
@@ -217,41 +217,40 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
         }
         results << distanceUnitToString(distance.unit());
     }
-    else
-        if (distance.unit() == metaf::Distance::Unit::METERS)
+    else if (distance.unit() == metaf::Distance::Unit::METERS)
+    {
+        const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
+        if (d.has_value() && qIsFinite(*d))
         {
-            const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
-            if (d.has_value())
+            if ((*d) < 5000)
             {
-                if ((*d) < 5000)
-                {
-                    results << QStringLiteral("%1 m").arg(qRound(*d));
-                }
-                else
-                {
-                    results << QStringLiteral("%1 km").arg( QString::number( *d/1000.0, 'f', 1));
-                }
+                results << QStringLiteral("%1 m").arg(qRound(*d));
             }
             else
             {
-                results << tr("[unable to convert distance to meters]");
+                results << QStringLiteral("%1 km").arg( QString::number( *d/1000.0, 'f', 1));
             }
         }
         else
         {
-            const auto d = distance.toUnit(distance.unit());
-            if (!d.has_value())
-            {
-                return tr("[unable to get distance's floating-point value]");
-            }
-            results << QString::number(qRound(*d));
-            results << distanceUnitToString(distance.unit());
+            results << tr("[unable to convert distance to meters]");
         }
+    }
+    else
+    {
+        const auto d = distance.toUnit(distance.unit());
+        if (!d.has_value() || !qIsFinite(*d))
+        {
+            return tr("[unable to get distance's floating-point value]");
+        }
+        results << QString::number(qRound(*d));
+        results << distanceUnitToString(distance.unit());
+    }
 
     if ((m_aircraft.horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) && (distance.unit() != metaf::Distance::Unit::METERS))
     {
         const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
-        if (d.has_value())
+        if (d.has_value() && qIsFinite(*d))
         {
             if ((*d) < 5000)
             {
@@ -299,7 +298,7 @@ QString Weather::Decoder::explainDistance_FT(metaf::Distance distance)
     }
 
     const auto d = distance.toUnit(metaf::Distance::Unit::FEET);
-    if (d.has_value())
+    if (d.has_value() && qIsFinite(*d))
     {
         return modifier + QStringLiteral("%1 ft").arg(qRound(*d));
     }
@@ -354,7 +353,7 @@ QString Weather::Decoder::explainPressure(metaf::Pressure pressure)
     }
 
     const auto phpa = pressure.toUnit(metaf::Pressure::Unit::HECTOPASCAL);
-    if (phpa.has_value())
+    if (phpa.has_value() && qIsFinite(*phpa))
     {
         return QStringLiteral("%1 hPa").arg(qRound(*phpa));
     }
@@ -400,7 +399,7 @@ QString Weather::Decoder::explainSpeed(metaf::Speed speed)
     if (m_aircraft.horizontalDistanceUnit() == Navigation::Aircraft::Kilometer)
     {
         const auto s = speed.toUnit(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
-        if (s.has_value())
+        if (s.has_value() && qIsFinite(*s))
         {
             return QStringLiteral("%1 km/h").arg(qRound(*s));
         }
@@ -408,7 +407,7 @@ QString Weather::Decoder::explainSpeed(metaf::Speed speed)
     }
 
     const auto s = speed.toUnit(metaf::Speed::Unit::KNOTS);
-    if (s.has_value())
+    if (s.has_value() && qIsFinite(*s))
     {
         return QStringLiteral("%1 kt").arg(qRound(*s));
     }
@@ -450,7 +449,7 @@ QString Weather::Decoder::explainTemperature(metaf::Temperature temperature)
 
     QString temperatureString = tr("[unable to convert temperature to °C]");
     const auto t = temperature.toUnit(metaf::Temperature::Unit::C);
-    if (t.has_value())
+    if (t.has_value() && qIsFinite(*t))
     {
         temperatureString = QStringLiteral("%1 °C").arg(qRound(*t));
     }
@@ -479,7 +478,7 @@ QString Weather::Decoder::explainWaveHeight(metaf::WaveHeight waveHeight)
         if (waveHeight.isReported())
         {
             const auto h = waveHeight.toUnit(metaf::WaveHeight::Unit::METERS);
-            if (h.has_value())
+            if (h.has_value() && qIsFinite(*h))
             {
                 return tr("wave height: %1 m").arg(qRound(*h));
             }
@@ -566,7 +565,7 @@ QString Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena 
         {
             break;
         }
-        result += " " + tr("began:") + " " + Weather::Decoder::explainMetafTime(*time);
+        result += u" "_s + tr("began:") + u" "_s + Weather::Decoder::explainMetafTime(*time);
         break;
 
     case metaf::WeatherPhenomena::Event::ENDING:
@@ -574,7 +573,7 @@ QString Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena 
         {
             break;
         }
-        result += " " + tr("ended:") + " " + Weather::Decoder::explainMetafTime(*time);
+        result += u" "_s + tr("ended:") + u" "_s + Weather::Decoder::explainMetafTime(*time);
         break;
 
     case metaf::WeatherPhenomena::Event::NONE:
@@ -2139,67 +2138,67 @@ QString Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /
         if (group.convectiveType() != metaf::CloudGroup::ConvectiveType::NONE)
         {
             return tr("%1 (%2) in %3 AGL")
-                    .arg(cloudAmountToString(group.amount()),
-                         convectiveTypeToString(group.convectiveType()),
-                         explainDistance_FT(group.height()));
+            .arg(cloudAmountToString(group.amount()),
+                 convectiveTypeToString(group.convectiveType()),
+                 explainDistance_FT(group.height()));
         }
         return tr("%1 in %2 AGL")
-                .arg(cloudAmountToString(group.amount()),
-                     explainDistance_FT(group.height()));
+            .arg(cloudAmountToString(group.amount()),
+                 explainDistance_FT(group.height()));
 
     case metaf::CloudGroup::Type::VERTICAL_VISIBILITY:
         return tr("Vertical visibility %1")
-                .arg(explainDistance_FT(group.verticalVisibility()));
+            .arg(explainDistance_FT(group.verticalVisibility()));
 
     case metaf::CloudGroup::Type::CEILING:
         if (rw.has_value() && d.has_value())
         {
             return tr("Ceiling height %1 AGL at %2 towards %3")
-                    .arg(explainDistance_FT(group.height()),
-                         explainRunway(*rw),
-                         explainDirection(*d));
+            .arg(explainDistance_FT(group.height()),
+                 explainRunway(*rw),
+                 explainDirection(*d));
         }
         if (rw.has_value())
         {
             return tr("Ceiling height %1 AGL at %2")
-                    .arg(explainDistance_FT(group.height()),
-                         explainRunway(*rw));
+            .arg(explainDistance_FT(group.height()),
+                 explainRunway(*rw));
         }
         if (d.has_value())
         {
             return tr("Ceiling height %1 AGL towards %2")
-                    .arg(explainDistance_FT(group.height()),
-                         explainDirection(*d));
+            .arg(explainDistance_FT(group.height()),
+                 explainDirection(*d));
         }
         return tr("Ceiling height %1")
-                .arg(explainDistance_FT(group.height()));
+            .arg(explainDistance_FT(group.height()));
 
     case metaf::CloudGroup::Type::VARIABLE_CEILING:
         if (rw.has_value() && d.has_value())
         {
             return tr("Ceiling height %1 -- %2 AGL at %3 towards %4")
-                    .arg(explainDistance_FT(group.minHeight()),
-                         explainDistance_FT(group.maxHeight()),
-                         explainRunway(*rw),
-                         explainDirection(*d));
+            .arg(explainDistance_FT(group.minHeight()),
+                 explainDistance_FT(group.maxHeight()),
+                 explainRunway(*rw),
+                 explainDirection(*d));
         }
         if (rw.has_value())
         {
             return tr("Ceiling height %1 -- %2 AGL at %3")
-                    .arg(explainDistance_FT(group.minHeight()),
-                         explainDistance_FT(group.maxHeight()),
-                         explainRunway(*rw));
+            .arg(explainDistance_FT(group.minHeight()),
+                 explainDistance_FT(group.maxHeight()),
+                 explainRunway(*rw));
         }
         if (d.has_value())
         {
             return tr("Ceiling height %1 -- %2 AGL towards %3")
-                    .arg(explainDistance_FT(group.minHeight()),
-                         explainDistance_FT(group.maxHeight()),
-                         explainDirection(*d));
+            .arg(explainDistance_FT(group.minHeight()),
+                 explainDistance_FT(group.maxHeight()),
+                 explainDirection(*d));
         }
         return tr("Ceiling height %1 -- %2 AGL")
-                .arg(explainDistance_FT(group.minHeight()),
-                     explainDistance_FT(group.maxHeight()));
+            .arg(explainDistance_FT(group.minHeight()),
+                 explainDistance_FT(group.maxHeight()));
 
     case metaf::CloudGroup::Type::CHINO:
         return tr("Ceiling data not awailable");
@@ -2320,13 +2319,13 @@ QString Weather::Decoder::visitLayerForecastGroup(const LayerForecastGroup & gro
     if (!group.baseHeight().isReported() && !group.topHeight().isReported())
     {
         return tr("%1 at all heights")
-                .arg(layerForecastGroupTypeToString(group.type()));
+        .arg(layerForecastGroupTypeToString(group.type()));
     }
 
     return tr("%1 at heights from %2 to %3.")
-            .arg(layerForecastGroupTypeToString(group.type()),
-                 explainDistance(group.baseHeight()),
-                 explainDistance(group.topHeight()));
+        .arg(layerForecastGroupTypeToString(group.type()),
+             explainDistance(group.baseHeight()),
+             explainDistance(group.topHeight()));
 }
 
 QString Weather::Decoder::visitLightningGroup(const LightningGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
@@ -2421,9 +2420,9 @@ QString Weather::Decoder::visitLowMidHighCloudGroup(const LowMidHighCloudGroup &
     }
 
     return tr("Low cloud layer: %1 • Mid cloud layer: %2 • High cloud layer: %3")
-            .arg(cloudLowLayerToString(group.lowLayer()),
-                 cloudMidLayerToString(group.midLayer()),
-                 cloudHighLayerToString(group.highLayer()));
+        .arg(cloudLowLayerToString(group.lowLayer()),
+             cloudMidLayerToString(group.midLayer()),
+             cloudHighLayerToString(group.highLayer()));
 }
 
 QString Weather::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
@@ -2439,24 +2438,24 @@ QString Weather::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperatureGro
     {
     case metaf::MinMaxTemperatureGroup::Type::OBSERVED_6_HOURLY:
         return tr("Observed 6-hourly minimum/maximum temperature: %1/%2")
-                .arg(explainTemperature(group.minimum()),
-                     explainTemperature(group.maximum()));
+            .arg(explainTemperature(group.minimum()),
+                 explainTemperature(group.maximum()));
 
     case metaf::MinMaxTemperatureGroup::Type::OBSERVED_24_HOURLY:
         return tr("Observed 24-hourly minimum/maximum temperature: %1/%2")
-                .arg(explainTemperature(group.minimum()),
-                     explainTemperature(group.maximum()));
+            .arg(explainTemperature(group.minimum()),
+                 explainTemperature(group.maximum()));
 
     case metaf::MinMaxTemperatureGroup::Type::FORECAST:
         if (group.minimum().isReported() && minimumTime.has_value()) {
             result += tr("Minimum forecast temperature: %1, expected at %2.")
-                    .arg(explainTemperature(group.minimum()),
-                         explainMetafTime(minimumTime.value()));
+            .arg(explainTemperature(group.minimum()),
+                 explainMetafTime(minimumTime.value()));
         }
         if (group.maximum().isReported() && (maximumTime.has_value())) {
-            result += " " + tr("Maximum forecast temperature: %1, expected at %2.")
-                    .arg(explainTemperature(group.maximum()),
-                         explainMetafTime(maximumTime.value()));
+            result += u" "_s + tr("Maximum forecast temperature: %1, expected at %2.")
+            .arg(explainTemperature(group.maximum()),
+                 explainMetafTime(maximumTime.value()));
         }
         return result;
     }
@@ -2479,7 +2478,10 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::SUNSHINE_DURATION_MINUTES:
         if (const auto duration = data; duration)
         {
-            return tr("Duration of sunshine that occurred the previous calendar day is %1 minutes.").arg(qRound(*duration));
+            if (qIsFinite(*duration))
+            {
+                return tr("Duration of sunshine that occurred the previous calendar day is %1 minutes.").arg(qRound(*duration));
+            }
         }
         return tr("No sunshine occurred the previous calendar day");
 
@@ -2491,7 +2493,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         return tr("This report is the corrected weather observation, correction number is %1").arg(static_cast<int>(*data));
 
     case metaf::MiscGroup::Type::DENSITY_ALTITUDE:
-        if (!data.has_value())
+        if (!data.has_value() || !qIsFinite(*data))
         {
             return {};
         }
@@ -2625,61 +2627,61 @@ QString Weather::Decoder::visitPrecipitationGroup(const PrecipitationGroup & gro
     {
     case metaf::PrecipitationGroup::Type::TOTAL_PRECIPITATION_HOURLY:
         return tr("Total precipitation for the past hour: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::SNOW_DEPTH_ON_GROUND:
         return tr("Snow depth on ground: %1")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_OR_6_HOURLY:
         return tr("Water equivalent of frozen precipitation for the last 3 or 6 hours: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_HOURLY:
         return tr("Water equivalent of frozen precipitation for the last 3 hours: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_6_HOURLY:
         return tr("Water equivalent of frozen precipitation for the last 6 hours: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_24_HOURLY:
         return tr("Water equivalent of frozen precipitation for the last 24 hours: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::SNOW_6_HOURLY:
         return tr("Snowfall for the last 6 hours: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::WATER_EQUIV_OF_SNOW_ON_GROUND:
         return tr("Water equivalent of snow on ground: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_HOUR:
         return tr("Ice accretion for the last hour: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_3_HOURS:
         return tr("Ice accretion for the last 3 hours: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_6_HOURS:
         return tr("Ice accretion for the last 6 hours: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::PRECIPITATION_ACCUMULATION_SINCE_LAST_REPORT:
         return tr("Precipitation accumulation since last report: %1.")
-                .arg(explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::SNOW_INCREASING_RAPIDLY:
         return tr("Snow increasing rapidly. For the last hour snow increased by %1. Total snowfall: %2.")
-                .arg(explainPrecipitation(group.recent()),
-                     explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.recent()),
+                 explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::RAINFALL_9AM_10MIN:
         return tr("Rainfall for the last 10 minutes before report release time: %1. Rainfall since 9:00 local time: %2.")
-                .arg(explainPrecipitation(group.recent()),
-                     explainPrecipitation(group.total()));
+            .arg(explainPrecipitation(group.recent()),
+                 explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::PNO:
         return tr("Tipping bucket rain gauge INOP.");
@@ -2742,18 +2744,18 @@ QString Weather::Decoder::visitPressureTendencyGroup(const PressureTendencyGroup
     {
     case metaf::PressureTendencyGroup::Type::NOT_REPORTED:
         return tr("3-hour pressure tendency is not reported. Absolute pressure change is %1.")
-                .arg(explainPressure(group.difference()));
+            .arg(explainPressure(group.difference()));
 
     case metaf::PressureTendencyGroup::Type::RISING_RAPIDLY:
     case metaf::PressureTendencyGroup::Type::FALLING_RAPIDLY:
         return tr("Atmospheric pressure is %1")
-                .arg(pressureTendencyTypeToString(group.type()));
+            .arg(pressureTendencyTypeToString(group.type()));
 
     default:
         //: Note: the string %2 will be replaced by a text such as "less than"
         return tr("During last 3 hours the atmospheric pressure was %1. Now the atmospheric pressure is %2 3h ago. Absolute pressure change is %3")
-                .arg(pressureTendencyTypeToString(group.type()),
-                     pressureTendencyTrendToString(metaf::PressureTendencyGroup::trend(group.type())),explainPressure(group.difference()));
+            .arg(pressureTendencyTypeToString(group.type()),
+                 pressureTendencyTrendToString(metaf::PressureTendencyGroup::trend(group.type())),explainPressure(group.difference()));
     }
     return {};
 }
@@ -2783,15 +2785,15 @@ QString Weather::Decoder::visitRunwayStateGroup(const RunwayStateGroup & group, 
         result += runwayStateDepositsToString(group.deposits());
         if (group.deposits() != metaf::RunwayStateGroup::Deposits::CLEAR_AND_DRY)
         {
-            result += ", " + tr("%1 of deposits, %2 of runway contaminated")
-                    .arg(explainPrecipitation(group.depositDepth()),runwayStateExtentToString(group.contaminationExtent()));
+            result += u", "_s + tr("%1 of deposits, %2 of runway contaminated")
+            .arg(explainPrecipitation(group.depositDepth()),runwayStateExtentToString(group.contaminationExtent()));
         }
-        result += ", " + explainSurfaceFriction(group.surfaceFriction());
+        result += u", "_s + explainSurfaceFriction(group.surfaceFriction());
         break;
 
     case metaf::RunwayStateGroup::Type::RUNWAY_CLRD:
         result += tr("deposits on runway were cleared or ceased to exist");
-        result += ", " + explainSurfaceFriction(group.surfaceFriction());
+        result += u", "_s + explainSurfaceFriction(group.surfaceFriction());
         break;
 
     case metaf::RunwayStateGroup::Type::RUNWAY_SNOCLO:
@@ -2815,8 +2817,8 @@ QString Weather::Decoder::visitSeaSurfaceGroup(const SeaSurfaceGroup & group, Re
     }
 
     return tr("Sea surface temperature: %1, %2")
-            .arg(explainTemperature(group.surfaceTemperature()),
-                 explainWaveHeight(group.waves()));
+        .arg(explainTemperature(group.surfaceTemperature()),
+             explainWaveHeight(group.waves()));
 }
 
 QString Weather::Decoder::visitTemperatureGroup(const TemperatureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
@@ -2830,8 +2832,8 @@ QString Weather::Decoder::visitTemperatureGroup(const TemperatureGroup & group, 
     {
     case metaf::TemperatureGroup::Type::TEMPERATURE_AND_DEW_POINT:
         return tr("Temperature %1, Dew point %2")
-                .arg(explainTemperature(group.airTemperature()),
-                     explainTemperature(group.dewPoint()));
+            .arg(explainTemperature(group.airTemperature()),
+                 explainTemperature(group.dewPoint()));
 
     case metaf::TemperatureGroup::Type::T_MISG:
         return tr("Temperature data is missing");
@@ -2863,38 +2865,38 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
         result += tr("Gradually changing");
         if (timeFrom)
         {
-            result += " " + tr("from %1").arg(explainMetafTime(*timeFrom));
+            result += u" "_s + tr("from %1").arg(explainMetafTime(*timeFrom));
         }
         if (timeUntil)
         {
-            result += " " + tr("until %1").arg(explainMetafTime(*timeUntil));
+            result += u" "_s + tr("until %1").arg(explainMetafTime(*timeUntil));
         }
         if (timeAt)
         {
-            result += " " + tr("at %1").arg(explainMetafTime(*timeAt));
+            result += u" "_s + tr("at %1").arg(explainMetafTime(*timeAt));
         }
-        return "<strong>" + result + "</strong>";
+        return u"<strong>"_s + result + u"</strong>"_s;
 
     case metaf::TrendGroup::Type::TEMPO:
     case metaf::TrendGroup::Type::INTER:
         result += tr("Temporarily");
         if (timeFrom)
         {
-            result += " " + tr("from %1").arg(explainMetafTime(*timeFrom));
+            result += u" "_s + tr("from %1").arg(explainMetafTime(*timeFrom));
         }
         if (timeUntil)
         {
-            result += " " + tr("until %1").arg(explainMetafTime(*timeUntil));
+            result += u" "_s + tr("until %1").arg(explainMetafTime(*timeUntil));
         }
         if (timeAt)
         {
-            result += " " + tr("at %1").arg(explainMetafTime(*timeAt));
+            result += u" "_s + tr("at %1").arg(explainMetafTime(*timeAt));
         }
         if (group.probability() != metaf::TrendGroup::Probability::NONE)
         {
             result += QStringLiteral(" (%1)").arg(probabilityToString(group.probability()));
         }
-        return "<strong>" + result + "</strong>";
+        return u"<strong>"_s + result + u"</strong>"_s;
 
     case metaf::TrendGroup::Type::FROM:
         if (!timeFrom.has_value())
@@ -2902,8 +2904,8 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
             return {};
         }
         result = tr("Forecast: rapid weather change at %1")
-                .arg(explainMetafTime(*timeFrom));
-        return "<strong>" + result + "</strong>";
+                     .arg(explainMetafTime(*timeFrom));
+        return u"<strong>"_s + result + u"</strong>"_s;
 
     case metaf::TrendGroup::Type::UNTIL:
         if (!timeUntil.has_value())
@@ -2911,8 +2913,8 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
             return {};
         }
         result = tr("Forecast until %1")
-                .arg(explainMetafTime(*timeUntil));
-        return "<strong>" + result + "</strong>";
+                     .arg(explainMetafTime(*timeUntil));
+        return u"<strong>"_s + result + u"</strong>"_s;
 
     case metaf::TrendGroup::Type::AT:
         if (!timeAt.has_value())
@@ -2920,8 +2922,8 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
             return {};
         }    
         result = tr("Forecast for %1")
-                .arg(explainMetafTime(*timeAt));
-        return "<strong>" + result + "</strong>";
+                     .arg(explainMetafTime(*timeAt));
+        return u"<strong>"_s + result + u"</strong>"_s;
 
     case metaf::TrendGroup::Type::TIME_SPAN:
         if ((!timeFrom.has_value()) || (!timeUntil.has_value()))
@@ -2932,21 +2934,21 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
         if (group.probability() != metaf::TrendGroup::Probability::NONE)
         {
             result = tr("Forecast from %1 to %2 (%3)")
-                    .arg(explainMetafTime(*timeFrom),
-                         explainMetafTime(*timeUntil),
-                         probabilityToString(group.probability()));
+            .arg(explainMetafTime(*timeFrom),
+                 explainMetafTime(*timeUntil),
+                 probabilityToString(group.probability()));
         }
         else
         {
             result = tr("Forecast from %1 to %2")
-                    .arg(explainMetafTime(*timeFrom),
-                         explainMetafTime(*timeUntil));
+            .arg(explainMetafTime(*timeFrom),
+                 explainMetafTime(*timeUntil));
         }
-        return "<strong>" + result + "</strong>";
+        return u"<strong>"_s + result + u"</strong>"_s;
 
     case metaf::TrendGroup::Type::PROB:
         return tr("Forecast %1")
-                .arg(probabilityToString(group.probability()));
+            .arg(probabilityToString(group.probability()));
     }
     return {};
 }
@@ -3082,11 +3084,11 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
     {
     case metaf::VisibilityGroup::Type::PREVAILING:
         return tr("Visibility is %1")
-                .arg(explainDistance(group.visibility()));
+            .arg(explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::PREVAILING_NDV:
         return tr("Visibility is %1. Station cannot differentiate the directional variation of visibility")
-                .arg(explainDistance(group.visibility()));
+            .arg(explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::DIRECTIONAL:
         if ((!direction.has_value()))
@@ -3094,8 +3096,8 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
             return {};
         } 
         return tr("Visibility toward %1 is %2")
-                .arg(explainDirection(direction.value()),
-                     explainDistance(group.visibility()));
+            .arg(explainDirection(direction.value()),
+                 explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::RUNWAY:
         if ((!runway.has_value()))
@@ -3103,8 +3105,8 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
             return {};
         } 
         return tr("Visibility for %1 is %2")
-                .arg(explainRunway(runway.value()),
-                     explainDistance(group.visibility()));
+            .arg(explainRunway(runway.value()),
+                 explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::RVR:
         if (!runway.has_value())
@@ -3113,31 +3115,31 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
         }
         if (group.trend() != metaf::VisibilityGroup::Trend::NONE) {
             return tr("Runway visual range for %1 is %2 and the trend is %3")
-                    .arg(explainRunway(runway.value()),
-                         explainDistance(group.visibility()),
-                         visTrendToString(group.trend()));
+            .arg(explainRunway(runway.value()),
+                 explainDistance(group.visibility()),
+                 visTrendToString(group.trend()));
         }
         return tr("Runway visual range for %1 is %2")
-                .arg(explainRunway(runway.value()),
-                     explainDistance(group.visibility()));
+            .arg(explainRunway(runway.value()),
+                 explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::SURFACE:
         return tr("Visibility at surface level is %1")
-                .arg(explainDistance(group.visibility()));
+            .arg(explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::TOWER:
         return tr("Visibility from air traffic control tower is %1")
-                .arg(explainDistance(group.visibility()));
+            .arg(explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::SECTOR:
         return tr("Sector visibility is %1 in the following directions %2")
-                .arg(explainDistance(group.visibility()),
-                     explainDirectionSector(group.sectorDirections()));
+            .arg(explainDistance(group.visibility()),
+                 explainDirectionSector(group.sectorDirections()));
 
     case metaf::VisibilityGroup::Type::VARIABLE_PREVAILING:
         return tr("Visibility is variable from %1 to %2")
-                .arg(explainDistance(group.minVisibility()),
-                     explainDistance(group.maxVisibility()));
+            .arg(explainDistance(group.minVisibility()),
+                 explainDistance(group.maxVisibility()));
 
     case metaf::VisibilityGroup::Type::VARIABLE_DIRECTIONAL:
         if (!direction.has_value())
@@ -3145,9 +3147,9 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
             return {};
         }
         return tr("Directional visibility toward %1 is variable from %2 to %3")
-                .arg(explainDirection(direction.value()),
-                     explainDistance(group.minVisibility()),
-                     explainDistance(group.maxVisibility()));
+            .arg(explainDirection(direction.value()),
+                 explainDistance(group.minVisibility()),
+                 explainDistance(group.maxVisibility()));
 
     case metaf::VisibilityGroup::Type::VARIABLE_RUNWAY:
         if (!runway.has_value())
@@ -3155,9 +3157,9 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
             return {};
         }
         return tr("Visibility for %1 is variable from %2 to %3")
-                .arg(explainRunway(runway.value()),
-                     explainDistance(group.minVisibility()),
-                     explainDistance(group.maxVisibility()));
+            .arg(explainRunway(runway.value()),
+                 explainDistance(group.minVisibility()),
+                 explainDistance(group.maxVisibility()));
 
     case metaf::VisibilityGroup::Type::VARIABLE_RVR:
         if (!runway.has_value())
@@ -3167,21 +3169,21 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
         if (group.trend() != metaf::VisibilityGroup::Trend::NONE)
         {
             return tr("Runway visual range for %1 is variable from %2 to %3 and the trend is %4")
-                    .arg(explainRunway(runway.value()),
-                         explainDistance(group.minVisibility()),
-                         explainDistance(group.maxVisibility()),
-                         visTrendToString(group.trend()));
+            .arg(explainRunway(runway.value()),
+                 explainDistance(group.minVisibility()),
+                 explainDistance(group.maxVisibility()),
+                 visTrendToString(group.trend()));
         }
         return tr("Runway visual range for %1 is variable from %2 to %3")
-                .arg(explainRunway(runway.value()),
-                     explainDistance(group.minVisibility()),
-                     explainDistance(group.maxVisibility()));
+            .arg(explainRunway(runway.value()),
+                 explainDistance(group.minVisibility()),
+                 explainDistance(group.maxVisibility()));
 
     case metaf::VisibilityGroup::Type::VARIABLE_SECTOR:
         return tr("Sector visibility is variable from %1 to %2 in the following directions: %3")
-                .arg(explainDistance(group.minVisibility()),
-                     explainDistance(group.maxVisibility()),
-                     explainDirectionSector(group.sectorDirections()));
+            .arg(explainDistance(group.minVisibility()),
+                 explainDistance(group.maxVisibility()),
+                 explainDirectionSector(group.sectorDirections()));
 
     case metaf::VisibilityGroup::Type::VIS_MISG:
         return tr("Visibility data missing");
@@ -3198,18 +3200,18 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
         if (r.has_value() && d.has_value())
         {
             return tr("Visibility data not available for %1 in the direction of %2")
-                    .arg(explainRunway(*r),
-                         explainDirection(*d));
+            .arg(explainRunway(*r),
+                 explainDirection(*d));
         }
         if (r.has_value())
         {
             return tr("Visibility data not available for %1")
-                    .arg(explainRunway(*r));
+            .arg(explainRunway(*r));
         }
         if (d.has_value())
         {
             return tr("Visibility data not available in the direction of %1")
-                    .arg(explainDirection(*d));
+            .arg(explainDirection(*d));
         }
         return tr("Visibility data not awailable");
     }
@@ -3285,47 +3287,47 @@ QString Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*r
         if (group.gustSpeed().isReported())
         {
             return tr("Wind direction %1, wind speed %2, gusts at %3")
-                    .arg(explainDirection(group.direction(), true),
-                         explainSpeed(group.windSpeed()),
-                         explainSpeed(group.gustSpeed()));
+            .arg(explainDirection(group.direction(), true),
+                 explainSpeed(group.windSpeed()),
+                 explainSpeed(group.gustSpeed()));
         }
         return tr("Wind direction %1, wind speed %2")
-                .arg(explainDirection(group.direction(), true),
-                     explainSpeed(group.windSpeed()));
+            .arg(explainDirection(group.direction(), true),
+                 explainSpeed(group.windSpeed()));
 
     case metaf::WindGroup::Type::VARIABLE_WIND_SECTOR:
         return tr("Variable wind direction %1 -- %2")
-                .arg(explainDirection(group.varSectorBegin()),
-                     explainDirection(group.varSectorEnd()));
+            .arg(explainDirection(group.varSectorBegin()),
+                 explainDirection(group.varSectorEnd()));
 
     case metaf::WindGroup::Type::SURFACE_WIND_WITH_VARIABLE_SECTOR:
         if (group.gustSpeed().isReported())
         {
             return tr("Wind direction %1 (%2 -- %3), wind speed %4, gusts at %5")
-                    .arg(explainDirection(group.direction(), true),
-                         explainDirection(group.varSectorBegin()),
-                         explainDirection(group.varSectorEnd()),
-                         explainSpeed(group.windSpeed()),
-                         explainSpeed(group.gustSpeed()));
+            .arg(explainDirection(group.direction(), true),
+                 explainDirection(group.varSectorBegin()),
+                 explainDirection(group.varSectorEnd()),
+                 explainSpeed(group.windSpeed()),
+                 explainSpeed(group.gustSpeed()));
         }
         return tr("Wind direction %1 (%2 -- %3), wind speed %4")
-                .arg(explainDirection(group.direction(), true),
-                     explainDirection(group.varSectorBegin()),
-                     explainDirection(group.varSectorEnd()),
-                     explainSpeed(group.windSpeed()));
+            .arg(explainDirection(group.direction(), true),
+                 explainDirection(group.varSectorBegin()),
+                 explainDirection(group.varSectorEnd()),
+                 explainSpeed(group.windSpeed()));
 
     case metaf::WindGroup::Type::WIND_SHEAR:
         if (group.gustSpeed().isReported()) {
             return tr("Wind shear at %1 AGL, wind direction %2, wind speed %3, gusts at %4")
-                    .arg(explainDistance_FT(group.height()),
-                         explainDirection(group.direction(), true),
-                         explainSpeed(group.windSpeed()),
-                         explainSpeed(group.gustSpeed()));
+            .arg(explainDistance_FT(group.height()),
+                 explainDirection(group.direction(), true),
+                 explainSpeed(group.windSpeed()),
+                 explainSpeed(group.gustSpeed()));
         }
         return tr("Wind shear at %1 AGL, wind direction %2, wind speed %3")
-                .arg(explainDistance_FT(group.height()),
-                     explainDirection(group.direction(), true),
-                     explainSpeed(group.windSpeed()));
+            .arg(explainDistance_FT(group.height()),
+                 explainDirection(group.direction(), true),
+                 explainSpeed(group.windSpeed()));
 
 
     case metaf::WindGroup::Type::WIND_SHIFT:
@@ -3348,9 +3350,9 @@ QString Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*r
             return {};
         }
         return tr("Peak wind observed at %1, wind direction %2, wind speed %3")
-                .arg(explainMetafTime(eventTime.value()),
-                     explainDirection(group.direction(), true),
-                     explainSpeed(group.windSpeed()));
+            .arg(explainMetafTime(eventTime.value()),
+                 explainDirection(group.direction(), true),
+                 explainSpeed(group.windSpeed()));
 
     case metaf::WindGroup::Type::WIND_SHEAR_IN_LOWER_LAYERS:
         if (const auto rw = group.runway(); rw.has_value())

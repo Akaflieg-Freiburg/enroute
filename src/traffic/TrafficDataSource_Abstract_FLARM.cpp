@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,7 +33,7 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace {
 
-static qreal interpretNMEALatLong(const QString& A, const QString& B)
+qreal interpretNMEALatLong(const QString& A, const QString& B)
 {
     bool ok1 = false;
     bool ok2 = false;
@@ -48,15 +48,20 @@ static qreal interpretNMEALatLong(const QString& A, const QString& B)
     return result;
 }
 
-static QDateTime interpretNMEATime(const QString& timeString)
+QDateTime interpretNMEATime(const QString& timeString)
 {
     auto HH = timeString.mid(0,2);
     auto MM = timeString.mid(2,2);
     auto SS = timeString.mid(4,2);
     auto MS = timeString.mid(6);
     QTime time(HH.toInt(), MM.toInt(), SS.toInt());
-    if (MS.isEmpty()) {
-        time = time.addMSecs(qRound(MS.toDouble()*1000.0));
+    if (!MS.isEmpty())
+    {
+        auto MSdouble = MS.toDouble();
+        if (qIsFinite(MSdouble))
+        {
+            time = time.addMSecs(qRound(MS.toDouble()*1000.0));
+        }
     }
     auto dateTime = QDateTime::currentDateTimeUtc();
     dateTime.setTime(time);
@@ -69,7 +74,7 @@ static QDateTime interpretNMEATime(const QString& timeString)
 // substring message is returned. If the input string is not a valid NMEA
 // sentence, an empty string is returned.
 
-static QString getNMEAMessage(const QString& input)
+QString getNMEAMessage(const QString& input)
 {
     // Paranoid safety checks
     if (input.length() < 5)
@@ -139,7 +144,6 @@ void Traffic::TrafficDataSource_Abstract::processFLARMData(const QString& data)
         processFLARMSentence(m_FLARMDataBuffer);
         m_FLARMDataBuffer.clear();
     }
-
 }
 
 

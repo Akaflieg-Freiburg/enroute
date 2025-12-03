@@ -50,6 +50,8 @@ endif()
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(Qt6 6.9 COMPONENTS DBus SerialPort Widgets REQUIRED)
     find_package(Qt6 6.9 COMPONENTS WebView)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(LIBUDEV REQUIRED libudev)
 endif()
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES cs de es fr it pl)

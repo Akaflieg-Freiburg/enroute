@@ -31,6 +31,7 @@ Traffic::ConnectionScanner_SerialPort::ConnectionScanner_SerialPort(QObject* par
 {
 }
 
+#warning Update when devices become available
 void Traffic::ConnectionScanner_SerialPort::start()
 {
 #if __has_include(<QSerialPortInfo>)

@@ -367,6 +367,9 @@ public:
      */
     Q_INVOKABLE QString addDataSource_OGN();
 
+#warning
+    Q_INVOKABLE bool hasDataSource_SerialPort(const QString& portNameOrDescription);
+
     /*! \brief Remove data sources
      *
      * This method removes a data source from this TrafficDataProvider.
@@ -375,6 +378,7 @@ public:
      * \param source New TrafficDataSource that is to be removed.
      */
     Q_INVOKABLE void removeDataSource(Traffic::TrafficDataSource_Abstract* source);
+
 
 signals:
     /*! \brief Notifier signal */

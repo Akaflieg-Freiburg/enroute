@@ -588,7 +588,7 @@ Page {
                 delegate: WordWrappingItemDelegate {
                     width: addSerialPortDialog.availableWidth
 
-                    enabled: model.modelData.canConnect
+                    enabled: model.modelData.canConnect && !TrafficDataProvider.hasDataSource_SerialPort(model.modelData.host)
                     icon.source: model.modelData.icon
                     text: model.modelData.description
 

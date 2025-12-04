@@ -55,6 +55,13 @@ public:
     ~TrafficDataSource_SerialPort() override;
 
 
+    /*! \brief Port Name or Description
+     *
+     *  This property contains the port name or description, as set in the constructor.
+     */
+    Q_PROPERTY(QString portNameOrDescription READ portNameOrDescription CONSTANT)
+
+
     //
     // Getter Methods
     //
@@ -91,6 +98,15 @@ public:
      *  @returns Property sourceName
      */
     [[nodiscard]] QString sourceName() const override;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
+     *
+     *  @returns Property sourceName
+     */
+    [[nodiscard]] QString portNameOrDescription() const {return m_portName;};
 
 
 public slots:

@@ -172,22 +172,16 @@ QString Traffic::TrafficDataProvider::addDataSource_UDP(quint16 port)
     return {};
 }
 
+#warning argument name!
 QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& portName)
 {
-#if __has_include(<QSerialPort>)
     // Ignore new device if data source already exists.
-    foreach(auto _dataSource, m_dataSources.value())
+    if (hasDataSource_SerialPort(portName))
     {
-        auto* dataSourceSerialPort = qobject_cast<TrafficDataSource_SerialPort*>(_dataSource);
-        if (dataSourceSerialPort != nullptr)
-        {
-            if (portName == dataSourceSerialPort->sourceName())
-            {
-                return tr("A connection to this device already exists.");
-            }
-        }
+        return tr("A connection to this device already exists.");
     }
 
+#if __has_include(<QSerialPort>)
     auto* source = new TrafficDataSource_SerialPort(false, portName, this);
     source->connectToTrafficReceiver();
     addDataSource(source);
@@ -321,6 +315,22 @@ void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
 void Traffic::TrafficDataProvider::foreFlightBroadcast()
 {
     foreFlightBroadcastSocket.writeDatagram(foreFlightBroadcastDatagram);
+}
+
+bool Traffic::TrafficDataProvider::hasDataSource_SerialPort(const QString& portNameOrDescription)
+{
+    foreach(auto _dataSource, m_dataSources.value())
+    {
+        auto* dataSourceSerialPort = qobject_cast<TrafficDataSource_SerialPort*>(_dataSource);
+        if (dataSourceSerialPort != nullptr)
+        {
+            if (portNameOrDescription == dataSourceSerialPort->portNameOrDescription())
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void Traffic::TrafficDataProvider::loadConnectionInfos()

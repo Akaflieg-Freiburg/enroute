@@ -41,7 +41,7 @@ public:
      */
     explicit PlatformAdaptor(QObject* parent = nullptr);
 
-    ~PlatformAdaptor() override = default;
+    ~PlatformAdaptor() override;
 
 
     //
@@ -87,6 +87,11 @@ private:
     // Help with DBus programming is found here:
     // https://develop.kde.org/docs/d-bus/accessing_dbus_interfaces/
     QDBusInterface networkManagerInterface {QStringLiteral("org.freedesktop.NetworkManager"), QStringLiteral("/org/freedesktop/NetworkManager"), QStringLiteral("org.freedesktop.NetworkManager"), QDBusConnection::systemBus()};
+
+    // Used to watch serial ports
+    struct udev *udev_ = nullptr;
+    struct udev_monitor *mon_ = nullptr;
+    QSocketNotifier *notifier_ = nullptr;
 };
 
 } // namespace Platform

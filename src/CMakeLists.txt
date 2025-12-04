@@ -384,6 +384,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt6::Widgets
     QMapLibre::Location
     libzip::zip
+    ${LIBUDEV_LIBRARIES}
 )
 if (TARGET Qt6::WebView)
     message(STATUS "QtWebView found.")

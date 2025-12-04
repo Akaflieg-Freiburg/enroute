@@ -219,6 +219,13 @@ signals:
      */
     void wifiConnected();
 
+    /*! \brief Emitted when a serial port configuration changes
+     *
+     *  This signal is emitted when serial ports become (un)available. This typically happens when the user
+     *  (dis)connects USB devices that offer serial port communication.
+     */
+    void serialPortsChanged();
+
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)
 

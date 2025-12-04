@@ -25,12 +25,11 @@
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
-    : PlatformAdaptor_Abstract(parent)
+    : PlatformAdaptor_Abstract(parent), udev_(udev_new())
 {
     connect(&networkManagerInterface, SIGNAL(StateChanged(uint)), this, SLOT(onNetworkStateChanged(uint)));
 
     // Watch changes of serial ports
-    udev_ = udev_new();
     if (udev_)
     {
         mon_ = udev_monitor_new_from_netlink(udev_, "udev");
@@ -40,7 +39,7 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
             udev_monitor_filter_add_match_subsystem_devtype(mon_, "tty", nullptr);
             udev_monitor_enable_receiving(mon_);
 
-            int fd = udev_monitor_get_fd(mon_);
+            const int fd = udev_monitor_get_fd(mon_);
             notifier_ = new QSocketNotifier(fd, QSocketNotifier::Read, this);
             connect(notifier_, &QSocketNotifier::activated, this, [this]() {
                 udev_device *dev = udev_monitor_receive_device(mon_);

@@ -113,7 +113,7 @@ public:
      *
      *  @returns Property sourceName
      */
-    [[nodiscard]] QString portNameOrDescription() const {return m_portName;};
+    [[nodiscard]] QString portNameOrDescription() const {return m_portNameOrDescription;};
 
 
 public slots:

@@ -23,9 +23,9 @@
 #include "traffic/TrafficDataSource_SerialPort.h"
 
 
-Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanonical, const QString& portName, QObject* parent) :
+Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription, QObject* parent) :
     TrafficDataSource_AbstractSocket(isCanonical, parent),
-    m_portName(portName)
+    m_portNameOrDescription(portNameOrDescription)
 {
 }
 
@@ -67,7 +67,7 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
     auto deviceInfos = QSerialPortInfo::availablePorts();
     foreach (auto deviceInfo, deviceInfos)
     {
-        if ((deviceInfo.portName() == m_portName) || (deviceInfo.description() == m_portName))
+        if ((deviceInfo.portName() == m_portNameOrDescription) || (deviceInfo.description() == m_portNameOrDescription))
         {
             m_port = new QSerialPort(deviceInfo);
             break;
@@ -175,7 +175,7 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
 
 QString Traffic::TrafficDataSource_SerialPort::sourceName() const
 {
-    auto name = m_portName;
+    auto name = m_portNameOrDescription;
     if (name.isEmpty())
     {
         name = tr("Unnamed Device");

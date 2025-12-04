@@ -43,13 +43,20 @@ class TrafficDataSource_SerialPort : public TrafficDataSource_AbstractSocket {
 public:
     /*! \brief Default constructor
      *
+     *  This class provides a FLARM/NMEA data connection via a serial port. The
+     *  constructor takes a name, which is either a proper port name (such as
+     *  "ttyS0") or a description string (such as "ublox 7 - GPS GNSS Receiver")
+     *  provided by QSerialPortInfo. This class will then connect to the first
+     *  serial port whose port name or description matches the given string.
+     *
      *  @param isCanonical Intializer for property canonical
      *
-     *  @param portName Name of the port
+     *  @param portNameOrDescription Name or description of the port, as
+     *  provided by QSerialPortInfo.portName() or QSerialPortInfo.description()
      *
      *  @param parent The standard QObject parent pointer
      */
-    TrafficDataSource_SerialPort(bool isCanonical, const QString& portName, QObject* parent);
+    TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription, QObject* parent);
 
     // Standard destructor
     ~TrafficDataSource_SerialPort() override;
@@ -65,7 +72,7 @@ public:
      */
     [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const override
     {
-        return Traffic::ConnectionInfo(m_portName, false);
+        return Traffic::ConnectionInfo(m_portNameOrDescription, false);
     }
 
     /*! \brief Getter function for the property with the same name
@@ -120,7 +127,7 @@ private:
 
     // Copied from the constructor
     QSerialPort* m_port {nullptr};
-    QString m_portName;
+    QString m_portNameOrDescription;
 
     // Text stream used for reading NMEA sentences
     QTextStream* m_textStream {nullptr};

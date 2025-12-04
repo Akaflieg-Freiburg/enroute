@@ -29,8 +29,9 @@ namespace Traffic {
 
 /*! \brief Connection Scanner: SerialPort Devices
  *
- *  This class is a wrapper for QSerialPortDeviceDiscoveryAgent, providing data
- *  in a format that can by used by C++ and QML.
+ *  This class discovers all serial ports available. If a serial port has a
+ *  description (such as "ublox 7 - GPS GNSS Receiver") then the port will be
+ *  reported twice, once by port name and once by description.
  */
 class ConnectionScanner_SerialPort : public ConnectionScanner_Abstract {
     Q_OBJECT

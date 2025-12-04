@@ -33,21 +33,22 @@ Traffic::ConnectionScanner_SerialPort::ConnectionScanner_SerialPort(QObject* par
 }
 
 
-
 void Traffic::ConnectionScanner_SerialPort::start()
 {
 #if __has_include(<QSerialPortInfo>)
-    QVector<Traffic::ConnectionInfo> result;
+    QVector<Traffic::ConnectionInfo> result1;
+    QVector<Traffic::ConnectionInfo> result2;
     auto deviceInfos = QSerialPortInfo::availablePorts();
     foreach (auto deviceInfo, deviceInfos)
     {
-        result += ConnectionInfo(deviceInfo.portName());
         if (!deviceInfo.description().isEmpty())
         {
-            result += ConnectionInfo(deviceInfo.description());
+            result1 += ConnectionInfo(deviceInfo.description());
         }
+        result2 += ConnectionInfo(deviceInfo.portName());
     }
-    std::sort(result.begin(), result.end());
-    setDevices(result);
+    std::sort(result1.begin(), result1.end());
+    std::sort(result2.begin(), result2.end());
+    setDevices(result1 + result2);
 #endif
 }

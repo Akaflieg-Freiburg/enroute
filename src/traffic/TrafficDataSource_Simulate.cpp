@@ -39,7 +39,8 @@ Traffic::TrafficDataSource_Simulate::TrafficDataSource_Simulate(bool isCanonical
 void Traffic::TrafficDataSource_Simulate::connectToTrafficReceiver()
 {
     // Do not do anything if the traffic receiver is connected and is receiving.
-    if (receivingHeartbeat()) {
+    if (receivingHeartbeat())
+    {
         return;
     }
 
@@ -60,25 +61,32 @@ void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
 {
 
     geoInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
-    if (geoInfo.isValid()) {
-        emit positionUpdated( Positioning::PositionInfo(geoInfo, sourceName()) );
+    if (geoInfo.isValid())
+    {
+        setPositionInfo( Positioning::PositionInfo(geoInfo, sourceName()) );
         setReceivingHeartbeat(true);
-    } else {
+    }
+    else
+    {
         setReceivingHeartbeat(false);
     }
 
-    foreach(TrafficFactor_WithPosition* trafficFactor, trafficFactors) {
-        if (trafficFactor == nullptr) {
+    foreach(TrafficFactor_WithPosition* trafficFactor, trafficFactors)
+    {
+        if (trafficFactor == nullptr)
+        {
             continue;
         }
 
         trafficFactor->startLiveTime();
-        if (trafficFactor->valid()) {
+        if (trafficFactor->valid())
+        {
             emit factorWithPosition(*trafficFactor);
         }
     }
 
-    if (!trafficFactor_DistanceOnly.isNull()) {
+    if (!trafficFactor_DistanceOnly.isNull())
+    {
         emit factorWithoutPosition(*trafficFactor_DistanceOnly);
     }
 

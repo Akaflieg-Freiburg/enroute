@@ -68,7 +68,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
 
         // Update position information and continue
         if (_geoPos.isValid()) {
-            emit positionUpdated( Positioning::PositionInfo(_geoPos, sourceName()) );
+            setPositionInfo( Positioning::PositionInfo(_geoPos, sourceName()) );
             setReceivingHeartbeat(true);
         }
 

@@ -34,8 +34,7 @@ using namespace Qt::Literals::StringLiterals;
 
 
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
-    : Positioning::PositionInfoSource_Abstract(parent),
-    m_receivingHeartbeat(false)
+    : QObject(parent), m_receivingHeartbeat(false)
 {
     // Create traffic objects
     const int numTrafficObjects = 20;
@@ -48,8 +47,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     }
     m_trafficObjectWithoutPosition = new Traffic::TrafficFactor_DistanceOnly(this);
     QQmlEngine::setObjectOwnership(m_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
-
-    setSourceName(tr("Traffic data receiver"));
 
     // Setup FLARM warning
     m_WarningTimer.setInterval( Positioning::PositionInfo::lifetime );
@@ -74,6 +71,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     m_currentSource.setBinding([this]() {return computeCurrentSource();});
     m_receivingHeartbeat.setBinding([this]() {return computeReceivingHeartbeat();});
     m_statusString.setBinding([this]() {return computeStatusString();});
+    m_positionInfo.setBinding([this]() {return computePositionInfo();});
     m_currentSourceIsInternetService.setBinding([this]() {
         return qobject_cast<TrafficDataSource_Ogn*>(m_currentSource.value()) != nullptr;
     });
@@ -355,7 +353,6 @@ void Traffic::TrafficDataProvider::onCurrentSourceChanged()
     {
         connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
         connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
-        connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
         connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
     }
     else
@@ -489,7 +486,6 @@ void Traffic::TrafficDataProvider::saveConnectionInfos()
         auto connectionInfo = dataSource->connectionInfo();
         if (connectionInfo.type() == Traffic::ConnectionInfo::Invalid)
         {
-            qWarning() << "CX" << connectionInfo.name();
             continue;
         }
         connectionInfos << connectionInfo;
@@ -553,6 +549,23 @@ QPointer<Traffic::TrafficDataSource_Abstract> Traffic::TrafficDataProvider::comp
         }
     }
     return nullptr;
+}
+
+Positioning::PositionInfo Traffic::TrafficDataProvider::computePositionInfo()
+{
+    foreach(auto source, m_dataSources.value())
+    {
+        if (source.isNull())
+        {
+            continue;
+        }
+        auto pInfo = source->positionInfo();
+        if (pInfo.isValid())
+        {
+            return pInfo;
+        }
+    }
+    return {};
 }
 
 Units::Distance Traffic::TrafficDataProvider::computePressureAltitude()

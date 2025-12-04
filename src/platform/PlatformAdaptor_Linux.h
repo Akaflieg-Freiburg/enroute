@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -40,6 +40,15 @@ public:
      * @param parent Standard QObject parent pointer
      */
     explicit PlatformAdaptor(QObject* parent = nullptr);
+
+    // No default constructor, important for QML singleton
+    explicit PlatformAdaptor() = delete;
+
+    // factory function for QML singleton
+    static Platform::PlatformAdaptor* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::platformAdaptor();
+    }
 
     ~PlatformAdaptor() override = default;
 

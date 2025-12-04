@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
-#include "platform/PlatformAdaptor_Abstract.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@
 #include "navigation/Navigator.h"
 #include "notification/NotificationManager.h"
 #include "notification/Notification_DataUpdateAvailable.h"
-#include "platform/PlatformAdaptor_Abstract.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
 #include <chrono>
 
@@ -90,12 +90,11 @@ void Notifications::NotificationManager::deferredInitialization()
 
 Notifications::Notification* Notifications::NotificationManager::currentVisualNotification() const
 {
-    Notifications::Notification* result = nullptr;
     if (!m_visualNotifications.isEmpty())
     {
-        result = m_visualNotifications[0];
+        return m_visualNotifications[0];
     }
-    return result;
+    return nullptr;
 }
 
 

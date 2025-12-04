@@ -21,9 +21,10 @@
 #pragma once
 
 #include <QQmlEngine>
-#include "GlobalObject.h"
+
 #include "geomaps/Waypoint.h"
 #include "geomaps/VAC.h"
+#include "GlobalObject.h"
 
 namespace Platform {
 

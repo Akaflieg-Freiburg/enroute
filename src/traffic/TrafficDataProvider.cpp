@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,7 @@
 #include <QCoreApplication>
 #include <QFile>
 
-#include "platform/PlatformAdaptor_Abstract.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
 #if __has_include(<QSerialPort>)
 #include "traffic/TrafficDataSource_SerialPort.h"

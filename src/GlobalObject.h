@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -66,8 +66,7 @@ class TrafficDataProvider;
 namespace Platform
 {
 class FileExchange;
-class Notifier_Abstract;
-class PlatformAdaptor_Abstract;
+class PlatformAdaptor;
 } // namespace Platform
 
 namespace Positioning
@@ -191,7 +190,7 @@ public:
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Platform::PlatformAdaptor_Abstract* platformAdaptor();
+    Q_INVOKABLE static Platform::PlatformAdaptor* platformAdaptor();
 
     /*! \brief Pointer to appplication-wide static Navigation::Clock instance
      *

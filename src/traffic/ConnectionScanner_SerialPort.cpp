@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,9 +29,7 @@
 Traffic::ConnectionScanner_SerialPort::ConnectionScanner_SerialPort(QObject* parent)
     : ConnectionScanner_Abstract(parent)
 {
-
 }
-
 
 void Traffic::ConnectionScanner_SerialPort::start()
 {

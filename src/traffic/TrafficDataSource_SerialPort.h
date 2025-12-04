@@ -52,20 +52,7 @@ public:
     TrafficDataSource_SerialPort(bool isCanonical, const QString& portName, QObject* parent);
 
     // Standard destructor
-    ~TrafficDataSource_SerialPort() override = default;
-
-
-
-    //
-    // Properties
-    //
-
-    /*! \brief Source info
-     *
-     *  Device info, as set in the constructor of this class.
-     */
-    Q_PROPERTY(QSerialPortInfo sourceInfo READ sourceInfo CONSTANT)
-
+    ~TrafficDataSource_SerialPort() override;
 
 
     //
@@ -78,7 +65,7 @@ public:
      */
     [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const override
     {
-        return Traffic::ConnectionInfo(sourceInfo(), canonical());
+        return Traffic::ConnectionInfo(m_portName, false);
     }
 
     /*! \brief Getter function for the property with the same name
@@ -104,15 +91,6 @@ public:
      *  @returns Property sourceName
      */
     [[nodiscard]] QString sourceName() const override;
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property sourceInfo
-     */
-    [[nodiscard]] QSerialPortInfo sourceInfo() const
-    {
-        return QSerialPortInfo(m_port.portName());
-    }
 
 
 public slots:
@@ -141,11 +119,11 @@ private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_SerialPort)
 
     // Copied from the constructor
-    QSerialPort m_port;
-    QPropertyNotifier m_errorChangeHandler;
+    QSerialPort* m_port {nullptr};
+    QString m_portName;
 
     // Text stream used for reading NMEA sentences
-    QTextStream m_textStream {&m_port};
+    QTextStream* m_textStream {nullptr};
 };
 
 } // namespace Traffic

@@ -25,16 +25,30 @@
 
 Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanonical, const QString& portName, QObject* parent) :
     TrafficDataSource_AbstractSocket(isCanonical, parent),
-    m_port(portName)
+    m_portName(portName)
 {
-    // Connect socket
-    connect(&m_port, &QSerialPort::readyRead, this, &Traffic::TrafficDataSource_SerialPort::onReadyRead);
-    m_errorChangeHandler = m_port.bindableError().addNotifier([&]{onErrorOccurred(m_port.error());});
+}
+
+
+Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
+{
+    if (m_textStream != nullptr)
+    {
+        delete m_textStream;
+        m_textStream = nullptr;
+    }
+
+    if (m_port != nullptr)
+    {
+        delete m_port;
+        m_port = nullptr;
+    }
 }
 
 
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 {
+
     // Do not do anything if the traffic receiver is connected and is receiving.
     if (receivingHeartbeat())
     {
@@ -49,24 +63,56 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
     // Close old connection
     disconnectFromTrafficReceiver();
 
+    // Create and connect QSerialPort and QTextStream
+    auto deviceInfos = QSerialPortInfo::availablePorts();
+    foreach (auto deviceInfo, deviceInfos)
+    {
+        if ((deviceInfo.portName() == m_portName) || (deviceInfo.description() == m_portName))
+        {
+            m_port = new QSerialPort(deviceInfo);
+            break;
+        }
+    }
+    if (m_port == nullptr)
+    {
+        setErrorString(tr("Device not found."));
+        return;
+    }
+
+    connect(m_port, &QSerialPort::readyRead, this, &Traffic::TrafficDataSource_SerialPort::onReadyRead);
+    connect(m_port, &QSerialPort::errorOccurred, this, &Traffic::TrafficDataSource_SerialPort::onErrorOccurred);
+    m_textStream = new QTextStream(m_port);
+
     // Start new connection
-    m_port.open(QIODeviceBase::ReadWrite);
-    if (m_port.isOpen())
+    m_port->open(QIODeviceBase::ReadWrite);
+    if (m_port->isOpen())
     {
         setConnectivityStatus(tr("Connected."));
     }
+
 }
 
 
 void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 {
-    if (m_port.isOpen())
+    if (m_textStream != nullptr)
     {
-        m_port.clear();
-        m_port.close();
+        delete m_textStream;
+        m_textStream = nullptr;
     }
-    m_port.clearError();
-    onErrorOccurred(m_port.error());
+
+    if (m_port != nullptr)
+    {
+        if (m_port->isOpen())
+        {
+            m_port->clear();
+            m_port->close();
+        }
+        m_port->clearError();
+        onErrorOccurred(m_port->error());
+        delete m_port;
+        m_port = nullptr;
+    }
     setConnectivityStatus(tr("Not connected."));
 }
 
@@ -114,8 +160,13 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
 
 void Traffic::TrafficDataSource_SerialPort::onReadyRead()
 {
+    if (m_textStream == nullptr)
+    {
+        return;
+    }
+
     QString sentence;
-    while(m_textStream.readLineInto(&sentence) )
+    while(m_textStream->readLineInto(&sentence))
     {
         processFLARMData(sentence);
     }
@@ -124,7 +175,7 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
 
 QString Traffic::TrafficDataSource_SerialPort::sourceName() const
 {
-    auto name = m_port.portName();
+    auto name = m_portName;
     if (name.isEmpty())
     {
         name = tr("Unnamed Device");

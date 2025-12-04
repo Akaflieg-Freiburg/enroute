@@ -41,7 +41,11 @@ void Traffic::ConnectionScanner_SerialPort::start()
     auto deviceInfos = QSerialPortInfo::availablePorts();
     foreach (auto deviceInfo, deviceInfos)
     {
-        result += ConnectionInfo(deviceInfo);
+        result += ConnectionInfo(deviceInfo.portName());
+        if (!deviceInfo.description().isEmpty())
+        {
+            result += ConnectionInfo(deviceInfo.description());
+        }
     }
     std::sort(result.begin(), result.end());
     setDevices(result);

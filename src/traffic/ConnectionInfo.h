@@ -88,7 +88,7 @@ public:
      *
      * \param canonical Property 'canonical', as described below.
      */
-    explicit ConnectionInfo(const QSerialPortInfo& info, bool canonical=false);
+    explicit ConnectionInfo(const QString& serialPortName, bool canonical=false);
 #endif
 
     /*!
@@ -165,7 +165,7 @@ public:
      *
      * For TCP connections, this property holds the host name.
      */
-    Q_PROPERTY(QString hostn READ host CONSTANT)
+    Q_PROPERTY(QString host READ host CONSTANT)
 
     /*!
      * \brief Icon

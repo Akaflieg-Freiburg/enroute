@@ -122,7 +122,7 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
     switch (error)
     {
     case QSerialPort::NoError:
-        setErrorString("");
+        setErrorString(u""_s);
         break;
     case QSerialPort::DeviceNotFoundError:
         setErrorString( tr("Non-existing device") );

@@ -58,6 +58,15 @@ public:
      */
     explicit PlatformAdaptor(QObject *parent = nullptr);
 
+    // No default constructor, important for QML singleton
+    explicit PlatformAdaptor() = delete;
+
+    // factory function for QML singleton
+    static Platform::PlatformAdaptor* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::platformAdaptor();
+    }
+
     ~PlatformAdaptor() override = default;
 
 

@@ -51,7 +51,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/***************************************************************************</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> *   Copyright (C) 2024 by Stefan Kebekus                                  *</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> *   Copyright (C) 2025 by Stefan Kebekus                                  *</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> *                                                                         *</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -79,46 +79,49 @@ $(function() {
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span>Traffic {</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span></div>
-<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classTraffic_1_1ConnectionScanner__SerialPort.html">   35</a></span><span class="keyword">class </span><a class="code hl_function" href="classTraffic_1_1ConnectionScanner__SerialPort.html#ae551b3b374e933d5cdb3a147f86e7eee">ConnectionScanner_SerialPort</a> : <span class="keyword">public</span> <a class="code hl_function" href="classTraffic_1_1ConnectionScanner__Abstract.html#a75bcad6f88648b6cef88d10c1e53b924">ConnectionScanner_Abstract</a> {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    Q_OBJECT</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    QML_ELEMENT</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    QML_SINGLETON</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// Properties need to be repeated, or else the Qt CMake macros cannot find them.</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    Q_PROPERTY(QList&lt;Traffic::ConnectionInfo&gt; connectionInfos READ connectionInfos NOTIFY <a class="code hl_signal" href="classTraffic_1_1ConnectionScanner__Abstract.html#aced83b0c23d51ca5f4a91ad2cd2be5b7">connectionInfosChanged</a>)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    Q_PROPERTY(QString error READ error NOTIFY <a class="code hl_signal" href="classTraffic_1_1ConnectionScanner__Abstract.html#a2dda2b47f22cb31ab4d4bbd8a2b89798">errorChanged</a>)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    Q_PROPERTY(<span class="keywordtype">bool</span> scanning READ scanning NOTIFY <a class="code hl_signal" href="classTraffic_1_1ConnectionScanner__Abstract.html#a52a55fc9984c69939955d9245d71668d">scanningChanged</a>)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classTraffic_1_1ConnectionScanner__SerialPort.html#ae551b3b374e933d5cdb3a147f86e7eee">   52</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classTraffic_1_1ConnectionScanner__SerialPort.html#ae551b3b374e933d5cdb3a147f86e7eee">ConnectionScanner_SerialPort</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="comment">// No default constructor, important for QML singleton</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classTraffic_1_1ConnectionScanner__SerialPort.html#ae551b3b374e933d5cdb3a147f86e7eee">ConnectionScanner_SerialPort</a>() = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="comment">// factory function for QML singleton</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keyword">static</span> <a class="code hl_class" href="classTraffic_1_1ConnectionScanner__SerialPort.html">Traffic::ConnectionScanner_SerialPort</a>* create(QQmlEngine* <span class="comment">/*unused*/</span>, QJSEngine* <span class="comment">/*unused*/</span>)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classTraffic_1_1ConnectionScanner__SerialPort.html">Traffic::ConnectionScanner_SerialPort</a>(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">public</span> slots:</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">// Re-implemented from ConnectionScanner_Abstract</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordtype">void</span> <a class="code hl_slot" href="classTraffic_1_1ConnectionScanner__Abstract.html#a48f90d93de810278fc19a12ab2b16bf6">start</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="comment">// Re-implemented from ConnectionScanner_Abstract</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordtype">void</span> <a class="code hl_slot" href="classTraffic_1_1ConnectionScanner__Abstract.html#a978e242a94a7a88fa71a34a75d64a426">stop</a>()<span class="keyword"> override </span>{};</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>};</div>
-</div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="};">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classTraffic_1_1ConnectionScanner__SerialPort.html">   36</a></span><span class="keyword">class </span><a class="code hl_function" href="classTraffic_1_1ConnectionScanner__SerialPort.html#ae551b3b374e933d5cdb3a147f86e7eee">ConnectionScanner_SerialPort</a> : <span class="keyword">public</span> <a class="code hl_function" href="classTraffic_1_1ConnectionScanner__Abstract.html#a75bcad6f88648b6cef88d10c1e53b924">ConnectionScanner_Abstract</a> {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    Q_OBJECT</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    QML_ELEMENT</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    QML_SINGLETON</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="comment">// Properties need to be repeated, or else the Qt CMake macros cannot find them.</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    Q_PROPERTY(QList&lt;Traffic::ConnectionInfo&gt; connectionInfos READ connectionInfos NOTIFY <a class="code hl_signal" href="classTraffic_1_1ConnectionScanner__Abstract.html#aced83b0c23d51ca5f4a91ad2cd2be5b7">connectionInfosChanged</a>)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    Q_PROPERTY(QString error READ error NOTIFY <a class="code hl_signal" href="classTraffic_1_1ConnectionScanner__Abstract.html#a2dda2b47f22cb31ab4d4bbd8a2b89798">errorChanged</a>)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    Q_PROPERTY(<span class="keywordtype">bool</span> scanning READ scanning NOTIFY <a class="code hl_signal" href="classTraffic_1_1ConnectionScanner__Abstract.html#a52a55fc9984c69939955d9245d71668d">scanningChanged</a>)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classTraffic_1_1ConnectionScanner__SerialPort.html#ae551b3b374e933d5cdb3a147f86e7eee">   53</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classTraffic_1_1ConnectionScanner__SerialPort.html#ae551b3b374e933d5cdb3a147f86e7eee">ConnectionScanner_SerialPort</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="comment">// No default constructor, important for QML singleton</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classTraffic_1_1ConnectionScanner__SerialPort.html#ae551b3b374e933d5cdb3a147f86e7eee">ConnectionScanner_SerialPort</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="comment">// factory function for QML singleton</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">static</span> <a class="code hl_class" href="classTraffic_1_1ConnectionScanner__SerialPort.html">Traffic::ConnectionScanner_SerialPort</a>* create(QQmlEngine* <span class="comment">/*unused*/</span>, QJSEngine* <span class="comment">/*unused*/</span>)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classTraffic_1_1ConnectionScanner__SerialPort.html">Traffic::ConnectionScanner_SerialPort</a>(<span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">public</span> slots:</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="comment">// Re-implemented from ConnectionScanner_Abstract</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">void</span> <a class="code hl_slot" href="classTraffic_1_1ConnectionScanner__Abstract.html#a48f90d93de810278fc19a12ab2b16bf6">start</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="comment">// Re-implemented from ConnectionScanner_Abstract</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordtype">void</span> <a class="code hl_slot" href="classTraffic_1_1ConnectionScanner__Abstract.html#a978e242a94a7a88fa71a34a75d64a426">stop</a>()<span class="keyword"> override </span>{ m_running = <span class="keyword">false</span>;};</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>} <span class="comment">// namespace Traffic</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordtype">bool</span> m_running {<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>};</div>
+</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>} <span class="comment">// namespace Traffic</span></div>
 <div class="ttc" id="aclassTraffic_1_1ConnectionScanner__Abstract_html_a2dda2b47f22cb31ab4d4bbd8a2b89798"><div class="ttname"><a href="classTraffic_1_1ConnectionScanner__Abstract.html#a2dda2b47f22cb31ab4d4bbd8a2b89798">Traffic::ConnectionScanner_Abstract::errorChanged</a></div><div class="ttdeci">void errorChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassTraffic_1_1ConnectionScanner__Abstract_html_a48f90d93de810278fc19a12ab2b16bf6"><div class="ttname"><a href="classTraffic_1_1ConnectionScanner__Abstract.html#a48f90d93de810278fc19a12ab2b16bf6">Traffic::ConnectionScanner_Abstract::start</a></div><div class="ttdeci">virtual void start()=0</div><div class="ttdoc">Start scan process.</div></div>
 <div class="ttc" id="aclassTraffic_1_1ConnectionScanner__Abstract_html_a52a55fc9984c69939955d9245d71668d"><div class="ttname"><a href="classTraffic_1_1ConnectionScanner__Abstract.html#a52a55fc9984c69939955d9245d71668d">Traffic::ConnectionScanner_Abstract::scanningChanged</a></div><div class="ttdeci">void scanningChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassTraffic_1_1ConnectionScanner__Abstract_html_a75bcad6f88648b6cef88d10c1e53b924"><div class="ttname"><a href="classTraffic_1_1ConnectionScanner__Abstract.html#a75bcad6f88648b6cef88d10c1e53b924">Traffic::ConnectionScanner_Abstract::ConnectionScanner_Abstract</a></div><div class="ttdeci">ConnectionScanner_Abstract(QObject *parent=nullptr)</div><div class="ttdoc">Constructor.</div></div>
 <div class="ttc" id="aclassTraffic_1_1ConnectionScanner__Abstract_html_a978e242a94a7a88fa71a34a75d64a426"><div class="ttname"><a href="classTraffic_1_1ConnectionScanner__Abstract.html#a978e242a94a7a88fa71a34a75d64a426">Traffic::ConnectionScanner_Abstract::stop</a></div><div class="ttdeci">virtual void stop()=0</div><div class="ttdoc">Stop scan process.</div></div>
 <div class="ttc" id="aclassTraffic_1_1ConnectionScanner__Abstract_html_aced83b0c23d51ca5f4a91ad2cd2be5b7"><div class="ttname"><a href="classTraffic_1_1ConnectionScanner__Abstract.html#aced83b0c23d51ca5f4a91ad2cd2be5b7">Traffic::ConnectionScanner_Abstract::connectionInfosChanged</a></div><div class="ttdeci">void connectionInfosChanged()</div><div class="ttdoc">Notifier signal.</div></div>
-<div class="ttc" id="aclassTraffic_1_1ConnectionScanner__SerialPort_html"><div class="ttname"><a href="classTraffic_1_1ConnectionScanner__SerialPort.html">Traffic::ConnectionScanner_SerialPort</a></div><div class="ttdoc">Connection Scanner: SerialPort Devices.</div><div class="ttdef"><b>Definition</b> <a href="#l00035">ConnectionScanner_SerialPort.h:35</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1ConnectionScanner__SerialPort_html"><div class="ttname"><a href="classTraffic_1_1ConnectionScanner__SerialPort.html">Traffic::ConnectionScanner_SerialPort</a></div><div class="ttdoc">Connection Scanner: SerialPort Devices.</div><div class="ttdef"><b>Definition</b> <a href="#l00036">ConnectionScanner_SerialPort.h:36</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1ConnectionScanner__SerialPort_html_ae551b3b374e933d5cdb3a147f86e7eee"><div class="ttname"><a href="classTraffic_1_1ConnectionScanner__SerialPort.html#ae551b3b374e933d5cdb3a147f86e7eee">Traffic::ConnectionScanner_SerialPort::ConnectionScanner_SerialPort</a></div><div class="ttdeci">ConnectionScanner_SerialPort(QObject *parent=nullptr)</div><div class="ttdoc">Constructor.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -97,7 +97,7 @@ $(function() {
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classGlobalObject.html#a1ef30c74add453f96a346bb91a9b564d">GlobalObject::platformAdaptor</a>();</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_class" href="classPlatform_1_1PlatformAdaptor.html">~PlatformAdaptor</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_class" href="classPlatform_1_1PlatformAdaptor.html">~PlatformAdaptor</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">//</span></div>
@@ -131,9 +131,14 @@ $(function() {
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">// Help with DBus programming is found here:</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment">// https://develop.kde.org/docs/d-bus/accessing_dbus_interfaces/</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    QDBusInterface networkManagerInterface {QStringLiteral(<span class="stringliteral">&quot;org.freedesktop.NetworkManager&quot;</span>), QStringLiteral(<span class="stringliteral">&quot;/org/freedesktop/NetworkManager&quot;</span>), QStringLiteral(<span class="stringliteral">&quot;org.freedesktop.NetworkManager&quot;</span>), QDBusConnection::systemBus()};</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>};</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>} <span class="comment">// namespace Platform</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="comment">// Used to watch serial ports</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keyword">struct </span>udev *udev_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keyword">struct </span>udev_monitor *mon_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    QSocketNotifier *notifier_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>};</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>} <span class="comment">// namespace Platform</span></div>
 <div class="ttc" id="aclassGlobalObject_html_a1ef30c74add453f96a346bb91a9b564d"><div class="ttname"><a href="classGlobalObject.html#a1ef30c74add453f96a346bb91a9b564d">GlobalObject::platformAdaptor</a></div><div class="ttdeci">static Q_INVOKABLE Platform::PlatformAdaptor * platformAdaptor()</div><div class="ttdoc">Pointer to appplication-wide static PlatformAdaptor instance.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html">Platform::PlatformAdaptor_Abstract</a></div><div class="ttdoc">Interface to platform-specific functionality.</div><div class="ttdef"><b>Definition</b> <a href="PlatformAdaptor__Abstract_8h_source.html#l00052">PlatformAdaptor_Abstract.h:53</a></div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html">Platform::PlatformAdaptor</a></div><div class="ttdoc">Implementation of PlatformAdaptor for Android devices.</div><div class="ttdef"><b>Definition</b> <a href="PlatformAdaptor__Android_8h_source.html#l00034">PlatformAdaptor_Android.h:35</a></div></div>

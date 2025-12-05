@@ -20,6 +20,8 @@
 
 #include <QCoreApplication>
 
+#include "GlobalObject.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataSource_SerialPort.h"
 
 
@@ -27,6 +29,7 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
     TrafficDataSource_AbstractSocket(isCanonical, parent),
     m_portNameOrDescription(portNameOrDescription)
 {
+    connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::serialPortsChanged, this, &Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver);
 }
 
 
@@ -48,11 +51,13 @@ Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 {
-
-    // Do not do anything if the traffic receiver is connected and is receiving.
-    if (receivingHeartbeat())
+    // Do not do anything if the traffic receiver is connected.
+    if (m_port != nullptr)
     {
-        return;
+        if (m_port->isOpen() && (m_port->error() == QSerialPort::NoError))
+        {
+            return;
+        }
     }
 
 #if defined(Q_OS_IOS)

@@ -21,6 +21,8 @@
 #if __has_include(<QSerialPortInfo>)
 #include <QSerialPortInfo>
 #endif
+#include "GlobalObject.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/ConnectionScanner_SerialPort.h"
 
 
@@ -29,11 +31,17 @@
 Traffic::ConnectionScanner_SerialPort::ConnectionScanner_SerialPort(QObject* parent)
     : ConnectionScanner_Abstract(parent)
 {
+    connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::serialPortsChanged, this, [this](){
+        if (m_running)
+        {
+            start();
+        }
+    });
 }
 
-#warning Update when devices become available
 void Traffic::ConnectionScanner_SerialPort::start()
 {
+    m_running = true;
 #if __has_include(<QSerialPortInfo>)
     QVector<Traffic::ConnectionInfo> result1;
     QVector<Traffic::ConnectionInfo> result2;

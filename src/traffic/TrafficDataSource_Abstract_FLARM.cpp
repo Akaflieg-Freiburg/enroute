@@ -226,7 +226,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& se
         return;
     }
 
-    qWarning() << "Unknown/unhandled FLARM/NMEA Message Type" << messageType;
+#warning
+//    qWarning() << "Unknown/unhandled FLARM/NMEA Message Type" << messageType;
 }
 
 

@@ -47,15 +47,8 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
                 {
                     return;
                 }
-//                const char *action  = udev_device_get_action(dev);   // "add" / "remove"
-//                const char *devNode = udev_device_get_devnode(dev);  // e.g. "/dev/ttyUSB0"
-//                qWarning() << "Serial port activity" << action << devNode;
-                qWarning() << "Serial port activity";
                 emit serialPortsChanged();
-
-
                 udev_device_unref(dev);
-
             });
         }
     }

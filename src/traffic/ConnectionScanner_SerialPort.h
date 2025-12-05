@@ -66,7 +66,10 @@ public slots:
     void start() override;
 
     // Re-implemented from ConnectionScanner_Abstract
-    void stop() override {};
+    void stop() override { m_running = false;};
+
+private:
+    bool m_running {false};
 };
 
 } // namespace Traffic

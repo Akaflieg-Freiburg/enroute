@@ -172,17 +172,16 @@ QString Traffic::TrafficDataProvider::addDataSource_UDP(quint16 port)
     return {};
 }
 
-#warning argument name!
-QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& portName)
+QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& portNameOrDescription)
 {
     // Ignore new device if data source already exists.
-    if (hasDataSource_SerialPort(portName))
+    if (hasDataSource_SerialPort(portNameOrDescription))
     {
         return tr("A connection to this device already exists.");
     }
 
 #if __has_include(<QSerialPort>)
-    auto* source = new TrafficDataSource_SerialPort(false, portName, this);
+    auto* source = new TrafficDataSource_SerialPort(false, portNameOrDescription, this);
     source->connectToTrafficReceiver();
     addDataSource(source);
     return {};

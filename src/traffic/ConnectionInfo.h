@@ -78,18 +78,17 @@ public:
      */
     explicit ConnectionInfo(const QBluetoothDeviceInfo& info, bool canonical=false);
 
-#warning
 #if __has_include (<QSerialPortInfo>)
     /*!
      * \brief Constructor for Bluetooth Device Connections
      *
      * This method constructs a ConnectionInfo for a connection to a serial port.
      *
-     * \param info QBluetoothDeviceInfo that describes the Bluetooth device
+     * \param serialPortNameOrDescription Serial port name or description by which the port can be identified
      *
      * \param canonical Property 'canonical', as described below.
      */
-    explicit ConnectionInfo(const QString& serialPortName, bool canonical=false);
+    explicit ConnectionInfo(const QString& serialPortNameOrDescription, bool canonical=false);
 #endif
 
     /*!

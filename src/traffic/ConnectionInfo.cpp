@@ -129,10 +129,10 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
 
 
 #if __has_include (<QSerialPortInfo>)
-Traffic::ConnectionInfo::ConnectionInfo(const QString& serialPortName, bool canonical)
-    : m_canConnect(true), m_canonical(canonical), m_host(serialPortName), m_name(serialPortName), m_type(Traffic::ConnectionInfo::Serial)
+Traffic::ConnectionInfo::ConnectionInfo(const QString& serialPortNameOrDescription, bool canonical)
+    : m_canConnect(true), m_canonical(canonical), m_host(serialPortNameOrDescription), m_name(serialPortNameOrDescription), m_type(Traffic::ConnectionInfo::Serial)
 {
-    m_description = QObject::tr("Serial Port Connection to %1", "Traffic::ConnectionInfo").arg(serialPortName);
+    m_description = QObject::tr("Serial Port Connection to %1", "Traffic::ConnectionInfo").arg(serialPortNameOrDescription);
     m_icon = u"/icons/material/ic_settings_ethernet.svg"_s;
 }
 #endif

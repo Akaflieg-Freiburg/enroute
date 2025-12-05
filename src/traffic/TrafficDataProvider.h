@@ -341,11 +341,12 @@ public:
      *
      * This method adds an additional serial port data source to this TrafficDataProvider.
      *
-     * \param portName Name of the serial port
+     * \param portNameOrDescription Name of the serial port or a description string by which
+     * the port can be identified-
      *
      * \returns An empty string on success, and a human-readable, translated error message on failure.
      */
-    Q_INVOKABLE QString addDataSource_SerialPort(const QString& portName);
+    Q_INVOKABLE QString addDataSource_SerialPort(const QString& portNameOrDescription);
 
     /*! \brief Add an additional data source
      *
@@ -367,7 +368,13 @@ public:
      */
     Q_INVOKABLE QString addDataSource_OGN();
 
-#warning
+    /*! \brief Check if serial port connection already exists
+     *
+     * @param portNameOrDescription Port name or description string by which the
+     * port can be identified.
+     *
+     * @returns True if a connection to that port already exists.
+     */
     Q_INVOKABLE bool hasDataSource_SerialPort(const QString& portNameOrDescription);
 
     /*! \brief Remove data sources

@@ -26,6 +26,7 @@
 
 using namespace Qt::Literals::StringLiterals;
 
+Q_GLOBAL_STATIC(QSet<QString>, unparsedFLARMSentences)
 
 //
 // Static Helper functions
@@ -226,8 +227,12 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& se
         return;
     }
 
-#warning
-//    qWarning() << "Unknown/unhandled FLARM/NMEA Message Type" << messageType;
+    // Warn about unknown message types, but warn only once.
+    if (!unparsedFLARMSentences->contains(messageType))
+    {
+        unparsedFLARMSentences->insert(messageType);
+        qWarning() << "Unknown/unhandled FLARM/NMEA Message Type" << messageType;
+    }
 }
 
 

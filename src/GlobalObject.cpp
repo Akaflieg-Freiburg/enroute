@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -43,6 +43,7 @@
 #include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
 
+namespace {
 bool isConstructingOrDeconstructing {false};
 
 QPointer<Sensors> g_sensors {};
@@ -65,7 +66,7 @@ QPointer<GlobalSettings> g_globalSettings {};
 QPointer<Traffic::TrafficDataProvider> g_trafficDataProvider {};
 QPointer<GeoMaps::WaypointLibrary> g_waypointLibrary {};
 QPointer<Weather::WeatherDataProvider> g_weatherDataProvider {};
-
+} // namespace
 
 template<typename T> auto GlobalObject::allocateInternal(QPointer<T>& pointer) -> T*
 {
@@ -185,7 +186,7 @@ auto GlobalObject::librarian() -> Librarian*
 }
 
 
-auto GlobalObject::platformAdaptor() -> Platform::PlatformAdaptor_Abstract*
+Platform::PlatformAdaptor* GlobalObject::platformAdaptor()
 {
     return allocateInternal<Platform::PlatformAdaptor>(g_platformAdaptor);
 }

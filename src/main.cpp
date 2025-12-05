@@ -46,13 +46,13 @@
 #include "ios/ObjCAdapter.h"
 #endif
 
-#include "config.h"
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
+#include "config.h"
 #include "geomaps/Airspace.h"
 #include "platform/FileExchange.h"
-#include "platform/PlatformAdaptor_Abstract.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/Warning.h"
 
 using namespace std::chrono_literals;

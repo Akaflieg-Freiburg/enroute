@@ -1,4 +1,3 @@
-
 #
 # Configure files
 #
@@ -430,39 +429,41 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         traffic/TrafficDataSource_SerialPort.cpp
     )
 
-# Compile definitions
-add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
-# Add executable and libraries
-qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
-set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
-set(MACOSX_BUNDLE_BUNDLE_VERSION 2) #MacOS Build Number -> increment manually
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    MACOSX_BUNDLE true
-    MACOSX_BUNDLE_GUI_IDENTIFIER "de.akafliegfreiburg.enroute"
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
-    MACOSX_BUNDLE_ICON_FILE enroute.icns
-    MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"
-)
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-    Qt6::Bluetooth
-    Qt6::Concurrent
-    Qt6::Core
-    Qt6::Core5Compat
-    Qt6::HttpServer
-    Qt6::Positioning
-    Qt6::Quick
-    Qt6::QuickControls2
-    Qt6::SerialPort
-    Qt6::Sql
-    Qt6::Svg
-    Qt6::TextToSpeech
-    Qt6::WebView
-    Qt6::Widgets
-    QMapLibre::Location
-    libzip::zip
-)
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
+    set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
+    set(MACOSX_BUNDLE_BUNDLE_VERSION 2) #MacOS Build Number -> increment manually
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_GUI_IDENTIFIER "de.akafliegfreiburg.enroute"
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
+        MACOSX_BUNDLE_ICON_FILE enroute.icns
+        MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"
+    )
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        "-framework IOKit"
+        "-framework CoreFoundation"
+        Qt6::Bluetooth
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::QuickControls2
+        Qt6::SerialPort
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::TextToSpeech
+        Qt6::WebView
+        Qt6::Widgets
+        QMapLibre::Location
+        libzip::zip
+    )
 endif()
 
 

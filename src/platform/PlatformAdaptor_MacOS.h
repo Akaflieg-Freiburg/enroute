@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +21,9 @@
 #pragma once
 
 #include "PlatformAdaptor_Abstract.h"
+
+// Forward declarations for IOKit types
+class IONotificationPort;
 
 namespace Platform {
 
@@ -48,10 +51,17 @@ public:
         return GlobalObject::platformAdaptor();
     }
 
-    ~PlatformAdaptor() override = default;
+    ~PlatformAdaptor() override;
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
+
+    // Members used to track changes of serial port devices
+    IONotificationPort* m_notifyPort {nullptr};
+    unsigned int m_addedIterator {0};
+    unsigned int m_removedIterator {0};
+    void setupIOKitNotifications();
+    static void deviceChanged(void *refCon, unsigned int iterator);
 };
 
 } // namespace Platform

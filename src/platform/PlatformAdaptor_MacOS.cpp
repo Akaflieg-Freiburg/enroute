@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,12 +20,96 @@
 
 #include "platform/PlatformAdaptor_MacOS.h"
 
-// This is a template file without actual implementation.
+#include <IOKit/IOKitLib.h>
+#include <IOKit/serial/IOSerialKeys.h>
+#include <CoreFoundation/CoreFoundation.h>
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : PlatformAdaptor_Abstract(parent)
 {
-    // Standard constructor. Recall that the constructor must not call virtual functions.
-    // If you need virtual functions, use the methode deferredInitialization below.
+    setupIOKitNotifications();
+}
+
+Platform::PlatformAdaptor::~PlatformAdaptor()
+{
+    if (m_addedIterator != 0)
+    {
+        IOObjectRelease(m_addedIterator);
+        m_addedIterator = 0;
+    }
+
+    if (m_removedIterator != 0)
+    {
+        IOObjectRelease(m_removedIterator);
+        m_removedIterator = 0;
+    }
+
+    if (m_notifyPort != nullptr)
+    {
+        CFRunLoopSourceRef runLoopSource = IONotificationPortGetRunLoopSource(m_notifyPort);
+        CFRunLoopRemoveSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopDefaultMode);
+        IONotificationPortDestroy(m_notifyPort);
+        m_notifyPort = nullptr;
+    }
+}
+
+
+void Platform::PlatformAdaptor::setupIOKitNotifications()
+{
+    m_notifyPort = IONotificationPortCreate(kIOMainPortDefault);
+    if (m_notifyPort == nullptr)
+    {
+        qWarning() << "Platform::PlatformAdaptor::setupIOKitNotifications()" << "m_notifyPort == nullptr";
+        return;
+    }
+
+    CFRunLoopSourceRef runLoopSource = IONotificationPortGetRunLoopSource(m_notifyPort);
+    CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopDefaultMode);
+
+    // Register for device addition
+    CFMutableDictionaryRef matchingDict = IOServiceMatching(kIOSerialBSDServiceValue);
+    if (matchingDict == nullptr)
+    {
+        qWarning() << "Platform::PlatformAdaptor::setupIOKitNotifications()" << "matchingDict == nullptr";
+        return;
+    }
+    CFDictionarySetValue(matchingDict, CFSTR(kIOSerialBSDTypeKey), CFSTR(kIOSerialBSDAllTypes));
+    auto kr = IOServiceAddMatchingNotification(m_notifyPort, kIOFirstMatchNotification, matchingDict,
+                                               deviceChanged, this, &m_addedIterator);
+    if (kr == KERN_SUCCESS)
+    {
+        deviceChanged(this, m_addedIterator);
+    }
+
+    // Register for device removal
+    matchingDict = IOServiceMatching(kIOSerialBSDServiceValue);
+    if (matchingDict == nullptr)
+    {
+        qWarning() << "Platform::PlatformAdaptor::setupIOKitNotifications()" << "matchingDict == nullptr";
+        return;
+    }
+    CFDictionarySetValue(matchingDict, CFSTR(kIOSerialBSDTypeKey), CFSTR(kIOSerialBSDAllTypes));
+    kr = IOServiceAddMatchingNotification(m_notifyPort, kIOTerminatedNotification, matchingDict,
+                                          deviceChanged, this, &m_removedIterator);
+    if (kr == KERN_SUCCESS)
+    {
+        deviceChanged(this, m_removedIterator);
+    }
+}
+
+
+void Platform::PlatformAdaptor::deviceChanged(void *refCon, unsigned int iterator)
+{
+    io_service_t device = 0;
+
+    // Consume all devices in the iterator
+    while ((device = IOIteratorNext(iterator)) != 0)
+    {
+        IOObjectRelease(device);
+    }
+
+    // Emit signal that something changed
+    auto *monitor = static_cast<Platform::PlatformAdaptor*>(refCon);
+    monitor->serialPortsChanged();
 }

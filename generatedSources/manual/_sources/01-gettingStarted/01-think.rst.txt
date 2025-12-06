@@ -22,11 +22,9 @@ requirement of the EU Regulation `No 923/2012:SERA.2010
   Before beginning a flight, the pilot-in-command of an aircraft shall become
   familiar with all available information appropriate to the intended operation.
 
-
 To put it simply: relying on **Enroute Flight Navigation** as a primary means of
 navigation is most likely illegal in your jurisdiction.  It is most certainly
 stupid and potentially suicidal.
-
 
 
 Software Limitations
@@ -35,7 +33,6 @@ Software Limitations
 **Enroute Flight Navigation** is not an officially approved flight navigation
 software.  It is not officially approved or certified in any way.  The software
 comes with no guarantee and might contain bugs.
-
 
 
 Navigational Data and Aviation Data

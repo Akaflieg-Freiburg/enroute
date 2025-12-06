@@ -40,17 +40,17 @@ For simplicity, our maps are divided in "Class 1" and "Class 2".
 
 - Class 1 maps are compiled from `openAIP <http://openaip.net>`_ and `open
   flightmaps <https://www.openflightmaps.org/>`_ data. These maps contain
-  complete information about airspaces, airfields and navaids.  In addition, the
-  maps contain (mandatory) reporting points. Some of our class 1 maps also show
-  traffic circuits and flight procedures for control zones.
+  information about airspaces, airfields, navaids, and reporting points. Some of
+  our class 1 maps also show traffic circuits and flight procedures for control
+  zones.
   
 - Class 2 maps are compiled from `openAIP <http://openaip.net>`_ data only. They
-  contain complete information about airspaces, airfields and navaids.
+  contain information about airspaces, airfields, navaids, and reporting points.
 
 Below is a complete list of the maps that we offer.
 
 =================== ============== =======
-Continent           Country        Class
+Continent           Region         Class
 =================== ============== =======
 Africa              Algeria        Class 2
 Africa              Botswana       Class 2
@@ -65,11 +65,14 @@ Africa              Réunion        Class 2
 Africa              South Africa   Class 1
 Africa              Tunisia        Class 2
 Asia                Bahrain        Class 2
+Asia                Brunei         Class 2
 Asia                Japan          Class 2
 Asia                Laos           Class 2
+Asia                Malaysia       Class 2
 Asia                Nepal          Class 2
 Asia                Qatar          Class 2
 Asia                Sri Lanka      Class 2
+Asia                Thailand       Class 2
 Asia                Unit. Emirates Class 2
 Australia Oceanica  Australia      Class 2
 Australia Oceanica  New Zealand    Class 2

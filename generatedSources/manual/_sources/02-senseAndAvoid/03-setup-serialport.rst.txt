@@ -74,3 +74,68 @@ whenever you go flying.  We recommend the following procedure.
   moving map.
 - If the data connection gets lost in mid-flight, **Enroute Flight Navigation**
   will automatically try to re-connect.
+
+
+Troubleshooting
+---------------
+
+Permission Issues on Linux Systems
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+On Linux systems, serial ports are typically accessed through device files such
+as `/dev/ttyUSB0`, `/dev/ttyACM0`, or `/dev/ttyS0`. By default, these devices
+are often restricted to specific user groups, which means **Enroute Flight
+Navigation** may not be able to access the serial port even though the hardware
+is properly connected.
+
+**Symptoms**
+
+If you experience permission issues, you might see one or more of the following:
+
+- The app cannot detect or connect to the serial port device
+- Error messages about "permission denied"
+- The serial port device appears in system tools but not in the app
+
+**Solution: Add Your User to the dialout Group (Recommended)**
+
+The most common and permanent solution is to add your user account to the group
+that has permission to access serial ports. On most Linux distributions, this
+group is called `dialout`.
+
+1. Open a terminal
+2. Run the following command (replace `username` with your actual username)::
+
+     sudo usermod -a -G dialout username
+
+3. Log out completely and log back in (or reboot your computer) for the changes
+   to take effect
+4. Verify the change by running: `groups` - you should see `dialout` in the list
+
+
+**Distribution-Specific Notes**
+
+- **Ubuntu/Debian**: The group is typically `dialout`
+- **Fedora/RHEL/CentOS**: The group is typically `dialout` or `uucp`
+- **Arch Linux**: The group is typically `uucp` or `lock`
+- **openSUSE**: The group is typically `dialout`
+
+If `dialout` doesn't work, check which group owns your serial port device by
+running::
+
+  ls -l /dev/tty*
+
+The output will show the group name (usually the third column from the left),
+and you can add your user to that group instead.
+
+
+**Still Having Issues?**
+
+If permission issues persist after following these steps:
+
+- Make sure you completely logged out and back in after adding yourself to the
+  group
+- Check if SELinux or AppArmor policies are blocking access (advanced users)
+- Verify the serial device is working by testing with another application like
+  `minicom` or `screen`
+- Check system logs with `dmesg | tail` to see if there are any hardware or
+  driver issues

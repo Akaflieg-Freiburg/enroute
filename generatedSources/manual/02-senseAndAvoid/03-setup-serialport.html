@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Connect via the Serial Port &mdash; Enroute Flight Navigation  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=7a5cd723" />
 
   
@@ -57,6 +57,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#daily-operations">Daily Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#permission-issues-on-linux-systems">Permission Issues on Linux Systems</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="05-compatibility.html">Compatibility List</a></li>
@@ -184,6 +188,64 @@ moving map.</p></li>
 <li><p>If the data connection gets lost in mid-flight, <strong>Enroute Flight Navigation</strong>
 will automatically try to re-connect.</p></li>
 </ul>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="permission-issues-on-linux-systems">
+<h3>Permission Issues on Linux Systems<a class="headerlink" href="#permission-issues-on-linux-systems" title="Link to this heading"></a></h3>
+<p>On Linux systems, serial ports are typically accessed through device files such
+as <cite>/dev/ttyUSB0</cite>, <cite>/dev/ttyACM0</cite>, or <cite>/dev/ttyS0</cite>. By default, these devices
+are often restricted to specific user groups, which means <strong>Enroute Flight
+Navigation</strong> may not be able to access the serial port even though the hardware
+is properly connected.</p>
+<p><strong>Symptoms</strong></p>
+<p>If you experience permission issues, you might see one or more of the following:</p>
+<ul class="simple">
+<li><p>The app cannot detect or connect to the serial port device</p></li>
+<li><p>Error messages about “permission denied”</p></li>
+<li><p>The serial port device appears in system tools but not in the app</p></li>
+</ul>
+<p><strong>Solution: Add Your User to the dialout Group (Recommended)</strong></p>
+<p>The most common and permanent solution is to add your user account to the group
+that has permission to access serial ports. On most Linux distributions, this
+group is called <cite>dialout</cite>.</p>
+<ol class="arabic">
+<li><p>Open a terminal</p></li>
+<li><p>Run the following command (replace <cite>username</cite> with your actual username):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">G</span> <span class="n">dialout</span> <span class="n">username</span>
+</pre></div>
+</div>
+</li>
+<li><p>Log out completely and log back in (or reboot your computer) for the changes
+to take effect</p></li>
+<li><p>Verify the change by running: <cite>groups</cite> - you should see <cite>dialout</cite> in the list</p></li>
+</ol>
+<p><strong>Distribution-Specific Notes</strong></p>
+<ul class="simple">
+<li><p><strong>Ubuntu/Debian</strong>: The group is typically <cite>dialout</cite></p></li>
+<li><p><strong>Fedora/RHEL/CentOS</strong>: The group is typically <cite>dialout</cite> or <cite>uucp</cite></p></li>
+<li><p><strong>Arch Linux</strong>: The group is typically <cite>uucp</cite> or <cite>lock</cite></p></li>
+<li><p><strong>openSUSE</strong>: The group is typically <cite>dialout</cite></p></li>
+</ul>
+<p>If <cite>dialout</cite> doesn’t work, check which group owns your serial port device by
+running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span> <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">tty</span><span class="o">*</span>
+</pre></div>
+</div>
+<p>The output will show the group name (usually the third column from the left),
+and you can add your user to that group instead.</p>
+<p><strong>Still Having Issues?</strong></p>
+<p>If permission issues persist after following these steps:</p>
+<ul class="simple">
+<li><p>Make sure you completely logged out and back in after adding yourself to the
+group</p></li>
+<li><p>Check if SELinux or AppArmor policies are blocking access (advanced users)</p></li>
+<li><p>Verify the serial device is working by testing with another application like
+<cite>minicom</cite> or <cite>screen</cite></p></li>
+<li><p>Check system logs with <cite>dmesg | tail</cite> to see if there are any hardware or
+driver issues</p></li>
+</ul>
+</section>
 </section>
 </section>
 

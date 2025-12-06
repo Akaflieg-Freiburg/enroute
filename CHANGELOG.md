@@ -3,7 +3,7 @@
 ## [3.0.8] - 2025-11-27
 
 ### Fixed
-- Erraneous "off route" messages (#572)
+- Erroneous "off route" messages (#572)
 
 
 ## [3.0.7] - 2025-11-25

@@ -318,6 +318,7 @@ void Traffic::TrafficDataProvider::foreFlightBroadcast()
 
 bool Traffic::TrafficDataProvider::hasDataSource_SerialPort(const QString& portNameOrDescription)
 {
+#if __has_include(<QSerialPort>)
     foreach(auto _dataSource, m_dataSources.value())
     {
         auto* dataSourceSerialPort = qobject_cast<TrafficDataSource_SerialPort*>(_dataSource);
@@ -329,6 +330,7 @@ bool Traffic::TrafficDataProvider::hasDataSource_SerialPort(const QString& portN
             }
         }
     }
+#endif
     return false;
 }
 

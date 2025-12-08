@@ -355,12 +355,15 @@ Page {
             contentHeight: co.height
             contentWidth: availableWidth // Disable horizontal scrolling
 
-            ColumnLayout {
+            GridLayout {
                 id: co
                 width: parent.width
 
+                columns: 2
+
                 Label {
                     Layout.fillWidth: true
+                    Layout.columnSpan: 2
                     text: {
                         if (connectionDescription.connection)
                             return connectionDescription.connection.sourceName
@@ -371,6 +374,7 @@ Page {
 
                 Label {
                     Layout.fillWidth: true
+                    Layout.columnSpan: 2
                     text: if (connectionDescription.connection) {
                               var sndLine = "<strong>" + qsTr("Status") +":</strong> " + connectionDescription.connection.connectivityStatus
                               if (connectionDescription.connection.errorString !== "")
@@ -410,6 +414,7 @@ Page {
 
                 Label {
                     Layout.fillWidth: true
+                    Layout.columnSpan: 2
                     text: {
                         if (!connectionDescription.connection)
                             return ""
@@ -421,8 +426,24 @@ Page {
                     wrapMode: Text.WordWrap
                 }
 
+                Label {
+                    Layout.columnSpan: 2
+                    Layout.topMargin: font.pixelSize/2
+                    font.pixelSize: connectionDescription.font.pixelSize*1.2
+                    font.bold: true
+                    text: qsTr("Configuration")
+                }
+
+
+                Label {text: qsTr("Baud Rate")}
                 ComboBox {
                     id: baudRate
+
+                    visible: {
+                        if (!connectionDescription.connection)
+                            return false
+                        return connectionDescription.connection.hasOwnProperty("baudRate")
+                    }
                     //Layout.columnSpan: 2
                     Layout.fillWidth: true
                     //Layout.alignment: Qt.AlignBaseline
@@ -442,9 +463,34 @@ Page {
                     //onActivated: Navigator.aircraft.horizontalDistanceUnit = currentIndex
 
                     model: [ 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 ]
-
                 }
 
+                Label {text: qsTr("Data Bits")}
+                ComboBox {
+                    id: dataBits
+
+                    Layout.fillWidth: true
+
+                    model: [ 7, 8 ]
+                }
+
+                Label {text: qsTr("Stop Bits")}
+                ComboBox {
+                    id: stopBits
+
+                    Layout.fillWidth: true
+
+                    model: [ 1, 2 ]
+                }
+
+                Label {text: qsTr("Flow Control")}
+                ComboBox {
+                    id: flowControl
+
+                    Layout.fillWidth: true
+
+                    model: [ "None", "RTS/CTS", "XON/XOFF" ]
+                }
             }
         }
     }

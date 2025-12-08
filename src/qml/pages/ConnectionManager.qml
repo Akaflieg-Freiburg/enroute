@@ -421,6 +421,30 @@ Page {
                     wrapMode: Text.WordWrap
                 }
 
+                ComboBox {
+                    id: baudRate
+                    //Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    //Layout.alignment: Qt.AlignBaseline
+    /*
+                    Component.onCompleted: {
+                        if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
+                            currentIndex = 1
+                            return
+                        }
+                        if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
+                            currentIndex = 2
+                            return
+                        }
+                        currentIndex = 0
+                    }
+      */
+                    //onActivated: Navigator.aircraft.horizontalDistanceUnit = currentIndex
+
+                    model: [ 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 ]
+
+                }
+
             }
         }
     }

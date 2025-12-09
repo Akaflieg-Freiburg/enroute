@@ -20,6 +20,7 @@
 
 #include "GlobalObject.h"
 #include "positioning/PositionProvider.h"
+#include "navigation/Navigator.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_Abstract.h"
 #include "traffic/TrafficFactorAircraftType.h"
@@ -32,16 +33,16 @@ using namespace Qt::Literals::StringLiterals;
 void Traffic::TrafficDataSource_Abstract::processAPRS(const QString& data)
 {
     static TransponderDB const transponderDB; // Initialize the database
-
+    
     Traffic::Ogn::OgnMessage m_ognMessage;
-
+    
     m_ognMessage.sentence = data;
     // notify that we are receiving data
     setReceivingHeartbeat(true);
-
+    
     // Process APRS-IS sentence
     Ogn::TrafficDataSource_OgnParser::parseAprsisMessage(m_ognMessage);
-
+    
     if (m_ognMessage.type != Traffic::Ogn::OgnMessageType::TRAFFIC_REPORT)
     {
         return;
@@ -54,12 +55,13 @@ void Traffic::TrafficDataSource_Abstract::processAPRS(const QString& data)
     {
         return;
     }
-
+    
     // Compute horizontal/vertical distance and the alarm Level
     int alarmLevel = 0;
     Units::Distance hDist;
     Units::Distance vDist;
-    QGeoCoordinate const ownShipCoordinate = GlobalObject::positionProvider()->positionInfo().coordinate();
+    auto const positionInfo = GlobalObject::positionProvider()->positionInfo();
+    QGeoCoordinate const ownShipCoordinate = positionInfo.coordinate();
     if (ownShipCoordinate.isValid())
     {
         hDist = Units::Distance::fromM(ownShipCoordinate.distanceTo(m_ognMessage.coordinate));
@@ -77,7 +79,7 @@ void Traffic::TrafficDataSource_Abstract::processAPRS(const QString& data)
             alarmLevel = 1; // Low alert
         }
     }
-
+    
     // Decode callsign
     QString callsign;
     if (m_ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM)
@@ -96,6 +98,18 @@ void Traffic::TrafficDataSource_Abstract::processAPRS(const QString& data)
     const QMetaEnum metaEnum = QMetaEnum::fromType<Traffic::Ogn::OgnAddressType>();
     callsign += QString(" (%1)").arg(metaEnum.valueToKey(static_cast<int>(m_ognMessage.addressType)));
 #endif
+    
+    auto aircraft = GlobalObject::navigator()->aircraft();
+    QString ownAircraftName = aircraft.name().remove(QChar('-')).toLower();
+    QString reducesCallsign = callsign.remove(QChar('-')).toLower(); //TODO: Extract in Method
+    if (aircraft.name() != nullptr && !aircraft.name().isEmpty()) {
+        if (QString::compare(ownAircraftName, reducesCallsign, Qt::CaseInsensitive) == 0) {
+            auto courseDifference = qAbs(positionInfo.trueTrack() - m_ognMessage.course);
+            if (hDist.toM() < 50 && vDist.toM() < 50 && courseDifference.toDEG() < 60) {
+                return;
+            }
+        }
+    }
 
 
     // PositionInfo
@@ -120,4 +134,9 @@ void Traffic::TrafficDataSource_Abstract::processAPRS(const QString& data)
 
     // Emit the factorWithPosition signal
     emit factorWithPosition(m_factor);
+}
+
+
+QString Traffic::TrafficDataSource_Abstract::relevantCallsign(QString originalCallsign) {
+    return originalCallsign.remove(QChar('-')).toLower();
 }

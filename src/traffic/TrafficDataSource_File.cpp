@@ -117,7 +117,7 @@ void Traffic::TrafficDataSource_File::readFromSimulatorStream()
         // interpreter directly, we split the string up and send only one part
         // of it, and the next part together with the next message
         buffer += lastPayload;
-        int const i = buffer.length() / 2;
+        int const i = buffer.length() / 2.0;
         processFLARMData(buffer.left(i));
         buffer = buffer.mid(i);
     }

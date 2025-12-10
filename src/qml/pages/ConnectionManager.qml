@@ -345,6 +345,11 @@ Page {
         id: connectionDescription
 
         property var connection
+        property bool isSerialPort: {
+            if (!connectionDescription.connection)
+                return false
+            return connectionDescription.connection.hasOwnProperty("baudRate")
+        }
 
         title: qsTr("Connection Info")
         standardButtons: Dialog.Ok
@@ -429,65 +434,55 @@ Page {
                 Label {
                     Layout.columnSpan: 2
                     Layout.topMargin: font.pixelSize/2
+                    visible: connectionDescription.isSerialPort
                     font.pixelSize: connectionDescription.font.pixelSize*1.2
                     font.bold: true
                     text: qsTr("Configuration")
                 }
 
-
-                Label {text: qsTr("Baud Rate")}
+                Label {
+                    visible: connectionDescription.isSerialPort
+                    text: qsTr("Baud Rate")}
                 ComboBox {
                     id: baudRate
 
-                    visible: {
-                        if (!connectionDescription.connection)
-                            return false
-                        return connectionDescription.connection.hasOwnProperty("baudRate")
-                    }
-                    //Layout.columnSpan: 2
+                    visible: connectionDescription.isSerialPort
                     Layout.fillWidth: true
-                    //Layout.alignment: Qt.AlignBaseline
-    /*
                     Component.onCompleted: {
-                        if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
+                        if (!connectionDescription.isSerialPort)
+                            return 0
+                        console.log(connectionDescription.connection.baudRate)
+                        if (connectionDescription.connection.baudRate === Baud1200)  {
                             currentIndex = 1
-                            return
-                        }
-                        if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
-                            currentIndex = 2
                             return
                         }
                         currentIndex = 0
                     }
-      */
                     //onActivated: Navigator.aircraft.horizontalDistanceUnit = currentIndex
 
                     model: [ 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 ]
                 }
 
-                Label {text: qsTr("Data Bits")}
-                ComboBox {
-                    id: dataBits
-
-                    Layout.fillWidth: true
-
-                    model: [ 7, 8 ]
-                }
-
-                Label {text: qsTr("Stop Bits")}
+                Label {
+                    visible: connectionDescription.isSerialPort
+                    text: qsTr("Stop Bits")}
                 ComboBox {
                     id: stopBits
 
                     Layout.fillWidth: true
+                    visible: connectionDescription.isSerialPort
 
                     model: [ 1, 2 ]
                 }
 
-                Label {text: qsTr("Flow Control")}
+                Label {
+                    visible: connectionDescription.isSerialPort
+                    text: qsTr("Flow Control")}
                 ComboBox {
                     id: flowControl
 
                     Layout.fillWidth: true
+                    visible: connectionDescription.isSerialPort
 
                     model: [ "None", "RTS/CTS", "XON/XOFF" ]
                 }

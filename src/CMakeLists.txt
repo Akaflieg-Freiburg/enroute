@@ -590,6 +590,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/main.qml
     qml/dialogs/AddBTDeviceDialog.qml
     qml/dialogs/CenteringDialog.qml
+    qml/dialogs/ConnectionInfo.qml
     qml/dialogs/LongTextDialog.qml
     qml/dialogs/AircraftSaveDialog.qml
     qml/dialogs/ErrorDialog.qml

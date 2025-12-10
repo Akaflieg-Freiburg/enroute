@@ -83,9 +83,7 @@ Page {
                 openManual("05-referencePages/03-settingsDataConnections.html")
             }
         }
-
     }
-
 
     DecoratedListView {
         anchors.fill: parent
@@ -141,8 +139,9 @@ Page {
                     }
 
                     onClicked: {
-                        connectionDescription.connection = model.modelData
-                        connectionDescription.open()
+                        Global.dialogLoader.active = false
+                        Global.dialogLoader.setSource("../dialogs/ConnectionInfo.qml", {connection: model.modelData})
+                        Global.dialogLoader.active = true
                     }
                 }
 
@@ -175,7 +174,6 @@ Page {
             }
         }
     }
-
 
     footer: Footer {
         ColumnLayout {
@@ -339,155 +337,6 @@ Page {
         id: ltd
         title: qsTr("Error Adding Connection")
         standardButtons: Dialog.Ok
-    }
-
-    CenteringDialog {
-        id: connectionDescription
-
-        property var connection
-        property bool isSerialPort: {
-            if (!connectionDescription.connection)
-                return false
-            return connectionDescription.connection.hasOwnProperty("baudRate")
-        }
-
-        title: qsTr("Connection Info")
-        standardButtons: Dialog.Ok
-
-        DecoratedScrollView {
-            anchors.fill: parent
-
-            contentHeight: co.height
-            contentWidth: availableWidth // Disable horizontal scrolling
-
-            GridLayout {
-                id: co
-                width: parent.width
-
-                columns: 2
-
-                Label {
-                    Layout.fillWidth: true
-                    Layout.columnSpan: 2
-                    text: {
-                        if (connectionDescription.connection)
-                            return connectionDescription.connection.sourceName
-                        return ""
-                    }
-                    wrapMode: Text.WordWrap
-                }
-
-                Label {
-                    Layout.fillWidth: true
-                    Layout.columnSpan: 2
-                    text: if (connectionDescription.connection) {
-                              var sndLine = "<strong>" + qsTr("Status") +":</strong> " + connectionDescription.connection.connectivityStatus
-                              if (connectionDescription.connection.errorString !== "")
-                                  sndLine += "<br><strong>" + qsTr("Error") + ":</strong> " + connectionDescription.connection.errorString
-                              return sndLine
-                          } else {
-                              return ""
-                          }
-
-                    Layout.leftMargin: 4
-                    Layout.rightMargin: 4
-                    wrapMode: Text.WordWrap
-
-                    bottomPadding: 0.2*font.pixelSize
-                    topPadding: 0.2*font.pixelSize
-                    leftPadding: 0.2*font.pixelSize
-                    rightPadding: 0.2*font.pixelSize
-
-                    leftInset: -4
-                    rightInset: -4
-
-                    // Background color according to METAR/FAA flight category
-                    background: Rectangle {
-                        border.color: "black"
-                        color: {
-                            if (connectionDescription.connection && connectionDescription.connection.receivingHeartbeat)
-                                return "green"
-                            if (connectionDescription.connection && connectionDescription.connection.errorString !== "")
-                                return "red"
-                            return "transparent"
-                        }
-
-                        opacity: 0.2
-                        radius: 4
-                    }
-                }
-
-                Label {
-                    Layout.fillWidth: true
-                    Layout.columnSpan: 2
-                    text: {
-                        if (!connectionDescription.connection)
-                            return ""
-                        var s = qsTr("Data Format: %1.").arg(connectionDescription.connection.dataFormat)
-                        if (connectionDescription.connection.canonical)
-                            s += "<br>" + qsTr("This is a standard connection that cannot be deleted by the user.")
-                        return s
-                    }
-                    wrapMode: Text.WordWrap
-                }
-
-                Label {
-                    Layout.columnSpan: 2
-                    Layout.topMargin: font.pixelSize/2
-                    visible: connectionDescription.isSerialPort
-                    font.pixelSize: connectionDescription.font.pixelSize*1.2
-                    font.bold: true
-                    text: qsTr("Configuration")
-                }
-
-                Label {
-                    visible: connectionDescription.isSerialPort
-                    text: qsTr("Baud Rate")}
-                ComboBox {
-                    id: baudRate
-
-                    visible: connectionDescription.isSerialPort
-                    Layout.fillWidth: true
-                    Component.onCompleted: {
-                        if (!connectionDescription.isSerialPort)
-                            return 0
-                        console.log(connectionDescription.connection.baudRate)
-                        if (connectionDescription.connection.baudRate === Baud1200)  {
-                            currentIndex = 1
-                            return
-                        }
-                        currentIndex = 0
-                    }
-                    //onActivated: Navigator.aircraft.horizontalDistanceUnit = currentIndex
-
-                    model: [ 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 ]
-                }
-
-                Label {
-                    visible: connectionDescription.isSerialPort
-                    text: qsTr("Stop Bits")}
-                ComboBox {
-                    id: stopBits
-
-                    Layout.fillWidth: true
-                    visible: connectionDescription.isSerialPort
-
-                    model: [ 1, 2 ]
-                }
-
-                Label {
-                    visible: connectionDescription.isSerialPort
-                    text: qsTr("Flow Control")}
-                ComboBox {
-                    id: flowControl
-
-                    Layout.fillWidth: true
-                    visible: connectionDescription.isSerialPort
-
-                    model: [ "None", "RTS/CTS", "XON/XOFF" ]
-                }
-            }
-        }
     }
 
     CenteringDialog {

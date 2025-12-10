@@ -32,7 +32,6 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::serialPortsChanged, this, &Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver);
 }
 
-
 Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 {
     if (m_textStream != nullptr)
@@ -47,7 +46,6 @@ Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
         m_port = nullptr;
     }
 }
-
 
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 {
@@ -83,6 +81,9 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
         setErrorString(tr("Device not found."));
         return;
     }
+    m_port->setBaudRate(m_baudRate);
+    m_port->setStopBits(m_stopBits);
+    m_port->setFlowControl(m_flowControl);
 
     connect(m_port, &QSerialPort::readyRead, this, &Traffic::TrafficDataSource_SerialPort::onReadyRead);
     connect(m_port, &QSerialPort::errorOccurred, this, &Traffic::TrafficDataSource_SerialPort::onErrorOccurred);
@@ -96,7 +97,6 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
     }
 
 }
-
 
 void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 {
@@ -120,7 +120,6 @@ void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
     }
     setConnectivityStatus(tr("Not connected."));
 }
-
 
 void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialPortError error)
 {
@@ -162,6 +161,32 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
     }
 }
 
+void Traffic::TrafficDataSource_SerialPort::setBaudRate(QSerialPort::BaudRate rate)
+{
+    if (m_port != nullptr)
+    {
+        m_port->setBaudRate(rate);
+    }
+    m_baudRate = rate;
+}
+
+void Traffic::TrafficDataSource_SerialPort::setStopBits(QSerialPort::StopBits sb)
+{
+    if (m_port != nullptr)
+    {
+        m_port->setStopBits(sb);
+    }
+    m_stopBits = sb;
+}
+
+void Traffic::TrafficDataSource_SerialPort::setFlowControl(QSerialPort::FlowControl fc)
+{
+    if (m_port != nullptr)
+    {
+        m_port->setFlowControl(fc);
+    }
+    m_flowControl = fc;
+}
 
 void Traffic::TrafficDataSource_SerialPort::onReadyRead()
 {
@@ -173,10 +198,11 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
     QString sentence;
     while(m_textStream->readLineInto(&sentence))
     {
+#warning
+        qWarning() << sentence;
         processFLARMData(sentence);
     }
 }
-
 
 QString Traffic::TrafficDataSource_SerialPort::sourceName() const
 {

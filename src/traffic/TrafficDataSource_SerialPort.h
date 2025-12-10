@@ -85,15 +85,15 @@ public:
 #warning implement
     [[nodiscard]] QSerialPort::BaudRate baudRate() { return m_baudRate.value();};
     [[nodiscard]] QBindable<QSerialPort::BaudRate> bindableBaudRate() { return &m_baudRate;};
-    void setBaudRate(QSerialPort::BaudRate rate) {};
+    void setBaudRate(QSerialPort::BaudRate rate);
 
     [[nodiscard]] QSerialPort::StopBits stopBits() { return m_stopBits.value();};
     [[nodiscard]] QBindable<QSerialPort::StopBits> bindableStopBits() { return &m_stopBits;};
-    void setStopBits(QSerialPort::StopBits sb) {};
+    void setStopBits(QSerialPort::StopBits sb);
 
     [[nodiscard]] QSerialPort::FlowControl flowControl() { return m_flowControl.value();};
     [[nodiscard]] QBindable<QSerialPort::FlowControl> bindableFlowControl() { return &m_flowControl;};
-    void setFlowControl(QSerialPort::FlowControl fc) {};
+    void setFlowControl(QSerialPort::FlowControl fc);
 
     /*! \brief Getter function for the property with the same name
      *

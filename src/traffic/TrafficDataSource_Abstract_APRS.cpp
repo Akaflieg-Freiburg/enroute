@@ -104,8 +104,8 @@ void Traffic::TrafficDataSource_Abstract::processAPRS(const QString& data)
     QString reducesCallsign = callsign.remove(QChar('-')).toLower(); //TODO: Extract in Method
     if (aircraft.name() != nullptr && !aircraft.name().isEmpty()) {
         if (QString::compare(ownAircraftName, reducesCallsign, Qt::CaseInsensitive) == 0) {
-            auto courseDifference = qAbs(positionInfo.trueTrack() - m_ognMessage.course);
-            if (hDist.toM() < 50 && vDist.toM() < 50 && courseDifference.toDEG() < 60) {
+            auto courseDifferenceInDeg = qAbs(positionInfo.trueTrack().toDEG() - m_ognMessage.course.toDEG());
+            if (hDist.toM() < 50 && vDist.toM() < 50 && courseDifferenceInDeg < 60) {
                 return;
             }
         }
@@ -136,7 +136,3 @@ void Traffic::TrafficDataSource_Abstract::processAPRS(const QString& data)
     emit factorWithPosition(m_factor);
 }
 
-
-QString Traffic::TrafficDataSource_Abstract::relevantCallsign(QString originalCallsign) {
-    return originalCallsign.remove(QChar('-')).toLower();
-}

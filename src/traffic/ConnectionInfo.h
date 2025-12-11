@@ -114,6 +114,12 @@ public:
      *
      * \param serialPortNameOrDescription Serial port name or description by which the port can be identified
      *
+     * \param baudRate Baud Rate
+     *
+     * \param stopBits Number of Stop Bits
+     *
+     * \param flowControl Flow Control
+     *
      * \param canonical Property 'canonical', as described below.
      */
     explicit ConnectionInfo(const QString& serialPortNameOrDescription,

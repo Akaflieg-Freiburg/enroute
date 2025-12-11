@@ -67,33 +67,30 @@ public:
      *  This property contains the port name or description, as set in the constructor.
      */
     Q_PROPERTY(QString portNameOrDescription READ portNameOrDescription CONSTANT)
+    [[nodiscard]] QString portNameOrDescription() const {return m_portNameOrDescription;};
 
     /*! \brief Baud Rate of the Serial Port Connection */
     Q_PROPERTY(ConnectionInfo::BaudRate baudRate READ baudRate BINDABLE bindableBaudRate WRITE setBaudRate)
+    [[nodiscard]] ConnectionInfo::BaudRate baudRate() { return m_baudRate.value();};
+    [[nodiscard]] QBindable<ConnectionInfo::BaudRate> bindableBaudRate() { return &m_baudRate;};
+    void setBaudRate(ConnectionInfo::BaudRate rate);
 
     /*! \brief Stop Bits of the Serial Port Connection */
     Q_PROPERTY(ConnectionInfo::StopBits stopBits READ stopBits BINDABLE bindableStopBits WRITE setStopBits)
+    [[nodiscard]] ConnectionInfo::StopBits stopBits() { return m_stopBits.value();};
+    [[nodiscard]] QBindable<ConnectionInfo::StopBits> bindableStopBits() { return &m_stopBits;};
+    void setStopBits(ConnectionInfo::StopBits sb);
 
     /*! \brief Flow Control */
     Q_PROPERTY(ConnectionInfo::FlowControl flowControl READ flowControl BINDABLE bindableFlowControl WRITE setFlowControl)
+    [[nodiscard]] ConnectionInfo::FlowControl flowControl() { return m_flowControl.value();};
+    [[nodiscard]] QBindable<ConnectionInfo::FlowControl> bindableFlowControl() { return &m_flowControl;};
+    void setFlowControl(ConnectionInfo::FlowControl fc);
 
 
     //
     // Getter Methods
     //
-
-#warning
-    [[nodiscard]] ConnectionInfo::BaudRate baudRate() { return m_baudRate.value();};
-    [[nodiscard]] QBindable<ConnectionInfo::BaudRate> bindableBaudRate() { return &m_baudRate;};
-    void setBaudRate(ConnectionInfo::BaudRate rate);
-
-    [[nodiscard]] ConnectionInfo::StopBits stopBits() { return m_stopBits.value();};
-    [[nodiscard]] QBindable<ConnectionInfo::StopBits> bindableStopBits() { return &m_stopBits;};
-    void setStopBits(ConnectionInfo::StopBits sb);
-
-    [[nodiscard]] ConnectionInfo::FlowControl flowControl() { return m_flowControl.value();};
-    [[nodiscard]] QBindable<ConnectionInfo::FlowControl> bindableFlowControl() { return &m_flowControl;};
-    void setFlowControl(ConnectionInfo::FlowControl fc);
 
     /*! \brief Getter function for the property with the same name
      *
@@ -118,15 +115,6 @@ public:
      *  @returns Property sourceName
      */
     [[nodiscard]] QString sourceName() const override;
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  This method implements the pure virtual method declared by its
-     *  superclass.
-     *
-     *  @returns Property sourceName
-     */
-    [[nodiscard]] QString portNameOrDescription() const {return m_portNameOrDescription;};
 
 
 public slots:

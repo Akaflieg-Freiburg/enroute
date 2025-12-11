@@ -95,39 +95,19 @@ CenteringDialog {
             Label {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: {
-                    if (connectionDescription.connection)
-                        return connectionDescription.connection.sourceName
-                    return ""
-                }
-                wrapMode: Text.WordWrap
-            }
-
-            Label {
-                Layout.fillWidth: true
-                Layout.columnSpan: 2
-                text: if (connectionDescription.connection) {
-                          var sndLine = "<strong>" + qsTr("Status") +":</strong> " + connectionDescription.connection.connectivityStatus
-                          if (connectionDescription.connection.errorString !== "")
-                              sndLine += "<br><strong>" + qsTr("Error") + ":</strong> " + connectionDescription.connection.errorString
-                          return sndLine
-                      } else {
-                          return ""
-                      }
-
-                Layout.leftMargin: 4
-                Layout.rightMargin: 4
-                wrapMode: Text.WordWrap
-
                 bottomPadding: 0.2*font.pixelSize
                 topPadding: 0.2*font.pixelSize
                 leftPadding: 0.2*font.pixelSize
                 rightPadding: 0.2*font.pixelSize
 
-                leftInset: -4
-                rightInset: -4
+                text: {
+                    if (connectionDescription.connection)
+                        return " " + connectionDescription.connection.sourceName
+                    return ""
+                }
 
-                // Background color according to METAR/FAA flight category
+                wrapMode: Text.WordWrap
+
                 background: Rectangle {
                     border.color: "black"
                     color: {
@@ -146,22 +126,27 @@ CenteringDialog {
             Label {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                text: {
-                    if (!connectionDescription.connection)
-                        return ""
-                    var s = qsTr("Data Format: %1.").arg(connectionDescription.connection.dataFormat)
-                    if (connectionDescription.connection.canonical)
-                        s += "<br>" + qsTr("This is a standard connection that cannot be deleted by the user.")
-                    return s
-                }
+                Layout.leftMargin: 4
+                Layout.rightMargin: 4
                 wrapMode: Text.WordWrap
+
+                text: if (connectionDescription.connection) {
+                          var sndLine = "• " + qsTr("Status") +": " + connectionDescription.connection.connectivityStatus + "<br>"
+                          if (connectionDescription.connection.errorString !== "")
+                              sndLine += "• " + qsTr("Error") + ": " + connectionDescription.connection.errorString + "<br>"
+                          sndLine += "• " + qsTr("Data Format: %1.").arg(connectionDescription.connection.dataFormat) + "<br>"
+                          if (connectionDescription.connection.canonical)
+                              sndLine += qsTr("This is a standard connection that cannot be deleted by the user.")
+                          return sndLine
+                      } else {
+                          return ""
+                      }
             }
 
             Label {
                 Layout.columnSpan: 2
                 Layout.topMargin: font.pixelSize/2
                 visible: connectionDescription.isSerialPort
-                font.pixelSize: connectionDescription.font.pixelSize*1.2
                 font.bold: true
                 text: qsTr("Configuration")
             }

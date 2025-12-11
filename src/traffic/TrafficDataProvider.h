@@ -70,9 +70,17 @@ public:
         return GlobalObject::trafficDataProvider();
     }
 
+
     //
     // Properties
     //
+
+    /*! \brief Connection Infos
+     *
+     * This property holds connection infos for all non-canonical connections currently
+     * in use.
+     */
+    Q_PROPERTY(QList<Traffic::ConnectionInfo> connectionInfos READ connectionInfos BINDABLE bindableConnectionInfos NOTIFY connectionInfosChanged)
 
     /*! \brief Internet service flag
      *
@@ -166,10 +174,21 @@ public:
     Q_PROPERTY(Traffic::Warning warning READ warning NOTIFY warningChanged)
 
 
-
     //
     // Getter Methods
     //
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property connectionInfos
+     */
+    [[nodiscard]] QList<Traffic::ConnectionInfo> connectionInfos() const {return m_connectionInfos.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property currentSourceIsInternetService
+     */
+    [[nodiscard]] QBindable<QList<Traffic::ConnectionInfo>> bindableConnectionInfos() {return &m_connectionInfos;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -181,7 +200,7 @@ public:
      *
      *  @returns Property currentSourceIsInternetService
      */
-    [[nodiscard]] QBindable<bool> bindableCurrentSourceIsInternetService() const {return &m_currentSourceIsInternetService;}
+    [[nodiscard]] QBindable<bool> bindableCurrentSourceIsInternetService() {return &m_currentSourceIsInternetService;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -202,10 +221,7 @@ public:
      *
      *  @returns Property positionInfo
      */
-    [[nodiscard]] QBindable<Positioning::PositionInfo> bindablePositionInfo() const
-    {
-        return &m_positionInfo;
-    }
+    [[nodiscard]] QBindable<Positioning::PositionInfo> bindablePositionInfo() {return &m_positionInfo;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -217,7 +233,7 @@ public:
      *
      *  @returns Property pressureAltitude
      */
-    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() const {return &m_pressureAltitude;}
+    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() {return &m_pressureAltitude;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -232,10 +248,7 @@ public:
      *
      *  @returns Property receiving
      */
-    [[nodiscard]] QBindable<bool> bindableReceivingHeartbeat() const
-    {
-        return &m_receivingHeartbeat;
-    }
+    [[nodiscard]] QBindable<bool> bindableReceivingHeartbeat() {return &m_receivingHeartbeat;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -250,10 +263,7 @@ public:
      *
      *  @returns Property statusString
      */
-    [[nodiscard]] QBindable<QString> bindableStatusString() const
-    {
-        return &m_statusString;
-    }
+    [[nodiscard]] QBindable<QString> bindableStatusString() {return &m_statusString;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -299,7 +309,6 @@ public:
     {
         return m_Warning;
     }
-
 
 
     //
@@ -388,6 +397,9 @@ public:
 
 
 signals:
+    /*! \brief Notifier signal */
+    void connectionInfosChanged();
+
     /*! \brief Notifier signal */
     void dataSourcesChanged();
 
@@ -518,6 +530,9 @@ private:
     // Property cache
     Traffic::Warning m_Warning;
     QTimer m_WarningTimer;
+
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, QList<Traffic::ConnectionInfo>, m_connectionInfos, &Traffic::TrafficDataProvider::connectionInfosChanged);
+    QList<Traffic::ConnectionInfo> computeConnectionInfos();
 
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, QString, m_trafficReceiverRuntimeError, &Traffic::TrafficDataProvider::trafficReceiverRuntimeErrorChanged);
     QString computeTrafficReceiverRuntimeError();

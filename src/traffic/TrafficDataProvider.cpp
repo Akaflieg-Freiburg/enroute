@@ -284,19 +284,20 @@ QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSo
 
 void Traffic::TrafficDataProvider::deferredInitialization()
 {
+    // Real data sources in order of preference, preferred sources first
+    loadConnectionInfos();
+
     // Setup bindings that refer to other global objects
     m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
     m_trafficReceiverRuntimeError.setBinding([this]() {return computeTrafficReceiverRuntimeError();});
     m_trafficReceiverSelfTestError.setBinding([this]() {return computeTrafficReceiverSelfTestError();});
+    m_connectionInfos.setBinding([this]() {return computeConnectionInfos();});
 
     // Try to (re)connect whenever the network situation changes
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
 
-    // Real data sources in order of preference, preferred sources first
-    loadConnectionInfos();
-
     // Bindings for saving
-    connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
+    connect(this, &Traffic::TrafficDataProvider::connectionInfosChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
 }
 
 void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
@@ -346,7 +347,6 @@ void Traffic::TrafficDataProvider::loadConnectionInfos()
     outStream >> connectionInfos;
     foreach (auto connectionInfo, connectionInfos)
     {
-        qWarning() << "CI " << connectionInfo.name();
         addDataSource(connectionInfo);
     }
 }
@@ -422,6 +422,29 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
     }
 }
 
+QList<Traffic::ConnectionInfo> Traffic::TrafficDataProvider::computeConnectionInfos()
+{
+    QList<Traffic::ConnectionInfo> connectionInfos;
+    foreach (auto dataSource, m_dataSources.value())
+    {
+        if (dataSource == nullptr)
+        {
+            continue;
+        }
+        if (dataSource->canonical())
+        {
+            continue;
+        }
+        auto connectionInfo = dataSource->connectionInfo();
+        if (connectionInfo.type() == Traffic::ConnectionInfo::Invalid)
+        {
+            continue;
+        }
+        connectionInfos << connectionInfo;
+    }
+    return connectionInfos;
+}
+
 QString Traffic::TrafficDataProvider::computeTrafficReceiverRuntimeError()
 {
     QString result;
@@ -483,32 +506,13 @@ void Traffic::TrafficDataProvider::resetWarning()
 
 void Traffic::TrafficDataProvider::saveConnectionInfos()
 {
-    QList<Traffic::ConnectionInfo> connectionInfos;
-    foreach (auto dataSource, m_dataSources.value())
-    {
-        if (dataSource == nullptr)
-        {
-            continue;
-        }
-        if (dataSource->canonical())
-        {
-            continue;
-        }
-        auto connectionInfo = dataSource->connectionInfo();
-        if (connectionInfo.type() == Traffic::ConnectionInfo::Invalid)
-        {
-            continue;
-        }
-        connectionInfos << connectionInfo;
-    }
-
     QFile outFile(stdFileName);
     if (!outFile.open(QIODeviceBase::WriteOnly))
     {
         return;
     }
     QDataStream outStream(&outFile);
-    outStream << connectionInfos;
+    outStream << m_connectionInfos.value();
     outFile.close();
 }
 

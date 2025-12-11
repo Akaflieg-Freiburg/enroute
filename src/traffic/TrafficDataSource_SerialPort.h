@@ -82,7 +82,7 @@ public:
     // Getter Methods
     //
 
-#warning implement
+#warning
     [[nodiscard]] QSerialPort::BaudRate baudRate() { return m_baudRate.value();};
     [[nodiscard]] QBindable<QSerialPort::BaudRate> bindableBaudRate() { return &m_baudRate;};
     void setBaudRate(QSerialPort::BaudRate rate);

@@ -24,6 +24,7 @@
 #include <QQmlEngine>
 
 #if __has_include (<QSerialPortInfo>)
+#include <QSerialPort>
 #include <QSerialPortInfo>
 #endif
 
@@ -88,7 +89,11 @@ public:
      *
      * \param canonical Property 'canonical', as described below.
      */
-    explicit ConnectionInfo(const QString& serialPortNameOrDescription, bool canonical=false);
+    explicit ConnectionInfo(const QString& serialPortNameOrDescription,
+                            QSerialPort::BaudRate baudRate = QSerialPort::BaudRate::Baud9600,
+                            QSerialPort::StopBits stopBits = QSerialPort::StopBits::OneStop,
+                            QSerialPort::FlowControl flowControl = QSerialPort::FlowControl::NoFlowControl,
+                            bool canonical = false);
 #endif
 
     /*!
@@ -321,6 +326,12 @@ private:
     QBluetoothDeviceInfo m_bluetoothDeviceInfo;
     quint16 m_port{0};
     QString                       m_host;
+
+#if __has_include (<QSerialPortInfo>)
+    QSerialPort::BaudRate m_baudRate {QSerialPort::BaudRate::Baud9600};
+    QSerialPort::StopBits m_stopBits {QSerialPort::StopBits::OneStop};
+    QSerialPort::FlowControl m_flowControl {QSerialPort::FlowControl::NoFlowControl};
+#endif
 };
 
 /*!

@@ -27,6 +27,8 @@ Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(bool isCanonical, quint16 
     Traffic::TrafficDataSource_AbstractSocket(isCanonical, parent),
     m_port(port)
 {
+    // ConnectionInfo
+    m_connectionInfo = Traffic::ConnectionInfo(m_port, canonical());
 
     // Initialize timers
     m_trueAltitudeTimer.setInterval(5s);

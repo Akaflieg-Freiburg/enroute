@@ -80,14 +80,6 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property connectionInfo
-     */
-    [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const override {
-        return Traffic::ConnectionInfo(Traffic::ConnectionInfo::OgnInfo());
-    }
-
-    /*! \brief Getter function for the property with the same name
-     *
      * @returns Property dataFormat
      */
     [[nodiscard]] QString dataFormat() const override { return u"APRS-IS"_s; }

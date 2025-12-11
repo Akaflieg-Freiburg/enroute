@@ -27,6 +27,9 @@ Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEne
     m_info(info),
     m_control(QLowEnergyController::createCentral(info, this))
 {
+    // Connection Info
+    m_connectionInfo = Traffic::ConnectionInfo(m_info, canonical());
+
     // Rectify Permissions
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
 

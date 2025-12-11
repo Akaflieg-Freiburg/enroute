@@ -22,8 +22,8 @@
 
 #include <QBluetoothDeviceInfo>
 #include <QBluetoothLocalDevice>
-#include <QBluetoothServiceInfo>
 #include <QBluetoothPermission>
+#include <QBluetoothServiceInfo>
 #include <QBluetoothSocket>
 #include <QLowEnergyController>
 
@@ -103,15 +103,6 @@ public:
     //
     // Getter Methods
     //
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property connectionInfo
-     */
-    [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const override
-    {
-        return Traffic::ConnectionInfo(m_info, canonical());
-    }
 
     /*! \brief Getter function for the property with the same name
      *

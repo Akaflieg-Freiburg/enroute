@@ -30,6 +30,9 @@ Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(bool isCanonical, QString 
     Traffic::TrafficDataSource_AbstractSocket(isCanonical, parent),
     m_hostName(std::move(hostName)), m_port(port)
 {
+    // Connection Info
+    m_connectionInfo = Traffic::ConnectionInfo(m_hostName, m_port, canonical());
+
     // Connect socket
     connect(&m_socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Tcp::onErrorOccurred);
     connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Tcp::onReadyRead);

@@ -29,6 +29,10 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
     TrafficDataSource_AbstractSocket(isCanonical, parent),
     m_portNameOrDescription(portNameOrDescription)
 {
+#warning
+    // Connection Info
+    m_connectionInfo = Traffic::ConnectionInfo(m_portNameOrDescription, false);
+
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::serialPortsChanged, this, &Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver);
 }
 

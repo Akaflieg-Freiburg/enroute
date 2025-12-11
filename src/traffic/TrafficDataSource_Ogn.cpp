@@ -41,6 +41,9 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
     m_hostName(hostName.isEmpty() ? u"aprs.glidernet.org"_s : std::move(hostName)), // Default to aprs.glidernet.org
     m_port(port == 0 ? 14580 : port) // Default to port 14580
 {
+    // Connection Info
+    m_connectionInfo = Traffic::ConnectionInfo(Traffic::ConnectionInfo::OgnInfo());
+
     // Generate a random number for the call sign.
     // This could be a problem if we have more than 10000 users at the same time. 
     m_callSign = QString(u"ENR%1"_s).arg(QRandomGenerator::global()->bounded(100000, 999999));

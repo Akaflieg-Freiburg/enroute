@@ -27,6 +27,9 @@ Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(
     TrafficDataSource_AbstractSocket(isCanonical, parent),
     m_info(info)
 {
+    // Connection Info
+    m_connectionInfo = Traffic::ConnectionInfo(m_info, canonical());
+
     // Rectify Permissions
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
 
@@ -34,6 +37,8 @@ Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(
     connect(&m_socket, &QBluetoothSocket::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothClassic::onErrorOccurred, Qt::QueuedConnection);
     connect(&m_socket, &QBluetoothSocket::stateChanged, this, &Traffic::TrafficDataSource_BluetoothClassic::onStateChanged);
     connect(&m_socket, &QBluetoothSocket::readyRead, this, &Traffic::TrafficDataSource_BluetoothClassic::onReadyRead);
+
+
 }
 
 void Traffic::TrafficDataSource_BluetoothClassic::connectToTrafficReceiver()

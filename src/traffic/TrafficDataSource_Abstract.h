@@ -85,7 +85,7 @@ public:
      *  This property contains a connection info that can be used to save
      *  and restore this connection.
      */
-    Q_PROPERTY(Traffic::ConnectionInfo connectionInfo READ connectionInfo CONSTANT)
+    Q_PROPERTY(Traffic::ConnectionInfo connectionInfo READ connectionInfo BINDABLE bindableConnectionInfo)
 
     /*! \brief Data format
      *
@@ -180,7 +180,13 @@ public:
      *
      * @returns Property connectionInfo
      */
-    [[nodiscard]] virtual Traffic::ConnectionInfo connectionInfo() const { return {}; }
+    [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const { return m_connectionInfo.value(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property connectionInfo
+     */
+    [[nodiscard]] QBindable<Traffic::ConnectionInfo> bindableConnectionInfo() const { return &m_connectionInfo; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -511,8 +517,10 @@ protected:
      */
     void setReceivingHeartbeat(bool newReceivingHeartbeat);
 
+protected:
     QProperty<QString> m_trafficReceiverRuntimeError;
     QProperty<QString> m_trafficReceiverSelfTestError;
+    QProperty<Traffic::ConnectionInfo> m_connectionInfo;
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_Abstract)

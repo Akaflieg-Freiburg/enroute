@@ -41,36 +41,36 @@ CenteringDialog {
         if (!connectionDescription.isSerialPort)
             return 0
         switch (connectionDescription.connection.baudRate)  {
-        case 1200:
+        case ConnectionInfo.Baud1200:
             baudRate.currentIndex = 0
             break;
-        case 2400:
+        case ConnectionInfo.Baud2400:
             baudRate.currentIndex = 1
             break;
-        case 4800:
+        case ConnectionInfo.Baud4800:
             baudRate.currentIndex = 2
             break;
-        case 9600:
+        case ConnectionInfo.Baud9600:
             baudRate.currentIndex = 3
             break;
-        case 19200:
+        case ConnectionInfo.Baud19200:
             baudRate.currentIndex = 4
             break;
-        case 38400:
+        case ConnectionInfo.Baud38400:
             baudRate.currentIndex = 5
             break;
-        case 57600:
+        case ConnectionInfo.Baud57600:
             baudRate.currentIndex = 6
             break;
-        case 115200:
+        case ConnectionInfo.Baud115200:
             baudRate.currentIndex = 7
             break;
         }
         switch (connectionDescription.connection.stopBits) {
-        case 1:
+        case ConnectionInfo.OneStop:
             stopBits.currentIndex = 0
             break;
-        case 2:
+        case ConnectionInfo.TwoStop:
             stopBits.currentIndex = 1
             break;
         }
@@ -177,28 +177,28 @@ CenteringDialog {
                 onActivated: function (index) {
                     switch(index) {
                     case 0:
-                        connectionDescription.connection.baudRate = 1200
+                        connectionDescription.connection.baudRate = ConnectionInfo.Baud1200
                         break;
                     case 1:
-                        connectionDescription.connection.baudRate = 2400
+                        connectionDescription.connection.baudRate = ConnectionInfo.Baud2400
                         break;
                     case 2:
-                        connectionDescription.connection.baudRate = 4800
+                        connectionDescription.connection.baudRate = ConnectionInfo.Baud4800
                         break;
                     case 3:
-                        connectionDescription.connection.baudRate = 9600
+                        connectionDescription.connection.baudRate = ConnectionInfo.Baud9600
                         break;
                     case 4:
-                        connectionDescription.connection.baudRate = 19200
+                        connectionDescription.connection.baudRate = ConnectionInfo.Baud19200
                         break;
                     case 5:
-                        connectionDescription.connection.baudRate = 38400
+                        connectionDescription.connection.baudRate = ConnectionInfo.Baud38400
                         break;
                     case 6:
-                        connectionDescription.connection.baudRate = 57600
+                        connectionDescription.connection.baudRate = ConnectionInfo.Baud57600
                         break;
                     case 7:
-                        connectionDescription.connection.baudRate = 115200
+                        connectionDescription.connection.baudRate = ConnectionInfo.Baud115200
                         break;
                     }
                 }
@@ -218,10 +218,10 @@ CenteringDialog {
                 onActivated: function (index) {
                     switch(index) {
                     case 0:
-                        connectionDescription.connection.stopBits = 1
+                        connectionDescription.connection.stopBits = ConnectionInfo.OneStop
                         break;
                     case 1:
-                        connectionDescription.connection.stopBits = 2
+                        connectionDescription.connection.stopBits = ConnectionInfo.TwoStop
                         break;
                     }
                 }

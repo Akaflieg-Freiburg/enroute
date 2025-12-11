@@ -70,6 +70,7 @@ public:
         return GlobalObject::trafficDataProvider();
     }
 
+    //~TrafficDataProvider();
 
     //
     // Properties
@@ -466,9 +467,6 @@ private slots:
 
     // Identical to addDataSource, but handles Bluetooth Low Energy connections only.
     QString addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo &connectionInfo);
-
-    // Clear all data sources
-    void clearDataSources();
 
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.

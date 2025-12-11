@@ -60,6 +60,34 @@ public:
     };
     Q_ENUM(Type)
 
+    // Duplicated from QSerialPort, in order to make it available to QML
+    enum BaudRate {
+        Baud1200 = 1200,
+        Baud2400 = 2400,
+        Baud4800 = 4800,
+        Baud9600 = 9600,
+        Baud19200 = 19200,
+        Baud38400 = 38400,
+        Baud57600 = 57600,
+        Baud115200 = 115200
+    };
+    Q_ENUM(BaudRate)
+
+    // Duplicated from QSerialPort, in order to make it available to QML
+    enum StopBits {
+        OneStop = 1,
+        TwoStop = 2
+    };
+    Q_ENUM(StopBits)
+
+    // Duplicated from QSerialPort, in order to make it available to QML
+    enum FlowControl {
+        NoFlowControl,
+        HardwareControl,
+        SoftwareControl
+    };
+    Q_ENUM(FlowControl)
+
     /*!
      * \brief Default constructor
      *
@@ -79,7 +107,6 @@ public:
      */
     explicit ConnectionInfo(const QBluetoothDeviceInfo& info, bool canonical=false);
 
-#if __has_include (<QSerialPortInfo>)
     /*!
      * \brief Constructor for Bluetooth Device Connections
      *
@@ -90,11 +117,10 @@ public:
      * \param canonical Property 'canonical', as described below.
      */
     explicit ConnectionInfo(const QString& serialPortNameOrDescription,
-                            QSerialPort::BaudRate baudRate = QSerialPort::BaudRate::Baud9600,
-                            QSerialPort::StopBits stopBits = QSerialPort::StopBits::OneStop,
-                            QSerialPort::FlowControl flowControl = QSerialPort::FlowControl::NoFlowControl,
+                            ConnectionInfo::BaudRate baudRate = ConnectionInfo::BaudRate::Baud9600,
+                            ConnectionInfo::StopBits stopBits = ConnectionInfo::StopBits::OneStop,
+                            ConnectionInfo::FlowControl flowControl = ConnectionInfo::FlowControl::NoFlowControl,
                             bool canonical = false);
-#endif
 
     /*!
      * \brief Constructor for UDP Connections
@@ -327,11 +353,9 @@ private:
     quint16 m_port{0};
     QString                       m_host;
 
-#if __has_include (<QSerialPortInfo>)
-    QSerialPort::BaudRate m_baudRate {QSerialPort::BaudRate::Baud9600};
-    QSerialPort::StopBits m_stopBits {QSerialPort::StopBits::OneStop};
-    QSerialPort::FlowControl m_flowControl {QSerialPort::FlowControl::NoFlowControl};
-#endif
+    BaudRate m_baudRate {BaudRate::Baud9600};
+    StopBits m_stopBits {StopBits::OneStop};
+    FlowControl m_flowControl {FlowControl::NoFlowControl};
 };
 
 /*!
@@ -349,3 +373,13 @@ QDataStream& operator<<(QDataStream& stream, const Traffic::ConnectionInfo &conn
 QDataStream& operator>>(QDataStream& stream, Traffic::ConnectionInfo& connectionInfo);
 
 } // namespace Traffic
+
+// Make enums available in QML
+namespace ConnectionInfoQML {
+Q_NAMESPACE
+QML_FOREIGN_NAMESPACE(Traffic::ConnectionInfo)
+QML_NAMED_ELEMENT(ConnectionInfo)
+} // Namespace ConnectionInfoQML
+
+// Declare meta types
+//Q_DECLARE_METATYPE(Navigation::Aircraft)

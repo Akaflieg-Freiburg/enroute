@@ -55,7 +55,6 @@ public:
     ~TrafficDataSource_Abstract() override = default;
 
 
-
     //
     // Properties
     //

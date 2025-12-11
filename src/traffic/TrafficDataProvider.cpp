@@ -84,11 +84,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     reconnectionTimer.setSingleShot(false);
     reconnectionTimer.start();
 
-    // Try to (re)connect whenever the network situation changes
     QTimer::singleShot(0, this, &Traffic::TrafficDataProvider::deferredInitialization);
-
-    // Clean up
-    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &Traffic::TrafficDataProvider::clearDataSources);
 }
 
 
@@ -227,27 +223,6 @@ QString Traffic::TrafficDataProvider::addDataSource_OGN()
     source->connectToTrafficReceiver();
     addDataSource(source);
     return {};
-}
-
-void Traffic::TrafficDataProvider::clearDataSources()
-{
-    if (m_dataSources.value().isEmpty())
-    {
-        return;
-    }
-    foreach(auto dataSource, m_dataSources.value())
-    {
-        if (dataSource.isNull())
-        {
-            continue;
-        }
-        dataSource->disconnect();
-        delete dataSource;
-    }
-
-    auto tmp = m_dataSources.value();
-    tmp.clear();
-    m_dataSources = tmp;
 }
 
 void Traffic::TrafficDataProvider::connectToTrafficReceiver()

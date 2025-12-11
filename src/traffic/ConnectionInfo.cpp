@@ -127,10 +127,8 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     }
 }
 
-
-#if __has_include (<QSerialPortInfo>)
-Traffic::ConnectionInfo::ConnectionInfo(const QString& serialPortNameOrDescription, QSerialPort::BaudRate baudRate,
-                                        QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControl, bool canonical)
+Traffic::ConnectionInfo::ConnectionInfo(const QString& serialPortNameOrDescription, BaudRate baudRate,
+                                        StopBits stopBits, FlowControl flowControl, bool canonical)
     : m_canConnect(true),
     m_host(serialPortNameOrDescription),
     m_name(serialPortNameOrDescription),
@@ -143,8 +141,6 @@ Traffic::ConnectionInfo::ConnectionInfo(const QString& serialPortNameOrDescripti
     m_description = QObject::tr("Serial Port Connection to %1", "Traffic::ConnectionInfo").arg(serialPortNameOrDescription);
     m_icon = u"/icons/material/ic_settings_ethernet.svg"_s;
 }
-#endif
-
 
 Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical)
     : m_canConnect(true), m_canonical(canonical), m_port(port), m_type(Traffic::ConnectionInfo::UDP)
@@ -292,6 +288,9 @@ QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionI
         break;
     case Traffic::ConnectionInfo::Serial:
         stream << connectionInfo.m_host;
+        stream << connectionInfo.m_baudRate;
+        stream << connectionInfo.m_stopBits;
+        stream << connectionInfo.m_flowControl;
         break;
     case Traffic::ConnectionInfo::FLARMFile:
     case Traffic::ConnectionInfo::OGN:
@@ -345,6 +344,9 @@ QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& c
         break;
     case Traffic::ConnectionInfo::Serial:
         stream >> connectionInfo.m_host;
+        stream >> connectionInfo.m_baudRate;
+        stream >> connectionInfo.m_stopBits;
+        stream >> connectionInfo.m_flowControl;
         break;
     case Traffic::ConnectionInfo::FLARMFile:
     case Traffic::ConnectionInfo::OGN:

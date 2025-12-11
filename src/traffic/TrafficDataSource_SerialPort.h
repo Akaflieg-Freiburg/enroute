@@ -69,13 +69,13 @@ public:
     Q_PROPERTY(QString portNameOrDescription READ portNameOrDescription CONSTANT)
 
     /*! \brief Baud Rate of the Serial Port Connection */
-    Q_PROPERTY(QSerialPort::BaudRate baudRate READ baudRate BINDABLE bindableBaudRate WRITE setBaudRate)
+    Q_PROPERTY(ConnectionInfo::BaudRate baudRate READ baudRate BINDABLE bindableBaudRate WRITE setBaudRate)
 
     /*! \brief Stop Bits of the Serial Port Connection */
-    Q_PROPERTY(QSerialPort::StopBits stopBits READ stopBits BINDABLE bindableStopBits WRITE setStopBits)
+    Q_PROPERTY(ConnectionInfo::StopBits stopBits READ stopBits BINDABLE bindableStopBits WRITE setStopBits)
 
     /*! \brief Flow Control */
-    Q_PROPERTY(QSerialPort::FlowControl flowControl READ flowControl BINDABLE bindableFlowControl WRITE setFlowControl)
+    Q_PROPERTY(ConnectionInfo::FlowControl flowControl READ flowControl BINDABLE bindableFlowControl WRITE setFlowControl)
 
 
     //
@@ -83,17 +83,17 @@ public:
     //
 
 #warning
-    [[nodiscard]] QSerialPort::BaudRate baudRate() { return m_baudRate.value();};
-    [[nodiscard]] QBindable<QSerialPort::BaudRate> bindableBaudRate() { return &m_baudRate;};
-    void setBaudRate(QSerialPort::BaudRate rate);
+    [[nodiscard]] ConnectionInfo::BaudRate baudRate() { return m_baudRate.value();};
+    [[nodiscard]] QBindable<ConnectionInfo::BaudRate> bindableBaudRate() { return &m_baudRate;};
+    void setBaudRate(ConnectionInfo::BaudRate rate);
 
-    [[nodiscard]] QSerialPort::StopBits stopBits() { return m_stopBits.value();};
-    [[nodiscard]] QBindable<QSerialPort::StopBits> bindableStopBits() { return &m_stopBits;};
-    void setStopBits(QSerialPort::StopBits sb);
+    [[nodiscard]] ConnectionInfo::StopBits stopBits() { return m_stopBits.value();};
+    [[nodiscard]] QBindable<ConnectionInfo::StopBits> bindableStopBits() { return &m_stopBits;};
+    void setStopBits(ConnectionInfo::StopBits sb);
 
-    [[nodiscard]] QSerialPort::FlowControl flowControl() { return m_flowControl.value();};
-    [[nodiscard]] QBindable<QSerialPort::FlowControl> bindableFlowControl() { return &m_flowControl;};
-    void setFlowControl(QSerialPort::FlowControl fc);
+    [[nodiscard]] ConnectionInfo::FlowControl flowControl() { return m_flowControl.value();};
+    [[nodiscard]] QBindable<ConnectionInfo::FlowControl> bindableFlowControl() { return &m_flowControl;};
+    void setFlowControl(ConnectionInfo::FlowControl fc);
 
     /*! \brief Getter function for the property with the same name
      *
@@ -161,9 +161,9 @@ private:
     // Text stream used for reading NMEA sentences
     QTextStream* m_textStream {nullptr};
 
-    QProperty<QSerialPort::BaudRate> m_baudRate {QSerialPort::BaudRate::Baud9600};
-    QProperty<QSerialPort::StopBits> m_stopBits {QSerialPort::StopBits::OneStop};
-    QProperty<QSerialPort::FlowControl> m_flowControl {QSerialPort::FlowControl::NoFlowControl};
+    QProperty<ConnectionInfo::BaudRate> m_baudRate {ConnectionInfo::BaudRate::Baud9600};
+    QProperty<ConnectionInfo::StopBits> m_stopBits {ConnectionInfo::StopBits::OneStop};
+    QProperty<ConnectionInfo::FlowControl> m_flowControl {ConnectionInfo::FlowControl::NoFlowControl};
 };
 
 } // namespace Traffic

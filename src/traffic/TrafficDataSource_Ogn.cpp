@@ -167,6 +167,7 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
     QString sentence;
     while (m_textStream.readLineInto(&sentence))
     {
+        emit dataReceived(sentence);
         processAPRS(sentence);
     }
 }

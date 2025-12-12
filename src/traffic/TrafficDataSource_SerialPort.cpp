@@ -26,7 +26,7 @@
 
 
 Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription, QObject* parent) :
-    TrafficDataSource_AbstractSocket(isCanonical, parent),
+    TrafficDataSource_Abstract(isCanonical, parent),
     m_portNameOrDescription(portNameOrDescription)
 {
     m_connectionInfo.setBinding([this]() {

@@ -1,5 +1,33 @@
 # Changelog
 
+## [3.0.10] - 2025-?
+
+### Added
+- Serial port connections can now be configured on Linux and macOS platforms
+  (#587)
+
+- Serial ports (via USB) are now fully supported on the macOS platform (#591)
+
+- Update manual to reflect improvements in serial port handling (#590)
+
+- Support NMEA positioning devices, such as external GPS receivers (#564)
+
+- Enroute now safely handle multiple connections to the same serial port device
+  (#589)
+
+### Fixed
+- GUI issue where the aircraft symbol in the moving map appears too close to
+  edge of screen (#573)
+
+- Serial port connection issues (#564)
+
+- Add proper privileges to flatpak, in order to access serial ports on Linux
+  platforms (#586)
+
+- Monitor serial connections and react when connections become (un)available
+  (#585)
+
+
 ## [3.0.8] - 2025-11-27
 
 ### Fixed

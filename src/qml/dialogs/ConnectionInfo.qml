@@ -129,18 +129,59 @@ CenteringDialog {
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
                 wrapMode: Text.WordWrap
-
+                textFormat: Text.RichText
                 text: if (connectionDescription.connection) {
-                          var sndLine = "• " + qsTr("Status") +": " + connectionDescription.connection.connectivityStatus + "<br>"
+                          var sndLine = "<ul style='margin-left:-25px;'>"
+
+                          sndLine += "<li>" + qsTr("Status") +": " + connectionDescription.connection.connectivityStatus + "</li>"
                           if (connectionDescription.connection.errorString !== "")
-                              sndLine += "• " + qsTr("Error") + ": " + connectionDescription.connection.errorString + "<br>"
-                          sndLine += "• " + qsTr("Data Format: %1.").arg(connectionDescription.connection.dataFormat) + "<br>"
+                              sndLine += "<li>" + qsTr("Error") + ": " + connectionDescription.connection.errorString + "</li>"
+                          sndLine += "<li>" + qsTr("Data Format: %1.").arg(connectionDescription.connection.dataFormat) + "</li>"
+                          sndLine += "</ul>"
                           if (connectionDescription.connection.canonical)
-                              sndLine += qsTr("This is a standard connection that cannot be deleted by the user.")
+                              sndLine += "<p>" + qsTr("This is a standard connection that cannot be deleted by the user.") + "</p>"
                           return sndLine
                       } else {
                           return ""
                       }
+            }
+
+            Label {
+                id: monitor
+
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
+                bottomPadding: 0.2*font.pixelSize
+                topPadding: 0.2*font.pixelSize
+                leftPadding: 0.2*font.pixelSize
+                rightPadding: 0.2*font.pixelSize
+
+                property string l1: "line 1"
+                property string l2: "line 2"
+                property string l3: "line 3"
+                property string l4: "line 4"
+                property string l5: "line 5"
+
+                Connections {
+                    target: connectionDescription.connection
+                    function onDataReceived(data) {
+                        console.log(data)
+                        monitor.l1 = monitor.l2
+                        monitor.l2 = monitor.l3
+                        monitor.l3 = monitor.l4
+                        monitor.l4 = monitor.l5
+                        monitor.l5 = data
+                        monitor.text = monitor.l1 + "<br>" + monitor.l2 + "<br>" + monitor.l3 + "<br>" + monitor.l4 + "<br>" + monitor.l5
+                    }
+                }
+
+                wrapMode: Text.NoWrap
+
+                background: Rectangle {
+                    border.color: "black"
+                    color: "transparent"
+                    radius: 4
+                }
             }
 
             Label {

@@ -31,13 +31,12 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace Traffic {
 
-/*! \brief Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source
+/*! \brief Traffic receiver: Serial Port Connection to a FLARM/NMEA Source
  *
- *  This class connects to a traffic receiver via a Bluetooth Classic serial port
- *  service.
+ *  This class connects to a traffic receiver via a serial port.
  */
 
-class TrafficDataSource_SerialPort : public TrafficDataSource_AbstractSocket {
+class TrafficDataSource_SerialPort : public TrafficDataSource_Abstract {
     Q_OBJECT
 
 public:

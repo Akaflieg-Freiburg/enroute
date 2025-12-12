@@ -315,6 +315,9 @@ signals:
     /*! \brief Notifier signal */
     void connectivityStatusChanged(QString newStatus);
 
+    /*! \brief Indicates new data has arrived, can be used in the GUI for monitoring purposes */
+    void dataReceived(QString data);
+
     /*! \brief Notifier signal */
     void errorStringChanged(QString newError);
 

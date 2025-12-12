@@ -23,9 +23,7 @@
 
 #include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
-#if __has_include(<QSerialPort>)
 #include "traffic/TrafficDataSource_SerialPort.h"
-#endif
 #include "traffic/TrafficDataSource_Ogn.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
@@ -84,6 +82,20 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     reconnectionTimer.setSingleShot(false);
     reconnectionTimer.start();
 
+    // Clean up before the app goes down
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, [this]() {
+        foreach(auto dataSource, m_dataSources.value())
+        {
+            if (dataSource.isNull())
+            {
+                continue;
+            }
+            dataSource->disconnect();
+            delete dataSource;
+        }
+        disconnect(this, &Traffic::TrafficDataProvider::connectionInfosChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
+        m_dataSources = QList<QPointer<Traffic::TrafficDataSource_Abstract>>();
+    });
     QTimer::singleShot(0, this, &Traffic::TrafficDataProvider::deferredInitialization);
 }
 
@@ -294,7 +306,6 @@ void Traffic::TrafficDataProvider::foreFlightBroadcast()
 
 bool Traffic::TrafficDataProvider::hasDataSource_SerialPort(const QString& portNameOrDescription)
 {
-#if __has_include(<QSerialPort>)
     foreach(auto _dataSource, m_dataSources.value())
     {
         auto* dataSourceSerialPort = qobject_cast<TrafficDataSource_SerialPort*>(_dataSource);
@@ -306,7 +317,6 @@ bool Traffic::TrafficDataProvider::hasDataSource_SerialPort(const QString& portN
             }
         }
     }
-#endif
     return false;
 }
 

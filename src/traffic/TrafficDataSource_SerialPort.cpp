@@ -205,6 +205,7 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
     QString sentence;
     while(m_textStream->readLineInto(&sentence))
     {
+        emit dataReceived(sentence);
         processFLARMData(sentence);
     }
 }

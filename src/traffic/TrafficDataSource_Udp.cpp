@@ -116,15 +116,17 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
         // Process datagrams, depending on content type
         if (data.startsWith("XGPS") || data.startsWith("XTRA"))
         {
+            emit dataReceived(QString::fromLatin1(data));
             processXGPSString(data);
         }
         else
         {
             // Split data into raw messages
             foreach(auto rawMessage, data.split(0x7e))
-            {
+            {                
                 if (!rawMessage.isEmpty())
                 {
+                    emit dataReceived(rawMessage.toHex());
                     processGDLMessage(rawMessage);
                 }
             }

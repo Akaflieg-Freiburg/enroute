@@ -108,6 +108,7 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onCharacteristicChanged(cons
 {
     if ((characteristic.uuid() == nordicUARTTxCharacteristicID) || (characteristic.uuid() == simpleUARTCharacteristicID))
     {
+        emit dataReceived(QString(newValue));
         processFLARMData(QString(newValue));
         return;
     }

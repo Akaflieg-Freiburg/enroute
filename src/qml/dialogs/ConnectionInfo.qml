@@ -146,41 +146,45 @@ CenteringDialog {
                       }
             }
 
-            Label {
-                id: monitor
-
+            GroupBox {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                bottomPadding: 0.2*font.pixelSize
-                topPadding: 0.2*font.pixelSize
-                leftPadding: 0.2*font.pixelSize
-                rightPadding: 0.2*font.pixelSize
+                title: qsTr("Monitor")
 
-                property string l1: "line 1"
-                property string l2: "line 2"
-                property string l3: "line 3"
-                property string l4: "line 4"
-                property string l5: "line 5"
+                Label {
+                    id: monitor
 
-                Connections {
-                    target: connectionDescription.connection
-                    function onDataReceived(data) {
-                        console.log(data)
-                        monitor.l1 = monitor.l2
-                        monitor.l2 = monitor.l3
-                        monitor.l3 = monitor.l4
-                        monitor.l4 = monitor.l5
-                        monitor.l5 = data
-                        monitor.text = monitor.l1 + "<br>" + monitor.l2 + "<br>" + monitor.l3 + "<br>" + monitor.l4 + "<br>" + monitor.l5
+                    bottomPadding: 0.2*font.pixelSize
+                    topPadding: 0.2*font.pixelSize
+                    leftPadding: 0.2*font.pixelSize
+                    rightPadding: 0.2*font.pixelSize
+
+                    property string l1: "line 1"
+                    property string l2: "line 2"
+                    property string l3: "line 3"
+                    property string l4: "line 4"
+                    property string l5: "line 5"
+
+                    Connections {
+                        target: connectionDescription.connection
+                        function onDataReceived(data) {
+                            console.log(data)
+                            monitor.l1 = monitor.l2
+                            monitor.l2 = monitor.l3
+                            monitor.l3 = monitor.l4
+                            monitor.l4 = monitor.l5
+                            monitor.l5 = data
+                            monitor.text = monitor.l1 + "<br>" + monitor.l2 + "<br>" + monitor.l3 + "<br>" + monitor.l4 + "<br>" + monitor.l5
+                        }
                     }
-                }
 
-                wrapMode: Text.NoWrap
+                    wrapMode: Text.NoWrap
 
-                background: Rectangle {
-                    border.color: "black"
-                    color: "transparent"
-                    radius: 4
+                    background: Rectangle {
+                        border.color: "black"
+                        color: "transparent"
+                        radius: 4
+                    }
                 }
             }
 

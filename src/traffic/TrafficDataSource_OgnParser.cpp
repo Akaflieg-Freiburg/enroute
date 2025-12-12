@@ -253,7 +253,7 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
     }
 
     // Parse the Header
-    int index = header.indexOf(u'>');
+    long index = header.indexOf(u'>');
     if (index == -1) {
         #if OGN_DEBUG
         qDebug() << "Invalid header format in Traffic Report: " << header << ":" << body;
@@ -265,7 +265,7 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
     ognMessage.sourceId = header.left(index);
 
     // Parse the body
-    int blankIndex = body.indexOf(u' ');
+    long blankIndex = body.indexOf(u' ');
     QStringView aprsPart;
     QStringView ognPart;
     if (blankIndex == -1) {
@@ -295,7 +295,7 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
         // optional precision enhancement, e.g. "!W91"
         QChar latEnhancement = {};
         QChar lonEnhancement = {};
-        int precisionIndex = body.indexOf(u"!W");
+        long precisionIndex = body.indexOf(u"!W");
         if (precisionIndex != -1 && body.size() > precisionIndex + 4) {
             latEnhancement = body.at(precisionIndex + 2);
             lonEnhancement = body.at(precisionIndex + 3);
@@ -321,31 +321,31 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
         QStringView windDirStr = aprsPart.mid(underscoreIndex + 1, 3);
         ognMessage.wind_direction = windDirStr.toUInt();
         // Find the slash following the wind direction to decode wind speed
-        int slashAfterUnderscore = aprsPart.indexOf(u"/", underscoreIndex);
+        long slashAfterUnderscore = aprsPart.indexOf(u"/", underscoreIndex);
         if (slashAfterUnderscore != -1) {
             QStringView windSpeedStr = aprsPart.mid(slashAfterUnderscore + 1, 3);
             ognMessage.wind_speed = windSpeedStr.toUInt();
         }
         // Decode wind gust speed: look for 'g'
-        int gIndex = aprsPart.indexOf(u"g", underscoreIndex);
+        long gIndex = aprsPart.indexOf(u"g", underscoreIndex);
         if (gIndex != -1) {
             QStringView gustStr = aprsPart.mid(gIndex + 1, 3);
             ognMessage.wind_gust_speed = gustStr.toUInt();
         }
         // Decode temperature: look for 't'
-        int tIndex = aprsPart.indexOf(u"t", underscoreIndex);
+        long tIndex = aprsPart.indexOf(u"t", underscoreIndex);
         if (tIndex != -1) {
             QStringView tempStr = aprsPart.mid(tIndex + 1, 3);
             ognMessage.temperature = tempStr.toDouble();
         }
         // Decode humidity: look for 'h'
-        int hIndex = aprsPart.indexOf(u"h", underscoreIndex);
+        long hIndex = aprsPart.indexOf(u"h", underscoreIndex);
         if (hIndex != -1) {
             QStringView humStr = aprsPart.mid(hIndex + 1, 2);
             ognMessage.humidity = humStr.toUInt();
         }
         // Decode pressure: look for 'b'
-        int bIndex = aprsPart.indexOf(u"b", underscoreIndex);
+        long bIndex = aprsPart.indexOf(u"b", underscoreIndex);
         if (bIndex != -1) {
             QStringView presStr = aprsPart.mid(bIndex + 1);
             double pressure = presStr.toDouble(); // tenths of hectopascal.
@@ -358,7 +358,7 @@ void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, con
             ognMessage.speed = Units::Speed::fromKN(aprsPart.mid(31, 3).toDouble());
         }
         // Parse altitude
-        int altitudeIndex = aprsPart.indexOf(QStringView(u"/A="));
+        long altitudeIndex = aprsPart.indexOf(QStringView(u"/A="));
         if (altitudeIndex != -1) {
             int altStart = altitudeIndex + 3;
             QStringView altitudeStr = aprsPart.mid(altStart, 6);

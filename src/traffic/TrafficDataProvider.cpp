@@ -150,7 +150,7 @@ QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInf
     case Traffic::ConnectionInfo::UDP:
         return addDataSource_UDP(connectionInfo.port());
     case Traffic::ConnectionInfo::Serial:
-        return addDataSource_SerialPort(connectionInfo.name(), connectionInfo.m_baudRate, connectionInfo.m_stopBits, connectionInfo.m_flowControl);
+        return addDataSource_SerialPort(connectionInfo.name(), connectionInfo.baudRate(), connectionInfo.stopBits(), connectionInfo.flowControl());
     case Traffic::ConnectionInfo::FLARMFile:
         return tr("Unable to add FLARM simulator file connection. This is not implemented at the moment.");
     case Traffic::ConnectionInfo::OGN:

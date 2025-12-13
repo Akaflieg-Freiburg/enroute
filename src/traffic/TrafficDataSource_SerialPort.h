@@ -53,6 +53,12 @@ public:
      *  @param portNameOrDescription Name or description of the port, as
      *  provided by QSerialPortInfo.portName() or QSerialPortInfo.description()
      *
+     *  @param baudRate Baud Rate
+     *
+     *  @param stopBits Stop Bits
+     *
+     *  @param flowControl Flow Control
+     *
      *  @param parent The standard QObject parent pointer
      */
     TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription,

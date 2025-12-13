@@ -352,7 +352,13 @@ public:
      * This method adds an additional serial port data source to this TrafficDataProvider.
      *
      * \param portNameOrDescription Name of the serial port or a description string by which
-     * the port can be identified-
+     * the port can be identified.
+     *
+     * \param baudRate Baud Rate
+     *
+     * \param stopBits Stop Bits
+     *
+     * \param flowControl Flow Control
      *
      * \returns An empty string on success, and a human-readable, translated error message on failure.
      */

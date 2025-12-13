@@ -166,6 +166,7 @@ public:
      */
     explicit ConnectionInfo(const OgnInfo& info);
 
+
     //
     // Properties
     //
@@ -179,6 +180,7 @@ public:
      * which are currently unsupported.
      */
     Q_PROPERTY(bool canConnect READ canConnect CONSTANT)
+    [[nodiscard]] bool canConnect() const { return m_canConnect; }
 
     /*!
      * \brief Canonicity
@@ -188,6 +190,7 @@ public:
      * cannot be edited or deleted in the GUI.
      */
     Q_PROPERTY(bool canonical READ canonical CONSTANT)
+    [[nodiscard]] bool canonical() const { return m_canonical; }
 
     /*!
      * \brief Description
@@ -196,6 +199,7 @@ public:
      * the connection, in HTML format.
      */
     Q_PROPERTY(QString description READ description CONSTANT)
+    [[nodiscard]] QString description() const { return m_description; }
 
     /*!
      * \brief Host
@@ -203,6 +207,7 @@ public:
      * For TCP connections, this property holds the host name.
      */
     Q_PROPERTY(QString host READ host CONSTANT)
+    [[nodiscard]] QString host() const { return m_host; }
 
     /*!
      * \brief Icon
@@ -211,6 +216,7 @@ public:
      * represent the connection in the GUI.
      */
     Q_PROPERTY(QString icon READ icon CONSTANT)
+    [[nodiscard]] QString icon() const { return m_icon; }
 
     /*!
      * \brief Name
@@ -218,6 +224,7 @@ public:
      * This property holds a human-readable, translated name of the connection.
      */
     Q_PROPERTY(QString name READ name CONSTANT)
+    [[nodiscard]] QString name() const { return m_name; }
 
     /*!
      * \brief Type
@@ -225,67 +232,19 @@ public:
      * This property holds the type of the connection.
      */
     Q_PROPERTY(Traffic::ConnectionInfo::Type type READ type CONSTANT)
-
-
-
-    //
-    // Getter Methods
-    //
-
-    /*!
-     * \brief Getter function for the property with the same name
-     *
-     * \returns Property canConnect
-     */
-    [[nodiscard]] bool canConnect() const { return m_canConnect; }
-
-    /*!
-     * \brief Getter function for the property with the same name
-     *
-     * \returns Property canonical
-     */
-    [[nodiscard]] bool canonical() const { return m_canonical; }
-
-    /*!
-     * \brief Getter function for the property with the same name
-     *
-     * \returns Property description
-     */
-    [[nodiscard]] QString description() const { return m_description; }
-
-    /*!
-     * \brief Getter function for the property with the same name
-     *
-     * \returns Property host
-     */
-    [[nodiscard]] QString host() const { return m_host; }
-
-    /*!
-     * \brief Getter function for the property with the same name
-     *
-     * \returns Property icon
-     */
-    [[nodiscard]] QString icon() const { return m_icon; }
-
-    /*!
-     * \brief Getter function for the property with the same name
-     *
-     * \returns Property name
-     */
-    [[nodiscard]] QString name() const { return m_name; }
-
-    /*!
-     * \brief Getter function for the property with the same name
-     *
-     * \returns Property type
-     */
     [[nodiscard]] Traffic::ConnectionInfo::Type type() const { return m_type; }
-
 
 
     //
     // Methods
     //
+
+    /*! \brief Baud Rate
+     *
+     *  \return In the connection is of type SerialPort, this method returns the
+     *  baud rate.
+     */
+    [[nodiscard]] BaudRate baudRate() const {return m_baudRate;}
 
     /*!
      * \brief Bluetooth Device Info
@@ -297,14 +256,12 @@ public:
      */
     [[nodiscard]] QBluetoothDeviceInfo bluetoothDeviceInfo() const { return m_bluetoothDeviceInfo; }
 
-    /*!
-     * \brief Equality of ConnectionInfos
+    /*! \brief Flow Control
      *
-     * \param other Other ConnectionInfo to compare with.
-     *
-     * \return True if the ConnectionInfo describe the same connection.
+     *  \return In the connection is of type SerialPort, this method returns the
+     *  flow control.
      */
-    [[nodiscard]] bool operator== (const Traffic::ConnectionInfo& other) const = default;
+    [[nodiscard]] FlowControl flowControl() const {return m_flowControl;}
 
     /*!
      * \brief Port
@@ -329,6 +286,22 @@ public:
      */
     [[nodiscard]] bool sameConnectionAs(const Traffic::ConnectionInfo& other) const;
 
+    /*! \brief Stop Bits
+     *
+     *  \return In the connection is of type SerialPort, this method returns the
+     *  stop bits.
+     */
+    [[nodiscard]] StopBits stopBits() const {return m_stopBits;}
+
+    /*!
+     * \brief Equality of ConnectionInfos
+     *
+     * \param other Other ConnectionInfo to compare with.
+     *
+     * \return True if the ConnectionInfo describe the same connection.
+     */
+    [[nodiscard]] bool operator== (const Traffic::ConnectionInfo& other) const = default;
+
     /*!
      * \brief Comparison
      *
@@ -340,11 +313,6 @@ public:
      * \return True if the ConnectionInfo describe the same connection.
      */
     bool operator< (const Traffic::ConnectionInfo& other) const;
-
-#warning
-    BaudRate m_baudRate {BaudRate::Baud9600};
-    StopBits m_stopBits {StopBits::OneStop};
-    FlowControl m_flowControl {FlowControl::NoFlowControl};
 
 private:
     //
@@ -363,6 +331,10 @@ private:
     QBluetoothDeviceInfo m_bluetoothDeviceInfo;
     quint16 m_port{0};
     QString                       m_host;
+
+    BaudRate m_baudRate {BaudRate::Baud9600};
+    StopBits m_stopBits {StopBits::OneStop};
+    FlowControl m_flowControl {FlowControl::NoFlowControl};
 
 };
 

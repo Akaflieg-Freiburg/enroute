@@ -109,20 +109,6 @@ CenteringDialog {
                     }
                     wrapMode: Text.WordWrap
                 }
-/*
-                background: Rectangle {
-                    color: {
-                        if (connectionDescription.connection && connectionDescription.connection.receivingHeartbeat)
-                            return "green"
-                        if (connectionDescription.connection && connectionDescription.connection.errorString !== "")
-                            return "red"
-                        return "transparent"
-                    }
-
-                    opacity: 0.2
-                    radius: 4
-                }
-*/
             }
 
             Label {
@@ -138,6 +124,8 @@ CenteringDialog {
                           sndLine += "<li>" + qsTr("Status") +": " + connectionDescription.connection.connectivityStatus + "</li>"
                           if (connectionDescription.connection.errorString !== "")
                               sndLine += "<li>" + qsTr("Error") + ": " + connectionDescription.connection.errorString + "</li>"
+                          if (!timer.running)
+                              sndLine += "<li>" + qsTr("Currently no incoming data.") + "</li>"
                           sndLine += "<li>" + qsTr("Data Format: %1.").arg(connectionDescription.connection.dataFormat) + "</li>"
                           sndLine += "</ul>"
                           if (connectionDescription.connection.canonical)
@@ -151,26 +139,34 @@ CenteringDialog {
             Frame {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
+                visible: timer.running
 
                 ColumnLayout {
+                    id: cl
                     width: parent.width
 
-                    Text {id: l1}
-                    Text {id: l2}
-                    Text {id: l3}
-                    Text {id: l4}
-                    Text {id: l5}
+                    Text {id: l1; Layout.preferredHeight: font.pixelSize+2}
+                    Text {id: l2; Layout.preferredHeight: font.pixelSize+2}
+                    Text {id: l3; Layout.preferredHeight: font.pixelSize+2}
+                    Text {id: l4; Layout.preferredHeight: font.pixelSize+2}
+                    Text {id: l5; Layout.preferredHeight: font.pixelSize+2}
                 }
 
                 Connections {
                     target: connectionDescription.connection
                     function onDataReceived(data) {
+                        timer.restart()
                         l1.text = l2.text
                         l2.text = l3.text
                         l3.text = l4.text
                         l4.text = l5.text
-                        l5.text = data
+                        l5.text = data.replace(/[^\x20-\x7E]/g, '�');
                     }
+                }
+
+                Timer {
+                    id: timer
+                    interval: 5000
                 }
             }
 

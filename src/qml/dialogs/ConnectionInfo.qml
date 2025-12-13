@@ -145,11 +145,11 @@ CenteringDialog {
                     id: cl
                     width: parent.width
 
-                    Text {id: l1; Layout.preferredHeight: font.pixelSize+2}
-                    Text {id: l2; Layout.preferredHeight: font.pixelSize+2}
-                    Text {id: l3; Layout.preferredHeight: font.pixelSize+2}
-                    Text {id: l4; Layout.preferredHeight: font.pixelSize+2}
-                    Text {id: l5; Layout.preferredHeight: font.pixelSize+2}
+                    Label {id: l1; Layout.preferredHeight: font.pixelSize+2}
+                    Label {id: l2; Layout.preferredHeight: font.pixelSize+2}
+                    Label {id: l3; Layout.preferredHeight: font.pixelSize+2}
+                    Label {id: l4; Layout.preferredHeight: font.pixelSize+2}
+                    Label {id: l5; Layout.preferredHeight: font.pixelSize+2}
                 }
 
                 Connections {

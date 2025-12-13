@@ -126,7 +126,7 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
             {                
                 if (!rawMessage.isEmpty())
                 {
-                    emit dataReceived(rawMessage.toHex());
+                    emit dataReceived("0x" + rawMessage.toHex());
                     processGDLMessage(rawMessage);
                 }
             }

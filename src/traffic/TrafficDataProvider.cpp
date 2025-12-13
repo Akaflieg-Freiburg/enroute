@@ -23,8 +23,8 @@
 
 #include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
-#include "traffic/TrafficDataSource_SerialPort.h"
 #include "traffic/TrafficDataSource_Ogn.h"
+#include "traffic/TrafficDataSource_SerialPort.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
 
@@ -150,7 +150,7 @@ QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInf
     case Traffic::ConnectionInfo::UDP:
         return addDataSource_UDP(connectionInfo.port());
     case Traffic::ConnectionInfo::Serial:
-        return addDataSource_SerialPort(connectionInfo.name());
+        return addDataSource_SerialPort(connectionInfo.name(), connectionInfo.m_baudRate, connectionInfo.m_stopBits, connectionInfo.m_flowControl);
     case Traffic::ConnectionInfo::FLARMFile:
         return tr("Unable to add FLARM simulator file connection. This is not implemented at the moment.");
     case Traffic::ConnectionInfo::OGN:
@@ -180,7 +180,10 @@ QString Traffic::TrafficDataProvider::addDataSource_UDP(quint16 port)
     return {};
 }
 
-QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& portNameOrDescription)
+QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& portNameOrDescription,
+                                                               ConnectionInfo::BaudRate baudRate,
+                                                               ConnectionInfo::StopBits stopBits,
+                                                               ConnectionInfo::FlowControl flowControl)
 {
     // Ignore new device if data source already exists.
     if (hasDataSource_SerialPort(portNameOrDescription))
@@ -189,7 +192,7 @@ QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& po
     }
 
 #if __has_include(<QSerialPort>)
-    auto* source = new TrafficDataSource_SerialPort(false, portNameOrDescription, this);
+    auto* source = new TrafficDataSource_SerialPort(false, portNameOrDescription, baudRate, stopBits, flowControl, this);
     source->connectToTrafficReceiver();
     addDataSource(source);
     return {};

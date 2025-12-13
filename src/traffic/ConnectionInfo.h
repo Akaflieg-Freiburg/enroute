@@ -341,6 +341,11 @@ public:
      */
     bool operator< (const Traffic::ConnectionInfo& other) const;
 
+#warning
+    BaudRate m_baudRate {BaudRate::Baud9600};
+    StopBits m_stopBits {StopBits::OneStop};
+    FlowControl m_flowControl {FlowControl::NoFlowControl};
+
 private:
     //
     // Properties
@@ -359,9 +364,6 @@ private:
     quint16 m_port{0};
     QString                       m_host;
 
-    BaudRate m_baudRate {BaudRate::Baud9600};
-    StopBits m_stopBits {StopBits::OneStop};
-    FlowControl m_flowControl {FlowControl::NoFlowControl};
 };
 
 /*!

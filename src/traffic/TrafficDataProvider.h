@@ -356,7 +356,10 @@ public:
      *
      * \returns An empty string on success, and a human-readable, translated error message on failure.
      */
-    Q_INVOKABLE QString addDataSource_SerialPort(const QString& portNameOrDescription);
+    Q_INVOKABLE QString addDataSource_SerialPort(const QString& portNameOrDescription,
+                                                 ConnectionInfo::BaudRate baudRate,
+                                                 ConnectionInfo::StopBits stopBits,
+                                                 ConnectionInfo::FlowControl flowControl);
 
     /*! \brief Add an additional data source
      *

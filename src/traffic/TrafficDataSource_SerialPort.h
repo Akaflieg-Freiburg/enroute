@@ -55,7 +55,11 @@ public:
      *
      *  @param parent The standard QObject parent pointer
      */
-    TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription, QObject* parent);
+    TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription,
+                                 ConnectionInfo::BaudRate baudRate,
+                                 ConnectionInfo::StopBits stopBits,
+                                 ConnectionInfo::FlowControl flowControl,
+                                 QObject* parent);
 
     // Standard destructor
     ~TrafficDataSource_SerialPort() override;

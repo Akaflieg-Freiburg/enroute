@@ -25,9 +25,16 @@
 #include "traffic/TrafficDataSource_SerialPort.h"
 
 
-Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription, QObject* parent) :
+Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription,
+                                                                    ConnectionInfo::BaudRate baudRate,
+                                                                    ConnectionInfo::StopBits stopBits,
+                                                                    ConnectionInfo::FlowControl flowControl,
+                                                                    QObject* parent) :
     TrafficDataSource_Abstract(isCanonical, parent),
-    m_portNameOrDescription(portNameOrDescription)
+    m_portNameOrDescription(portNameOrDescription),
+    m_baudRate(baudRate),
+    m_stopBits(stopBits),
+    m_flowControl(flowControl)
 {
     m_connectionInfo.setBinding([this]() {
         return Traffic::ConnectionInfo(m_portNameOrDescription,

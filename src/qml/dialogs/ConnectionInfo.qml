@@ -92,24 +92,25 @@ CenteringDialog {
 
             columns: 2
 
-            Label {
+            Frame {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                bottomPadding: 0.2*font.pixelSize
-                topPadding: 0.2*font.pixelSize
-                leftPadding: 0.2*font.pixelSize
-                rightPadding: 0.2*font.pixelSize
 
-                text: {
-                    if (connectionDescription.connection)
-                        return " " + connectionDescription.connection.sourceName
-                    return ""
+                Label {
+                    bottomPadding: 0.2*font.pixelSize
+                    topPadding: 0.2*font.pixelSize
+                    leftPadding: 0.2*font.pixelSize
+                    rightPadding: 0.2*font.pixelSize
+
+                    text: {
+                        if (connectionDescription.connection)
+                            return connectionDescription.connection.sourceName
+                        return ""
+                    }
+                    wrapMode: Text.WordWrap
                 }
-
-                wrapMode: Text.WordWrap
-
+/*
                 background: Rectangle {
-                    border.color: "black"
                     color: {
                         if (connectionDescription.connection && connectionDescription.connection.receivingHeartbeat)
                             return "green"
@@ -121,6 +122,7 @@ CenteringDialog {
                     opacity: 0.2
                     radius: 4
                 }
+*/
             }
 
             Label {
@@ -146,54 +148,30 @@ CenteringDialog {
                       }
             }
 
-            GroupBox {
+            Frame {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
-                title: qsTr("Monitor")
 
-                Label {
-                    id: monitor
+                ColumnLayout {
+                    width: parent.width
 
-                    bottomPadding: 0.2*font.pixelSize
-                    topPadding: 0.2*font.pixelSize
-                    leftPadding: 0.2*font.pixelSize
-                    rightPadding: 0.2*font.pixelSize
+                    Text {id: l1}
+                    Text {id: l2}
+                    Text {id: l3}
+                    Text {id: l4}
+                    Text {id: l5}
+                }
 
-                    property string l1: "line 1"
-                    property string l2: "line 2"
-                    property string l3: "line 3"
-                    property string l4: "line 4"
-                    property string l5: "line 5"
-
-                    Connections {
-                        target: connectionDescription.connection
-                        function onDataReceived(data) {
-                            console.log(data)
-                            monitor.l1 = monitor.l2
-                            monitor.l2 = monitor.l3
-                            monitor.l3 = monitor.l4
-                            monitor.l4 = monitor.l5
-                            monitor.l5 = data
-                            monitor.text = monitor.l1 + "<br>" + monitor.l2 + "<br>" + monitor.l3 + "<br>" + monitor.l4 + "<br>" + monitor.l5
-                        }
-                    }
-
-                    wrapMode: Text.NoWrap
-
-                    background: Rectangle {
-                        border.color: "black"
-                        color: "transparent"
-                        radius: 4
+                Connections {
+                    target: connectionDescription.connection
+                    function onDataReceived(data) {
+                        l1.text = l2.text
+                        l2.text = l3.text
+                        l3.text = l4.text
+                        l4.text = l5.text
+                        l5.text = data
                     }
                 }
-            }
-
-            Label {
-                Layout.columnSpan: 2
-                Layout.topMargin: font.pixelSize/2
-                visible: connectionDescription.isSerialPort
-                font.bold: true
-                text: qsTr("Configuration")
             }
 
             Label {

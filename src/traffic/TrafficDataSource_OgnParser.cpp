@@ -163,14 +163,14 @@ double TrafficDataSource_OgnParser::decodeLatitude(const QStringView nmeaLatitud
     bool ok = false;
 
     // Parse degrees (first 2 characters)
-    double latitudeDegrees = nmeaLatitude.left(2).toDouble(&ok);
+    const double latitudeDegrees = nmeaLatitude.left(2).toDouble(&ok);
     if (!ok) {
         qDebug() << nmeaLatitude << "decodeLatitude toDouble failed 1" << nmeaLatitude.left(2);
         return qQNaN();
     }
 
     // Parse minutes (remaining characters after the first 2)
-    double latitudeMinutes = nmeaLatitude.mid(2).toDouble(&ok);
+    const double latitudeMinutes = nmeaLatitude.mid(2).toDouble(&ok);
     if (!ok) {
         qDebug() << "decodeLatitude toDouble failed 2";
         return qQNaN();

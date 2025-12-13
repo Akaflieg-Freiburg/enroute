@@ -56,7 +56,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source.  
+<p>Traffic receiver: Serial Port Connection to a FLARM/NMEA Source.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>&gt;</code></p>
@@ -66,8 +66,7 @@ Inheritance diagram for Traffic::TrafficDataSource_SerialPort:</div>
  <div class="center">
   <img src="classTraffic_1_1TrafficDataSource__SerialPort.png" usemap="#Traffic_3A_3ATrafficDataSource_5FSerialPort_map" alt=""/>
   <map id="Traffic_3A_3ATrafficDataSource_5FSerialPort_map" name="Traffic_3A_3ATrafficDataSource_5FSerialPort_map">
-<area href="classTraffic_1_1TrafficDataSource__AbstractSocket.html" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="Traffic::TrafficDataSource_AbstractSocket" shape="rect" coords="0,56,251,80"/>
-<area href="classTraffic_1_1TrafficDataSource__Abstract.html" title="Base class for all traffic receiver data sources." alt="Traffic::TrafficDataSource_Abstract" shape="rect" coords="0,0,251,24"/>
+<area href="classTraffic_1_1TrafficDataSource__Abstract.html" title="Base class for all traffic receiver data sources." alt="Traffic::TrafficDataSource_Abstract" shape="rect" coords="0,0,222,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -87,26 +86,23 @@ Public Slots</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9c6397fc2c62dcd2225aba40f55b4286" id="r_a9c6397fc2c62dcd2225aba40f55b4286"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c6397fc2c62dcd2225aba40f55b4286">TrafficDataSource_SerialPort</a> (bool isCanonical, const QString &amp;<a class="el" href="#ab9a775f693174a0396e1fa854c445875">portNameOrDescription</a>, QObject *parent)</td></tr>
-<tr class="memdesc:a9c6397fc2c62dcd2225aba40f55b4286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="memitem:aef1fafa1f8f49bab852ddafb25c2ac47" id="r_aef1fafa1f8f49bab852ddafb25c2ac47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef1fafa1f8f49bab852ddafb25c2ac47">connectionInfo</a> () const override</td></tr>
-<tr class="memdesc:aef1fafa1f8f49bab852ddafb25c2ac47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:afdc7640e8750a6bc74dac3e0cf73b8db" id="r_afdc7640e8750a6bc74dac3e0cf73b8db"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdc7640e8750a6bc74dac3e0cf73b8db">TrafficDataSource_SerialPort</a> (bool isCanonical, const QString &amp;<a class="el" href="#ab9a775f693174a0396e1fa854c445875">portNameOrDescription</a>, ConnectionInfo::BaudRate <a class="el" href="#a39966deccf5a8fec586dbf9a8d0fc569">baudRate</a>, ConnectionInfo::StopBits <a class="el" href="#a275bd47a77c26c3f23b6ec9430475173">stopBits</a>, ConnectionInfo::FlowControl <a class="el" href="#a7be76a0209a42f7f6856b513fe014a0b">flowControl</a>, QObject *parent)</td></tr>
+<tr class="memdesc:afdc7640e8750a6bc74dac3e0cf73b8db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="memitem:af4cd7adf086c2081061d2d6fa42f8e4c" id="r_af4cd7adf086c2081061d2d6fa42f8e4c"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4cd7adf086c2081061d2d6fa42f8e4c">dataFormat</a> () const override</td></tr>
 <tr class="memdesc:af4cd7adf086c2081061d2d6fa42f8e4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a5c035a9421b29c64da356d8edc5b2e39" id="r_a5c035a9421b29c64da356d8edc5b2e39"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c035a9421b29c64da356d8edc5b2e39">icon</a> () const override</td></tr>
 <tr class="memdesc:a5c035a9421b29c64da356d8edc5b2e39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a0bde7b9f0ccc380171ad1d36cc3766ac" id="r_a0bde7b9f0ccc380171ad1d36cc3766ac"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0bde7b9f0ccc380171ad1d36cc3766ac">sourceName</a> () const override</td></tr>
 <tr class="memdesc:a0bde7b9f0ccc380171ad1d36cc3766ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="memitem:afeabc4972469585880741eb6a0781ad5" id="r_afeabc4972469585880741eb6a0781ad5"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afeabc4972469585880741eb6a0781ad5">portNameOrDescription</a> () const</td></tr>
-<tr class="memdesc:afeabc4972469585880741eb6a0781ad5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="inherit_header pub_methods_classTraffic_1_1TrafficDataSource__AbstractSocket"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classTraffic_1_1TrafficDataSource__AbstractSocket')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classTraffic_1_1TrafficDataSource__AbstractSocket.html">Traffic::TrafficDataSource_AbstractSocket</a></td></tr>
-<tr class="memitem:a4a445b729b2ac390df0d3dc703f055d0 inherit pub_methods_classTraffic_1_1TrafficDataSource__AbstractSocket" id="r_a4a445b729b2ac390df0d3dc703f055d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__AbstractSocket.html#a4a445b729b2ac390df0d3dc703f055d0">TrafficDataSource_AbstractSocket</a> (bool isCanonical, QObject *parent)</td></tr>
-<tr class="memdesc:a4a445b729b2ac390df0d3dc703f055d0 inherit pub_methods_classTraffic_1_1TrafficDataSource__AbstractSocket"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="inherit_header pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classTraffic_1_1TrafficDataSource__Abstract')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a></td></tr>
 <tr class="memitem:a1f1b84f93e7566c82a1b6e0d876ec363 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_a1f1b84f93e7566c82a1b6e0d876ec363"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a1f1b84f93e7566c82a1b6e0d876ec363">TrafficDataSource_Abstract</a> (bool isCanonical, QObject *parent)</td></tr>
 <tr class="memdesc:a1f1b84f93e7566c82a1b6e0d876ec363 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="memitem:a0c0b7de2782d5bb64dbdac690ed0a4fd inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_a0c0b7de2782d5bb64dbdac690ed0a4fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a0c0b7de2782d5bb64dbdac690ed0a4fd">canonical</a> () const</td></tr>
 <tr class="memdesc:a0c0b7de2782d5bb64dbdac690ed0a4fd inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a2d9cb95644cf3592107e39a75b9918fa inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_a2d9cb95644cf3592107e39a75b9918fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a2d9cb95644cf3592107e39a75b9918fa">connectionInfo</a> () const</td></tr>
+<tr class="memdesc:a2d9cb95644cf3592107e39a75b9918fa inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a1c1b5763749ac6ba6e15e06eb8882c56 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_a1c1b5763749ac6ba6e15e06eb8882c56"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a1c1b5763749ac6ba6e15e06eb8882c56">bindableConnectionInfo</a> () const</td></tr>
+<tr class="memdesc:a1c1b5763749ac6ba6e15e06eb8882c56 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a3eb47fb6ebab35c8931547027d1eadf2 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_a3eb47fb6ebab35c8931547027d1eadf2"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a3eb47fb6ebab35c8931547027d1eadf2">connectivityStatus</a> () const</td></tr>
 <tr class="memdesc:a3eb47fb6ebab35c8931547027d1eadf2 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:ae42e5eae8707539f939a7ea7aeec8017 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_ae42e5eae8707539f939a7ea7aeec8017"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae42e5eae8707539f939a7ea7aeec8017">errorString</a> () const</td></tr>
@@ -136,6 +132,15 @@ Public Member Functions</h2></td></tr>
 Properties</h2></td></tr>
 <tr class="memitem:ab9a775f693174a0396e1fa854c445875" id="r_ab9a775f693174a0396e1fa854c445875"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9a775f693174a0396e1fa854c445875">portNameOrDescription</a></td></tr>
 <tr class="memdesc:ab9a775f693174a0396e1fa854c445875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Port Name or Description.  <br /></td></tr>
+<tr class="memitem:a39966deccf5a8fec586dbf9a8d0fc569" id="r_a39966deccf5a8fec586dbf9a8d0fc569"><td class="memItemLeft" align="right" valign="top"><a id="a39966deccf5a8fec586dbf9a8d0fc569" name="a39966deccf5a8fec586dbf9a8d0fc569"></a>
+ConnectionInfo::BaudRate&#160;</td><td class="memItemRight" valign="bottom"><b>baudRate</b></td></tr>
+<tr class="memdesc:a39966deccf5a8fec586dbf9a8d0fc569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Baud Rate of the Serial Port Connection. <br /></td></tr>
+<tr class="memitem:a275bd47a77c26c3f23b6ec9430475173" id="r_a275bd47a77c26c3f23b6ec9430475173"><td class="memItemLeft" align="right" valign="top"><a id="a275bd47a77c26c3f23b6ec9430475173" name="a275bd47a77c26c3f23b6ec9430475173"></a>
+ConnectionInfo::StopBits&#160;</td><td class="memItemRight" valign="bottom"><b>stopBits</b></td></tr>
+<tr class="memdesc:a275bd47a77c26c3f23b6ec9430475173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop Bits of the Serial Port Connection. <br /></td></tr>
+<tr class="memitem:a7be76a0209a42f7f6856b513fe014a0b" id="r_a7be76a0209a42f7f6856b513fe014a0b"><td class="memItemLeft" align="right" valign="top"><a id="a7be76a0209a42f7f6856b513fe014a0b" name="a7be76a0209a42f7f6856b513fe014a0b"></a>
+ConnectionInfo::FlowControl&#160;</td><td class="memItemRight" valign="bottom"><b>flowControl</b></td></tr>
+<tr class="memdesc:a7be76a0209a42f7f6856b513fe014a0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow Control. <br /></td></tr>
 <tr class="inherit_header properties_classTraffic_1_1TrafficDataSource__Abstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('properties_classTraffic_1_1TrafficDataSource__Abstract')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Properties inherited from <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a></td></tr>
 <tr class="memitem:a5d7761678f5f74ba2c2d79e30ed61a5e inherit properties_classTraffic_1_1TrafficDataSource__Abstract" id="r_a5d7761678f5f74ba2c2d79e30ed61a5e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5d7761678f5f74ba2c2d79e30ed61a5e">canonical</a></td></tr>
 <tr class="memdesc:a5d7761678f5f74ba2c2d79e30ed61a5e inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Canonicity.  <br /></td></tr>
@@ -169,6 +174,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a29175a0a6310a645e7ba34e26fcf42ca inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a29175a0a6310a645e7ba34e26fcf42ca"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>connectivityStatusChanged</b> (QString newStatus)</td></tr>
 <tr class="memdesc:a29175a0a6310a645e7ba34e26fcf42ca inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="memitem:a9a721308ec0f0783c0191cb2d46ae1e4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a9a721308ec0f0783c0191cb2d46ae1e4"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>dataReceived</b> (QString data)</td></tr>
+<tr class="memdesc:a9a721308ec0f0783c0191cb2d46ae1e4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates new data has arrived, can be used in the GUI for monitoring purposes. <br /></td></tr>
 <tr class="memitem:a287d4c6523682facee4e2ef8a3f703db inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a287d4c6523682facee4e2ef8a3f703db"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>errorStringChanged</b> (QString newError)</td></tr>
 <tr class="memdesc:a287d4c6523682facee4e2ef8a3f703db inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
@@ -210,13 +218,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>receivingHeartbeatCha
 <tr class="memdesc:a53d634de1067eddc68df8a43f0898fc5 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter method for the property with the same name.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source. </p>
-<p>This class connects to a traffic receiver via a Bluetooth Classic serial port service. </p>
+<div class="textblock"><p>Traffic receiver: Serial Port Connection to a FLARM/NMEA Source. </p>
+<p>This class connects to a traffic receiver via a serial port. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00040">40</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00039">39</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9c6397fc2c62dcd2225aba40f55b4286" name="a9c6397fc2c62dcd2225aba40f55b4286"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c6397fc2c62dcd2225aba40f55b4286">&#9670;&#160;</a></span>TrafficDataSource_SerialPort()</h2>
+<a id="afdc7640e8750a6bc74dac3e0cf73b8db" name="afdc7640e8750a6bc74dac3e0cf73b8db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdc7640e8750a6bc74dac3e0cf73b8db">&#9670;&#160;</a></span>TrafficDataSource_SerialPort()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,6 +242,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>receivingHeartbeatCha
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ConnectionInfo::BaudRate</td>          <td class="paramname"><span class="paramname"><em>baudRate</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ConnectionInfo::StopBits</td>          <td class="paramname"><span class="paramname"><em>stopBits</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ConnectionInfo::FlowControl</td>          <td class="paramname"><span class="paramname"><em>flowControl</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">QObject *</td>          <td class="paramname"><span class="paramname"><em>parent</em></span>&#160;)</td>
         </tr>
       </table>
@@ -245,6 +268,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>receivingHeartbeatCha
   <table class="params">
     <tr><td class="paramname">isCanonical</td><td>Intializer for property canonical</td></tr>
     <tr><td class="paramname">portNameOrDescription</td><td>Name or description of the port, as provided by QSerialPortInfo.portName() or QSerialPortInfo.description()</td></tr>
+    <tr><td class="paramname">baudRate</td><td>Baud Rate</td></tr>
+    <tr><td class="paramname">stopBits</td><td>Stop Bits</td></tr>
+    <tr><td class="paramname">flowControl</td><td>Flow Control</td></tr>
     <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
   </table>
   </dd>
@@ -253,38 +279,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>receivingHeartbeatCha
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="aef1fafa1f8f49bab852ddafb25c2ac47" name="aef1fafa1f8f49bab852ddafb25c2ac47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef1fafa1f8f49bab852ddafb25c2ac47">&#9670;&#160;</a></span>connectionInfo()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> Traffic::TrafficDataSource_SerialPort::connectionInfo </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property connectionInfo </dd></dl>
-
-<p>Reimplemented from <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a49ff830aa2f9c946aae844521b517dfb">Traffic::TrafficDataSource_Abstract</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00080">80</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
-
-</div>
-</div>
 <a id="aa437b9675d4165888b3dc6ef17b02a64" name="aa437b9675d4165888b3dc6ef17b02a64"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa437b9675d4165888b3dc6ef17b02a64">&#9670;&#160;</a></span>connectToTrafficReceiver</h2>
 
@@ -341,7 +335,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>receivingHeartbeatCha
 
 <p>Implements <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a064eeeaacd5886aa73678ddef8a00c7f">Traffic::TrafficDataSource_Abstract</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00089">89</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00108">108</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
 
 </div>
 </div>
@@ -402,38 +396,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>receivingHeartbeatCha
 
 <p>Implements <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#aacc1922346405a538496b212b6d05a16">Traffic::TrafficDataSource_Abstract</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00098">98</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
-
-</div>
-</div>
-<a id="afeabc4972469585880741eb6a0781ad5" name="afeabc4972469585880741eb6a0781ad5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afeabc4972469585880741eb6a0781ad5">&#9670;&#160;</a></span>portNameOrDescription()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Traffic::TrafficDataSource_SerialPort::portNameOrDescription </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<p>This method implements the pure virtual method declared by its superclass.</p>
-<dl class="section return"><dt>Returns</dt><dd>Property sourceName </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00116">116</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00117">117</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
 
 </div>
 </div>
@@ -492,7 +455,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>receivingHeartbeatCha
 <p>Port Name or Description. </p>
 <p>This property contains the port name or description, as set in the constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00069">69</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__SerialPort_8h_source.html#l00078">78</a> of file <a class="el" href="TrafficDataSource__SerialPort_8h_source.html">TrafficDataSource_SerialPort.h</a>.</p>
 
 </div>
 </div>

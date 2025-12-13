@@ -73,6 +73,9 @@ Public Slots</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-signals" class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
+<tr class="memitem:a604c947de89c837f765da9e279c38267" id="r_a604c947de89c837f765da9e279c38267"><td class="memItemLeft" align="right" valign="top"><a id="a604c947de89c837f765da9e279c38267" name="a604c947de89c837f765da9e279c38267"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>connectionInfosChanged</b> ()</td></tr>
+<tr class="memdesc:a604c947de89c837f765da9e279c38267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
 <tr class="memitem:aab715eee07094f5975046fa8ba1d5880" id="r_aab715eee07094f5975046fa8ba1d5880"><td class="memItemLeft" align="right" valign="top"><a id="aab715eee07094f5975046fa8ba1d5880" name="aab715eee07094f5975046fa8ba1d5880"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>dataSourcesChanged</b> ()</td></tr>
 <tr class="memdesc:aab715eee07094f5975046fa8ba1d5880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
@@ -97,28 +100,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>warningChanged</b> (c
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad08bfbab038fcc25fbe45af20b8e1e99" id="r_ad08bfbab038fcc25fbe45af20b8e1e99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad08bfbab038fcc25fbe45af20b8e1e99">TrafficDataProvider</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ad08bfbab038fcc25fbe45af20b8e1e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
+<tr class="memitem:a77f88adf368e7a65973aad850e8a574e" id="r_a77f88adf368e7a65973aad850e8a574e"><td class="memItemLeft" align="right" valign="top">QList&lt; <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77f88adf368e7a65973aad850e8a574e">connectionInfos</a> () const</td></tr>
+<tr class="memdesc:a77f88adf368e7a65973aad850e8a574e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="memitem:afd76f673f9551e95babb17fce83284ba" id="r_afd76f673f9551e95babb17fce83284ba"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QList&lt; <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd76f673f9551e95babb17fce83284ba">bindableConnectionInfos</a> ()</td></tr>
+<tr class="memdesc:afd76f673f9551e95babb17fce83284ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:ade1c66bee9c7368a72affa74b68334ca" id="r_ade1c66bee9c7368a72affa74b68334ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade1c66bee9c7368a72affa74b68334ca">currentSourceIsInternetService</a> () const</td></tr>
 <tr class="memdesc:ade1c66bee9c7368a72affa74b68334ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="memitem:af29dd2101cd580268602fe0a1c0c60f9" id="r_af29dd2101cd580268602fe0a1c0c60f9"><td class="memItemLeft" align="right" valign="top">QBindable&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af29dd2101cd580268602fe0a1c0c60f9">bindableCurrentSourceIsInternetService</a> () const</td></tr>
-<tr class="memdesc:af29dd2101cd580268602fe0a1c0c60f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="memitem:a41a4ab4ac7485183ba7a4c33b880e00f" id="r_a41a4ab4ac7485183ba7a4c33b880e00f"><td class="memItemLeft" align="right" valign="top">QBindable&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41a4ab4ac7485183ba7a4c33b880e00f">bindableCurrentSourceIsInternetService</a> ()</td></tr>
+<tr class="memdesc:a41a4ab4ac7485183ba7a4c33b880e00f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:a62298c0750acd448e5ad3443d7ffc0e4" id="r_a62298c0750acd448e5ad3443d7ffc0e4"><td class="memItemLeft" align="right" valign="top">QList&lt; <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62298c0750acd448e5ad3443d7ffc0e4">dataSources</a> () const</td></tr>
 <tr class="memdesc:a62298c0750acd448e5ad3443d7ffc0e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:a75d9f60c4cd5e92be1e72b7e4e412a8c" id="r_a75d9f60c4cd5e92be1e72b7e4e412a8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75d9f60c4cd5e92be1e72b7e4e412a8c">positionInfo</a> () const</td></tr>
 <tr class="memdesc:a75d9f60c4cd5e92be1e72b7e4e412a8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="memitem:aa082a02956afffc32a80a153d83ef3f0" id="r_aa082a02956afffc32a80a153d83ef3f0"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa082a02956afffc32a80a153d83ef3f0">bindablePositionInfo</a> () const</td></tr>
-<tr class="memdesc:aa082a02956afffc32a80a153d83ef3f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="memitem:a772b07e716a681f04d127dbae0ab3094" id="r_a772b07e716a681f04d127dbae0ab3094"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a772b07e716a681f04d127dbae0ab3094">bindablePositionInfo</a> ()</td></tr>
+<tr class="memdesc:a772b07e716a681f04d127dbae0ab3094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:af3ccc88d78047f5c594e913348ea9991" id="r_af3ccc88d78047f5c594e913348ea9991"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3ccc88d78047f5c594e913348ea9991">pressureAltitude</a> () const</td></tr>
 <tr class="memdesc:af3ccc88d78047f5c594e913348ea9991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="memitem:ad8349934da12839b354d5cc77fa3541c" id="r_ad8349934da12839b354d5cc77fa3541c"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8349934da12839b354d5cc77fa3541c">bindablePressureAltitude</a> () const</td></tr>
-<tr class="memdesc:ad8349934da12839b354d5cc77fa3541c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="memitem:a855b209fb0b47062afff6c95a52018fd" id="r_a855b209fb0b47062afff6c95a52018fd"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a855b209fb0b47062afff6c95a52018fd">bindablePressureAltitude</a> ()</td></tr>
+<tr class="memdesc:a855b209fb0b47062afff6c95a52018fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:a7349f286dc40b5401fd683e7c1b35e74" id="r_a7349f286dc40b5401fd683e7c1b35e74"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7349f286dc40b5401fd683e7c1b35e74">receivingHeartbeat</a> () const</td></tr>
 <tr class="memdesc:a7349f286dc40b5401fd683e7c1b35e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="memitem:a4ac3b648df17994a9af8433764ef559a" id="r_a4ac3b648df17994a9af8433764ef559a"><td class="memItemLeft" align="right" valign="top">QBindable&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ac3b648df17994a9af8433764ef559a">bindableReceivingHeartbeat</a> () const</td></tr>
-<tr class="memdesc:a4ac3b648df17994a9af8433764ef559a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="memitem:ad75b8fe6b8eb116f5d91073303c61bb1" id="r_ad75b8fe6b8eb116f5d91073303c61bb1"><td class="memItemLeft" align="right" valign="top">QBindable&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad75b8fe6b8eb116f5d91073303c61bb1">bindableReceivingHeartbeat</a> ()</td></tr>
+<tr class="memdesc:ad75b8fe6b8eb116f5d91073303c61bb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:aa976cd5c7ac9f1cefe6c68fd5ca2b63e" id="r_aa976cd5c7ac9f1cefe6c68fd5ca2b63e"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa976cd5c7ac9f1cefe6c68fd5ca2b63e">statusString</a> () const</td></tr>
 <tr class="memdesc:aa976cd5c7ac9f1cefe6c68fd5ca2b63e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="memitem:abd2631253b8e4a7ef499801e8a2129b9" id="r_abd2631253b8e4a7ef499801e8a2129b9"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd2631253b8e4a7ef499801e8a2129b9">bindableStatusString</a> () const</td></tr>
-<tr class="memdesc:abd2631253b8e4a7ef499801e8a2129b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="memitem:a5448aaa4edc7662ccf4ec85a56130332" id="r_a5448aaa4edc7662ccf4ec85a56130332"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5448aaa4edc7662ccf4ec85a56130332">bindableStatusString</a> ()</td></tr>
+<tr class="memdesc:a5448aaa4edc7662ccf4ec85a56130332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:a65e46e962fa58d0cb719dd92f2d9bd9a" id="r_a65e46e962fa58d0cb719dd92f2d9bd9a"><td class="memItemLeft" align="right" valign="top">QList&lt; <a class="el" href="classTraffic_1_1TrafficFactor__WithPosition.html">Traffic::TrafficFactor_WithPosition</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65e46e962fa58d0cb719dd92f2d9bd9a">trafficObjects</a> () const</td></tr>
 <tr class="memdesc:a65e46e962fa58d0cb719dd92f2d9bd9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:a4028e0ced7cc2ec33926652308f5ebc6" id="r_a4028e0ced7cc2ec33926652308f5ebc6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTraffic_1_1TrafficFactor__DistanceOnly.html">Traffic::TrafficFactor_DistanceOnly</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4028e0ced7cc2ec33926652308f5ebc6">trafficObjectWithoutPosition</a> () const</td></tr>
@@ -135,8 +142,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:afc0d7d75ff8560e4851785d1ece4c393"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an additional data source.  <br /></td></tr>
 <tr class="memitem:a6560da2fcc6b81a235fc448860779830" id="r_a6560da2fcc6b81a235fc448860779830"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6560da2fcc6b81a235fc448860779830">addDataSource_UDP</a> (quint16 port)</td></tr>
 <tr class="memdesc:a6560da2fcc6b81a235fc448860779830"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an additional data source.  <br /></td></tr>
-<tr class="memitem:a227b1d70e9e293e05a2134fe7d9f67b8" id="r_a227b1d70e9e293e05a2134fe7d9f67b8"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a227b1d70e9e293e05a2134fe7d9f67b8">addDataSource_SerialPort</a> (const QString &amp;portNameOrDescription)</td></tr>
-<tr class="memdesc:a227b1d70e9e293e05a2134fe7d9f67b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an additional data source.  <br /></td></tr>
+<tr class="memitem:a9e1fad78c669f3440e1565f880e07ba7" id="r_a9e1fad78c669f3440e1565f880e07ba7"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e1fad78c669f3440e1565f880e07ba7">addDataSource_SerialPort</a> (const QString &amp;portNameOrDescription, ConnectionInfo::BaudRate baudRate, ConnectionInfo::StopBits stopBits, ConnectionInfo::FlowControl flowControl)</td></tr>
+<tr class="memdesc:a9e1fad78c669f3440e1565f880e07ba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an additional data source.  <br /></td></tr>
 <tr class="memitem:a4e4a9c403075c9ce4bc73e495362995d" id="r_a4e4a9c403075c9ce4bc73e495362995d"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e4a9c403075c9ce4bc73e495362995d">addDataSource_TCP</a> (const QString &amp;host, quint16 port)</td></tr>
 <tr class="memdesc:a4e4a9c403075c9ce4bc73e495362995d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an additional data source.  <br /></td></tr>
 <tr class="memitem:acdcf199f35ec1b6b1e37b960b87df752" id="r_acdcf199f35ec1b6b1e37b960b87df752"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdcf199f35ec1b6b1e37b960b87df752">addDataSource_OGN</a> ()</td></tr>
@@ -148,6 +155,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a1a3afea65b3104138d5f2343721ac6db" id="r_a1a3afea65b3104138d5f2343721ac6db"><td class="memItemLeft" align="right" valign="top">QList&lt; <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a3afea65b3104138d5f2343721ac6db">connectionInfos</a></td></tr>
+<tr class="memdesc:a1a3afea65b3104138d5f2343721ac6db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connection Infos.  <br /></td></tr>
 <tr class="memitem:a24fa19fa190cc90ceded395db0d554d2" id="r_a24fa19fa190cc90ceded395db0d554d2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24fa19fa190cc90ceded395db0d554d2">currentSourceIsInternetService</a></td></tr>
 <tr class="memdesc:a24fa19fa190cc90ceded395db0d554d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internet service flag.  <br /></td></tr>
 <tr class="memitem:a4698b7787ed17b8bc8f2b87a0033c3ee" id="r_a4698b7787ed17b8bc8f2b87a0033c3ee"><td class="memItemLeft" align="right" valign="top">QList&lt; <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4698b7787ed17b8bc8f2b87a0033c3ee">dataSources</a></td></tr>
@@ -292,8 +301,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a227b1d70e9e293e05a2134fe7d9f67b8" name="a227b1d70e9e293e05a2134fe7d9f67b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a227b1d70e9e293e05a2134fe7d9f67b8">&#9670;&#160;</a></span>addDataSource_SerialPort()</h2>
+<a id="a9e1fad78c669f3440e1565f880e07ba7" name="a9e1fad78c669f3440e1565f880e07ba7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e1fad78c669f3440e1565f880e07ba7">&#9670;&#160;</a></span>addDataSource_SerialPort()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -301,8 +310,22 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">Q_INVOKABLE QString Traffic::TrafficDataProvider::addDataSource_SerialPort </td>
           <td>(</td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>portNameOrDescription</em></span></td><td>)</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>portNameOrDescription</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ConnectionInfo::BaudRate</td>          <td class="paramname"><span class="paramname"><em>baudRate</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ConnectionInfo::StopBits</td>          <td class="paramname"><span class="paramname"><em>stopBits</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ConnectionInfo::FlowControl</td>          <td class="paramname"><span class="paramname"><em>flowControl</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -311,7 +334,10 @@ Properties</h2></td></tr>
 <p>This method adds an additional serial port data source to this <a class="el" href="classTraffic_1_1TrafficDataProvider.html" title="Traffic receiver.">TrafficDataProvider</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">portNameOrDescription</td><td>Name of the serial port or a description string by which the port can be identified-</td></tr>
+    <tr><td class="paramname">portNameOrDescription</td><td>Name of the serial port or a description string by which the port can be identified.</td></tr>
+    <tr><td class="paramname">baudRate</td><td>Baud Rate</td></tr>
+    <tr><td class="paramname">stopBits</td><td>Stop Bits</td></tr>
+    <tr><td class="paramname">flowControl</td><td>Flow Control</td></tr>
   </table>
   </dd>
 </dl>
@@ -378,8 +404,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="af29dd2101cd580268602fe0a1c0c60f9" name="af29dd2101cd580268602fe0a1c0c60f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af29dd2101cd580268602fe0a1c0c60f9">&#9670;&#160;</a></span>bindableCurrentSourceIsInternetService()</h2>
+<a id="afd76f673f9551e95babb17fce83284ba" name="afd76f673f9551e95babb17fce83284ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd76f673f9551e95babb17fce83284ba">&#9670;&#160;</a></span>bindableConnectionInfos()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -388,10 +414,10 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QBindable&lt; bool &gt; Traffic::TrafficDataProvider::bindableCurrentSourceIsInternetService </td>
+          <td class="memname">QBindable&lt; QList&lt; <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> &gt; &gt; Traffic::TrafficDataProvider::bindableConnectionInfos </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -404,12 +430,42 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property currentSourceIsInternetService </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00184">184</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00192">192</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="aa082a02956afffc32a80a153d83ef3f0" name="aa082a02956afffc32a80a153d83ef3f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa082a02956afffc32a80a153d83ef3f0">&#9670;&#160;</a></span>bindablePositionInfo()</h2>
+<a id="a41a4ab4ac7485183ba7a4c33b880e00f" name="a41a4ab4ac7485183ba7a4c33b880e00f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41a4ab4ac7485183ba7a4c33b880e00f">&#9670;&#160;</a></span>bindableCurrentSourceIsInternetService()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QBindable&lt; bool &gt; Traffic::TrafficDataProvider::bindableCurrentSourceIsInternetService </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property currentSourceIsInternetService </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00204">204</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a772b07e716a681f04d127dbae0ab3094" name="a772b07e716a681f04d127dbae0ab3094"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a772b07e716a681f04d127dbae0ab3094">&#9670;&#160;</a></span>bindablePositionInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -421,7 +477,7 @@ Properties</h2></td></tr>
           <td class="memname">QBindable&lt; <a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> &gt; Traffic::TrafficDataProvider::bindablePositionInfo </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -434,12 +490,12 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property positionInfo </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00205">205</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00225">225</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="ad8349934da12839b354d5cc77fa3541c" name="ad8349934da12839b354d5cc77fa3541c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8349934da12839b354d5cc77fa3541c">&#9670;&#160;</a></span>bindablePressureAltitude()</h2>
+<a id="a855b209fb0b47062afff6c95a52018fd" name="a855b209fb0b47062afff6c95a52018fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a855b209fb0b47062afff6c95a52018fd">&#9670;&#160;</a></span>bindablePressureAltitude()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -451,7 +507,7 @@ Properties</h2></td></tr>
           <td class="memname">QBindable&lt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> &gt; Traffic::TrafficDataProvider::bindablePressureAltitude </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -464,12 +520,12 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property pressureAltitude </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00220">220</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00237">237</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="a4ac3b648df17994a9af8433764ef559a" name="a4ac3b648df17994a9af8433764ef559a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ac3b648df17994a9af8433764ef559a">&#9670;&#160;</a></span>bindableReceivingHeartbeat()</h2>
+<a id="ad75b8fe6b8eb116f5d91073303c61bb1" name="ad75b8fe6b8eb116f5d91073303c61bb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad75b8fe6b8eb116f5d91073303c61bb1">&#9670;&#160;</a></span>bindableReceivingHeartbeat()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -481,7 +537,7 @@ Properties</h2></td></tr>
           <td class="memname">QBindable&lt; bool &gt; Traffic::TrafficDataProvider::bindableReceivingHeartbeat </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -494,12 +550,12 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property receiving </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00235">235</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00252">252</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="abd2631253b8e4a7ef499801e8a2129b9" name="abd2631253b8e4a7ef499801e8a2129b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd2631253b8e4a7ef499801e8a2129b9">&#9670;&#160;</a></span>bindableStatusString()</h2>
+<a id="a5448aaa4edc7662ccf4ec85a56130332" name="a5448aaa4edc7662ccf4ec85a56130332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5448aaa4edc7662ccf4ec85a56130332">&#9670;&#160;</a></span>bindableStatusString()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -509,6 +565,36 @@ Properties</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">QBindable&lt; QString &gt; Traffic::TrafficDataProvider::bindableStatusString </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property statusString </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00267">267</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a77f88adf368e7a65973aad850e8a574e" name="a77f88adf368e7a65973aad850e8a574e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77f88adf368e7a65973aad850e8a574e">&#9670;&#160;</a></span>connectionInfos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QList&lt; <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> &gt; Traffic::TrafficDataProvider::connectionInfos </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -522,9 +608,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Getter method for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property statusString </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Property connectionInfos </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00253">253</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00186">186</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -582,7 +668,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property currentSourceIsInternetService </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00178">178</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00198">198</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -760,7 +846,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property positionInfo </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00196">196</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00216">216</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -790,7 +876,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property pressureAltitude </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00214">214</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00231">231</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -820,7 +906,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property receiving </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00226">226</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00243">243</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -915,7 +1001,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property statusString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00244">244</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00258">258</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -945,7 +1031,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficObjects </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00262">262</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00273">273</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -975,7 +1061,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficObjectWithoutPosition </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00271">271</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00282">282</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1091,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficReceiverRuntimeError </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00280">280</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00291">291</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1035,7 +1121,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficReceiverSelfTestError </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00289">289</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00300">300</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1065,11 +1151,38 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property <a class="el" href="classTraffic_1_1Warning.html" title="Traffic warning.">Warning</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00298">298</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00309">309</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-property-members" id="doc-property-members"></a><h2 id="header-doc-property-members" class="groupheader">Property Documentation</h2>
+<a id="a1a3afea65b3104138d5f2343721ac6db" name="a1a3afea65b3104138d5f2343721ac6db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a3afea65b3104138d5f2343721ac6db">&#9670;&#160;</a></span>connectionInfos</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QList&lt;<a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a>&gt; Traffic::TrafficDataProvider::connectionInfos</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel read">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Connection Infos. </p>
+<p>This property holds connection infos for all non-canonical connections currently in use. </p>
+
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00084">84</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+
+</div>
+</div>
 <a id="a24fa19fa190cc90ceded395db0d554d2" name="a24fa19fa190cc90ceded395db0d554d2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a24fa19fa190cc90ceded395db0d554d2">&#9670;&#160;</a></span>currentSourceIsInternetService</h2>
 
@@ -1093,7 +1206,7 @@ Properties</h2></td></tr>
 <p>Internet service flag. </p>
 <p>This property is true if the data source currently in use is an internet service rather than a proper traffic receiver. This can be used by the GUI to warn the user that data might not be reliable. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00082">82</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00091">91</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1120,7 +1233,7 @@ Properties</h2></td></tr>
 <p>Traffic data sources. </p>
 <p>This property holds a list of all traffic data sources currently in use. The items are owned by this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00089">89</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00098">98</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1147,7 +1260,7 @@ Properties</h2></td></tr>
 <p>Position information. </p>
 <p>This property holds information about the device position. To ensure that the data is up-to-date, the position information will be set to an invalid positionInfo when no data has arrived for more than the time specified in PositionInfo::lifetime. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00098">98</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00107">107</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1174,7 +1287,7 @@ Properties</h2></td></tr>
 <p>Pressure altitude. </p>
 <p>This property holds information about the pressure altitude reported by the traffic data receiver. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00105">105</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00114">114</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1201,7 +1314,7 @@ Properties</h2></td></tr>
 <p>Heartbeat indicator. </p>
 <p>When active, traffic receivers send regular heartbeat messages. These can be used to verify that the connection to the receiver works, even in times when no traffic is reported. This property indicates if the class receives heartbeat messages from at least one of the known receivers. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00114">114</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00123">123</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1228,7 +1341,7 @@ Properties</h2></td></tr>
 <p>Source status. </p>
 <p>This property holds a translated, human-readable string that describes the status of the positionInfo source. This could typically be a string of the form "OK" or "Insufficient permission to access position info" </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00122">122</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00131">131</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1255,7 +1368,7 @@ Properties</h2></td></tr>
 <p>Traffic objects whose position is known. </p>
 <p>This property holds a list of the most relevant traffic objects, as a QQmlListProperty for better cooperation with QML. Note that only the valid items in this list pertain to actual traffic. Invalid items should be ignored. The list is not sorted in any way. The items themselves are owned by this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00132">132</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00141">141</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1282,7 +1395,7 @@ Properties</h2></td></tr>
 <p>Most relevant traffic object whose position is not known. </p>
 <p>This property holds a pointer to the most relevant traffic object whose position is not known. This item should be ignored if invalid. The item is owned by this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00140">140</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00149">149</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1309,7 +1422,7 @@ Properties</h2></td></tr>
 <p>String describing the current traffic data receiver errors. </p>
 <p>This property holds a translated, human-readable string that describes the current errors reported by the traffic receiver, or an empty string when there is no error. The string is cleared when a new connection attempt is started. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00149">149</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00158">158</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1336,7 +1449,7 @@ Properties</h2></td></tr>
 <p>String describing the traffic data receiver errors found in self-test. </p>
 <p>This property holds a translated, human-readable string that describes the errors reported by the traffic receiver during self-test, or an empty string when there is no error. The string is cleared when a new connection attempt is started. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00158">158</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00167">167</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -1363,7 +1476,7 @@ Properties</h2></td></tr>
 <p>Current traffic warning. </p>
 <p>This property holds the current traffic warning. The traffic warning is updated regularly and set to an invalid warning (i.e. one with alarmLevel == -1) after a certain period. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00166">166</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00175">175</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>

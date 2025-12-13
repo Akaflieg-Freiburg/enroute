@@ -68,15 +68,15 @@ Inheritance diagram for Traffic::TrafficDataSource_Abstract:</div>
  <div class="center">
   <img src="classTraffic_1_1TrafficDataSource__Abstract.png" usemap="#Traffic_3A_3ATrafficDataSource_5FAbstract_map" alt=""/>
   <map id="Traffic_3A_3ATrafficDataSource_5FAbstract_map" name="Traffic_3A_3ATrafficDataSource_5FAbstract_map">
-<area href="classTraffic_1_1TrafficDataSource__AbstractSocket.html" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="Traffic::TrafficDataSource_AbstractSocket" shape="rect" coords="730,56,1012,80"/>
-<area href="classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver: Simulator file with FLARM/NMEA sentences." alt="Traffic::TrafficDataSource_File" shape="rect" coords="1022,56,1304,80"/>
-<area href="classTraffic_1_1TrafficDataSource__Simulate.html" title="Traffic receiver: Simulator that provides constant data." alt="Traffic::TrafficDataSource_Simulate" shape="rect" coords="1314,56,1596,80"/>
+<area href="classTraffic_1_1TrafficDataSource__AbstractSocket.html" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="Traffic::TrafficDataSource_AbstractSocket" shape="rect" coords="584,56,866,80"/>
+<area href="classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver: Simulator file with FLARM/NMEA sentences." alt="Traffic::TrafficDataSource_File" shape="rect" coords="876,56,1158,80"/>
+<area href="classTraffic_1_1TrafficDataSource__SerialPort.html" title="Traffic receiver: Serial Port Connection to a FLARM/NMEA Source." alt="Traffic::TrafficDataSource_SerialPort" shape="rect" coords="1168,56,1450,80"/>
+<area href="classTraffic_1_1TrafficDataSource__Simulate.html" title="Traffic receiver: Simulator that provides constant data." alt="Traffic::TrafficDataSource_Simulate" shape="rect" coords="1460,56,1742,80"/>
 <area href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html" title="Traffic receiver: Bluetooth Classic connection to a FLARM/NMEA source." alt="Traffic::TrafficDataSource_BluetoothClassic" shape="rect" coords="0,112,282,136"/>
 <area href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html" title="Traffic receiver: Bluetooth LE connection to a FLARM/NMEA source via the &quot;Nordic UART Service&quot;." alt="Traffic::TrafficDataSource_BluetoothLowEnergy" shape="rect" coords="292,112,574,136"/>
 <area href="classTraffic_1_1TrafficDataSource__Ogn.html" title="Traffic receiver: OGN glidernet.org via internet connection." alt="Traffic::TrafficDataSource_Ogn" shape="rect" coords="584,112,866,136"/>
-<area href="classTraffic_1_1TrafficDataSource__SerialPort.html" title="Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source." alt="Traffic::TrafficDataSource_SerialPort" shape="rect" coords="876,112,1158,136"/>
-<area href="classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="Traffic::TrafficDataSource_Tcp" shape="rect" coords="1168,112,1450,136"/>
-<area href="classTraffic_1_1TrafficDataSource__Udp.html" title="Traffic receiver: UDP connection to GDL90 source." alt="Traffic::TrafficDataSource_Udp" shape="rect" coords="1460,112,1742,136"/>
+<area href="classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="Traffic::TrafficDataSource_Tcp" shape="rect" coords="876,112,1158,136"/>
+<area href="classTraffic_1_1TrafficDataSource__Udp.html" title="Traffic receiver: UDP connection to GDL90 source." alt="Traffic::TrafficDataSource_Udp" shape="rect" coords="1168,112,1450,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -94,6 +94,9 @@ Signals</h2></td></tr>
 <tr class="memitem:a29175a0a6310a645e7ba34e26fcf42ca" id="r_a29175a0a6310a645e7ba34e26fcf42ca"><td class="memItemLeft" align="right" valign="top"><a id="a29175a0a6310a645e7ba34e26fcf42ca" name="a29175a0a6310a645e7ba34e26fcf42ca"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>connectivityStatusChanged</b> (QString newStatus)</td></tr>
 <tr class="memdesc:a29175a0a6310a645e7ba34e26fcf42ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="memitem:a9a721308ec0f0783c0191cb2d46ae1e4" id="r_a9a721308ec0f0783c0191cb2d46ae1e4"><td class="memItemLeft" align="right" valign="top"><a id="a9a721308ec0f0783c0191cb2d46ae1e4" name="a9a721308ec0f0783c0191cb2d46ae1e4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>dataReceived</b> (QString data)</td></tr>
+<tr class="memdesc:a9a721308ec0f0783c0191cb2d46ae1e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates new data has arrived, can be used in the GUI for monitoring purposes. <br /></td></tr>
 <tr class="memitem:a287d4c6523682facee4e2ef8a3f703db" id="r_a287d4c6523682facee4e2ef8a3f703db"><td class="memItemLeft" align="right" valign="top"><a id="a287d4c6523682facee4e2ef8a3f703db" name="a287d4c6523682facee4e2ef8a3f703db"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>errorStringChanged</b> (QString newError)</td></tr>
 <tr class="memdesc:a287d4c6523682facee4e2ef8a3f703db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
@@ -119,8 +122,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1f1b84f93e7566c82a1b6e0d876ec363"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="memitem:a0c0b7de2782d5bb64dbdac690ed0a4fd" id="r_a0c0b7de2782d5bb64dbdac690ed0a4fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c0b7de2782d5bb64dbdac690ed0a4fd">canonical</a> () const</td></tr>
 <tr class="memdesc:a0c0b7de2782d5bb64dbdac690ed0a4fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="memitem:a49ff830aa2f9c946aae844521b517dfb" id="r_a49ff830aa2f9c946aae844521b517dfb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49ff830aa2f9c946aae844521b517dfb">connectionInfo</a> () const</td></tr>
-<tr class="memdesc:a49ff830aa2f9c946aae844521b517dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a2d9cb95644cf3592107e39a75b9918fa" id="r_a2d9cb95644cf3592107e39a75b9918fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d9cb95644cf3592107e39a75b9918fa">connectionInfo</a> () const</td></tr>
+<tr class="memdesc:a2d9cb95644cf3592107e39a75b9918fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a1c1b5763749ac6ba6e15e06eb8882c56" id="r_a1c1b5763749ac6ba6e15e06eb8882c56"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c1b5763749ac6ba6e15e06eb8882c56">bindableConnectionInfo</a> () const</td></tr>
+<tr class="memdesc:a1c1b5763749ac6ba6e15e06eb8882c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a3eb47fb6ebab35c8931547027d1eadf2" id="r_a3eb47fb6ebab35c8931547027d1eadf2"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3eb47fb6ebab35c8931547027d1eadf2">connectivityStatus</a> () const</td></tr>
 <tr class="memdesc:a3eb47fb6ebab35c8931547027d1eadf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a064eeeaacd5886aa73678ddef8a00c7f" id="r_a064eeeaacd5886aa73678ddef8a00c7f"><td class="memItemLeft" align="right" valign="top">virtual QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a064eeeaacd5886aa73678ddef8a00c7f">dataFormat</a> () const =0</td></tr>
@@ -240,6 +245,36 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a1c1b5763749ac6ba6e15e06eb8882c56" name="a1c1b5763749ac6ba6e15e06eb8882c56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c1b5763749ac6ba6e15e06eb8882c56">&#9670;&#160;</a></span>bindableConnectionInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QBindable&lt; <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> &gt; Traffic::TrafficDataSource_Abstract::bindableConnectionInfo </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property connectionInfo </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00188">188</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+
+</div>
+</div>
 <a id="ad17d038d176fe31d0f30bec61defa3df" name="ad17d038d176fe31d0f30bec61defa3df"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad17d038d176fe31d0f30bec61defa3df">&#9670;&#160;</a></span>bindablePositionInfo()</h2>
 
@@ -266,7 +301,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property positionInfo </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00228">228</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00233">233</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -296,7 +331,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property pressureAltitude </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00243">243</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00248">248</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -326,7 +361,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property receivingHeartbeat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00261">261</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00266">266</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -356,7 +391,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficReceiverRuntimeError </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00285">285</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00290">290</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -386,7 +421,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property errorString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00303">303</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00308">308</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -416,12 +451,12 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property canonical </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00174">174</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00173">173</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
-<a id="a49ff830aa2f9c946aae844521b517dfb" name="a49ff830aa2f9c946aae844521b517dfb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49ff830aa2f9c946aae844521b517dfb">&#9670;&#160;</a></span>connectionInfo()</h2>
+<a id="a2d9cb95644cf3592107e39a75b9918fa" name="a2d9cb95644cf3592107e39a75b9918fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d9cb95644cf3592107e39a75b9918fa">&#9670;&#160;</a></span>connectionInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -430,7 +465,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> Traffic::TrafficDataSource_Abstract::connectionInfo </td>
+          <td class="memname"><a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> Traffic::TrafficDataSource_Abstract::connectionInfo </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -438,7 +473,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel virtual">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -446,9 +481,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property connectionInfo </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothClassic.html#a256e58785802dd20cb11084af1d9e0e5">Traffic::TrafficDataSource_BluetoothClassic</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__BluetoothLowEnergy.html#aefbd248424e9d68144025b7118797ed9">Traffic::TrafficDataSource_BluetoothLowEnergy</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Ogn.html#ab7a207913600f0833faa0eae0e4ef19c">Traffic::TrafficDataSource_Ogn</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__SerialPort.html#aef1fafa1f8f49bab852ddafb25c2ac47">Traffic::TrafficDataSource_SerialPort</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#a8b115b0034b31f5df746cae5718a05b1">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#ae3768401c867a4f79be1eefc96524e60">Traffic::TrafficDataSource_Udp</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00183">183</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00182">182</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -478,7 +511,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property connectivityStatus </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00189">189</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00194">194</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -594,7 +627,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property errorString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00204">204</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00209">209</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -722,7 +755,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property positionInfo </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00219">219</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00224">224</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -752,7 +785,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property pressureAltitude </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00237">237</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00242">242</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -920,7 +953,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property receivingHeartbeat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00252">252</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00257">257</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1048,7 +1081,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Set password. </p>
 <p>If the implementation of the traffic data source supports passwords, this method checks if the traffic data source is waiting for a password with key SSID. If so, it will send the password to the traffic data receiver. If the implementation of the traffic data source does not support passwords, this method does nothing. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00419">419</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00427">427</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1278,7 +1311,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficReceiverRuntimeError </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00276">276</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00281">281</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1308,7 +1341,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property errorString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00294">294</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00299">299</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1404,7 +1437,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Canonicity. </p>
 <p>This property contains 'true' if the connection is a canonical connection that cannot be deleted. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00068">68</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00067">67</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1431,7 +1464,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 <p>Connection Info. </p>
 <p>This property contains a connection info that can be used to save and restore this connection. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00088">88</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00087">87</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1460,7 +1493,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>icon</b></td></tr>
 not connected yet.". Subclasses shall use the setter function to set the property content.</p>
 <p>The setter method is protected and can be used by subclasses to update the property content. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00081">81</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00080">80</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1487,7 +1520,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>Data format. </p>
 <p>This property contains a string of the form "FLARM/NMEA" or "GDL90 · XGPS". </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00094">94</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00093">93</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1514,7 +1547,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>String describing the last socket error. </p>
 <p>This property holds a translated, human-readable string that describes the last error, or an empty string when there is not error. The string is cleared when a new connection attempt is started. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00102">102</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00101">101</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1541,7 +1574,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>Position information. </p>
 <p>This property holds information about the device position. To ensure that the data is up-to-date, the position information will be set to an invalid positionInfo when no data has arrived for more than the time specified in PositionInfo::lifetime. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00114">114</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00113">113</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1568,7 +1601,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>Pressure altitude. </p>
 <p>This property holds information about the pressure altitude, that is, the altitude that you would read off your altimeter if the altimeter is set to 1013.2 hPa. To ensure that the data is up-to-date, the position information will be set to "invalid" when no data has arrived for more than the time specified in PositionInfo::lifetime. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00124">124</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00123">123</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1596,7 +1629,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>When active, traffic receivers send regular heartbeat messages. These can be used to verify that the connection to the receiver works, even in times when no traffic is reported. This property indicates if the class receives heartbeat messages from at least one of the known receivers.</p>
 <p>The setter and resetter methods are protected and can be used by subclasses to update the property content. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00136">136</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00135">135</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1624,7 +1657,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>This property contains a short, human-readable and translated description of the source. A typical string is "TCP connection to
 132.168.1.1 port 2000". </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00144">144</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00143">143</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1651,7 +1684,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>String describing the last traffic data receiver runtime error. </p>
 <p>This property holds a translated, human-readable string that describes the last error reported by the traffic receiver, or an empty string when there is not error. The string is cleared when a new connection attempt is started. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00153">153</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00152">152</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1678,7 +1711,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>String describing the last traffic data receiver self-test error. </p>
 <p>This property holds a translated, human-readable string that describes the last error reported by the traffic receiver self-test, or an empty string when there is not error. The string is cleared when a new connection attempt is started. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00162">162</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00161">161</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>

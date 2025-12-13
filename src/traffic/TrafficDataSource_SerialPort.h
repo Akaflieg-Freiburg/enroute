@@ -20,11 +20,14 @@
 
 #pragma once
 
-#include <QPropertyNotifier>
+#if __has_include(<QSerialPortInfo>)
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#endif
 
-#include "traffic/TrafficDataSource_AbstractSocket.h"
+#include <QPropertyNotifier>
+
+#include "traffic/TrafficDataSource_Abstract.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -142,8 +145,10 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
+#if __has_include(<QSerialPortInfo>)
     // Handle serial port errors
     void onErrorOccurred(QSerialPort::SerialPortError error);
+#endif
 
     // Read and process received NMEA sentences
     void onReadyRead();
@@ -152,12 +157,11 @@ private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_SerialPort)
 
     // Copied from the constructor
+#if __has_include(<QSerialPortInfo>)
     QSerialPort* m_port {nullptr};
-    QString m_portNameOrDescription;
-
-    // Text stream used for reading NMEA sentences
     QTextStream* m_textStream {nullptr};
-
+#endif
+    QString m_portNameOrDescription;
     QProperty<ConnectionInfo::BaudRate> m_baudRate {ConnectionInfo::BaudRate::Baud9600};
     QProperty<ConnectionInfo::StopBits> m_stopBits {ConnectionInfo::StopBits::OneStop};
     QProperty<ConnectionInfo::FlowControl> m_flowControl {ConnectionInfo::FlowControl::NoFlowControl};

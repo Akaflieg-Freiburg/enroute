@@ -66,18 +66,18 @@ static QList<StrideMapping> strideMappings = {
 void initStrideMappings() {
     for (auto& mapping : strideMappings) {
         if (!mapping.first.isEmpty()) {
-            int c1 = mapping.alphabet.indexOf(mapping.first[0]);
-            int c2 = mapping.alphabet.indexOf(mapping.first[1]);
-            int c3 = mapping.alphabet.indexOf(mapping.first[2]);
+            auto c1 = mapping.alphabet.indexOf(mapping.first[0]);
+            auto c2 = mapping.alphabet.indexOf(mapping.first[1]);
+            auto c3 = mapping.alphabet.indexOf(mapping.first[2]);
             mapping.offset = c1 * mapping.s1 + c2 * mapping.s2 + c3;
         } else {
             mapping.offset = 0;
         }
 
         if (!mapping.last.isEmpty()) {
-            int c1 = mapping.alphabet.indexOf(mapping.last[0]);
-            int c2 = mapping.alphabet.indexOf(mapping.last[1]);
-            int c3 = mapping.alphabet.indexOf(mapping.last[2]);
+            auto c1 = mapping.alphabet.indexOf(mapping.last[0]);
+            auto c2 = mapping.alphabet.indexOf(mapping.last[1]);
+            auto c3 = mapping.alphabet.indexOf(mapping.last[2]);
             mapping.end = mapping.start - mapping.offset +
                           c1 * mapping.s1 +
                           c2 * mapping.s2 +

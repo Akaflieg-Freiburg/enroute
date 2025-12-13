@@ -48,6 +48,7 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
 
 Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 {
+#if __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
         delete m_textStream;
@@ -59,10 +60,12 @@ Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
         delete m_port;
         m_port = nullptr;
     }
+#endif
 }
 
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 {
+#if __has_include(<QSerialPortInfo>)
     // Do not do anything if the traffic receiver is connected.
     if (m_port != nullptr)
     {
@@ -71,11 +74,6 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
             return;
         }
     }
-
-#if defined(Q_OS_IOS)
-    setErrorString( tr("Due to platform limitations, serial ports are not supported on iOS."));
-    return;
-#endif
 
     // Close old connection
     disconnectFromTrafficReceiver();
@@ -109,11 +107,14 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
     {
         setConnectivityStatus(tr("Connected."));
     }
-
+#else
+    setErrorString( tr("Serial ports are not supported on this platform."));
+#endif
 }
 
 void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 {
+#if __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
         delete m_textStream;
@@ -132,9 +133,12 @@ void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
         delete m_port;
         m_port = nullptr;
     }
+#endif
+
     setConnectivityStatus(tr("Not connected."));
 }
 
+#if __has_include(<QSerialPortInfo>)
 void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialPortError error)
 {
     switch (error)
@@ -174,36 +178,44 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
         break;
     }
 }
+#endif
 
 void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate rate)
 {
+#if __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setBaudRate(rate);
     }
+#endif
     m_baudRate = rate;
 }
 
 void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits sb)
 {
+#if __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setStopBits((QSerialPort::StopBits)sb);
     }
+#endif
     m_stopBits = sb;
 }
 
 void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowControl fc)
 {
+#if __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setFlowControl((QSerialPort::FlowControl)fc);
     }
+#endif
     m_flowControl = fc;
 }
 
 void Traffic::TrafficDataSource_SerialPort::onReadyRead()
 {
+#if __has_include(<QSerialPortInfo>)
     if (m_textStream == nullptr)
     {
         return;
@@ -215,6 +227,7 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
         emit dataReceived(sentence);
         processFLARMData(sentence);
     }
+#endif
 }
 
 QString Traffic::TrafficDataSource_SerialPort::sourceName() const

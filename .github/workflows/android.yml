@@ -59,6 +59,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: android
+        max-size: "500M"  # Limit cache size (default is 2G)  
     - name: Compile and Install libzip
       run: |
         export QT_HOST_PATH="$(readlink -f "$QT_ROOT_DIR/../gcc_64")"
@@ -77,6 +78,7 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-libzip
         cmake --install build-libzip
+        rm -rf build-libzip
     - name: Compile and Install maplibre-native-qt
       run: |
         export QT_HOST_PATH="$(readlink -f "$QT_ROOT_DIR/../gcc_64")"
@@ -91,6 +93,7 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-maplibre-native-qt
         cmake --install build-maplibre-native-qt
+        rm -rf build-maplibre-native-qt
     - name: Compile Enroute
       run: |
         export QT_HOST_PATH="$(readlink -f "$QT_ROOT_DIR/../gcc_64")"

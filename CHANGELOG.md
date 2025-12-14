@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.10] - 2025-?
+## [3.0.10] - 2025-12-14
 
 ### Added
 - Serial port connections can now be configured on Linux and macOS platforms

@@ -137,8 +137,11 @@ platform :mac do
     FileUtils.rm_rf('../build/enroute.app')
     ## Validate the package for upload to the App Store
     upload_to_testflight(
+      username: "stefan.kebekus@gmail.com",
       app_identifier: "de.akafliegfreiburg.enroute",
-      pkg: "build/enroute.pkg"
+      pkg: "build/enroute.pkg",
+      groups: ["Akaflieg"],
+      notify_external_testers: true
     )
   end
 end

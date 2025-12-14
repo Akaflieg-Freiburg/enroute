@@ -124,7 +124,23 @@ platform :mac do
 
   desc "Upload to TestFlight"
   lane :TestFlight do
+    # Fetch the latest build number from TestFlight
+    latest_build = latest_testflight_build_number(
+      username: "stefan.kebekus@gmail.com",
+      app_identifier: "de.akafliegfreiburg.enroute",
+      platform: "osx"
+    )
+    latest_build = 0 if latest_build.nil?
+    new_build_number = latest_build + 1
+    UI.message("🚀 Upgrading build number from #{latest_build} to #{new_build_number}")
+
+    # Build!
     build
+
+    # INJECT THE NEW BUILD NUMBER: edit the Info.plist inside the .app bundle before signing
+    info_plist_path = "../build/enroute.app/Contents/Info.plist"
+    sh("/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion #{new_build_number}\" #{info_plist_path}")
+
     # Add provisioning profile to the bundle
     sh("cp ../src/macos/enroute_for_Mac_App_Store.provisionprofile ../build/enroute.app/Contents/embedded.provisionprofile")
     # The bundle might contain extended attributes that interfere with upload to the App Store. Remove them first.
@@ -141,7 +157,7 @@ platform :mac do
       app_identifier: "de.akafliegfreiburg.enroute",
       pkg: "build/enroute.pkg",
       groups: ["Akaflieg"],
-      notify_external_testers: true
+      notify_external_testers: false
     )
   end
 end

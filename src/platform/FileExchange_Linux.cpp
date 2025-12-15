@@ -49,12 +49,14 @@ void Platform::FileExchange::importContent()
 }
 
 
-QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& /*fileNameSuffix*/, const QString& fileNameTemplate)
+QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& /*mimeType*/, const QString& /*fileNameSuffix*/, const QString& fileNameTemplate)
 {
     QMimeDatabase const mimeDataBase;
-    QMimeType const mime = mimeDataBase.mimeTypeForName(mimeType);
-
-    auto fileNameX = QFileDialog::getSaveFileName(nullptr, tr("Export Data"), QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(), tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix()));
+    QMimeType const mime = mimeDataBase.mimeTypeForData(content);
+    auto fileNameX = QFileDialog::getSaveFileName(nullptr,
+                                                  tr("Export Data"),
+                                                  QDir::homePath() + u"/"_s + fileNameTemplate + u"."_s + mime.preferredSuffix(),
+                                                  tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix()));
     if (fileNameX.isEmpty())
     {
         return QStringLiteral("abort");
@@ -85,7 +87,7 @@ QString Platform::FileExchange::viewContent(const QByteArray& content, const QSt
     tmpFile.close();
 
     bool const success = QDesktopServices::openUrl(
-        QUrl("file://" + tmpFile.fileName(), QUrl::TolerantMode));
+        QUrl(u"file://"_s + tmpFile.fileName(), QUrl::TolerantMode));
     if (success)
     {
         return {};

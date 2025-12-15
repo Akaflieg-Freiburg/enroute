@@ -199,7 +199,7 @@ Page {
                 text: qsTr("Share Info")
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    var errorString = FileExchange.shareContent(sysInfoLabel.text, "application/text", "EnrouteSystemInformation.txt")
+                    var errorString = FileExchange.shareContent(sysInfoLabel.text, "text/plain;charset=UTF-8", "txt", "EnrouteSystemInformation")
                     if (errorString === "abort") {
                         pg.toast.doToast(qsTr("Aborted"))
                         return

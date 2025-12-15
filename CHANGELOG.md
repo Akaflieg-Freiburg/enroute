@@ -1,9 +1,11 @@
 # Changelog
 
-## [3.0.11] - 2025-12-??
+## [3.0.11] - 2025-12-15
 
 ### Fixed
 - Sharing System Information was inoperational (#595)
+
+- Android SSL libraries not distributed (#594)
 
 
 ## [3.0.10] - 2025-12-14

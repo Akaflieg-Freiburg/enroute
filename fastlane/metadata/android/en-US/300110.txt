@@ -1,0 +1,4 @@
+### Fixed
+- Sharing System Information was inoperational (#595)
+
+- Android SSL libraries not distributed (#594)

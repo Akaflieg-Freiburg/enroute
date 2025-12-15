@@ -37,6 +37,7 @@ set(QT_VERSION ${Qt6Core_VERSION})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
     find_package(Qt6 6.9 COMPONENTS Sensors SerialPort WebView REQUIRED)
+    include(3rdParty/android_openssl/android_openssl.cmake)
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")

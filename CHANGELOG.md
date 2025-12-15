@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.11] - 2025-12-??
+
+### Fixed
+- Sharing System Information was inoperational (#595)
+
+
 ## [3.0.10] - 2025-12-14
 
 ### Added

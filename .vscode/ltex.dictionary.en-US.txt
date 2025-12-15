@@ -6,3 +6,4 @@ DMEs
 Enroute
 ANRs
 airspaces
+inoperational

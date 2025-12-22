@@ -242,6 +242,7 @@ public class ShareActivity extends QtActivity
             if (driver != null) 
             {
                 Log.d("enroute flight navigation", "processIntent USB device attached: " + device.getDeviceName());
+                onOpenUSBRequestReceived(device.getDeviceName());
                 return;
             }
         }

@@ -7,67 +7,71 @@
     android:versionCode="${PROJECT_VERSION_CODE}0"
     android:installLocation="auto">
   <uses-sdk
-      android:minSdkVersion="28"
-      android:targetSdkVersion="35"/>
+    android:minSdkVersion="28"
+    android:targetSdkVersion="35"/>
   
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-  <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+  <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30"/>
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30"/>
   <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
   <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
   <supports-screens
-      android:anyDensity="true"
-      android:largeScreens="true"
-      android:normalScreens="true"
-      android:smallScreens="true"/>
+    android:anyDensity="true"
+    android:largeScreens="true"
+    android:normalScreens="true"
+    android:smallScreens="true"/>
   
   <application
-      android:name="org.qtproject.qt.android.bindings.QtApplication"
-      android:hardwareAccelerated="true"
-      android:label="Enroute Flight Navigation"
-      android:requestLegacyExternalStorage="true"
-      android:allowNativeHeapPointerTagging="false"
-      android:allowBackup="false"
-      android:fullBackupOnly="false"
-      android:icon="@mipmap/ic_launcher"
-      android:localeConfig="@xml/locales_config">
+    android:name="org.qtproject.qt.android.bindings.QtApplication"
+    android:hardwareAccelerated="true"
+    android:label="Enroute Flight Navigation"
+    android:requestLegacyExternalStorage="true"
+    android:allowNativeHeapPointerTagging="false"
+    android:allowBackup="false"
+    android:fullBackupOnly="false"
+    android:icon="@mipmap/ic_launcher"
+    android:localeConfig="@xml/locales_config">
     <activity
-	android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
-	android:exported="true"
-	android:name="de.akaflieg_freiburg.enroute.MobileAdaptor"
-        android:label="Enroute Flight Navigation"
-        android:screenOrientation="unspecified"
-        android:launchMode="singleInstance"
-        android:showWhenLocked="true"
-	android:theme="@style/SplashScreenTheme"
-        android:windowSoftInputMode="adjustResize">
+      android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
+      android:exported="true"
+      android:name="de.akaflieg_freiburg.enroute.MobileAdaptor"
+      android:label="Enroute Flight Navigation"
+      android:screenOrientation="unspecified"
+      android:launchMode="singleInstance"
+      android:showWhenLocked="true"
+      android:theme="@style/SplashScreenTheme"
+      android:windowSoftInputMode="adjustResize">
+
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
-      
+      <intent-filter>
+        <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+      </intent-filter>
+      <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/device_filter" />
+
       <!--
-          Beginning of Intent Filters for Sending and Viewing Files.
-          Apparently is important to include "application/octet-stream"
-          as other apps seem to send gpx files as application/octet-stream
-          see https://en.wikipedia.org/wiki/GPS_Exchange_Format
-	  
-          android.intent.action.VIEW used for receiving files for viewing (or "open with...")
-          android.intent.action.SEND enables enroute as "share with" target
-	  
-          (Zellner, 2020-03-03)
+      Beginning of Intent Filters for Sending and Viewing Files. Apparently is
+      important to include "application/octet-stream" as other apps seem to send
+      gpx files as application/octet-stream see
+      https://en.wikipedia.org/wiki/GPS_Exchange_Format
+
+      android.intent.action.VIEW used for receiving files for viewing (or "open
+      with...") android.intent.action.SEND enables enroute as "share with"
+      target (Zellner, 2020-03-03) 
       -->
-      
+   
       <!-- receive content from other app as "share with" -->
       <intent-filter>
         <action android:name="android.intent.action.SEND"/>
@@ -99,7 +103,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <data android:mimeType="text/xml"/>
       </intent-filter>
-      
+  
       <!-- receive content from other app as "open with" -->
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>
@@ -163,22 +167,25 @@
         <data android:scheme="geo"/>
       </intent-filter>
       <!-- End of Intent Filters for Sending and Viewing Files -->
-      
+
       <!-- Application arguments -->
       <!-- meta-data android:name="android.app.arguments" android:value="arg1 arg2 arg3"/ -->
       <!-- Application arguments -->
-      
       <meta-data android:name="android.app.lib_name" android:value="enroute"/>
-      
+
       <!--  Messages maps -->
       <!-- meta-data android:value="@string/unsupported_android_version" android:name="android.app.unsupported_android_version"/ -->
       <!--  Messages maps -->
-      
+
       <!-- Splash screen -->
-      <!-- Orientation-specific (portrait/landscape) data is checked first. If not available for current orientation,
-           then android.app.splash_screen_drawable. For best results, use together with splash_screen_sticky and
-           use hideSplashScreen() with a fade-out animation from Qt Android Extras to hide the splash screen when you
-           are done populating your window with content. -->
+      <!-- 
+      Orientation-specific (portrait/landscape) data is checked first. If not
+      available for current orientation, then
+      android.app.splash_screen_drawable. For best results, use together with
+      splash_screen_sticky and use hideSplashScreen() with a fade-out animation
+      from Qt Android Extras to hide the splash screen when you are done
+      populating your window with content. 
+      -->
       <!-- meta-data android:name="android.app.splash_screen_drawable_portrait" android:resource="@drawable/logo_portrait" / -->
       <!-- meta-data android:name="android.app.splash_screen_drawable_landscape" android:resource="@drawable/logo_landscape" / -->
       <!-- meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/logo"/ -->
@@ -189,13 +196,13 @@
       <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/splash"/>
       <meta-data android:name="android.app.splash_screen_sticky" android:value="true"/>
       <!-- Splash screen -->
-      
 	
       <!-- Background running -->
-      <!-- Warning: changing this value to true may cause unexpected crashes if the
-           application still try to draw after
-           "applicationStateChanged(Qt::ApplicationSuspended)"
-           signal is sent! -->
+      <!-- 
+      Warning: changing this value to true may cause unexpected crashes if the
+      application still try to draw after
+      "applicationStateChanged(Qt::ApplicationSuspended)" signal is sent! 
+      -->
       <meta-data android:name="android.app.background_running" android:value="false"/>
       <!-- Background running -->
       
@@ -204,29 +211,34 @@
       <!-- auto screen scale factor -->
       
       <!-- extract android style -->
-      <!-- available android:values :
-           * default - In most cases this will be the same as "full", but it can also be something else if needed, e.g., for compatibility reasons
-           * full - useful QWidget & Quick Controls 1 apps
-           * minimal - useful for Quick Controls 2 apps, it is much faster than "full"
-           * none - useful for apps that don't use any of the above Qt modules
+      <!-- 
+      available android:values :
+
+      * default - In most cases this will be the same as "full", but it can also
+        be something else if needed, e.g., for compatibility reasons
+
+      * full - useful QWidget & Quick Controls 1 apps
+
+      * minimal - useful for Quick Controls 2 apps, it is much faster than "full"
+
+      * none - useful for apps that don't use any of the above Qt modules
       -->
       <meta-data android:name="android.app.extract_android_style" android:value="none"/>
       <!-- extract android style -->
     </activity>
-    
+
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
     
     <!-- NOTE: android:authorities must match AUTHORITY in de/akaflieg_freiburg/enroute/IntentLauncher.java -->
     <provider
-        android:name="androidx.core.content.FileProvider"
-        android:authorities="de.akaflieg_freiburg.enroute"
-        android:exported="false"
-        android:grantUriPermissions="true">
+      android:name="androidx.core.content.FileProvider"
+      android:authorities="de.akaflieg_freiburg.enroute"
+      android:exported="false"
+      android:grantUriPermissions="true">
       <meta-data
-          android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/filepaths"/>
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/filepaths"/>
     </provider>
     
-  </application>
-  
+  </application>  
 </manifest>

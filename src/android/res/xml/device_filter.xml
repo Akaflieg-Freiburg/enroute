@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- USB CDC ACM (Abstract Control Model) - most USB-serial adapters -->
+    <usb-device class="2" subclass="2" protocol="1" />
+
+    <!-- USB CDC - broader match for serial devices -->
+    <usb-device class="2" />
+
+    <!-- Vendor-specific devices that don't use CDC class -->
+    <!-- Many GPS/FLARM devices use vendor-specific drivers -->
+    <usb-device class="255" />
+</resources>

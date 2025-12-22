@@ -31,31 +31,10 @@
 Traffic::ConnectionScanner_SerialPort::ConnectionScanner_SerialPort(QObject* parent)
     : ConnectionScanner_Abstract(parent)
 {
-    connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::serialPortsChanged, this, [this](){
-        if (m_running)
-        {
-            start();
-        }
-    });
+    connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::serialPortsChanged, this, &Traffic::ConnectionScanner_SerialPort::start);
 }
 
 void Traffic::ConnectionScanner_SerialPort::start()
 {
-    m_running = true;
-#if __has_include(<QSerialPortInfo>)
-    QVector<Traffic::ConnectionInfo> result1;
-    QVector<Traffic::ConnectionInfo> result2;
-    auto deviceInfos = QSerialPortInfo::availablePorts();
-    foreach (auto deviceInfo, deviceInfos)
-    {
-        if (!deviceInfo.description().isEmpty())
-        {
-            result1 += ConnectionInfo(deviceInfo.description());
-        }
-        result2 += ConnectionInfo(deviceInfo.portName());
-    }
-    std::sort(result1.begin(), result1.end());
-    std::sort(result2.begin(), result2.end());
-    setDevices(result1 + result2);
-#endif
+    setDevices(GlobalObject::platformAdaptor()->serialPortConnectionInfos());
 }

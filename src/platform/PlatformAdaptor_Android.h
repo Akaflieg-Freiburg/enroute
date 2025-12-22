@@ -81,6 +81,9 @@ public:
      */
     void openSatView(const QGeoCoordinate& coordinate) override;
 
+    /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract */
+    QVector<Traffic::ConnectionInfo> serialPortConnectionInfos() override;
+
     /*! \brief Information about the system, in HTML format
      *
      * @returns Info string

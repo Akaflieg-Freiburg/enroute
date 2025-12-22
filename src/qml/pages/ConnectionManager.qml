@@ -257,7 +257,7 @@ Page {
 
                     Action {
                         text: qsTr("Serial Port")
-                        enabled: (Qt.platform.os !== "ios") && (Qt.platform.os !== "android")
+                        enabled: (Qt.platform.os !== "ios")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             addSerialPortDialog.open()

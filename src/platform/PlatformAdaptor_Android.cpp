@@ -27,6 +27,7 @@
 #include <QScreen>
 
 #include "platform/PlatformAdaptor_Android.h"
+#include "traffic/TrafficDataProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -121,8 +122,31 @@ void Platform::PlatformAdaptor::openSatView(const QGeoCoordinate& coordinate)
 
 QVector<Traffic::ConnectionInfo> Platform::PlatformAdaptor::serialPortConnectionInfos()
 {
-    QVector<Traffic::ConnectionInfo> result;
+    QVector<Traffic::ConnectionInfo> resultV;
 
+    QJniObject result = QJniObject::callStaticObjectMethod(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "listSerialDevices",
+        "()[Ljava/lang/String;"
+        );
+
+    if (result.isValid())
+    {
+        QJniEnvironment env;
+        jobjectArray jArray = result.object<jobjectArray>();
+        jsize length = env->GetArrayLength(jArray);
+
+        for (int i = 0; i < length; i++) {
+            jstring jStr = (jstring)env->GetObjectArrayElement(jArray, i);
+            const char* str = env->GetStringUTFChars(jStr, nullptr);
+            resultV += Traffic::ConnectionInfo(QString::fromUtf8(str));
+            env->ReleaseStringUTFChars(jStr, str);
+            env->DeleteLocalRef(jStr);
+        }
+    }
+    return resultV;
+
+    /*
     // Get Android context
     auto *nativeInterface = QCoreApplication::instance()
                                 ->nativeInterface<QNativeInterface::QAndroidApplication>();
@@ -223,6 +247,7 @@ QVector<Traffic::ConnectionInfo> Platform::PlatformAdaptor::serialPortConnection
         }
     }
     return result;
+*/
 }
 
 QString Platform::PlatformAdaptor::systemInfo()
@@ -284,19 +309,32 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUS
 {
     const char* fname = env->GetStringUTFChars(deviceName, nullptr);
     qWarning() << "Received request to open USB Serial Port Device" << QString::fromUtf8(fname);
-    /*
-    // A little complicated because GlobalObject::fileExchange() lives in a different thread
-    QMetaObject::invokeMethod( GlobalObject::fileExchange(),
-                              "processText",
-                              Qt::QueuedConnection,
-                              Q_ARG( QString, QString::fromUtf8(fname)) );
-    */
+
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (GlobalObject::canConstruct())
+    {
+        GlobalObject::trafficDataProvider()->addDataSource( Traffic::ConnectionInfo(QString::fromUtf8(fname)));
+        emit GlobalObject::platformAdaptor()->serialPortsChanged();
+    }
+
     env->ReleaseStringUTFChars(deviceName, fname);
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_UsbConnectionReceiver_onSerialPortConnectionsChanged(JNIEnv* /*unused*/, jobject /*unused*/)
 {
-    qDebug() << "onSerialPortConnectionsChanged";
+    qWarning() << "onSerialPortConnectionsChanged";
+
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (GlobalObject::canConstruct())
+    {
+        emit GlobalObject::platformAdaptor()->serialPortsChanged();
+    }
 }
 
 }

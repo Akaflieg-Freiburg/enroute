@@ -79,6 +79,7 @@ public class ShareActivity extends QtActivity
         Log.d(TAG, "onCreate");
 
         super.onCreate(savedInstanceState);
+        UsbSerialHelper.initialize(this);
 
         // check if the App was started from another Android App via Intent
         Intent theIntent = getIntent();

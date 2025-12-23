@@ -1,4 +1,4 @@
-package org.qtproject.example.appqtjenny_consumer;
+package de.akaflieg_freiburg.enroute;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,31 +13,18 @@ public class UsbConnectionReceiver extends BroadcastReceiver
     {
         String action = intent.getAction();
 
-        if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action))
+        if (!UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action) && !UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action))
         {
-            UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-            if (device != null)
-            {
-                // Call native C++ function
-                notifyUsbDeviceAttached(
-                device.getDeviceName(),
-                device.getVendorId(),
-                device.getProductId(),
-                device.getDeviceClass()
-                );
-            }
+            return;
         }
-        else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action))
+        UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        if (device == null)
         {
-            UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-            if (device != null)
-            {
-                notifyUsbDeviceDetached(device.getDeviceName());
-            }
+            return;
         }
+        onSerialPortConnectionsChanged();
     }
 
     // Native methods implemented in C++
-    private native void notifyUsbDeviceAttached(String deviceName, int vendorId, int productId, int deviceClass);
-    private native void notifyUsbDeviceDetached(String deviceName);
+    private native void onSerialPortConnectionsChanged();
 }

@@ -293,4 +293,10 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUS
     */
     env->ReleaseStringUTFChars(deviceName, fname);
 }
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_UsbConnectionReceiver_onSerialPortConnectionsChanged(JNIEnv* /*unused*/, jobject /*unused*/)
+{
+    qDebug() << "onSerialPortConnectionsChanged";
+}
+
 }

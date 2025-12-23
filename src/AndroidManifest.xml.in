@@ -239,6 +239,13 @@
         android:name="android.support.FILE_PROVIDER_PATHS"
         android:resource="@xml/filepaths"/>
     </provider>
-    
+
+    <!-- Receive USB device connection events -->
+    <receiver android:name=".UsbConnectionReceiver" android:exported="true">
+      <intent-filter>
+        <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+        <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+      </intent-filter>
+    </receiver>
   </application>  
 </manifest>

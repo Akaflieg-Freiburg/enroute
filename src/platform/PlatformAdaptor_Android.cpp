@@ -124,130 +124,36 @@ QVector<Traffic::ConnectionInfo> Platform::PlatformAdaptor::serialPortConnection
 {
     QVector<Traffic::ConnectionInfo> resultV;
 
-    QJniObject result = QJniObject::callStaticObjectMethod(
-        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-        "listSerialDevices",
-        "()[Ljava/lang/String;"
-        );
-
-    if (result.isValid())
-    {
-        QJniEnvironment env;
-        jobjectArray jArray = result.object<jobjectArray>();
-        jsize length = env->GetArrayLength(jArray);
-
-        for (int i = 0; i < length; i++) {
-            jstring jStr = (jstring)env->GetObjectArrayElement(jArray, i);
-            const char* str = env->GetStringUTFChars(jStr, nullptr);
-            resultV += Traffic::ConnectionInfo(QString::fromUtf8(str));
-            env->ReleaseStringUTFChars(jStr, str);
-            env->DeleteLocalRef(jStr);
+    try {
+        auto result = QJniObject::callStaticObjectMethod(
+            "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+            "listSerialDevices",
+            "()[Ljava/lang/String;"
+            );
+        if (!result.isValid())
+        {
+            qWarning() << "Failed to call listSerialDevices()";
+            return {};
         }
+
+        // Convert Java String array to QStringList
+        const QJniEnvironment env;
+        auto length = env->GetArrayLength(result.object<jobjectArray>());
+        for (jsize i = 0; i < length; ++i)
+        {
+            const QJniObject jString = env->GetObjectArrayElement(result.object<jobjectArray>(), i);
+            if (jString.isValid())
+            {
+                resultV += Traffic::ConnectionInfo(jString.toString());
+            }
+        }
+
+    }
+    catch (...)
+    {
+        qWarning() << "Exception occurred while listing USB serial devices";
     }
     return resultV;
-
-    /*
-    // Get Android context
-    auto *nativeInterface = QCoreApplication::instance()
-                                ->nativeInterface<QNativeInterface::QAndroidApplication>();
-
-    if (!nativeInterface) {
-        qWarning() << "Failed to get native interface";
-        return result;
-    }
-
-    QJniObject context = nativeInterface->context();
-    if (!context.isValid()) {
-        qWarning() << "Invalid context";
-        return result;
-    }
-
-    // Get UsbManager system service
-    QJniObject usbServiceString = QJniObject::fromString("usb");
-    QJniObject usbManager = context.callObjectMethod(
-        "getSystemService",
-        "(Ljava/lang/String;)Ljava/lang/Object;",
-        usbServiceString.object()
-        );
-
-    if (!usbManager.isValid()) {
-        qWarning() << "Failed to get UsbManager";
-        return result;
-    }
-
-    // Get default UsbSerialProber
-    QJniObject prober = QJniObject::callStaticObjectMethod(
-        "com/hoho/android/usbserial/driver/UsbSerialProber",
-        "getDefaultProber",
-        "()Lcom/hoho/android/usbserial/driver/UsbSerialProber;"
-        );
-
-    if (!prober.isValid()) {
-        qWarning() << "Failed to get UsbSerialProber";
-        return result;
-    }
-
-    // Get list of available drivers
-    QJniObject driverList = prober.callObjectMethod(
-        "findAllDrivers",
-        "(Landroid/hardware/usb/UsbManager;)Ljava/util/List;",
-        usbManager.object()
-        );
-
-    if (!driverList.isValid()) {
-        qWarning() << "Failed to get driver list";
-        return result;
-    }
-
-    // Get the size of the list
-    int size = driverList.callMethod<jint>("size", "()I");
-    qWarning() << "Found" << size << "USB serial device(s)";
-
-    // Iterate through all drivers
-    for (int i = 0; i < size; i++) {
-        // Get driver at index i
-        QJniObject driver = driverList.callObjectMethod(
-            "get",
-            "(I)Ljava/lang/Object;",
-            i
-            );
-
-        if (!driver.isValid()) {
-            continue;
-        }
-
-
-        // Get UsbDevice
-        QJniObject usbDevice = driver.callObjectMethod(
-            "getDevice",
-            "()Landroid/hardware/usb/UsbDevice;"
-            );
-
-        if (usbDevice.isValid()) {
-            // Get device name
-            QJniObject deviceNameObj = usbDevice.callObjectMethod("getProductName", "()Ljava/lang/String;");
-            QString serialPortNameOrDescription = deviceNameObj.toString();
-            if (serialPortNameOrDescription.isEmpty())
-            {
-                QJniObject deviceNameObj = usbDevice.callObjectMethod("getDeviceName", "()Ljava/lang/String;");
-                serialPortNameOrDescription = deviceNameObj.toString();
-            }
-            if (!serialPortNameOrDescription.isEmpty())
-            {
-                result += Traffic::ConnectionInfo(deviceNameObj.toString());
-            }
-
-            // device.deviceName = deviceNameObj.toString();
-
-            // Get vendor ID
-            // device.vendorId = usbDevice.callMethod<jint>("getVendorId", "()I");
-
-            // Get product ID
-            // device.productId = usbDevice.callMethod<jint>("getProductId", "()I");
-        }
-    }
-    return result;
-*/
 }
 
 QString Platform::PlatformAdaptor::systemInfo()
@@ -316,7 +222,9 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUS
     // and we simply return.
     if (GlobalObject::canConstruct())
     {
-        GlobalObject::trafficDataProvider()->addDataSource( Traffic::ConnectionInfo(QString::fromUtf8(fname)));
+        // A little complicated because GlobalObject::fileExchange() lives in a different thread
+        QMetaObject::invokeMethod(GlobalObject::trafficDataProvider(), "addDataSource", Qt::QueuedConnection,
+                                  Q_ARG( Traffic::ConnectionInfo, Traffic::ConnectionInfo(QString::fromUtf8(fname))) );
         emit GlobalObject::platformAdaptor()->serialPortsChanged();
     }
 

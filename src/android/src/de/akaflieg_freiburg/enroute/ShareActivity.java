@@ -242,8 +242,14 @@ public class ShareActivity extends QtActivity
                 com.hoho.android.usbserial.driver.UsbSerialProber.getDefaultProber().probeDevice(device);
             if (driver != null) 
             {
-                Log.d("enroute flight navigation", "processIntent USB device attached: " + device.getDeviceName());
-                onOpenUSBRequestReceived(device.getDeviceName());
+                // Get product name, fallback to device name
+                String deviceName = device.getProductName();
+                if (deviceName == null || deviceName.trim().isEmpty()) 
+                {
+                    deviceName = device.getDeviceName();
+                }
+                Log.d("enroute flight navigation", "processIntent USB device attached: " + deviceName);
+                onOpenUSBRequestReceived(deviceName);
                 return;
             }
         }

@@ -76,16 +76,8 @@ public class UsbSerialHelper
                     if (deviceName == null || deviceName.trim().isEmpty()) {
                         deviceName = device.getDeviceName();
                     }
-
-                    // Add additional info for disambiguation
-                    String deviceInfo = String.format("%s (VID:0x%04X PID:0x%04X)",
-                            deviceName != null ? deviceName : "Unknown Device",
-                            device.getVendorId(),
-                            device.getProductId());
-
-                    deviceList.add(deviceInfo);
-                    Log.d(TAG, "Found device: " + deviceInfo);
-
+                    deviceList.add(deviceName);
+                    Log.d(TAG, "Found device: " + deviceName);
                 } 
                 catch (Exception e) 
                 {

@@ -156,7 +156,6 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_SerialPort)
 
-    // Copied from the constructor
 #if __has_include(<QSerialPortInfo>)
     QSerialPort* m_port {nullptr};
     QTextStream* m_textStream {nullptr};

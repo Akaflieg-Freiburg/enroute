@@ -48,7 +48,16 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
 
 Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 {
-#if __has_include(<QSerialPortInfo>)
+#if defined(Q_OS_ANDROID)
+#warning
+    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+    bool success = QJniObject::callStaticMethod<jboolean>(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "close",
+        "(Ljava/lang/String;)Z",  // Signature: takes String, returns boolean
+        jDevicePath.object<jstring>());
+    qWarning() << "Port closed" << success;
+#elif __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
         delete m_textStream;
@@ -65,7 +74,62 @@ Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 {
-#if __has_include(<QSerialPortInfo>)
+#if defined(Q_OS_ANDROID)
+#warning
+    try
+    {
+        QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+        bool isOpen = QJniObject::callStaticMethod<jboolean>(
+            "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+            "isOpen",
+            "(Ljava/lang/String;)Z",
+            jDevicePath.object<jstring>()
+            );
+        qWarning() << "isOpen" << isOpen;
+        if (isOpen && errorString().isEmpty())
+        {
+            return;
+        }
+    }
+    catch (...)
+    {
+        return;
+    }
+
+    // Close old connection
+    disconnectFromTrafficReceiver();
+
+    try
+    {
+        QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+        bool success = QJniObject::callStaticMethod<jboolean>(
+            "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+            "openDevice",
+            "(Ljava/lang/String;IIII)Z",
+            jDevicePath.object<jstring>(),
+            9600, 8, 1, 0
+            );
+
+        if (success)
+        {
+            qDebug() << "Opened device:" << m_portNameOrDescription;
+            setConnectivityStatus(tr("Connected."));
+        }
+        else
+        {
+            qWarning() << "Failed to open device:" << m_portNameOrDescription;
+            setErrorString(tr("Failed to open device."));
+        }
+        return;
+
+    }
+    catch (...)
+    {
+        qWarning() << "Exception occurred while opening device:" << m_portNameOrDescription;
+        setErrorString(tr("Exception occurred while opening device."));
+    }
+
+#elif __has_include(<QSerialPortInfo>)
     // Do not do anything if the traffic receiver is connected.
     if (m_port != nullptr)
     {
@@ -114,7 +178,16 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 
 void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 {
-#if __has_include(<QSerialPortInfo>)
+#if defined(Q_OS_ANDROID)
+#warning
+    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+    bool success = QJniObject::callStaticMethod<jboolean>(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "close",
+        "(Ljava/lang/String;)Z",  // Signature: takes String, returns boolean
+        jDevicePath.object<jstring>());
+    qWarning() << "Port closed" << success;
+#elif __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
         delete m_textStream;

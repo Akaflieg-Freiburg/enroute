@@ -283,6 +283,8 @@ if(ANDROID)
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
+        android/src/de/akaflieg_freiburg/enroute/UsbSerialHelper.java
+        android/src/de/akaflieg_freiburg/enroute/UsbConnectionReceiver.java
     )
 
     # Copy manual and other files into the Android directories

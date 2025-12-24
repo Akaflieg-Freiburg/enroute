@@ -145,7 +145,7 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-#if __has_include(<QSerialPortInfo>)
+#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
     // Handle serial port errors
     void onErrorOccurred(QSerialPort::SerialPortError error);
 #endif
@@ -156,7 +156,10 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_SerialPort)
 
-#if __has_include(<QSerialPortInfo>)
+#if defined(Q_OS_ANDROID)
+#warning
+    QTimer pollTimer;
+#elif __has_include(<QSerialPortInfo>)
     QSerialPort* m_port {nullptr};
     QTextStream* m_textStream {nullptr};
 #endif

@@ -320,5 +320,97 @@ public class UsbSerialHelper
         return true;
     }
 
+
+    /**
+     * Reads data from the serial port.
+     *
+     * @param devicePath Device path from listSerialDevices()
+     * 
+     * @param maxBytes Maximum number of bytes to read
+     * 
+     * @param timeoutMs Timeout in milliseconds
+     * 
+     * @return Bytes read, or null on error/timeout
+     */
+    public static byte[] read(String devicePath, int maxBytes, int timeoutMs) 
+    {
+        ConnectionInfo info = connections.get(devicePath);
+        if (info == null) 
+        {
+            Log.e(TAG, "Device not open: " + devicePath);
+            return null;
+        }
+
+        try 
+        {
+            byte[] buffer = new byte[maxBytes];
+            int bytesRead = info.port.read(buffer, timeoutMs);
+            
+            if (bytesRead <= 0) 
+            {
+                return new byte[0]; // Timeout or no data
+            }
+            
+            // Return only the bytes actually read
+            byte[] result = new byte[bytesRead];
+            System.arraycopy(buffer, 0, result, 0, bytesRead);
+            return result;
+            
+        } 
+        catch (IOException e) 
+        {
+            Log.e(TAG, "Read error on " + devicePath + ": " + e.getMessage(), e);
+            return null;
+        } 
+        catch (Exception e) {
+            Log.e(TAG, "Unexpected error reading: " + e.getMessage(), e);
+            return null;
+        }
+    }
+
+    
+    /**
+     * Writes data to the serial port.
+     * 
+     * @param devicePath Device path from listSerialDevices()
+     * 
+     * @param data Data to write
+     * 
+     * @param timeoutMs Timeout in milliseconds
+     * 
+     * @return Number of bytes written, or -1 on error
+     */
+    public static int write(String devicePath, byte[] data, int timeoutMs) 
+    {
+        ConnectionInfo info = connections.get(devicePath);
+        if (info == null) 
+        {
+            Log.e(TAG, "Device not open: " + devicePath);
+            return -1;
+        }
+
+        if (data == null || data.length == 0) 
+        {
+            return 0;
+        }
+
+        try 
+        {
+            info.port.write(data, timeoutMs);
+            return data.length;
+            
+        } 
+        catch (IOException e) 
+        {
+            Log.e(TAG, "Write error on " + devicePath + ": " + e.getMessage(), e);
+            return -1;
+        } 
+        catch (Exception e) 
+        {
+            Log.e(TAG, "Unexpected error writing: " + e.getMessage(), e);
+            return -1;
+        }
+    }
+
 }
 

@@ -93,10 +93,12 @@ CenteringDialog {
             columns: 2
 
             Frame {
+                id: frme
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
 
                 Label {
+                    width: frme.width
                     bottomPadding: 0.2*font.pixelSize
                     topPadding: 0.2*font.pixelSize
                     leftPadding: 0.2*font.pixelSize

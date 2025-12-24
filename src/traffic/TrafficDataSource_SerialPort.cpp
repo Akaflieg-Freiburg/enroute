@@ -43,6 +43,11 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
                                        m_flowControl.value(), false);
     });
 
+#if defined(Q_OS_ANDROID)
+    pollTimer.setInterval(200);
+    pollTimer.setSingleShot(false);
+    connect(&pollTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_SerialPort::onReadyRead);
+#endif
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::serialPortsChanged, this, &Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver);
 }
 
@@ -114,6 +119,7 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
         {
             qDebug() << "Opened device:" << m_portNameOrDescription;
             setConnectivityStatus(tr("Connected."));
+            pollTimer.start();
         }
         else
         {
@@ -180,6 +186,7 @@ void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 {
 #if defined(Q_OS_ANDROID)
 #warning
+    pollTimer.stop();
     QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
     bool success = QJniObject::callStaticMethod<jboolean>(
         "de/akaflieg_freiburg/enroute/UsbSerialHelper",
@@ -211,7 +218,7 @@ void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
     setConnectivityStatus(tr("Not connected."));
 }
 
-#if __has_include(<QSerialPortInfo>)
+#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
 void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialPortError error)
 {
     switch (error)
@@ -255,7 +262,7 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
 
 void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate rate)
 {
-#if __has_include(<QSerialPortInfo>)
+#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setBaudRate(rate);
@@ -266,7 +273,7 @@ void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate
 
 void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits sb)
 {
-#if __has_include(<QSerialPortInfo>)
+#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setStopBits((QSerialPort::StopBits)sb);
@@ -277,7 +284,7 @@ void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits
 
 void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowControl fc)
 {
-#if __has_include(<QSerialPortInfo>)
+#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setFlowControl((QSerialPort::FlowControl)fc);
@@ -288,7 +295,40 @@ void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowC
 
 void Traffic::TrafficDataSource_SerialPort::onReadyRead()
 {
-#if __has_include(<QSerialPortInfo>)
+#if defined(Q_OS_ANDROID)
+    QByteArray result;
+    try
+    {
+        QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+        auto jResult = QJniObject::callStaticObjectMethod(
+            "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+            "read",
+            "(Ljava/lang/String;II)[B",
+            jDevicePath.object<jstring>(),
+            1024, 100 //maxBytes, timeoutMs
+            );
+
+        if (jResult.isValid())
+        {
+            QJniEnvironment env;
+            jbyteArray jArray = jResult.object<jbyteArray>();
+            jsize length = env->GetArrayLength(jArray);
+            if (length > 0)
+            {
+                result.resize(length);
+                env->GetByteArrayRegion(jArray, 0, length, reinterpret_cast<jbyte*>(result.data()));
+#warning Want to split sentence, I guess
+                QString sentence = QString::fromLatin1(result);
+                emit dataReceived(sentence);
+                processFLARMData(sentence);
+            }
+        }
+    }
+    catch (...)
+    {
+        qWarning() << "Exception occurred while reading" ;
+    }
+#elif __has_include(<QSerialPortInfo>)
     if (m_textStream == nullptr)
     {
         return;

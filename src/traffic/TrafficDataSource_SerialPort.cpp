@@ -24,6 +24,11 @@
 #include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataSource_SerialPort.h"
 
+#warning TODO
+#warning Request permissions and respond to request result
+#warning Meaningful error messages
+#warning automatic opening of connections
+#warning set port parameters
 
 Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription,
                                                                     ConnectionInfo::BaudRate baudRate,

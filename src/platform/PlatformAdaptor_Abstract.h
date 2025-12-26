@@ -176,7 +176,10 @@ public:
      */
     Q_INVOKABLE static void saveScreenshot(const QImage& image, const QString& path);
 
-    /*! \brief Connection infos for all available serial port connections */
+    /*! \brief Connection infos for all available serial port connections
+     *
+     *  @returns QVector with connection infos
+     */
     virtual QVector<Traffic::ConnectionInfo> serialPortConnectionInfos();
 
 public slots:

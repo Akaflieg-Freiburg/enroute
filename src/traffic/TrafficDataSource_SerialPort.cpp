@@ -115,16 +115,24 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
         bool success = QJniObject::callStaticMethod<jboolean>(
             "de/akaflieg_freiburg/enroute/UsbSerialHelper",
             "openDevice",
-            "(Ljava/lang/String;IIII)Z",
-            jDevicePath.object<jstring>(),
-            9600, 8, 1, 0
+            "(Ljava/lang/String;)Z",
+            jDevicePath.object<jstring>()
             );
-
+        qWarning() << "OPENDING" << success;
         if (success)
         {
             qDebug() << "Opened device:" << m_portNameOrDescription;
             setConnectivityStatus(tr("Connected."));
             pollTimer.start();
+
+            QJniObject::callStaticMethod<jboolean>(
+                "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+                "setParameters",
+                "(Ljava/lang/String;III)Z",
+                jDevicePath.object<jstring>(),
+                m_baudRate.value(), m_stopBits.value(), m_flowControl.value()
+                );
+
         }
         else
         {
@@ -198,6 +206,7 @@ void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
         "close",
         "(Ljava/lang/String;)Z",  // Signature: takes String, returns boolean
         jDevicePath.object<jstring>());
+
     qWarning() << "Port closed" << success;
 #elif __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
@@ -267,7 +276,16 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
 
 void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate rate)
 {
-#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
+#if defined(Q_OS_ANDROID)
+    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+    QJniObject::callStaticMethod<jboolean>(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "setParameters",
+        "(Ljava/lang/String;III)Z",
+        jDevicePath.object<jstring>(),
+        m_baudRate.value(), m_stopBits.value(), m_flowControl.value()
+        );
+#elif __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setBaudRate(rate);
@@ -278,7 +296,16 @@ void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate
 
 void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits sb)
 {
-#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
+#if defined(Q_OS_ANDROID)
+    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+    QJniObject::callStaticMethod<jboolean>(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "setParameters",
+        "(Ljava/lang/String;III)Z",
+        jDevicePath.object<jstring>(),
+        m_baudRate.value(), m_stopBits.value(), m_flowControl.value()
+        );
+#elif __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setStopBits((QSerialPort::StopBits)sb);
@@ -289,7 +316,16 @@ void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits
 
 void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowControl fc)
 {
-#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
+#if defined(Q_OS_ANDROID)
+    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+    QJniObject::callStaticMethod<jboolean>(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "setParameters",
+        "(Ljava/lang/String;III)Z",
+        jDevicePath.object<jstring>(),
+        m_baudRate.value(), m_stopBits.value(), m_flowControl.value()
+        );
+#elif __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setFlowControl((QSerialPort::FlowControl)fc);
@@ -331,7 +367,7 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
     }
     catch (...)
     {
-        qWarning() << "Exception occurred while reading" ;
+        qWarning() << "Exception occurred while reading";
     }
 #elif __has_include(<QSerialPortInfo>)
     if (m_textStream == nullptr)

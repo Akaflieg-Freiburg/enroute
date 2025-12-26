@@ -214,6 +214,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* env, jobject /*unused*/, jstring deviceName)
 {
     const char* fname = env->GetStringUTFChars(deviceName, nullptr);
+#warning
     qWarning() << "Received request to open USB Serial Port Device" << QString::fromUtf8(fname);
 
     // This method gets called from Java before main() has executed
@@ -233,6 +234,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUS
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_UsbConnectionReceiver_onSerialPortConnectionsChanged(JNIEnv* /*unused*/, jobject /*unused*/)
 {
+#warning
     qWarning() << "onSerialPortConnectionsChanged";
 
     // This method gets called from Java before main() has executed

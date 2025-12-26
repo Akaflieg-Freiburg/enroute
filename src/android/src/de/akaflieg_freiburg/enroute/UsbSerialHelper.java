@@ -134,7 +134,7 @@ public class UsbSerialHelper
      *
      * @return true if opened successfully, false on error
      */
-    public static boolean openDevice(String devicePath, int baudRate, int dataBits, int stopBits, int parity) 
+    public static boolean openDevice(String devicePath) 
     {
         try 
         {
@@ -198,20 +198,22 @@ public class UsbSerialHelper
                 */
                    
                 // Request permission
+                android.content.Intent intent = new android.content.Intent(ACTION_USB_PERMISSION);
+                intent.setPackage(appContext.getPackageName()); // Make intent explicit for Android 14+
                 android.app.PendingIntent permissionIntent;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) 
                 {
                     permissionIntent = android.app.PendingIntent.getBroadcast(
                         appContext, 0, 
-                        new android.content.Intent(ACTION_USB_PERMISSION),
-                        android.app.PendingIntent.FLAG_MUTABLE
+                        intent,
+                        android.app.PendingIntent.FLAG_IMMUTABLE
                     );
-                } 
-                else 
+                }
+                else
                 {
                     permissionIntent = android.app.PendingIntent.getBroadcast(
                         appContext, 0, 
-                        new android.content.Intent(ACTION_USB_PERMISSION),
+                        intent,
                         0
                     );
                 }
@@ -241,7 +243,6 @@ public class UsbSerialHelper
             try 
             {
                 port.open(connection);
-                port.setParameters(baudRate, dataBits, stopBits, parity);
                 
                 // Store connection
                 connections.put(devicePath, new ConnectionInfo(port, connection));
@@ -276,6 +277,51 @@ public class UsbSerialHelper
     {
         ConnectionInfo info = connections.get(devicePath);
         return info != null && info.port != null;
+    }
+
+
+    /**
+     * Sets parameters for an open USB serial connection by device path.
+     *
+     * @param devicePath Device path from listSerialDevices() (e.g.,
+     * "/dev/bus/usb/001/002")
+     *
+     * @param baudRate Baud rate (e.g., 9600, 115200)
+     *
+     * @param dataBits Data bits (5, 6, 7, or 8)
+     *
+     * @param stopBits Stop bits (1 or 2)
+     *
+     * @param parity Parity: 0=NONE, 1=ODD, 2=EVEN, 3=MARK, 4=SPACE
+     *
+     * @return true if parameters were set successfully, false on error
+     */
+    public static boolean setParameters(String devicePath, int baudRate, int stopBits, int flowControl) 
+    {
+        ConnectionInfo info = connections.get(devicePath);
+        if (info == null) 
+        {
+            Log.e(TAG, "Device not open: " + devicePath);
+            return false;
+        }
+
+        try
+        {
+            info.port.setParameters(baudRate, 8, stopBits, UsbSerialPort.PARITY_NONE);
+            if (flowControl == 0)
+                info.port.setFlowControl(UsbSerialPort.FlowControl.NONE);
+            else if (flowControl == 1)
+                info.port.setFlowControl(UsbSerialPort.FlowControl.RTS_CTS);
+            else if (flowControl == 2)
+                info.port.setFlowControl(UsbSerialPort.FlowControl.XON_XOFF);
+            Log.i(TAG, "Set parameters on device: " + devicePath);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, "Error setting parameters on device: " + e.getMessage(), e);
+            return false;
+        }
+        return true;
     }
     
 
@@ -368,7 +414,7 @@ public class UsbSerialHelper
         }
     }
 
-    
+
     /**
      * Writes data to the serial port.
      * 

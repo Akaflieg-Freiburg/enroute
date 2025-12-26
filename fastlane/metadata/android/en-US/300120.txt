@@ -1,0 +1,2 @@
+### Fixed
+- Scroll gesture scrolls airspace side view instead of dialog content.

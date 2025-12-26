@@ -992,6 +992,9 @@ Item {
                 DragHandler {
                     target: null
 
+                    // Work around https://bugreports.qt.io/browse/QTBUG-87815
+                    enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
+
                     onActiveTranslationChanged: (delta) => cl.SplitView.preferredHeight -= delta.y
                     //onActiveChanged: if (active) cl.SplitView.preferredHeight = navBar.implicitHeight
                 }

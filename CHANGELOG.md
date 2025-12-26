@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.12] - 2025-12-26
+
+### Fixed
+- Scroll gesture scrolls airspace side view instead of dialog content.
+
+
 ## [3.0.11] - 2025-12-15
 
 ### Fixed

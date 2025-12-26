@@ -16,6 +16,8 @@
     "--socket=fallback-x11",
     "--socket=pulseaudio",
     "--socket=wayland",
+    "--system-talk-name=org.bluez",
+    "--system-talk-name=org.bluez.obex",
     "--system-talk-name=org.freedesktop.GeoClue2",
     "--system-talk-name=org.freedesktop.NetworkManager",
     "--talk-name=org.freedesktop.Notifications"

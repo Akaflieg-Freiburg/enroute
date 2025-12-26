@@ -150,38 +150,42 @@ public class UsbSerialHelper
      *
      * @return true if opened successfully, false on error
      */
-    public static boolean openDevice(String devicePath) 
+    public static String openDevice(String devicePath) 
     {
         try 
         {
             if (appContext == null) 
             {
-                Log.e(TAG, "Context not initialized");
-                return false;
+                String err = "Context not initialized";
+                Log.e(TAG, err);
+                return err;
             }
 
             if (devicePath == null || devicePath.isEmpty()) 
             {
-                Log.e(TAG, "Invalid device path");
-                return false;
+                String err = "Invalid device path provided";
+                Log.e(TAG, err);
+                return err;
             }
 
             // Check if already open
             if (connections.containsKey(devicePath)) 
             {
-                Log.w(TAG, "Device already open: " + devicePath);
-                return false;
+                String err = "Device already open: " + devicePath;
+                Log.w(TAG, err);
+                return err;
             }
 
             UsbManager usbManager = (UsbManager) appContext.getSystemService(Context.USB_SERVICE);
             if (usbManager == null) 
             {
-                Log.e(TAG, "Failed to get UsbManager");
-                return false;
+                String err = "Failed to get UsbManager (System USB service unavailable)";
+                Log.e(TAG, err);
+                return err;
             }
 
             List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(usbManager);
-            
+        
             // Find the driver matching the device path
             UsbSerialDriver driver = null;
             UsbDevice device = null;
@@ -195,92 +199,86 @@ public class UsbSerialHelper
                     break;
                 }
             }
-
             if (driver == null || device == null) 
             {
-                Log.e(TAG, "Device not found: " + devicePath);
-                return false;
+                String err = "Device not found";
+                Log.e(TAG, err);
+                return err;
             }
 
             // Check and request permission if needed
             if (!usbManager.hasPermission(device)) 
             {
-                Log.i(TAG, "Requesting USB permission for: " + devicePath);
-                    
-                // Store pending request
-                /*
-                pendingPermissions.put(devicePath, 
-                    new PendingPermissionRequest(devicePath, baudRate, dataBits, stopBits, parity));
-                */
-                   
-                // Request permission
+                Log.i(TAG, "Lacking USB permission");
+            
                 android.content.Intent intent = new android.content.Intent(ACTION_USB_PERMISSION);
-                intent.setPackage(appContext.getPackageName()); // Make intent explicit for Android 14+
+                intent.setPackage(appContext.getPackageName());
                 android.app.PendingIntent permissionIntent;
+            
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) 
                 {
                     permissionIntent = android.app.PendingIntent.getBroadcast(
-                        appContext, 0, 
-                        intent,
-                        android.app.PendingIntent.FLAG_IMMUTABLE
-                    );
+                        appContext, 0, intent, android.app.PendingIntent.FLAG_IMMUTABLE);
                 }
                 else
                 {
                     permissionIntent = android.app.PendingIntent.getBroadcast(
-                        appContext, 0, 
-                        intent,
-                        0
-                    );
+                        appContext, 0, intent, 0);
                 }
+            
                 usbManager.requestPermission(device, permissionIntent);
-                return false;
+            
+                // We return a specific status because the actual "open" 
+                // will happen in the BroadcastReceiver after user grants permission.
+                return "No permission to access device";
             }
 
             // Open connection
             UsbDeviceConnection connection = usbManager.openDevice(device);
             if (connection == null) 
             {
-                Log.e(TAG, "Failed to open USB device connection: " + devicePath);
-                return false;
+                String err = "Failed to open USB device connection (Internal Android Error)";
+                Log.e(TAG, err);
+                return err;
             }
 
-            // Get the first port (most devices have only one)
+            // Get the first port
             List<UsbSerialPort> ports = driver.getPorts();
             if (ports.isEmpty()) 
             {
                 connection.close();
-                Log.e(TAG, "No ports available on device: " + devicePath);
-                return false;
+                String err = "No ports available on device";
+                Log.e(TAG, err);
+                return err;
             }
 
             UsbSerialPort port = ports.get(0);
-            
+        
             try 
             {
                 port.open(connection);
-                
+            
                 // Store connection
                 connections.put(devicePath, new ConnectionInfo(port, connection));
-                
-                Log.i(TAG, "Opened device: " + devicePath);                
+            
+                Log.i(TAG, "Successfully opened device: " + devicePath);
+                return ""; // Success: return empty string
             } 
             catch (IOException e) 
             {
-                connection.close();
-                Log.e(TAG, "Failed to configure port: " + e.getMessage(), e);
-                return false;
+                if (connection != null) connection.close();
+                String err = e.getMessage();
+                Log.e(TAG, err, e);
+                return err;
             }
-
         } 
         catch (Exception e) 
         {
-            Log.e(TAG, "Error opening device: " + e.getMessage(), e);
-            return false;
+            String err = e.toString();
+            Log.e(TAG, err, e);
+            return err;
         }
-        return true;
     }
-
 
     /**
      * Checks if a connection is open.
@@ -312,34 +310,56 @@ public class UsbSerialHelper
      *
      * @return true if parameters were set successfully, false on error
      */
-    public static boolean setParameters(String devicePath, int baudRate, int stopBits, int flowControl) 
+    public static String setParameters(String devicePath, int baudRate, int stopBits, int flowControl) 
     {
         ConnectionInfo info = connections.get(devicePath);
         if (info == null) 
         {
-            Log.e(TAG, "Device not open: " + devicePath);
-            return false;
+            String err = "Device not open";
+            Log.e(TAG, err);
+            return err;
         }
 
+        if (info.port == null) 
+        {
+            String err = "Port object is null";
+            Log.e(TAG, err);
+            return err;
+        }
         try
         {
+            // Set basic parameters: Baud rate, Data bits (8), Stop bits, Parity (None)
             info.port.setParameters(baudRate, 8, stopBits, UsbSerialPort.PARITY_NONE);
-            if (flowControl == 0)
+
+            // Configure Flow Control
+            if (flowControl == 0) 
+                {
                 info.port.setFlowControl(UsbSerialPort.FlowControl.NONE);
-            else if (flowControl == 1)
+            } 
+            else if (flowControl == 1) 
+            {
                 info.port.setFlowControl(UsbSerialPort.FlowControl.RTS_CTS);
-            else if (flowControl == 2)
+            } 
+            else if (flowControl == 2) {
                 info.port.setFlowControl(UsbSerialPort.FlowControl.XON_XOFF);
-            Log.i(TAG, "Set parameters on device: " + devicePath);
+            } 
+            else 
+            {
+                // Optional: Handle unexpected flow control values
+                Log.w(TAG, "Unknown flow control value: " + flowControl + ". Defaulting to NONE.");
+                info.port.setFlowControl(UsbSerialPort.FlowControl.NONE);
+            }
+
+            Log.i(TAG, "Successfully set parameters on device: " + devicePath);
+            return ""; // Success: return empty string
         }
         catch (Exception e)
         {
-            Log.e(TAG, "Error setting parameters on device: " + e.getMessage(), e);
-            return false;
+            String err = e.toString();
+            Log.e(TAG, err, e);
+            return err;
         }
-        return true;
     }
-    
 
     /**
      * Closes a serial port connection.
@@ -353,7 +373,7 @@ public class UsbSerialHelper
         ConnectionInfo info = connections.remove(devicePath);
         if (info == null) 
         {
-            Log.e(TAG, "Device not open: " + devicePath);
+            Log.e(TAG, "Device not open");
             return false;
         }
 
@@ -399,7 +419,7 @@ public class UsbSerialHelper
         ConnectionInfo info = connections.get(devicePath);
         if (info == null) 
         {
-            Log.e(TAG, "Device not open: " + devicePath);
+            Log.e(TAG, "Device not open");
             return null;
         }
 
@@ -424,7 +444,8 @@ public class UsbSerialHelper
             Log.e(TAG, "Read error on " + devicePath + ": " + e.getMessage(), e);
             return null;
         } 
-        catch (Exception e) {
+        catch (Exception e) 
+        {
             Log.e(TAG, "Unexpected error reading: " + e.getMessage(), e);
             return null;
         }
@@ -478,7 +499,8 @@ public class UsbSerialHelper
     /** 
      * Broadcast receiver to handle USB permission results.
      */
-    private static final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
+    private static final BroadcastReceiver usbReceiver = new BroadcastReceiver() 
+    {
         @Override
         public void onReceive(Context context, Intent intent) 
         {

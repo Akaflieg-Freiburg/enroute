@@ -213,9 +213,6 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* env, jobject /*unused*/, jstring deviceName)
 {
-    const char* fname = env->GetStringUTFChars(deviceName, nullptr);
-#warning
-    qWarning() << "Received request to open USB Serial Port Device" << QString::fromUtf8(fname);
 
     // This method gets called from Java before main() has executed
     // and thus before a QApplication instance has been constructed.
@@ -224,19 +221,18 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUS
     if (GlobalObject::canConstruct())
     {
         // A little complicated because GlobalObject::fileExchange() lives in a different thread
+        const char* fname = env->GetStringUTFChars(deviceName, nullptr);
         QMetaObject::invokeMethod(GlobalObject::trafficDataProvider(), "addDataSource", Qt::QueuedConnection,
                                   Q_ARG( Traffic::ConnectionInfo, Traffic::ConnectionInfo(QString::fromUtf8(fname))) );
+        env->ReleaseStringUTFChars(deviceName, fname);
+
         emit GlobalObject::platformAdaptor()->serialPortsChanged();
     }
 
-    env->ReleaseStringUTFChars(deviceName, fname);
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_UsbConnectionReceiver_onSerialPortConnectionsChanged(JNIEnv* /*unused*/, jobject /*unused*/)
 {
-#warning
-    qWarning() << "onSerialPortConnectionsChanged";
-
     // This method gets called from Java before main() has executed
     // and thus before a QApplication instance has been constructed.
     // In these cases, the methods of the Global class must not be called
@@ -248,15 +244,16 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_UsbConnectionReceiver_
 }
 
 JNIEXPORT void JNICALL
-Java_de_akaflieg_1freiburg_enroute_UsbSerialHelper_onPermissionResult(JNIEnv *env, jclass clazz, jstring devicePath, jboolean granted)
+Java_de_akaflieg_1freiburg_enroute_UsbSerialHelper_onPermissionResult(JNIEnv* /*unused*/, jclass /*unused*/, jstring /*unused*/, jboolean /*unused*/)
 {
-#warning
-    QString path = QJniObject(devicePath).toString();
-    bool isGranted = (bool)granted;
-
-    qDebug() << "USB Permission for" << path << (isGranted ? "GRANTED" : "DENIED");
-
-    // Handle the result (e.g., emit a signal or call openDevice again)
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (GlobalObject::canConstruct())
+    {
+        emit GlobalObject::platformAdaptor()->serialPortsChanged();
+    }
 }
 
 }

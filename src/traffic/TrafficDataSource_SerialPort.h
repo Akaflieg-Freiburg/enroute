@@ -159,6 +159,7 @@ private:
 #if defined(Q_OS_ANDROID)
 #warning
     QTimer pollTimer;
+    void setParameters();
 #elif __has_include(<QSerialPortInfo>)
     QSerialPort* m_port {nullptr};
     QTextStream* m_textStream {nullptr};

@@ -23,6 +23,8 @@
 #if defined(Q_OS_ANDROID)
 #include <QtCore/QJniObject>
 #include <QtCore/qjnitypes.h>
+Q_DECLARE_JNI_CLASS(UsbSerialHelper, "de/akaflieg_freiburg/enroute/UsbSerialHelper");
+using namespace QtJniTypes;
 #endif
 
 #include "GlobalObject.h"
@@ -30,11 +32,8 @@
 #include "traffic/TrafficDataSource_SerialPort.h"
 
 
-Q_DECLARE_JNI_CLASS(UsbSerialHelper, "de/akaflieg_freiburg/enroute/UsbSerialHelper");
-
 #warning TODO
 #warning Request permissions and respond to request result
-#warning Meaningful error messages
 #warning automatic opening of connections
 #warning set port parameters
 
@@ -67,14 +66,8 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
 Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 {
 #if defined(Q_OS_ANDROID)
-#warning
-    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
-    bool success = QJniObject::callStaticMethod<jboolean>(
-        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-        "close",
-        "(Ljava/lang/String;)Z",  // Signature: takes String, returns boolean
-        jDevicePath.object<jstring>());
-    qWarning() << "Port closed" << success;
+    pollTimer.stop();
+    UsbSerialHelper::callStaticMethod<jboolean>("close", m_portNameOrDescription);
 #elif __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
@@ -95,8 +88,7 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 #if defined(Q_OS_ANDROID)
     // Check if the connection is already open. If so, do not do anything
     // and return immediately
-    const bool isOpen = (bool)QJniObject::callStaticMethod<QtJniTypes::UsbSerialHelper, jboolean>("isOpen", m_portNameOrDescription);
-    qWarning() << "isOpen" << isOpen;
+    const bool isOpen = (bool)UsbSerialHelper::callStaticMethod<jboolean>("isOpen", m_portNameOrDescription);
     if (isOpen && errorString().isEmpty())
     {
         return;
@@ -106,40 +98,26 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
     disconnectFromTrafficReceiver();
     setErrorString();
 
-#warning
-    try
+    // Open new connection
+    auto errorString = UsbSerialHelper::callStaticMethod<jstring>("openDevice", m_portNameOrDescription).toString();
+    if (!errorString.isEmpty())
     {
-        const bool success = (bool)QJniObject::callStaticMethod<QtJniTypes::UsbSerialHelper, jboolean>("openDevice", m_portNameOrDescription);
-        qWarning() << "OPENING" << success;
-        if (success)
-        {
-            qDebug() << "Opened device:" << m_portNameOrDescription;
-            setConnectivityStatus(tr("Connected."));
-            pollTimer.start();
-
-            QJniObject::callStaticMethod<jboolean>(
-                "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-                "setParameters",
-                "(Ljava/lang/String;III)Z",
-                m_portNameOrDescription, //jDevicePath.object<jstring>(),
-                m_baudRate.value(), m_stopBits.value(), m_flowControl.value()
-                );
-
-        }
-        else
-        {
-            qWarning() << "Failed to open device:" << m_portNameOrDescription;
-            setErrorString(tr("Failed to open device."));
-        }
+        setErrorString(errorString);
         return;
-
     }
-    catch (...)
+
+    // Set parameters
+    errorString = UsbSerialHelper::callStaticMethod<jstring>("setParameters", m_portNameOrDescription,
+                                                             (int)m_baudRate.value(), (int)m_stopBits.value(), (int)m_flowControl.value()).toString();
+    if (!errorString.isEmpty())
     {
-        qWarning() << "Exception occurred while opening device:" << m_portNameOrDescription;
-        setErrorString(tr("Exception occurred while opening device."));
+        setErrorString(errorString);
+        return;
     }
 
+    // Start polling
+    setConnectivityStatus(tr("Connected."));
+    pollTimer.start();
 #elif __has_include(<QSerialPortInfo>)
     // Do not do anything if the traffic receiver is connected.
     if (m_port != nullptr)
@@ -190,16 +168,8 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 {
 #if defined(Q_OS_ANDROID)
-#warning
     pollTimer.stop();
-    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
-    bool success = QJniObject::callStaticMethod<jboolean>(
-        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-        "close",
-        "(Ljava/lang/String;)Z",  // Signature: takes String, returns boolean
-        jDevicePath.object<jstring>());
-
-    qWarning() << "Port closed" << success;
+    UsbSerialHelper::callStaticMethod<jboolean>("close", m_portNameOrDescription);
 #elif __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
@@ -220,7 +190,6 @@ void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
         m_port = nullptr;
     }
 #endif
-
     setConnectivityStatus(tr("Not connected."));
 }
 
@@ -266,100 +235,95 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
 }
 #endif
 
+#if defined(Q_OS_ANDROID)
+void Traffic::TrafficDataSource_SerialPort::setParameters()
+{
+    auto errorString = UsbSerialHelper::callStaticMethod<jstring>("setParameters", m_portNameOrDescription,
+                                                                  (int)m_baudRate.value(), (int)m_stopBits.value(), (int)m_flowControl.value()).toString();
+    if (!errorString.isEmpty())
+    {
+        setErrorString(errorString);
+        disconnectFromTrafficReceiver();
+    }
+}
+#endif
+
 void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate rate)
 {
+    m_baudRate = rate;
 #if defined(Q_OS_ANDROID)
-    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
-    QJniObject::callStaticMethod<jboolean>(
-        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-        "setParameters",
-        "(Ljava/lang/String;III)Z",
-        jDevicePath.object<jstring>(),
-        m_baudRate.value(), m_stopBits.value(), m_flowControl.value()
-        );
+    setParameters();
 #elif __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setBaudRate(rate);
     }
 #endif
-    m_baudRate = rate;
 }
 
 void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits sb)
 {
+    m_stopBits = sb;
 #if defined(Q_OS_ANDROID)
-    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
-    QJniObject::callStaticMethod<jboolean>(
-        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-        "setParameters",
-        "(Ljava/lang/String;III)Z",
-        jDevicePath.object<jstring>(),
-        m_baudRate.value(), m_stopBits.value(), m_flowControl.value()
-        );
+    setParameters();
 #elif __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setStopBits((QSerialPort::StopBits)sb);
     }
 #endif
-    m_stopBits = sb;
 }
 
 void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowControl fc)
 {
+    m_flowControl = fc;
 #if defined(Q_OS_ANDROID)
-    QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
-    QJniObject::callStaticMethod<jboolean>(
-        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-        "setParameters",
-        "(Ljava/lang/String;III)Z",
-        jDevicePath.object<jstring>(),
-        m_baudRate.value(), m_stopBits.value(), m_flowControl.value()
-        );
+    setParameters();
 #elif __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setFlowControl((QSerialPort::FlowControl)fc);
     }
 #endif
-    m_flowControl = fc;
 }
 
 void Traffic::TrafficDataSource_SerialPort::onReadyRead()
 {
 #if defined(Q_OS_ANDROID)
-    QByteArray result;
-    try
-    {
-        QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
-        auto jResult = QJniObject::callStaticObjectMethod(
-            "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-            "read",
-            "(Ljava/lang/String;II)[B",
-            jDevicePath.object<jstring>(),
-            1024, 100 //maxBytes, timeoutMs
-            );
+    const QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+    auto jResult = QJniObject::callStaticObjectMethod(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "read",
+        "(Ljava/lang/String;II)[B",
+        jDevicePath.object<jstring>(),
+        1024, 1 //maxBytes, timeoutMs
+        );
 
-        if (jResult.isValid())
+    if (!jResult.isValid())
+    {
+        setErrorString(u"Exception while reading"_s);
+        disconnectFromTrafficReceiver();
+        return;
+    }
+
+    const QJniEnvironment env;
+    auto* jArray = jResult.object<jbyteArray>();
+    const jsize length = env->GetArrayLength(jArray);
+    if (length > 0)
+    {
+        QByteArray result;
+        result.resize(length);
+        env->GetByteArrayRegion(jArray, 0, length, reinterpret_cast<jbyte*>(result.data()));
+        const QString sentence = QString::fromLatin1(result);
+        for(auto& st : sentence.split('\n'))
         {
-            QJniEnvironment env;
-            jbyteArray jArray = jResult.object<jbyteArray>();
-            jsize length = env->GetArrayLength(jArray);
-            if (length > 0)
+            st = st.trimmed();
+            if (!st.isEmpty())
             {
-                result.resize(length);
-                env->GetByteArrayRegion(jArray, 0, length, reinterpret_cast<jbyte*>(result.data()));
-#warning Want to split sentence, I guess
-                QString sentence = QString::fromLatin1(result);
-                emit dataReceived(sentence);
-                processFLARMData(sentence);
+                emit dataReceived(st.trimmed());
             }
         }
-    }
-    catch (...)
-    {
-        qWarning() << "Exception occurred while reading";
+        processFLARMData(sentence);
     }
 #elif __has_include(<QSerialPortInfo>)
     if (m_textStream == nullptr)

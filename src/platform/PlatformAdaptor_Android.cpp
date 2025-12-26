@@ -247,4 +247,16 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_UsbConnectionReceiver_
     }
 }
 
+JNIEXPORT void JNICALL
+Java_de_akaflieg_1freiburg_enroute_UsbSerialHelper_onPermissionResult(JNIEnv *env, jclass clazz, jstring devicePath, jboolean granted)
+{
+#warning
+    QString path = QJniObject(devicePath).toString();
+    bool isGranted = (bool)granted;
+
+    qDebug() << "USB Permission for" << path << (isGranted ? "GRANTED" : "DENIED");
+
+    // Handle the result (e.g., emit a signal or call openDevice again)
+}
+
 }

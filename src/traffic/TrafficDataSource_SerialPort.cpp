@@ -20,9 +20,17 @@
 
 #include <QCoreApplication>
 
+#if defined(Q_OS_ANDROID)
+#include <QtCore/QJniObject>
+#include <QtCore/qjnitypes.h>
+#endif
+
 #include "GlobalObject.h"
 #include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataSource_SerialPort.h"
+
+
+Q_DECLARE_JNI_CLASS(UsbSerialHelper, "de/akaflieg_freiburg/enroute/UsbSerialHelper");
 
 #warning TODO
 #warning Request permissions and respond to request result
@@ -49,7 +57,7 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
     });
 
 #if defined(Q_OS_ANDROID)
-    pollTimer.setInterval(200);
+    pollTimer.setInterval(200ms);
     pollTimer.setSingleShot(false);
     connect(&pollTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_SerialPort::onReadyRead);
 #endif
@@ -85,40 +93,24 @@ Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 {
 #if defined(Q_OS_ANDROID)
-#warning
-    try
-    {
-        QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
-        bool isOpen = QJniObject::callStaticMethod<jboolean>(
-            "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-            "isOpen",
-            "(Ljava/lang/String;)Z",
-            jDevicePath.object<jstring>()
-            );
-        qWarning() << "isOpen" << isOpen;
-        if (isOpen && errorString().isEmpty())
-        {
-            return;
-        }
-    }
-    catch (...)
+    // Check if the connection is already open. If so, do not do anything
+    // and return immediately
+    const bool isOpen = (bool)QJniObject::callStaticMethod<QtJniTypes::UsbSerialHelper, jboolean>("isOpen", m_portNameOrDescription);
+    qWarning() << "isOpen" << isOpen;
+    if (isOpen && errorString().isEmpty())
     {
         return;
     }
 
     // Close old connection
     disconnectFromTrafficReceiver();
+    setErrorString();
 
+#warning
     try
     {
-        QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
-        bool success = QJniObject::callStaticMethod<jboolean>(
-            "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-            "openDevice",
-            "(Ljava/lang/String;)Z",
-            jDevicePath.object<jstring>()
-            );
-        qWarning() << "OPENDING" << success;
+        const bool success = (bool)QJniObject::callStaticMethod<QtJniTypes::UsbSerialHelper, jboolean>("openDevice", m_portNameOrDescription);
+        qWarning() << "OPENING" << success;
         if (success)
         {
             qDebug() << "Opened device:" << m_portNameOrDescription;
@@ -129,7 +121,7 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
                 "de/akaflieg_freiburg/enroute/UsbSerialHelper",
                 "setParameters",
                 "(Ljava/lang/String;III)Z",
-                jDevicePath.object<jstring>(),
+                m_portNameOrDescription, //jDevicePath.object<jstring>(),
                 m_baudRate.value(), m_stopBits.value(), m_flowControl.value()
                 );
 

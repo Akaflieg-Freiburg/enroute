@@ -81,7 +81,6 @@ void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 
 void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 {
-
     // Reset password lifecycle
     resetPasswordLifecycle();
 
@@ -90,7 +89,6 @@ void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 
     // Update properties
     onStateChanged(m_socket.state());
-
 }
 
 void Traffic::TrafficDataSource_Tcp::onReadyRead()

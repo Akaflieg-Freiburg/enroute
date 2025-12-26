@@ -1,6 +1,9 @@
 package de.akaflieg_freiburg.enroute;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
@@ -35,6 +38,8 @@ public class UsbSerialHelper
     private static Context appContext;
     private static final Map<String, ConnectionInfo> connections = new HashMap<>();
 
+    // Notify native C++ code about permission result
+    private static native void onPermissionResult(String devicePath, boolean granted);
 
     /**
      * Initialize the helper with application context. Call this from your main
@@ -43,6 +48,17 @@ public class UsbSerialHelper
     public static void initialize(Context context) 
     {
         appContext = context.getApplicationContext();
+
+        // Register the broadcast receiver that handles USB permission results
+        IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) 
+        {
+            appContext.registerReceiver(usbReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        }
+        else 
+        {
+            appContext.registerReceiver(usbReceiver, filter);
+        }
     }
 
     /**
@@ -458,5 +474,26 @@ public class UsbSerialHelper
         }
     }
 
+
+    /** 
+     * Broadcast receiver to handle USB permission results.
+     */
+    private static final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) 
+        {
+            if (ACTION_USB_PERMISSION.equals(intent.getAction())) 
+            {
+                UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+                boolean granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false);
+            
+                if (device != null) 
+                {
+                    // Call the C++ callback
+                    onPermissionResult(device.getDeviceName(), granted);
+                }
+            }
+        }
+    };
 }
 

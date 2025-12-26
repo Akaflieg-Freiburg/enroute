@@ -32,11 +32,6 @@ using namespace QtJniTypes;
 #include "traffic/TrafficDataSource_SerialPort.h"
 
 
-#warning TODO
-#warning Request permissions and respond to request result
-#warning automatic opening of connections
-#warning set port parameters
-
 Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription,
                                                                     ConnectionInfo::BaudRate baudRate,
                                                                     ConnectionInfo::StopBits stopBits,

@@ -37,7 +37,7 @@ public:
      *
      *  @returns The aircraft registration, or an empty string if not found.
      */
-    Q_INVOKABLE QString getRegistration(const QString& address) const;
+    [[nodiscard]] static Q_INVOKABLE QString getRegistration(const QString& address);
 
 private:
     /*! \brief Decode fallback registration based on ICAO address ranges
@@ -46,7 +46,7 @@ private:
      *
      *  @returns The fallback registration, or an empty string if no match is found.
      */
-    QString registration_from_hexid(const QString& address) const;
+    [[nodiscard]] QString registration_from_hexid(const QString& address) const;
 };
 
 } // namespace Traffic

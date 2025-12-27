@@ -122,38 +122,27 @@ void Platform::PlatformAdaptor::openSatView(const QGeoCoordinate& coordinate)
 
 QVector<Traffic::ConnectionInfo> Platform::PlatformAdaptor::serialPortConnectionInfos()
 {
-    QVector<Traffic::ConnectionInfo> resultV;
+    QVector<Traffic::ConnectionInfo> result;
 
-    try {
-        auto result = QJniObject::callStaticObjectMethod(
-            "de/akaflieg_freiburg/enroute/UsbSerialHelper",
-            "listSerialDevices",
-            "()[Ljava/lang/String;"
-            );
-        if (!result.isValid())
-        {
-            qWarning() << "Failed to call listSerialDevices()";
-            return {};
-        }
-
-        // Convert Java String array to QStringList
+    auto deviceListJNI = QJniObject::callStaticObjectMethod(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "listSerialDevices",
+        "()[Ljava/lang/String;"
+        );
+    if (deviceListJNI.isValid())
+    {
         const QJniEnvironment env;
-        auto length = env->GetArrayLength(result.object<jobjectArray>());
+        auto length = env->GetArrayLength(deviceListJNI.object<jobjectArray>());
         for (jsize i = 0; i < length; ++i)
         {
-            const QJniObject jString = env->GetObjectArrayElement(result.object<jobjectArray>(), i);
+            const QJniObject jString = env->GetObjectArrayElement(deviceListJNI.object<jobjectArray>(), i);
             if (jString.isValid())
             {
-                resultV += Traffic::ConnectionInfo(jString.toString());
+                result += Traffic::ConnectionInfo(jString.toString());
             }
         }
-
     }
-    catch (...)
-    {
-        qWarning() << "Exception occurred while listing USB serial devices";
-    }
-    return resultV;
+    return result + PlatformAdaptor_Abstract::serialPortConnectionInfos();
 }
 
 QString Platform::PlatformAdaptor::systemInfo()

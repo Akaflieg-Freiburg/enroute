@@ -137,6 +137,11 @@ auto main(int argc, char *argv[]) -> int
         QCoreApplication::translate("main",
                                     "Run simulator and generate screenshots for GooglePlay"));
     parser.addOption(googlePlayScreenshotOption);
+    QCommandLineOption const macosScreenshotOption(
+        QStringLiteral("smac"),
+        QCoreApplication::translate("main", "Run simulator and generate screenshots for MacOS")
+    );
+    parser.addOption(macosScreenshotOption);
     QCommandLineOption const iosScreenshotOption(
         QStringLiteral("si"),
         QCoreApplication::translate("main", "Run simulator and generate screenshots for iOS"));
@@ -224,6 +229,11 @@ auto main(int argc, char *argv[]) -> int
     {
         GlobalObject::demoRunner()->setEngine(engine);
         QTimer::singleShot(3s, GlobalObject::demoRunner(), &DemoRunner::generateIosScreenshots);
+    }
+    if (parser.isSet(macosScreenshotOption))
+    {
+        GlobalObject::demoRunner()->setEngine(engine);
+        QTimer::singleShot(3s, GlobalObject::demoRunner(), &DemoRunner::generateMacosScreenshots);
     }
     if (parser.isSet(manualScreenshotOption))
     {

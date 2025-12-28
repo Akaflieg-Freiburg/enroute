@@ -34,6 +34,7 @@
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
+#include "platform/PlatformAdaptor.h"
 #include "ios/ObjCAdapter.h"
 #include "navigation/Navigator.h"
 #include "traffic/TrafficDataProvider.h"
@@ -82,6 +83,11 @@ auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) ->
 void DemoRunner::generateIosScreenshots()
 {
     generateScreenshotsForDevices({"ios_Device"}, true);
+}
+
+void DemoRunner::generateMacosScreenshots()
+{
+    generateScreenshotsForDevices({"macos"}, false);
 }
 
 void DemoRunner::generateGooglePlayScreenshots()
@@ -146,7 +152,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
             emit requestMapBearing(1);
             emit requestShowSideView(false);
 
-            auto language = QLocale::system().name().replace(u"_"_s,u"-"_s);
+            auto language = GlobalObject::platformAdaptor()->language();
             {
                 if (device == u"phone"_s)
                 {
@@ -163,6 +169,11 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }
+                if (device == u"macos"_s)
+                {
+                    applicationWindow->setProperty("width", 1440);
+                    applicationWindow->setProperty("height", 900);
+                }
 
 
                 qWarning() << "Generating screenshots for Google Play" << device;
@@ -171,6 +182,28 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                 // Generate directory
                 const QDir dir;
                 dir.mkpath(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
+
+                // Route on Map
+                {
+                    qWarning() << "… Route on Map";
+                    trafficSimulator->setCoordinate( {48.8, 8.5, Units::Distance::fromFT(0).toM()} );
+                    trafficSimulator->setBarometricHeight( Units::Distance::fromFT(0) );
+                    trafficSimulator->setTT( Units::Angle::fromDEG(0) );
+                    trafficSimulator->setGS( Units::Speed::fromKN(0) );
+
+                    GlobalObject::navigator()->flightRoute()->clear();
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTL")) );
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("KRH")) );
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
+
+                    flightMap->setProperty("zoomLevel", 10);
+                    flightMap->setProperty("followGPS", true);
+                    flightMap->setProperty("mapBearingPolicy", 0);
+                    flightMap->setProperty("bearing", 0);
+                    delay(8s);
+                    saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    GlobalObject::navigator()->flightRoute()->clear();
+                }
 
                 // Enroute near EDSB
                 {
@@ -288,6 +321,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
                 }
+
             }
         }
     }

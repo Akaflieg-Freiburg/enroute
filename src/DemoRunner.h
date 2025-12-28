@@ -80,6 +80,9 @@ public slots:
     void generateIosScreenshots();
 
     // Begin to remote-control the app
+    void generateMacosScreenshots();
+
+    // Begin to remote-control the app
     void generateManualScreenshots();
 
 signals:

@@ -314,6 +314,7 @@ void DemoRunner::generateManualScreenshots()
     Q_ASSERT(waypointDescription != nullptr);
 
     // Set up traffic simulator
+    GlobalObject::trafficDataProvider()->removeDataSources();
     GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate(false, GlobalObject::trafficDataProvider());
     GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );

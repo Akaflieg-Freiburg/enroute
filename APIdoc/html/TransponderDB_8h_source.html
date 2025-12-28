@@ -72,16 +72,16 @@ $(function() {
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classTraffic_1_1TransponderDB.html#aabe0d95d572e7b80401cbbd5847a2372">   32</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classTraffic_1_1TransponderDB.html#aabe0d95d572e7b80401cbbd5847a2372">TransponderDB</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classTraffic_1_1TransponderDB.html#a722a9a9cfb0fd3ce854101c611a0c494">   40</a></span>    Q_INVOKABLE QString <a class="code hl_function" href="classTraffic_1_1TransponderDB.html#a722a9a9cfb0fd3ce854101c611a0c494">getRegistration</a>(<span class="keyword">const</span> QString&amp; address) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classTraffic_1_1TransponderDB.html#aef9267c1dd689c6a00fb3cc92ca073db">   40</a></span>    [[nodiscard]] <span class="keyword">static</span> Q_INVOKABLE QString <a class="code hl_function" href="classTraffic_1_1TransponderDB.html#aef9267c1dd689c6a00fb3cc92ca073db">getRegistration</a>(<span class="keyword">const</span> QString&amp; address);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    QString registration_from_hexid(<span class="keyword">const</span> QString&amp; address) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    [[nodiscard]] QString registration_from_hexid(<span class="keyword">const</span> QString&amp; address) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>};</div>
 </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace Traffic</span></div>
-<div class="ttc" id="aclassTraffic_1_1TransponderDB_html_a722a9a9cfb0fd3ce854101c611a0c494"><div class="ttname"><a href="classTraffic_1_1TransponderDB.html#a722a9a9cfb0fd3ce854101c611a0c494">Traffic::TransponderDB::getRegistration</a></div><div class="ttdeci">Q_INVOKABLE QString getRegistration(const QString &amp;address) const</div><div class="ttdoc">Get registration for a given ICAO address.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TransponderDB_html_aabe0d95d572e7b80401cbbd5847a2372"><div class="ttname"><a href="classTraffic_1_1TransponderDB.html#aabe0d95d572e7b80401cbbd5847a2372">Traffic::TransponderDB::TransponderDB</a></div><div class="ttdeci">TransponderDB(QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
+<div class="ttc" id="aclassTraffic_1_1TransponderDB_html_aef9267c1dd689c6a00fb3cc92ca073db"><div class="ttname"><a href="classTraffic_1_1TransponderDB.html#aef9267c1dd689c6a00fb3cc92ca073db">Traffic::TransponderDB::getRegistration</a></div><div class="ttdeci">static Q_INVOKABLE QString getRegistration(const QString &amp;address)</div><div class="ttdoc">Get registration for a given ICAO address.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

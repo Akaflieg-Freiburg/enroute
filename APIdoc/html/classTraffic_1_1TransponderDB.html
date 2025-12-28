@@ -49,6 +49,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classTraffic_1_1TransponderDB-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Traffic::TransponderDB Class Reference</div></div>
 </div><!--header-->
@@ -63,8 +64,11 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aabe0d95d572e7b80401cbbd5847a2372" id="r_aabe0d95d572e7b80401cbbd5847a2372"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabe0d95d572e7b80401cbbd5847a2372">TransponderDB</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:aabe0d95d572e7b80401cbbd5847a2372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="memitem:a722a9a9cfb0fd3ce854101c611a0c494" id="r_a722a9a9cfb0fd3ce854101c611a0c494"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a722a9a9cfb0fd3ce854101c611a0c494">getRegistration</a> (const QString &amp;address) const</td></tr>
-<tr class="memdesc:a722a9a9cfb0fd3ce854101c611a0c494"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get registration for a given ICAO address.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aef9267c1dd689c6a00fb3cc92ca073db" id="r_aef9267c1dd689c6a00fb3cc92ca073db"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef9267c1dd689c6a00fb3cc92ca073db">getRegistration</a> (const QString &amp;address)</td></tr>
+<tr class="memdesc:aef9267c1dd689c6a00fb3cc92ca073db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get registration for a given ICAO address.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Transponder database. This class implements an algorithm to decode the 24-bit transponder address to a callsign for some countries. It is based on code from dump1090 at <a href="https://github.com/mutability/dump1090/blob/unmaintained/public_html/registrations.js">https://github.com/mutability/dump1090/blob/unmaintained/public_html/registrations.js</a> under GPLv2 license. </p>
@@ -106,19 +110,27 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a722a9a9cfb0fd3ce854101c611a0c494" name="a722a9a9cfb0fd3ce854101c611a0c494"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a722a9a9cfb0fd3ce854101c611a0c494">&#9670;&#160;</a></span>getRegistration()</h2>
+<a id="aef9267c1dd689c6a00fb3cc92ca073db" name="aef9267c1dd689c6a00fb3cc92ca073db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef9267c1dd689c6a00fb3cc92ca073db">&#9670;&#160;</a></span>getRegistration()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Q_INVOKABLE QString Traffic::TransponderDB::getRegistration </td>
           <td>(</td>
           <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>address</em></span></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get registration for a given ICAO address. </p>

@@ -1,8 +1,26 @@
 # This file contains the fastlane.tools configuration
 # You can find the documentation at https://docs.fastlane.tools
 
-
 default_platform(:android)
+
+desc "Build Linux Binary"
+lane :linuxBinary do
+  # Clean up previous builds
+  FileUtils.rm_rf('../build/build-linux-release')
+
+  UI.message('Configuring CMake build...')
+  qt6_linux_dir = ENV['Qt6_DIR_LINUX']
+  sh("#{qt6_linux_dir}/bin/qt-cmake",
+    '-G Ninja',
+    '-DCMAKE_BUILD_TYPE:STRING=Release',
+    '-DCMAKE_C_COMPILER_LAUNCHER=ccache',
+    '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache',
+    '-S ..',
+    '-B ../build/build-linux-release'
+  )
+  UI.message('Building Linux Binary...')
+  sh('cmake --build ../build/build-linux-release')
+end
 
 platform :android do
   desc "Build Android Binary"

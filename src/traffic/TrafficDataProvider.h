@@ -405,6 +405,9 @@ public:
      */
     Q_INVOKABLE void removeDataSource(Traffic::TrafficDataSource_Abstract* source);
 
+    /*! \brief Remove all non-canonical data sources */
+    Q_INVOKABLE void removeDataSources();
+
 
 signals:
     /*! \brief Notifier signal */

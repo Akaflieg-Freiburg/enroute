@@ -58,6 +58,7 @@
 - `PCRE2 - Stack-less Just-In-Time Compiler <http://www.pcre.org/>`_. BSD 2-clause "Simplified" License.
 - `Pixman <http://www.pixman.org/>`_. MIT License.
 - `Poly2Tri Polygon Triangulation Library <https://github.com/greenm01/poly2tri>`_. BSD 3-clause "New" or "Revised" License.
+- `Presentation Time Protocol <https://wayland.freedesktop.org>`_. MIT License.
 - QEventDispatcher on macOS. BSD 3-clause "New" or "Revised" License.
 - `QHttpEngine <https://github.com/nitroshare/qhttpengine>`_. MIT License.
 - `Qt Toolkit, Libraries and Modules <https://qt.io>`_. GNU General Public License v3.0.
@@ -74,17 +75,44 @@
 - `TIFF Software Distribution (libtiff) <http://www.simplesystems.org/libtiff/>`_. libtiff License.
 - `TinyCBOR <https://github.com/intel/tinycbor>`_. MIT License.
 - `Titillium Web Font <https://fonts.google.com/specimen/Titillium+Web>`_. SIL OPEN FONT LICENSE Version 1.1.
+- `tl::expected <https://github.com/TartanLlama/expected/>`_. Creative Commons Zero v1.0 Universal.
 - `underscore <https://github.com/jashkenas/underscore>`_. MIT License.
 - `Unicode Character Database (UCD) <https://www.unicode.org/ucd/>`_. Unicode License Agreement - Data Files and Software (2016).
 - `Unicode Common Locale Data Repository (CLDR) <https://cldr.unicode.org/>`_. Unicode License v3.
 - `Valgrind <http://valgrind.org/>`_. BSD 4-clause "Original" or "Old" License.
 - `Vulkan API Registry <https://www.khronos.org/>`_. Apache License 2.0 or MIT License.
 - `Vulkan Memory Allocator <https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator>`_. MIT License.
+- `Wayland Color Management Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Dialog Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland EGLStream Controller Protocol <https://github.com/NVIDIA/egl-wayland>`_. MIT License.
+- `Wayland Fractional Scale Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Fullscreen Shell Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland KDE DBus Menu Protocol <https://kde.org>`_. GNU Lesser General Public License 2.1 or later.
+- `Wayland Linux Dmabuf Unstable V1 Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Pointer Gestures Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Pointer Warp Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Primary Selection Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Scaler Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Tablet Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Text Input Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Text Input Protocol v1 <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Text Input Protocol v2 <https://wayland.freedesktop.org>`_. HPND License.
+- `Wayland Viewporter Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland XDG Foreign Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland XDG Output Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland XDG Shell Protocol <https://gitlab.freedesktop.org/wayland/wayland-protocols/>`_. MIT License.
+- `Wayland XDG System Bell Protocol <https://gitlab.freedesktop.org/wayland/wayland-protocols/>`_. MIT License.
+- `Wayland xdg-activation Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland xdg-decoration Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland xdg-toplevel-icon Protocol <https://wayland.freedesktop.org>`_. MIT License.
 - Weather icons from the Noto Emoji collection. Apache License 2.0.
 - `WebGradients <https://webgradients.com/>`_. MIT License.
 - `WebP (libwebp) <https://developers.google.com/speed/webp/>`_. BSD 3-clause "New" or "Revised" License.
 - Wintab API. LCS-Telegraphics License.
+- `Wlr Data Control Unstable V1 Protocol <https://gitlab.freedesktop.org/wlroots/wlr-protocols/>`_. MIT License.
 - Work Sans font by Wei Huang. SIL Open Font License 1.1.
 - `X Server helper <https://www.x.org/>`_. X11 License and Historical Permission Notice and Disclaimer.
 - `XCB-XInput <https://xcb.freedesktop.org/>`_. MIT License.
 - XSVG. Historical Permission Notice and Disclaimer - sell variant.
+- `Yoga <https://www.yogalayout.dev/>`_. MIT License.

@@ -13,6 +13,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
+### linuxBinary
+
+```sh
+[bundle exec] fastlane linuxBinary
+```
+
+Build Linux Binary
+
 ### gitHubRelease
 
 ```sh

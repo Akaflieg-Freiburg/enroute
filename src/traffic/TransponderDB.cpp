@@ -12,23 +12,25 @@
 #include <QStringList>
 #include <cmath>
 
+using namespace Qt::Literals::StringLiterals;
+
 namespace Traffic {
 
 // Define alphabets
-static const QString LIMITED_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ"; // 24 chars; no I, O
-static const QString FULL_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  // 26 chars
+static const QString LIMITED_ALPHABET = u"ABCDEFGHJKLMNPQRSTUVWXYZ"_s; // 24 chars; no I, O
+static const QString FULL_ALPHABET = u"ABCDEFGHIJKLMNOPQRSTUVWXYZ"_s;  // 26 chars
 
 // Define stride mappings
 struct StrideMapping {
-    uint32_t start;
+    size_t start;
     uint32_t s1;
     uint32_t s2;
     QString prefix;
     QString alphabet = FULL_ALPHABET;
     QString first;
     QString last;
-    uint32_t offset = 0;
-    uint32_t end = 0;
+    size_t offset = 0;
+    size_t end = 0;
 };
 
 static QList<StrideMapping> strideMappings = {
@@ -63,18 +65,24 @@ static QList<StrideMapping> strideMappings = {
 };
 
 // Initialize stride mappings
-void initStrideMappings() {
-    for (auto& mapping : strideMappings) {
-        if (!mapping.first.isEmpty()) {
+void initStrideMappings()
+{
+    for (auto& mapping : strideMappings)
+    {
+        if (!mapping.first.isEmpty())
+        {
             auto c1 = mapping.alphabet.indexOf(mapping.first[0]);
             auto c2 = mapping.alphabet.indexOf(mapping.first[1]);
             auto c3 = mapping.alphabet.indexOf(mapping.first[2]);
             mapping.offset = c1 * mapping.s1 + c2 * mapping.s2 + c3;
-        } else {
+        }
+        else
+        {
             mapping.offset = 0;
         }
 
-        if (!mapping.last.isEmpty()) {
+        if (!mapping.last.isEmpty())
+        {
             auto c1 = mapping.alphabet.indexOf(mapping.last[0]);
             auto c2 = mapping.alphabet.indexOf(mapping.last[1]);
             auto c3 = mapping.alphabet.indexOf(mapping.last[2]);
@@ -82,7 +90,9 @@ void initStrideMappings() {
                           c1 * mapping.s1 +
                           c2 * mapping.s2 +
                           c3 - mapping.offset;
-        } else {
+        }
+        else
+        {
             mapping.end = mapping.start - mapping.offset +
                           (mapping.alphabet.length() - 1) * mapping.s1 +
                           (mapping.alphabet.length() - 1) * mapping.s2 +
@@ -92,30 +102,34 @@ void initStrideMappings() {
 }
 
 // Lookup function for stride mappings
-QString lookupStride(uint32_t hexid) {
-    for (const auto& mapping : strideMappings) {
-        if (hexid < mapping.start || hexid > mapping.end) {
+QString lookupStride(uint32_t hexid)
+{
+    for (const auto& mapping : std::as_const(strideMappings))
+    {
+        if (hexid < mapping.start || hexid > mapping.end)
+        {
             continue;
         }
 
-        uint32_t offset = hexid - mapping.start + mapping.offset;
+        auto offset = hexid - mapping.start + mapping.offset;
 
-        int i1 = offset / mapping.s1;
+        auto i1 = offset / mapping.s1;
         offset %= mapping.s1;
-        int i2 = offset / mapping.s2;
+        auto i2 = offset / mapping.s2;
         offset %= mapping.s2;
-        int i3 = offset;
+        auto i3 = offset;
 
         if (i1 < 0 || i1 >= mapping.alphabet.length() ||
             i2 < 0 || i2 >= mapping.alphabet.length() ||
-            i3 < 0 || i3 >= mapping.alphabet.length()) {
+            i3 < 0 || i3 >= mapping.alphabet.length())
+        {
             continue;
         }
 
         return mapping.prefix + mapping.alphabet[i1] + mapping.alphabet[i2] + mapping.alphabet[i3];
     }
 
-    return QString(); // No match found
+    return {}; // No match found
 }
 
 // Define numeric mappings
@@ -133,56 +147,67 @@ static QList<NumericMapping> numericMappings = {
 };
 
 // Initialize numeric mappings
-void initNumericMappings() {
-    for (auto& mapping : numericMappings) {
+void initNumericMappings()
+{
+    for (auto& mapping : numericMappings)
+    {
         mapping.end = mapping.start + mapping.count - 1;
     }
 }
 
 // Lookup function for numeric mappings
-QString lookupNumeric(uint32_t hexid) {
-    for (const auto& mapping : numericMappings) {
-        if (hexid < mapping.start || hexid > mapping.end) {
+QString lookupNumeric(uint32_t hexid)
+{
+    for (const auto& mapping : std::as_const(numericMappings))
+    {
+        if (hexid < mapping.start || hexid > mapping.end)
+        {
             continue;
         }
 
-        uint32_t regNumber = hexid - mapping.start + mapping.first;
-        QString reg = QString::number(regNumber);
+        auto regNumber = hexid - mapping.start + mapping.first;
+        auto reg = QString::number(regNumber);
         return mapping.templateString.left(mapping.templateString.length() - reg.length()) + reg;
     }
 
-    return QString(); // No match found
+    return {}; // No match found
 }
 
 // Constructor
-TransponderDB::TransponderDB(QObject* parent) : QObject(parent) {
+TransponderDB::TransponderDB(QObject* parent)
+    : QObject(parent)
+{
     initStrideMappings();
     initNumericMappings();
 }
 
 // Get registration
-QString TransponderDB::getRegistration(const QString& address) const {
+QString TransponderDB::getRegistration(const QString& address)
+{
     QString registration;
     
-    bool ok;
-    uint32_t hexid = address.toUInt(&ok, 16);
-    if (!ok) {
-        return QString();
+    bool ok = false;
+    auto hexid = address.toUInt(&ok, 16);
+    if (!ok)
+    {
+        return {};
     }
 
     // Try stride mappings
     registration = lookupStride(hexid);
-    if (!registration.isEmpty()) {
+    if (!registration.isEmpty())
+    {
         return registration;
     }
 
     // Try numeric mappings
     registration = lookupNumeric(hexid);
-    if (!registration.isEmpty()) {
+    if (!registration.isEmpty())
+    {
         return registration;
     }
 
-    return QString(); // No match found
+    return {}; // No match found
 }
 
 } // namespace Traffic

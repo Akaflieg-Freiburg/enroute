@@ -9,18 +9,6 @@ configure_file(icons.qrc.in icons.qrc)
 configure_file(ressources.qrc.in ressources.qrc)
 
 #
-# Generate manual
-# 
-execute_process(
-    COMMAND ${SPHINX_BUILD_EXECUTABLE} ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual ${CMAKE_BINARY_DIR}/generatedSources/manual
-    RESULT_VARIABLE result
-    ERROR_VARIABLE error_output
-)
-if(NOT result EQUAL 0)
-    message(FATAL_ERROR "Failed to generate manual: ${error_output}")
-endif()
-
-#
 # Set up sources
 #
 
@@ -299,7 +287,7 @@ if(ANDROID)
     )
 
     # Copy manual and other files into the Android directories
-    file(COPY ${CMAKE_BINARY_DIR}/generatedSources/manual DESTINATION android/assets)
+    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION android/assets)
     file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
     file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
@@ -317,7 +305,7 @@ if(ANDROID)
     set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
 
     # Compile definitions
-    add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
+    add_compile_definitions(MANUAL_LOCATION="/android_asset/enrouteManual")
 
     qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
     qt_import_plugins(${PROJECT_NAME}
@@ -369,7 +357,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
 
 # Compile definitions
-add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteManual")
 
 # Add executable and libraries
 qt_add_executable(${PROJECT_NAME} ${SOURCES})
@@ -407,7 +395,7 @@ target_precompile_headers(${PROJECT_NAME}
 
 # Install
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY ${CMAKE_BINARY_DIR}/generatedSources/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 
@@ -436,7 +424,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     )
 
     # Compile definitions
-    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteManual")
 
     # Add executable and libraries
     qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
@@ -494,7 +482,7 @@ if (IOS)
     )
 
     # Compile definitions
-    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteManual")
 
     # Add executable and libraries
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
@@ -547,7 +535,7 @@ if (IOS)
         "ios/fr.lproj"
         "ios/it.lproj"
         "ios/pl.lproj"
-        ${CMAKE_BINARY_DIR}/generatedSources/manual
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual
     )
     target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
     set_source_files_properties(${bundle_resources} PROPERTIES

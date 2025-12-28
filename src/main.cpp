@@ -205,7 +205,7 @@ auto main(int argc, char *argv[]) -> int
     engine->addImportPath(u":/"_s);
 
 #if defined(Q_OS_IOS)
-    engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), QCoreApplication::applicationDirPath()+"/manual/");
+    engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), QCoreApplication::applicationDirPath()+"/enrouteManual/");
 #else
     engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
 #endif

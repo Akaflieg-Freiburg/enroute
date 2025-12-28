@@ -75,26 +75,6 @@ find_package(libzip REQUIRED)
 find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
 
-file(GLOB PYTHON_USER_DIRS "$ENV{HOME}/Library/Python/*/bin")
-file(GLOB PYTHON_LOCAL_DIRS "$ENV{HOME}/.local/lib/python*/bin")
-find_program(SPHINX_BUILD_EXECUTABLE
-    NAMES sphinx-build sphinx-build.exe
-    HINTS
-        ${PYTHON_USER_DIRS}  # macOS user Python installs
-        ${PYTHON_LOCAL_DIRS}  # Linux user Python installs
-        $ENV{HOME}/.local/bin  # Linux pip user installs
-    PATHS
-        /usr/local/bin
-        /opt/homebrew/bin  # Apple Silicon Homebrew
-        /usr/bin
-    PATH_SUFFIXES
-        bin
-        Scripts  # Windows/Python installation directory
-    DOC "Path to sphinx-build executable"
-)
-if(NOT SPHINX_BUILD_EXECUTABLE)
-    message(error "sphinx-build not found. Documentation generation will be disabled.")
-endif()
 if(IOS)
     set(QT_USE_RISKY_DSYM_ARCHIVING_WORKAROUND ON)
     set(XCODE_ATTRIBUTE_DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT "YES")

@@ -314,20 +314,15 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += u"<p>"_s
-                  + tr("Welcome to version 3.0.0 of Enroute Flight Navigation.")
-                  + u"</p>"_s;
+#if !defined(Q_OS_IOS)
         result += u"<p>"_s
                   + tr("<strong>New Feature</strong>: ")
-                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.") + u" "_s
-                  + tr("We thank Simon Schneider and Markus Marks for help with the implementation. "
-                       "Consult the manual for more information.")
+                  + tr("Enroute is now able to read data from GPS or FLARM devices connected to via USB or serial ports. Consult the manual for details.")
                   + u"</p>"_s;
+#endif
         result += u"<p>"_s
-                  + tr("Enroute Flight Navigation is now able to display traffic data provided by the Open Glider Network. "
-                       "Flight routes can now be copied to the clipboard in ICAO flight plan format. "
-                       "We thank Christian Engelhardt for the implementation of these features. "
-                       "Consult the manual for more information.")
+                  + tr("<strong>New Feature</strong>: ")
+                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.")
                   + u"</p>"_s;
 #if !defined(Q_OS_IOS)
 /*

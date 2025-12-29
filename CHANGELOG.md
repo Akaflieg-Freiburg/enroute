@@ -10,6 +10,8 @@
 ### Fixed
 - Make links to manual more robust (#555)
 
+- Wrong font size in scale items of moving map (#576)
+
 
 ## [3.0.12] - 2025-12-26
 

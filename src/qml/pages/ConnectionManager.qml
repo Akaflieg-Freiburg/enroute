@@ -80,7 +80,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("05-referencePages/03-settingsDataConnections.html")
+                openManual("forward.html#settingsdataconnections-page")
             }
         }
     }

@@ -148,10 +148,15 @@ private slots:
 #if __has_include(<QSerialPortInfo>)
     // Handle serial port errors
     void onErrorOccurred(QSerialPort::SerialPortError error);
-#endif
 
     // Read and process received NMEA sentences
     void onReadyRead();
+#endif
+
+#if defined(Q_OS_ANDROID)
+    // Read and process received NMEA sentences
+    void read();
+#endif
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_SerialPort)

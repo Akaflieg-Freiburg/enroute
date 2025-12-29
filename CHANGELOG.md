@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.x] - 2025-12-xx
+
+### Added
+- Support serial port USB devices on Android (#411)
+
+- Support external GPS devices (#564)
+
+### Fixed
+- Make links to manual more robust (#555)
+
+
 ## [3.0.12] - 2025-12-26
 
 ### Fixed

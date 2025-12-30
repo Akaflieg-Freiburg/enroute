@@ -131,7 +131,7 @@ Map {
 
             type: "symbol"
             property string source: "aviation-data"
-            property var filter: ["==", ["get", "TYP"], "AS"]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "BOT"], 9500]]
             property string metadata: '{}'
 
             layout: {

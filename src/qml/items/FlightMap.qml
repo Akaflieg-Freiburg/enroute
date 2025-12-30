@@ -125,31 +125,31 @@ Map {
         // Map layers, sorted according to importance, from low to high
 
         LayerParameter {
-          id:  airspaceLabels
+            id:  airspaceLabels
 
-          styleId: "AirspaceLabels"
+            styleId: "AirspaceLabels"
 
-          type: "symbol"
-          property string source: "aviation-data"
-          property var filter: ["==", ["get", "TYP"], "AS"]
-          property string metadata: '{}'
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["==", ["get", "TYP"], "AS"]
+            property string metadata: '{}'
 
-          layout: {
-              "symbol-placement": "line",
-              "text-allow-overlap": false,
-              "text-anchor": "center",
-              "text-field": Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? '["get", "MLM"]' : '["get", "MLI"]',
-              "text-ignore-placement": false,
-              "text-justify": "center",
-              "text-offset": '[0,1]',
-              "text-optional": true,
-              "text-size": 0.85*GlobalSettings.fontSize
-          }
+            layout: {
+                "symbol-placement": "line",
+                "text-allow-overlap": false,
+                "text-anchor": "center",
+                "text-field": Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? '["get", "MLM"]' : '["get", "MLI"]',
+                "text-ignore-placement": false,
+                "text-justify": "center",
+                "text-offset": '[0,1]',
+                "text-optional": true,
+                "text-size": 0.85*GlobalSettings.fontSize
+            }
 
-          paint: {
-              "text-halo-width": 2,
-              "text-halo-color": "white"
-          }
+            paint: {
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
         }
 
         LayerParameter {
@@ -415,6 +415,285 @@ Map {
                 "text-color": "black",
                 "text-halo-width": 2,
                 "text-halo-color": "white"
+            }
+        }
+
+        // Please insert here
+        LayerParameter {
+            id: fis
+            styleId: "FIS"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", "CAT", "FIR"], ["==", "CAT", "FIS"]]
+
+            paint: {
+                "line-color": "green",
+                "line-width": 1.5
+            }
+        }
+
+        LayerParameter {
+            id: sua
+            styleId: "SUA"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["==", "CAT", "SUA"]
+
+            paint: {
+                "line-color": "red",
+                "line-width": 2,
+                "line-dasharray": [4.0, 3.0]
+            }
+        }
+
+        LayerParameter {
+            id: glidingSector
+            styleId: "glidingSector"
+            type: "fill"
+            property string source: "aviation-data"
+            property var filter: ["==", "CAT", "GLD"]
+
+            paint: {
+                "fill-color": "yellow",
+                "fill-opacity": 0.1
+            }
+        }
+
+        LayerParameter {
+            id: glidingSectorOutLines
+            styleId: "glidingSectorOutLines"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["==", "CAT", "GLD"]
+
+            paint: {
+                "line-color": "yellow",
+                "line-width": 2,
+                "line-opacity": 0.8
+            }
+        }
+
+        LayerParameter {
+            id: rmz
+            styleId: "RMZ"
+            type: "fill"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", "CAT", "ATZ"], ["==", "CAT", "RMZ"], ["==", "CAT", "TIZ"], ["==", "CAT", "TIA"]]
+
+            paint: {
+                "fill-color": "blue",
+                "fill-opacity": 0.2
+            }
+        }
+
+        LayerParameter {
+            id: rmzOutline
+            styleId: "RMZoutline"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", "CAT", "ATZ"], ["==", "CAT", "RMZ"], ["==", "CAT", "TIZ"], ["==", "CAT", "TIA"]]
+
+            paint: {
+                "line-color": "blue",
+                "line-width": 2,
+                "line-dasharray": [3.0, 3.0]
+            }
+        }
+
+        LayerParameter {
+            id: tmz
+            styleId: "TMZ"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["==", "CAT", "TMZ"]
+
+            paint: {
+                "line-color": "black",
+                "line-width": 2,
+                "line-dasharray": [4.0, 3.0, 0.5, 3.0]
+            }
+        }
+
+        LayerParameter {
+            id: pje
+            styleId: "PJE"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["==", "CAT", "PJE"]
+
+            paint: {
+                "line-color": "red",
+                "line-width": 2,
+                "line-dasharray": [4.0, 3.0]
+            }
+        }
+
+        LayerParameter {
+            id: abcdOutlines
+            styleId: "ABCDOutlines"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", "CAT", "A"], ["==", "CAT", "B"], ["==", "CAT", "C"], ["==", "CAT", "D"]]
+
+            paint: {
+                "line-color": "blue",
+                "line-width": 2
+            }
+        }
+
+        LayerParameter {
+            id: abcds
+            styleId: "ABCDs"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", "CAT", "A"], ["==", "CAT", "B"], ["==", "CAT", "C"], ["==", "CAT", "D"]]
+
+            paint: {
+                "line-color": "blue",
+                "line-opacity": 0.2,
+                "line-width": 7,
+                "line-offset": 3.5
+            }
+        }
+
+        LayerParameter {
+            id: efgOutlines
+            styleId: "EFGOutlines"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", "CAT", "E"], ["==", "CAT", "F"], ["==", "CAT", "G"]]
+
+            paint: {
+                "line-color": "blue",
+                "line-width": 2
+            }
+        }
+
+        LayerParameter {
+            id: ctr
+            styleId: "CTR"
+            type: "fill"
+            property string source: "aviation-data"
+            property var filter: ["==", "CAT", "CTR"]
+
+            paint: {
+                "fill-color": "red",
+                "fill-opacity": 0.2
+            }
+        }
+
+        LayerParameter {
+            id: ctrOutline
+            styleId: "CTRoutline"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["==", "CAT", "CTR"]
+
+            paint: {
+                "line-color": "blue",
+                "line-width": 2,
+                "line-dasharray": [4.0, 3.0]
+            }
+        }
+
+        LayerParameter {
+            id: nraOutlines
+            styleId: "NRAoutlines"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["==", "CAT", "NRA"]
+
+            paint: {
+                "line-color": "green",
+                "line-width": 2
+            }
+        }
+
+        LayerParameter {
+            id: nra
+            styleId: "NRA"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["==", "CAT", "NRA"]
+
+            paint: {
+                "line-color": "green",
+                "line-opacity": 0.2,
+                "line-width": 7,
+                "line-offset": 3.5
+            }
+        }
+
+        LayerParameter {
+            id: dangerZonesOutlines
+            styleId: "dangerZonesOutlines"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", "CAT", "DNG"], ["==", "CAT", "R"], ["==", "CAT", "P"]]
+
+            paint: {
+                "line-color": "red",
+                "line-width": 2,
+                "line-dasharray": [4.0, 3.0]
+            }
+        }
+
+        LayerParameter {
+            id: dangerZones
+            styleId: "dangerZones"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", "CAT", "DNG"], ["==", "CAT", "R"], ["==", "CAT", "P"]]
+
+            paint: {
+                "line-color": "red",
+                "line-opacity": 0.2,
+                "line-width": 7,
+                "line-offset": 3.5
+            }
+        }
+
+        LayerParameter {
+            id: prcDep
+            styleId: "PRC_DEP"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["all", ["==", "CAT", "PRC"], ["==", "USE", "DEP"]]
+            property real minzoom: 10.0
+
+            paint: {
+                "line-color": ["get", "GAC"],
+                "line-width": 3.0,
+                "line-dasharray": [3.0, 3.0]
+            }
+        }
+
+        LayerParameter {
+            id: prcArr
+            styleId: "PRC_ARR"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["all", ["==", "CAT", "PRC"], ["==", "USE", "ARR"]]
+            property real minzoom: 10.0
+
+            paint: {
+                "line-color": ["get", "GAC"],
+                "line-width": 3.0,
+                "line-dasharray": [9.0, 3.0]
+            }
+        }
+
+        LayerParameter {
+            id: prcOth
+            styleId: "PRC_OTH"
+            type: "line"
+            property string source: "aviation-data"
+            property var filter: ["all", ["==", "CAT", "PRC"], ["!=", "USE", "ARR"], ["!=", "USE", "DEP"]]
+            property real minzoom: 10.0
+
+            paint: {
+                "line-color": ["get", "GAC"],
+                "line-width": 3.0
             }
         }
     }

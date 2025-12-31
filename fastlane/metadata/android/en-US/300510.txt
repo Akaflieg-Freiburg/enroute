@@ -1,0 +1,2 @@
+### Fixed
+- Fixes problems with accessibility features under Android.

@@ -424,7 +424,7 @@ Map {
             styleId: "FIS"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["any", ["==", "CAT", "FIR"], ["==", "CAT", "FIS"]]
+            property var filter: ["any", ["==", ["get", "CAT"], "FIR"], ["==", ["get", "CAT"], "FIS"]]
 
             paint: {
                 "line-color": "green",
@@ -437,7 +437,7 @@ Map {
             styleId: "SUA"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["==", "CAT", "SUA"]
+            property var filter: ["==", ["get", "CAT"], "SUA"]
 
             paint: {
                 "line-color": "red",
@@ -451,7 +451,7 @@ Map {
             styleId: "glidingSector"
             type: "fill"
             property string source: "aviation-data"
-            property var filter: ["==", "CAT", "GLD"]
+            property var filter: ["any", ["==", ["get", "CAT"], "GLD"], ["<=", ["get", "CAT"], GlobalSettings.airspaceAltitudeLimit.fromFT()]]
 
             paint: {
                 "fill-color": "yellow",
@@ -464,7 +464,7 @@ Map {
             styleId: "glidingSectorOutLines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["==", "CAT", "GLD"]
+            property var filter: ["==", ["get", "CAT"], "GLD"]
 
             paint: {
                 "line-color": "yellow",
@@ -478,7 +478,7 @@ Map {
             styleId: "RMZ"
             type: "fill"
             property string source: "aviation-data"
-            property var filter: ["any", ["==", "CAT", "ATZ"], ["==", "CAT", "RMZ"], ["==", "CAT", "TIZ"], ["==", "CAT", "TIA"]]
+            property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]
 
             paint: {
                 "fill-color": "blue",
@@ -491,7 +491,7 @@ Map {
             styleId: "RMZoutline"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["any", ["==", "CAT", "ATZ"], ["==", "CAT", "RMZ"], ["==", "CAT", "TIZ"], ["==", "CAT", "TIA"]]
+            property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]
 
             paint: {
                 "line-color": "blue",
@@ -505,7 +505,7 @@ Map {
             styleId: "TMZ"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["==", "CAT", "TMZ"]
+            property var filter: ["==", ["get", "CAT"], "TMZ"]
 
             paint: {
                 "line-color": "black",
@@ -519,7 +519,7 @@ Map {
             styleId: "PJE"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["==", "CAT", "PJE"]
+            property var filter: ["==", ["get", "CAT"], "PJE"]
 
             paint: {
                 "line-color": "red",
@@ -533,7 +533,7 @@ Map {
             styleId: "ABCDOutlines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["any", ["==", "CAT", "A"], ["==", "CAT", "B"], ["==", "CAT", "C"], ["==", "CAT", "D"]]
+            property var filter: ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]
 
             paint: {
                 "line-color": "blue",
@@ -546,7 +546,7 @@ Map {
             styleId: "ABCDs"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["any", ["==", "CAT", "A"], ["==", "CAT", "B"], ["==", "CAT", "C"], ["==", "CAT", "D"]]
+            property var filter: ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]
 
             paint: {
                 "line-color": "blue",
@@ -561,7 +561,7 @@ Map {
             styleId: "EFGOutlines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["any", ["==", "CAT", "E"], ["==", "CAT", "F"], ["==", "CAT", "G"]]
+            property var filter: ["any", ["==", ["get", "CAT"], "E"], ["==", ["get", "CAT"], "F"], ["==", ["get", "CAT"], "G"]]
 
             paint: {
                 "line-color": "blue",
@@ -574,7 +574,7 @@ Map {
             styleId: "CTR"
             type: "fill"
             property string source: "aviation-data"
-            property var filter: ["==", "CAT", "CTR"]
+            property var filter: ["==", ["get", "CAT"], "CTR"]
 
             paint: {
                 "fill-color": "red",
@@ -587,7 +587,7 @@ Map {
             styleId: "CTRoutline"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["==", "CAT", "CTR"]
+            property var filter: ["==", ["get", "CAT"], "CTR"]
 
             paint: {
                 "line-color": "blue",
@@ -601,7 +601,7 @@ Map {
             styleId: "NRAoutlines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["==", "CAT", "NRA"]
+            property var filter: ["==", ["get", "CAT"], "NRA"]
 
             paint: {
                 "line-color": "green",
@@ -614,7 +614,7 @@ Map {
             styleId: "NRA"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["==", "CAT", "NRA"]
+            property var filter: ["==", ["get", "CAT"], "NRA"]
 
             paint: {
                 "line-color": "green",
@@ -629,7 +629,7 @@ Map {
             styleId: "dangerZonesOutlines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["any", ["==", "CAT", "DNG"], ["==", "CAT", "R"], ["==", "CAT", "P"]]
+            property var filter: ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
 
             paint: {
                 "line-color": "red",
@@ -643,7 +643,7 @@ Map {
             styleId: "dangerZones"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["any", ["==", "CAT", "DNG"], ["==", "CAT", "R"], ["==", "CAT", "P"]]
+            property var filter: ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
 
             paint: {
                 "line-color": "red",
@@ -658,7 +658,7 @@ Map {
             styleId: "PRC_DEP"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", "CAT", "PRC"], ["==", "USE", "DEP"]]
+            property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "DEP"]]
             property real minzoom: 10.0
 
             paint: {
@@ -673,7 +673,7 @@ Map {
             styleId: "PRC_ARR"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", "CAT", "PRC"], ["==", "USE", "ARR"]]
+            property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "ARR"]]
             property real minzoom: 10.0
 
             paint: {
@@ -688,7 +688,7 @@ Map {
             styleId: "PRC_OTH"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", "CAT", "PRC"], ["!=", "USE", "ARR"], ["!=", "USE", "DEP"]]
+            property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "ARR"], ["!=", ["get", "USE"], "DEP"]]
             property real minzoom: 10.0
 
             paint: {

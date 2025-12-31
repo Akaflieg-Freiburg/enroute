@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.51] - 2025-12-31
+
+### Fixed
+- Fixes problems with accessibility features under Android.
+
+
 ## [3.0.12] - 2025-12-26
 
 ### Fixed

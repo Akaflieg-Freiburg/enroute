@@ -131,7 +131,7 @@ Map {
 
             type: "symbol"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "BOT"], 9500]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet() ]]
             property string metadata: '{}'
 
             layout: {
@@ -451,7 +451,7 @@ Map {
             styleId: "glidingSector"
             type: "fill"
             property string source: "aviation-data"
-            property var filter: ["any", ["==", ["get", "CAT"], "GLD"], ["<=", ["get", "CAT"], GlobalSettings.airspaceAltitudeLimit.fromFT()]]
+            property var filter: ["==", ["get", "CAT"], "GLD"]
 
             paint: {
                 "fill-color": "yellow",

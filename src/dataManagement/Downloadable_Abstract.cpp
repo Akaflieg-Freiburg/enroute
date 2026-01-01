@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2022-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,17 +54,6 @@ auto DataManagement::Downloadable_Abstract::updateSizeString() -> QString
 //
 // Setter methods
 //
-
-void DataManagement::Downloadable_Abstract::setBoundingBox(const QGeoRectangle& boundingBox)
-{
-    if (boundingBox == m_boundingBox)
-    {
-        return;
-    }
-    m_boundingBox = boundingBox;
-    emit boundingBoxChanged();
-}
-
 
 void DataManagement::Downloadable_Abstract::setContentType(DataManagement::Downloadable_Abstract::ContentType contentType)
 {

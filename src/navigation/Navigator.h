@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -93,6 +93,18 @@ public:
      *  QML ownership has been set to QQmlEngine::CppOwnership.
      */
     Q_PROPERTY(Navigation::Aircraft aircraft READ aircraft BINDABLE bindableAircraft WRITE setAircraft NOTIFY aircraftChanged)
+    [[nodiscard]] Navigation::Aircraft aircraft() const { return m_aircraft.value(); }
+    [[nodiscard]] QBindable<Navigation::Aircraft> bindableAircraft() { return &m_aircraft; }
+    void setAircraft(const Navigation::Aircraft& newAircraft);
+
+    /*! \brief Indicates whether an aviation map is installed for the current location
+     *
+     *  For performance reasons, this method only checks whether the approximate last valid coordinate provided by PositionProvider
+     *  is contained in the bounding box of one of the installed aviation maps.
+     */
+    Q_PROPERTY(bool hasAviationMapForCurrentLocation READ hasAviationMapForCurrentLocation BINDABLE bindableHasAviationMapForCurrentLocation)
+    [[nodiscard]] bool hasAviationMapForCurrentLocation() const {return m_hasAviationMapForCurrentLocation.value();}
+    [[nodiscard]] QBindable<bool> bindableHasAviationMapForCurrentLocation() {return &m_hasAviationMapForCurrentLocation;}
 
     /*! \brief Current flight route
      *
@@ -100,6 +112,7 @@ public:
      *  QML ownership has been set to QQmlEngine::CppOwnership.
      */
     Q_PROPERTY(Navigation::FlightRoute* flightRoute READ flightRoute CONSTANT)
+    [[nodiscard]] Navigation::FlightRoute* flightRoute();
 
     /*! \brief Estimate whether the device is flying or on the ground
      *
@@ -107,75 +120,16 @@ public:
      *  on the ground.
      */
     Q_PROPERTY(FlightStatus flightStatus READ flightStatus NOTIFY flightStatusChanged)
+    [[nodiscard]] FlightStatus flightStatus() const { return m_flightStatus; }
 
     /*! \brief Up-to-date information about the remaining route */
     Q_PROPERTY(Navigation::RemainingRouteInfo remainingRouteInfo READ remainingRouteInfo BINDABLE bindableRemainingRouteInfo)
+    [[nodiscard]] Navigation::RemainingRouteInfo remainingRouteInfo() const {return m_remainingRouteInfo.value();}
+    [[nodiscard]] QBindable<Navigation::RemainingRouteInfo> bindableRemainingRouteInfo() {return &m_remainingRouteInfo;}
 
     /*! \brief Current wind */
     Q_PROPERTY(Weather::Wind wind READ wind WRITE setWind NOTIFY windChanged)
-
-
-    //
-    // Getter Methods
-    //
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property aircraft
-     */
-    [[nodiscard]] Navigation::Aircraft aircraft() const { return m_aircraft.value(); }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property aircraft
-     */
-    [[nodiscard]] QBindable<Navigation::Aircraft> bindableAircraft() { return &m_aircraft; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property flightRoute
-     */
-    auto flightRoute() -> Navigation::FlightRoute*;
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property flightStatus
-     */
-    [[nodiscard]] auto flightStatus() const -> FlightStatus { return m_flightStatus; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property remaining route info
-     */
-    [[nodiscard]] Navigation::RemainingRouteInfo remainingRouteInfo() const {return m_remainingRouteInfo.value();}
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property remaining route info
-     */
-    [[nodiscard]] QBindable<Navigation::RemainingRouteInfo> bindableRemainingRouteInfo() const {return &m_remainingRouteInfo;}
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property wind
-     */
-    [[nodiscard]] auto wind() const -> Weather::Wind { return m_wind; }
-
-
-    //
-    // Setter Methods
-    //
-
-    /*! \brief Setter function for property of the same name
-     *
-     *  @param newAircraft Property aircraft
-     */
-    void setAircraft(const Navigation::Aircraft& newAircraft);
-
-    /*! \brief Setter function for property of the same name
-     *
-     *  @param newWind Property wind
-     */
+    [[nodiscard]] Weather::Wind wind() const { return m_wind; }
     void setWind(Weather::Wind newWind);
 
 signals:
@@ -214,6 +168,10 @@ private:
 
     // Updater function for the property with the same name
     void setFlightStatus(FlightStatus newFlightStatus);
+
+    QProperty<bool> m_hasAviationMapForCurrentLocation {false};
+    bool computeHasAviationMapForCurrentLocation();
+
 
     // Hysteresis for flight speed
     static constexpr auto flightSpeedHysteresis = Units::Speed::fromKN(5.0);

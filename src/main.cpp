@@ -71,7 +71,11 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Traffic::Warning>();
 
     // Required by the maplibre plugin to QtLocation
+#if defined(Q_OS_MACOS) || defined(Q_OS_IOS)
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
+#else
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
+#endif
 
 // Set up application
 #if __has_include (<QtWebView/QtWebView>)

@@ -56,6 +56,17 @@ Page {
             }
 
             ToolButton {
+                id: deleteButton
+
+                visible: waypoint.icon.indexOf("WP") !== -1
+                icon.source: "/icons/material/ic_delete.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    Navigator.flightRoute.removeWaypoint(index)
+                }
+            }
+
+            ToolButton {
                 id: editButton
 
                 visible: waypoint.icon.indexOf("WP") !== -1

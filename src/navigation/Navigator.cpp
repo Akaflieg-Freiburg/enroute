@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +23,7 @@
 
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
-#include "geomaps/GeoMapProvider.h"
+#include "dataManagement/DataManager.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 
@@ -70,6 +70,8 @@ void Navigation::Navigator::deferredInitialization()
     connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(); });
+
+    m_hasAviationMapForCurrentLocation.setBinding([this]() {return computeHasAviationMapForCurrentLocation();});
 }
 
 
@@ -357,4 +359,19 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     }
 
     m_remainingRouteInfo = rri;
+}
+
+
+bool Navigation::Navigator::computeHasAviationMapForCurrentLocation()
+{
+    auto coordinate = GlobalObject::positionProvider()->approximateLastValidCoordinate();
+    auto aviationMaps = GlobalObject::dataManager()->aviationMaps()->downloadables();
+    for(auto* map : std::as_const(aviationMaps))
+    {
+        if (map->hasFile() && map->boundingBox().contains(coordinate))
+        {
+            return true;
+        }
+    }
+    return false;
 }

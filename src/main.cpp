@@ -137,6 +137,11 @@ auto main(int argc, char *argv[]) -> int
         QCoreApplication::translate("main",
                                     "Run simulator and generate screenshots for GooglePlay"));
     parser.addOption(googlePlayScreenshotOption);
+    QCommandLineOption const macosScreenshotOption(
+        QStringLiteral("smac"),
+        QCoreApplication::translate("main", "Run simulator and generate screenshots for MacOS")
+    );
+    parser.addOption(macosScreenshotOption);
     QCommandLineOption const iosScreenshotOption(
         QStringLiteral("si"),
         QCoreApplication::translate("main", "Run simulator and generate screenshots for iOS"));
@@ -225,6 +230,11 @@ auto main(int argc, char *argv[]) -> int
         GlobalObject::demoRunner()->setEngine(engine);
         QTimer::singleShot(3s, GlobalObject::demoRunner(), &DemoRunner::generateIosScreenshots);
     }
+    if (parser.isSet(macosScreenshotOption))
+    {
+        GlobalObject::demoRunner()->setEngine(engine);
+        QTimer::singleShot(3s, GlobalObject::demoRunner(), &DemoRunner::generateMacosScreenshots);
+    }
     if (parser.isSet(manualScreenshotOption))
     {
         GlobalObject::demoRunner()->setEngine(engine);
@@ -244,3 +254,28 @@ auto main(int argc, char *argv[]) -> int
 
     return result;
 }
+
+
+#ifdef Q_OS_ANDROID
+// This is an ugly patch to disable all Android accessibility features. These
+// features are known to be buggy, and lead to sporadic, hard-to-reproduce ANRs
+// and odd behavior of the GUI.
+//
+// In principle, accessibility is disabled by the line
+//
+// > qputenv("QT_ANDROID_DISABLE_ACCESSIBILITY", "1");
+//
+// above, but it seems that this line is INOP on Qt 6.10.1. See
+//
+// > https://stackoverflow.com/questions/79857022/how-to-disable-accessibility-features-in-a-qt-app
+//
+// for details
+extern "C" {
+JNIEXPORT bool JNICALL
+Java_org_qtproject_qt_android_QtNativeAccessibility_accessibilitySupported(JNIEnv *, jobject)
+{
+    qDebug() << "DISABLE ANDROID ACCESSIBILITY FEATURES";
+    return false;
+}
+}
+#endif

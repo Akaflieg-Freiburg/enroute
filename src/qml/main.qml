@@ -32,6 +32,8 @@ AppWindow {
     id: view
     objectName: "applicationWindow"
 
+    property color accentTeal: "#008080"
+
     flags: ((Qt.platform.os === "android") || (Qt.platform.os === "ios")) ? Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint | Qt.Window : Qt.Window
 
     Component.onCompleted: {
@@ -85,7 +87,7 @@ AppWindow {
                     font.weight: Font.Medium
 
                     background: Rectangle {
-                        color: "teal"
+                        color: view.accentTeal
                     }
                 }
 
@@ -93,7 +95,7 @@ AppWindow {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 4
 
-                    color: "teal"
+                    color: view.accentTeal
                 }
 
                 Label { // Subtitle
@@ -108,7 +110,7 @@ AppWindow {
                     color: "white"
 
                     background: Rectangle {
-                        color: "teal"
+                        color: view.accentTeal
                     }
                 }
 
@@ -116,7 +118,7 @@ AppWindow {
                     Layout.preferredHeight: 18
                     Layout.fillWidth: true
 
-                    color: "teal"
+                    color: view.accentTeal
                 }
 
                 ItemDelegate { // Aircraft
@@ -212,7 +214,7 @@ AppWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: "teal"
+                    color: view.accentTeal
                 }
 
                 ItemDelegate {
@@ -803,7 +805,7 @@ AppWindow {
 
         horizontalAlignment: Text.AlignHCenter
         background: Rectangle {
-            color: "teal"
+            color: view.accentTeal
             radius: 5
         }
 
@@ -1042,4 +1044,3 @@ AppWindow {
         Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/"+pageUrl)
     }
 }
-

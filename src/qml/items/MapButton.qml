@@ -18,14 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtQuick
 import QtQuick.Controls
+import QtQuick.Effects
 
-RoundButton {
-    height: 3*font.pixelSize
+Button {
+    id: control
+
     width: 3*font.pixelSize
+    height: 3*font.pixelSize
+    padding: 0
+    topPadding: Math.round(Math.max(6, 0.75*font.pixelSize))
+    bottomPadding: 0
+    spacing: 0
 
     visible: enabled
 
     icon.height: 2*font.pixelSize
     icon.width: 2*font.pixelSize
+    icon.color: control.palette.buttonText
+    display: AbstractButton.IconOnly
+
+    background: Rectangle {
+        anchors.fill: control
+        color: control.down ? Qt.darker(control.palette.button, 1.08) : control.palette.button
+
+        layer.enabled: true
+        layer.effect: MultiEffect {
+            shadowEnabled: true
+            shadowOpacity: 0.25
+            shadowBlur: 0.35
+            shadowVerticalOffset: 1
+        }
+    }
 }

@@ -36,6 +36,8 @@ import "../dialogs"
 Item {
     id: page
 
+    property int mapBottomInset: 6
+
     enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
     property int mapBearingPolicy: MFM.NUp
     property int mapBearingRevertPolicy: MFM.NUp
@@ -695,12 +697,18 @@ Item {
 
                     // Column 1: Main Menu / Vertical Scale / ...
                     ColumnLayout {
+                        id: leftColumnContent
+
                         Layout.fillHeight: true
                         Layout.leftMargin: SafeInsets.left
+                        Layout.topMargin: SafeInsets.top
+                        implicitWidth: Math.max(menuButton.implicitWidth,
+                                                trafficDataReceiverButton.implicitWidth)
 
                         MapButton {
                             id: menuButton
 
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                             icon.source: "/icons/material/ic_menu.svg"
                             visible: !Global.currentVAC.isValid
 
@@ -711,8 +719,29 @@ Item {
                         }
 
                         MapButton {
+                            id: trafficDataReceiverButton
+
+                            icon.source: "/icons/material/ic_airplanemode_active.svg"
+                            icon.color: Material.color(Material.Red)
+
+                            enabled: !TrafficDataProvider.receivingHeartbeat || TrafficDataProvider.currentSourceIsInternetService
+                            visible: enabled
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                stackView.pop()
+                                stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+                            }
+                        }
+
+                        Item {
+                            Layout.fillHeight: true
+                        }
+
+                        MapButton {
                             id: followGPSButton
 
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                             icon.source: "/icons/material/ic_my_location.svg"
 
                             enabled: !flightMap.followGPS
@@ -725,21 +754,10 @@ Item {
                             }
                         }
 
-                        MapButton {
-                            id: trafficDataReceiverButton
-
-                            icon.source: "/icons/material/ic_airplanemode_active.svg"
-                            icon.color: "red"
-
-                            enabled: !TrafficDataProvider.receivingHeartbeat || TrafficDataProvider.currentSourceIsInternetService
-                            visible: enabled
-
-                            onClicked: {
-                                PlatformAdaptor.vibrateBrief()
-                                PlatformAdaptor.vibrateBrief()
-                                stackView.pop()
-                                stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
-                            }
+                        Item {
+                            Layout.preferredHeight: page.mapBottomInset
+                            Layout.minimumHeight: page.mapBottomInset
+                            Layout.maximumHeight: page.mapBottomInset
                         }
                     }
 
@@ -986,8 +1004,16 @@ Item {
                             }
 
                         }
+
+                        Item {
+                            Layout.preferredHeight: page.mapBottomInset
+                            Layout.minimumHeight: page.mapBottomInset
+                            Layout.maximumHeight: page.mapBottomInset
+                            visible: !showSideView.visible
+                        }
                     }
                 }
+
             }
 
             ColumnLayout {

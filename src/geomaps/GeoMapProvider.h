@@ -412,7 +412,7 @@ private:
         QList<Airspace> airspaces;
         QByteArray combinedGeoJSON;
     };
-    aviationDataCacheResult fillAviationDataCache(QStringList JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors);
+    aviationDataCacheResult fillAviationDataCache(QStringList JSONFileNames, bool hideGlidingSectors);
 
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars{QStringLiteral("[^a-zA-Z0-9]")};

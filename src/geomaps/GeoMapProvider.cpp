@@ -60,7 +60,6 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::filesChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
-    connect(GlobalObject::globalSettings(), &GlobalSettings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
     connect(GlobalObject::globalSettings(), &GlobalSettings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
 
     connect(&m_tileServer, &GeoMaps::TileServer::serverUrlChanged, this, &GeoMaps::GeoMapProvider::serverUrlChanged);
@@ -530,7 +529,8 @@ QStringList GeoMaps::GeoMapProvider::computeAvailableRasterMaps()
 void GeoMaps::GeoMapProvider::onAviationMapsChanged()
 {
     // Paranoid safety checks
-    if (_aviationDataCacheFuture.isRunning()) {
+    if (_aviationDataCacheFuture.isRunning())
+    {
         _aviationDataCacheTimer.start();
         return;
     }
@@ -558,7 +558,7 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(&GeoMaps::GeoMapProvider::fillAviationDataCache, this, JSONFileNames, GlobalObject::globalSettings()->airspaceAltitudeLimit(), GlobalObject::globalSettings()->hideGlidingSectors());
+    _aviationDataCacheFuture = QtConcurrent::run(&GeoMaps::GeoMapProvider::fillAviationDataCache, this, JSONFileNames, GlobalObject::globalSettings()->hideGlidingSectors());
     _aviationDataCacheFuture.then(this, [this](GeoMaps::GeoMapProvider::aviationDataCacheResult result) {
         m_airspaces = result.airspaces;
         if (_waypoints_ != result.waypoints)
@@ -646,11 +646,8 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     emit styleFileURLChanged();
 }
 
-GeoMaps::GeoMapProvider::aviationDataCacheResult GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)
+GeoMaps::GeoMapProvider::aviationDataCacheResult GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, bool hideGlidingSectors)
 {
-    // Avoid rounding errors
-    airspaceAltitudeLimit = airspaceAltitudeLimit-Units::Distance::fromFT(1);
-
     // Ensure that order is the same every time
     JSONFileNames.sort();
 
@@ -718,13 +715,6 @@ GeoMaps::GeoMapProvider::aviationDataCacheResult GeoMaps::GeoMapProvider::fillAv
     QJsonArray newFeatures;
     for(const auto& object : std::as_const(objectVector))
     {
-        // Ignore all objects that are airspaces and that begin above the airspaceAltitudeLimit.
-        Airspace const airspaceTest(object);
-        if (airspaceAltitudeLimit.isFinite() && (airspaceTest.estimatedLowerBoundMSL(Units::Distance::fromFT(0), Units::Pressure::fromHPa(1013.2), Units::Distance::fromFT(0), Units::Distance::fromFT(0)) > airspaceAltitudeLimit))
-        {
-            continue;
-        }
-
         // If 'hideGlidingSector' is set, ignore all objects that are airspaces
         // and that are gliding sectors
         if (hideGlidingSectors)

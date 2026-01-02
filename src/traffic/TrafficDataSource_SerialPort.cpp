@@ -53,7 +53,7 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
 #if defined(Q_OS_ANDROID)
     pollTimer.setInterval(200ms);
     pollTimer.setSingleShot(false);
-    connect(&pollTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_SerialPort::onReadyRead);
+    connect(&pollTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_SerialPort::read);
 #endif
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::serialPortsChanged, this, &Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver);
 }
@@ -63,7 +63,8 @@ Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 #if defined(Q_OS_ANDROID)
     pollTimer.stop();
     UsbSerialHelper::callStaticMethod<jboolean>("close", m_portNameOrDescription);
-#elif __has_include(<QSerialPortInfo>)
+#endif
+#if __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
         delete m_textStream;
@@ -80,40 +81,16 @@ Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 {
-#if defined(Q_OS_ANDROID)
     // Check if the connection is already open. If so, do not do anything
     // and return immediately
+#if defined(Q_OS_ANDROID)
     const bool isOpen = (bool)UsbSerialHelper::callStaticMethod<jboolean>("isOpen", m_portNameOrDescription);
     if (isOpen && errorString().isEmpty())
     {
         return;
     }
-
-    // Close old connection
-    disconnectFromTrafficReceiver();
-    setErrorString();
-
-    // Open new connection
-    auto errorString = UsbSerialHelper::callStaticMethod<jstring>("openDevice", m_portNameOrDescription).toString();
-    if (!errorString.isEmpty())
-    {
-        setErrorString(errorString);
-        return;
-    }
-
-    // Set parameters
-    errorString = UsbSerialHelper::callStaticMethod<jstring>("setParameters", m_portNameOrDescription,
-                                                             (int)m_baudRate.value(), (int)m_stopBits.value(), (int)m_flowControl.value()).toString();
-    if (!errorString.isEmpty())
-    {
-        setErrorString(errorString);
-        return;
-    }
-
-    // Start polling
-    setConnectivityStatus(tr("Connected."));
-    pollTimer.start();
-#elif __has_include(<QSerialPortInfo>)
+#endif
+#if __has_include(<QSerialPortInfo>)
     // Do not do anything if the traffic receiver is connected.
     if (m_port != nullptr)
     {
@@ -122,10 +99,40 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
             return;
         }
     }
+#endif
 
     // Close old connection
     disconnectFromTrafficReceiver();
+    setErrorString();
 
+    // Open new connection
+#if defined(Q_OS_ANDROID)
+    if ((bool)UsbSerialHelper::callStaticMethod<jboolean>("exists", m_portNameOrDescription))
+    {
+        // Open
+        auto errorString = UsbSerialHelper::callStaticMethod<jstring>("openDevice", m_portNameOrDescription).toString();
+        if (!errorString.isEmpty())
+        {
+            setErrorString(errorString);
+            return;
+        }
+
+        // Set parameters
+        errorString = UsbSerialHelper::callStaticMethod<jstring>("setParameters", m_portNameOrDescription,
+                                                                 (int)m_baudRate.value(), (int)m_stopBits.value(), (int)m_flowControl.value()).toString();
+        if (!errorString.isEmpty())
+        {
+            setErrorString(errorString);
+            return;
+        }
+
+        // Start polling
+        setConnectivityStatus(tr("Connected."));
+        pollTimer.start();
+        return;
+    }
+#endif
+#if __has_include(<QSerialPortInfo>)
     // Create and connect QSerialPort and QTextStream
     auto deviceInfos = QSerialPortInfo::availablePorts();
     foreach (auto deviceInfo, deviceInfos)
@@ -155,9 +162,9 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
     {
         setConnectivityStatus(tr("Connected."));
     }
-#else
-    setErrorString( tr("Serial ports are not supported on this platform."));
+    return;
 #endif
+    setErrorString( tr("Serial ports are not supported on this platform."));
 }
 
 void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
@@ -165,7 +172,8 @@ void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 #if defined(Q_OS_ANDROID)
     pollTimer.stop();
     UsbSerialHelper::callStaticMethod<jboolean>("close", m_portNameOrDescription);
-#elif __has_include(<QSerialPortInfo>)
+#endif
+#if __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
         delete m_textStream;
@@ -188,7 +196,7 @@ void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
     setConnectivityStatus(tr("Not connected."));
 }
 
-#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
+#if __has_include(<QSerialPortInfo>)
 void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialPortError error)
 {
     switch (error)
@@ -248,7 +256,8 @@ void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate
     m_baudRate = rate;
 #if defined(Q_OS_ANDROID)
     setParameters();
-#elif __has_include(<QSerialPortInfo>)
+#endif
+#if __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setBaudRate(rate);
@@ -261,7 +270,8 @@ void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits
     m_stopBits = sb;
 #if defined(Q_OS_ANDROID)
     setParameters();
-#elif __has_include(<QSerialPortInfo>)
+#endif
+#if __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setStopBits((QSerialPort::StopBits)sb);
@@ -274,7 +284,8 @@ void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowC
     m_flowControl = fc;
 #if defined(Q_OS_ANDROID)
     setParameters();
-#elif __has_include(<QSerialPortInfo>)
+#endif
+#if __has_include(<QSerialPortInfo>)
     if (m_port != nullptr)
     {
         m_port->setFlowControl((QSerialPort::FlowControl)fc);
@@ -282,9 +293,9 @@ void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowC
 #endif
 }
 
-void Traffic::TrafficDataSource_SerialPort::onReadyRead()
-{
 #if defined(Q_OS_ANDROID)
+void Traffic::TrafficDataSource_SerialPort::read()
+{
     const QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
     auto jResult = QJniObject::callStaticObjectMethod(
         "de/akaflieg_freiburg/enroute/UsbSerialHelper",
@@ -320,7 +331,12 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
         }
         processFLARMData(sentence);
     }
-#elif __has_include(<QSerialPortInfo>)
+}
+#endif
+
+#if __has_include(<QSerialPortInfo>)
+void Traffic::TrafficDataSource_SerialPort::onReadyRead()
+{
     if (m_textStream == nullptr)
     {
         return;
@@ -332,8 +348,8 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
         emit dataReceived(sentence);
         processFLARMData(sentence);
     }
-#endif
 }
+#endif
 
 QString Traffic::TrafficDataSource_SerialPort::sourceName() const
 {

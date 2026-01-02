@@ -109,7 +109,8 @@ public class UsbSerialHelper
 
                     // Get product name, fallback to device name
                     String deviceName = device.getProductName();
-                    if (deviceName == null || deviceName.trim().isEmpty()) {
+                    if (deviceName == null || deviceName.trim().isEmpty()) 
+                    {
                         deviceName = device.getDeviceName();
                     }
                     deviceList.add(deviceName);
@@ -133,6 +134,34 @@ public class UsbSerialHelper
         return deviceList.toArray(new String[0]);
     }
 
+    /**
+     * Checks if a USB serial device exists by device name.
+     *
+     * @param device Device name to check
+     * 
+     * @return true if device exists, false otherwise
+     */
+    public static boolean exists(String device) 
+    {
+        // Get the list of devices
+        String[] devices = listSerialDevices();
+
+        // Guard against null to prevent a NullPointerException
+        if (devices == null || device == null) 
+        {
+            return false;
+        }
+
+        // Check each device in the array
+        for (String d : devices) 
+        {
+            if (device.equals(d)) 
+            {
+                return true; // Found a match!
+            }
+        }
+        return false; // No match found after checking the whole list
+    }
 
     /**
      * Opens a USB serial connection by device path.

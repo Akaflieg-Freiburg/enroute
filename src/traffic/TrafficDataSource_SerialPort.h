@@ -145,22 +145,27 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-#if !defined(Q_OS_ANDROID) && __has_include(<QSerialPortInfo>)
+#if __has_include(<QSerialPortInfo>)
     // Handle serial port errors
     void onErrorOccurred(QSerialPort::SerialPortError error);
-#endif
 
     // Read and process received NMEA sentences
     void onReadyRead();
+#endif
+
+#if defined(Q_OS_ANDROID)
+    // Read and process received NMEA sentences
+    void read();
+#endif
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_SerialPort)
 
 #if defined(Q_OS_ANDROID)
-#warning
     QTimer pollTimer;
     void setParameters();
-#elif __has_include(<QSerialPortInfo>)
+#endif
+#if __has_include(<QSerialPortInfo>)
     QSerialPort* m_port {nullptr};
     QTextStream* m_textStream {nullptr};
 #endif

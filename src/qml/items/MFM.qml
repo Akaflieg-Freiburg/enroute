@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -659,15 +659,14 @@ Item {
                     visible: !DataManager.baseMapsRaster.hasFile
                 }
 
-                Rectangle {
+                Pane {
                     id: noMapWarningRect
 
-                    color: "white"
+                    Material.elevation: 1
                     anchors.centerIn: parent
                     width: parent.width*0.6
                     height: noMapWarning.height+20
-                    border.color: "black"
-                    visible: !DataManager.aviationMaps.hasFile
+                    visible: !Navigator.hasAviationMapForCurrentLocation
                     Label {
                         id: noMapWarning
                         anchors.centerIn: parent
@@ -675,7 +674,7 @@ Item {
                         wrapMode: Text.WordWrap
 
                         text: {
-                            var t = "<p><strong>" + qsTr("There is no aviation map installed.") + "</strong></p>"
+                            var t = "<p><strong>" + qsTr("No aviation map installed for your present location.") + "</strong></p>"
                             if (DataManager.aviationMaps.downloading)
                                 return t + "<p>" + qsTr("Please wait for the download to complete.") + "</p>"
                             return t + "<p>" + qsTr("In order to install a map, please open the menu using the menu button in the upper left corner of this screen.") + " " +

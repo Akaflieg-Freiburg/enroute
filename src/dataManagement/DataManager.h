@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -112,36 +112,42 @@ public:
      *  the GUI should yell at the user and block any attempt to download or update maps and data.
      */
     Q_PROPERTY(bool appUpdateRequired READ appUpdateRequired NOTIFY appUpdateRequiredChanged)
+    [[nodiscard]] bool appUpdateRequired() const { return m_appUpdateRequired; }
 
     /*! \brief Downloadable_MultiFile that holds all aviation maps
      *
      *  Pointer to a Downloadable_MultiFile that holds all aviation maps.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* aviationMaps READ aviationMaps CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* aviationMaps() { return &m_aviationMaps; }
 
     /*! \brief Downloadable_MultiFile that holds all base maps in raster format
      *
      *  Pointer to a Downloadable_MultiFile that holds all base maps in raster format.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* baseMapsRaster READ baseMapsRaster CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* baseMapsRaster() { return &m_baseMapsRaster; }
 
     /*! \brief Downloadable_MultiFile that holds all base maps in vector format
      *
      *  Pointer to a Downloadable_MultiFile that holds all base maps in vector format.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* baseMapsVector READ baseMapsVector CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* baseMapsVector() { return &m_baseMapsVector; }
 
     /*! \brief Downloadable_MultiFile that holds all base maps
      *
      *  Pointer to a Downloadable_MultiFile that holds all base maps.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* baseMaps READ baseMaps CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* baseMaps() { return &m_baseMaps; }
 
     /*! \brief Downloadable_MultiFile that holds all databases
      *
      *  Pointer to a Downloadable_MultiFile that holds all databases.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* databases READ databases CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* databases() { return &m_databases; }
 
     /*! \brief Downloadable_MultiFile that holds all data items
      *
@@ -149,112 +155,36 @@ public:
      *  includes aviation maps, base maps, and databases.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* items READ items CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* items() { return &m_items; }
 
     /*! \brief Downloadable_SingleFile that holds the list of all maps and databases */
     Q_PROPERTY(DataManagement::Downloadable_SingleFile* mapList READ mapList CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_SingleFile* mapList() { return &m_mapList; }
 
     /*! \brief Downloadable_MultiFile that holds all the map sets and databases */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* mapsAndData READ mapsAndData CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* mapsAndData() { return &m_mapsAndData; }
 
     /*! \brief Downloadable_MultiFile that holds all map sets
      *
      *  Pointer to a Downloadable_MultiFile that holds all map sets.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* mapSets READ mapSets CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* mapSets() { return &m_mapSets; }
 
     /*! \brief Downloadable_MultiFile that holds all terrain maps
      *
      *  Pointer to a Downloadable_MultiFile that holds all terrain maps.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* terrainMaps READ terrainMaps CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* terrainMaps() { return &m_terrainMaps; }
 
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
+    [[nodiscard]] QString whatsNew() const { return m_whatsNew; }
 
     /*! \brief Hash of the current "what's new" message */
     Q_PROPERTY(Units::ByteSize whatsNewHash READ whatsNewHash NOTIFY whatsNewChanged)
-
-
-    //
-    // Getter Methods
-    //
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property aviationMaps
-     */
-    [[nodiscard]] bool appUpdateRequired() const { return m_appUpdateRequired; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property aviationMaps
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* aviationMaps() { return &m_aviationMaps; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property baseMaps
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* baseMaps() { return &m_baseMaps; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property baseMapsRaster
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* baseMapsRaster() { return &m_baseMapsRaster; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property baseMapsVector
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* baseMapsVector() { return &m_baseMapsVector; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property databases
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* databases() { return &m_databases; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property items
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* items() { return &m_items; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property mapsList
-     */
-    [[nodiscard]] DataManagement::Downloadable_SingleFile* mapList() { return &m_mapList; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property mapsAndData
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* mapsAndData() { return &m_mapsAndData; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property mapSets
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* mapSets() { return &m_mapSets; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property terrainMaps
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* terrainMaps() { return &m_terrainMaps; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property whatsNew
-     */
-    [[nodiscard]] QString whatsNew() const { return m_whatsNew; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property lastWhatsNewHash
-     */
     [[nodiscard]] Units::ByteSize whatsNewHash() const { return qHash(m_whatsNew, 0); }
 
 

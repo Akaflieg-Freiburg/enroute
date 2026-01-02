@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022--2024 by Stefan Kebekus                            *
+ *   Copyright (C) 2022--2026 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -74,7 +74,10 @@ public:
     //
 
     /*! \brief Geographic bounding box */
-    Q_PROPERTY(QGeoRectangle boundingBox READ boundingBox WRITE setBoundingBox NOTIFY boundingBoxChanged)
+    Q_PROPERTY(QGeoRectangle boundingBox READ boundingBox WRITE setBoundingBox BINDABLE bindableBoundingBox NOTIFY boundingBoxChanged)
+    [[nodiscard]] QGeoRectangle boundingBox() const {return m_boundingBox.value();}
+    [[nodiscard]] QBindable<QGeoRectangle> bindableBoundingBox() {return &m_boundingBox;}
+    void setBoundingBox(const QGeoRectangle& boundingBox) {m_boundingBox = boundingBox;}
 
     /*! \brief Most probable content of file(s) managed by this object */
     Q_PROPERTY(DataManagement::Downloadable_Abstract::ContentType contentType READ contentType WRITE setContentType NOTIFY contentTypeChanged)
@@ -147,12 +150,6 @@ public:
 
     /*! \brief Getter method for the property with the same name
      *
-     *  @returns Property boundingBox
-     */
-    [[nodiscard]] QGeoRectangle boundingBox() const {return m_boundingBox;}
-
-    /*! \brief Getter method for the property with the same name
-     *
      *  @returns Property contentType
      */
     [[nodiscard]] DataManagement::Downloadable_Abstract::ContentType contentType() const {return m_contentType;}
@@ -203,7 +200,7 @@ public:
      *
      * @returns Property section
      */
-    [[nodiscard]] QString section() const { return m_section; }
+    [[nodiscard]] QString section() const { return m_section.value(); }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -228,12 +225,6 @@ public:
     //
     // Setter Methods
     //
-
-    /*! \brief Setter function for the property with the same name
-     *
-     * @param boundingBox Property boundingBox
-     */
-    void setBoundingBox(const QGeoRectangle& boundingBox);
 
     /*! \brief Setter function for the property with the same name
      *
@@ -334,8 +325,7 @@ protected:
 private:
     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
 
-    // Property contentType
-    QGeoRectangle m_boundingBox;
+    Q_OBJECT_BINDABLE_PROPERTY(DataManagement::Downloadable_Abstract, QGeoRectangle, m_boundingBox, &DataManagement::Downloadable_Abstract::boundingBoxChanged);
 
     // Property contentType
     ContentType m_contentType {Data};

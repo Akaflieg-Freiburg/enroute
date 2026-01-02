@@ -710,30 +710,6 @@ Item {
                             }
                         }
 
-                        Control {
-                            Layout.alignment: Qt.AlignHCenter
-                            Layout.fillHeight: true
-                            Layout.preferredWidth: 26
-
-                            Pane {
-                                Material.elevation: 1
-                                anchors.fill: parent
-                                anchors.bottomMargin: menuButton.bottomInset
-                                anchors.topMargin: menuButton.topInset
-
-                                opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-                                visible: (!Global.currentVAC.isValid) && !scale.visible
-
-                                contentItem: Scale {
-                                    anchors.fill: parent
-
-                                    color: Material.foreground
-                                    pixelPer10km: flightMap.pixelPer10km
-                                    vertical: true
-                                }
-                            }
-                        }
-
                         MapButton {
                             id: followGPSButton
 
@@ -815,46 +791,76 @@ Item {
                             Layout.fillWidth: true
                         }
 
-                        Label {
-                            id: noCopyrightInfo
-
-                            Layout.alignment: Qt.AlignRight
-
-                            visible: (!Global.currentVAC.isValid)
-                            text: "<font size='2'><a href='xx'>&nbsp;"+qsTr("ⓒ Map Data")+"&nbsp;</a></font>"
-                            opacity: 0.8
-
-                            //style: Text.Outline
-                            //styleColor: GlobalSettings.nightMode ? "black" : "white"
-                            background: Pane { opacity: GlobalSettings.nightMode ? 0.3 : 0.8 }
-                            onLinkActivated: {
-                                Global.dialogLoader.active = false
-                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
-                                                                  text: GeoMapProvider.copyrightNotice,
-                                                                  standardButtons: Dialog.Ok})
-                                Global.dialogLoader.active = true
-                            }
-                        }
-
-                        Pane {
-                            id: scale
-
-                            Material.elevation: 1
-                            Layout.bottomMargin: 14
+                        RowLayout {
                             Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignVCenter
-                            Layout.preferredHeight: 24
+                            Layout.alignment: Qt.AlignBottom
+                            Layout.bottomMargin: page.mapBottomInset
+                            visible: (!Global.currentVAC.isValid)
 
-                            opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-                            visible: (!Global.currentVAC.isValid) && (gridView.height > gridView.width)
+                            Pane {
+                                id: scale
 
-                            contentItem: Scale
-                            {
-                                anchors.fill: parent
+                                Material.elevation: 1
+                                Layout.leftMargin: 0
+                                Layout.fillWidth: false
+                                Layout.maximumWidth: gridView.width / 4
+                                Layout.preferredWidth: Layout.maximumWidth
+                                Layout.preferredHeight: 24
 
-                                color: Material.foreground
-                                pixelPer10km: flightMap.pixelPer10km
-                                vertical: false
+                                opacity: GlobalSettings.nightMode ? 0.3 : 1.0
+                                background: Rectangle {
+                                    radius: 0
+                                    color: scale.Material.background
+                                }
+
+                                contentItem: Scale
+                                {
+                                    anchors.fill: parent
+
+                                    color: Material.foreground
+                                    pixelPer10km: flightMap.pixelPer10km
+                                    vertical: false
+                                }
+                            }
+
+                            Item {
+                                Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                                Layout.bottomMargin: -2
+                                Layout.minimumHeight: Math.max(scale.implicitHeight, noCopyrightInfo.implicitHeight)
+
+                                Label {
+                                    id: noCopyrightInfo
+
+                                    anchors.right: parent.right
+                                    anchors.bottom: parent.bottom
+                                    width: implicitWidth
+                                    leftPadding: 4
+                                    rightPadding: 4
+                                    topPadding: 2
+                                    bottomPadding: 2
+                                    wrapMode: Text.NoWrap
+                                    textFormat: Text.RichText
+                                    horizontalAlignment: Text.AlignLeft
+                                    verticalAlignment: Text.AlignBottom
+
+                                    text: "<font size='2'><a href='xx'>&nbsp;"+qsTr("ⓒ Map Data")+"&nbsp;</a></font>"
+                                    opacity: 0.8
+
+                                    //style: Text.Outline
+                                    //styleColor: GlobalSettings.nightMode ? "black" : "white"
+                                    background: Rectangle {
+                                        color: scale.Material.background
+                                        opacity: GlobalSettings.nightMode ? 0.3 : 0.8
+                                    }
+                                    onLinkActivated: {
+                                        Global.dialogLoader.active = false
+                                        Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
+                                                                          text: GeoMapProvider.copyrightNotice,
+                                                                          standardButtons: Dialog.Ok})
+                                        Global.dialogLoader.active = true
+                                    }
+                                }
                             }
                         }
                     }

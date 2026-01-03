@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.x] - 2025-12-xx
+## [3.0.52] - 2026-01-02
 
 ### Added
 - Support serial port USB devices on Android (#411)

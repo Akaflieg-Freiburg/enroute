@@ -256,7 +256,7 @@ Page {
                     }
 
                     Action {
-                        text: qsTr("Serial Port")
+                        text: qsTr("Serial Port or USB")
                         enabled: (Qt.platform.os !== "ios")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()

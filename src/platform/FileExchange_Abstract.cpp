@@ -54,6 +54,10 @@ Platform::FileExchange_Abstract::FileExchange_Abstract(QObject *parent)
 
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& path)
 {
+    if (path.isEmpty())
+    {
+        return;
+    }
     processFileOpenRequest(QString::fromUtf8(path).simplified(), {});
 }
 

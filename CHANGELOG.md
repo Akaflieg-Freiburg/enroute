@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.?.?] - 2026-??-??
+
+### Fixed
+- Suppress confusing log messages
+
+
 ## [3.0.52] - 2026-01-02
 
 ### Added

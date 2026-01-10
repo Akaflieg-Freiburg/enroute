@@ -535,8 +535,8 @@ private:
      */
     void processFLARMSentence(const QString& sentence);
     // Methods interpreting specific FLARM/NMEA messages
-    void processFLARMMessageGPGGA(const QStringList& arguments); // NMEA GPS 3D-fix data
-    void processFLARMMessageGPRMC(const QStringList& arguments); // Recommended minimum specific GPS/Transit data
+    void processFLARMMessageGxGGA(const QStringList& arguments); // NMEA GPS 3D-fix data
+    void processFLARMMessageGxRMC(const QStringList& arguments); // Recommended minimum specific GPS/Transit data
     void processFLARMMessagePFLAA(const QStringList& arguments); // Data on other proximate aircraft
     void processFLARMMessagePFLAE(const QStringList& arguments); // Self-test result and errors codes
     static void processFLARMMessagePFLAS(const QStringList& arguments); // Debug Information

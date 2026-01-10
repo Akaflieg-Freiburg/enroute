@@ -165,16 +165,16 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& se
     auto messageType = arguments.takeFirst();
 
     // NMEA GPS 3D-fix data
-    if (messageType == u"GPGGA")
+    if (messageType.startsWith('G') && messageType.endsWith(u"GGA"_s))
     {
-        processFLARMMessageGPGGA(arguments);
+        processFLARMMessageGxGGA(arguments);
         return;
     }
 
     // Recommended minimum specific GPS/Transit data
-    if (messageType == u"GPRMC")
+    if (messageType.startsWith('G') && messageType.endsWith(u"RMC"_s))
     {
-        processFLARMMessageGPRMC(arguments);
+        processFLARMMessageGxRMC(arguments);
         return;
     }
 
@@ -237,7 +237,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& se
 
 
 // NMEA GPS 3D-fix data
-void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPGGA(const QStringList& arguments)
+void Traffic::TrafficDataSource_Abstract::processFLARMMessageGxGGA(const QStringList& arguments)
 {
     if (arguments.length() < 9)
     {
@@ -275,7 +275,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPGGA(const QString
 
 
 // Recommended minimum specific GPS/Transit data
-void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPRMC(const QStringList& arguments)
+void Traffic::TrafficDataSource_Abstract::processFLARMMessageGxRMC(const QStringList& arguments)
 {
     if (arguments.length() < 8)
     {
@@ -338,7 +338,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPRMC(const QString
     }
     if (groundSpeed.isFinite())
     {
-        pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, groundSpeed.toMPS() );
+        pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, groundSpeed.toMPS());
     }
 
     // Track
@@ -349,7 +349,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPRMC(const QString
     }
     if (TT != qQNaN())
     {
-        pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
+        pInfo.setAttribute(QGeoPositionInfo::Direction, TT);
     }
 
     setPositionInfo(Positioning::PositionInfo(pInfo, sourceName()));

@@ -254,43 +254,22 @@ void Traffic::TrafficDataSource_SerialPort::setParameters()
 void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate rate)
 {
     m_baudRate = rate;
-#if defined(Q_OS_ANDROID)
-    setParameters();
-#endif
-#if __has_include(<QSerialPortInfo>)
-    if (m_port != nullptr)
-    {
-        m_port->setBaudRate(rate);
-    }
-#endif
+    disconnectFromTrafficReceiver();
+    connectToTrafficReceiver();
 }
 
 void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits sb)
 {
     m_stopBits = sb;
-#if defined(Q_OS_ANDROID)
-    setParameters();
-#endif
-#if __has_include(<QSerialPortInfo>)
-    if (m_port != nullptr)
-    {
-        m_port->setStopBits((QSerialPort::StopBits)sb);
-    }
-#endif
+    disconnectFromTrafficReceiver();
+    connectToTrafficReceiver();
 }
 
 void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowControl fc)
 {
     m_flowControl = fc;
-#if defined(Q_OS_ANDROID)
-    setParameters();
-#endif
-#if __has_include(<QSerialPortInfo>)
-    if (m_port != nullptr)
-    {
-        m_port->setFlowControl((QSerialPort::FlowControl)fc);
-    }
-#endif
+    disconnectFromTrafficReceiver();
+    connectToTrafficReceiver();
 }
 
 #if defined(Q_OS_ANDROID)

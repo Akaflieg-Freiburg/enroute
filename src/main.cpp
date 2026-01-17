@@ -65,6 +65,12 @@ auto main(int argc, char *argv[]) -> int
     // Might help with ANRs under Android
     qputenv("QT_ANDROID_DISABLE_ACCESSIBILITY", "1");
 
+#if defined(Q_OS_LINUX)
+    // Silence warnings on Linux: "Failed to register with host portal", "Could not register
+    // app ID: Connection already associated with an application ID"
+    QLoggingCategory::setFilterRules(u"qt.qpa.services.warning=false"_s);
+#endif
+
     // Register types
     qRegisterMetaType<GeoMaps::Airspace>();
     qRegisterMetaType<Platform::FileExchange_Abstract::FileFunction>();
@@ -178,9 +184,12 @@ auto main(int argc, char *argv[]) -> int
     KDSingleApplication kdsingleapp;
     if (!kdsingleapp.isPrimaryInstance())
     {
-        if (!positionalArguments.empty()) {
+        if (!positionalArguments.empty())
+        {
             kdsingleapp.sendMessage(positionalArguments[0].toUtf8());
-        } else {
+        }
+        else
+        {
             kdsingleapp.sendMessage(QByteArray());
         }
         return 0;

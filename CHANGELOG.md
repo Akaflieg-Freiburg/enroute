@@ -1,13 +1,15 @@
 # Changelog
 
-## [3.0.52] - 2026-01-02
+## [3.1.0] - 2026-01-17
 
 ### Added
-- Support serial port USB devices on Android (#411)
+- Support serial port USB devices on Android (#411, #532, #537)
 
 - Support external GPS devices (#564)
 
 ### Fixed
+- Suppress confusing log messages
+
 - Make links to manual more robust (#555)
 
 - Wrong font size in scale items of moving map (#576)

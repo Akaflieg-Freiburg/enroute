@@ -188,7 +188,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_setFileR
     const char* unmingled = env->GetStringUTFChars(junmingled, nullptr);
 
     // A little complicated because GlobalObject::fileExchange() lives in a different thread
-    QMetaObject::invokeMethod( GlobalObject::fileExchange(),
+    QMetaObject::invokeMethod(GlobalObject::fileExchange(),
                               "processFileOpenRequest",
                               Qt::QueuedConnection,
                               Q_ARG( QString, QString::fromUtf8(fname)),
@@ -204,7 +204,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileR
     const char* unmingled = env->GetStringUTFChars(junmingled, nullptr);
 
     // A little complicated because GlobalObject::fileExchange() lives in a different thread
-    QMetaObject::invokeMethod( GlobalObject::fileExchange(),
+    QMetaObject::invokeMethod(GlobalObject::fileExchange(),
                               "processFileOpenRequest",
                               Qt::QueuedConnection,
                               Q_ARG( QString, QString::fromUtf8(fname)),
@@ -219,7 +219,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setTextR
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
 
     // A little complicated because GlobalObject::fileExchange() lives in a different thread
-    QMetaObject::invokeMethod( GlobalObject::fileExchange(),
+    QMetaObject::invokeMethod(GlobalObject::fileExchange(),
                               "processText",
                               Qt::QueuedConnection,
                               Q_ARG( QString, QString::fromUtf8(fname)) );

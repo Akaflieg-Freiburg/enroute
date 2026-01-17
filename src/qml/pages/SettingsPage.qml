@@ -77,7 +77,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("05-referencePages/02-settings.html")
+                openManual("forward.html#settings-page")
             }
         }
 
@@ -395,7 +395,7 @@ Page {
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
-                onClicked: openManual("02-senseAndAvoid.html")
+                onClicked: openManual("forward.html#senseandavoid")
             }
 
             WordWrappingItemDelegate {
@@ -403,7 +403,7 @@ Page {
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a flight simulator…")
-                onClicked: openManual("02-tutorialBasic/07-simulator.html")
+                onClicked: openManual("forward.html#simulator-tutorial")
             }
 
             Item { // Spacer

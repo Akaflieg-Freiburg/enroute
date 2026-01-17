@@ -120,6 +120,7 @@ private:
     qreal m_pixelPer10km {0.0};
     bool m_vertical {false};
     QColor m_color {Qt::black};
+    QFont m_font;
 };
 
 } // namespace Ui

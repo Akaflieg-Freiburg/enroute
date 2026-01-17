@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,6 +27,7 @@
 #include <QScreen>
 
 #include "platform/PlatformAdaptor_Android.h"
+#include "traffic/TrafficDataProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -55,7 +56,6 @@ auto Platform::PlatformAdaptor::currentSSID() -> QString
                                              "()Ljava/lang/String;");
     return stringObject.toString();
 }
-
 
 void Platform::PlatformAdaptor::disableScreenSaver()
 {
@@ -88,12 +88,10 @@ void Platform::PlatformAdaptor::disableScreenSaver()
     });
 }
 
-
 void Platform::PlatformAdaptor::lockWifi(bool lock)
 {
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
 }
-
 
 void Platform::PlatformAdaptor::onGUISetupCompleted()
 {
@@ -117,9 +115,35 @@ void Platform::PlatformAdaptor::openSatView(const QGeoCoordinate& coordinate)
                                                      "(Ljava/lang/String;)Z",
                                                      c.object<jstring>());
     if (!ok)
+    {
         PlatformAdaptor_Abstract::openSatView(coordinate);
+    }
 }
 
+QVector<Traffic::ConnectionInfo> Platform::PlatformAdaptor::serialPortConnectionInfos()
+{
+    QVector<Traffic::ConnectionInfo> result;
+
+    auto deviceListJNI = QJniObject::callStaticObjectMethod(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "listSerialDevices",
+        "()[Ljava/lang/String;"
+        );
+    if (deviceListJNI.isValid())
+    {
+        const QJniEnvironment env;
+        auto length = env->GetArrayLength(deviceListJNI.object<jobjectArray>());
+        for (jsize i = 0; i < length; ++i)
+        {
+            const QJniObject jString = env->GetObjectArrayElement(deviceListJNI.object<jobjectArray>(), i);
+            if (jString.isValid())
+            {
+                result += Traffic::ConnectionInfo(jString.toString());
+            }
+        }
+    }
+    return result + PlatformAdaptor_Abstract::serialPortConnectionInfos();
+}
 
 QString Platform::PlatformAdaptor::systemInfo()
 {
@@ -142,18 +166,15 @@ QString Platform::PlatformAdaptor::systemInfo()
     return result;
 }
 
-
 void Platform::PlatformAdaptor::vibrateBrief()
 {
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
 }
 
-
 void Platform::PlatformAdaptor::vibrateLong()
 {
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateLong");
 }
-
 
 
 //
@@ -176,6 +197,51 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     if (GlobalObject::canConstruct())
     {
         emit GlobalObject::platformAdaptor()->wifiConnected();
+    }
+}
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* env, jobject /*unused*/, jstring deviceName)
+{
+
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (GlobalObject::canConstruct())
+    {
+        // A little complicated because GlobalObject::fileExchange() lives in a different thread
+        const char* fname = env->GetStringUTFChars(deviceName, nullptr);
+        QMetaObject::invokeMethod(GlobalObject::trafficDataProvider(), "addDataSource", Qt::QueuedConnection,
+                                  Q_ARG( Traffic::ConnectionInfo, Traffic::ConnectionInfo(QString::fromUtf8(fname))) );
+        env->ReleaseStringUTFChars(deviceName, fname);
+
+        emit GlobalObject::platformAdaptor()->serialPortsChanged();
+    }
+
+}
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_UsbConnectionReceiver_onSerialPortConnectionsChanged(JNIEnv* /*unused*/, jobject /*unused*/)
+{
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (GlobalObject::canConstruct())
+    {
+        emit GlobalObject::platformAdaptor()->serialPortsChanged();
+    }
+}
+
+JNIEXPORT void JNICALL
+Java_de_akaflieg_1freiburg_enroute_UsbSerialHelper_onPermissionResult(JNIEnv* /*unused*/, jclass /*unused*/, jstring /*unused*/, jboolean /*unused*/)
+{
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (GlobalObject::canConstruct())
+    {
+        emit GlobalObject::platformAdaptor()->serialPortsChanged();
     }
 }
 

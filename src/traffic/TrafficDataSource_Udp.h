@@ -139,7 +139,7 @@ private:
     // We use this vector to store the last 512 datatgram hashes in a circular
     // array. This is used to sort out doubly sent datagrams. The nextHashIndex
     // points to the next vector entry that will be re-written.
-    QVector<uint> receivedDatagramHashes {512, 0};
+    QVector<size_t> receivedDatagramHashes {512, 0};
     qsizetype nextHashIndex {0};
 
     // GPS altitude of owncraft

@@ -8,7 +8,6 @@ configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qr
 configure_file(icons.qrc.in icons.qrc)
 configure_file(ressources.qrc.in ressources.qrc)
 
-
 #
 # Set up sources
 #
@@ -283,10 +282,12 @@ if(ANDROID)
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
+        android/src/de/akaflieg_freiburg/enroute/UsbSerialHelper.java
+        android/src/de/akaflieg_freiburg/enroute/UsbConnectionReceiver.java
     )
 
     # Copy manual and other files into the Android directories
-    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION android/assets)
+    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION android/assets)
     file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
     file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
@@ -304,7 +305,7 @@ if(ANDROID)
     set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
 
     # Compile definitions
-    add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
+    add_compile_definitions(MANUAL_LOCATION="/android_asset/enrouteManual")
 
     qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
     qt_import_plugins(${PROJECT_NAME}
@@ -356,7 +357,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
 
 # Compile definitions
-add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteManual")
 
 # Add executable and libraries
 qt_add_executable(${PROJECT_NAME} ${SOURCES})
@@ -394,7 +395,7 @@ target_precompile_headers(${PROJECT_NAME}
 
 # Install
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 
@@ -423,7 +424,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     )
 
     # Compile definitions
-    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteManual")
 
     # Add executable and libraries
     qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
@@ -480,75 +481,75 @@ if (IOS)
         ios/SafeAreaService.m
     )
 
-# Compile definitions
-add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteManual")
 
-# Add executable and libraries
-qt_add_executable(${PROJECT_NAME} ${SOURCES})
-set(CMAKE_MACOSX_RPATH OFF)
-qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-    Qt6::Bluetooth
-    Qt6::Concurrent
-    Qt6::Core
-    Qt6::Core5Compat
-    Qt6::HttpServer
-    Qt6::Location
-    Qt6::Positioning
-    Qt6::Quick
-    Qt6::QuickControls2
-    Qt6::Sensors
-    Qt6::Sql
-    Qt6::Svg
-    Qt6::TextToSpeech
-    Qt6::WebView
-    QMapLibre::Location
-    libzip::zip
-)
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    MACOSX_BUNDLE true
-    MACOSX_BUNDLE_GUI_IDENTIFIER ${PRODUCT_BUNDLE_IDENTIFIER}
-    XCODE_GENERATE_SCHEME ON
-    XCODE_SCHEME_LAUNCH_CONFIGURATION "Release"
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
-)
-set_source_files_properties(
-    PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-qmaplibre_location_setup_plugins(${PROJECT_NAME})
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-    ios/mapLibreDependencies
-    ios/mapLibreDependencies/optional
-    ios/mapLibreDependencies/csscolorparser
-    ios/mapLibreDependencies/parsedate
-    ios/mapLibreDependencies/nunicode/include
-)
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    set(CMAKE_MACOSX_RPATH OFF)
+    qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Bluetooth
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Location
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::QuickControls2
+        Qt6::Sensors
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::TextToSpeech
+        Qt6::WebView
+        QMapLibre::Location
+        libzip::zip
+    )
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_GUI_IDENTIFIER ${PRODUCT_BUNDLE_IDENTIFIER}
+        XCODE_GENERATE_SCHEME ON
+        XCODE_SCHEME_LAUNCH_CONFIGURATION "Release"
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+    )
+    set_source_files_properties(
+        PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    qmaplibre_location_setup_plugins(${PROJECT_NAME})
+    target_include_directories(${PROJECT_NAME}
+        PUBLIC
+        ios/mapLibreDependencies
+        ios/mapLibreDependencies/optional
+        ios/mapLibreDependencies/csscolorparser
+        ios/mapLibreDependencies/parsedate
+        ios/mapLibreDependencies/nunicode/include
+    )
 
-#Resources
-set(bundle_resources
-    "ios/Assets.xcassets"
-    "ios/de.lproj"
-    "ios/en.lproj"
-    "ios/es.lproj"
-    "ios/fr.lproj"
-    "ios/it.lproj"
-    "ios/pl.lproj"
-    ${CMAKE_SOURCE_DIR}/generatedSources/manual
-)
-target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
-set_source_files_properties(${bundle_resources} PROPERTIES
-    MACOSX_PACKAGE_LOCATION "Resources"
-)
-source_group("Resources" FILES ${bundle_resources})
+    #Resources
+    set(bundle_resources
+        "ios/Assets.xcassets"
+        "ios/de.lproj"
+        "ios/en.lproj"
+        "ios/es.lproj"
+        "ios/fr.lproj"
+        "ios/it.lproj"
+        "ios/pl.lproj"
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual
+    )
+    target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
+    set_source_files_properties(${bundle_resources} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources"
+    )
+    source_group("Resources" FILES ${bundle_resources})
 
-#Launchscreen
-set_target_properties(${PROJECT_NAME} PROPERTIES QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
+    #Launchscreen
+    set_target_properties(${PROJECT_NAME} PROPERTIES QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
 
-#Privacy Manifest
-set(privacy_manifest "${CMAKE_CURRENT_SOURCE_DIR}/ios/PrivacyInfo.xcprivacy")
-target_sources("${PROJECT_NAME}" PRIVATE "${privacy_manifest}")
-set_property(TARGET "${PROJECT_NAME}" APPEND PROPERTY RESOURCE "${privacy_manifest}")
+    #Privacy Manifest
+    set(privacy_manifest "${CMAKE_CURRENT_SOURCE_DIR}/ios/PrivacyInfo.xcprivacy")
+    target_sources("${PROJECT_NAME}" PRIVATE "${privacy_manifest}")
+    set_property(TARGET "${PROJECT_NAME}" APPEND PROPERTY RESOURCE "${privacy_manifest}")
 endif()
 
 target_include_directories(${PROJECT_NAME}
@@ -721,17 +722,14 @@ qt_add_resources(${PROJECT_NAME} translations_qt
 #
 
 if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR ((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME STREQUAL "Windows")))
-
     # Install the executable into "${CMAKE_INSTALL_PREFIX}/bin".
     install(TARGETS ${PROJECT_NAME}
         BUNDLE  DESTINATION .
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
-
 endif()
 
 if ( QTDEPLOY )
-
     # Generate the deployment script for the target MyApp.
     qt_generate_deploy_qml_app_script(
         TARGET ${PROJECT_NAME}
@@ -744,5 +742,4 @@ if ( QTDEPLOY )
 
     # Call the deployment script on "cmake --install".
     install(SCRIPT ${deploy_script})
-
 endif()

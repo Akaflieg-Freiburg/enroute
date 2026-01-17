@@ -81,7 +81,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("05-referencePages/04-infoTraffic.html")
+                openManual("forward.html#traffic-infopage")
             }
         }
     }
@@ -574,7 +574,7 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
-                onClicked: trafficReceiverPage.appWindow.openManual("02-senseAndAvoid.html")
+                onClicked: trafficReceiverPage.appWindow.openManual("forward.html#senseandavoid")
             }
 
             WordWrappingItemDelegate {
@@ -583,7 +583,7 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a flight simulator…")
-                onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/07-simulator.html")
+                onClicked: trafficReceiverPage.appWindow.openManual("forward.html#simulator-tutorial")
             }
         }
 

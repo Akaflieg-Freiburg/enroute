@@ -80,7 +80,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("05-referencePages/03-settingsDataConnections.html")
+                openManual("forward.html#settingsdataconnections-page")
             }
         }
     }
@@ -256,8 +256,8 @@ Page {
                     }
 
                     Action {
-                        text: qsTr("Serial Port")
-                        enabled: (Qt.platform.os !== "ios") && (Qt.platform.os !== "android")
+                        text: qsTr("Serial Port or USB")
+                        enabled: (Qt.platform.os !== "ios")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             addSerialPortDialog.open()

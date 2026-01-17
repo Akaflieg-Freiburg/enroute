@@ -20,6 +20,13 @@
 
 #include <QCoreApplication>
 
+#if defined(Q_OS_ANDROID)
+#include <QtCore/QJniObject>
+#include <QtCore/qjnitypes.h>
+Q_DECLARE_JNI_CLASS(UsbSerialHelper, "de/akaflieg_freiburg/enroute/UsbSerialHelper");
+using namespace QtJniTypes;
+#endif
+
 #include "GlobalObject.h"
 #include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataSource_SerialPort.h"
@@ -43,11 +50,20 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
                                        m_flowControl.value(), false);
     });
 
+#if defined(Q_OS_ANDROID)
+    pollTimer.setInterval(200ms);
+    pollTimer.setSingleShot(false);
+    connect(&pollTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_SerialPort::read);
+#endif
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::serialPortsChanged, this, &Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver);
 }
 
 Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 {
+#if defined(Q_OS_ANDROID)
+    pollTimer.stop();
+    UsbSerialHelper::callStaticMethod<jboolean>("close", m_portNameOrDescription);
+#endif
 #if __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
@@ -65,6 +81,15 @@ Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 {
+    // Check if the connection is already open. If so, do not do anything
+    // and return immediately
+#if defined(Q_OS_ANDROID)
+    const bool isOpen = (bool)UsbSerialHelper::callStaticMethod<jboolean>("isOpen", m_portNameOrDescription);
+    if (isOpen && errorString().isEmpty())
+    {
+        return;
+    }
+#endif
 #if __has_include(<QSerialPortInfo>)
     // Do not do anything if the traffic receiver is connected.
     if (m_port != nullptr)
@@ -74,10 +99,40 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
             return;
         }
     }
+#endif
 
     // Close old connection
     disconnectFromTrafficReceiver();
+    setErrorString();
 
+    // Open new connection
+#if defined(Q_OS_ANDROID)
+    if ((bool)UsbSerialHelper::callStaticMethod<jboolean>("exists", m_portNameOrDescription))
+    {
+        // Open
+        auto errorString = UsbSerialHelper::callStaticMethod<jstring>("openDevice", m_portNameOrDescription).toString();
+        if (!errorString.isEmpty())
+        {
+            setErrorString(errorString);
+            return;
+        }
+
+        // Set parameters
+        errorString = UsbSerialHelper::callStaticMethod<jstring>("setParameters", m_portNameOrDescription,
+                                                                 (int)m_baudRate.value(), (int)m_stopBits.value(), (int)m_flowControl.value()).toString();
+        if (!errorString.isEmpty())
+        {
+            setErrorString(errorString);
+            return;
+        }
+
+        // Start polling
+        setConnectivityStatus(tr("Connected."));
+        pollTimer.start();
+        return;
+    }
+#endif
+#if __has_include(<QSerialPortInfo>)
     // Create and connect QSerialPort and QTextStream
     auto deviceInfos = QSerialPortInfo::availablePorts();
     foreach (auto deviceInfo, deviceInfos)
@@ -107,13 +162,17 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
     {
         setConnectivityStatus(tr("Connected."));
     }
-#else
-    setErrorString( tr("Serial ports are not supported on this platform."));
+    return;
 #endif
+    setErrorString( tr("Serial ports are not supported on this platform."));
 }
 
 void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 {
+#if defined(Q_OS_ANDROID)
+    pollTimer.stop();
+    UsbSerialHelper::callStaticMethod<jboolean>("close", m_portNameOrDescription);
+#endif
 #if __has_include(<QSerialPortInfo>)
     if (m_textStream != nullptr)
     {
@@ -134,7 +193,6 @@ void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
         m_port = nullptr;
     }
 #endif
-
     setConnectivityStatus(tr("Not connected."));
 }
 
@@ -180,42 +238,84 @@ void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialP
 }
 #endif
 
+#if defined(Q_OS_ANDROID)
+void Traffic::TrafficDataSource_SerialPort::setParameters()
+{
+    auto errorString = UsbSerialHelper::callStaticMethod<jstring>("setParameters", m_portNameOrDescription,
+                                                                  (int)m_baudRate.value(), (int)m_stopBits.value(), (int)m_flowControl.value()).toString();
+    if (!errorString.isEmpty())
+    {
+        setErrorString(errorString);
+        disconnectFromTrafficReceiver();
+    }
+}
+#endif
+
 void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate rate)
 {
-#if __has_include(<QSerialPortInfo>)
-    if (m_port != nullptr)
-    {
-        m_port->setBaudRate(rate);
-    }
-#endif
     m_baudRate = rate;
+    disconnectFromTrafficReceiver();
+    connectToTrafficReceiver();
 }
 
 void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits sb)
 {
-#if __has_include(<QSerialPortInfo>)
-    if (m_port != nullptr)
-    {
-        m_port->setStopBits((QSerialPort::StopBits)sb);
-    }
-#endif
     m_stopBits = sb;
+    disconnectFromTrafficReceiver();
+    connectToTrafficReceiver();
 }
 
 void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowControl fc)
 {
-#if __has_include(<QSerialPortInfo>)
-    if (m_port != nullptr)
-    {
-        m_port->setFlowControl((QSerialPort::FlowControl)fc);
-    }
-#endif
     m_flowControl = fc;
+    disconnectFromTrafficReceiver();
+    connectToTrafficReceiver();
 }
 
+#if defined(Q_OS_ANDROID)
+void Traffic::TrafficDataSource_SerialPort::read()
+{
+    const QJniObject jDevicePath = QJniObject::fromString(m_portNameOrDescription);
+    auto jResult = QJniObject::callStaticObjectMethod(
+        "de/akaflieg_freiburg/enroute/UsbSerialHelper",
+        "read",
+        "(Ljava/lang/String;II)[B",
+        jDevicePath.object<jstring>(),
+        1024, 1 //maxBytes, timeoutMs
+        );
+
+    if (!jResult.isValid())
+    {
+        setErrorString(u"Exception while reading"_s);
+        disconnectFromTrafficReceiver();
+        return;
+    }
+
+    const QJniEnvironment env;
+    auto* jArray = jResult.object<jbyteArray>();
+    const jsize length = env->GetArrayLength(jArray);
+    if (length > 0)
+    {
+        QByteArray result;
+        result.resize(length);
+        env->GetByteArrayRegion(jArray, 0, length, reinterpret_cast<jbyte*>(result.data()));
+        const QString sentence = QString::fromLatin1(result);
+        for(auto& st : sentence.split('\n'))
+        {
+            st = st.trimmed();
+            if (!st.isEmpty())
+            {
+                emit dataReceived(st.trimmed());
+            }
+        }
+        processFLARMData(sentence);
+    }
+}
+#endif
+
+#if __has_include(<QSerialPortInfo>)
 void Traffic::TrafficDataSource_SerialPort::onReadyRead()
 {
-#if __has_include(<QSerialPortInfo>)
     if (m_textStream == nullptr)
     {
         return;
@@ -227,8 +327,8 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
         emit dataReceived(sentence);
         processFLARMData(sentence);
     }
-#endif
 }
+#endif
 
 QString Traffic::TrafficDataSource_SerialPort::sourceName() const
 {

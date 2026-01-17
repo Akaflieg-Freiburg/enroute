@@ -475,7 +475,8 @@ void Traffic::TrafficDataProvider::removeDataSource(Traffic::TrafficDataSource_A
     {
         return;
     }
-    if (source->canonical()) {
+    if (source->canonical())
+    {
         return;
     }
 
@@ -485,6 +486,31 @@ void Traffic::TrafficDataProvider::removeDataSource(Traffic::TrafficDataSource_A
 
     emit dataSourcesChanged();
     source->deleteLater();
+}
+
+void Traffic::TrafficDataProvider::removeDataSources()
+{
+    QList<QPointer<Traffic::TrafficDataSource_Abstract>> sourcesToDelete;
+    foreach(auto dataSource, m_dataSources.value())
+    {
+        if (dataSource.isNull())
+        {
+            continue;
+        }
+        if (dataSource->canonical())
+        {
+            continue;
+        }
+        sourcesToDelete << dataSource;
+    }
+    auto tmp = m_dataSources.value();
+    foreach(auto dataSource, sourcesToDelete)
+    {
+        tmp.removeAll(dataSource);
+        dataSource->deleteLater();
+    }
+    m_dataSources = tmp;
+    emit dataSourcesChanged();
 }
 
 void Traffic::TrafficDataProvider::resetWarning()

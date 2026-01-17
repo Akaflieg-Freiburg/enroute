@@ -30,6 +30,9 @@
 Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
+    m_font = qGuiApp->font();
+    m_font.setPointSizeF(10.0);
+
     connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &QQuickItem::update);
 }
 
@@ -79,16 +82,7 @@ void Ui::ScaleQuickItem::paint(QPainter* painter)
     int const sizeOfScaleInPix = qRound(sizeOfScaleInUnit * pixelPerUnit);
 
     // Compute size of text. Set font to somewhat smaller than standard size.
-    QFont font = painter->font();
-    if (font.pointSizeF() > 0.0)
-    {
-        font.setPointSizeF(font.pointSizeF()*0.8);
-    }
-    else
-    {
-        font.setPixelSize(qRound(font.pixelSize()*0.8));
-    }
-    painter->setFont(font);
+    painter->setFont(m_font);
     QString text;
     switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
     {

@@ -82,9 +82,9 @@ public:
 
     // Duplicated from QSerialPort, in order to make it available to QML
     enum FlowControl {
-        NoFlowControl,
-        HardwareControl,
-        SoftwareControl
+        NoFlowControl = 0,
+        HardwareControl = 1,
+        SoftwareControl = 2
     };
     Q_ENUM(FlowControl)
 

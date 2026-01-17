@@ -1,0 +1,118 @@
+- `Adobe Glyph List For New Fonts <https://github.com/adobe-type-tools/agl-aglfn>`_. BSD 3-Clause "New" or "Revised" License.
+- `Anti-aliasing rasterizer from FreeType 2 <http://www.freetype.org>`_. Freetype Project License or GNU General Public License v2.0 only.
+- `Apache Tika MimeType Definitions <https://github.com/apache/tika/tree/main/tika-core/src/main/resources/org/apache/tika/mime>`_. Apache License 2.0.
+- `BLAKE2 (reference implementation) <https://blake2.net/>`_. Creative Commons Zero v1.0 Universal or Apache License 2.0.
+- `Catch2 <https://github.com/catchorg/Catch2>`_. Boost Software License 1.0.
+- `Clip2Tri Polygon Triangulation Library <https://github.com/raptor/clip2tri>`_. MIT License.
+- `Clipper Polygon Clipping Library <https://sourceforge.net/projects/polyclipping/>`_. Boost Software License 1.0.
+- `cmake-runcmake-test-modules <https://cmake.org/>`_. BSD 3-Clause "New" or "Revised" License.
+- Cocoa Platform Plugin. BSD 3-clause "New" or "Revised" License.
+- `Cycle <http://fftw.org/>`_. MIT License.
+- `D3D12 Memory Allocator <https://github.com/GPUOpen-LibrariesAndSDKs/D3D12MemoryAllocator>`_. MIT License.
+- `Data Compression Library (zlib) <https://zlib.net/>`_. zlib License.
+- `DejaVu Fonts <https://dejavu-fonts.github.io/>`_. Bitstream Vera Font License.
+- `Earth Gravitational Model <https://earth-info.nga.mil>`_. Public Domain.
+- `Easing Equations by Robert Penner <http://robertpenner.com/easing/>`_. BSD 3-clause "New" or "Revised" License.
+- `Efficient Binary-Decimal and Decimal-Binary Conversion Routines for IEEE Doubles <https://github.com/google/double-conversion>`_. BSD 3-clause "New" or "Revised" License.
+- `Emoji Segmenter <https://github.com/google/emoji-segmenter>`_. Apache License 2.0.
+- `extra-cmake-modules <https://api.kde.org/ecm/>`_. BSD-3-Clause.
+- `fontawesome <https://github.com/FortAwesome/Font-Awesome>`_. SIL Open Font Licence 1.1.
+- forkfd. MIT License.
+- `Freetype 2 <http://www.freetype.org>`_. Freetype Project License or GNU General Public License v2.0 only.
+- `Freetype 2 - Bitmap Distribution Format (BDF) support <http://www.freetype.org>`_. MIT License.
+- `Freetype 2 - Portable Compiled Format (PCF) support <http://www.freetype.org>`_. MIT License and MIT Open Group variant.
+- `Freetype 2 - zlib <http://www.freetype.org>`_. zlib License.
+- Gear Icon. MIT License.
+- `Georama <https://github.com/productiontype/Georama>`_. SIL Open Font License 1.1.
+- `Google Fonts <https://github.com/google/fonts>`_. Apache 2 License.
+- `Google Material Icon Font <https://fonts.google.com/icons>`_. Apache Licence 2.0.
+- `Gradle wrapper <https://gradle.org>`_. Apache License 2.0.
+- `Guidelines Support Library <https://github.com/microsoft/GSL>`_. MIT License.
+- `HarfBuzz-NG <http://harfbuzz.org>`_. MIT License.
+- `JavaScriptCore Macro Assembler <https://trac.webkit.org/wiki/JavaScriptCore>`_. BSD 2-clause "Simplified" License.
+- `jQuery <https://github.com/jquery/jquery>`_. MIT License.
+- `KDAB's helper class for single-instance policy applications <https://github.com/KDAB/KDSingleApplication>`_. MIT License.
+- `KWin <https://www.kde.org/>`_. BSD 3-Clause "New" or "Revised" License.
+- `libdus-1 headers <https://www.freedesktop.org/wiki/Software/dbus/>`_. Academic Free License v2.1, or GNU General Public License v2.0 or later.
+- `LibJPEG-turbo <http://libjpeg-turbo.virtualgl.org/>`_. Independent JPEG Group License and BSD 3-Clause "New" or "Revised" License.
+- `LibPNG <http://www.libpng.org/pub/png/libpng.html>`_. libpng License and PNG Reference Library version 2.
+- `libpsl - C library to handle the Public Suffix List <https://github.com/rockdaboot/libpsl>`_. BSD 3-clause "New" or "Revised" License.
+- `libzip <https://libzip.org>`_. 3-clause BSD license.
+- `Linux Performance Events <https://www.kernel.org>`_. GNU General Public License v2.0 only with Linux Syscall Note.
+- `lunr.js <https://github.com/olivernn/lunr.js>`_. MIT License.
+- Map of Europe from Wikipedia. Creative Commons Attribution 3.0 Unported.
+- `Material Design Icons <https://github.com/google/material-design-icons>`_. Apache License.
+- `Material Sphinx Theme <https://github.com/bashtage/sphinx-material/>`_. MIT License.
+- `Material Symbols and Icons <https://fonts.google.com/icons>`_. Apache License Version 2.0.
+- MD4. Public Domain.
+- `MD4C <https://github.com/mity/md4c>`_. MIT License.
+- MD5. Public Domain.
+- `Metaf library <https://github.com/nnaumenko/metaf>`_. MIT License.
+- `Mipmap generator for D3D12 <https://github.com/microsoft/DirectX-Graphics-Samples>`_. MIT License.
+- Native Style for Android. Apache License 2.0.
+- `OpenGL ES 2 Headers <https://www.khronos.org/>`_. MIT License.
+- `OpenGL Headers <https://www.khronos.org/>`_. MIT License.
+- `openSSL library <https://www.openssl.org>`_. Apache 2 License.
+- `OSM Liberty <https://github.com/maputnik/osm-liberty>`_. BSD License.
+- `PCRE2 <http://www.pcre.org/>`_. BSD 3-clause "New" or "Revised" License with PCRE2 binary-like Packages Exception.
+- `PCRE2 - Stack-less Just-In-Time Compiler <http://www.pcre.org/>`_. BSD 2-clause "Simplified" License.
+- `Pixman <http://www.pixman.org/>`_. MIT License.
+- `Poly2Tri Polygon Triangulation Library <https://github.com/greenm01/poly2tri>`_. BSD 3-clause "New" or "Revised" License.
+- `Presentation Time Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- QEventDispatcher on macOS. BSD 3-clause "New" or "Revised" License.
+- `QHttpEngine <https://github.com/nitroshare/qhttpengine>`_. MIT License.
+- `Qt Toolkit, Libraries and Modules <https://qt.io>`_. GNU General Public License v3.0.
+- `Secure Hash Algorithm SHA-1 <http://www.dominik-reichl.de/projects/csha1/>`_. Public Domain.
+- Secure Hash Algorithm SHA-3 - brg_endian. BSD 2-clause "Simplified" License.
+- Secure Hash Algorithm SHA-3 - Keccak. Creative Commons Zero v1.0 Universal.
+- Secure Hash Algorithms SHA-384 and SHA-512. BSD 3-clause "New" or "Revised" License.
+- `Shadow values from Angular Material <https://angularjs.org/>`_. MIT License.
+- `SipHash Algorithm <https://131002.net/siphash/>`_. Creative Commons Zero v1.0 Universal.
+- Smooth Scaling Algorithm. BSD 2-clause "Simplified" License and Imlib2 License.
+- `SQLite <https://www.sqlite.org/>`_. SQLite Blessing.
+- `sRGB color profile icc file <http://www.color.org/>`_. International Color Consortium License.
+- `The Public Suffix List <http://publicsuffix.org/>`_. Mozilla Public License 2.0.
+- `TIFF Software Distribution (libtiff) <http://www.simplesystems.org/libtiff/>`_. libtiff License.
+- `TinyCBOR <https://github.com/intel/tinycbor>`_. MIT License.
+- `Titillium Web Font <https://fonts.google.com/specimen/Titillium+Web>`_. SIL OPEN FONT LICENSE Version 1.1.
+- `tl::expected <https://github.com/TartanLlama/expected/>`_. Creative Commons Zero v1.0 Universal.
+- `underscore <https://github.com/jashkenas/underscore>`_. MIT License.
+- `Unicode Character Database (UCD) <https://www.unicode.org/ucd/>`_. Unicode License Agreement - Data Files and Software (2016).
+- `Unicode Common Locale Data Repository (CLDR) <https://cldr.unicode.org/>`_. Unicode License v3.
+- `Valgrind <http://valgrind.org/>`_. BSD 4-clause "Original" or "Old" License.
+- `Vulkan API Registry <https://www.khronos.org/>`_. Apache License 2.0 or MIT License.
+- `Vulkan Memory Allocator <https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator>`_. MIT License.
+- `Wayland Color Management Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Dialog Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland EGLStream Controller Protocol <https://github.com/NVIDIA/egl-wayland>`_. MIT License.
+- `Wayland Fractional Scale Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Fullscreen Shell Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland KDE DBus Menu Protocol <https://kde.org>`_. GNU Lesser General Public License 2.1 or later.
+- `Wayland Linux Dmabuf Unstable V1 Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Pointer Gestures Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Pointer Warp Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Primary Selection Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Scaler Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Tablet Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Text Input Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Text Input Protocol v1 <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland Text Input Protocol v2 <https://wayland.freedesktop.org>`_. HPND License.
+- `Wayland Viewporter Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland XDG Foreign Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland XDG Output Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland XDG Shell Protocol <https://gitlab.freedesktop.org/wayland/wayland-protocols/>`_. MIT License.
+- `Wayland XDG System Bell Protocol <https://gitlab.freedesktop.org/wayland/wayland-protocols/>`_. MIT License.
+- `Wayland xdg-activation Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland xdg-decoration Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- `Wayland xdg-toplevel-icon Protocol <https://wayland.freedesktop.org>`_. MIT License.
+- Weather icons from the Noto Emoji collection. Apache License 2.0.
+- `WebGradients <https://webgradients.com/>`_. MIT License.
+- `WebP (libwebp) <https://developers.google.com/speed/webp/>`_. BSD 3-clause "New" or "Revised" License.
+- Wintab API. LCS-Telegraphics License.
+- `Wlr Data Control Unstable V1 Protocol <https://gitlab.freedesktop.org/wlroots/wlr-protocols/>`_. MIT License.
+- Work Sans font by Wei Huang. SIL Open Font License 1.1.
+- `X Server helper <https://www.x.org/>`_. X11 License and Historical Permission Notice and Disclaimer.
+- `XCB-XInput <https://xcb.freedesktop.org/>`_. MIT License.
+- XSVG. Historical Permission Notice and Disclaimer - sell variant.
+- `Yoga <https://www.yogalayout.dev/>`_. MIT License.

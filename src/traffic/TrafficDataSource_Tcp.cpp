@@ -81,7 +81,6 @@ void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 
 void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 {
-
     // Reset password lifecycle
     resetPasswordLifecycle();
 
@@ -90,7 +89,6 @@ void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 
     // Update properties
     onStateChanged(m_socket.state());
-
 }
 
 void Traffic::TrafficDataSource_Tcp::onReadyRead()
@@ -174,7 +172,7 @@ void Traffic::TrafficDataSource_Tcp::sendPassword_internal()
     connect(this, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnHeartbeatChange);
     connect(&m_socket, &QTcpSocket::disconnected, this, &Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnDisconnected);
 
-    m_textStream << passwordRequest_password+"\n";
+    m_textStream << passwordRequest_password + u"\n"_s;
     m_textStream.flush();
     passwordRequest_Status = waitingForDevice;
 

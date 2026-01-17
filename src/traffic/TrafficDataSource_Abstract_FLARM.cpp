@@ -19,10 +19,12 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
+#include "navigation/Atmosphere.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_Abstract.h"
 #include "traffic/TrafficFactorAircraftType.h"
+#include "units/Pressure.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -165,16 +167,16 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& se
     auto messageType = arguments.takeFirst();
 
     // NMEA GPS 3D-fix data
-    if (messageType == u"GPGGA")
+    if (messageType.startsWith('G') && messageType.endsWith(u"GGA"_s))
     {
-        processFLARMMessageGPGGA(arguments);
+        processFLARMMessageGxGGA(arguments);
         return;
     }
 
     // Recommended minimum specific GPS/Transit data
-    if (messageType == u"GPRMC")
+    if (messageType.startsWith('G') && messageType.endsWith(u"RMC"_s))
     {
-        processFLARMMessageGPRMC(arguments);
+        processFLARMMessageGxRMC(arguments);
         return;
     }
 
@@ -237,7 +239,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& se
 
 
 // NMEA GPS 3D-fix data
-void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPGGA(const QStringList& arguments)
+void Traffic::TrafficDataSource_Abstract::processFLARMMessageGxGGA(const QStringList& arguments)
 {
     if (arguments.length() < 9)
     {
@@ -275,7 +277,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPGGA(const QString
 
 
 // Recommended minimum specific GPS/Transit data
-void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPRMC(const QStringList& arguments)
+void Traffic::TrafficDataSource_Abstract::processFLARMMessageGxRMC(const QStringList& arguments)
 {
     if (arguments.length() < 8)
     {
@@ -338,7 +340,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPRMC(const QString
     }
     if (groundSpeed.isFinite())
     {
-        pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, groundSpeed.toMPS() );
+        pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, groundSpeed.toMPS());
     }
 
     // Track
@@ -349,7 +351,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPRMC(const QString
     }
     if (TT != qQNaN())
     {
-        pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
+        pInfo.setAttribute(QGeoPositionInfo::Direction, TT);
     }
 
     setPositionInfo(Positioning::PositionInfo(pInfo, sourceName()));
@@ -861,9 +863,15 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePXCV(const QStringL
         return;
     }
 
+    bool ok = false;
+
     const double vSpeed_ms = arguments[0].toDouble();
     const double OAT_degC = arguments[5].toDouble();
-    const double staticPressure_hPa = arguments[7].toDouble();
+    double staticPressure_hPa = arguments[7].toDouble(&ok);
+    if (!ok)
+    {
+        staticPressure_hPa = qQNaN();
+    }
     const double dynamicPressure_Pa = arguments[8].toDouble();
     const double rollAngle_deg = arguments[9].toDouble();
     const double pitchAgle_deg = arguments[10].toDouble();
@@ -877,4 +885,10 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePXCV(const QStringL
     qWarning() << "roll angle" << rollAngle_deg << "°";
     qWarning() << "pitch angle" << pitchAgle_deg << "°";
     qWarning() << "accel x / y / z" << accel_x << accel_y << accel_z;
+
+    auto barometricAlt = Navigation::Atmosphere::height(Units::Pressure::fromHPa(staticPressure_hPa));
+    if (barometricAlt.isFinite())
+    {
+        setPressureAltitude(barometricAlt);
+    }
 }

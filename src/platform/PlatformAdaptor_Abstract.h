@@ -25,6 +25,7 @@
 #include <QQuickItem>
 
 #include "GlobalObject.h"
+#include "traffic/ConnectionInfo.h"
 
 
 namespace Platform {
@@ -174,6 +175,12 @@ public:
      *  @param path File path where the image will be stored
      */
     Q_INVOKABLE static void saveScreenshot(const QImage& image, const QString& path);
+
+    /*! \brief Connection infos for all available serial port connections
+     *
+     *  @returns QVector with connection infos
+     */
+    virtual QVector<Traffic::ConnectionInfo> serialPortConnectionInfos();
 
 public slots:
     /*! \brief Signal handler: GUI setup completed

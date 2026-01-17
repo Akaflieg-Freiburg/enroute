@@ -18,6 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#if __has_include(<QSerialPortInfo>)
+#include <QSerialPortInfo>
+#endif
+
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QGuiApplication>
@@ -100,7 +104,7 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
     QString const updateCheckTimeStamp = QSettings()
         .value(QStringLiteral("DataManager/MapListTimeStamp"))
         .toDateTime()
-        .toString("dd-MM-yyyy hh:mm:ss t");
+        .toString(u"dd-MM-yyyy hh:mm:ss t"_s);
     result += u"<h3>Data</h3>\n"_s;
     result += u"<table>\n"_s;
     result += u"<tr></tr>\n"_s;
@@ -108,11 +112,11 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
     auto lastNotamUpdate = notamProvider()->lastUpdate();
     if (lastNotamUpdate.isValid())
     {
-        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last NOTAM download", lastNotamUpdate.toString("dd-MM-yyyy hh:mm:ss t"));
+        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last NOTAM download", lastNotamUpdate.toString(u"dd-MM-yyyy hh:mm:ss t"_s));
     }
     else
     {
-        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last NOTAM download", "NONE");
+        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last NOTAM download", u"NONE"_s);
     }
     result += u"</table><br>\n"_s;
 
@@ -129,4 +133,26 @@ QString Platform::PlatformAdaptor_Abstract::language()
 void Platform::PlatformAdaptor_Abstract::saveScreenshot(const QImage& image, const QString& path)
 {
     image.save(path);
+}
+
+QVector<Traffic::ConnectionInfo> Platform::PlatformAdaptor_Abstract::serialPortConnectionInfos()
+{
+#if __has_include(<QSerialPortInfo>)
+    QVector<Traffic::ConnectionInfo> result1;
+    QVector<Traffic::ConnectionInfo> result2;
+    auto deviceInfos = QSerialPortInfo::availablePorts();
+    foreach (auto deviceInfo, deviceInfos)
+    {
+        if (!deviceInfo.description().isEmpty())
+        {
+            result1 += Traffic::ConnectionInfo(deviceInfo.description());
+        }
+        result2 += Traffic::ConnectionInfo(deviceInfo.portName());
+    }
+    std::sort(result1.begin(), result1.end());
+    std::sort(result2.begin(), result2.end());
+    return result1 + result2;
+#else
+    return {};
+#endif
 }

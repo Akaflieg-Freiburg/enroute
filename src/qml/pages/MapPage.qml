@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -68,7 +68,6 @@ Page {
         }
     }
 
-
     Loader {
         id: mapLoader
 
@@ -77,6 +76,16 @@ Page {
 
     Component.onCompleted: {
         mapLoader.source = "../items/MFM.qml"
+    }
+
+    Connections {
+        target: GlobalSettings
+
+        function onAirspaceAltitudeLimitChanged() {
+            mapLoader.active = false
+            mapLoader.source = "../items/MFM.qml"
+            mapLoader.active = true
+        }
     }
 
     Connections {

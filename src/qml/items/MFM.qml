@@ -158,68 +158,67 @@ Item {
                             }
                         }
 
-                        onScaleChanged: (delta) => {
-                                            var newZoom = startZoomLevel+Math.log2(activeScale)
-                                            if (newZoom < flightMap.minimumZoomLevel) {
-                                                newZoom = flightMap.minimumZoomLevel
-                                            }
-                                            if (newZoom > flightMap.maximumZoomLevel) {
-                                                newZoom = flightMap.maximumZoomLevel
-                                            }
-                                            zoomLevelBehavior.enabled = false
-                                            flightMap.zoomLevel = newZoom
-                                            flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
-                                            zoomLevelBehavior.enabled = true
-                                        }
+                        onScaleChanged: function(delta) {
+                            var newZoom = startZoomLevel+Math.log2(activeScale)
+                            if (newZoom < flightMap.minimumZoomLevel) {
+                                newZoom = flightMap.minimumZoomLevel
+                            }
+                            if (newZoom > flightMap.maximumZoomLevel) {
+                                newZoom = flightMap.maximumZoomLevel
+                            }
+                            zoomLevelBehavior.enabled = false
+                            flightMap.zoomLevel = newZoom
+                            flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                            zoomLevelBehavior.enabled = true
+                        }
 
-                        onRotationChanged: (delta) => {
-                                               pinch.rawBearing -= delta
+                        onRotationChanged: function(delta) {
+                            pinch.rawBearing -= delta
 
-                                               if (page.mapBearingPolicy === MFM.UserDefinedBearingUp)
-                                               {
-                                                   // snap to 0° if we're close enough
-                                                   bearingBehavior.enabled = false
-                                                   flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
-                                                   flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
-                                                   bearingBehavior.enabled = true
-                                                   return
-                                               }
+                            if (page.mapBearingPolicy === MFM.UserDefinedBearingUp)
+                            {
+                                // snap to 0° if we're close enough
+                                bearingBehavior.enabled = false
+                                flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
+                                flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                                bearingBehavior.enabled = true
+                                return
+                            }
 
-                                               if (Math.abs(pinch.rawBearing-pinch.startBearing) > 20)
-                                               {
-                                                   page.mapBearingPolicy = MFM.UserDefinedBearingUp
-                                               }
-                                           }
+                            if (Math.abs(pinch.rawBearing-pinch.startBearing) > 20)
+                            {
+                                page.mapBearingPolicy = MFM.UserDefinedBearingUp
+                            }
+                        }
                     }
 
                     WheelHandler {
                         id: wheel
                         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-                        onWheel: (event) => {
-                                     const loc = flightMap.toCoordinate(wheel.point.position)
-                                     if (event.modifiers === Qt.NoModifier)
-                                     {
-                                         zoomLevelBehavior.enabled = false
-                                         var newZoom = flightMap.zoomLevel + event.angleDelta.y / 240
-                                         if (newZoom < flightMap.minimumZoomLevel) {
-                                             newZoom = flightMap.minimumZoomLevel
-                                         }
-                                         if (newZoom > flightMap.maximumZoomLevel) {
-                                             newZoom = flightMap.maximumZoomLevel
-                                         }
-                                         flightMap.zoomLevel = newZoom
-                                         //flightMap.zoomLevel += event.angleDelta.y / 240
-                                         zoomLevelBehavior.enabled = true
-                                     }
-                                     else
-                                     {
-                                         bearingBehavior.enabled = false
-                                         flightMap.bearing += event.angleDelta.y / 5
-                                         bearingBehavior.enabled = true
-                                     }
-                                     flightMap.followGPS = false;
-                                     flightMap.alignCoordinateToPoint(loc, wheel.point.position)
-                                 }
+                        onWheel: function(event) {
+                            const loc = flightMap.toCoordinate(wheel.point.position)
+                            if (event.modifiers === Qt.NoModifier)
+                            {
+                                zoomLevelBehavior.enabled = false
+                                var newZoom = flightMap.zoomLevel + event.angleDelta.y / 240
+                                if (newZoom < flightMap.minimumZoomLevel) {
+                                    newZoom = flightMap.minimumZoomLevel
+                                }
+                                if (newZoom > flightMap.maximumZoomLevel) {
+                                    newZoom = flightMap.maximumZoomLevel
+                                }
+                                flightMap.zoomLevel = newZoom
+                                zoomLevelBehavior.enabled = true
+                            }
+                            else
+                            {
+                                bearingBehavior.enabled = false
+                                flightMap.bearing += event.angleDelta.y / 5
+                                bearingBehavior.enabled = true
+                            }
+                            flightMap.followGPS = false;
+                            flightMap.alignCoordinateToPoint(loc, wheel.point.position)
+                        }
                     }
 
                     DragHandler {
@@ -229,13 +228,13 @@ Item {
                         // Work around https://bugreports.qt.io/browse/QTBUG-87815
                         enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
 
-                        onActiveTranslationChanged: (delta) => {
-                                                        if (delta === activeTranslation)
-                                                        {
-                                                            return;
-                                                        }
-                                                        flightMap.pan(-delta.x, -delta.y)
-                                                    }
+                        onActiveTranslationChanged: function(delta) {
+                            if (delta === activeTranslation)
+                            {
+                                return;
+                            }
+                            flightMap.pan(-delta.x, -delta.y)
+                        }
 
                         onActiveChanged: {
                             if (active)
@@ -248,6 +247,44 @@ Item {
                             }
                         }
                     }
+
+                    TapHandler {
+                        // We used to use a MouseArea instead of a tap handler, but that
+                        // triggered a host of bugs in Qt 6.4.2…
+                        onDoubleTapped: {
+                            if (!gridView.contains(point.position))
+                                return
+
+                            PlatformAdaptor.vibrateBrief()
+                            var pos = point.position
+                            var posTr = Qt.point(pos.x+25,pos.y)
+
+                            var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
+                                                                    flightMap.toCoordinate(posTr))
+                            if (!wp.isValid)
+                                return
+                            waypointDescription.waypoint = wp
+                            waypointDescription.open()
+                        }
+
+                        onLongPressed: {
+                            if (!gridView.contains(point.position))
+                                return
+
+                            PlatformAdaptor.vibrateBrief()
+                            var pos = point.position
+                            var posTr = Qt.point(pos.x+25,pos.y)
+
+                            var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
+                                                                    flightMap.toCoordinate(posTr))
+                            if (!wp.isValid)
+                                return
+
+                            waypointDescription.waypoint = wp
+                            waypointDescription.open()
+                        }
+                    }
+
 
                     Shortcut {
                         enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
@@ -293,9 +330,9 @@ Item {
                     property var centerCoordinate: {
                         // If not in flight, then aircraft stays in center of display
                         if (Navigator.flightStatus !== Navigator.Flight)
-                            return ownPosition.coordinate
+                            return PositionProvider.lastValidCoordinate
                         if (!PositionProvider.lastValidTT.isFinite())
-                            return ownPosition.coordinate
+                            return PositionProvider.lastValidCoordinate
 
                         // Otherwise, we position the aircraft someplace on a circle around the
                         // center, so that the map shows a larger portion of the airspace ahead
@@ -305,7 +342,7 @@ Item {
                         const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0 - 2*font.pixelSize)
                         const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
-                        return ownPosition.coordinate.atDistanceAndAzimuth(radiusInM, animatedTrack)
+                        return PositionProvider.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, animatedTrack)
                     }
 
                     onCenterCoordinateChanged: {
@@ -369,268 +406,6 @@ Item {
                             flightMap.zoomLevel = 11
                             flightMap.alignCoordinateToPoint(Global.currentVAC.center, flightMap.centerPoint)
                             zoomLevelBehavior.enabled = true
-                        }
-                    }
-
-
-                    // ADDITINAL MAP ITEMS
-                    MapCircle { // Circle for nondirectional traffic warning
-                        center: PositionProvider.lastValidCoordinate
-
-                        radius: Math.max(500, TrafficDataProvider.trafficObjectWithoutPosition.hDist.toM())
-                        Behavior on radius {
-                            NumberAnimation { duration: 1000 }
-                            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
-                        }
-
-                        color: TrafficDataProvider.trafficObjectWithoutPosition.color
-                        Behavior on color {
-                            ColorAnimation { duration: 400 }
-                            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
-                        }
-                        opacity: 0.1
-                        visible: TrafficDataProvider.trafficObjectWithoutPosition.relevant
-                    }
-
-                    MapQuickItem {
-                        id: mapCircleLabel
-
-                        property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
-
-                        coordinate: PositionProvider.lastValidCoordinate
-                        Behavior on coordinate {
-                            CoordinateAnimation { duration: 1000 }
-                            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
-                        }
-
-                        visible: TrafficDataProvider.trafficObjectWithoutPosition.relevant
-
-                        Connections {
-                            // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
-                            // is not updated when the height of the map changes. It does get updated when the
-                            // width of the map changes. We use the undocumented method polishAndUpdate() here.
-                            target: flightMap
-                            function onHeightChanged() { mapCircleLabel.polishAndUpdate() }
-                        }
-
-                        Control { id: fontGlean }
-
-                        sourceItem: Label {
-                            id: lbl
-
-                            x: -width/2
-                            y: mapCircleLabel.distFromCenter - height/2
-
-                            text: TrafficDataProvider.trafficObjectWithoutPosition.description
-                            textFormat: Text.RichText
-
-                            font.pixelSize: 0.8*fontGlean.font.pixelSize
-
-                            leftInset: -4
-                            rightInset: -4
-                            bottomInset: -1
-                            topInset: -2
-
-                            background: Rectangle {
-                                border.color: "black"
-                                border.width: 1
-                                color: Qt.lighter(TrafficDataProvider.trafficObjectWithoutPosition.color, 1.9)
-
-                                Behavior on color {
-                                    ColorAnimation { duration: 400 }
-                                    enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
-                                }
-                                radius: 4
-                            }
-                        }
-                    }
-
-                    MapItemView { // Labels for traffic opponents
-                        model: TrafficDataProvider.trafficObjects
-                        delegate: Component {
-                            TrafficLabel {
-                                trafficInfo: modelData
-                            }
-                        }
-                    }
-
-                    MapPolyline {
-                        id: flightPath
-                        line.width: 4
-                        line.color: "#ff00ff"
-                        path: {
-                            var array = []
-                            //Looks weird, but is necessary. geoPath is an 'object' not an array
-                            Navigator.flightRoute.geoPath.forEach(element => array.push(element))
-                            return array
-                        }
-                    }
-
-                    MapPolyline {
-                        id: toNextWP
-                        visible: PositionProvider.lastValidCoordinate.isValid &&
-                                 (Navigator.remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
-                        line.width: 2
-                        line.color: 'darkred'
-                        path: visible ? [PositionProvider.lastValidCoordinate, Navigator.remainingRouteInfo.nextWP.coordinate] : []
-                    }
-
-                    MapQuickItem {
-                        id: ownPosition
-
-                        coordinate: PositionProvider.lastValidCoordinate
-                        Behavior on coordinate { CoordinateAnimation { duration: 1000 } }
-
-                        Connections {
-                            // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
-                            // is not updated when the height of the map changes. It does get updated when the
-                            // width of the map changes. We use the undocumented method polishAndUpdate() here.
-                            target: flightMap
-                            function onHeightChanged() { ownPosition.polishAndUpdate() }
-                        }
-
-                        sourceItem: Item {
-
-                            rotation: flightMap.animatedTrack-flightMap.bearing
-
-                            FlightVector {
-                                pixelPerTenKM: flightMap.pixelPer10km
-                                groundSpeedInMetersPerSecond: PositionProvider.positionInfo.groundSpeed().toMPS()
-                                visible: {
-                                    if (!PositionProvider.positionInfo.trueTrack().isFinite())
-                                        return false
-                                    if (!PositionProvider.positionInfo.groundSpeed().isFinite())
-                                        return false
-                                    if (PositionProvider.positionInfo.groundSpeed().toMPS() < 2.0)
-                                        return false
-                                    return true
-                                }
-                            }
-
-                            Image {
-                                id: imageOP
-
-                                x: -width/2.0
-                                y: -height/2.0
-
-                                source: {
-                                    var pInfo = PositionProvider.positionInfo
-
-                                    if (!pInfo.isValid()) {
-                                        return "/icons/self-noPosition.svg"
-                                    }
-                                    if (!pInfo.trueTrack().isFinite()) {
-                                        return "/icons/self-noDirection.svg"
-                                    }
-
-                                    return "/icons/self-withDirection.svg"
-                                }
-
-                                sourceSize.width: 50
-                                sourceSize.height: 50
-                            }
-                        }
-                    }
-
-                    MapItemView { // Traffic opponents
-                        model: TrafficDataProvider.trafficObjects
-                        delegate: Component {
-                            Traffic {
-                                map: flightMap
-                                trafficInfo: modelData
-                            }
-                        }
-                    }
-
-                    Component {
-                        id: waypointComponent
-
-                        MapQuickItem {
-                            id: midFieldWP
-
-                            anchorPoint.x: image.width/2
-                            anchorPoint.y: image.height/2
-                            coordinate: model.modelData.coordinate
-
-                            Connections {
-                                // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
-                                // is not updated when the height of the map changes. It does get updated when the
-                                // width of the map changes. We use the undocumented method polishAndUpdate() here.
-                                target: flightMap
-                                function onHeightChanged() { midFieldWP.polishAndUpdate() }
-                            }
-
-                            sourceItem: Item{
-                                Image {
-                                    id: image
-
-                                    source:  "/icons/waypoints/WP-map.svg"
-                                    sourceSize.width: 10
-                                    sourceSize.height: 10
-                                }
-                                Label {
-                                    anchors.verticalCenter: image.verticalCenter
-                                    anchors.left: image.right
-                                    anchors.leftMargin: 5
-                                    text: model.modelData.extendedName
-                                    color: "black" // Always black, independent of dark/light mode
-                                    visible: (flightMap.zoomLevel > 11.0) && (model.modelData.extendedName !== "Waypoint")
-                                    leftInset: -4
-                                    rightInset: -4
-                                    topInset: -2
-                                    bottomInset: -2
-                                    background: Rectangle {
-                                        opacity: 0.8
-                                        border.color: "black"
-                                        border.width: 0.5
-                                        color: "white"
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
-                    MapItemView {
-                        id: midFieldWaypoints
-                        model: Navigator.flightRoute.midFieldWaypoints
-                        delegate: waypointComponent
-                    }
-
-                    TapHandler {
-                        // We used to use a MouseArea instead of a tap handler, but that
-                        // triggered a host of bugs in Qt 6.4.2…
-                        onDoubleTapped: {
-                            if (!gridView.contains(point.position))
-                                return
-
-                            PlatformAdaptor.vibrateBrief()
-                            var pos = point.position
-                            var posTr = Qt.point(pos.x+25,pos.y)
-
-                            var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
-                                                                    flightMap.toCoordinate(posTr))
-                            if (!wp.isValid)
-                                return
-                            waypointDescription.waypoint = wp
-                            waypointDescription.open()
-                        }
-
-                        onLongPressed: {
-                            if (!gridView.contains(point.position))
-                                return
-
-                            PlatformAdaptor.vibrateBrief()
-                            var pos = point.position
-                            var posTr = Qt.point(pos.x+25,pos.y)
-
-                            var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
-                                                                    flightMap.toCoordinate(posTr))
-                            if (!wp.isValid)
-                                return
-
-                            waypointDescription.waypoint = wp
-                            waypointDescription.open()
                         }
                     }
 

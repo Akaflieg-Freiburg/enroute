@@ -350,6 +350,38 @@ void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& waypoint)
     m_waypoints = newWaypoints;
 }
 
+void Navigation::FlightRoute::insertAt(int idx, const GeoMaps::Waypoint& waypoint)
+{
+    if (!canInsert(waypoint))
+    {
+        return;
+    }
+
+    insertAtInternal(idx, waypoint);
+}
+
+void Navigation::FlightRoute::insertAtInternal(int idx, const GeoMaps::Waypoint& waypoint)
+{
+    auto newWaypoints = m_waypoints.value();
+    if ((idx < 0) || (idx > newWaypoints.size()))
+    {
+        return;
+    }
+
+    newWaypoints.insert(idx, waypoint);
+    m_waypoints = newWaypoints;
+}
+
+void Navigation::FlightRoute::insertAtAllowNear(int idx, const GeoMaps::Waypoint& waypoint)
+{
+    if (!waypoint.isValid())
+    {
+        return;
+    }
+
+    insertAtInternal(idx, waypoint);
+}
+
 auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) const -> qsizetype
 {
     for(auto i=m_waypoints.value().size()-1; i>=0; i--)

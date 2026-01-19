@@ -266,6 +266,31 @@ namespace Navigation
          */
         Q_INVOKABLE void insert(const GeoMaps::Waypoint& waypoint);
 
+        /*! \brief Inserts a waypoint into the route at a specific index
+         *
+         *  Inserts the waypoint into the route at the given index. If canInsert()
+         *  is false, this method does nothing.
+         *
+         *  @param idx Index at which to insert the waypoint
+         *  @param waypoint Waypoint to be inserted
+         *
+         *  @note If idx is out of bounds, this method does nothing.
+         */
+        Q_INVOKABLE void insertAt(int idx, const GeoMaps::Waypoint& waypoint);
+
+        /*! \brief Inserts a waypoint into the route at a specific index (no proximity check)
+         *
+         *  Inserts the waypoint into the route at the given index without checking
+         *  for proximity to existing waypoints. Intended for manual route editing.
+         *  This method bypasses canInsert().
+         *
+         *  @param idx Index at which to insert the waypoint
+         *  @param waypoint Waypoint to be inserted
+         *
+         *  @note If idx is out of bounds, this method does nothing.
+         */
+        Q_INVOKABLE void insertAtAllowNear(int idx, const GeoMaps::Waypoint& waypoint);
+
         /*! \brief Index for last occurrence of the waypoint in the flight route
          *
          *  This method finds the index position of the last waypoint in the
@@ -415,6 +440,7 @@ namespace Navigation
 
         // Helper function for method toGPX
         [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
+        void insertAtInternal(int idx, const GeoMaps::Waypoint& waypoint);
 
         QProperty<QList<QGeoCoordinate>> m_geoPath;
         QList<QGeoCoordinate> computeGeoPath();

@@ -39,6 +39,11 @@ Item {
     enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
     property int mapBearingPolicy: MFM.NUp
     property int mapBearingRevertPolicy: MFM.NUp
+    property bool routeWaypointDragActive: false
+    property int selectedRouteWaypointIndex: -1
+    property int routeDragPreviewIndex: -1
+    property var routeDragPreviewCoordinate: QtPositioning.coordinate()
+    property bool mapLongPressActive: false
     onMapBearingPolicyChanged: {
         if (mapBearingPolicy != MFM.UserDefinedBearingUp)
         {
@@ -225,9 +230,13 @@ Item {
                     DragHandler {
                         id: drag
                         target: null
+                        grabPermissions: PointerHandler.ApprovesTakeOverByAnything
 
                         // Work around https://bugreports.qt.io/browse/QTBUG-87815
-                        enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
+                        enabled: !page.routeWaypointDragActive
+                                 && !waypointDescription.visible
+                                 && !Global.drawer.opened
+                                 && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
 
                         onActiveTranslationChanged: (delta) => {
                                                         if (delta === activeTranslation)
@@ -454,7 +463,7 @@ Item {
                         }
                     }
 
-                    MapPolyline {
+                        MapPolyline {
                         id: flightPath
                         line.width: 4
                         line.color: "#ff00ff"
@@ -462,6 +471,9 @@ Item {
                             var array = []
                             //Looks weird, but is necessary. geoPath is an 'object' not an array
                             Navigator.flightRoute.geoPath.forEach(element => array.push(element))
+                            if (page.routeDragPreviewIndex >= 0 && page.routeDragPreviewIndex < array.length) {
+                                array[page.routeDragPreviewIndex] = page.routeDragPreviewCoordinate
+                            }
                             return array
                         }
                     }
@@ -542,15 +554,74 @@ Item {
                         }
                     }
 
+                    function distancePointToSegment(point, segmentStart, segmentEnd) {
+                        var vx = segmentEnd.x - segmentStart.x
+                        var vy = segmentEnd.y - segmentStart.y
+                        var wx = point.x - segmentStart.x
+                        var wy = point.y - segmentStart.y
+                        var c1 = vx*wx + vy*wy
+                        if (c1 <= 0) {
+                            return Math.hypot(point.x - segmentStart.x, point.y - segmentStart.y)
+                        }
+                        var c2 = vx*vx + vy*vy
+                        if (c2 <= c1) {
+                            return Math.hypot(point.x - segmentEnd.x, point.y - segmentEnd.y)
+                        }
+                        var b = c1 / c2
+                        var pbx = segmentStart.x + b*vx
+                        var pby = segmentStart.y + b*vy
+                        return Math.hypot(point.x - pbx, point.y - pby)
+                    }
+
+                    function routeInsertIndex(screenPos) {
+                        var path = Navigator.flightRoute.geoPath
+                        if (!path || path.length < 2) {
+                            return -1
+                        }
+                        var thresholdPx = 80
+                        var bestIndex = -1
+                        var bestDistance = 1e9
+                        for (var i = 0; i < path.length - 1; i++) {
+                            var a = flightMap.fromCoordinate(path[i], false)
+                            var b = flightMap.fromCoordinate(path[i+1], false)
+                            var distance = distancePointToSegment(screenPos, a, b)
+                            if (distance < bestDistance) {
+                                bestDistance = distance
+                                bestIndex = i + 1
+                            }
+                        }
+                        return (bestDistance <= thresholdPx) ? bestIndex : -1
+                    }
+
+                    function insertWaypointAtScreenPos(screenPos) {
+                        var insertIndex = routeInsertIndex(screenPos)
+                        if (insertIndex < 0) {
+                            return false
+                        }
+                        var wp = GeoMapProvider.createWaypoint()
+                        wp.coordinate = flightMap.toCoordinate(screenPos, false)
+                        Navigator.flightRoute.insertAtAllowNear(insertIndex, wp)
+                        return true
+                    }
+
+                    function removeSelectedRouteWaypoint() {
+                        if (page.selectedRouteWaypointIndex < 0)
+                            return
+                        Navigator.flightRoute.removeWaypoint(page.selectedRouteWaypointIndex)
+                        page.selectedRouteWaypointIndex = -1
+                    }
+
+
                     Component {
                         id: waypointComponent
 
                         MapQuickItem {
                             id: midFieldWP
 
-                            anchorPoint.x: image.width/2
-                            anchorPoint.y: image.height/2
+                            anchorPoint.x: 14
+                            anchorPoint.y: 14
                             coordinate: model.modelData.coordinate
+                            property int routeIndex: -1
 
                             Connections {
                                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -560,13 +631,88 @@ Item {
                                 function onHeightChanged() { midFieldWP.polishAndUpdate() }
                             }
 
+                            MouseArea {
+                                id: waypointDragArea
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                preventStealing: true
+                                enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
+                                cursorShape: Qt.OpenHandCursor
+                                acceptedButtons: Qt.LeftButton
+
+                                onPressed: function(mouse) {
+                                    flightMap.followGPS = false
+                                    page.routeWaypointDragActive = true
+                                    midFieldWP.routeIndex = Navigator.flightRoute.lastIndexOf(model.modelData)
+                                    page.selectedRouteWaypointIndex = midFieldWP.routeIndex
+                                    page.routeDragPreviewIndex = midFieldWP.routeIndex
+                                    page.routeDragPreviewCoordinate = QtPositioning.coordinate(midFieldWP.coordinate.latitude,
+                                                                                               midFieldWP.coordinate.longitude,
+                                                                                               midFieldWP.coordinate.altitude)
+                                }
+
+                                onPositionChanged: function(mouse) {
+                                    if (!pressed)
+                                        return
+                                    var mapPoint = flightMap.mapFromItem(waypointDragArea, Qt.point(mouse.x, mouse.y))
+                                    midFieldWP.coordinate = flightMap.toCoordinate(mapPoint, false)
+                                    page.routeDragPreviewCoordinate = QtPositioning.coordinate(midFieldWP.coordinate.latitude,
+                                                                                               midFieldWP.coordinate.longitude,
+                                                                                               midFieldWP.coordinate.altitude)
+                                }
+
+                                onReleased: {
+                                    page.routeWaypointDragActive = false
+                                    page.routeDragPreviewIndex = -1
+                                    if (midFieldWP.routeIndex < 0)
+                                        return
+                                    var updatedWP = model.modelData.copy()
+                                    updatedWP.coordinate = midFieldWP.coordinate
+                                    Navigator.flightRoute.replaceWaypoint(midFieldWP.routeIndex, updatedWP)
+                                    midFieldWP.routeIndex = -1
+                                }
+                            }
+
+                            TapHandler {
+                                acceptedButtons: Qt.RightButton
+                                onTapped: {
+                                    page.selectedRouteWaypointIndex = Navigator.flightRoute.lastIndexOf(model.modelData)
+                                    waypointContextMenu.popup()
+                                }
+                            }
+
+                            TapHandler {
+                                onLongPressed: {
+                                    page.selectedRouteWaypointIndex = Navigator.flightRoute.lastIndexOf(model.modelData)
+                                    waypointContextMenu.popup()
+                                }
+                            }
+
                             sourceItem: Item{
+                                width: 28
+                                height: 28
+
+                                Rectangle {
+                                    width: 22
+                                    height: 22
+                                    radius: width/2
+                                    color: page.selectedRouteWaypointIndex === Navigator.flightRoute.lastIndexOf(model.modelData) ? "#ffe3f0" : "white"
+                                    border.color: "#ff00ff"
+                                    border.width: 2
+                                    anchors.centerIn: parent
+                                }
                                 Image {
                                     id: image
 
+                                    anchors.centerIn: parent
                                     source:  "/icons/waypoints/WP-map.svg"
-                                    sourceSize.width: 10
-                                    sourceSize.height: 10
+                                    sourceSize.width: 16
+                                    sourceSize.height: 16
+                                }
+                                ColorOverlay {
+                                    anchors.fill: image
+                                    source: image
+                                    color: "#ff00ff"
                                 }
                                 Label {
                                     anchors.verticalCenter: image.verticalCenter
@@ -591,6 +737,15 @@ Item {
 
                     }
 
+                    Menu {
+                        id: waypointContextMenu
+
+                        MenuItem {
+                            text: qsTr("Remove waypoint")
+                            onTriggered: flightMap.removeSelectedRouteWaypoint()
+                        }
+                    }
+
                     MapItemView {
                         id: midFieldWaypoints
                         model: Navigator.flightRoute.midFieldWaypoints
@@ -600,6 +755,21 @@ Item {
                     TapHandler {
                         // We used to use a MouseArea instead of a tap handler, but that
                         // triggered a host of bugs in Qt 6.4.2…
+                        onTapped: {
+                            if (point.tapCount > 1)
+                                return
+                            if (!gridView.contains(point.position))
+                                return
+                            if (page.mapLongPressActive) {
+                                page.mapLongPressActive = false
+                                return
+                            }
+                            if (!waypointDescription.visible && flightMap.insertWaypointAtScreenPos(point.position)) {
+                                PlatformAdaptor.vibrateBrief()
+                                return
+                            }
+                        }
+
                         onDoubleTapped: {
                             if (!gridView.contains(point.position))
                                 return
@@ -621,6 +791,7 @@ Item {
                                 return
 
                             PlatformAdaptor.vibrateBrief()
+                            page.mapLongPressActive = true
                             var pos = point.position
                             var posTr = Qt.point(pos.x+25,pos.y)
 
@@ -632,6 +803,12 @@ Item {
                             waypointDescription.waypoint = wp
                             waypointDescription.open()
                         }
+                    }
+
+                    Shortcut {
+                        enabled: page.selectedRouteWaypointIndex >= 0
+                        sequences: [StandardKey.Delete]
+                        onActivated: flightMap.removeSelectedRouteWaypoint()
                     }
 
                     // On completion, re-consider the binding of the property bearing

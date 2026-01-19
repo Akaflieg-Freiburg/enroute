@@ -23,7 +23,7 @@ import QtQml
 import QtQuick
 import QtQuick.Controls
 
-import MapLibre 3.0
+import MapLibre.Location 4.0
 import akaflieg_freiburg.enroute
 
 Map {
@@ -404,6 +404,7 @@ Map {
             layout: {
                 "icon-ignore-placement": true,
                 "icon-image": ["get", "CAT"],
+                "icon-size": 1.4,
                 "text-field": ["get", "NAM"],
                 "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",

@@ -61,11 +61,28 @@ Item {
     }
 
     Settings {
+        id: settings
+
         category: "MovingMap"
         property alias mapBearingPolicy: page.mapBearingPolicy
         property alias mapBearingRevertPolicy: page.mapBearingRevertPolicy
+        property alias mapFollowGPSPolicy: flightMap.followGPS
+        property var mapZoomLevel
+        property var mapBearing
     }
 
+    Component.onCompleted: {
+        if (settings.mapZoomLevel !== undefined)
+            flightMap.zoomLevel = settings.mapZoomLevel
+        if (settings.mapBearing !== undefined)
+            flightMap.bearing = settings.mapBearing
+    }
+    Component.onDestruction: {
+        settings.mapZoomLevel = flightMap.zoomLevel
+        settings.mapBearing = flightMap.bearing
+    }
+
+    /*
     Component.onCompleted: splitView.restoreState(settings.splitView)
     Component.onDestruction: settings.splitView = splitView.saveState()
 
@@ -73,6 +90,7 @@ Item {
         id: settings
         property var splitView
     }
+    */
 
     ColumnLayout {
         anchors.fill: parent
@@ -556,14 +574,13 @@ Item {
                             Layout.maximumWidth: col2.width
                             Layout.topMargin: 14
 
-                            visible: (!Global.currentVAC.isValid) && !DataManager.baseMapsRaster.hasFile && (text !== "")
+                            visible: text !== ""
                             wrapMode: Text.WordWrap
 
                             text: {
                                 var resultList = []
 
-                                if (GlobalSettings.airspaceAltitudeLimit.isFinite())
-                                {
+                                if ((!Global.currentVAC.isValid) && (GeoMapProvider.currentRasterMap === "") && (GlobalSettings.airspaceAltitudeLimit.isFinite())) {
                                     var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
                                     var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                                     resultList.push(qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString))

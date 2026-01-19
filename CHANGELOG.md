@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.1] - 2026-
+
+### Fixed
+- Map is reset when airspace altitude limit changes (#551)
+
+
 ## [3.1.0] - 2026-01-17
 
 ### Added

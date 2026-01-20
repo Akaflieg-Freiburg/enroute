@@ -341,19 +341,6 @@ Map {
         }
 
         LayerParameter {
-            id: rasterTileLayer
-
-            styleId: "rasterTileLayer"
-            type: "raster"
-            property string source: "rasterTiles"
-
-            layout: {
-                "visibility": 'visible', // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
-                "raster-resampling": 'linear'
-            }
-        }
-
-        LayerParameter {
             id: approachChartLayer
 
             styleId: "vacLayer"
@@ -689,6 +676,19 @@ Map {
             paint: {
                 "line-color": ["get", "GAC"],
                 "line-width": 3.0
+            }
+        }
+
+        LayerParameter {
+            id: rasterTileLayer
+
+            styleId: "rasterTileLayer"
+            type: "raster"
+            property string source: "rasterTiles"
+
+            layout: {
+                "visibility": 'visible', // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
+                "raster-resampling": 'linear'
             }
         }
     }

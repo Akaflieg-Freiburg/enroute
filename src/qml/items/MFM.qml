@@ -67,30 +67,17 @@ Item {
         property alias mapBearingPolicy: page.mapBearingPolicy
         property alias mapBearingRevertPolicy: page.mapBearingRevertPolicy
         property alias mapFollowGPSPolicy: flightMap.followGPS
-        property var mapZoomLevel
+        property alias mapZoomLevel: flightMap.zoomLevel
         property var mapBearing
     }
 
     Component.onCompleted: {
-        if (settings.mapZoomLevel !== undefined)
-            flightMap.zoomLevel = settings.mapZoomLevel
         if (settings.mapBearing !== undefined)
             flightMap.bearing = settings.mapBearing
     }
     Component.onDestruction: {
-        settings.mapZoomLevel = flightMap.zoomLevel
         settings.mapBearing = flightMap.bearing
     }
-
-    /*
-    Component.onCompleted: splitView.restoreState(settings.splitView)
-    Component.onDestruction: settings.splitView = splitView.saveState()
-
-    Settings {
-        id: settings
-        property var splitView
-    }
-    */
 
     ColumnLayout {
         anchors.fill: parent
@@ -302,7 +289,6 @@ Item {
                             waypointDescription.open()
                         }
                     }
-
 
                     Shortcut {
                         enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
@@ -807,7 +793,6 @@ Item {
                 }
             }
         }
-
     }
 
     WaypointDescription {

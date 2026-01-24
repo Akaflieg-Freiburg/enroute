@@ -56,6 +56,15 @@ Map {
     maximumZoomLevel: 17
     minimumZoomLevel: 7.0001  // When setting 7 precisely, MapBox is looking for tiles of zoom 6, which we do not have…
 
+    property real airspaceAltitudeLimitInFeet: {
+        var aAL = GlobalSettings.airspaceAltitudeLimit
+        if (aAL.isFinite())
+        {
+            return aAL.toFeet()
+        }
+        return 10e6
+    }
+
     MapLibre.style: Style {
         id: style
 
@@ -127,7 +136,7 @@ Map {
 
             type: "symbol"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet]]
             property string metadata: '{}'
 
             layout: {
@@ -406,7 +415,7 @@ Map {
             styleId: "FIS"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["any", ["==", ["get", "CAT"], "FIR"], ["==", ["get", "CAT"], "FIS"]]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "FIR"], ["==", ["get", "CAT"], "FIS"]]]
 
             paint: {
                 "line-color": "green",
@@ -419,7 +428,7 @@ Map {
             styleId: "SUA"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["==", ["get", "CAT"], "SUA"]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "SUA"]]
 
             paint: {
                 "line-color": "red",
@@ -433,7 +442,7 @@ Map {
             styleId: "glidingSector"
             type: "fill"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["==", ["get", "CAT"], "GLD"]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "GLD"]]
 
             paint: {
                 "fill-color": "yellow",
@@ -446,7 +455,7 @@ Map {
             styleId: "glidingSectorOutLines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["==", ["get", "CAT"], "GLD"]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "GLD"]]
 
             paint: {
                 "line-color": "yellow",
@@ -460,7 +469,7 @@ Map {
             styleId: "RMZ"
             type: "fill"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
 
             paint: {
                 "fill-color": "blue",
@@ -473,7 +482,7 @@ Map {
             styleId: "RMZoutline"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
 
             paint: {
                 "line-color": "blue",
@@ -487,7 +496,7 @@ Map {
             styleId: "TMZ"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["==", ["get", "CAT"], "TMZ"]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "TMZ"]]
 
             paint: {
                 "line-color": "black",
@@ -501,7 +510,7 @@ Map {
             styleId: "PJE"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["==", ["get", "CAT"], "PJE"]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "PJE"]]
 
             paint: {
                 "line-color": "red",
@@ -515,7 +524,7 @@ Map {
             styleId: "ABCDOutlines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
 
             paint: {
                 "line-color": "blue",
@@ -528,7 +537,7 @@ Map {
             styleId: "ABCDs"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
 
             paint: {
                 "line-color": "blue",
@@ -543,7 +552,7 @@ Map {
             styleId: "EFGOutlines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["any", ["==", ["get", "CAT"], "E"], ["==", ["get", "CAT"], "F"], ["==", ["get", "CAT"], "G"]]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "E"], ["==", ["get", "CAT"], "F"], ["==", ["get", "CAT"], "G"]]]
 
             paint: {
                 "line-color": "blue",
@@ -556,7 +565,7 @@ Map {
             styleId: "CTR"
             type: "fill"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["==", ["get", "CAT"], "CTR"]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "CTR"]]
 
             paint: {
                 "fill-color": "red",
@@ -569,7 +578,7 @@ Map {
             styleId: "CTRoutline"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["==", ["get", "CAT"], "CTR"]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "CTR"]]
 
             paint: {
                 "line-color": "blue",
@@ -583,7 +592,7 @@ Map {
             styleId: "NRAoutlines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["==", ["get", "CAT"], "NRA"]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "NRA"]]
 
             paint: {
                 "line-color": "green",
@@ -596,7 +605,7 @@ Map {
             styleId: "NRA"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["==", ["get", "CAT"], "NRA"]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "NRA"]]
 
             paint: {
                 "line-color": "green",
@@ -611,7 +620,7 @@ Map {
             styleId: "dangerZonesOutlines"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
 
             paint: {
                 "line-color": "red",
@@ -625,7 +634,7 @@ Map {
             styleId: "dangerZones"
             type: "line"
             property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], GlobalSettings.airspaceAltitudeLimit.toFeet()], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["get", "SBO"], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
 
             paint: {
                 "line-color": "red",

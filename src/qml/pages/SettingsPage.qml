@@ -525,7 +525,13 @@ Page {
                     var trueAlt = positionInfo.trueAltitudeAMSL()
                     if (!trueAlt.isFinite())
                         return GlobalSettings.airspaceAltitudeLimit_min.toFeet()
-                    return Math.min(GlobalSettings.airspaceAltitudeLimit_max.toFeet(), 500.0*Math.ceil(trueAlt.toFeet()/500.0+2))
+
+                    var result = 500.0*Math.floor(trueAlt.toFeet()/500.0)
+                    if (result < GlobalSettings.airspaceAltitudeLimit_min.toFeet())
+                        return GlobalSettings.airspaceAltitudeLimit_min.toFeet()
+                    if (result > GlobalSettings.airspaceAltitudeLimit_max.toFeet()-3000)
+                        return GlobalSettings.airspaceAltitudeLimit_max.toFeet()-3000
+                    return result
                 }
                 to: GlobalSettings.airspaceAltitudeLimit_max.toFeet()
 
@@ -552,9 +558,6 @@ Page {
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
             }
-
-
-
         }
 
         onAccepted: {
@@ -569,7 +572,6 @@ Page {
             altLimitCheck.checked = (GlobalSettings.airspaceAltitudeLimit.toM() < GlobalSettings.airspaceAltitudeLimit_max.toM())
             slider.value = GlobalSettings.lastValidAirspaceAltitudeLimit.toFeet()
         }
-
     }
 
     CenteringDialog {

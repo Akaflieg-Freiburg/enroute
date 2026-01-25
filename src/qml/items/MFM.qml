@@ -132,7 +132,6 @@ Item {
 
                             if (flightMap.bearing === 0.0)
                             {
-                                console.log("ZZZ")
                                 Global.mapBearingPolicy = MFM.NUp
                             }
                         }
@@ -157,10 +156,8 @@ Item {
                             if (Global.mapBearingPolicy === MFM.UserDefinedBearingUp)
                             {
                                 // snap to 0° if we're close enough
-                                bearingBehavior.enabled = false
                                 flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
                                 flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
-                                bearingBehavior.enabled = true
                                 return
                             }
 

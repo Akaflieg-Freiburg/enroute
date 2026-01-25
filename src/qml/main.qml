@@ -817,7 +817,10 @@ AppWindow {
         }
 
         function doToast(string) {
-            toast.text = string
+            if (seqA.running) {
+                toast.text = string + " • " + toast.text
+            } else
+                toast.text = string
             seqA.start()
         }
 

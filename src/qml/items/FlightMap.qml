@@ -65,6 +65,12 @@ Map {
         return 10e6
     }
 
+    property geoCoordinate animatedCoordinate: PositionProvider.lastValidCoordinate
+    Behavior on animatedCoordinate { CoordinateAnimation { duration: 1000 } }
+
+    property real animatedTT: PositionProvider.lastValidTT.toDEG()
+    Behavior on animatedTT { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
+
     MapLibre.style: Style {
         id: style
 
@@ -706,6 +712,7 @@ Map {
     //
     // Additional Map Items
     //
+
     MapCircle { // Circle for nondirectional traffic warning
         center: PositionProvider.lastValidCoordinate
 
@@ -823,7 +830,7 @@ Map {
 
         sourceItem: Item {
 
-            rotation: flightMap.animatedTrack-flightMap.bearing
+            rotation: flightMap.animatedTT-flightMap.bearing
 
             FlightVector {
                 pixelPerTenKM: flightMap.pixelPer10km

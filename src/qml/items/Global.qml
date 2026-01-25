@@ -39,6 +39,54 @@ Item {
     property bool warnNOTAMLocation: true
     property bool warnMETARPerformance: true
     property bool showMETARPerformanceExplanation: true
+    Settings {
+        category: "GUIWarnings"
+        property alias warnNOTAMLocation: global.warnNOTAMLocation
+        property alias warnMETARPerformance: global.warnMETARPerformance
+        property alias showMETARPerformanceExplanation: global.showMETARPerformanceExplanation
+    }
+
+    // Parameters for the moving map display
+    property int mapBearingPolicy: 0
+    onMapBearingPolicyChanged: {
+        if (mapBearingPolicy != MFM.UserDefinedBearingUp)
+        {
+            mapBearingRevertPolicy = mapBearingPolicy
+        }
+
+        if (toast) {
+            if (global.mapBearingPolicy === MFM.NUp) {
+                toast.doToast(qsTr("Map Mode: North Up"))
+            } else if (Global.mapBearingPolicy === MFM.TTUp) {
+                toast.doToast(qsTr("Map Mode: Track Up"))
+            } else {
+                toast.doToast(qsTr("Map Mode: User Defined Direction Up"))
+            }
+        }
+    }
+    property int mapBearingRevertPolicy: 0
+    property bool followGPS: true
+    onFollowGPSChanged: {
+        if (toast) {
+            if (followGPS) {
+                toast.doToast(qsTr("Map Mode: Autopan"))
+            } else {
+                toast.doToast(qsTr("Map Mode: No Autopan"))
+            }
+        }
+    }
+    property real mapZoomLevel
+    property real mapBearing
+    property var mapCenter
+    Settings {
+        category: "MovingMap"
+        property alias mapBearingPolicy: global.mapBearingPolicy
+        property alias mapBearingRevertPolicy: global.mapBearingRevertPolicy
+        property alias mapFollowGPSPolicy: global.followGPS
+        property alias mapZoomLevel: global.mapZoomLevel
+        property alias mapBearing: global.mapBearing
+        property alias mapCenter: global.mapCenter
+    }
 
     property LocationPermission locationPermission: LocationPermission {
         id: locationPermission
@@ -49,13 +97,4 @@ Item {
         onStatusChanged: PositionProvider.startUpdates()
         Component.onCompleted: PositionProvider.startUpdates()
     }
-
-    Settings {
-        category: "GUIWarnings"
-        property alias warnNOTAMLocation: global.warnNOTAMLocation
-        property alias warnMETARPerformance: global.warnMETARPerformance
-        property alias showMETARPerformanceExplanation: global.showMETARPerformanceExplanation
-    }
-
-
 }

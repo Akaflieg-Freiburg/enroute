@@ -37,14 +37,7 @@ Item {
     id: page
 
     enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
-    property int mapBearingPolicy: MFM.NUp
-    property int mapBearingRevertPolicy: MFM.NUp
-    onMapBearingPolicyChanged: {
-        if (mapBearingPolicy != MFM.UserDefinedBearingUp)
-        {
-            mapBearingRevertPolicy = mapBearingPolicy
-        }
-    }
+
 
     Connections {
         target: DemoRunner
@@ -58,25 +51,6 @@ Item {
             else
                 cl.SplitView.preferredHeight = 0
         }
-    }
-
-    Settings {
-        id: settings
-
-        category: "MovingMap"
-        property alias mapBearingPolicy: page.mapBearingPolicy
-        property alias mapBearingRevertPolicy: page.mapBearingRevertPolicy
-        property alias mapFollowGPSPolicy: flightMap.followGPS
-        property alias mapZoomLevel: flightMap.zoomLevel
-        property var mapBearing
-    }
-
-    Component.onCompleted: {
-        if (settings.mapBearing !== undefined)
-            flightMap.bearing = settings.mapBearing
-    }
-    Component.onDestruction: {
-        settings.mapBearing = flightMap.bearing
     }
 
     ColumnLayout {
@@ -124,19 +98,18 @@ Item {
 
                     copyrightsVisible: false // We have our own copyrights notice
 
-                    property bool followGPS: true
-                    onFollowGPSChanged: {
-                        if (followGPS)
-                            alignMapToCenter()
+                    onMapReadyChanged: {
+                        if (!mapReady)
+                            return
+                        if (Global.mapBearingPolicy === MFM.UserDefinedBearingUp)
+                            flightMap.bearing = Global.mapBearing
+                        if (!Global.followGPS)
+                            flightMap.center = Global.mapCenter
+                        zoomLevel = Global.mapZoomLevel
                     }
-
-                    property real animatedTrack: PositionProvider.lastValidTT.isFinite() ? PositionProvider.lastValidTT.toDEG() : 0
-                    Behavior on animatedTrack { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
-
 
                     // GESTURES
 
-                    // Enable gestures. Make sure that whenever a gesture starts, the property "followGPS" is set to "false"
                     PinchHandler {
                         id: pinch
                         target: null
@@ -149,7 +122,7 @@ Item {
 
                         onActiveChanged: {
                             if (active) {
-                                flightMap.followGPS = false
+                                Global.followGPS = false
                                 startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
                                 startZoomLevel = flightMap.zoomLevel
                                 rawBearing = flightMap.bearing
@@ -159,7 +132,8 @@ Item {
 
                             if (flightMap.bearing === 0.0)
                             {
-                                page.mapBearingPolicy = MFM.NUp
+                                console.log("ZZZ")
+                                Global.mapBearingPolicy = MFM.NUp
                             }
                         }
 
@@ -180,7 +154,7 @@ Item {
                         onRotationChanged: function(delta) {
                             pinch.rawBearing -= delta
 
-                            if (page.mapBearingPolicy === MFM.UserDefinedBearingUp)
+                            if (Global.mapBearingPolicy === MFM.UserDefinedBearingUp)
                             {
                                 // snap to 0° if we're close enough
                                 bearingBehavior.enabled = false
@@ -192,7 +166,7 @@ Item {
 
                             if (Math.abs(pinch.rawBearing-pinch.startBearing) > 20)
                             {
-                                page.mapBearingPolicy = MFM.UserDefinedBearingUp
+                                Global.mapBearingPolicy = MFM.UserDefinedBearingUp
                             }
                         }
                     }
@@ -202,6 +176,7 @@ Item {
                         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
                         onWheel: function(event) {
                             const loc = flightMap.toCoordinate(wheel.point.position)
+                            Global.followGPS = false;
                             if (event.modifiers === Qt.NoModifier)
                             {
                                 zoomLevelBehavior.enabled = false
@@ -217,11 +192,9 @@ Item {
                             }
                             else
                             {
-                                bearingBehavior.enabled = false
-                                flightMap.bearing += event.angleDelta.y / 5
-                                bearingBehavior.enabled = true
+                                Global.mapBearingPolicy = MFM.UserDefinedBearingUp
+                                flightMap.bearing += event.angleDelta.y / 10
                             }
-                            flightMap.followGPS = false;
                             flightMap.alignCoordinateToPoint(loc, wheel.point.position)
                         }
                     }
@@ -234,20 +207,16 @@ Item {
                         enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
 
                         onActiveTranslationChanged: function(delta) {
-                            if (delta === activeTranslation)
-                            {
-                                return;
-                            }
                             flightMap.pan(-delta.x, -delta.y)
                         }
 
                         onActiveChanged: {
                             if (active)
                             {
-                                flightMap.followGPS = false
-                                if (page.mapBearingPolicy === MFM.TTUp)
+                                Global.followGPS = false
+                                if (Global.mapBearingPolicy === MFM.TTUp)
                                 {
-                                    page.mapBearingPolicy = MFM.UserDefinedBearingUp
+                                    Global.mapBearingPolicy = MFM.UserDefinedBearingUp
                                 }
                             }
                         }
@@ -307,21 +276,13 @@ Item {
                     // PROPERTY "bearing"
                     //
 
-
-                    // Initially, set the bearing to the last saved value
                     bearing: 0
-
-                    // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
+                    onBearingChanged: Global.mapBearing = bearing
                     Binding on bearing {
+                        id: bearingBinding
                         restoreMode: Binding.RestoreNone
-                        when: page.mapBearingPolicy !== MFM.UserDefinedBearingUp
-                        value: page.mapBearingPolicy === MFM.TTUp ? PositionProvider.lastValidTT.toDEG() : 0
-                    }
-
-                    // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
-                    Behavior on bearing {
-                        id: bearingBehavior
-                        RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest }
+                        when: Global.mapBearingPolicy !== MFM.UserDefinedBearingUp
+                        value: Global.mapBearingPolicy === MFM.TTUp ? flightMap.animatedTT : 0
                     }
 
 
@@ -329,48 +290,36 @@ Item {
                     // PROPERTY "center"
                     //
 
-                    // If "followGPS" is true, then update the map center whenever a new GPS position comes in
-                    // or the zoom level changes
-                    property var centerCoordinate: {
-                        // If not in flight, then aircraft stays in center of display
-                        if (Navigator.flightStatus !== Navigator.Flight)
-                            return PositionProvider.lastValidCoordinate
-                        if (!PositionProvider.lastValidTT.isFinite())
-                            return PositionProvider.lastValidCoordinate
+                    center: PositionProvider.lastValidCoordinate
+                    onCenterChanged: Global.mapCenter = center
+                    Binding on center {
+                        restoreMode: Binding.RestoreNone
+                        when: Global.followGPS
 
-                        // Otherwise, we position the aircraft someplace on a circle around the
-                        // center, so that the map shows a larger portion of the airspace ahead
-                        // of the aircraft. The following lines find a good radius for that
-                        // circle, which ensures that the circle does not collide with any of the
-                        // GUI elements.
-                        const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0 - 2*font.pixelSize)
-                        const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
+                        value: {
+                            var coordinate = flightMap.animatedCoordinate
 
-                        return PositionProvider.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, animatedTrack)
-                    }
+                            // In in flight, we position the aircraft someplace on a circle around the
+                            // center, so that the map shows a larger portion of the airspace ahead
+                            // of the aircraft. The following lines find a good radius for that
+                            // circle, which ensures that the circle does not collide with any of the
+                            // GUI elements.
+                            if (Navigator.flightStatus === Navigator.Flight)
+                            {
+                                const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0 - 2*font.pixelSize)
+                                const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
+                                if (isFinite(radiusInM))
+                                    coordinate = coordinate.atDistanceAndAzimuth(radiusInM, flightMap.animatedTT)
+                            }
 
-                    onCenterCoordinateChanged: {
-                        if (!flightMap.followGPS)
-                            return
-                        alignMapToCenter()
-                    }
-
-                    property var centerPoint: {
-                        const xCenter = col2.x + centerItem.x + centerItem.width/2.0
-                        const yCenter = col2.y + centerItem.y + centerItem.height/2.0
-                        return Qt.point(xCenter, yCenter)
-                    }
-
-                    onCenterPointChanged:  {
-                        if (!flightMap.followGPS)
-                            return
-                        alignMapToCenter()
-                    }
-
-                    onMapReadyChanged: alignMapToCenter()
-
-                    function alignMapToCenter() {
-                        flightMap.alignCoordinateToPoint(centerCoordinate, centerPoint)
+                            // Handle the offset between the center of the map and the center of the region that is
+                            // not covered by buttons
+                            const deltaYInPixel = col2.y + centerItem.y + centerItem.height/2.0 - flightMap.height/2.0
+                            const deltaYInM     = 10000.0*deltaYInPixel/flightMap.pixelPer10km
+                            if (isFinite(deltaYInM))
+                                coordinate = coordinate.atDistanceAndAzimuth(deltaYInM, flightMap.bearing)
+                            return coordinate
+                        }
                     }
 
 
@@ -380,38 +329,12 @@ Item {
 
                     // Initially, set the zoom level to the last saved value
                     zoomLevel: 12
-
-                    // Animate changes in zoom level for visually smooth transition
+                    onZoomLevelChanged: Global.mapZoomLevel = zoomLevel
                     Behavior on zoomLevel {
                         id: zoomLevelBehavior
                         NumberAnimation { duration: 400 }
                     }
 
-                    onZoomLevelChanged:  {
-                        if (!flightMap.followGPS)
-                            return
-                        alignMapToCenter()
-                    }
-
-
-                    //
-                    // Connections
-                    //
-
-                    Connections {
-                        target: Global
-
-                        function onCurrentVACChanged()
-                        {
-                            if (!Global.currentVAC.isValid)
-                                return;
-                            flightMap.followGPS = false
-                            zoomLevelBehavior.enabled = false
-                            flightMap.zoomLevel = 11
-                            flightMap.alignCoordinateToPoint(Global.currentVAC.center, flightMap.centerPoint)
-                            zoomLevelBehavior.enabled = true
-                        }
-                    }
 
                     // On completion, re-consider the binding of the property bearing
                     Component.onCompleted: {
@@ -424,7 +347,7 @@ Item {
                         target: FileExchange
 
                         function onOpenWaypointRequest(waypoint) {
-                            flightMap.followGPS = false
+                            Global.followGPS = false
                             flightMap.center = waypoint.coordinate
                         }
                     }
@@ -517,13 +440,12 @@ Item {
 
                             icon.source: "/icons/material/ic_my_location.svg"
 
-                            enabled: !flightMap.followGPS
+                            enabled: !Global.followGPS
                             visible: enabled
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                flightMap.followGPS = true
-                                toast.doToast(qsTr("Map Mode: Autopan"))
+                                Global.followGPS = true
                             }
                         }
 
@@ -649,19 +571,12 @@ Item {
                             icon.source: "/icons/NorthArrow.svg"
 
                             onClicked: {
-                                if (page.mapBearingPolicy === MFM.NUp) {
-                                    page.mapBearingPolicy = MFM.TTUp
-                                }  else if (page.mapBearingPolicy === MFM.TTUp) {
-                                    page.mapBearingPolicy = MFM.NUp
+                                if (Global.mapBearingPolicy === MFM.NUp) {
+                                    Global.mapBearingPolicy = MFM.TTUp
+                                }  else if (Global.mapBearingPolicy === MFM.TTUp) {
+                                    Global.mapBearingPolicy = MFM.NUp
                                 } else
-                                    page.mapBearingPolicy = page.mapBearingRevertPolicy
-
-                                if (page.mapBearingPolicy === MFM.NUp) {
-                                    toast.doToast(qsTr("Map Mode: North Up"))
-                                } else if (page.mapBearingPolicy === MFM.TTUp) {
-                                    toast.doToast(qsTr("Map Mode: Track Up"))
-                                } else
-                                    toast.doToast(qsTr("Map Mode: User Defined Direction Up"))
+                                    Global.mapBearingPolicy = Global.mapBearingRevertPolicy
                             }
                         }
 

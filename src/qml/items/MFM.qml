@@ -99,17 +99,21 @@ Item {
                     copyrightsVisible: false // We have our own copyrights notice
 
                     onMapReadyChanged: {
-                        if (!mapReady)
-                            return
+                        if (!Global.mapBearingPolicy)
+                            Global.mapBearingPolicy = MFM.NUp
+                        if (!Global.mapBearingRevertPolicy)
+                            Global.mapBearingRevertPolicy = MFM.NUp
+                        if (!Global.mapZoomLevel || !isFinite(Global.mapZoomLevel) || (Global.mapZoomLevel < flightMap.minimumZoomLevel) || (Global.mapZoomLevel > flightMap.maximumZoomLevel))
+                            Global.mapZoomLevel = 12
+                        if (!Global.mapBearing || !isFinite(Global.bearing) || (Global.mapBearing < 0) || (Global.mapBearing > 360))
+                            Global.mapBearing = 0
+                        if (!Global.mapCenter || !Global.mapCenter.isValid)
+                            Global.mapCenter = PositionProvider.lastValidCoordinate
 
-                        // WARNING!
-                        if (Global.mapBearingPolicy === MFM.UserDefinedBearingUp)
+                        if ((Global.mapBearingPolicy === MFM.UserDefinedBearingUp))
                             flightMap.bearing = Global.mapBearing
-                        if (!Global.followGPS && Global.mapCenter && Global.mapCenter.isValid)
+                        if (!Global.followGPS)
                             flightMap.center = Global.mapCenter
-                        else
-                            flightMap.center = PositionProvider.lastValidCoordinate
-
                         zoomLevel = Global.mapZoomLevel
                     }
 
@@ -328,8 +332,7 @@ Item {
                     // PROPERTY "zoomLevel"
                     //
 
-                    // Initially, set the zoom level to the last saved value
-                    zoomLevel: 12
+                    zoomLevel: Global.mapZoomLevel
                     onZoomLevelChanged: Global.mapZoomLevel = zoomLevel
                     Behavior on zoomLevel {
                         id: zoomLevelBehavior

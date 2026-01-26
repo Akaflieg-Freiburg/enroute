@@ -529,8 +529,6 @@ Page {
                     var result = 500.0*Math.floor(trueAlt.toFeet()/500.0)
                     if (result < GlobalSettings.airspaceAltitudeLimit_min.toFeet())
                         return GlobalSettings.airspaceAltitudeLimit_min.toFeet()
-                    if (result > GlobalSettings.airspaceAltitudeLimit_max.toFeet()-3000)
-                        return GlobalSettings.airspaceAltitudeLimit_max.toFeet()-3000
                     return result
                 }
                 to: GlobalSettings.airspaceAltitudeLimit_max.toFeet()

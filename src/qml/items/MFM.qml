@@ -101,10 +101,15 @@ Item {
                     onMapReadyChanged: {
                         if (!mapReady)
                             return
+
+                        // WARNING!
                         if (Global.mapBearingPolicy === MFM.UserDefinedBearingUp)
                             flightMap.bearing = Global.mapBearing
-                        if (!Global.followGPS)
+                        if (!Global.followGPS && Global.mapCenter && Global.mapCenter.isValid)
                             flightMap.center = Global.mapCenter
+                        else
+                            flightMap.center = PositionProvider.lastValidCoordinate
+
                         zoomLevel = Global.mapZoomLevel
                     }
 
@@ -287,7 +292,6 @@ Item {
                     // PROPERTY "center"
                     //
 
-                    center: PositionProvider.lastValidCoordinate
                     onCenterChanged: Global.mapCenter = center
                     Binding on center {
                         restoreMode: Binding.RestoreNone
@@ -634,7 +638,6 @@ Item {
                                 }
 
                             }
-
                         }
 
                         Item {

@@ -356,67 +356,6 @@ Map {
         }
 
         LayerParameter {
-            id: approachChartLayer
-
-            styleId: "vacLayer"
-            type: "raster"
-            property string source: "vac"
-
-            layout: {
-                "visibility": Global.currentVAC.isValid ? 'visible' : 'none'
-            }
-        }
-
-        LayerParameter {
-            id: waypointLibParam
-
-            styleId: "waypoint-layer"
-
-            type: "symbol"
-            property string source: "waypointlib"
-
-            layout: {
-                "icon-image": '["get", "CAT"]',
-                "text-field": '["get", "NAM"]',
-                "text-size": 0.85*GlobalSettings.fontSize,
-                "text-anchor": "top",
-                "text-offset": [0, 1],
-                "text-optional": true,
-            }
-
-            paint: {
-                "text-color": "black",
-                "text-halo-width": 2,
-                "text-halo-color": "white"
-            }
-        }
-
-        LayerParameter {
-            id: notamParam
-
-            styleId: "notam-layer"
-
-            type: "symbol"
-            property string source: "notams"
-
-            layout: {
-                "icon-ignore-placement": true,
-                "icon-image": ["get", "CAT"],
-                "text-field": ["get", "NAM"],
-                "text-size": 0.85*GlobalSettings.fontSize,
-                "text-anchor": "top",
-                "text-offset": [0, 1],
-                "text-optional": true,
-            }
-
-            paint: {
-                "text-color": "black",
-                "text-halo-width": 2,
-                "text-halo-color": "white"
-            }
-        }
-
-        LayerParameter {
             id: fis
             styleId: "FIS"
             type: "line"
@@ -704,6 +643,67 @@ Map {
             layout: {
                 "visibility": 'visible', // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
                 "raster-resampling": 'linear'
+            }
+        }
+
+        LayerParameter {
+            id: approachChartLayer
+
+            styleId: "vacLayer"
+            type: "raster"
+            property string source: "vac"
+
+            layout: {
+                "visibility": Global.currentVAC.isValid ? 'visible' : 'none'
+            }
+        }
+
+        LayerParameter {
+            id: waypointLibParam
+
+            styleId: "waypoint-layer"
+
+            type: "symbol"
+            property string source: "waypointlib"
+
+            layout: {
+                "icon-image": '["get", "CAT"]',
+                "text-field": '["get", "NAM"]',
+                "text-size": 0.85*GlobalSettings.fontSize,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true,
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
+            id: notamParam
+
+            styleId: "notam-layer"
+
+            type: "symbol"
+            property string source: "notams"
+
+            layout: {
+                "icon-ignore-placement": true,
+                "icon-image": ["get", "CAT"],
+                "text-field": ["get", "NAM"],
+                "text-size": 0.85*GlobalSettings.fontSize,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true,
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
             }
         }
     }

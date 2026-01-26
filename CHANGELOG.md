@@ -5,6 +5,18 @@
 ### Fixed
 - Map is reset when airspace altitude limit changes (#551)
 
+- Maintain zoom, bearing, map center and display modes when toggling raster maps
+
+- Visual approach charts now drawn on top of aviation map, not underneath
+
+- Inconsistent behavior of slider when setting airspace altitude limit
+
+- Simplified logic when setting map display modes, added toast messages for
+  clarity
+
+### Added
+- Tooltips on several buttons on the moving maps
+
 
 ## [3.1.0] - 2026-01-17
 

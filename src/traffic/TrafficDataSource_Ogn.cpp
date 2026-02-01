@@ -340,10 +340,11 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
         }
     #endif
 
-    // Filter out ownship by ICAO 24-bit address (supports multiple codes separated by spaces)
-    // Cached codes are uppercase, case-sensitive comparison
+    // Filter out ownship by ICAO 24-bit address (supports multiple codes separated by spaces).
+    // Cached codes are uppercase, case-sensitive comparison.
     for (const std::string& code : m_ownTransponderCodes)
     {
+        // Check if transponder code matches the address  (e.g. user enters "3D1C11").
         if (code.size() == m_ognMessage.address.size() &&
             std::equal(m_ognMessage.address.begin(), m_ognMessage.address.end(), code.begin()))
         {
@@ -352,7 +353,17 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
             #endif
             return;
         }
-    }    
+        
+        // Check if transponder code matches sourceId (e.g. user enters "ICA3D1C11").
+        if (code.size() == m_ognMessage.sourceId.size() &&
+            std::equal(m_ognMessage.sourceId.begin(), m_ognMessage.sourceId.end(), code.begin()))
+        {
+            #if OGN_DEBUG
+            qDebug() << "Filtering out ownship with sourceId:" << QString::fromStdString(code);
+            #endif
+            return;
+        }
+    }
 
     // Decode callsign
     QString callsign;
@@ -372,8 +383,8 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
         callsign += QString(" (%1)").arg(addressTypeToString(m_ognMessage.addressType));
     #endif
 
-    // Filter out ownship by aircraft name (callsign)
-    // Direct comparison between QString and std::u16string using std::equal
+    // Filter out ownship by aircraft name (callsign) (e.g. user enters "D-KEBE").
+    // Direct comparison between QString and std::u16string using std::equal.
     if (!m_ownAircraftName.empty() && 
         static_cast<size_t>(callsign.size()) == m_ownAircraftName.size() &&
         std::equal(reinterpret_cast<const char16_t*>(callsign.utf16()), 

@@ -35,7 +35,9 @@ Item {
     property vac currentVAC
     property vac defaultVAC
 
-    // Warning
+    //
+    // GUI Warnings
+    //
     property bool warnNOTAMLocation: true
     property bool warnMETARPerformance: true
     property bool showMETARPerformanceExplanation: true
@@ -46,8 +48,18 @@ Item {
         property alias showMETARPerformanceExplanation: global.showMETARPerformanceExplanation
     }
 
+    //
     // Parameters for the moving map display
+    //
+
     property int mapBearingPolicy: 0
+    readonly property int mapBearingPolicyRect: {
+        // Rectified version, always returns sane values
+        if (!mapBearingPolicy || (mapBearingPolicy < 0) || (mapBearingPolicy > 2)) {
+            return MFM.NUp
+        }
+        return mapBearingPolicy
+    }
     onMapBearingPolicyChanged: {
         if (mapBearingPolicy != MFM.UserDefinedBearingUp)
         {
@@ -65,6 +77,13 @@ Item {
         }
     }
     property int mapBearingRevertPolicy: 0
+    readonly property int mapBearingRevertPolicyRect: {
+        // Rectified version, always returns sane values
+        if (!mapBearingRevertPolicy || (mapBearingRevertPolicy < 0) || (mapBearingRevertPolicy > 2)) {
+            return MFM.NUp
+        }
+        return mapBearingRevertPolicy
+    }
     property bool followGPS: true
     onFollowGPSChanged: {
         if (toast) {
@@ -75,9 +94,32 @@ Item {
             }
         }
     }
-    property real mapZoomLevel
-    property real mapBearing
+    property real mapZoomLevelMax: 17
+    property real mapZoomLevelMin: 7.0001 // When setting 7 precisely, MapBox is looking for tiles of zoom 6, which we do not have…
+    property real mapZoomLevel: 12
+    readonly property real mapZoomLevelRect: {
+        // Rectified version, always returns sane values
+        if (!mapZoomLevel || !isFinite(mapZoomLevel) || (mapZoomLevel < mapZoomLevelMin) || (mapZoomLevel > mapZoomLevelMax)) {
+            return 12
+        }
+        return mapZoomLevel
+    }
+    property real mapBearing: 0
+    readonly property real mapBearingRect: {
+        // Rectified version, always returns sane values
+        if (!mapBearing || !isFinite(mapBearing) || (mapBearing < 0) || (mapBearing > 360)) {
+            return 0
+        }
+        return mapBearing
+    }
     property var mapCenter
+    readonly property var mapCenterRect: {
+        // Rectified version, always returns sane values
+        if (!mapCenter || !mapCenter.isValid) {
+            return PositionProvider.lastValidCoordinate
+        }
+        return mapCenter
+    }
     Settings {
         category: "MovingMap"
         property alias mapBearingPolicy: global.mapBearingPolicy
@@ -87,6 +129,10 @@ Item {
         property alias mapBearing: global.mapBearing
         property alias mapCenter: global.mapCenter
     }
+
+    //
+    // Permissions
+    //
 
     property LocationPermission locationPermission: LocationPermission {
         id: locationPermission

@@ -98,24 +98,7 @@ Item {
 
                     copyrightsVisible: false // We have our own copyrights notice
 
-                    onMapReadyChanged: {
-                        if (!Global.mapBearingPolicy)
-                            Global.mapBearingPolicy = MFM.NUp
-                        if (!Global.mapBearingRevertPolicy)
-                            Global.mapBearingRevertPolicy = MFM.NUp
-                        if (!Global.mapZoomLevel || !isFinite(Global.mapZoomLevel) || (Global.mapZoomLevel < flightMap.minimumZoomLevel) || (Global.mapZoomLevel > flightMap.maximumZoomLevel))
-                            Global.mapZoomLevel = 12
-                        if (!Global.mapBearing || !isFinite(Global.bearing) || (Global.mapBearing < 0) || (Global.mapBearing > 360))
-                            Global.mapBearing = 0
-                        if (!Global.mapCenter || !Global.mapCenter.isValid)
-                            Global.mapCenter = PositionProvider.lastValidCoordinate
-
-                        if ((Global.mapBearingPolicy === MFM.UserDefinedBearingUp))
-                            flightMap.bearing = Global.mapBearing
-                        if (!Global.followGPS)
-                            flightMap.center = Global.mapCenter
-                        zoomLevel = Global.mapZoomLevel
-                    }
+                    property bool defaultValuesSet: false
 
                     // GESTURES
 
@@ -162,7 +145,7 @@ Item {
                         onRotationChanged: function(delta) {
                             pinch.rawBearing -= delta
 
-                            if (Global.mapBearingPolicy === MFM.UserDefinedBearingUp)
+                            if (Global.mapBearingPolicyRect === MFM.UserDefinedBearingUp)
                             {
                                 // snap to 0° if we're close enough
                                 flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
@@ -220,7 +203,7 @@ Item {
                             if (active)
                             {
                                 Global.followGPS = false
-                                if (Global.mapBearingPolicy === MFM.TTUp)
+                                if (Global.mapBearingPolicyRect === MFM.TTUp)
                                 {
                                     Global.mapBearingPolicy = MFM.UserDefinedBearingUp
                                 }
@@ -282,13 +265,16 @@ Item {
                     // PROPERTY "bearing"
                     //
 
-                    bearing: 0
-                    onBearingChanged: Global.mapBearing = bearing
+                    onBearingChanged: {
+                        if (defaultValuesSet)
+                            Global.mapBearing = bearing
+                    }
                     Binding on bearing {
                         id: bearingBinding
+
                         restoreMode: Binding.RestoreNone
-                        when: Global.mapBearingPolicy !== MFM.UserDefinedBearingUp
-                        value: Global.mapBearingPolicy === MFM.TTUp ? flightMap.animatedTT : 0
+                        when: Global.mapBearingPolicyRect !== MFM.UserDefinedBearingUp
+                        value: Global.mapBearingPolicyRect === MFM.TTUp ? flightMap.animatedTT : 0
                     }
 
 
@@ -296,11 +282,15 @@ Item {
                     // PROPERTY "center"
                     //
 
-                    onCenterChanged: Global.mapCenter = center
+                    onCenterChanged: {
+                        if (defaultValuesSet)
+                            Global.mapCenter = center
+                    }
                     Binding on center {
+                        id: centerBinding
+
                         restoreMode: Binding.RestoreNone
                         when: Global.followGPS
-
                         value: {
                             var coordinate = flightMap.animatedCoordinate
 
@@ -332,16 +322,34 @@ Item {
                     // PROPERTY "zoomLevel"
                     //
 
-                    zoomLevel: Global.mapZoomLevel
-                    onZoomLevelChanged: Global.mapZoomLevel = zoomLevel
+                    onZoomLevelChanged: {
+                        if (defaultValuesSet)
+                            Global.mapZoomLevel = zoomLevel
+                    }
                     Behavior on zoomLevel {
                         id: zoomLevelBehavior
                         NumberAnimation { duration: 400 }
                     }
 
 
-                    // On completion, re-consider the binding of the property bearing
-                    Component.onCompleted: {
+                    //
+                    // Once the map is ready, set default values if necessary
+                    //
+                    onMapReadyChanged: {
+                        if (!mapReady)
+                            return
+                        if (defaultValuesSet)
+                            return
+                        if (!bearingBinding.when)
+                            bearing = Global.mapBearingRect
+                        if (!centerBinding.when)
+                            center = Global.mapCenterRect
+                        zoomLevelBehavior.enabled = false
+                        zoomLevel = Global.mapZoomLevelRect
+                        zoomLevelBehavior.enabled = true
+                        defaultValuesSet = true;
+                    }
+                    Component.onCompleted: {                        
                         // Oddly, this is necessary, or else the system will try to reset
                         // the write-once property 'plugin' on language changes
                         plugin = mapPlugin
@@ -574,25 +582,25 @@ Item {
 
                             icon.source: "/icons/NorthArrow.svg"
                             ToolTip.text: {
-                                if (Global.mapBearingPolicy === MFM.NUp)
+                                if (Global.mapBearingPolicyRect === MFM.NUp)
                                     return qsTr("Current Mode: North Up")
-                                if (Global.mapBearingPolicy === MFM.TTUp)
+                                if (Global.mapBearingPolicyRect === MFM.TTUp)
                                     return qsTr("Current Mode: Track Up")
-                                if (Global.mapBearingPolicy === MFM.UserDefinedBearingUp)
+                                if (Global.mapBearingPolicyRect === MFM.UserDefinedBearingUp)
                                     return qsTr("Current Mode: User Defined Direction Up")
-                                return Global.mapBearingPolicy
+                                return Global.mapBearingPolicyRect
                             }
                             ToolTip.delay: 1000
                             ToolTip.timeout: 5000
                             ToolTip.visible: hovered
 
                             onClicked: {
-                                if (Global.mapBearingPolicy === MFM.NUp) {
+                                if (Global.mapBearingPolicyRect === MFM.NUp) {
                                     Global.mapBearingPolicy = MFM.TTUp
-                                }  else if (Global.mapBearingPolicy === MFM.TTUp) {
+                                }  else if (Global.mapBearingPolicyRect === MFM.TTUp) {
                                     Global.mapBearingPolicy = MFM.NUp
                                 } else
-                                    Global.mapBearingPolicy = Global.mapBearingRevertPolicy
+                                    Global.mapBearingPolicy = Global.mapBearingRevertPolicyRect
                             }
                         }
 

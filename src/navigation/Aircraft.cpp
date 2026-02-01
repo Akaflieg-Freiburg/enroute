@@ -91,6 +91,12 @@ void Navigation::Aircraft::setName(const QString& newName)
 }
 
 
+void Navigation::Aircraft::setTransponderCode(const QString& newCode)
+{
+    m_transponderCode = newCode;
+}
+
+
 void Navigation::Aircraft::setVerticalDistanceUnit(VerticalDistanceUnit newUnit)
 {
     m_verticalDistanceUnit = newUnit;
@@ -234,6 +240,7 @@ QString Navigation::Aircraft::loadFromJSON(const QByteArray &JSON)
     setHorizontalDistanceUnit( static_cast<HorizontalDistanceUnit>(content[QStringLiteral("horizontalDistanceUnit")].toInt(NauticalMile)) );
     setMinimumSpeed( Units::Speed::fromMPS( content[QStringLiteral("minimumSpeed_mps")].toDouble(NAN) ));
     setName( content[QStringLiteral("name")].toString() );
+    setTransponderCode( content[QStringLiteral("transponderCode")].toString() );
     setVerticalDistanceUnit( static_cast<VerticalDistanceUnit>(content[QStringLiteral("verticalDistanceUnit")].toInt(Feet)) );
 
     return {};
@@ -288,6 +295,7 @@ auto Navigation::Aircraft::toJSON() const -> QByteArray
     jsonObj.insert(QStringLiteral("horizontalDistanceUnit"), m_horizontalDistanceUnit);
     jsonObj.insert(QStringLiteral("minimumSpeed_mps"), m_minimumSpeed.toMPS());
     jsonObj.insert(QStringLiteral("name"), m_name);
+    jsonObj.insert(QStringLiteral("transponderCode"), m_transponderCode);
     jsonObj.insert(QStringLiteral("verticalDistanceUnit"), m_verticalDistanceUnit);
 
     QJsonDocument doc;

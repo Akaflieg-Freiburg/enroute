@@ -21,6 +21,7 @@
 #include "TrafficDataSource_Ogn.h"
 #include "GlobalObject.h"
 #include "geomaps/GeoMapProvider.h"
+#include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "OgnParser.h"
 #include "traffic/ConnectionInfo.h"
@@ -199,6 +200,12 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
         updateCurrentCoordinate();
         setFilter(m_currentPosition);
     });
+
+    // Update cached ownship filter data when aircraft settings change
+    connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Traffic::TrafficDataSource_Ogn::updateOwnshipFilterData);
+    
+    // Initialize cached ownship filter data
+    updateOwnshipFilterData();
 }
 
 Traffic::TrafficDataSource_Ogn::~TrafficDataSource_Ogn()
@@ -266,6 +273,31 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
     }
 }
 
+void Traffic::TrafficDataSource_Ogn::updateOwnshipFilterData()
+{
+    // Cache aircraft name as std::u16string to match QString's 16-bit characters, convert to uppercase
+    QString const name = GlobalObject::navigator()->aircraft().name().toUpper();
+    m_ownAircraftName = std::u16string(reinterpret_cast<const char16_t*>(name.utf16()), name.size());
+    
+    // Cache and split transponder codes, convert to uppercase std::string for efficient comparison
+    QString const transponderCode = GlobalObject::navigator()->aircraft().transponderCode().toUpper();
+    m_ownTransponderCodes.clear();
+    if (!transponderCode.isEmpty())
+    {
+        QStringList const codes = transponderCode.toUpper().split(QRegularExpression(u"\\s+"_s), Qt::SkipEmptyParts);
+        m_ownTransponderCodes.reserve(codes.size());
+        for (const QString& code : codes)
+        {
+            m_ownTransponderCodes.push_back(code.toStdString());
+        }
+    }
+    
+    #if OGN_DEBUG
+    qDebug() << "Updated ownship filter data - Name:" << name
+             << "Transponder codes count:" << m_ownTransponderCodes.size();
+    #endif
+}
+
 void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
 {
     // In this function 
@@ -301,9 +333,58 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
             qDebug() << "Traffic type:" << static_cast<int>(m_ognMessage.aircraftType) 
                     << " speed:" << m_ognMessage.speed 
                     << " coord valid:" << (!std::isnan(m_ognMessage.latitude) && !std::isnan(m_ognMessage.longitude))
-                    << " alt:" << m_ognMessage.altitude;
+                    << " alt:" << m_ognMessage.altitude
+                    << " callsign:" << QString::fromUtf8(m_ognMessage.flightnumber.data(), static_cast<qsizetype>(m_ognMessage.flightnumber.size()))
+                    << " addr:" << QString::fromUtf8(m_ognMessage.address.data(), static_cast<qsizetype>(m_ognMessage.address.size()));
+
         }
     #endif
+
+    // Filter out ownship by ICAO 24-bit address (supports multiple codes separated by spaces)
+    // Cached codes are uppercase, case-sensitive comparison
+    for (const std::string& code : m_ownTransponderCodes)
+    {
+        if (code.size() == m_ognMessage.address.size() &&
+            std::equal(m_ognMessage.address.begin(), m_ognMessage.address.end(), code.begin()))
+        {
+            #if OGN_DEBUG
+            qDebug() << "Filtering out ownship with transponder code:" << QString::fromStdString(code);
+            #endif
+            return;
+        }
+    }    
+
+    // Decode callsign
+    QString callsign;
+    if (m_ognMessage.addressType == Ogn::OgnAddressType::FLARM)
+    {
+        callsign = GlobalObject::flarmnetDB()->getRegistration(QString::fromUtf8(m_ognMessage.address.data(), static_cast<qsizetype>(m_ognMessage.address.size())));
+    }
+    else if (static_cast<int>(!m_ognMessage.flightnumber.empty()) != 0)
+    {
+        callsign = QString::fromUtf8(m_ognMessage.flightnumber.data(), static_cast<qsizetype>(m_ognMessage.flightnumber.size()));
+    }
+    else if (m_ognMessage.addressType == Ogn::OgnAddressType::ICAO)
+    {
+        callsign = transponderDB.getRegistration(QString::fromUtf8(m_ognMessage.address.data(), static_cast<qsizetype>(m_ognMessage.address.size())));
+    }
+    #if OGN_SHOW_ADDRESSTYPE
+        callsign += QString(" (%1)").arg(addressTypeToString(m_ognMessage.addressType));
+    #endif
+
+    // Filter out ownship by aircraft name (callsign)
+    // Direct comparison between QString and std::u16string using std::equal
+    if (!m_ownAircraftName.empty() && 
+        static_cast<size_t>(callsign.size()) == m_ownAircraftName.size() &&
+        std::equal(reinterpret_cast<const char16_t*>(callsign.utf16()), 
+                   reinterpret_cast<const char16_t*>(callsign.utf16()) + callsign.size(),
+                   m_ownAircraftName.begin()))
+    {
+        #if OGN_DEBUG
+        qDebug() << "Filtering out ownship with callsign:" << callsign;
+        #endif
+        return;
+    }
 
     // Compute horizontal/vertical distance and the alarm Level
     int alarmLevel = 0;
@@ -312,7 +393,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
       
     if (m_currentPosition.isValid())
     {
-        QGeoCoordinate ognCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude);
+        const QGeoCoordinate ognCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude);
         hDist = Units::Distance::fromM(m_currentPosition.distanceTo(ognCoordinate));
         vDist = Units::Distance::fromM(qFabs(m_ognMessage.altitude - m_currentPosition.altitude()));
         
@@ -334,24 +415,6 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
         }
     }
 
-    // Decode callsign
-    QString callsign;
-    if (m_ognMessage.addressType == Ogn::OgnAddressType::FLARM)
-    {
-        callsign = GlobalObject::flarmnetDB()->getRegistration(QString::fromUtf8(m_ognMessage.address.data(), m_ognMessage.address.size()));
-    }
-    else if (static_cast<int>(!m_ognMessage.flightnumber.empty()) != 0)
-    {
-        callsign = QString::fromUtf8(m_ognMessage.flightnumber.data(), m_ognMessage.flightnumber.size());
-    }
-    else if (m_ognMessage.addressType == Ogn::OgnAddressType::ICAO)
-    {
-        callsign = transponderDB.getRegistration(QString::fromUtf8(m_ognMessage.address.data(), m_ognMessage.address.size()));
-    }
-#if OGN_SHOW_ADDRESSTYPE
-    callsign += QString(" (%1)").arg(addressTypeToString(m_ognMessage.addressType));
-#endif
-
     // PositionInfo
     QGeoPositionInfo pInfo(QGeoCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude), QDateTime::currentDateTimeUtc());
     pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course);  // Already in degrees
@@ -366,7 +429,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     Traffic::TrafficFactor_WithPosition factor;
     factor.setAlarmLevel(alarmLevel);
     factor.setCallSign(callsign);
-    factor.setID(QString::fromUtf8(m_ognMessage.sourceId.data(), m_ognMessage.sourceId.size()));
+    factor.setID(QString::fromUtf8(m_ognMessage.sourceId.data(), static_cast<qsizetype>(m_ognMessage.sourceId.size())));
     factor.setType(convertOgnAircraftType(m_ognMessage.aircraftType));
     factor.setPositionInfo(Positioning::PositionInfo(pInfo, sourceName()));
     factor.setHDist(hDist);
@@ -374,14 +437,13 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     factor.startLiveTime();
 
     #if OGN_DEBUG
-    qDebug() << "Emitting traffic factor - ID:" << QString::fromStdString(std::string(ognMessage.sourceId)) 
+    qDebug() << "Emitting traffic factor - ID:" << QString::fromUtf8(m_ognMessage.sourceId.data(), static_cast<qsizetype>(m_ognMessage.sourceId.size()))
              << " alarmLevel:" << alarmLevel
-             << " type:" << static_cast<int>(ognMessage.aircraftType)
-             << " callsign:" << callsign 
-             << " id:" << ognMessage.sourceId.toString()
-             << " speed:" << ognMessage.speed << "kts"
-             << " course:" << ognMessage.course << "°"
-             << " altitude:" << ognMessage.altitude * 3.28084 << "ft"
+             << " type:" << static_cast<int>(m_ognMessage.aircraftType)
+             << " callsign:" << callsign
+             << " speed:" << m_ognMessage.speed << "kts"
+             << " course:" << m_ognMessage.course << "°"
+             << " altitude:" << m_ognMessage.altitude << "m"
              << " hDist:" << hDist.toM() << "m"
              << " vDist:" << vDist.toFeet() << "ft"
              << " valid:" << factor.positionInfo().isValid();

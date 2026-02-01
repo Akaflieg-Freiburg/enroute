@@ -22,6 +22,8 @@
 
 #include <QPointer>
 #include <QTcpSocket>
+#include <string>
+#include <vector>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 #include "OgnParser.h"  // From enrouteOGN library
@@ -166,7 +168,7 @@ private:
     QString m_lineBuffer;         // Reusable buffer for reading lines
     Ogn::OgnMessage m_ognMessage; // Reusable message structure
 
-    // our own CallSign
+    // our own OGN APRS CallSign, like "ENR12345"
     QString m_callSign;
 
     // our own AircraftType
@@ -179,6 +181,10 @@ private:
     QGeoCoordinate m_currentPosition;
     bool m_usingGps = true;
 
+    // Cached ownship filter data (updated when aircraft settings change)
+    std::u16string m_ownAircraftName;
+    std::vector<std::string> m_ownTransponderCodes;
+
     // Throttling for filter updates
     QGeoCoordinate m_lastFilterPosition;     // Last coordinate actually sent to OGN server
     qint64 m_lastFilterUpdateTime = 0;
@@ -190,6 +196,9 @@ private:
 
     // Update current coordinate based on GPS and map center availability
     void updateCurrentCoordinate();
+
+    // Update cached ownship filter data from aircraft settings
+    void updateOwnshipFilterData();
 
     // Periodic update function called once per minute
     void periodicUpdate();

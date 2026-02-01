@@ -75,6 +75,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<GeoMaps::Airspace>();
     qRegisterMetaType<Platform::FileExchange_Abstract::FileFunction>();
     qRegisterMetaType<Traffic::Warning>();
+    qRegisterMetaType<QGeoCoordinate>("QGeoCoordinate");
 
     // Required by the maplibre plugin to QtLocation
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);

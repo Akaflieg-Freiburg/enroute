@@ -72,6 +72,21 @@ Page {
         id: mapLoader
 
         anchors.fill: parent
+
+        function reload() {
+            rateLimitingTimer.start()
+        }
+
+        Timer {
+            id: rateLimitingTimer
+
+            interval: 200
+            onTriggered: {
+                mapLoader.active = false
+                mapLoader.source = "../items/MFM.qml"
+                mapLoader.active = true
+            }
+        }
     }
 
     Component.onCompleted: {
@@ -82,9 +97,7 @@ Page {
         target: GlobalSettings
 
         function onAirspaceAltitudeLimitChanged() {
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
+            mapLoader.reload()
         }
     }
 
@@ -92,14 +105,10 @@ Page {
         target: GeoMapProvider
 
         function onStyleFileURLChanged() {
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
+            mapLoader.reload()
         }
         function onGeoJSONChanged() {
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
+            mapLoader.reload()
         }
     }
 

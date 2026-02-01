@@ -24,7 +24,7 @@
 #include <QTcpSocket>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
-#include "traffic/TrafficDataSource_OgnParser.h"
+#include "OgnParser.h"  // From enrouteOGN library
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -163,7 +163,8 @@ private:
     QString m_hostName;
     quint16 m_port;
 
-    Traffic::Ogn::OgnMessage m_ognMessage;
+    QString m_lineBuffer;         // Reusable buffer for reading lines
+    Ogn::OgnMessage m_ognMessage; // Reusable message structure
 
     // our own CallSign
     QString m_callSign;
@@ -172,10 +173,29 @@ private:
     Traffic::AircraftType m_aircraftType = {Traffic::AircraftType::Aircraft};
 
     // Radius around the approximate position for which traffic data is requested.
-    static constexpr Units::Distance m_receiveRadius = Units::Distance::fromKM(50);
+    static constexpr Units::Distance m_receiveRadius = Units::Distance::fromNM(20.0);
+
+    // Current coordinate and GPS usage
+    QGeoCoordinate m_currentPosition;
+    bool m_usingGps = true;
+
+    // Throttling for filter updates
+    QGeoCoordinate m_lastFilterPosition;     // Last coordinate actually sent to OGN server
+    qint64 m_lastFilterUpdateTime = 0;
+    static constexpr qint64 MIN_FILTER_UPDATE_INTERVAL_MS = 1000; // 1 second
+    static constexpr double MIN_FILTER_UPDATE_DISTANCE_KM = 5.0;  // 5 km
+
+    // Update filter with throttling logic
+    void setFilter(const QGeoCoordinate& coordinate);
+
+    // Update current coordinate based on GPS and map center availability
+    void updateCurrentCoordinate();
 
     // Periodic update function called once per minute
     void periodicUpdate();
+
+    // Process OGN message and emit factorWithPosition signal
+    void processOgnMessage(const QString& data);
 
     // Send a keep-alive message to the APRS-IS server
     void sendKeepAlive();

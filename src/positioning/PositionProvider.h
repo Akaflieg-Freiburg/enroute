@@ -93,6 +93,15 @@ public:
      */
     Q_PROPERTY(QGeoCoordinate lastValidCoordinate READ lastValidCoordinate BINDABLE bindableLastValidCoordinate)
 
+    /*! \brief Map center coordinate
+     *
+     *  This property holds the current center coordinate of the flight map.
+     *  It should be set from QML whenever the map center changes.
+     *  This allows C++ code to use the map center for distance calculations
+     *  when GPS position is unavailable.
+     */
+    Q_PROPERTY(QGeoCoordinate mapCenter READ mapCenter WRITE setMapCenter BINDABLE bindableMapCenter NOTIFY mapCenterChanged)
+
     /*! \brief Last valid true track
      *
      *  This property holds the last valid true track known.  At the first
@@ -177,6 +186,24 @@ public:
      */
     [[nodiscard]] QBindable<Units::Angle> bindableLastValidTT() {return &m_lastValidTT;}
 
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property mapCenter
+     */
+    [[nodiscard]] QGeoCoordinate mapCenter() const {return m_mapCenter.value();}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property mapCenter
+     */
+    [[nodiscard]] QBindable<QGeoCoordinate> bindableMapCenter() {return &m_mapCenter;}
+
+    /*! \brief Setter function for the property with the same name
+     *
+     *  @param newMapCenter New map center coordinate
+     */
+    void setMapCenter(const QGeoCoordinate& newMapCenter) {m_mapCenter = newMapCenter;}
+
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property positionInfo
@@ -243,6 +270,9 @@ signals:
     void approximateLastValidCoordinateChanged();
 
     // Notifier signal
+    void mapCenterChanged();
+
+    // Notifier signal
     void positionInfoChanged(const Positioning::PositionInfo& info);
 
     // Notifier signal
@@ -288,6 +318,7 @@ private:
     Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, QGeoCoordinate, m_approximateLastValidCoordinate, &Positioning::PositionProvider::approximateLastValidCoordinateChanged);
     QProperty<QGeoCoordinate> m_lastValidCoordinate {QGeoCoordinate(EDTF_lat, EDTF_lon, EDTF_ele)};
     QProperty<Units::Angle> m_lastValidTT;
+    Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, QGeoCoordinate, m_mapCenter, &Positioning::PositionProvider::mapCenterChanged);
 
     Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, bool, m_receivingPositionInfo, &Positioning::PositionProvider::receivingPositionInfoChanged);
     QProperty<QString> m_statusString;

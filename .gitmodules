@@ -29,3 +29,6 @@
 [submodule "3rdParty/enrouteManual"]
 	path = 3rdParty/enrouteManual
 	url = https://github.com/Akaflieg-Freiburg/enrouteManual
+[submodule "3rdParty/enrouteOGN"]
+	path = 3rdParty/enrouteOGN
+	url = https://github.com/Akaflieg-Freiburg/enrouteOGN.git

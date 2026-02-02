@@ -283,8 +283,12 @@ Item {
                     //
 
                     onCenterChanged: {
-                        if (defaultValuesSet)
+                        if (defaultValuesSet) {
                             Global.mapCenter = center
+                        }
+                        if (flightMap.center.isValid) {
+                            PositionProvider.mapCenter = flightMap.center
+                        }
                     }
                     Binding on center {
                         id: centerBinding

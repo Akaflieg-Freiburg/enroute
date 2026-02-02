@@ -100,7 +100,6 @@ set(SOURCES
     traffic/TrafficDataSource_BluetoothLowEnergy.h
     traffic/TrafficDataSource_File.h
     traffic/TrafficDataSource_Ogn.h
-    traffic/TrafficDataSource_OgnParser.h
     traffic/TrafficDataSource_SerialPort.h
     traffic/TrafficDataSource_Simulate.h
     traffic/TrafficDataSource_Tcp.h
@@ -198,7 +197,6 @@ set(SOURCES
     traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp
-    traffic/TrafficDataSource_Abstract_APRS.cpp
     traffic/TrafficDataSource_Abstract_FLARM.cpp
     traffic/TrafficDataSource_Abstract_GDL90.cpp
     traffic/TrafficDataSource_Abstract_XGPS.cpp
@@ -207,7 +205,6 @@ set(SOURCES
     traffic/TrafficDataSource_BluetoothLowEnergy.cpp
     traffic/TrafficDataSource_File.cpp
     traffic/TrafficDataSource_Ogn.cpp
-    traffic/TrafficDataSource_OgnParser.cpp
     traffic/TrafficDataSource_SerialPort.cpp
     traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp
@@ -315,6 +312,7 @@ if(ANDROID)
     )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        enrouteOGN
         Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
@@ -379,6 +377,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt6::Widgets
     QMapLibre::Location
     libzip::zip
+    enrouteOGN
     ${LIBUDEV_LIBRARIES}
 )
 if (TARGET Qt6::WebView)
@@ -557,6 +556,7 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/KDSingleApplication/src
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteOGN/lib
     dataManagement
     fileFormats
     geomaps

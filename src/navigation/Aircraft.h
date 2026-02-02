@@ -132,6 +132,13 @@ public:
      */
     Q_PROPERTY(QString name READ name WRITE setName)
 
+    /*! \brief Transponder Code
+     *
+     * This property holds the ICAO 24-bit address (Mode S transponder code).
+     * Typically a 6-character hexadecimal string (e.g., "3C6543").
+     */
+    Q_PROPERTY(QString transponderCode READ transponderCode WRITE setTransponderCode)
+
     /*! \brief Preferred units of measurement for vertical distances */
     Q_PROPERTY(VerticalDistanceUnit verticalDistanceUnit READ verticalDistanceUnit WRITE setVerticalDistanceUnit)
 
@@ -187,6 +194,12 @@ public:
      * @returns Property name
      */
     [[nodiscard]] auto name() const -> QString { return m_name; }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property transponderCode
+     */
+    [[nodiscard]] auto transponderCode() const -> QString { return m_transponderCode; }
 
     /*! \brief Getter function for property of the same name
      *
@@ -253,6 +266,12 @@ public:
      * @param newName Property name
      */
     void setName(const QString& newName);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newCode Property transponderCode
+     */
+    void setTransponderCode(const QString& newCode);
 
     /*! \brief Setter function for property of the same name
      *
@@ -403,6 +422,7 @@ private:
     HorizontalDistanceUnit m_horizontalDistanceUnit {NauticalMile};
     Units::Speed m_minimumSpeed {};
     QString m_name;
+    QString m_transponderCode;
     VerticalDistanceUnit m_verticalDistanceUnit{Feet};
 };
 

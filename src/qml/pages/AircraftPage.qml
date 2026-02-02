@@ -783,7 +783,7 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
-                KeyNavigation.tab: name
+                KeyNavigation.tab: transponderCode
                 rightPadding: 30
 
                 validator: DoubleValidator {
@@ -839,6 +839,37 @@ Page {
                         return "gal/h";
                     }
                 }
+            }
+
+            // Transponder
+            Label {
+                text: qsTr("Transponder")
+                Layout.columnSpan: 2
+                font.pixelSize: acftTab.font.pixelSize*1.2
+                font.bold: true
+            }
+            ToolButton {
+                enabled: false
+            }
+
+            Label {
+                text: qsTr("Code")
+                Layout.alignment: Qt.AlignBaseline
+            }
+            MyTextField {
+                id: transponderCode
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                Layout.minimumWidth: font.pixelSize*5
+                KeyNavigation.tab: name
+                placeholderText: qsTr("ICAO 24-bit Address (e.g., 3C6543)")
+
+                onEditingFinished: {
+                    Navigator.aircraft.transponderCode = text.toUpperCase()
+                    name.focus = true
+                }
+                text: Navigator.aircraft.transponderCode
             }
 
             Rectangle {

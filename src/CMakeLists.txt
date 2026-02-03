@@ -312,7 +312,6 @@ if(ANDROID)
     )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        enrouteOGN
         Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
@@ -328,6 +327,7 @@ if(ANDROID)
         Qt6::TextToSpeech
         Qt6::WebView
         QMapLibre::Location
+        enrouteOGN
         libzip::zip
     )
     add_android_openssl_libraries(${PROJECT_NAME})
@@ -376,8 +376,8 @@ target_link_libraries(${PROJECT_NAME}
     Qt6::TextToSpeech
     Qt6::Widgets
     QMapLibre::Location
-    libzip::zip
     enrouteOGN
+    libzip::zip
     ${LIBUDEV_LIBRARIES}
 )
 if (TARGET Qt6::WebView)
@@ -455,6 +455,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         Qt6::WebView
         Qt6::Widgets
         QMapLibre::Location
+        enrouteOGN
         libzip::zip
     )
 endif()
@@ -504,6 +505,7 @@ if (IOS)
         Qt6::TextToSpeech
         Qt6::WebView
         QMapLibre::Location
+        enrouteOGN
         libzip::zip
     )
     set_target_properties(${PROJECT_NAME} PROPERTIES

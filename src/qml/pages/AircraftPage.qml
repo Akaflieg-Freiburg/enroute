@@ -161,12 +161,34 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
                 KeyNavigation.tab: horizontalUOM
+                placeholderText: qsTr("Aircraft Callsign")
 
                 onEditingFinished: {
                     Navigator.aircraft.name = text
                     horizontalUOM.focus = true
                 }
                 text: Navigator.aircraft.name
+            }
+
+            Label {
+                text: qsTr("Hex ID")
+                Layout.alignment: Qt.AlignBaseline
+            }
+            MyTextField {
+                id: transponderCode
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                Layout.topMargin: 20
+                Layout.alignment: Qt.AlignBaseline
+                Layout.minimumWidth: font.pixelSize*5
+                KeyNavigation.tab: name
+                placeholderText: qsTr("Transponder Address/FLARM ID")
+
+                onEditingFinished: {
+                    Navigator.aircraft.transponderCode = text.toUpperCase()
+                    name.focus = true
+                }
+                text: Navigator.aircraft.transponderCode
             }
 
             CheckBox {
@@ -839,37 +861,6 @@ Page {
                         return "gal/h";
                     }
                 }
-            }
-
-            // Transponder
-            Label {
-                text: qsTr("Transponder")
-                Layout.columnSpan: 2
-                font.pixelSize: acftTab.font.pixelSize*1.2
-                font.bold: true
-            }
-            ToolButton {
-                enabled: false
-            }
-
-            Label {
-                text: qsTr("Code")
-                Layout.alignment: Qt.AlignBaseline
-            }
-            MyTextField {
-                id: transponderCode
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: font.pixelSize*5
-                KeyNavigation.tab: name
-                placeholderText: qsTr("ICAO 24-bit Address (e.g., 3C6543)")
-
-                onEditingFinished: {
-                    Navigator.aircraft.transponderCode = text.toUpperCase()
-                    name.focus = true
-                }
-                text: Navigator.aircraft.transponderCode
             }
 
             Rectangle {

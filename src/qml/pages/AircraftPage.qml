@@ -251,9 +251,10 @@ Page {
                 font.bold: true
             }
 
+/*
             WordWrappingItemDelegate {
                 id: ios_horizontalUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 4
                 Layout.fillWidth: true
                 visible: (Qt.platform.os === "ios")
 
@@ -341,7 +342,7 @@ Page {
 
             WordWrappingItemDelegate {
                 id: ios_verticalUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 4
                 Layout.fillWidth: true
                 visible: (Qt.platform.os === "ios")
 
@@ -418,7 +419,7 @@ Page {
 
             WordWrappingItemDelegate {
                 id: ios_volumeUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 4
                 Layout.fillWidth: true
                 visible: (Qt.platform.os === "ios")
 
@@ -492,11 +493,11 @@ Page {
 
                 }
             }
+*/
 
             Label {
                 text: qsTr("Horizontal")
                 Layout.alignment: Qt.AlignBaseline
-                visible: (Qt.platform.os !== "ios")
             }
             ComboBox {
                 id: horizontalUOM
@@ -504,7 +505,6 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: verticalUOM
-                visible: (Qt.platform.os !== "ios")
 
                 Component.onCompleted: {
                     if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
@@ -526,7 +526,6 @@ Page {
             Label {
                 text: qsTr("Vertical")
                 Layout.alignment: Qt.AlignBaseline
-                visible: (Qt.platform.os !== "ios")
             }
             ComboBox {
                 id: verticalUOM
@@ -534,7 +533,6 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: volumeUOM
-                visible: (Qt.platform.os !== "ios")
 
                 Component.onCompleted: {
                     if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters) {
@@ -552,7 +550,6 @@ Page {
             Label {
                 text: qsTr("Volume")
                 Layout.alignment: Qt.AlignBaseline
-                visible: (Qt.platform.os !== "ios")
             }
             ComboBox {
                 id: volumeUOM
@@ -560,7 +557,6 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: cruiseSpeed
-                visible: (Qt.platform.os !== "ios")
 
                 Component.onCompleted: {
                     if (Navigator.aircraft.fuelConsumptionUnit === Aircraft.GallonPerHour) {
@@ -902,7 +898,6 @@ Page {
                 Layout.columnSpan: 4
                 Layout.preferredHeight: acftTab.font.pixelSize
             }
-
         }
 
     }

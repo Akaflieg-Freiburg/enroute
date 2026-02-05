@@ -3,8 +3,6 @@
 ## [3.1.1] - 2026-
 
 ### Fixed
-- Map is reset when airspace altitude limit changes (#551)
-
 - Maintain zoom, bearing, map center and display modes when toggling raster maps
 
 - Visual approach charts now drawn on top of aviation map, not underneath
@@ -13,6 +11,12 @@
 
 - Simplified logic when setting map display modes, added toast messages for
   clarity
+
+- Ownship shown twice when using OGN data (#581)
+
+- Warning "QML Loader cannot create delegate" (#578)
+
+- Map is reset when airspace altitude limit changes (#551)
 
 ### Added
 - Tooltips on several buttons on the moving maps

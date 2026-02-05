@@ -165,7 +165,7 @@ Page {
 
                 onEditingFinished: {
                     Navigator.aircraft.name = text
-                    horizontalUOM.focus = true
+                    transponderCode.focus = true
                 }
                 text: Navigator.aircraft.name
             }
@@ -173,12 +173,13 @@ Page {
             Label {
                 text: qsTr("Hex ID")
                 Layout.alignment: Qt.AlignBaseline
+                Layout.topMargin: font.pixelSize/2
             }
             MyTextField {
                 id: transponderCode
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
-                Layout.topMargin: 20
+                Layout.topMargin: font.pixelSize/2
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
                 KeyNavigation.tab: name
@@ -805,7 +806,7 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
-                KeyNavigation.tab: transponderCode
+                KeyNavigation.tab: name
                 rightPadding: 30
 
                 validator: DoubleValidator {

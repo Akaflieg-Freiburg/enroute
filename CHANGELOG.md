@@ -19,6 +19,8 @@
 - Map is reset when airspace altitude limit changes (#551)
 
 ### Added
+- Android libraries are now 16kb-aligned (#552)
+
 - Tooltips on several buttons on the moving maps
 
 

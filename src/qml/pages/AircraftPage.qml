@@ -137,22 +137,21 @@ Page {
             anchors.right: parent.right
             anchors.rightMargin: acftTab.font.pixelSize
 
-            columns: 3
+            columns: 4
 
             // Aircraft
             Label {
                 text: qsTr("Aircraft")
-                Layout.columnSpan: 2
+                Layout.columnSpan: 4
+                Layout.topMargin: font.pixelSize/2
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-            }
-            ToolButton {
-                enabled: false
             }
 
             Label {
                 text: qsTr("Name")
                 Layout.alignment: Qt.AlignBaseline
+                Layout.topMargin: font.pixelSize/2
             }
             MyTextField {
                 id: name
@@ -160,14 +159,22 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
-                KeyNavigation.tab: horizontalUOM
-                placeholderText: qsTr("Aircraft Callsign")
+                Layout.topMargin: font.pixelSize/2
+                KeyNavigation.tab: transponderCode
+                placeholderText: qsTr("Callsign")
 
-                onEditingFinished: {
-                    Navigator.aircraft.name = text
-                    transponderCode.focus = true
-                }
+                onEditingFinished: Navigator.aircraft.name = text
                 text: Navigator.aircraft.name
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
             }
 
             Label {
@@ -182,14 +189,21 @@ Page {
                 Layout.topMargin: font.pixelSize/2
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
-                KeyNavigation.tab: name
-                placeholderText: qsTr("Transponder Address/FLARM ID")
+                KeyNavigation.tab: cruiseSpeed
+                placeholderText: qsTr("Transponder/FLARM ID")
 
-                onEditingFinished: {
-                    Navigator.aircraft.transponderCode = text.toUpperCase()
-                    name.focus = true
-                }
+                onEditingFinished: Navigator.aircraft.transponderCode = text.toUpperCase()
                 text: Navigator.aircraft.transponderCode
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
             }
 
             CheckBox {
@@ -210,16 +224,24 @@ Page {
                 text: qsTr("Use cabin pressure instead of static pressure for pressure altitude calculation.")
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             // Units
             Label {
                 text: qsTr("Units")
-                Layout.columnSpan: 2
+                Layout.columnSpan: 4
+                Layout.topMargin: font.pixelSize/2
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-            }
-            ToolButton {
-                enabled: false
             }
 
             WordWrappingItemDelegate {
@@ -492,6 +514,17 @@ Page {
 
                 model: [ qsTr("Nautical Miles"), qsTr("Kilometers"), qsTr("Statute Miles") ]
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
+            }
+
             Label {
                 text: qsTr("Vertical")
                 Layout.alignment: Qt.AlignBaseline
@@ -516,6 +549,17 @@ Page {
 
                 model: [ qsTr("Feet"), qsTr("Meters") ]
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
+            }
+
             Label {
                 text: qsTr("Volume")
                 Layout.alignment: Qt.AlignBaseline
@@ -540,16 +584,24 @@ Page {
 
                 model: [ qsTr("Liters"), qsTr("U.S. Gallons") ]
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             // True Airspeed
             Label {
                 text: qsTr("True Airspeed")
-                Layout.columnSpan: 2
+                Layout.columnSpan: 4
+                Layout.topMargin: font.pixelSize
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-            }
-            ToolButton {
-                enabled: false
             }
 
             Label {
@@ -630,6 +682,16 @@ Page {
                     }
                 }
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             Label {
                 text: qsTr("Descent")
@@ -706,6 +768,16 @@ Page {
                     case Aircraft.StatuteMile :
                         return "mph";
                     }
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
                 }
             }
 
@@ -785,16 +857,24 @@ Page {
                     }
                 }
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             // Fuel Consumption
             Label {
                 text: qsTr("Fuel Consumption")
-                Layout.columnSpan: 2
+                Layout.columnSpan: 4
+                Layout.topMargin: font.pixelSize
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-            }
-            ToolButton {
-                enabled: false
             }
 
             Label {
@@ -863,9 +943,19 @@ Page {
                     }
                 }
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             Rectangle {
-                Layout.columnSpan: 3
+                Layout.columnSpan: 4
                 Layout.preferredHeight: acftTab.font.pixelSize
             }
 
@@ -916,6 +1006,14 @@ Page {
             PlatformAdaptor.vibrateBrief()
             pressureCheckBox.checked = false
         }
+    }
+
+    LongTextDialog {
+        id: helpDialog
+
+        modal: true
+
+        standardButtons: Dialog.Ok
     }
 
 } // Page

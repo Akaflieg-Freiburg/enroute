@@ -585,23 +585,11 @@ Item {
                             rotation: -flightMap.bearing
 
                             icon.source: "/icons/NorthArrow.svg"
-                            ToolTip.text: {
-                                if (Global.mapBearingPolicyRect === MFM.NUp)
-                                    return qsTr("Current Mode: North Up")
-                                if (Global.mapBearingPolicyRect === MFM.TTUp)
-                                    return qsTr("Current Mode: Track Up")
-                                if (Global.mapBearingPolicyRect === MFM.UserDefinedBearingUp)
-                                    return qsTr("Current Mode: User Defined Direction Up")
-                                return Global.mapBearingPolicyRect
-                            }
-                            ToolTip.delay: 1000
-                            ToolTip.timeout: 5000
-                            ToolTip.visible: hovered
 
                             onClicked: {
                                 if (Global.mapBearingPolicyRect === MFM.NUp) {
                                     Global.mapBearingPolicy = MFM.TTUp
-                                }  else if (Global.mapBearingPolicyRect === MFM.TTUp) {
+                                } else if (Global.mapBearingPolicyRect === MFM.TTUp) {
                                     Global.mapBearingPolicy = MFM.NUp
                                 } else
                                     Global.mapBearingPolicy = Global.mapBearingRevertPolicyRect
@@ -613,14 +601,6 @@ Item {
 
                             icon.source: "/icons/material/ic_layers.svg"
                             visible: GeoMapProvider.availableRasterMaps.length !== 0
-                            ToolTip.text: {
-                                if (GeoMapProvider.currentRasterMap === "")
-                                    return qsTr("Currently no raster map in use.")
-                                return qsTr("Current Raster Map: " + GeoMapProvider.currentRasterMap)
-                            }
-                            ToolTip.delay: 1000
-                            ToolTip.timeout: 5000
-                            ToolTip.visible: hovered
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()

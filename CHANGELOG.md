@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.1.1] - 2026-
+## [3.1.2] - 2026-
 
 ### Fixed
 - Maintain zoom, bearing, map center and display modes when toggling raster maps
@@ -11,6 +11,8 @@
 
 - Simplified logic when setting map display modes, added toast messages for
   clarity
+
+- Fix $PGRMZ message interpretation issue (#612)
 
 - Ownship shown twice when using OGN data (#581)
 

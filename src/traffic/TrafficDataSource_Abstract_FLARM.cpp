@@ -820,7 +820,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePGRMZ(const QString
     }
 
     // Quality check
-    if (arguments[1] != u"F")
+    if ((arguments[1] != u"F"_s) && (arguments[1] != u"f"_s))
     {
         return;
     }

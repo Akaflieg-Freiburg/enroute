@@ -131,8 +131,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a53844130b135bec48481773f0c02c8da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads aircraft data from a JSON document.  <br /></td></tr>
 <tr class="memitem:a1c27a731b407fe8d69a3621abd5a6778" id="r_a1c27a731b407fe8d69a3621abd5a6778"><td class="memItemLeft">Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#a1c27a731b407fe8d69a3621abd5a6778">loadFromJSON</a> (const QByteArray &amp;JSON)</td></tr>
 <tr class="memdesc:a1c27a731b407fe8d69a3621abd5a6778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads aircraft data from a JSON document.  <br /></td></tr>
-<tr class="memitem:a9725aa88146ac335e6d6f7f8b8022238" id="r_a9725aa88146ac335e6d6f7f8b8022238"><td class="memItemLeft">Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#a9725aa88146ac335e6d6f7f8b8022238">operator==</a> (const <a class="el" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a> &amp;other) const</td></tr>
-<tr class="memdesc:a9725aa88146ac335e6d6f7f8b8022238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality check.  <br /></td></tr>
+<tr class="memitem:ae3632e1d33b7d2a151c24d0fd951c946" id="r_ae3632e1d33b7d2a151c24d0fd951c946"><td class="memItemLeft">Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#ae3632e1d33b7d2a151c24d0fd951c946">operator==</a> (const <a class="el" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a> &amp;other) const =default</td></tr>
+<tr class="memdesc:ae3632e1d33b7d2a151c24d0fd951c946"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality check.  <br /></td></tr>
 <tr class="memitem:a5e8131ca8cdc9f9074f4c4a9cbd20e4d" id="r_a5e8131ca8cdc9f9074f4c4a9cbd20e4d"><td class="memItemLeft">Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#a5e8131ca8cdc9f9074f4c4a9cbd20e4d">save</a> (const QString &amp;fileName) const</td></tr>
 <tr class="memdesc:a5e8131ca8cdc9f9074f4c4a9cbd20e4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves aircraft to a file.  <br /></td></tr>
 <tr class="memitem:a18d85e89bd3ab9d526f908b78614e44e" id="r_a18d85e89bd3ab9d526f908b78614e44e"><td class="memItemLeft">Q_INVOKABLE QByteArray&#160;</td><td class="memItemRight"><a class="el" href="#a18d85e89bd3ab9d526f908b78614e44e">toJSON</a> () const</td></tr>
@@ -713,11 +713,14 @@ bool&#160;</td><td class="memItemRight"><b>cabinPressureEqualsStaticPressure</b>
 
 </div>
 </div>
-<a id="a9725aa88146ac335e6d6f7f8b8022238" name="a9725aa88146ac335e6d6f7f8b8022238"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9725aa88146ac335e6d6f7f8b8022238">&#9670;&#160;</a></span>operator==()</h2>
+<a id="ae3632e1d33b7d2a151c24d0fd951c946" name="ae3632e1d33b7d2a151c24d0fd951c946"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3632e1d33b7d2a151c24d0fd951c946">&#9670;&#160;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Q_INVOKABLE bool Navigation::Aircraft::operator== </td>
@@ -726,6 +729,11 @@ bool&#160;</td><td class="memItemRight"><b>cabinPressureEqualsStaticPressure</b>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel default">default</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Equality check. </p>

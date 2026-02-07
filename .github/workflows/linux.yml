@@ -3,7 +3,7 @@ name: Compile on Linux
 on:
   push:
     branches: [ develop ]
-    paths-ignore:
+    paths-ignore: &paths-ignore
       - ".gitignore"
       - "README.md"
       # ignore CI for other platforms
@@ -11,6 +11,9 @@ on:
       - ".github/workflows/api.yml"
       - ".github/workflows/ios.yml"
       - ".github/workflows/macos.yml"
+  pull_request:
+    branches: [ main, develop ]
+    paths-ignore: *paths-ignore
 
 jobs:
   build:
@@ -79,6 +82,7 @@ jobs:
         linuxdeploy-x86_64.AppImage --appdir app --output appimage
         mv *-x86_64.AppImage enroute-Linux.AppImage
     - name: Upload to developerBuilds
+      if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
       run: |
         gh release upload --clobber developerBuilds ../enroute-Linux.AppImage
       env:

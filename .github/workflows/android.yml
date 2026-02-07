@@ -3,7 +3,7 @@ name: Compile on Android
 on:
   push:
     branches: [ develop ]
-    paths-ignore:
+    paths-ignore: &paths-ignore
       - ".gitignore"
       - "README.md"
       # ignore CI for other platforms
@@ -11,6 +11,9 @@ on:
       - ".github/workflows/ios.yml"
       - ".github/workflows/linux.yml"
       - ".github/workflows/macos.yml"
+  pull_request:
+    branches: [ main, develop ]
+    paths-ignore: *paths-ignore
 
 jobs:
   build:
@@ -104,6 +107,7 @@ jobs:
           -DCMAKE_BUILD_TYPE:STRING=Debug
         cmake --build build-enroute
     - name: Upload to developerBuilds
+      if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
       run: |
         gh release upload --clobber developerBuilds ../build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk
       env:

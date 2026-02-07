@@ -3,7 +3,7 @@ name: Compile on iOS
 on:
   push:
     branches: [ develop ]
-    paths-ignore:
+    paths-ignore: &paths-ignore
       - ".gitignore"
       - "README.md"
       # ignore CI for other platforms
@@ -11,6 +11,9 @@ on:
       - ".github/workflows/api.yml"
       - ".github/workflows/linux.yml"
       - ".github/workflows/macos.yml"
+  pull_request:
+    branches: [ main, develop ]
+    paths-ignore: *paths-ignore
 
 jobs:
   build:
@@ -130,6 +133,7 @@ jobs:
         #brew install create-dmg
         #create-dmg enroute-iphonesimulator.dmg build-enroute/src/Debug-iphonesimulator
     - name: Upload to developerBuilds
+      if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
       run: |
         echo "Skip uploading developer build because of size reasons..."
         #gh release upload --clobber developerBuilds ../enroute-iphonesimulator.dmg

@@ -339,7 +339,7 @@ void NOTAM::NOTAMProvider::startRequest(const QGeoCoordinate& coordinate)
     }
 
     const QGeoCoordinate coordinateRounded( qRound(coordinate.latitude()), qRound(coordinate.longitude()) );
-    auto urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/notam.php?"
+    auto urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxyDevelop/notam.php?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
                      "locationRadius=%3&"

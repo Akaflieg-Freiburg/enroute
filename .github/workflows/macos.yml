@@ -3,7 +3,7 @@ name: Compile on MacOS
 on:
   push:
     branches: [ develop ]
-    paths-ignore:
+    paths-ignore: &paths-ignore
       - ".gitignore"
       - "README.md"
       # ignore CI for other platforms
@@ -11,6 +11,9 @@ on:
       - ".github/workflows/api.yml"
       - ".github/workflows/ios.yml"
       - ".github/workflows/linux.yml"
+  pull_request:
+    branches: [ main, develop ]
+    paths-ignore: *paths-ignore
 
 jobs:
   build:
@@ -96,6 +99,7 @@ jobs:
         /usr/bin/sudo $QT_ROOT_DIR/bin/macdeployqt enroute.app -dmg
         mv enroute.dmg enroute-macOS-universal.dmg
     - name: Upload to developerBuilds
+      if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
       run: |
         gh release upload --clobber developerBuilds ../enroute-macOS-universal.dmg
       env:

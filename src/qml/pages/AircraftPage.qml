@@ -251,250 +251,6 @@ Page {
                 font.bold: true
             }
 
-/*
-            WordWrappingItemDelegate {
-                id: ios_horizontalUOM
-                Layout.columnSpan: 4
-                Layout.fillWidth: true
-                visible: (Qt.platform.os === "ios")
-
-                text: {
-                    var unitString = qsTr("Nautical Miles")
-                    if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
-                        unitString = qsTr("Kilometers")
-                    }
-                    if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
-                        unitString = qsTr("Statute Miles")
-                    }
-                    return qsTr("Horizontal Distances") +
-                            '<br><font color="#606060" size="2">' +
-                            qsTr("Currently using: %1").arg(unitString) +
-                            '</font>'
-                }
-                icon.source: "/icons/material/ic_arrow_forward.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    horizontalUOMDialog.open()
-                }
-                CenteringDialog {
-                    id: horizontalUOMDialog
-
-                    title: qsTr("Horizontal Distances")
-                    standardButtons: Dialog.Ok|Dialog.Cancel
-
-                    DecoratedScrollView{
-                        anchors.fill: parent
-                        contentWidth: availableWidth // Disable horizontal scrolling
-
-
-                        // Delays evaluation and prevents binding loops
-                        Binding on implicitHeight {
-                            value: cl.implicitHeight
-                            delayed: true    // Prevent intermediary values from being assigned
-                        }
-
-                        clip: true
-
-                        ColumnLayout {
-                            id: cl
-                            width: horizontalUOMDialog.availableWidth
-
-                            Label{
-                                Layout.fillWidth: true
-                                text: qsTr("Choose the preferred units of measurement for this aircraft. The units also apply to horizontal speed indications.")
-                                wrapMode: Text.Wrap
-                            }
-                            WordWrappingRadioDelegate {
-                                id: a
-                                Layout.fillWidth: true
-                                text: qsTr("Nautical Miles")
-                            }
-                            WordWrappingRadioDelegate {
-                                id: b
-                                Layout.fillWidth: true
-                                text: qsTr("Kilometers")
-                            }
-                            WordWrappingRadioDelegate {
-                                id: c
-                                Layout.fillWidth: true
-                                text: qsTr("Statute Miles")
-                            }
-                        }
-                    }
-
-                    onAboutToShow: {
-                        a.checked = Navigator.aircraft.horizontalDistanceUnit === Aircraft.NauticalMile
-                        b.checked = Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer
-                        c.checked = Navigator.aircraft.horizontalDistanceUnit === Aircraft.StatuteMile
-                    }
-
-                    onAccepted: {
-                        if (a.checked)
-                            Navigator.aircraft.horizontalDistanceUnit = Aircraft.NauticalMile
-                        if (b.checked)
-                            Navigator.aircraft.horizontalDistanceUnit = Aircraft.Kilometer
-                        if (c.checked)
-                            Navigator.aircraft.horizontalDistanceUnit = Aircraft.StatuteMile
-                    }
-
-                }
-            }
-
-            WordWrappingItemDelegate {
-                id: ios_verticalUOM
-                Layout.columnSpan: 4
-                Layout.fillWidth: true
-                visible: (Qt.platform.os === "ios")
-
-                text: {
-                    var unitString = qsTr("Feet")
-                    if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters) {
-                        unitString = qsTr("Meters")
-                    }
-                    return qsTr("Vertical Distances") +
-                            '<br><font color="#606060" size="2">' +
-                            qsTr("Currently using: %1").arg(unitString) +
-                            '</font>'
-                }
-                icon.source: "/icons/material/ic_arrow_upward.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    verticalUOMDialog.open()
-                }
-                CenteringDialog {
-                    id: verticalUOMDialog
-
-                    title: qsTr("Vertical Distances")
-                    standardButtons: Dialog.Ok|Dialog.Cancel
-
-                    DecoratedScrollView{
-                        anchors.fill: parent
-                        contentWidth: availableWidth // Disable horizontal scrolling
-
-
-                        // Delays evaluation and prevents binding loops
-                        Binding on implicitHeight {
-                            value: cl1.implicitHeight
-                            delayed: true    // Prevent intermediary values from being assigned
-                        }
-
-                        clip: true
-
-                        ColumnLayout {
-                            id: cl1
-                            width: verticalUOMDialog.availableWidth
-
-                            Label{
-                                Layout.fillWidth: true
-                                text: qsTr("Choose the preferred units of measurement for this aircraft. The units also apply to vertical speed indications.")
-                                wrapMode: Text.Wrap
-                            }
-                            WordWrappingRadioDelegate {
-                                id: a1
-                                Layout.fillWidth: true
-                                text: qsTr("Feet")
-                            }
-                            WordWrappingRadioDelegate {
-                                id: b1
-                                Layout.fillWidth: true
-                                text: qsTr("Meters")
-                            }
-                        }
-                    }
-
-                    onAboutToShow: {
-                        a1.checked = Navigator.aircraft.verticalDistanceUnit === Aircraft.Feet
-                        b1.checked = Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters
-                    }
-
-                    onAccepted: {
-                        if (a1.checked)
-                            Navigator.aircraft.verticalDistanceUnit = Aircraft.Feet
-                        if (b1.checked)
-                            Navigator.aircraft.verticalDistanceUnit = Aircraft.Meters
-                    }
-
-                }
-            }
-
-            WordWrappingItemDelegate {
-                id: ios_volumeUOM
-                Layout.columnSpan: 4
-                Layout.fillWidth: true
-                visible: (Qt.platform.os === "ios")
-
-                text: {
-                    var unitString = qsTr("Liters")
-                    if (Navigator.aircraft.FuelConsumptionUnit === Aircraft.LiterPerHour) {
-                        unitString = qsTr("Gallons")
-                    }
-                    return qsTr("Volume") +
-                            '<br><font color="#606060" size="2">' +
-                            qsTr("Currently using: %1").arg(unitString) +
-                            '</font>'
-                }
-                icon.source: "/icons/material/ic_gas.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    volumeUOMDialog.open()
-                }
-                CenteringDialog {
-                    id: volumeUOMDialog
-
-                    title: qsTr("Volumes")
-                    standardButtons: Dialog.Ok|Dialog.Cancel
-
-                    DecoratedScrollView{
-                        anchors.fill: parent
-                        contentWidth: availableWidth // Disable horizontal scrolling
-
-
-                        // Delays evaluation and prevents binding loops
-                        Binding on implicitHeight {
-                            value: cl2.implicitHeight
-                            delayed: true    // Prevent intermediary values from being assigned
-                        }
-
-                        clip: true
-
-                        ColumnLayout {
-                            id: cl2
-                            width: volumeUOMDialog.availableWidth
-
-                            Label{
-                                Layout.fillWidth: true
-                                text: qsTr("Choose the preferred units of measurement for this aircraft.")
-                                wrapMode: Text.Wrap
-                            }
-                            WordWrappingRadioDelegate {
-                                id: a2
-                                Layout.fillWidth: true
-                                text: qsTr("Liters")
-                            }
-                            WordWrappingRadioDelegate {
-                                id: b2
-                                Layout.fillWidth: true
-                                text: qsTr("Gallons")
-                            }
-                        }
-                    }
-
-                    onAboutToShow: {
-                        a2.checked = Navigator.aircraft.fuelConsumptionUnit === Aircraft.LiterPerHour
-                        b2.checked = Navigator.aircraft.fuelConsumptionUnit === Aircraft.GallonPerHour
-                    }
-
-                    onAccepted: {
-                        if (a2.checked)
-                            Navigator.aircraft.fuelConsumptionUnit = Aircraft.LiterPerHour
-                        if (b2.checked)
-                            Navigator.aircraft.fuelConsumptionUnit = Aircraft.GallonPerHour
-                    }
-
-                }
-            }
-*/
-
             Label {
                 text: qsTr("Horizontal")
                 Layout.alignment: Qt.AlignBaseline
@@ -506,16 +262,14 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: verticalUOM
 
-                Component.onCompleted: {
+                currentIndex: {
                     if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
-                        currentIndex = 1
-                        return
+                        return 1
                     }
                     if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
-                        currentIndex = 2
-                        return
+                        return 2
                     }
-                    currentIndex = 0
+                    return 0
                 }
                 onActivated: Navigator.aircraft.horizontalDistanceUnit = currentIndex
 
@@ -534,12 +288,11 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: volumeUOM
 
-                Component.onCompleted: {
+                currentIndex: {
                     if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters) {
-                        currentIndex = 1
-                        return
+                        return 1
                     }
-                    currentIndex = 0
+                    return 0
                 }
                 onActivated: Navigator.aircraft.verticalDistanceUnit = currentIndex
 
@@ -558,12 +311,11 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: cruiseSpeed
 
-                Component.onCompleted: {
+                currentIndex: {
                     if (Navigator.aircraft.fuelConsumptionUnit === Aircraft.GallonPerHour) {
-                        currentIndex = 1
-                        return
+                        return 1
                     }
-                    currentIndex = 0
+                    return 0
                 }
                 onActivated: Navigator.aircraft.fuelConsumptionUnit = currentIndex
 

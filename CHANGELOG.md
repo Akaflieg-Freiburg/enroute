@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.1.2] - 2026-
+## [3.1.3] - 2026-02-09
 
 ### Fixed
 - Maintain zoom, bearing, map center and display modes when toggling raster maps
@@ -11,6 +11,8 @@
 
 - Simplified logic when setting map display modes, added toast messages for
   clarity
+
+- Fix error in GUI of the aircraft page when loading aircraft from the library.
 
 - Fix $PGRMZ message interpretation issue (#612)
 

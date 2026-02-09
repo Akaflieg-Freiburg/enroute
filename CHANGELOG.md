@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.1.3] - 2026-02-09
+## [3.1.4] - 2026-02-09
 
 ### Fixed
 - Maintain zoom, bearing, map center and display modes when toggling raster maps

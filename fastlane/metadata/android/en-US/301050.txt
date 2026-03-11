@@ -1,0 +1,2 @@
+### Fixed
+- Airspaces imported from OpenAIR files are not shown.

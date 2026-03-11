@@ -248,8 +248,6 @@ void NOTAM::NOTAMProvider::downloadFinished()
         auto data = networkReply->readAll();
         networkReply->deleteLater();
 
-        qWarning() << data;
-
         auto jsonDoc = QJsonDocument::fromJson(data);
         if (jsonDoc.isNull())
         {

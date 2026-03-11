@@ -439,6 +439,33 @@ public:
             if (!i.ah.isEmpty()) {
                 propObj.insert(u"TOP"_s, QJsonValue::fromVariant(i.ah));
             }
+
+            // Compute SBO: simplified bottom altitude in feet
+            if (!i.al.isEmpty())
+            {
+                int sbo = 0;
+                const QString& al = i.al;
+                if (al.compare(u"GND"_s) == 0)
+                {
+                    sbo = 0;
+                }
+                else if (al.startsWith(u"FL "_s))
+                {
+                    // "FL 90" → 9000 ft, "FL 100" → 10000 ft, etc.
+                    bool ok = false;
+                    const int fl = al.sliced(3).toInt(&ok);
+                    sbo = ok ? fl * 100 : 0;
+                }
+                else
+                {
+                    // Plain feet AMSL ("3500") or feet AGL ("3500 AGL") — take the leading number
+                    bool ok = false;
+                    const int ft = al.split(u' ', Qt::SkipEmptyParts).first().toInt(&ok);
+                    sbo = ok ? ft : 0;
+                }
+                propObj.insert(u"SBO"_s, QJsonValue::fromVariant(sbo));
+            }
+
             featureObj.insert(u"properties"_s, propObj);
 
             while (coordArray.count() != 0)

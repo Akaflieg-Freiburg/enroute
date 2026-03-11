@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.5] - 2026-03-11
+
+### Fixed
+- Airspaces imported from OpenAIR files are not shown.
+
+
 ## [3.1.4] - 2026-02-09
 
 ### Fixed

@@ -426,7 +426,8 @@ public:
         recObj.insert(u"type"_s, QJsonValue::fromVariant("FeatureCollection"));
         recObj.insert(u"info"_s, QJsonValue::fromVariant(fileName));
 
-        for (const auto &i : airSpaceVector) {
+        for (const auto &i : std::as_const(airSpaceVector))
+        {
             featureObj.insert(u"type"_s, QJsonValue::fromVariant("Feature"));
             propObj = QJsonObject();
             propObj.insert(u"NAM"_s, QJsonValue::fromVariant(i.an));

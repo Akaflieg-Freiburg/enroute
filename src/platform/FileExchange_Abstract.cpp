@@ -171,6 +171,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
             emit openVACRequest(vac);
             return;
         }
+#warning Want to handle TIFF-specific errors here.
     }
 
     // Image

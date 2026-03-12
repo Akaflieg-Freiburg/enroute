@@ -84,13 +84,25 @@ void FileFormats::GeoTIFF::checkGeoKeySupport(const QMap<quint16, QVariantList>&
     {
         auto base     = 4 + static_cast<int>(i) * 4;
         auto keyID    = values.at(base + 0).toUInt(&ok);
-        if (!ok) { continue; }
+        if (!ok)
+        {
+            continue;
+        }
         auto location = values.at(base + 1).toUInt(&ok);
-        if (!ok) { continue; }
+        if (!ok)
+        {
+            continue;
+        }
         auto value    = values.at(base + 3).toUInt(&ok);
-        if (!ok) { continue; }
+        if (!ok)
+        {
+            continue;
+        }
 
-        if (keyID != 1024) { continue; }
+        if (keyID != 1024)
+        {
+            continue;
+        }
 
         // GTModelTypeGeoKey must be stored inline (location == 0)
         if (location != 0)
@@ -104,13 +116,13 @@ void FileFormats::GeoTIFF::checkGeoKeySupport(const QMap<quint16, QVariantList>&
         if (value == 1)
         {
             throw QObject::tr("Unsupported coordinate system: file uses a projected CRS (e.g. Lambert, UTM, Mercator). "
-                              "Convert using: gdalwarp -t_srs EPSG:4326 -ot Byte -scale "
-                              "-co PHOTOMETRIC=RGB -co INTERLEAVE=PIXEL input.tif output.tif",
+                              "Consult the manual for an explanation how to convert to geographic coordinates.",
                               "FileFormats::GeoTIFF");
         }
         if (value == 3)
         {
-            throw QObject::tr("Unsupported coordinate system: file uses geocentric (3D Cartesian) coordinates.",
+            throw QObject::tr("Unsupported coordinate system: file uses geocentric (3D Cartesian) coordinates. "
+                              "Consult the manual for an explanation how to convert to geographic coordinates.",
                               "FileFormats::GeoTIFF");
         }
         if (value != 2)

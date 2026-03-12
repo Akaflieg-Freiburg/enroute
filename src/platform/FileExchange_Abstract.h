@@ -75,7 +75,6 @@ public:
     // Methods
     //
 
-
     /*! \brief Import content from file
      *
      * On desktop systems, this method is supposed to open a file dialog to
@@ -161,6 +160,14 @@ public slots:
      */
     void processFileOpenRequest(const QByteArray& path);
 
+    /*! \brief Determine file function and emit openFileRequest()
+     *
+     * Overloaded function for convenience
+     *
+     * @param path QByteArray containing an UTF8-Encoded strong
+     */
+    void processFileOpenRequest(const QString& path);
+
     /*! \brief Process text
      *
      * This helper function is called by platform-dependent code whenever
@@ -214,6 +221,9 @@ signals:
 
     /*! \brief Emitted when processText was unable to parse a text item */
     void unableToProcessText(QString text);
+
+    /*! \brief Emitted when a general file import error occurs */
+    void importError(QString text);
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange_Abstract)

@@ -27,6 +27,7 @@
 
 #include "fileFormats/CUP.h"
 #include "fileFormats/FPL.h"
+#include "fileFormats/GeoTIFF.h"
 #include "fileFormats/MBTILES.h"
 #include "fileFormats/MapURL.h"
 #include "fileFormats/PLN.h"
@@ -61,6 +62,15 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& p
     processFileOpenRequest(QString::fromUtf8(path).simplified(), {});
 }
 
+
+void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path)
+{
+    if (path.isEmpty())
+    {
+        return;
+    }
+    processFileOpenRequest(path.simplified(), {});
+}
 
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path, const QString& unmingledFilename)
 {
@@ -171,7 +181,20 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
             emit openVACRequest(vac);
             return;
         }
-#warning Want to handle TIFF-specific errors here.
+        // VAC could not be loaded even though we have one of the supported MIME types.
+        // If the file is in GeoTIFF format, then it could be that the geographic projection
+        // is unsupported. In that case, issue a more detailed error message here.
+        if (FileFormats::GeoTIFF::mimeTypes().contains(mimeType.name()))
+        {
+            FileFormats::GeoTIFF const geoTIFF(path);
+            if (!geoTIFF.error().isEmpty())
+            {
+                emit importError(tr("Unable to extract georeferencing information from the file. %1").arg(geoTIFF.error()));
+                return;
+            }
+        }
+        emit importError(tr("Unable to extract georeferencing information from the file."));
+        return;
     }
 
     // Image

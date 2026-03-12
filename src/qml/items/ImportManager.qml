@@ -44,6 +44,11 @@ Item {
     Connections {
         target: FileExchange
 
+        function onImportError(text) {
+            errLbl.text = text
+            errorDialog.open()
+        }
+
         function onOpenFileRequest(fileName, info, fileFunction) {
             importManager.view.raise()
             importManager.view.requestActivate()

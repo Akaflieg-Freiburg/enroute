@@ -115,13 +115,13 @@ void FileFormats::GeoTIFF::checkGeoKeySupport(const QMap<quint16, QVariantList>&
         // ModelTypeGeocentric (3) = 3D Cartesian — not supported
         if (value == 1)
         {
-            throw QObject::tr("Unsupported coordinate system: file uses a projected CRS (e.g. Lambert, UTM, Mercator). "
-                              "Consult the manual for an explanation how to convert to geographic coordinates.",
+            throw QObject::tr("Unsupported coordinate system: This file uses a projected coordinate reference system, such as Lambert, UTM, or Mercator. "
+                              "Consult the manual for an explanation how to convert the file to geographic coordinates.",
                               "FileFormats::GeoTIFF");
         }
         if (value == 3)
         {
-            throw QObject::tr("Unsupported coordinate system: file uses geocentric (3D Cartesian) coordinates. "
+            throw QObject::tr("Unsupported coordinate system: This file uses geocentric (3D Cartesian) coordinates. "
                               "Consult the manual for an explanation how to convert to geographic coordinates.",
                               "FileFormats::GeoTIFF");
         }

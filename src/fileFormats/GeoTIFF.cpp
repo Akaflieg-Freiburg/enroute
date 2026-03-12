@@ -49,6 +49,83 @@ FileFormats::GeoTIFF::GeoTIFF(QIODevice& device)
 // Private Methods
 //
 
+void FileFormats::GeoTIFF::checkGeoKeySupport(const QMap<quint16, QVariantList>& TIFFFields)
+{
+    // Tag 34735 = GeoKeyDirectoryTag
+    if (!TIFFFields.contains(34735))
+    {
+        throw QObject::tr("No GeoKeyDirectoryTag found — not a valid GeoTIFF.", "FileFormats::GeoTIFF");
+    }
+
+    auto values = TIFFFields.value(34735);
+
+    // Header occupies the first 4 entries:
+    // [0] KeyDirectoryVersion, [1] KeyRevision, [2] MinorRevision, [3] NumberOfKeys
+    if (values.size() < 4)
+    {
+        throw QObject::tr("GeoKeyDirectoryTag is too short to be valid.", "FileFormats::GeoTIFF");
+    }
+
+    bool ok = false;
+    auto numberOfKeys = values.at(3).toUInt(&ok);
+    if (!ok)
+    {
+        throw QObject::tr("Invalid key count in GeoKeyDirectoryTag.", "FileFormats::GeoTIFF");
+    }
+
+    // Each key entry is 4 values: [KeyID, TIFFTagLocation, Count, Value_Offset]
+    if (values.size() < static_cast<int>(4 + numberOfKeys * 4))
+    {
+        throw QObject::tr("GeoKeyDirectoryTag is truncated.", "FileFormats::GeoTIFF");
+    }
+
+    // Walk key entries looking for GTModelTypeGeoKey (1024)
+    for (auto i = 0u; i < numberOfKeys; i++)
+    {
+        auto base     = 4 + static_cast<int>(i) * 4;
+        auto keyID    = values.at(base + 0).toUInt(&ok);
+        if (!ok) { continue; }
+        auto location = values.at(base + 1).toUInt(&ok);
+        if (!ok) { continue; }
+        auto value    = values.at(base + 3).toUInt(&ok);
+        if (!ok) { continue; }
+
+        if (keyID != 1024) { continue; }
+
+        // GTModelTypeGeoKey must be stored inline (location == 0)
+        if (location != 0)
+        {
+            throw QObject::tr("GTModelTypeGeoKey is not stored inline — malformed GeoTIFF.", "FileFormats::GeoTIFF");
+        }
+
+        // ModelTypeGeographic (2) = lat/lon degrees — supported
+        // ModelTypeProjected  (1) = Lambert, UTM, Mercator, etc. — not supported
+        // ModelTypeGeocentric (3) = 3D Cartesian — not supported
+        if (value == 1)
+        {
+            throw QObject::tr("Unsupported coordinate system: file uses a projected CRS (e.g. Lambert, UTM, Mercator). "
+                              "Convert using: gdalwarp -t_srs EPSG:4326 -ot Byte -scale "
+                              "-co PHOTOMETRIC=RGB -co INTERLEAVE=PIXEL input.tif output.tif",
+                              "FileFormats::GeoTIFF");
+        }
+        if (value == 3)
+        {
+            throw QObject::tr("Unsupported coordinate system: file uses geocentric (3D Cartesian) coordinates.",
+                              "FileFormats::GeoTIFF");
+        }
+        if (value != 2)
+        {
+            throw QObject::tr("Unsupported coordinate system: unknown GTModelType %1.",
+                              "FileFormats::GeoTIFF").arg(value);
+        }
+
+        return; // value == 2, geographic CRS — all good
+    }
+
+    // GTModelTypeGeoKey was not found at all — be permissive and let it through,
+    // since some real-world GeoTIFFs omit it when the CRS is obvious from context.
+}
+
 QList<double> FileFormats::GeoTIFF::getTransformation(const QMap<quint16, QVariantList>& TIFFFields)
 {
     auto transformation = readTransformation(TIFFFields);
@@ -205,6 +282,7 @@ void FileFormats::GeoTIFF::interpretGeoData()
         auto TIFFFields = fields();
 
         m_name = readName(TIFFFields);
+        checkGeoKeySupport(TIFFFields);
 
         auto _rasterSize = rasterSize();
         if (!_rasterSize.isValid())

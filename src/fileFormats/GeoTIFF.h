@@ -116,6 +116,15 @@ private:
         QGeoCoordinate geoCoordinate;
     };
 
+    /* This method checks the GeoKeyDirectory (tag 34735) for unsupported
+     * coordinate systems. Only geographic CRS (lat/lon) is supported.
+     * Projected CRS (Lambert, UTM, Mercator, etc.) are not supported.
+     *
+     * An exception is thrown if an unsupported coordinate system is detected,
+     * or if the GeoKeyDirectory is malformed.
+     */
+    static void checkGeoKeySupport(const QMap<quint16, QVariantList>& TIFFFields);
+
     /* This method computes a 4x4 tranformation matrix that maps pixel coordinates to
      * geographic coordinates.
      *

@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.6] - 2026-03-xx
+
+### Fixed
+- GeoTIFF import problems (#620)
+
+
 ## [3.1.5] - 2026-03-11
 
 ### Fixed

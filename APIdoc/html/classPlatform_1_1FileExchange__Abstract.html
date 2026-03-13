@@ -90,6 +90,8 @@ Public Slots</h2></td></tr>
 <tr class="memdesc:a35f38983f675f8f465c2b9de66613ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine file function and emit <a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a>.  <br /></td></tr>
 <tr class="memitem:aa84c47181a3261bd9fbea4fc3c7893fd" id="r_aa84c47181a3261bd9fbea4fc3c7893fd"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa84c47181a3261bd9fbea4fc3c7893fd">processFileOpenRequest</a> (const QByteArray &amp;path)</td></tr>
 <tr class="memdesc:aa84c47181a3261bd9fbea4fc3c7893fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine file function and emit <a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a>.  <br /></td></tr>
+<tr class="memitem:a2964835d552192f4e8d14d6ed2dbd240" id="r_a2964835d552192f4e8d14d6ed2dbd240"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a2964835d552192f4e8d14d6ed2dbd240">processFileOpenRequest</a> (const QString &amp;path)</td></tr>
+<tr class="memdesc:a2964835d552192f4e8d14d6ed2dbd240"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine file function and emit <a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a>.  <br /></td></tr>
 <tr class="memitem:a6b9fac2ca1c369812a302324d7b92a96" id="r_a6b9fac2ca1c369812a302324d7b92a96"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6b9fac2ca1c369812a302324d7b92a96">processText</a> (const QString &amp;text)</td></tr>
 <tr class="memdesc:a6b9fac2ca1c369812a302324d7b92a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process text.  <br /></td></tr>
 </table><table class="memberdecls">
@@ -106,6 +108,9 @@ Signals</h2></td></tr>
 <tr class="memitem:a17966a89f5134faa68b70b10ad2f6a1f" id="r_a17966a89f5134faa68b70b10ad2f6a1f"><td class="memItemLeft"><a id="a17966a89f5134faa68b70b10ad2f6a1f" name="a17966a89f5134faa68b70b10ad2f6a1f"></a>
 void&#160;</td><td class="memItemRight"><b>unableToProcessText</b> (QString text)</td></tr>
 <tr class="memdesc:a17966a89f5134faa68b70b10ad2f6a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when processText was unable to parse a text item. <br /></td></tr>
+<tr class="memitem:ab3b2ba3348c67548290b8c9a13587a27" id="r_ab3b2ba3348c67548290b8c9a13587a27"><td class="memItemLeft"><a id="ab3b2ba3348c67548290b8c9a13587a27" name="ab3b2ba3348c67548290b8c9a13587a27"></a>
+void&#160;</td><td class="memItemRight"><b>importError</b> (QString text)</td></tr>
+<tr class="memdesc:ab3b2ba3348c67548290b8c9a13587a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a general file import error occurs. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -387,7 +392,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a id="aa84c47181a3261bd9fbea4fc3c7893fd" name="aa84c47181a3261bd9fbea4fc3c7893fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa84c47181a3261bd9fbea4fc3c7893fd">&#9670;&#160;</a></span>processFileOpenRequest <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa84c47181a3261bd9fbea4fc3c7893fd">&#9670;&#160;</a></span>processFileOpenRequest <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -420,8 +425,42 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a2964835d552192f4e8d14d6ed2dbd240" name="a2964835d552192f4e8d14d6ed2dbd240"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2964835d552192f4e8d14d6ed2dbd240">&#9670;&#160;</a></span>processFileOpenRequest <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Platform::FileExchange_Abstract::processFileOpenRequest </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determine file function and emit <a class="el" href="#af73cbaa9a94c84ca492ac8529bf8de8d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a>. </p>
+<p>Overloaded function for convenience</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>QByteArray containing an UTF8-Encoded strong </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a35f38983f675f8f465c2b9de66613ec0" name="a35f38983f675f8f465c2b9de66613ec0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35f38983f675f8f465c2b9de66613ec0">&#9670;&#160;</a></span>processFileOpenRequest <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a35f38983f675f8f465c2b9de66613ec0">&#9670;&#160;</a></span>processFileOpenRequest <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

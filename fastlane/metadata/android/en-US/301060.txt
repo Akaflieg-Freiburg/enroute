@@ -1,0 +1,2 @@
+### Fixed
+- GeoTIFF import problems (#620)

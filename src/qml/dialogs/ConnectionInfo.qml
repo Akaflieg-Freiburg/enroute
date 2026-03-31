@@ -98,11 +98,7 @@ CenteringDialog {
                 Layout.columnSpan: 2
 
                 Label {
-                    width: frme.width
-                    bottomPadding: 0.2*font.pixelSize
-                    topPadding: 0.2*font.pixelSize
-                    leftPadding: 0.2*font.pixelSize
-                    rightPadding: 0.2*font.pixelSize
+                    width: parent.width
 
                     text: {
                         if (connectionDescription.connection)
@@ -146,6 +142,7 @@ CenteringDialog {
                 ColumnLayout {
                     id: cl
                     width: parent.width
+                    clip:true
 
                     Label {id: l1; Layout.preferredHeight: font.pixelSize+2}
                     Label {id: l2; Layout.preferredHeight: font.pixelSize+2}

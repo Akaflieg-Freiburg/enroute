@@ -69,7 +69,11 @@ void Traffic::TrafficDataSource_BluetoothClassic::connectToTrafficReceiver()
     // Start new connection
     m_socket.abort();
     setErrorString();
+#if defined(Q_OS_MACOS)
+    m_socket.connectToService(m_info.address(), 1);
+#else
     m_socket.connectToService(m_info.address(), QBluetoothUuid::ServiceClassUuid::SerialPort);
+#endif
 
     // Update properties
     onStateChanged(m_socket.state());

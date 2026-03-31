@@ -90,7 +90,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
             {
                 continue;
             }
-            dataSource->disconnect();
             delete dataSource;
         }
         disconnect(this, &Traffic::TrafficDataProvider::connectionInfosChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);

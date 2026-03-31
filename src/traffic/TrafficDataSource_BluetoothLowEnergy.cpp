@@ -25,18 +25,21 @@
 Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEnergy(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent) :
     TrafficDataSource_AbstractSocket(isCanonical, parent),
     m_info(info),
-    m_control(QLowEnergyController::createCentral(info, this))
+    m_control(QLowEnergyController::createCentral(info, this)),
+    m_discoveryAgent(new QBluetoothDeviceDiscoveryAgent(this))
 {
-    // Connection Info
     m_connectionInfo = Traffic::ConnectionInfo(m_info, canonical());
-
-    // Rectify Permissions
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
 
-    connect(m_control, &QLowEnergyController::connected, m_control, &QLowEnergyController::discoverServices);
-    connect(m_control, &QLowEnergyController::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred);
-    connect(m_control, &QLowEnergyController::discoveryFinished, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscoveryFinished);
-    connect(m_control, &QLowEnergyController::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged);
+    // Initialize the discovery agent
+    m_discoveryAgent->setLowEnergyDiscoveryTimeout(5000); // 5-second timeout
+
+    connect(m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onDeviceDiscovered);
+    connect(m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onDiscoveryFinished);
+    connect(m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onDiscoveryError);
+
+    // Initial setup of the controller
+    setupController(m_info);
 }
 
 
@@ -85,7 +88,19 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::connectToTrafficReceiver()
     }
 
     setErrorString();
+
+    // macOS Fix: Start discovery to find the device by name instead of trusting the cached address
+#if defined(Q_OS_MAC) || defined(Q_OS_IOS)
+    setConnectivityStatus(tr("Searching for device."));
+    if (m_discoveryAgent->isActive())
+    {
+        m_discoveryAgent->stop();
+    }
+    m_discoveryAgent->start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
+#else
+    // On other platforms, standard connection usually works
     m_control->connectToDevice();
+#endif
 }
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::disconnectFromTrafficReceiver()
@@ -115,7 +130,7 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onCharacteristicChanged(cons
     setErrorString( tr("Received data from unknown characteristic %1.").arg(characteristic.name()) );
 }
 
-void Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred(QLowEnergyController::Error error)
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onControlerError(QLowEnergyController::Error error)
 {
     switch (error)
     {
@@ -150,6 +165,21 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred(QLowEnergyCo
         break;
     case QLowEnergyController::RssiReadError:
         setErrorString( tr("An attempt to read RSSI (received signal strength indicator) of a remote device finished with error.") );
+        break;
+    }
+}
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error error)
+{
+    switch (error) {
+    case QBluetoothDeviceDiscoveryAgent::PoweredOffError:
+        setErrorString(tr("Bluetooth is turned off. Please enable it in System Settings."));
+        break;
+    case QBluetoothDeviceDiscoveryAgent::InputOutputError:
+        setErrorString(tr("A hardware error occurred while searching for devices."));
+        break;
+    default:
+        setErrorString(tr("An error occurred during device discovery (%1).").arg(error));
         break;
     }
 }
@@ -268,4 +298,44 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged(QLowEnergyCon
         setConnectivityStatus( tr("The controller is currently advertising data.") );
         break;
     }
+}
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onDeviceDiscovered(const QBluetoothDeviceInfo &info)
+{
+    // Compare by name. If you have multiple devices with the same name,
+    // you might need a more specific filter (like Service UUIDs).
+    if (info.name() == m_info.name()) {
+        m_discoveryAgent->stop();
+
+        // Update our stored info with the fresh UUID/handle provided by the OS
+        m_info = info;
+        setupController(m_info);
+
+        setConnectivityStatus(tr("Device found. Connecting..."));
+        m_control->connectToDevice();
+    }
+}
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onDiscoveryFinished()
+{
+    if (m_control->state() == QLowEnergyController::UnconnectedState) {
+        setErrorString(tr("Unable to find device within range."));
+        onStateChanged(m_control->state());
+    }
+}
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::setupController(const QBluetoothDeviceInfo &info)
+{
+    // Clean up old controller if it exists
+    if (m_control) {
+        m_control->disconnect();
+        m_control->deleteLater();
+    }
+
+    m_control = QLowEnergyController::createCentral(info, this);
+
+    connect(m_control, &QLowEnergyController::connected, m_control, &QLowEnergyController::discoverServices);
+    connect(m_control, &QLowEnergyController::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onControlerError);
+    connect(m_control, &QLowEnergyController::discoveryFinished, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscoveryFinished);
+    connect(m_control, &QLowEnergyController::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged);
 }

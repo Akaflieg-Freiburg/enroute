@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothDeviceInfo>
 #include <QBluetoothLocalDevice>
 #include <QBluetoothPermission>
@@ -157,10 +158,15 @@ private slots:
     // Read and process NMEA sentences
     void onCharacteristicChanged(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue);
 
+    // Device discovery slots
+    void onDeviceDiscovered(const QBluetoothDeviceInfo &info);
+    void onDiscoveryFinished();
+
     // Handle errors
-    void onErrorOccurred(QLowEnergyController::Error error);
+    void onControlerError(QLowEnergyController::Error error);
 
     void onServiceDiscoveryFinished();
+    void onDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error error);
 
     void onServiceStateChanged(QLowEnergyService::ServiceState newState);
 
@@ -175,6 +181,11 @@ private:
     // Copied from the constructor
     QBluetoothDeviceInfo m_info;
 
+    // Device discovery
+    QBluetoothDeviceDiscoveryAgent* m_discoveryAgent {nullptr};
+
+    // Helper to setup the controller since we'll recreate it often
+    void setupController(const QBluetoothDeviceInfo &info);
     QLowEnergyController* m_control {nullptr};
 
     QLowEnergyService* m_nordicUARTService {nullptr};

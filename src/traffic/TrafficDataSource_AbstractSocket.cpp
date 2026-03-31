@@ -28,6 +28,9 @@
 Traffic::TrafficDataSource_AbstractSocket::TrafficDataSource_AbstractSocket(bool isCanonical, QObject* parent) :
     Traffic::TrafficDataSource_Abstract(isCanonical, parent)
 {
+    // Default connectivity status.
+    setConnectivityStatus( tr("Not connected.") );
+
     // Connect WiFi locker/unlocker
     connect(this, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataSource_AbstractSocket::onReceivingHeartbeatChanged);
 }

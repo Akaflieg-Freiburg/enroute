@@ -26,16 +26,31 @@ Positioning::PositionInfo::PositionInfo(const QGeoPositionInfo& info, const QStr
     : m_positionInfo(info), m_source(source)
 {}
 
-auto Positioning::PositionInfo::groundSpeed() const -> Units::Speed
+Units::Speed Positioning::PositionInfo::groundSpeed() const
 {
-    if (!m_positionInfo.isValid()) {
+    if (!m_positionInfo.isValid())
+    {
         return {};
     }
-    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
+    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed))
+    {
         return {};
     }
 
-    return Units::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
+    auto result = Units::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
+    if (!result.isFinite())
+    {
+        return {};
+    }
+    if (result.isNegative())
+    {
+        return {};
+    }
+    if (result > Units::Speed::fromMPS(343)) // Supersonic speed? Unlikely.
+    {
+        return {};
+    }
+    return result;
 }
 
 auto Positioning::PositionInfo::isValid() const -> bool

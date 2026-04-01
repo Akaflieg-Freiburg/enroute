@@ -88,19 +88,12 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::connectToTrafficReceiver()
     }
 
     setErrorString();
-
-    // macOS Fix: Start discovery to find the device by name instead of trusting the cached address
-#if defined(Q_OS_MAC) || defined(Q_OS_IOS)
     setConnectivityStatus(tr("Searching for device."));
     if (m_discoveryAgent->isActive())
     {
         m_discoveryAgent->stop();
     }
     m_discoveryAgent->start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
-#else
-    // On other platforms, standard connection usually works
-    m_control->connectToDevice();
-#endif
 }
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::disconnectFromTrafficReceiver()

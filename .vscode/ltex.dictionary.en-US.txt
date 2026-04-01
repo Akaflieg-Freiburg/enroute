@@ -12,3 +12,8 @@ Airspaces
 OpenAIR
 OGN
 Ownship
+UART
+Austrocontrol
+enroute-data
+NMEA
+Changelog

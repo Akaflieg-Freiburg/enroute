@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.7] - 2026-04-xx
+
+### Fixed
+- Issues with Bluetooth connections on macOS.
+
+- Minor GUI graphics issue in connection info dialogs.
+
+
 ## [3.1.6] - 2026-03-16
 
 ### Fixed

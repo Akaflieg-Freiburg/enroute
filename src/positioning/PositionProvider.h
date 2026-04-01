@@ -324,7 +324,7 @@ private:
     QProperty<QString> m_statusString;
 
     QProperty<Units::Distance> m_pressureAltitude;
-    Units::Distance computePressureAltitude();
+    static Units::Distance computePressureAltitude();
 };
 
 } // namespace Positioning

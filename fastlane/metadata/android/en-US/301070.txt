@@ -1,0 +1,6 @@
+### Fixed
+- Issues with Bluetooth connections on macOS.
+
+- Minor GUI graphics issue in connection info dialogs.
+
+- Filter improbably high ground speed. (#623)

@@ -7,6 +7,8 @@
 
 - Minor GUI graphics issue in connection info dialogs.
 
+- Filter improbably high ground speed. (#623)
+
 
 ## [3.1.6] - 2026-03-16
 

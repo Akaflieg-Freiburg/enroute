@@ -32,3 +32,6 @@
 [submodule "3rdParty/enrouteOGN"]
 	path = 3rdParty/enrouteOGN
 	url = https://github.com/Akaflieg-Freiburg/enrouteOGN.git
+[submodule "3rdParty/spriteGenerator"]
+	path = 3rdParty/spriteGenerator
+	url = https://github.com/Akaflieg-Freiburg/spriteGenerator.git

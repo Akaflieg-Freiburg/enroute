@@ -157,7 +157,7 @@ QString NOTAM::NOTAM::cancels() const
 QJsonObject NOTAM::NOTAM::GeoJSON() const
 {
     QMap<QString, QVariant> m_properties;
-    m_properties[u"CAT"_s] = u"NOTAM"_s;
+    m_properties[u"CAT"_s] = category();
     m_properties[u"NAM"_s] = {};
 
     QJsonArray coords;
@@ -197,6 +197,24 @@ bool NOTAM::NOTAM::isValid() const
 //
 // Methods
 //
+
+QString NOTAM::NOTAM::category() const
+{
+    if (m_text.contains(u"PJE"_s))
+    {
+        return u"NOTAM-PJE"_s;
+    }
+    if (m_text.contains(u"CRANE"_s) || m_text.contains(u"WIND TURBINE"_s) || m_text.contains(u"WINDMILL"_s))
+    {
+        return u"NOTAM-OBST"_s;
+    }
+    if (m_text.contains(u"UAS "_s) || m_text.contains(u"UAV "_s) || m_text.contains(u"UNMANNED"_s))
+    {
+        return u"NOTAM-UAS"_s;
+    }
+    return u"NOTAM"_s;
+}
+
 
 QString NOTAM::NOTAM::richText() const
 {

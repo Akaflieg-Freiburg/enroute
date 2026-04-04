@@ -33,6 +33,9 @@ add_custom_target(flightMapSprites
   COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites
   COMMAND rm -f *.png
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM.svg -o NOTAM.png -h 15 -w 15
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM-OBST.svg -o NOTAM-OBST.png -h 15 -w 15
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM-PJE.svg -o NOTAM-PJE.png -h 15 -w 15
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM-UAS.svg -o NOTAM-UAS.png -h 15 -w 15
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD.svg -o AD.png -h 30 -w 30
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GLD.svg -o AD-GLD.png -h 20 -w 20
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GRASS.svg -o AD-GRASS.png -h 30 -w 30
@@ -70,6 +73,9 @@ add_custom_target(flightMapSprites
   COMMAND rm -f *.png
 
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM.svg -o NOTAM.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM-OBST.svg -o NOTAM-OBST.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM-PJE.svg -o NOTAM-PJE.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM-UAS.svg -o NOTAM-UAS.png -h 30 -w 30
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD.svg -o AD.png -h 60 -w 60
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GLD.svg -o AD-GLD.png -h 40 -w 40
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GRASS.svg -o AD-GRASS.png -h 60 -w 60

@@ -184,6 +184,17 @@ public:
     // Methods
     //
 
+    /*! \brief Category of this NOTAM for map icon selection
+     *
+     *  Returns a category string based on the NOTAM text content.
+     *  Possible values: "NOTAM" (default), "NOTAM-PJE" (parachute jumping),
+     *  "NOTAM-OBST" (obstacle such as crane or wind turbine),
+     *  "NOTAM-UAS" (unmanned aircraft system).
+     *
+     *  @returns Category string for sprite selection
+     */
+    Q_REQUIRED_RESULT QString category() const;
+
     /*! \brief Comparison
      *
      *  @param rhs Right hand side of the comparison

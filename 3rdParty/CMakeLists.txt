@@ -35,6 +35,17 @@ set(mapBoxFont_SOURCE_DIR
 
 
 #
+# spriteGenerator
+#
+
+# Build the spriteGenerator tool only when the flightMapSprites target is invoked.
+# It is a host-only developer tool and must not be included in mobile builds.
+if(NOT ANDROID AND NOT IOS)
+    add_subdirectory(spriteGenerator EXCLUDE_FROM_ALL)
+endif()
+
+
+#
 # enrouteOGN library
 #
 

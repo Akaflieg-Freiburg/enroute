@@ -404,8 +404,51 @@ QList<QGeoCoordinate> NOTAM::NOTAMProvider::computeControlPoints4FlightRoute()
     return result;
 }
 
+// Computes a GeoJSON FeatureCollection for all current NOTAMs.
+//
+// NOTAMs in the same ~1 km grid cell that have different categories
+// will all be shown with the generic NOTAM icon.
+//
+// Two NOTAMs that are close together but not at identical coordinates
+// each produce a map feature with the same resolved category icon.
+// At typical zoom levels they overlap visually and look like one icon;
+// at high zoom you might see two identical icons right next to each other.
 QByteArray NOTAM::NOTAMProvider::computeGeoJSON() const
 {
+    // Helper: round coordinate to ~0.01° grid (~1 km) so that nearby
+    // NOTAMs (e.g. multiple NOTAMs for the same airport) are grouped
+    // together when deciding which icon to show.
+    auto roundedKey = [](const QGeoCoordinate& c) -> QPair<int,int> {
+        return { qRound(c.latitude() * 100), qRound(c.longitude() * 100) };
+    };
+
+    // First pass: collect the category per rounded location.
+    // If all NOTAMs in a cell share the same category, keep it.
+    // Otherwise fall back to the generic NOTAM icon.
+    QHash<QPair<int,int>, QString> cellCategory;
+    for(const auto& notamList : m_notamLists.value())
+    {
+        for(const auto& notam : notamList.notams())
+        {
+            auto coordinate = notam.coordinate();
+            if (!coordinate.isValid())
+            {
+                continue;
+            }
+            auto key = roundedKey(coordinate);
+            auto cat = notam.category();
+            if (!cellCategory.contains(key))
+            {
+                cellCategory[key] = cat;
+            }
+            else if (cellCategory.value(key) != cat)
+            {
+                cellCategory[key] = u"NOTAM"_s;
+            }
+        }
+    }
+
+    // Second pass: build GeoJSON features, one per coordinate.
     QList<QJsonObject> result;
     QSet<QGeoCoordinate> coordinatesSeen;
 
@@ -425,7 +468,17 @@ QByteArray NOTAM::NOTAMProvider::computeGeoJSON() const
                 continue;
             }
             coordinatesSeen += coordinate;
-            result.append(notam.GeoJSON());
+
+            auto feature = notam.GeoJSON();
+            auto resolvedCat = cellCategory.value(roundedKey(coordinate));
+            if (resolvedCat != notam.category())
+            {
+                // Mixed categories at this location: use resolved (generic) icon
+                auto properties = feature[u"properties"_s].toObject();
+                properties[u"CAT"_s] = resolvedCat;
+                feature[u"properties"_s] = properties;
+            }
+            result.append(feature);
         }
     }
 

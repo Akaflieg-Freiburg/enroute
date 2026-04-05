@@ -316,8 +316,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
         QString result;
 #if !defined(Q_OS_IOS)
         result += u"<p>"_s
-                  + tr("<strong>New Feature</strong>: ")
-                  + tr("Enroute is now able to read data from GPS or FLARM devices connected to via USB or serial ports. Consult the manual for details.")
+                  + tr("There are now specialized icons for obstacle NOTAMs and NOTAMs about drone flights. We thank Christian Engelhardt for the implementation!")
                   + u"</p>"_s;
 #endif
         result += u"<p>"_s
@@ -325,11 +324,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                   + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.")
                   + u"</p>"_s;
 #if !defined(Q_OS_IOS)
-/*
         result += u"<p>"_s
-                  + tr("Support for Bluetooth Low Energy has been extended, so Enroute Flight Navigation is now able to connect to a broader range traffic data receivers.")
+                  + tr("Support for Bluetooth Classic and Bluetooth Low Energy is now a regular feature and no longer in tech preview. Please report any issues that you may find!")
                   + u"</p>"_s;
-*/
 #endif
         result += u"<p>"_s
                   + tr("We need help with promotional graphics for the app stores and with explainer videos. "

@@ -95,11 +95,14 @@ signals:
     /*! \brief Emitted to set followGPS mode in the moving map */
     void requestFollowGPS(bool val);
 
+    /*! \brief Emitted to set bearing of the moving map */
+    void requestMapBearing(double bearing);
+
     /*! \brief Emitted to indicate that the GUI should set a map bearing
      *
      *  @param bearing New bearing policy
      */
-    void requestMapBearing(int bearing);
+    void requestMapBearingPolicy(int bearing);
 
     /*! \brief Emitted to indicate that the GUI should open the "Aircraft" page */
     void requestOpenAircraftPage();

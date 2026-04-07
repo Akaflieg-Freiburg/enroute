@@ -42,6 +42,10 @@ Item {
     Connections {
         target: DemoRunner
 
+        function onRequestMapBearing(bearing) {
+            flightMap.bearing = bearing
+        }
+
         function onRequestShowSideView(show) {
             if (show)
                 cl.SplitView.preferredHeight = page.height/3
@@ -272,7 +276,7 @@ Item {
                     // PROPERTY "bearing"
                     //
 
-                    onBearingChanged: {
+                    function onBearingChanged(bearing) {
                         if (defaultValuesSet)
                             Global.mapBearing = bearing
                     }
@@ -333,7 +337,7 @@ Item {
                     // PROPERTY "zoomLevel"
                     //
 
-                    onZoomLevelChanged: {
+                    function onZoomLevelChanged(zoomLevel) {
                         if (defaultValuesSet)
                             Global.mapZoomLevel = zoomLevel
                     }

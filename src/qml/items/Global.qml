@@ -155,7 +155,7 @@ Item {
             followGPS = newVal
         }
 
-        function onRequestMapBearing(newBearing) {
+        function onRequestMapBearingPolicy(newBearing) {
             mapBearingPolicy = newBearing
         }
     }

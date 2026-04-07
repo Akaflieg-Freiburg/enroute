@@ -105,10 +105,6 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
     // Obtain pointers to QML items
     auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem(QStringLiteral("applicationWindow"), m_engine));
     Q_ASSERT(applicationWindow != nullptr);
-    auto* flightMap = findQQuickItem(QStringLiteral("flightMap"), m_engine);
-    Q_ASSERT(flightMap != nullptr);
-    auto *waypointDescription = findQQuickItem(QStringLiteral("waypointDescription"), m_engine);
-    Q_ASSERT(waypointDescription != nullptr);
 
     // Set up traffic simulator
     GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
@@ -141,6 +137,8 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
     // Settings
     GlobalObject::globalSettings()->setAirspaceAltitudeLimit({});
     GlobalObject::globalSettings()->setHideGlidingSectors(true);
+    emit requestFollowGPS(true);
+    delay(1s);
 
     //
     // GENERATE SCREENSHOTS FOR GOOGLE PLAY
@@ -149,7 +147,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
     {
         foreach(auto device, devices)
         {
-            emit requestMapBearing(1);
+            emit requestMapBearingPolicy(1);
             emit requestShowSideView(false);
 
             auto language = GlobalObject::platformAdaptor()->language();
@@ -196,10 +194,10 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("KRH")) );
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
-                    flightMap->setProperty("zoomLevel", 10);
-                    flightMap->setProperty("followGPS", true);
-                    flightMap->setProperty("mapBearingPolicy", 0);
-                    flightMap->setProperty("bearing", 0);
+                    emit requestZoomLevel(10);
+                    emit requestFollowGPS(true);
+                    emit requestMapBearingPolicy(0);
+                    emit requestMapBearing(0);
                     delay(8s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
@@ -219,8 +217,8 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("KRH")) );
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
-                    flightMap->setProperty("zoomLevel", 11);
-                    flightMap->setProperty("mapBearingPolicy", 1);
+                    emit requestZoomLevel(11);
+                    emit requestMapBearingPolicy(1);
                     delay(8s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
@@ -234,8 +232,8 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     trafficSimulator->setTT( Units::Angle::fromDEG(30) );
                     trafficSimulator->setGS( Units::Speed::fromKN(120) );
                     trafficSimulator->setVSpeed( Units::Speed::fromFPM(-300) );
-                    flightMap->setProperty("zoomLevel", 10);
-                    flightMap->setProperty("mapBearingPolicy", 1);
+                    emit requestZoomLevel(10);
+                    emit requestMapBearingPolicy(1);
                     emit requestShowSideView(true);
                     delay(10s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
@@ -249,8 +247,8 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     trafficSimulator->setBarometricHeight( Units::Distance::fromFT(5500) );
                     trafficSimulator->setTT( Units::Angle::fromDEG(158) );
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
-                    flightMap->setProperty("zoomLevel", 12);
-                    flightMap->setProperty("mapBearingPolicy", 1);
+                    emit requestZoomLevel(12);
+                    emit requestMapBearingPolicy(1);
                     delay(10s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
@@ -263,9 +261,9 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
                     trafficSimulator->setTT( Units::Angle::fromDEG(36) );
                     trafficSimulator->setGS( Units::Speed::fromKN(92) );
-                    flightMap->setProperty("zoomLevel", 13);
-                    flightMap->setProperty("followGPS", true);
-                    flightMap->setProperty("mapBearingPolicy", 1);
+                    emit requestZoomLevel(13);
+                    emit requestFollowGPS(true);
+                    emit requestMapBearingPolicy(1);
                     const QGeoCoordinate trafficPosition(48.0103, 7.8052, 540);
                     QGeoPositionInfo trafficInfo;
                     trafficInfo.setCoordinate(trafficPosition);
@@ -294,11 +292,10 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                 {
                     qWarning() << "… EDDE Info Page";
                     auto waypoint = GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDDE"));
-                    waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
-                    QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
+                    emit requestOpenWaypointDescription(waypoint);
                     delay(5s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
-                    QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
+                    requestCloseWaypointDescription();
                 }
 
                 // Weather Dialog
@@ -400,7 +397,7 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setGS( Units::Speed::fromKN(120) );
         trafficSimulator->setVSpeed( Units::Speed::fromFPM(-300) );
         emit requestZoomLevel(10);
-        emit requestMapBearing(1);
+        emit requestMapBearingPolicy(1);
         emit requestShowSideView(true);
         delay(5s);
         applicationWindow->grabWindow().save(QStringLiteral("05-01-01-SideView.png"));
@@ -446,7 +443,7 @@ void DemoRunner::generateManualScreenshots()
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
         emit requestZoomLevel(11);
-        emit requestMapBearing(1); // TTUp
+        emit requestMapBearingPolicy(1); // TTUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("02-02-04-EnRoute.png"));
         GlobalObject::navigator()->flightRoute()->clear();
@@ -498,7 +495,7 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setGS( Units::Speed::fromKN(5) );
         emit requestZoomLevel(13);
         emit requestFollowGPS(true);
-        emit requestMapBearing(0); // NUp
+        emit requestMapBearingPolicy(0); // NUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-01-ground.png"));
     }
@@ -511,7 +508,7 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setTT( Units::Angle::fromDEG(170) );
         trafficSimulator->setGS( Units::Speed::fromKN(90) );
         emit requestZoomLevel(11);
-        emit requestMapBearing(1); // TTUp
+        emit requestMapBearingPolicy(1); // TTUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-02-flight.png"));
     }
@@ -522,7 +519,7 @@ void DemoRunner::generateManualScreenshots()
         auto waypoint = GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDFE"));
         Q_ASSERT(waypoint.isValid());
         requestOpenWaypointDescription(waypoint);
-        emit requestMapBearing(0); // NUp
+        emit requestMapBearingPolicy(0); // NUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-03-EDFEinfo.png"));
         requestCloseWaypointDescription();
@@ -538,7 +535,7 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setGS( Units::Speed::fromKN(92) );
         emit requestZoomLevel(13);
         emit requestFollowGPS(true);
-        emit requestMapBearing(1); // TTUp
+        emit requestMapBearingPolicy(1); // TTUp
         const QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
         QGeoPositionInfo trafficInfo;
         trafficInfo.setCoordinate(trafficPosition);
@@ -588,7 +585,7 @@ void DemoRunner::generateManualScreenshots()
         Q_ASSERT(QFile::exists(VACFileName));
         emit requestVAC(u"LFGA COLMAR HOUSSEN 2"_s);
         delay(2s);
-        emit requestMapBearing(0); // NUp
+        emit requestMapBearingPolicy(0); // NUp
         delay(2s);
         applicationWindow->grabWindow().save(QStringLiteral("03-03-VAC.png"));
         emit requestVAC(u""_s);

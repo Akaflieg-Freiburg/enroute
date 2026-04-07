@@ -89,6 +89,12 @@ signals:
     /*! \brief Emitted to indicate that the GUI return to the main page */
     void requestClosePages();
 
+    /*! \brief Emitted to indicate that the GUI close open the "Waypoint Description" dialog */
+    void requestCloseWaypointDescription();
+
+    /*! \brief Emitted to set followGPS mode in the moving map */
+    void requestFollowGPS(bool val);
+
     /*! \brief Emitted to indicate that the GUI should set a map bearing
      *
      *  @param bearing New bearing policy
@@ -107,6 +113,9 @@ signals:
     /*! \brief Emitted to indicate that the GUI should open the "Route & Wind" page */
     void requestOpenRoutePage();
 
+    /*! \brief Emitted to indicate that the GUI should open the "Waypoint Description" dialog */
+    void requestOpenWaypointDescription(GeoMaps::Waypoint waypoint);
+
     /*! \brief Emitted to indicate that the GUI should open the "Weather" page */
     void requestOpenWeatherDialog(Weather::Observer* obs);
 
@@ -124,6 +133,9 @@ signals:
      *  @param vacName Name of the VAC
      */
     void requestVAC(QString vacName);
+
+    /*! \brief Emitted to set a zoom level in the moving map */
+    void requestZoomLevel(double newZoom);
 
 private:
     Q_DISABLE_COPY_MOVE(DemoRunner)

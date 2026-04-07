@@ -34,9 +34,9 @@
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
-#include "platform/PlatformAdaptor.h"
 #include "ios/ObjCAdapter.h"
 #include "navigation/Navigator.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
 #include "traffic/TrafficFactor_WithPosition.h"
@@ -55,7 +55,7 @@ DemoRunner::DemoRunner(QObject *parent) : QObject(parent)
 }
 
 
-void delay(std::chrono::milliseconds ms)
+static void delay(std::chrono::milliseconds ms)
 {
     QEventLoop loop; // define a new event loop
     QTimer::singleShot(ms, &loop, &QEventLoop::quit);
@@ -63,7 +63,7 @@ void delay(std::chrono::milliseconds ms)
 }
 
 
-auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) -> QObject*
+static QObject* findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine)
 {
     foreach (auto rootItem, engine->rootObjects())
     {
@@ -342,10 +342,6 @@ void DemoRunner::generateManualScreenshots()
     // Obtain pointers to QML items
     auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem(QStringLiteral("applicationWindow"), m_engine));
     Q_ASSERT(applicationWindow != nullptr);
-    auto* flightMap = findQQuickItem(QStringLiteral("flightMap"), m_engine);
-    Q_ASSERT(flightMap != nullptr);
-    auto* waypointDescription = findQQuickItem(QStringLiteral("waypointDescription"), m_engine);
-    Q_ASSERT(waypointDescription != nullptr);
 
     // Set up traffic simulator
     GlobalObject::trafficDataProvider()->removeDataSources();
@@ -379,6 +375,8 @@ void DemoRunner::generateManualScreenshots()
     // Settings
     GlobalObject::globalSettings()->setAirspaceAltitudeLimit({});
     GlobalObject::globalSettings()->setHideGlidingSectors(true);
+    emit requestFollowGPS(true);
+    delay(1s);
 
 
     //
@@ -401,10 +399,10 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setTT( Units::Angle::fromDEG(30) );
         trafficSimulator->setGS( Units::Speed::fromKN(120) );
         trafficSimulator->setVSpeed( Units::Speed::fromFPM(-300) );
-        flightMap->setProperty("zoomLevel", 10);
-        flightMap->setProperty("mapBearingPolicy", 1);
+        emit requestZoomLevel(10);
+        emit requestMapBearing(1);
         emit requestShowSideView(true);
-        delay(10s);
+        delay(5s);
         applicationWindow->grabWindow().save(QStringLiteral("05-01-01-SideView.png"));
         emit requestShowSideView(false);
     }
@@ -447,7 +445,7 @@ void DemoRunner::generateManualScreenshots()
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("KRH")) );
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
-        flightMap->setProperty("zoomLevel", 11);
+        emit requestZoomLevel(11);
         emit requestMapBearing(1); // TTUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("02-02-04-EnRoute.png"));
@@ -498,8 +496,8 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setBarometricHeight( Units::Distance::fromFT(800) );
         trafficSimulator->setTT( Units::Angle::fromDEG(160) );
         trafficSimulator->setGS( Units::Speed::fromKN(5) );
-        flightMap->setProperty("zoomLevel", 13);
-        flightMap->setProperty("followGPS", true);
+        emit requestZoomLevel(13);
+        emit requestFollowGPS(true);
         emit requestMapBearing(0); // NUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-01-ground.png"));
@@ -512,7 +510,7 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setBarometricHeight( Units::Distance::fromFT(5500) );
         trafficSimulator->setTT( Units::Angle::fromDEG(170) );
         trafficSimulator->setGS( Units::Speed::fromKN(90) );
-        flightMap->setProperty("zoomLevel", 11);
+        emit requestZoomLevel(11);
         emit requestMapBearing(1); // TTUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-02-flight.png"));
@@ -523,12 +521,11 @@ void DemoRunner::generateManualScreenshots()
         qWarning() << "… EDFE Info Page";
         auto waypoint = GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDFE"));
         Q_ASSERT(waypoint.isValid());
-        waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
-        QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
+        requestOpenWaypointDescription(waypoint);
         emit requestMapBearing(0); // NUp
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-03-EDFEinfo.png"));
-        QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
+        requestCloseWaypointDescription();
     }
 
     // Approaching EDTF w/ traffic
@@ -539,8 +536,8 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
         trafficSimulator->setTT( Units::Angle::fromDEG(41) );
         trafficSimulator->setGS( Units::Speed::fromKN(92) );
-        flightMap->setProperty("zoomLevel", 13);
-        flightMap->setProperty("followGPS", true);
+        emit requestZoomLevel(13);
+        emit requestFollowGPS(true);
         emit requestMapBearing(1); // TTUp
         const QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
         QGeoPositionInfo trafficInfo;

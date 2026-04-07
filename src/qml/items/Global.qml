@@ -143,4 +143,21 @@ Item {
         onStatusChanged: PositionProvider.startUpdates()
         Component.onCompleted: PositionProvider.startUpdates()
     }
+
+
+    //
+    // Connections
+    //
+    Connections {
+        target: DemoRunner
+
+        function onRequestFollowGPS(newVal) {
+            followGPS = newVal
+        }
+
+        function onRequestMapBearing(newBearing) {
+            mapBearingPolicy = newBearing
+        }
+    }
+
 }

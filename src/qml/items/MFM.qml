@@ -42,14 +42,21 @@ Item {
     Connections {
         target: DemoRunner
 
-        function onRequestMapBearing(newBearing) {
-            mapBearingPolicy = newBearing
-        }
         function onRequestShowSideView(show) {
             if (show)
                 cl.SplitView.preferredHeight = page.height/3
             else
                 cl.SplitView.preferredHeight = 0
+        }
+        function onRequestZoomLevel(lvl) {
+            flightMap.zoomLevel = lvl
+        }
+        function onRequestOpenWaypointDescription(wp) {
+            waypointDescription.waypoint = wp
+            waypointDescription.open()
+        }
+        function onRequestCloseWaypointDescription() {
+            waypointDescription.close()
         }
     }
 
@@ -703,7 +710,6 @@ Item {
                     enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
 
                     onActiveTranslationChanged: (delta) => cl.SplitView.preferredHeight -= delta.y
-                    //onActiveChanged: if (active) cl.SplitView.preferredHeight = navBar.implicitHeight
                 }
 
                 spacing: 0  // Set the spacing between children to 0

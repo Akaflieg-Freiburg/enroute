@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.2.0] - 2026-04-xx
+## [3.2.0] - 2026-04-11
 
 ### Added
 - Added new icons to moving maps, for obstacle NOTAMs and NOTAMs about UAVs. (#625)

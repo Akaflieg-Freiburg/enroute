@@ -204,7 +204,7 @@ QString NOTAM::NOTAM::category() const
     {
         return u"NOTAM-PJE"_s;
     }
-    if (m_text.contains(u"CRANE"_s) || m_text.contains(u"WIND TURBINE"_s) || m_text.contains(u"WINDMILL"_s))
+    if (m_text.contains(u"OBST"_s) || m_text.contains(u"CRANE"_s) || m_text.contains(u"WINDMILL"_s))
     {
         return u"NOTAM-OBST"_s;
     }

@@ -1,0 +1,2 @@
+### Added
+- Added new icons to moving maps, for obstacle NOTAMs and NOTAMs about UAVs. (#625)

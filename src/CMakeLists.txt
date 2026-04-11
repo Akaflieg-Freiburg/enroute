@@ -63,6 +63,7 @@ set(SOURCES
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
+    LibrarianExportImport.h
     Sensors.h
     navigation/Aircraft.h
     navigation/Atmosphere.h
@@ -165,6 +166,7 @@ set(SOURCES
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp
+    LibrarianExportImport.cpp
     Sensors.cpp
     main.cpp
     navigation/Aircraft.cpp

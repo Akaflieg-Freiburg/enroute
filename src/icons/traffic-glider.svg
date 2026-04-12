@@ -10,5 +10,5 @@
   <path d="M25 8 L26 19 L48 22 L48 24 L26 22 L26 38 L31 42 L31 44 L26 42.5 L25.5 47 L24.5 47 L24 42.5 L19 44 L19 42 L24 38 L24 22 L2 24 L2 22 L24 19 Z"
 	style="fill:none;stroke:#ffffff;stroke-width:2"/>
   <path d="M25 8 L26 19 L48 22 L48 24 L26 22 L26 38 L31 42 L31 44 L26 42.5 L25.5 47 L24.5 47 L24 42.5 L19 44 L19 42 L24 38 L24 22 L2 24 L2 22 L24 19 Z"
-	style="fill:#f0f000;stroke:none"/>
+	style="fill:pink;stroke:none"/>
 </svg>

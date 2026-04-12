@@ -217,6 +217,23 @@ public:
      */
     Q_INVOKABLE static void rename(Librarian::Library library, const QString& oldName, const QString& newName);
 
+    /*! \brief Export library backup and share/save it via FileExchange
+     *
+     * @returns Empty string on success, the string "abort" if the user
+     * cancelled, or a translated error/warning message otherwise
+     */
+    Q_INVOKABLE static QString exportAndShareBackup();
+
+    /*! \brief Import complete library backup from file
+     *
+     * This method imports a JSON backup file and restores aircraft, routes, and waypoints
+     *
+     * @param fileName Path to the backup file
+     *
+     * @returns Empty string on success, translated error message on failure
+     */
+    Q_INVOKABLE static QString importFullBackupFromFile(const QString& fileName);
+
     /*! \brief Filters a QStringList in a fuzzy way
      *
      * This helper method filters a QStringList. It returns a sublist of those

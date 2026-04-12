@@ -403,13 +403,46 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
     {
         return tr("Error reading file '%1'").arg(myFileName);
     }
-    if (result.length() > 100)
+    return snapAndSetWaypoints(result);
+}
+
+auto Navigation::FlightRoute::loadFromGeoJSON(const QByteArray& geoJSON) -> QString
+{
+    QJsonParseError parseError{};
+    auto document = QJsonDocument::fromJson(geoJSON, &parseError);
+    if (parseError.error != QJsonParseError::NoError)
     {
-        return tr("The file '%1' contains too many waypoints. Flight routes with more than 100 waypoints are not supported.").arg(myFileName);
+        return tr("Error reading GeoJSON data.");
+    }
+
+    QVector<GeoMaps::Waypoint> result;
+    const auto features = document.object()[QStringLiteral("features")].toArray();
+    for (const auto& value : features)
+    {
+        auto wp = GeoMaps::Waypoint(value.toObject());
+        if (!wp.isValid())
+        {
+            return tr("Error reading GeoJSON data.");
+        }
+        result.append(wp);
+    }
+
+    if (result.isEmpty())
+    {
+        return tr("Error reading GeoJSON data.");
+    }
+    return snapAndSetWaypoints(result);
+}
+
+auto Navigation::FlightRoute::snapAndSetWaypoints(const QVector<GeoMaps::Waypoint>& waypoints) -> QString
+{
+    if (waypoints.length() > 100)
+    {
+        return tr("Flight routes with more than 100 waypoints are not supported.");
     }
 
     QVector<GeoMaps::Waypoint> newWaypoints;
-    foreach(auto waypoint, result)
+    foreach(auto waypoint, waypoints)
     {
         if (!waypoint.isValid())
         {

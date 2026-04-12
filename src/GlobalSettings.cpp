@@ -222,6 +222,18 @@ void GlobalSettings::setNightMode(bool newNightMode)
 }
 
 
+void GlobalSettings::setAutoFlightDetection(bool newAutoFlightDetection)
+{
+    if (newAutoFlightDetection == autoFlightDetection())
+    {
+        return;
+    }
+
+    m_settings.setValue(QStringLiteral("FlightLog/autoFlightDetection"), newAutoFlightDetection);
+    emit autoFlightDetectionChanged();
+}
+
+
 void GlobalSettings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver)
 {
     m_settings.setValue(QStringLiteral("positioningByTrafficDataReceiver"), newPositioningByTrafficDataReceiver);

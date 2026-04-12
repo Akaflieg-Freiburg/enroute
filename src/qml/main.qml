@@ -208,6 +208,24 @@ AppWindow {
                     }
                 }
 
+                ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
+                    id: menuItemFlightLog
+
+                    text: qsTr("Flight Log")
+                    icon.source: "/icons/material/ic_flight_takeoff.svg"
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/FlightLogPage.qml")
+                        drawer.close()
+                    }
+                }
+
                 Rectangle {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
@@ -927,6 +945,18 @@ AppWindow {
             }
         }
 
+    }
+
+    Connections { // FlightLog
+        target: FlightLog
+
+        function onTakeoffDetected(time) {
+            toast.doToast(qsTr("Start Time: %1 UTC").arg(time))
+        }
+
+        function onLandingDetected(time) {
+            toast.doToast(qsTr("Landing Time: %1 UTC").arg(time))
+        }
     }
 
     Connections { // SSLErrorHandler

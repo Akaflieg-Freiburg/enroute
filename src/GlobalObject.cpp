@@ -32,6 +32,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Clock.h"
+#include "flightlog/FlightLog.h"
 #include "navigation/Navigator.h"
 #include "notam/NOTAMProvider.h"
 #include "notification/NotificationManager.h"
@@ -56,6 +57,7 @@ QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
 QPointer<Librarian> g_librarian {};
 QPointer<Platform::PlatformAdaptor> g_platformAdaptor {};
+QPointer<Flightlog::FlightLog> g_flightLog {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<NOTAM::NOTAMProvider> g_notamProvider {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
@@ -118,6 +120,7 @@ void GlobalObject::clear()
     delete g_fileExchange;
     delete g_librarian;
     delete g_platformAdaptor;
+    delete g_flightLog;
     delete g_navigator;
     delete g_passwordDB;
     delete g_positionProvider;
@@ -154,6 +157,11 @@ auto GlobalObject::fileExchange() -> Platform::FileExchange*
 auto GlobalObject::flarmnetDB() -> Traffic::FlarmnetDB*
 {
     return allocateInternal<Traffic::FlarmnetDB>(g_flarmnetDB);
+}
+
+auto GlobalObject::flightLog() -> Flightlog::FlightLog*
+{
+    return allocateInternal<Flightlog::FlightLog>(g_flightLog);
 }
 
 auto GlobalObject::geoMapProvider() -> GeoMaps::GeoMapProvider*

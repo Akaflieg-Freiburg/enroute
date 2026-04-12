@@ -143,6 +143,9 @@ public:
     /*! \brief Night mode */
     Q_PROPERTY(bool nightMode READ nightMode WRITE setNightMode NOTIFY nightModeChanged)
 
+    /*! \brief Automatic flight detection enabled */
+    Q_PROPERTY(bool autoFlightDetection READ autoFlightDetection WRITE setAutoFlightDetection NOTIFY autoFlightDetectionChanged)
+
     /*! \brief Use traffic data receiver for positioning */
     Q_PROPERTY(bool positioningByTrafficDataReceiver READ positioningByTrafficDataReceiver WRITE setPositioningByTrafficDataReceiver BINDABLE bindablePositioningByTrafficDataReceiver)
 
@@ -239,6 +242,12 @@ public:
      * @returns Property night mode
      */
     [[nodiscard]] auto nightMode() const -> bool { return m_settings.value(QStringLiteral("Map/nightMode"), false).toBool(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property autoFlightDetection
+     */
+    [[nodiscard]] auto autoFlightDetection() const -> bool { return m_settings.value(QStringLiteral("FlightLog/autoFlightDetection"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -354,6 +363,12 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * @param newAutoFlightDetection Property autoFlightDetection
+     */
+    void setAutoFlightDetection(bool newAutoFlightDetection);
+
+    /*! \brief Setter function for property of the same name
+     *
      * @param newPositioningByTrafficDataReceiver Property positioningByTrafficDataReceiver
      */
     void setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver);
@@ -417,6 +432,9 @@ signals:
 
     /*! \brief Notifier signal */
     void nightModeChanged();
+
+    /*! \brief Notifier signal */
+    void autoFlightDetectionChanged();
 
     /*! \brief Notifier signal */
     void privacyHashChanged();

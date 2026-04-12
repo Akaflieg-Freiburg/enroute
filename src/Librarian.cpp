@@ -21,10 +21,10 @@
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
 #include <QSysInfo>
-#include <QtGlobal>
 
 #include "config.h"
 #include "Librarian.h"
+#include "LibrarianExportImport.h"
 #include "navigation/FlightRoute.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -513,6 +513,18 @@ void Librarian::remove(Librarian::Library library, const QString& baseName)
 void Librarian::rename(Librarian::Library library, const QString &oldName, const QString &newName) 
 {
     QFile::rename(fullPath(library, oldName), fullPath(library, newName));
+}
+
+
+auto Librarian::exportAndShareBackup() -> QString
+{
+    return LibrarianExportImport::exportAndShareBackup();
+}
+
+
+auto Librarian::importFullBackupFromFile(const QString& fileName) -> QString
+{
+    return LibrarianExportImport::importFullBackupFromFile(fileName);
 }
 
 

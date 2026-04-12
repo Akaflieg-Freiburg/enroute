@@ -49,14 +49,20 @@ void Platform::FileExchange::importContent()
 }
 
 
-QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& /*mimeType*/, const QString& /*fileNameSuffix*/, const QString& fileNameTemplate)
+QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate)
 {
     QMimeDatabase const mimeDataBase;
-    QMimeType const mime = mimeDataBase.mimeTypeForData(content);
+    QMimeType mime = mimeDataBase.mimeTypeForName(mimeType);
+    if (!mime.isValid())
+    {
+        mime = mimeDataBase.mimeTypeForData(content);
+    }
+
+    const QString suffix = fileNameSuffix.isEmpty() ? mime.preferredSuffix() : fileNameSuffix;
     auto fileNameX = QFileDialog::getSaveFileName(nullptr,
                                                   tr("Export Data"),
-                                                  QDir::homePath() + u"/"_s + fileNameTemplate + u"."_s + mime.preferredSuffix(),
-                                                  tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix()));
+                                                  QDir::homePath() + u"/"_s + fileNameTemplate + u"."_s + suffix,
+                                                  tr("%1 (*.%2);;All files (*)").arg(mime.comment(), suffix));
     if (fileNameX.isEmpty())
     {
         return QStringLiteral("abort");

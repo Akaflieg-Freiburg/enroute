@@ -100,6 +100,16 @@ Item {
                 errorDialog.open()
                 return
             }
+            if (fileFunction === FileExchange.Backup) {
+                var errorString = Librarian.importFullBackupFromFile(importManager.filePath)
+                if (errorString !== "") {
+                    errLbl.text = errorString
+                    errorDialog.open()
+                    return
+                }
+                toast.doToast(qsTr("Backup imported successfully"))
+                return
+            }
 
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
@@ -559,4 +569,5 @@ Item {
 
         }
     }
+
 }

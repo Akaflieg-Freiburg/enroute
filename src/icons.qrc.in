@@ -83,6 +83,30 @@
     <file alias="icons/traffic-withDirection-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-withDirection-green.svg</file>
     <file alias="icons/traffic-withDirection-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-withDirection-yellow.svg</file>
     <file alias="icons/traffic-withDirection-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-withDirection-red.svg</file>
+    <file alias="icons/traffic-aircraft-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-aircraft-green.svg</file>
+    <file alias="icons/traffic-aircraft-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-aircraft-yellow.svg</file>
+    <file alias="icons/traffic-aircraft-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-aircraft-red.svg</file>
+    <file alias="icons/traffic-glider-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-glider-green.svg</file>
+    <file alias="icons/traffic-glider-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-glider-yellow.svg</file>
+    <file alias="icons/traffic-glider-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-glider-red.svg</file>
+    <file alias="icons/traffic-paraglider-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-paraglider-green.svg</file>
+    <file alias="icons/traffic-paraglider-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-paraglider-yellow.svg</file>
+    <file alias="icons/traffic-paraglider-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-paraglider-red.svg</file>
+    <file alias="icons/traffic-hangGlider-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-hangGlider-green.svg</file>
+    <file alias="icons/traffic-hangGlider-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-hangGlider-yellow.svg</file>
+    <file alias="icons/traffic-hangGlider-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-hangGlider-red.svg</file>
+    <file alias="icons/traffic-jet-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-jet-green.svg</file>
+    <file alias="icons/traffic-jet-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-jet-yellow.svg</file>
+    <file alias="icons/traffic-jet-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-jet-red.svg</file>
+    <file alias="icons/traffic-copter-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-copter-green.svg</file>
+    <file alias="icons/traffic-copter-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-copter-yellow.svg</file>
+    <file alias="icons/traffic-copter-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-copter-red.svg</file>
+    <file alias="icons/traffic-drone-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-drone-green.svg</file>
+    <file alias="icons/traffic-drone-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-drone-yellow.svg</file>
+    <file alias="icons/traffic-drone-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-drone-red.svg</file>
+    <file alias="icons/traffic-balloon-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-balloon-green.svg</file>
+    <file alias="icons/traffic-balloon-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-balloon-yellow.svg</file>
+    <file alias="icons/traffic-balloon-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-balloon-red.svg</file>
     <file alias="icons/vertLine.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/vertLine.svg</file>
 
 	<!-- GUI icons: Waypoint -->

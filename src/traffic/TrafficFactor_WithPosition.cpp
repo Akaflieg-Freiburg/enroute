@@ -31,6 +31,7 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
     // Bindings for property icon
     connect(this, &Traffic::TrafficFactor_Abstract::colorChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
+    connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
     connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
 
     // Bindings for property valid
@@ -131,14 +132,44 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
 
 void Traffic::TrafficFactor_WithPosition::updateIcon()
 {
-    // BaseType
+    // Determine base icon type from direction availability and aircraft type
     QString baseType = QStringLiteral("noDirection");
     if (m_positionInfo.groundSpeed().isFinite() && m_positionInfo.trueTrack().isFinite())
     {
         auto GS = m_positionInfo.groundSpeed();
         if (GS.isFinite() && (GS.toKN() > 4))
         {
-            baseType = QStringLiteral("withDirection");
+            // Select icon shape based on aircraft type
+            switch(type()) {
+            case Traffic::Aircraft:
+            case Traffic::TowPlane:
+                baseType = QStringLiteral("aircraft");
+                break;
+            case Traffic::Glider:
+                baseType = QStringLiteral("glider");
+                break;
+            case Traffic::Paraglider:
+                baseType = QStringLiteral("paraglider");
+                break;
+            case Traffic::HangGlider:
+                baseType = QStringLiteral("hangGlider");
+                break;
+            case Traffic::Jet:
+                baseType = QStringLiteral("jet");
+                break;
+            case Traffic::Copter:
+                baseType = QStringLiteral("copter");
+                break;
+            case Traffic::Drone:
+                baseType = QStringLiteral("drone");
+                break;
+            case Traffic::Balloon:
+                baseType = QStringLiteral("balloon");
+                break;
+            default:
+                baseType = QStringLiteral("withDirection");
+                break;
+            }
         }
     }
 

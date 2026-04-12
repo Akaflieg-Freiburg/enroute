@@ -293,6 +293,15 @@ namespace Navigation
          */
         Q_INVOKABLE QString load(const QString& fileName);
 
+        /*! \brief Load flight route from GeoJSON data in memory
+         *
+         * @param geoJSON QByteArray containing GeoJSON data
+         *
+         * @returns Empty string in case of success, human-readable, translated
+         * error message otherwise.
+         */
+        QString loadFromGeoJSON(const QByteArray& geoJSON);
+
         /*! \brief Move waypoint one position down in the list of waypoints
          *
          * @param idx Index of the waypoint
@@ -415,6 +424,9 @@ namespace Navigation
 
         // Helper function for method toGPX
         [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
+
+        // Validate, snap to nearest known waypoints, and assign
+        QString snapAndSetWaypoints(const QVector<GeoMaps::Waypoint>& waypoints);
 
         QProperty<QList<QGeoCoordinate>> m_geoPath;
         QList<QGeoCoordinate> computeGeoPath();

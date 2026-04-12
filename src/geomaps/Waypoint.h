@@ -26,6 +26,8 @@
 #include <QQmlEngine>
 #include <QXmlStreamWriter>
 
+#include "units/Angle.h"
+
 
 namespace GeoMaps {
 
@@ -175,6 +177,12 @@ public:
      */
     Q_PROPERTY(QString type READ type CONSTANT)
 
+    /*! \brief Magnetic variation at the waypoint
+     *
+     * This property holds the magnetic variation at the waypoint as a number.
+     */
+    Q_PROPERTY(Units::Angle variation READ variation CONSTANT)
+
 
     //
     // GETTER METHODS
@@ -275,6 +283,12 @@ public:
     {
         return m_properties.value(QStringLiteral("TYP")).toString();
     }
+
+    /*! \brief Get variation
+     *
+     * @returns The variation, or NaN if not available.
+     */
+    [[nodiscard]] auto variation() const -> Units::Angle;
 
 
     //

@@ -18,3 +18,4 @@ enroute-data
 NMEA
 Changelog
 NOTAMs
+NOTAM

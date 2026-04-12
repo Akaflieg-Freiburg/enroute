@@ -372,9 +372,15 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
         result.append("NOTE" + m_properties.value(QStringLiteral("NOT")).toString());
     }
 
-    const auto var_deg = variation().toDEG();
+    auto var_deg = variation().toDEG();
     if (!std::isnan(var_deg)) {
-        result.append("VAR " + QString::number(std::round(var_deg)) + "°");
+        QString suffix = QStringLiteral("° E");
+        if (var_deg > 180) {
+            var_deg = 360 - var_deg;
+            suffix = QStringLiteral("° W");
+        }
+
+        result.append("VAR " + QString::number(std::round(var_deg)) + suffix);
     }
 
     return result;

@@ -34,8 +34,10 @@ namespace Flightlog {
  *
  *  Detection criteria:
  *  - **Takeoff**: Ground speed > 50 km/h within 5 km of an airfield,
- *    confirmed by altitude gain of at least 200 ft AGL within 60 seconds.
- *  - **Landing**: Altitude below 100 ft AGL within 5 km of an airfield.
+ *    confirmed by altitude gain of at least 200 ft above airfield elevation
+ *    within 60 seconds.
+ *  - **Landing**: Altitude below 100 ft above airfield elevation within
+ *    5 km of an airfield.
  *  - **Abort**: Speed drops below 25 km/h or 60 seconds elapse in
  *    TakeoffPhase without altitude confirmation.
  */
@@ -70,11 +72,12 @@ private:
     QString m_pendingDepartureICAO;
     QGeoCoordinate m_pendingDepartureCoordinate;
     QDateTime m_pendingStartTime;
+    Units::Distance m_pendingDepartureElevation;
 
     // Detection thresholds
     static constexpr double takeoffSpeedKMH = 50.0;          ///< Minimum ground speed to trigger takeoff detection
-    static constexpr double altitudeGainFT = 200.0;          ///< Minimum altitude AGL to confirm takeoff
-    static constexpr double landingAltitudeAGLFT = 100.0;    ///< Maximum altitude AGL to detect landing
+    static constexpr double altitudeGainFT = 200.0;          ///< Minimum altitude above airfield elevation to confirm takeoff
+    static constexpr double landingAltitudeAGLFT = 100.0;    ///< Maximum altitude above airfield elevation to detect landing
     static constexpr double airfieldProximityM = 5000.0;     ///< Maximum distance to an airfield for detection
     static constexpr double takeoffAbortSpeedFactor = 0.5;   ///< Speed drop factor to abort takeoff detection
 };

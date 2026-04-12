@@ -47,7 +47,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
     }
 
     auto groundSpeed = info.groundSpeed();
-    auto altitudeAGL = info.trueAltitudeAGL();
+    auto altitudeAMSL = info.trueAltitudeAMSL();
 
     switch (m_detectionState) {
 
@@ -77,6 +77,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         // Near airfield and speed above threshold → enter takeoff phase
         m_pendingDepartureICAO = closestAD.ICAOCode();
         m_pendingDepartureCoordinate = closestAD.coordinate();
+        m_pendingDepartureElevation = Units::Distance::fromM(closestAD.coordinate().altitude());
         m_pendingStartTime = info.timestamp();
         m_detectionState = TakeoffPhase;
         emit detectionStateChanged();
@@ -92,8 +93,9 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
             return;
         }
 
-        // Check if altitude has gained enough to confirm takeoff
-        if (altitudeAGL.isFinite() && altitudeAGL > Units::Distance::fromFT(altitudeGainFT)) {
+        // Check if altitude has gained enough above the airfield to confirm takeoff
+        if (altitudeAMSL.isFinite() && m_pendingDepartureElevation.isFinite()
+            && (altitudeAMSL - m_pendingDepartureElevation) > Units::Distance::fromFT(altitudeGainFT)) {
             // Build the preliminary flight entry
             Flight prelimFlight;
             prelimFlight.setDepartureICAO(m_pendingDepartureICAO);
@@ -109,12 +111,12 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
     }
 
     case InFlight: {
-        // Need valid altitude to detect landing
-        if (!altitudeAGL.isFinite() || altitudeAGL > Units::Distance::fromFT(landingAltitudeAGLFT)) {
+        // Need valid AMSL altitude to detect landing
+        if (!altitudeAMSL.isFinite()) {
             return;
         }
 
-        // Altitude is low — check if near an airport
+        // Check if near an airport
         auto nearby = geoMapProvider->nearbyWaypoints(info.coordinate(), u"AD"_s);
         if (nearby.isEmpty()) {
             return;
@@ -126,6 +128,13 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
             return;
         }
 
+        // Check altitude above the airfield elevation
+        auto airfieldElevation = Units::Distance::fromM(closestAD.coordinate().altitude());
+        if (!airfieldElevation.isFinite()
+            || (altitudeAMSL - airfieldElevation) > Units::Distance::fromFT(landingAltitudeAGLFT)) {
+            return;
+        }
+
         // Near airport and low altitude → landing detected
         auto landingTime = info.timestamp();
         auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
@@ -134,6 +143,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         m_detectionState = Idle;
         m_pendingDepartureICAO.clear();
         m_pendingDepartureCoordinate = {};
+        m_pendingDepartureElevation = {};
         m_pendingStartTime = {};
         emit detectionStateChanged();
         emit landingDetected(closestAD.ICAOCode(), closestAD.coordinate(), landingTime, timeStr);
@@ -179,6 +189,7 @@ void Flightlog::AirplaneFlightDetector::endFlight()
     m_detectionState = Idle;
     m_pendingDepartureICAO.clear();
     m_pendingDepartureCoordinate = {};
+    m_pendingDepartureElevation = {};
     m_pendingStartTime = {};
     emit detectionStateChanged();
     emit landingDetected(arrivalICAO, arrivalCoordinate, now, timeStr);
@@ -194,6 +205,7 @@ void Flightlog::AirplaneFlightDetector::resetDetection()
     m_detectionState = Idle;
     m_pendingDepartureICAO.clear();
     m_pendingDepartureCoordinate = {};
+    m_pendingDepartureElevation = {};
     m_pendingStartTime = {};
     emit detectionStateChanged();
 }

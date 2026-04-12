@@ -18,10 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QFile>
+#include <QHash>
+
 #include "GlobalObject.h"
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
 #include "traffic/TrafficFactor_WithPosition.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent) : TrafficFactor_Abstract(parent)
@@ -31,6 +36,7 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
     // Bindings for property icon
     connect(this, &Traffic::TrafficFactor_Abstract::colorChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
+    connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
     connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
 
     // Bindings for property valid
@@ -131,18 +137,81 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
 
 void Traffic::TrafficFactor_WithPosition::updateIcon()
 {
-    // BaseType
+    // To not store each traffic icon in multiple colors, 
+    // use a lazy cache keyed by "<shape>-<color>"
+    static QHash<QString, QString> iconCache;
+
+    // Map alarm color name to hex color code for use with SVG template files
+    static const QHash<QString, QString> colorMap = {
+        { QStringLiteral("green"),  QStringLiteral("#00a000") },
+        { QStringLiteral("yellow"), QStringLiteral("#f0f000") },
+        { QStringLiteral("red"),    QStringLiteral("#a00000") },
+    };
+
+    // Determine base icon shape from direction availability and aircraft type
     QString baseType = QStringLiteral("noDirection");
     if (m_positionInfo.groundSpeed().isFinite() && m_positionInfo.trueTrack().isFinite())
     {
         auto GS = m_positionInfo.groundSpeed();
         if (GS.isFinite() && (GS.toKN() > 4))
         {
-            baseType = QStringLiteral("withDirection");
+            switch(type()) {
+            case Traffic::Aircraft:
+            case Traffic::TowPlane:
+                baseType = QStringLiteral("aircraft");
+                break;
+            case Traffic::Glider:
+                baseType = QStringLiteral("glider");
+                break;
+            case Traffic::Paraglider:
+                baseType = QStringLiteral("paraglider");
+                break;
+            case Traffic::HangGlider:
+                baseType = QStringLiteral("hangGlider");
+                break;
+            case Traffic::Jet:
+                baseType = QStringLiteral("jet");
+                break;
+            case Traffic::Copter:
+                baseType = QStringLiteral("copter");
+                break;
+            case Traffic::Drone:
+                baseType = QStringLiteral("drone");
+                break;
+            case Traffic::Balloon:
+                baseType = QStringLiteral("balloon");
+                break;
+            default:
+                baseType = QStringLiteral("withDirection");
+                break;
+            }
         }
     }
 
-    auto newIcon = "/icons/traffic-"+baseType+"-"+color()+".svg";
+    // Use icon from Cache if exists, e.g. "glider-green" or "copter-red"
+    const QString cacheKey = baseType + u'-' + color();
+    const auto cachedIcon = iconCache.constFind(cacheKey);
+    if (cachedIcon != iconCache.constEnd()) {
+        if (m_icon != *cachedIcon) {
+            m_icon = *cachedIcon;
+            emit iconChanged();
+        }
+        return;
+    }
+
+    // Load the template SVG (placeholder fill color is "pink"), 
+    // replace color, 
+    // store in Cache
+    QFile svgFile(u":/icons/traffic-"_s + baseType + u".svg"_s);
+    if (!svgFile.open(QIODevice::ReadOnly)) {
+        return;
+    }
+    QString svgContent = QString::fromUtf8(svgFile.readAll());
+    const QString fillColor = colorMap.value(color(), QStringLiteral("#a00000"));
+    svgContent.replace(QStringLiteral("pink"), fillColor);
+    auto newIcon = u"data:image/svg+xml;base64,"_s
+                   + QString::fromLatin1(svgContent.toUtf8().toBase64());
+    iconCache.insert(cacheKey, newIcon);
     if (m_icon == newIcon) {
         return;
     }

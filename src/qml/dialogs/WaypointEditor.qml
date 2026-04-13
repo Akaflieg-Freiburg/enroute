@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtPositioning
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -28,8 +29,8 @@ import "../items"
 
 /* Waypoint dialog
  *
- * Short description: set property waypoint, then open. Re-implement onAccepted and read the new values from newName, newLatitude
- * and newLongitude.
+ * Short description: set property waypoint, then open. Re-implement onAccepted and read the new values from newName, newLatitude,
+ * newLongitude, newAltitudeMeter, and newRepresentation.
  */
 
 CenteringDialog {
@@ -43,6 +44,9 @@ CenteringDialog {
     readonly property double newLatitude: latInput.value
     readonly property double newLongitude: longInput.value
     readonly property double newAltitudeMeter: eleField.valueMeter
+    property string newRepresentation: ""
+    property var availableRepresentations: []
+    property bool coordinatesAreValid: waypoint.coordinate.isValid
 
     modal: true
     title: qsTr("Edit Waypoint")
@@ -55,7 +59,80 @@ CenteringDialog {
         eleField.valueMeter = waypoint.coordinate.altitude
         wpNameField.text = waypoint.extendedName
         wpNotesField.text = waypoint.notes
+        coordinatesAreValid = waypoint.coordinate.isValid
+        
+        if (coordinatesAreValid) {
+            // Get available representations from C++
+            availableRepresentations = waypoint.availableRepresentations()
+            
+            // Set the current index based on existing representation
+            var currentRep = waypoint.representation
+            if (currentRep !== "") {
+                var idx = availableRepresentations.indexOf(currentRep)
+                if (idx >= 0) {
+                    representationChoice.currentIndex = idx
+                    newRepresentation = currentRep
+                } else {
+                    // Default to coordinate notation (first option)
+                    representationChoice.currentIndex = 0
+                    newRepresentation = availableRepresentations[0]
+                }
+            } else {
+                // Default to coordinate notation (first option)
+                representationChoice.currentIndex = 0
+                newRepresentation = availableRepresentations[0]
+            }
+        } else {
+            // Coordinates are not valid - use text input mode
+            representationInput.text = waypoint.representation
+            newRepresentation = waypoint.representation
+        }
+        
         wpNameField.focus = true
+    }
+
+    // When the coordinates first become valid, replace the text input with a dropdown:
+    function updateRepresentationOptions() {
+        // Create a temporary waypoint with the current coordinates
+        var tempWaypoint = GeoMapProvider.createWaypoint()
+        tempWaypoint.coordinate = QtPositioning.coordinate(latInput.value, longInput.value, eleField.valueMeter)
+        
+        // Get available representations from C++
+        availableRepresentations = tempWaypoint.availableRepresentations()
+        
+        // Set to coordinate notation (first option) by default
+        representationChoice.currentIndex = 0
+        newRepresentation = availableRepresentations[0]
+    }
+
+    // After updating the coordinates of the waypoint, check if the current representation
+    // is still valid (only minor change in coordinates). If it is not, update the possible representations.
+    function checkAndUpdateRepresentations() {
+        // Only proceed if both coordinates are valid
+        if (!latInput.acceptableInput || !longInput.acceptableInput) {
+            return
+        }
+
+        // Create a temporary waypoint with the current coordinates
+        var tempWaypoint = GeoMapProvider.createWaypoint()
+        tempWaypoint.coordinate = QtPositioning.coordinate(latInput.value, longInput.value)
+        
+        // Get new available representations
+        availableRepresentations = tempWaypoint.availableRepresentations()
+        
+        // Check if current representation is still valid for the new coordinate
+        var currentRep = newRepresentation
+        var repIndex = tempWaypoint.representationIndex(currentRep)
+        
+        if (repIndex >= 0) {
+            // Keep the current representation if it's still valid
+            representationChoice.currentIndex = repIndex
+            newRepresentation = currentRep
+        } else {
+            // Otherwise, select coordinate notation (first option)
+            representationChoice.currentIndex = 0
+            newRepresentation = availableRepresentations[0]
+        }
     }
 
     DecoratedScrollView {
@@ -213,6 +290,22 @@ CenteringDialog {
                 value: waypoint.coordinate.latitude
                 minValue: -90.0
                 maxValue: 90.0
+                
+                onValueChanged: {
+                    if (!acceptableInput || !longInput.acceptableInput) {
+                        return
+                    }
+                    
+                    if (!coordinatesAreValid) {
+                        // Coordinates were invalid, now becoming valid
+                        coordinatesAreValid = true
+                        updateRepresentationOptions()
+                    } else {
+                        // Coordinates were already valid but changed
+                        // Check if current representation is still valid
+                        checkAndUpdateRepresentations()
+                    }
+                }
             }
 
             Label {
@@ -229,6 +322,22 @@ CenteringDialog {
                 value: waypoint.coordinate.longitude
                 minValue: -180.0
                 maxValue: 180.0
+                
+                onValueChanged: {
+                    if (!acceptableInput || !latInput.acceptableInput) {
+                        return
+                    }
+                    
+                    if (!coordinatesAreValid) {
+                        // Coordinates were invalid, now becoming valid
+                        coordinatesAreValid = true
+                        updateRepresentationOptions()
+                    } else {
+                        // Coordinates were already valid but changed
+                        // Check if current representation is still valid
+                        checkAndUpdateRepresentations()
+                    }
+                }
             }
 
 
@@ -356,6 +465,73 @@ CenteringDialog {
                 visible: (Qt.platform.os !== "ios")
 
                 model: [ qsTr("Feet"), qsTr("Meter") ]
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                Layout.columnSpan: 2
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Representation")
+            }
+
+            // Show ComboBox when coordinates are valid
+            ComboBox {
+                id: representationChoice
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                Layout.rightMargin: 3
+                visible: coordinatesAreValid
+
+                model: availableRepresentations
+                
+                onCurrentIndexChanged: {
+                    if (currentIndex >= 0 && currentIndex < availableRepresentations.length) {
+                        newRepresentation = availableRepresentations[currentIndex]
+                    }
+                }
+            }
+
+            // Show text input when coordinates are not valid
+            MyTextField {
+                id: representationInput
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                Layout.rightMargin: 3
+                visible: !coordinatesAreValid
+
+                placeholderText: qsTr("4602N07805W or DUB180040")
+                
+                onTextChanged: {
+                    // Parse the representation and update coordinates
+                    if (text.length > 0) {
+                        var parsedWaypoint = GeoMapProvider.parseWaypointString(text)
+                        if (parsedWaypoint.coordinate.isValid) {
+                            latInput.value = parsedWaypoint.coordinate.latitude
+                            longInput.value = parsedWaypoint.coordinate.longitude
+                            if (parsedWaypoint.coordinate.altitude !== 0) {
+                                eleField.valueMeter = parsedWaypoint.coordinate.altitude
+                            }
+                            newRepresentation = text
+                            
+                            // Update to show dropdown mode
+                            coordinatesAreValid = true
+                            
+                            // Get available representations from C++
+                            availableRepresentations = parsedWaypoint.availableRepresentations()
+                            
+                            // Select the current representation if it exists in the list
+                            var idx = availableRepresentations.indexOf(text)
+                            if (idx >= 0) {
+                                representationChoice.currentIndex = idx
+                            } else {
+                                representationChoice.currentIndex = 0
+                            }
+                        }
+                    }
+                }
             }
 
         }

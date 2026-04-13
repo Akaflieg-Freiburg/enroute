@@ -578,6 +578,21 @@ auto GeoMaps::Waypoint::availableRepresentations() const -> QStringList
 }
 
 
+auto GeoMaps::Waypoint::representationIndex(const QString& representation) const -> int
+{
+    if (representation.isEmpty() || !m_coordinate.isValid())
+    {
+        return -1;
+    }
+
+    // Get all available representations for this waypoint's coordinate
+    auto representations = availableRepresentations();
+
+    // Find the representation in the list
+    return representations.indexOf(representation);
+}
+
+
 size_t GeoMaps::qHash(const GeoMaps::Waypoint& waypoint)
 {
     auto result = qHash(waypoint.m_coordinate);

@@ -729,6 +729,7 @@ CenteringDialog {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            newWP.representation = newRepresentation
             WaypointLibrary.replace(waypointDescriptionDialog.waypoint, newWP)
             waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
@@ -746,6 +747,7 @@ CenteringDialog {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            newWP.representation = newRepresentation
             WaypointLibrary.add(newWP)
             waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))

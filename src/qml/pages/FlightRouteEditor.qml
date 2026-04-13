@@ -899,6 +899,7 @@ Page {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            newWP.representation = newRepresentation
             Navigator.flightRoute.append(newWP)
             addbyCoordinates.close()
         }
@@ -971,6 +972,7 @@ Page {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            newWP.representation = newRepresentation
             Navigator.flightRoute.replaceWaypoint(index, newWP)
             wpEditor.close()
         }

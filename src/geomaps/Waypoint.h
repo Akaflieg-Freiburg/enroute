@@ -457,6 +457,20 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE QStringList availableRepresentations() const;
 
+    /*! \brief Find index of representation in available representations
+     *
+     * As the list of representations is always sorted (by distance to reference
+     * station), we can refer to a representation by its index in that list.
+     *
+     * This method checks whether a given representation string is valid for
+     * this waypoint's coordinate and returns its index.
+     *
+     * @param representation The representation string to find
+     *
+     * @returns Index of the representation (0 or higher if found), or -1 if not found
+     */
+    [[nodiscard]] Q_INVOKABLE int representationIndex(const QString& representation) const;
+
     /*! \brief Serialization to GeoJSON object
      *
      * This method serialises the waypoint as a GeoJSON object. The object

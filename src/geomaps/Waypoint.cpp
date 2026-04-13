@@ -333,7 +333,14 @@ auto GeoMaps::Waypoint::extendedName() const -> QString
         return QStringLiteral("%1 (%2)").arg(m_properties.value(QStringLiteral("NAM")).toString(), m_properties.value(QStringLiteral("CAT")).toString());
     }
 
-    return m_properties.value(QStringLiteral("NAM")).toString();
+    const auto name = m_properties.value(QStringLiteral("NAM")).toString();
+
+    // If name is generic "Waypoint", use a more concise representation instead:
+    if (name == u"Waypoint") {
+        return representation();
+    }
+
+    return name;
 }
 
 

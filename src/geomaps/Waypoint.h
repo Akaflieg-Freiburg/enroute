@@ -288,10 +288,16 @@ public:
      */
     [[nodiscard]] auto shortName() const -> QString
     {
-        if (ICAOCode().isEmpty()) {
-            return name();
+        if (!ICAOCode().isEmpty()) {
+            return ICAOCode();
         }
-        return ICAOCode();
+
+        // If name is generic "Waypoint", use a more concise representation instead:
+        if (name() == u"Waypoint") {
+            return representation();
+        }
+
+        return name();
     }
 
     /*! \brief Getter method for property with the same name

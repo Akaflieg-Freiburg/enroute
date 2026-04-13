@@ -158,7 +158,7 @@ QString Navigation::Aircraft::describeWay(const QGeoCoordinate &from, const QGeo
 }
 
 
-auto Navigation::Aircraft::horizontalDistanceToString(Units::Distance distance) const -> QString
+QString Navigation::Aircraft::horizontalDistanceToString(Units::Distance distance) const
 {
     if (!distance.isFinite()) {
         return QStringLiteral("-");
@@ -205,7 +205,7 @@ QString Navigation::Aircraft::horizontalSpeedToString(Units::Speed speed) const
 }
 
 
-auto Navigation::Aircraft::loadFromJSON(const QString& fileName) -> QString
+QString Navigation::Aircraft::loadFromJSON(const QString& fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -247,7 +247,7 @@ QString Navigation::Aircraft::loadFromJSON(const QByteArray &JSON)
 }
 
 
-auto Navigation::Aircraft::save(const QString& fileName) const -> QString
+QString Navigation::Aircraft::save(const QString& fileName) const
 {
     // Make directory, if it does not yet exist.
     QDir const dir;
@@ -268,7 +268,7 @@ auto Navigation::Aircraft::save(const QString& fileName) const -> QString
 }
 
 
-auto Navigation::Aircraft::toJSON() const -> QByteArray
+QByteArray Navigation::Aircraft::toJSON() const
 {
     QJsonObject jsonObj;
     jsonObj.insert(QStringLiteral("content"), "aircraft");

@@ -157,55 +157,55 @@ public:
      *
      * @returns Property cruise speed
      */
-    [[nodiscard]] auto cruiseSpeed() const -> Units::Speed { return m_cruiseSpeed; }
+    [[nodiscard]] Units::Speed cruiseSpeed() const { return m_cruiseSpeed; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property descentSpeed
      */
-    [[nodiscard]] auto descentSpeed() const -> Units::Speed { return m_descentSpeed; }
+    [[nodiscard]] Units::Speed descentSpeed() const { return m_descentSpeed; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property fuelConsumptionInLPH
      */
-    [[nodiscard]] auto fuelConsumption() const -> Units::VolumeFlow { return m_fuelConsumption; }
+    [[nodiscard]] Units::VolumeFlow fuelConsumption() const { return m_fuelConsumption; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property preferredVolumeUnit
      */
-    [[nodiscard]] auto fuelConsumptionUnit() const -> FuelConsumptionUnit { return m_fuelConsumptionUnit; }
+    [[nodiscard]] FuelConsumptionUnit fuelConsumptionUnit() const { return m_fuelConsumptionUnit; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property preferredHorizontalDistanceUnit
      */
-    [[nodiscard]] auto horizontalDistanceUnit() const -> HorizontalDistanceUnit { return m_horizontalDistanceUnit; }
+    [[nodiscard]] HorizontalDistanceUnit horizontalDistanceUnit() const { return m_horizontalDistanceUnit; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property minimum speed
      */
-    [[nodiscard]] auto minimumSpeed() const -> Units::Speed { return m_minimumSpeed; }
+    [[nodiscard]] Units::Speed minimumSpeed() const { return m_minimumSpeed; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property name
      */
-    [[nodiscard]] auto name() const -> QString { return m_name; }
+    [[nodiscard]] QString name() const { return m_name; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property transponderCode
      */
-    [[nodiscard]] auto transponderCode() const -> QString { return m_transponderCode; }
+    [[nodiscard]] QString transponderCode() const { return m_transponderCode; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property preferredVertialDistanceUnit
      */
-    [[nodiscard]] auto verticalDistanceUnit() const -> VerticalDistanceUnit { return m_verticalDistanceUnit; }
+    [[nodiscard]] VerticalDistanceUnit verticalDistanceUnit() const { return m_verticalDistanceUnit; }
 
 
     //

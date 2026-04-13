@@ -660,34 +660,9 @@ auto Navigation::FlightRoute::toVfrFlightPlan() const -> QString
         
         if (!useIcaoCode)
         {
-            // Convert coordinates to VFR flight plan format (degrees and minutes)
-            // Format: "4620N07805W" (DDMMNDDDDMME) - 11 characters as per AIP
-            const QGeoCoordinate coord = waypoint.coordinate();
-            if (coord.isValid())
-            {
-                const double latitude = coord.latitude();
-                const double longitude = coord.longitude();
-                
-                // Extract degrees and minutes for latitude
-                const int latDeg = static_cast<int>(qAbs(latitude));
-                const int latMin = static_cast<int>((qAbs(latitude) - latDeg) * 60.0);
-                const QString latDir = (latitude >= 0) ? u"N"_s : u"S"_s;
-                
-                // Extract degrees and minutes for longitude
-                const int lonDeg = static_cast<int>(qAbs(longitude));
-                const int lonMin = static_cast<int>((qAbs(longitude) - lonDeg) * 60.0);
-                const QString lonDir = (longitude >= 0) ? u"E"_s : u"W"_s;
-                
-                waypointString = QString("%1%2%3%4%5%6")
-                    .arg(latDeg, 2, 10, QLatin1Char('0'))
-                    .arg(latMin, 2, 10, QLatin1Char('0'))
-                    .arg(latDir)
-                    .arg(lonDeg, 3, 10, QLatin1Char('0'))
-                    .arg(lonMin, 2, 10, QLatin1Char('0'))
-                    .arg(lonDir);
-            }
+            waypointString = waypoint.representation();
         }
-        
+
         if (!waypointString.isEmpty())
         {
             routeElements.append(waypointString);

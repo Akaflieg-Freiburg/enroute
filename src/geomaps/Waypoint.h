@@ -183,6 +183,17 @@ public:
      */
     Q_PROPERTY(Units::Angle variation READ variation CONSTANT)
 
+    /*! \brief Custom representation of the waypoint
+     *
+     * This property holds a custom representation of the waypoint, e.g.
+     * by fix/bearing/distance.
+     * The custom representation is used when exporting a VFR flight plan.
+     *
+     * The property is reset, whenever the underlying waypoint is changed
+     * (i.e. the coordinates are changed).
+     */
+    Q_PROPERTY(QString representation READ representation WRITE setRepresentation)
+
 
     //
     // GETTER METHODS
@@ -290,6 +301,24 @@ public:
      */
     [[nodiscard]] auto variation() const -> Units::Angle;
 
+    /*! \brief Representation for writing this in a VFR flight plan.
+     *
+     * A custom representation may be set using #setRepresentation().
+     * If no custom representation is set, the default geocoordinate
+     * representation is returned.
+     *
+     * @returns the applicable representation.
+     */
+    [[nodiscard]] auto representation() const -> QString
+    {
+        if (!m_properties.contains(QStringLiteral("REP")) ||
+                m_properties.value(QStringLiteral("REP")).toString().isEmpty()) {
+            return coordinateNotation();
+        }
+
+        return m_properties.value(QStringLiteral("REP")).toString();
+    }
+
 
     //
     // SETTER METHODS
@@ -302,6 +331,7 @@ public:
     void setCoordinate(const QGeoCoordinate& newCoordinate)
     {
         m_coordinate = newCoordinate;
+        m_properties.remove("REP");
     }
 
     /*! \brief Set name
@@ -320,6 +350,15 @@ public:
     void setNotes(const QString &newNotes)
     {
         m_properties.insert(QStringLiteral("NOT"), newNotes);
+    }
+
+    /*! \brief Set custom representation for use in VFR flight plans.
+     *
+     * @param rep The new representation.
+     */
+    void setRepresentation(const QString rep)
+    {
+        m_properties.insert(QStringLiteral("REP"), QString(rep));
     }
 
 
@@ -362,6 +401,18 @@ public:
      *  them is less than 2km
      */
     [[nodiscard]] Q_INVOKABLE bool isNear(const GeoMaps::Waypoint& other) const;
+
+    /*! \brief Generate VFR flight plan format
+     *
+     * Convert coordinates to VFR flight plan format (degrees and minutes)
+     * Format: "4620N07805W" (DDMMNDDDMME) - 11 characters as per AIP.
+     *
+     * For more information, see (2) Significant point in
+     * https://www.faa.gov/air_traffic/publications/atpubs/fss/AppendixA.htm
+     *
+     * @returns coordinate string in VFR flight plan format.
+     */
+    [[nodiscard]] Q_INVOKABLE QString coordinateNotation() const;
 
     /*! \brief Serialization to GeoJSON object
      *

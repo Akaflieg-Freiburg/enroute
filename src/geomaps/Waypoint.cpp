@@ -423,6 +423,34 @@ auto GeoMaps::Waypoint::variation() const -> Units::Angle
 }
 
 
+auto GeoMaps::Waypoint::coordinateNotation() const -> QString {
+    if (!isValid()) {
+        return {};
+    }
+
+    const double latitude = coordinate().latitude();
+    const double longitude = coordinate().longitude();
+
+    // Extract degrees and minutes for latitude
+    const int latDeg = static_cast<int>(qAbs(latitude));
+    const int latMin = static_cast<int>((qAbs(latitude) - latDeg) * 60.0);
+    const QString latDir = (latitude >= 0) ? u"N"_s : u"S"_s;
+
+    // Extract degrees and minutes for longitude
+    const int lonDeg = static_cast<int>(qAbs(longitude));
+    const int lonMin = static_cast<int>((qAbs(longitude) - lonDeg) * 60.0);
+    const QString lonDir = (longitude >= 0) ? u"E"_s : u"W"_s;
+
+    return QString("%1%2%3%4%5%6")
+        .arg(latDeg, 2, 10, QLatin1Char('0'))
+        .arg(latMin, 2, 10, QLatin1Char('0'))
+        .arg(latDir)
+        .arg(lonDeg, 3, 10, QLatin1Char('0'))
+        .arg(lonMin, 2, 10, QLatin1Char('0'))
+        .arg(lonDir);
+}
+
+
 size_t GeoMaps::qHash(const GeoMaps::Waypoint& waypoint)
 {
     auto result = qHash(waypoint.m_coordinate);

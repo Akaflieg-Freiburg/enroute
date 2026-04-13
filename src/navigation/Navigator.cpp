@@ -79,7 +79,7 @@ void Navigation::Navigator::deferredInitialization()
 // Getter Methods
 //
 
-auto Navigation::Navigator::flightRoute() -> FlightRoute*
+Navigation::FlightRoute* Navigation::Navigator::flightRoute()
 {
     if (m_flightRoute.isNull())
     {

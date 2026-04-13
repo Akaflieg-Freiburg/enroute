@@ -466,6 +466,7 @@ Page {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            newWP.representation = newRepresentation
             WaypointLibrary.replace(waypoint, newWP)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint modified"))
@@ -483,6 +484,7 @@ Page {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            newWP.representation = newRepresentation
             WaypointLibrary.add(newWP)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint added"))

@@ -748,6 +748,22 @@ Page {
 
         standardButtons: DialogButtonBox.Cancel
 
+        // Combine filtered waypoints with parsed waypoint (if valid)
+        function getWaypointList(text) {
+            var filteredWPs = GeoMapProvider.filteredWaypoints(text)
+            var parsedWP = GeoMapProvider.parseWaypointString(text)
+            
+            if (parsedWP.coordinate.isValid) {
+                // Add parsed waypoint to the beginning of the list
+                var combined = [parsedWP]
+                for (var i = 0; i < filteredWPs.length; i++) {
+                    combined.push(filteredWPs[i])
+                }
+                return combined
+            }
+            return filteredWPs
+        }
+
         Component {
             id: waypointDelegate
 
@@ -834,10 +850,10 @@ Page {
                 Timer {
                     id: debounceTimer
                     interval: 200 // 200ms
-                    onTriggered: wpList.model = GeoMapProvider.filteredWaypoints(textInput.displayText)
+                    onTriggered: wpList.model = flightRouteAddWPDialog.getWaypointList(textInput.displayText)
                 }
 
-                model: GeoMapProvider.filteredWaypoints(textInput.displayText)
+                model: flightRouteAddWPDialog.getWaypointList(textInput.displayText)
                 delegate: waypointDelegate
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -883,6 +899,7 @@ Page {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            newWP.representation = newRepresentation
             Navigator.flightRoute.append(newWP)
             addbyCoordinates.close()
         }
@@ -955,6 +972,7 @@ Page {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            newWP.representation = newRepresentation
             Navigator.flightRoute.replaceWaypoint(index, newWP)
             wpEditor.close()
         }

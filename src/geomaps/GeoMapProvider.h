@@ -331,6 +331,38 @@ public:
         return {};
     }
 
+    /*! \brief Find navaid with the given name
+     *
+     * Finds a navaid from a three-letter identification code.
+     * Note that the navaid has to be in the currently active library to be found.
+     *
+     * Because the three-letter codes are sometimes ambiguous, we apply some heuristics
+     * to choose the correct one:
+     *
+     * 1. Choose the navaid that is closest to the currently active flight route.
+     * 2. If the route is empty, choose the navaid, that is closest to the user position.
+     * 3. If the user position is unknown, return an invalid waypoint.
+     */
+    [[nodiscard]] Q_INVOKABLE GeoMaps::Waypoint findNavaid(const QString& id);
+
+
+    /*! \brief Parse waypoint string
+     *
+     * Accepted formats are according to the VFR flight plan format:
+     * https://www.faa.gov/air_traffic/publications/atpubs/fss/AppendixA.htm.
+     *
+     *  Parses a waypoint representation string (either coordinate notation
+     *  like "4602N07805W" or radial notation like "DUB180040").
+     *
+     *  For radial notations with ambiguous navaid codes, the navaid closest
+     *  to the current route or user position is chosen.
+     *
+     *  @param representation String representation of the waypoint
+     *
+     *  @returns A waypoint, or invalid if the representation cannot be parsed
+     */
+    [[nodiscard]] Q_INVOKABLE GeoMaps::Waypoint parseWaypointString(const QString& representation);
+
     /*! \brief Elevation of terrain at a given coordinate, above sea level
      *
      *  @param coordinate Coordinate

@@ -788,6 +788,9 @@ AppWindow {
     Label {
         id: toast
 
+        parent: Overlay.overlay
+        z: 10000
+
         width: Math.min(parent.width-4*view.font.pixelSize, 40*view.font.pixelSize)
         x: (parent.width-width)/2.0
         y: parent.height*(3.0/4.0)-height/2.0

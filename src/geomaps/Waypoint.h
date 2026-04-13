@@ -26,6 +26,8 @@
 #include <QQmlEngine>
 #include <QXmlStreamWriter>
 
+#include "units/Angle.h"
+
 
 namespace GeoMaps {
 
@@ -78,6 +80,26 @@ public:
      * @param geoJSONObject GeoJSON Object that describes the waypoint
      */
     explicit Waypoint(const QJsonObject& geoJSONObject);
+
+    /*! \brief Constructs a waypoint from fix, bearing and distance
+     *
+     * This constructor calculates a waypoint position based on a reference
+     * navigation aid, a magnetic bearing from that navaid, and a distance.
+     * The magnetic variation at the navaid is taken into account.
+     *
+     * - category is set to "WP"
+     * - name is set to "Waypoint"
+     * - type is set to "WP"
+     * - representation is set accordingly
+     *
+     * If the navaid is invalid or doesn't have valid magnetic variation,
+     * the resulting waypoint will be invalid.
+     *
+     * @param navaid Reference navigation aid waypoint
+     * @param magneticBearing Magnetic bearing from the navaid (in degrees)
+     * @param distanceNM Distance from the navaid in nautical miles
+     */
+    Waypoint(const GeoMaps::Waypoint& navaid, const Units::Angle& magneticBearing, double distanceNM);
 
 
     //
@@ -175,6 +197,23 @@ public:
      */
     Q_PROPERTY(QString type READ type CONSTANT)
 
+    /*! \brief Magnetic variation at the waypoint
+     *
+     * This property holds the magnetic variation at the waypoint as a number.
+     */
+    Q_PROPERTY(Units::Angle variation READ variation CONSTANT)
+
+    /*! \brief Custom representation of the waypoint
+     *
+     * This property holds a custom representation of the waypoint, e.g.
+     * by fix/bearing/distance.
+     * The custom representation is used when exporting a VFR flight plan.
+     *
+     * The property is reset, whenever the underlying waypoint is changed
+     * (i.e. the coordinates are changed).
+     */
+    Q_PROPERTY(QString representation READ representation WRITE setRepresentation)
+
 
     //
     // GETTER METHODS
@@ -249,10 +288,16 @@ public:
      */
     [[nodiscard]] auto shortName() const -> QString
     {
-        if (ICAOCode().isEmpty()) {
-            return name();
+        if (!ICAOCode().isEmpty()) {
+            return ICAOCode();
         }
-        return ICAOCode();
+
+        // If name is generic "Waypoint", use a more concise representation instead:
+        if (name() == u"Waypoint") {
+            return representation();
+        }
+
+        return name();
     }
 
     /*! \brief Getter method for property with the same name
@@ -276,6 +321,30 @@ public:
         return m_properties.value(QStringLiteral("TYP")).toString();
     }
 
+    /*! \brief Get variation
+     *
+     * @returns The variation, or NaN if not available.
+     */
+    [[nodiscard]] auto variation() const -> Units::Angle;
+
+    /*! \brief Representation for writing this in a VFR flight plan.
+     *
+     * A custom representation may be set using #setRepresentation().
+     * If no custom representation is set, the default geocoordinate
+     * representation is returned.
+     *
+     * @returns the applicable representation.
+     */
+    [[nodiscard]] auto representation() const -> QString
+    {
+        if (!m_properties.contains(QStringLiteral("REP")) ||
+                m_properties.value(QStringLiteral("REP")).toString().isEmpty()) {
+            return coordinateNotation();
+        }
+
+        return m_properties.value(QStringLiteral("REP")).toString();
+    }
+
 
     //
     // SETTER METHODS
@@ -288,6 +357,7 @@ public:
     void setCoordinate(const QGeoCoordinate& newCoordinate)
     {
         m_coordinate = newCoordinate;
+        m_properties.remove("REP");
     }
 
     /*! \brief Set name
@@ -306,6 +376,15 @@ public:
     void setNotes(const QString &newNotes)
     {
         m_properties.insert(QStringLiteral("NOT"), newNotes);
+    }
+
+    /*! \brief Set custom representation for use in VFR flight plans.
+     *
+     * @param rep The new representation.
+     */
+    void setRepresentation(const QString rep)
+    {
+        m_properties.insert(QStringLiteral("REP"), QString(rep));
     }
 
 
@@ -348,6 +427,55 @@ public:
      *  them is less than 2km
      */
     [[nodiscard]] Q_INVOKABLE bool isNear(const GeoMaps::Waypoint& other) const;
+
+    /*! \brief Generate radial notation string from a navaid
+     *
+     * This method generates a radial position notation in the format used in
+     * flight plans (e.g., "LNO070012" = LNO VOR, radial 070°, distance 12 nm).
+     *
+     * @param navaid Navigation aid waypoint to use as reference
+     *
+     * @returns Radial notation string, or empty string if this waypoint or the
+     * navaid is invalid, or if navaid is not a NAV type
+     */
+    [[nodiscard]] Q_INVOKABLE QString radialNotation(const GeoMaps::Waypoint& navaid) const;
+
+    /*! \brief Generate VFR flight plan format
+     *
+     * Convert coordinates to VFR flight plan format (degrees and minutes)
+     * Format: "4620N07805W" (DDMMNDDDMME) - 11 characters as per AIP.
+     *
+     * For more information, see (2) Significant point in
+     * https://www.faa.gov/air_traffic/publications/atpubs/fss/AppendixA.htm
+     *
+     * @returns coordinate string in VFR flight plan format.
+     */
+    [[nodiscard]] Q_INVOKABLE QString coordinateNotation() const;
+
+    /*! \brief Compute available representations for this waypoint
+     *
+     * This method computes all possible representations for this waypoint's
+     * coordinate, including coordinate notation and radial notations from nearby
+     * navigation aids.
+     *
+     * @returns A list of representation strings, with coordinate notation first,
+     *          followed by radial notations from nearby navaids
+     */
+    [[nodiscard]] Q_INVOKABLE QStringList availableRepresentations() const;
+
+    /*! \brief Find index of representation in available representations
+     *
+     * As the list of representations is always sorted (by distance to reference
+     * station), we can refer to a representation by its index in that list.
+     *
+     * This method checks whether a given representation string is valid for
+     * this waypoint's coordinate and returns its index.
+     *
+     * @param representation The representation string to find
+     *
+     * @returns Index of the representation (0 or higher if found), or -1 if not found
+     */
+    [[nodiscard]] Q_INVOKABLE int representationIndex(const QString& representation) const;
 
     /*! \brief Serialization to GeoJSON object
      *

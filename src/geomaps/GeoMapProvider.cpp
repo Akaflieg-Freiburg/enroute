@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <limits>
+
 #include <QImage>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -25,6 +27,7 @@
 #include <QLockFile>
 #include <QQmlEngine>
 #include <QRandomGenerator>
+#include <QRegularExpression>
 #include <QtConcurrent/QtConcurrentRun>
 
 #include "GlobalSettings.h"
@@ -33,7 +36,9 @@
 #include "fileFormats/MBTILES.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
+#include "navigation/FlightRoute.h"
 #include "navigation/Navigator.h"
+#include "positioning/PositionProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -287,6 +292,124 @@ Units::Distance decodeImageData(const QImage* image, double intraTileX, double i
     double const y4 = (qRed(pix) * 256.0 + qGreen(pix) + qBlue(pix) / 256.0) - 32768.0;
 
     return Units::Distance::fromM((1-t)*(1-u)*y1 + t*(1-u)*y2+t*u*y3+(1-t)*u*y4);
+}
+
+GeoMaps::Waypoint GeoMaps::GeoMapProvider::findNavaid(const QString& id)
+{
+    // Get all navaids
+    QList<GeoMaps::Waypoint> matchingNavaids;
+    auto allWaypoints = waypoints();
+    for (const auto& wp : allWaypoints) {
+        if (wp.isValid() && wp.type() == u"NAV" && wp.ICAOCode() == id) {
+            matchingNavaids.append(wp);
+        }
+    }
+
+    if (matchingNavaids.isEmpty()) {
+        return Waypoint(); // No matching navaid found
+    }
+
+    if (matchingNavaids.size() == 1) {
+        return matchingNavaids.first();
+    }
+
+    // Choose the best navaid based on reference position:
+    QGeoCoordinate referenceCoord;
+
+    // Try to use route waypoints first
+    if (navigator()->flightRoute() != nullptr) {
+        const auto route = navigator()->flightRoute();
+        // Use the center of the bounding rectangle as reference
+        referenceCoord = route->boundingRectangle().center();
+    }
+
+    // If no route, use user position
+    if (!referenceCoord.isValid()) {
+        referenceCoord = positionProvider()->lastValidCoordinate();
+    }
+
+    // Still no reference coordinate, fail:
+    if (!referenceCoord.isValid()) {
+        return Waypoint();
+    }
+
+    // Find closest navaid to reference coordinate
+    GeoMaps::Waypoint bestNavaid;
+    double minDistance = std::numeric_limits<double>::max();
+    for (const auto& navaid : matchingNavaids) {
+        double distance = referenceCoord.distanceTo(navaid.coordinate());
+        if (distance < minDistance) {
+            minDistance = distance;
+            bestNavaid = navaid;
+        }
+    }
+
+    return bestNavaid;
+}
+
+GeoMaps::Waypoint GeoMaps::GeoMapProvider::parseWaypointString(const QString& rep)
+{
+    if (rep.isEmpty()) {
+        return Waypoint();
+    }
+
+    // Try to parse as coordinate notation
+    // 11 characters include minutes "DDMMXDDDMMX". Example: "4620N07805W"
+    // 7 characters only have degrees "DDXDDDX". Example: "46N078W"
+    QRegularExpression coordRegex(u"^(\\d{2})(\\d{2})?([NS])(\\d{3})(\\d{2})?([EW])$"_s);
+    auto coordMatch = coordRegex.match(rep);
+
+    if (coordMatch.hasMatch()) {
+        // Parse coordinate notation
+        int latDeg = coordMatch.captured(1).toInt();
+        int latMin = coordMatch.captured(2).toInt();
+        QString latDir = coordMatch.captured(3);
+        int lonDeg = coordMatch.captured(4).toInt();
+        int lonMin = coordMatch.captured(5).toInt();
+        QString lonDir = coordMatch.captured(6);
+
+        // Validate ranges
+        if (latDeg > 90 || latMin >= 60 || lonDeg > 180 || lonMin >= 60) {
+            return Waypoint(); // Invalid coordinate
+        }
+
+        // Convert to decimal degrees
+        double latitude = latDeg + latMin / 60.0;
+        if (latDir == u"S") {
+            latitude = -latitude;
+        }
+
+        double longitude = lonDeg + lonMin / 60.0;
+        if (lonDir == u"W") {
+            longitude = -longitude;
+        }
+
+        return Waypoint(QGeoCoordinate(latitude, longitude));
+    }
+
+    // Try to parse as radial notation (9 characters: SSSRRRDDD)
+    // Example: "LNO070012" (LNO VOR, radial 070°, distance 12 NM)
+    QRegularExpression radialRegex(u"^([A-Z]{3})(\\d{3})(\\d{3})$"_s);
+    auto radialMatch = radialRegex.match(rep);
+
+    if (radialMatch.hasMatch()) {
+        // Parse radial notation
+        QString navaidCode = radialMatch.captured(1);
+        int radialDeg = radialMatch.captured(2).toInt();
+        int distanceNM = radialMatch.captured(3).toInt();
+
+        // Validate ranges
+        if (radialDeg >= 360 || distanceNM > 999) {
+            return Waypoint(); // Invalid radial notation
+        }
+
+        // Create waypoint from navaid, bearing, and distance
+        auto magneticBearing = Units::Angle::fromDEG(radialDeg);
+        return Waypoint(findNavaid(navaidCode), magneticBearing, distanceNM);
+    }
+
+    // No matching representation:
+    return Waypoint();
 }
 
 Units::Distance GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordinate)

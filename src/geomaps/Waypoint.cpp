@@ -23,6 +23,7 @@
 
 #include "GlobalObject.h"
 #include "Waypoint.h"
+#include "geomaps/GeoMapProvider.h"
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
 #include "units/Distance.h"
@@ -113,6 +114,36 @@ GeoMaps::Waypoint::Waypoint(const QJsonObject &geoJSONObject)
             m_properties[u"NAM"_s] = "Waypoint";
         }
     }
+}
+
+
+GeoMaps::Waypoint::Waypoint(const GeoMaps::Waypoint& navaid, const Units::Angle& magneticBearing, double distanceNM) : Waypoint()
+{
+    // Check if navaid is valid
+    if (!navaid.isValid() || navaid.type() != u"NAV") {
+        // Return invalid waypoint
+        return;
+    }
+
+    // Get magnetic variation at navaid
+    auto var = navaid.variation();
+    if (std::isnan(var.toDEG())) {
+        // Return invalid waypoint
+        return;
+    }
+
+    // Convert magnetic bearing to true bearing
+    // True = Magnetic + Variation
+    auto trueBearing = magneticBearing + var;
+
+    // Calculate coordinate at given distance and bearing from navaid
+    auto navaidCoord = navaid.coordinate();
+    double distanceMeters = distanceNM * 1852.0; // Convert NM to meters
+
+    m_coordinate = navaidCoord.atDistanceAndAzimuth(distanceMeters, trueBearing.toDEG());
+
+    // Set the representation property to the original string
+    setRepresentation(radialNotation(navaid));
 }
 
 

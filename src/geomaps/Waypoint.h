@@ -81,6 +81,26 @@ public:
      */
     explicit Waypoint(const QJsonObject& geoJSONObject);
 
+    /*! \brief Constructs a waypoint from fix, bearing and distance
+     *
+     * This constructor calculates a waypoint position based on a reference
+     * navigation aid, a magnetic bearing from that navaid, and a distance.
+     * The magnetic variation at the navaid is taken into account.
+     *
+     * - category is set to "WP"
+     * - name is set to "Waypoint"
+     * - type is set to "WP"
+     * - representation is set accordingly
+     *
+     * If the navaid is invalid or doesn't have valid magnetic variation,
+     * the resulting waypoint will be invalid.
+     *
+     * @param navaid Reference navigation aid waypoint
+     * @param magneticBearing Magnetic bearing from the navaid (in degrees)
+     * @param distanceNM Distance from the navaid in nautical miles
+     */
+    Waypoint(const GeoMaps::Waypoint& navaid, const Units::Angle& magneticBearing, double distanceNM);
+
 
     //
     // PROPERTIES

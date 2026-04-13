@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <cmath>
 #include <QJsonArray>
 
 #include "GlobalObject.h"
@@ -371,6 +372,17 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
         result.append("NOTE" + m_properties.value(QStringLiteral("NOT")).toString());
     }
 
+    auto var_deg = variation().toDEG();
+    if (!std::isnan(var_deg)) {
+        QString suffix = QStringLiteral("° E");
+        if (var_deg > 180) {
+            var_deg = 360 - var_deg;
+            suffix = QStringLiteral("° W");
+        }
+
+        result.append("VAR " + QString::number(std::round(var_deg)) + suffix);
+    }
+
     return result;
 }
 
@@ -390,6 +402,24 @@ auto GeoMaps::Waypoint::twoLineTitle() const -> QString
     }
 
     return extendedName();
+}
+
+
+auto GeoMaps::Waypoint::variation() const -> Units::Angle
+{
+    if (!m_properties.contains(QStringLiteral("VAR"))) {
+        return Units::Angle::nan();
+    }
+
+    bool ok;
+    const auto var = m_properties.value(QStringLiteral("VAR"));
+    double var_d = var.toDouble(&ok);
+
+    if (!ok) {
+        return Units::Angle::nan();
+    }
+
+    return Units::Angle::fromDEG(var_d);
 }
 
 

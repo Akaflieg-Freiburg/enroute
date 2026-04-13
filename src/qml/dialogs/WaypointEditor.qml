@@ -57,7 +57,7 @@ CenteringDialog {
         latInput.value = waypoint.coordinate.latitude
         longInput.value = waypoint.coordinate.longitude
         eleField.valueMeter = waypoint.coordinate.altitude
-        wpNameField.text = waypoint.extendedName
+        wpNameField.text = waypoint.name
         wpNotesField.text = waypoint.notes
         coordinatesAreValid = waypoint.coordinate.isValid
         
@@ -165,7 +165,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
 
-                text: waypoint.extendedName
+                text: waypoint.name
 
                 focus: true
             }

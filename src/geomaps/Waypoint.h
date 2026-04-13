@@ -402,6 +402,18 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE bool isNear(const GeoMaps::Waypoint& other) const;
 
+    /*! \brief Generate radial notation string from a navaid
+     *
+     * This method generates a radial position notation in the format used in
+     * flight plans (e.g., "LNO070012" = LNO VOR, radial 070°, distance 12 nm).
+     *
+     * @param navaid Navigation aid waypoint to use as reference
+     *
+     * @returns Radial notation string, or empty string if this waypoint or the
+     * navaid is invalid, or if navaid is not a NAV type
+     */
+    [[nodiscard]] Q_INVOKABLE QString radialNotation(const GeoMaps::Waypoint& navaid) const;
+
     /*! \brief Generate VFR flight plan format
      *
      * Convert coordinates to VFR flight plan format (degrees and minutes)
@@ -413,6 +425,17 @@ public:
      * @returns coordinate string in VFR flight plan format.
      */
     [[nodiscard]] Q_INVOKABLE QString coordinateNotation() const;
+
+    /*! \brief Compute available representations for this waypoint
+     *
+     * This method computes all possible representations for this waypoint's
+     * coordinate, including coordinate notation and radial notations from nearby
+     * navigation aids.
+     *
+     * @returns A list of representation strings, with coordinate notation first,
+     *          followed by radial notations from nearby navaids
+     */
+    [[nodiscard]] Q_INVOKABLE QStringList availableRepresentations() const;
 
     /*! \brief Serialization to GeoJSON object
      *

@@ -423,6 +423,70 @@ auto GeoMaps::Waypoint::variation() const -> Units::Angle
 }
 
 
+auto GeoMaps::Waypoint::radialNotation(const GeoMaps::Waypoint& navaid) const -> QString
+{
+    // Check validity
+    if (!isValid() || !navaid.isValid()) {
+        return {};
+    }
+
+    // Check that navaid is actually a navigation aid
+    if (navaid.type() != u"NAV") {
+        return {};
+    }
+
+    // Get ICAO code of navaid
+    QString navaidCode = navaid.ICAOCode();
+    if (navaidCode.length() != 3) {
+        return {};
+    }
+
+    // Get magnetic variation at navaid
+    auto var = navaid.variation();
+    if (std::isnan(var.toDEG())) {
+        return {};
+    }
+
+    // Calculate radial (bearing from navaid TO this waypoint)
+    auto navaidCoord = navaid.coordinate();
+    auto thisCoord = m_coordinate;
+
+    auto radial = Units::Angle::fromDEG(navaidCoord.azimuthTo(thisCoord));
+    if (!radial.isFinite()) {
+        return {};
+    }
+
+    // Convert true bearing to magnetic bearing (relative to magnetic north).
+    // From https://en.wikipedia.org/wiki/Magnetic_declination#Navigation:
+    // True = Magnetic + Variation
+    // => Magnetic = True - Variation
+    // Make sure to use - instead of -=, because the latter is not implemented.
+    radial = radial - var;
+
+    // Calculate distance
+    qreal distanceMeters = navaidCoord.distanceTo(thisCoord);
+    if (!qIsFinite(distanceMeters)) {
+        return {};
+    }
+
+    int radialInt = qRound(radial.toDEG());
+    int distanceInt = qRound(distanceMeters / 1852.0);
+
+    // Format: STATIONRRRDDD (e.g., LNO070012)
+    // RRR = radial (3 digits, zero-padded)
+    // DDD = distance in NM (3 digits, zero-padded)
+
+    if (distanceInt > 999) {
+        return {};
+    }
+
+    return QString("%1%2%3")
+        .arg(navaidCode)
+        .arg(radialInt, 3, 10, QLatin1Char('0'))
+        .arg(distanceInt, 3, 10, QLatin1Char('0'));
+}
+
+
 auto GeoMaps::Waypoint::coordinateNotation() const -> QString {
     if (!isValid()) {
         return {};
@@ -448,6 +512,38 @@ auto GeoMaps::Waypoint::coordinateNotation() const -> QString {
         .arg(lonDeg, 3, 10, QLatin1Char('0'))
         .arg(lonMin, 2, 10, QLatin1Char('0'))
         .arg(lonDir);
+}
+
+
+auto GeoMaps::Waypoint::availableRepresentations() const -> QStringList
+{
+    QStringList representations;
+
+    if (!m_coordinate.isValid()) {
+        return representations;
+    }
+
+    // Add coordinate notation as the first (default) option
+    QString coordNotation = coordinateNotation();
+    if (!coordNotation.isEmpty()) {
+        representations.append(coordNotation);
+    }
+
+    // Get nearby navaids and add radial notations
+    if (GlobalObject::canConstruct()) {
+        auto geoMapProvider = GlobalObject::geoMapProvider();
+        if (geoMapProvider != nullptr) {
+            auto navaids = geoMapProvider->nearbyWaypoints(m_coordinate, u"NAV"_s);
+            for (const auto& navaid : navaids) {
+                QString notation = radialNotation(navaid);
+                if (!notation.isEmpty()) {
+                    representations.append(notation);
+                }
+            }
+        }
+    }
+
+    return representations;
 }
 
 

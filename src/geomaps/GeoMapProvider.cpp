@@ -38,6 +38,7 @@
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/FlightRoute.h"
 #include "navigation/Navigator.h"
+#include "notification/NotificationManager.h"
 #include "positioning/PositionProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -357,7 +358,7 @@ GeoMaps::Waypoint GeoMaps::GeoMapProvider::parseWaypointString(const QString& re
     // 11 characters include minutes "DDMMXDDDMMX". Example: "4620N07805W"
     // 7 characters only have degrees "DDXDDDX". Example: "46N078W"
     QRegularExpression coordRegex(u"^(\\d{2})(\\d{2})?([NS])(\\d{3})(\\d{2})?([EW])$"_s);
-    auto coordMatch = coordRegex.match(rep);
+    auto coordMatch = coordRegex.match(rep.toUpper());
 
     if (coordMatch.hasMatch()) {
         // Parse coordinate notation
@@ -390,7 +391,7 @@ GeoMaps::Waypoint GeoMaps::GeoMapProvider::parseWaypointString(const QString& re
     // Try to parse as radial notation (9 characters: SSSRRRDDD)
     // Example: "LNO070012" (LNO VOR, radial 070°, distance 12 NM)
     QRegularExpression radialRegex(u"^([A-Z]{3})(\\d{3})(\\d{3})$"_s);
-    auto radialMatch = radialRegex.match(rep);
+    auto radialMatch = radialRegex.match(rep.toUpper());
 
     if (radialMatch.hasMatch()) {
         // Parse radial notation
@@ -404,7 +405,15 @@ GeoMaps::Waypoint GeoMaps::GeoMapProvider::parseWaypointString(const QString& re
         }
 
         // Create waypoint from navaid, bearing, and distance
-        auto magneticBearing = Units::Angle::fromDEG(radialDeg);
+        const auto magneticBearing = Units::Angle::fromDEG(radialDeg);
+        const auto ref = findNavaid(navaidCode);
+
+        // If navaid is invalid, show a message to the user:
+        if (!ref.isValid()) {
+            const QString msg = "'%1' is unknown or ambiguous";
+            emit GlobalObject::notificationManager()->toastPosted(msg.arg(navaidCode));
+        }
+
         return Waypoint(findNavaid(navaidCode), magneticBearing, distanceNM);
     }
 

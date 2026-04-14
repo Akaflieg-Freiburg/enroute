@@ -314,14 +314,11 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-#if !defined(Q_OS_IOS)
+        result += u"<p>"_s
+                  + tr("For most airfields and navaids, the waypoint info dialog now shows the magnetic variation.")
+                  + u"</p>"_s;
         result += u"<p>"_s
                   + tr("There are now specialized icons for obstacle NOTAMs and NOTAMs about drone flights. We thank Christian Engelhardt for the implementation!")
-                  + u"</p>"_s;
-#endif
-        result += u"<p>"_s
-                  + tr("<strong>New Feature</strong>: ")
-                  + tr("Swipe up from the navigation bar at the bottom of the main screen to open a side view of the airspace.")
                   + u"</p>"_s;
 #if !defined(Q_OS_IOS)
         result += u"<p>"_s

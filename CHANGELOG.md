@@ -1,9 +1,11 @@
 # Changelog
 
-## [3.2.1] - 2026-04-11
+## [3.2.1] - 2026-04-xx
 
 ### Added
 - Improve NOTAM classification. (#629)
+
+- Display magnetic variation of waypoints. (#633)
 
 
 ## [3.2.0] - 2026-04-11

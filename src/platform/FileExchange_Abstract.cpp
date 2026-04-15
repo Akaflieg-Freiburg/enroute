@@ -100,6 +100,31 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
      * Check for various possible file formats/contents
      */
 
+    // Check for Enroute backup file first (try parsing as JSON)
+    // This needs to be early because backup files might not have proper MIME type on Android
+    if (!file->open(QIODevice::ReadOnly))
+    {
+        // Cannot open file, will try other methods below
+    }
+    else
+    {
+        QJsonParseError parseError{};
+        auto fileData = file->readAll();
+        auto document = QJsonDocument::fromJson(fileData, &parseError);
+        file->close();
+
+        if (parseError.error == QJsonParseError::NoError && document.isObject())
+        {
+            auto rootObj = document.object();
+            if (rootObj.value(QStringLiteral("content")).toString() == u"enroute-backup")
+            {
+                // It's a backup file - emit signal to handle import
+                emit openFileRequest(path, {}, Backup);
+                return;
+            }
+        }
+    }
+
     // Flight Route in GPX format
     if ((mimeType.inherits(QStringLiteral("application/xml"))) || (mimeType.name() == u"application/x-gpx+xml"))
     {

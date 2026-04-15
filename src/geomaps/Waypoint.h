@@ -304,6 +304,15 @@ public:
         m_coordinate = newCoordinate;
     }
 
+    /*! \brief Set ICAO code
+     *
+     *  @param newICAOCode New ICAO code of the waypoint
+     */
+    void setICAOCode(const QString &newICAOCode)
+    {
+        m_properties.insert(QStringLiteral("COD"), newICAOCode);
+    }
+
     /*! \brief Set name
      *
      *  @param newName New name of the waypoint

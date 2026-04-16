@@ -21,6 +21,7 @@
 import QtCore
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -283,6 +284,93 @@ AppWindow {
                                 stackView.push("pages/WaypointLibraryPage.qml")
                                 libraryMenu.close()
                                 drawer.close()
+                            }
+                        }
+
+                        MenuSeparator { }
+
+                        ItemDelegate {
+                            text: qsTr("Backup & Restore")
+                            icon.source: "/icons/material/ic_cached.svg"
+                            Layout.fillWidth: true
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                backupMenu.open()
+                            }
+
+                            AutoSizingMenu {
+                                id: backupMenu
+
+                                MenuItem {
+                                    text: Qt.platform.os === "android" ? qsTr("Share Full Backup…") : qsTr("Export Full Backup…")
+
+                                    onTriggered: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        highlighted = false
+                                        var errorString = Librarian.exportAndShareBackup()
+                                        if (errorString === "abort") {
+                                            toast.doToast(qsTr("Aborted"))
+                                            return
+                                        }
+                                        if (errorString !== "") {
+                                            backupErrorDialog.text = errorString
+                                            backupErrorDialog.open()
+                                            return
+                                        }
+                                        if (Qt.platform.os === "android" || Qt.platform.os === "ios")
+                                            toast.doToast(qsTr("Backup shared"))
+                                        else
+                                            toast.doToast(qsTr("Backup exported"))
+                                        backupMenu.close()
+                                        libraryMenu.close()
+                                        drawer.close()
+                                    }
+                                }
+
+                                MenuItem {
+                                    text: qsTr("Import Full Backup…")
+
+                                    onTriggered: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        highlighted = false
+                                        if (Qt.platform.os === "ios") {
+                                            Global.dialogLoader.active = false
+                                            Global.dialogLoader.setSource("dialogs/LongTextDialog.qml", {
+                                                                              title: qsTr("Import backup"),
+                                                                              text: qsTr("Locate your backup file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
+                                                                              standardButtons: Dialog.Ok})
+                                            Global.dialogLoader.active = true
+                                        } else if (Qt.platform.os === "android") {
+                                            FileExchange.openFilePicker("")
+                                        } else {
+                                            backupImportDialog.open()
+                                        }
+                                        backupMenu.close()
+                                        libraryMenu.close()
+                                        drawer.close()
+                                    }
+
+                                    FileDialog {
+                                        id: backupImportDialog
+
+                                        acceptLabel: qsTr("Import")
+                                        rejectLabel: qsTr("Cancel")
+
+                                        fileMode: FileDialog.OpenFile
+
+                                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("Backup Files (*.json)")]
+
+                                        onAccepted: {
+                                            PlatformAdaptor.vibrateBrief()
+                                            var selectedFile = backupImportDialog.selectedFile.toString()
+                                            Qt.callLater(FileExchange.processFileOpenRequest, selectedFile)
+                                        }
+                                        onRejected: {
+                                            PlatformAdaptor.vibrateBrief()
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -878,6 +966,13 @@ AppWindow {
         stackView: stackView
         toast: toast
         view: view
+    }
+
+    LongTextDialog {
+        id: backupErrorDialog
+
+        title: qsTr("Error with Backup")
+        standardButtons: Dialog.Ok
     }
 
     LongTextDialog {

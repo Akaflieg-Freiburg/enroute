@@ -56,7 +56,8 @@ public:
         OpenAir, /*< Airspace data in openAir format */
         Image, /*< Image without georeferencing information */
         TripKit, /*< Trip Kit */
-        ZipFile /*< Zip File */
+        ZipFile, /*< Zip File */
+        Backup /*< Enroute full backup file */
       };
     Q_ENUM(FileFunction)
 
@@ -164,7 +165,7 @@ public slots:
      *
      * Overloaded function for convenience
      *
-     * @param path QByteArray containing an UTF8-Encoded strong
+     * @param path File path or URL as a string
      */
     void processFileOpenRequest(const QString& path);
 

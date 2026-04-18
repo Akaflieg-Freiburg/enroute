@@ -62,8 +62,12 @@ auto Flightlog::Flight::toJSON() const -> QJsonObject
     if (m_offBlockTime.isValid()) {
         json[u"offBlockTime"_s] = m_offBlockTime.toString(Qt::ISODate);
     }
-    json[u"startTime"_s] = m_startTime.toString(Qt::ISODate);
-    json[u"landingTime"_s] = m_landingTime.toString(Qt::ISODate);
+    if (m_startTime.isValid()) {
+        json[u"startTime"_s] = m_startTime.toString(Qt::ISODate);
+    }
+    if (m_landingTime.isValid()) {
+        json[u"landingTime"_s] = m_landingTime.toString(Qt::ISODate);
+    }
     if (m_onBlockTime.isValid()) {
         json[u"onBlockTime"_s] = m_onBlockTime.toString(Qt::ISODate);
     }

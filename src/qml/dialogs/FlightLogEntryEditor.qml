@@ -316,9 +316,8 @@ CenteringDialog {
             text: qsTr("OK")
             flat: true
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            enabled: depField.displayText !== "" && arrField.displayText !== ""
+            enabled: depField.displayText !== ""
                      && dateField.displayText !== "" && startField.displayText !== ""
-                     && landingField.displayText !== ""
         }
     }
 

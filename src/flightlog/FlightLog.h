@@ -159,6 +159,17 @@ public:
      */
     Q_INVOKABLE void endFlight();
 
+    /*! \brief Find the last arrival ICAO for a given aircraft
+     *
+     *  Searches the flight log for the most recent flight with the
+     *  given aircraft callsign and returns its arrival ICAO code.
+     *  Returns an empty string if no matching flight is found.
+     *
+     *  @param aircraftCallsign The callsign to search for
+     *  @returns Arrival ICAO of the most recent matching flight
+     */
+    Q_INVOKABLE QString lastArrivalICAO(const QString& aircraftCallsign) const;
+
 signals:
     /*! \brief Notifier signal */
     void flightsChanged();
@@ -211,6 +222,9 @@ private:
 
     // Resolve ICAO codes to coordinates using the GeoMapProvider
     void resolveCoordinates(Flight& flight);
+
+    // Sort m_flights by startTime, most recent first
+    void sortFlights();
 
     // Helper to parse a date+time string to QDateTime
     static auto parseDateTime(const QString& date, const QString& timeStr) -> QDateTime;

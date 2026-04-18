@@ -90,6 +90,7 @@ void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
     auto f = flight;
     resolveCoordinates(f);
     m_flights.prepend(f);
+    sortFlights();
     save();
     emit flightsChanged();
 }
@@ -136,6 +137,7 @@ void Flightlog::FlightLog::updateFlight(int index, const Flightlog::Flight& flig
     }
 
     m_flights[index] = f;
+    sortFlights();
     save();
     emit flightsChanged();
 }
@@ -175,6 +177,17 @@ void Flightlog::FlightLog::endFlight()
 }
 
 
+auto Flightlog::FlightLog::lastArrivalICAO(const QString& aircraftCallsign) const -> QString
+{
+    for (const auto& flight : m_flights) {
+        if (flight.aircraftCallsign() == aircraftCallsign && !flight.arrivalICAO().isEmpty()) {
+            return flight.arrivalICAO();
+        }
+    }
+    return {};
+}
+
+
 //
 // Coordinate resolution
 //
@@ -199,6 +212,15 @@ void Flightlog::FlightLog::resolveCoordinates(Flight& flight)
             flight.setArrivalCoordinate(wp.coordinate());
         }
     }
+}
+
+
+void Flightlog::FlightLog::sortFlights()
+{
+    std::sort(m_flights.begin(), m_flights.end(),
+              [](const Flight& a, const Flight& b) {
+                  return a.startTime() > b.startTime();
+              });
 }
 
 
@@ -254,6 +276,7 @@ void Flightlog::FlightLog::load()
             m_flights.append(Flight::fromJSON(val.toObject()));
         }
     }
+    sortFlights();
 }
 
 

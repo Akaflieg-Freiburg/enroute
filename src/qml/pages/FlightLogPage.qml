@@ -323,7 +323,9 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     addFlightEditor.flightIndex = -1
-                    addFlightEditor.editFlight = FlightLog.createFlight("", "", "", "", "", "", "", "", "", "")
+                    var acName = Navigator.aircraft.name
+                    var lastArr = FlightLog.lastArrivalICAO(acName)
+                    addFlightEditor.editFlight = FlightLog.createFlight(lastArr, "", "", "", "", "", "", "", acName, "")
                     addFlightEditor.open()
                 }
             }

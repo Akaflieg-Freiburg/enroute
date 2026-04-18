@@ -23,6 +23,11 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#ifdef Q_OS_ANDROID
+#include <QJniObject>
+#include <QCoreApplication>
+#endif
+
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
@@ -52,6 +57,14 @@ void Flightlog::FlightLog::deferredInitialization()
 {
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged,
             this, &Flightlog::FlightLog::onPositionUpdated);
+
+    connect(GlobalObject::globalSettings(), &GlobalSettings::autoFlightDetectionChanged,
+            this, &Flightlog::FlightLog::onAutoFlightDetectionChanged);
+
+    // If auto-detection was already enabled (persisted setting), start the service now
+    if (GlobalObject::globalSettings()->autoFlightDetection()) {
+        onAutoFlightDetectionChanged();
+    }
 }
 
 
@@ -264,7 +277,7 @@ void Flightlog::FlightLog::connectDetector(FlightDetector* detector)
     }
 
     connect(detector, &FlightDetector::detectionStateChanged,
-            this, &FlightLog::detectionStateChanged);
+            this, &FlightLog::onDetectionStateChanged);
     connect(detector, &FlightDetector::takeoffDetected,
             this, &FlightLog::onTakeoffDetected);
     connect(detector, &FlightDetector::landingDetected,
@@ -272,10 +285,34 @@ void Flightlog::FlightLog::connectDetector(FlightDetector* detector)
 }
 
 
+void Flightlog::FlightLog::onDetectionStateChanged()
+{
+    emit detectionStateChanged();
+}
+
+
 void Flightlog::FlightLog::onTakeoffDetected(const Flightlog::Flight& flight, const QString& timeStr)
 {
     // Add the preliminary flight entry so it appears in the list immediately
     addFlight(flight);
+
+#ifdef Q_OS_ANDROID
+    // Post a notification with sound so the pilot knows takeoff was detected,
+    // even if the app is in the background.
+    auto title = QStringLiteral("Takeoff Detected");
+    auto message = QStringLiteral("Departed %1 at %2 UTC").arg(
+        flight.departureICAO().isEmpty() ? QStringLiteral("unknown") : flight.departureICAO(),
+        timeStr);
+    QJniObject context = QNativeInterface::QAndroidApplication::context();
+    QJniObject::callStaticMethod<void>(
+        "de/akaflieg_freiburg/enroute/FlightLogService",
+        "notifyEvent",
+        "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V",
+        context.object(),
+        QJniObject::fromString(title).object<jstring>(),
+        QJniObject::fromString(message).object<jstring>());
+#endif
+
     emit takeoffDetected(timeStr);
 }
 
@@ -300,6 +337,22 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
     }
 
     emit landingDetected(timeStr);
+
+#ifdef Q_OS_ANDROID
+    // Post a notification with sound so the pilot knows landing was detected.
+    auto title = QStringLiteral("Landing Detected");
+    auto message = QStringLiteral("Landed %1 at %2 UTC").arg(
+        arrivalICAO.isEmpty() ? QStringLiteral("unknown") : arrivalICAO,
+        timeStr);
+    QJniObject context = QNativeInterface::QAndroidApplication::context();
+    QJniObject::callStaticMethod<void>(
+        "de/akaflieg_freiburg/enroute/FlightLogService",
+        "notifyEvent",
+        "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V",
+        context.object(),
+        QJniObject::fromString(title).object<jstring>(),
+        QJniObject::fromString(message).object<jstring>());
+#endif
 }
 
 
@@ -324,4 +377,30 @@ void Flightlog::FlightLog::onPositionUpdated()
 
     auto info = GlobalObject::positionProvider()->positionInfo();
     m_detector->processPositionUpdate(info);
+}
+
+
+void Flightlog::FlightLog::onAutoFlightDetectionChanged()
+{
+#ifdef Q_OS_ANDROID
+    bool enabled = GlobalObject::globalSettings()->autoFlightDetection();
+
+    if (enabled && !m_foregroundServiceRunning) {
+        QJniObject context = QNativeInterface::QAndroidApplication::context();
+        QJniObject::callStaticMethod<void>(
+            "de/akaflieg_freiburg/enroute/FlightLogService",
+            "start",
+            "(Landroid/content/Context;)V",
+            context.object());
+        m_foregroundServiceRunning = true;
+    } else if (!enabled && m_foregroundServiceRunning) {
+        QJniObject context = QNativeInterface::QAndroidApplication::context();
+        QJniObject::callStaticMethod<void>(
+            "de/akaflieg_freiburg/enroute/FlightLogService",
+            "stop",
+            "(Landroid/content/Context;)V",
+            context.object());
+        m_foregroundServiceRunning = false;
+    }
+#endif
 }

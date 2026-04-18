@@ -1,0 +1,320 @@
+/***************************************************************************
+ *   Copyright (C) 2026 by Stefan Kebekus                                  *
+ *   stefan.kebekus@gmail.com                                              *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+package de.akaflieg_freiburg.enroute;
+
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
+import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
+import android.net.Uri;
+import android.os.Build;
+import android.os.IBinder;
+
+/**
+ * Foreground service that keeps the app alive while recording a flight.
+ *
+ * When the user switches to another app, Android normally suspends our process
+ * and GPS updates stop. This foreground service with a persistent notification
+ * prevents that, allowing automatic flight detection to continue working.
+ */
+public class FlightLogService extends Service {
+
+    // Identifier for the notification channel, used to group notifications
+    // in system settings under "Flight Recording".
+    private static final String CHANNEL_ID = "flightlog_channel";
+
+    // Separate channel for takeoff/landing event notifications. Uses
+    // IMPORTANCE_HIGH so the notification plays a sound and shows as
+    // a heads-up banner — even when the app is in the background.
+    private static final String EVENT_CHANNEL_ID = "flightlog_event_channel";
+
+    // Unique ID for the persistent notification. Android requires each
+    // foreground service to display a notification with a stable ID.
+    private static final int NOTIFICATION_ID = 1001;
+
+    // Separate ID for event notifications so they don't replace the
+    // persistent service notification.
+    private static final int EVENT_NOTIFICATION_ID = 1002;
+
+    // ConnectivityManager and NetworkCallback for keeping the WiFi network
+    // alive. On modern Android, the OS disconnects from WiFi networks without
+    // internet access (like Stratux hotspots). By requesting a network with
+    // TRANSPORT_WIFI, we tell Android that we actively need the WiFi
+    // connection even without internet validation.
+    private ConnectivityManager m_connectivityManager;
+    private ConnectivityManager.NetworkCallback m_networkCallback;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // The notification channel must exist before we can post notifications.
+        // Creating it multiple times is safe — the system ignores duplicates.
+        createNotificationChannel();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // Build an intent that brings the user back to the app when they
+        // tap the notification. MobileAdaptor is the app's main Activity.
+        // FLAG_ACTIVITY_SINGLE_TOP avoids creating a second instance if
+        // the activity is already running — it simply brings it to front.
+        Intent notificationIntent = new Intent(this, MobileAdaptor.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        // Wrap the intent in a PendingIntent so Android can launch it later
+        // on behalf of our app.
+        // - FLAG_UPDATE_CURRENT: reuse an existing PendingIntent, updating extras
+        // - FLAG_IMMUTABLE: required on Android 12+, prevents other apps from
+        //   modifying the intent (security requirement)
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        // Build the persistent notification shown in the status bar.
+        // setOngoing(true) prevents the user from swiping it away.
+        Notification notification = new Notification.Builder(this, CHANNEL_ID)
+                .setContentTitle("Enroute Flight Navigation")
+                .setContentText("Flight recording in progress")
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentIntent(pendingIntent)
+                .setOngoing(true)
+                .build();
+
+        // Promote this service to a foreground service. The
+        // FOREGROUND_SERVICE_TYPE_LOCATION flag tells Android that this service
+        // needs location access. With this flag, the app is treated as
+        // "in the foreground" and does NOT need ACCESS_BACKGROUND_LOCATION —
+        // ACCESS_FINE_LOCATION is sufficient.
+        startForeground(NOTIFICATION_ID, notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
+
+        // Request a WiFi network to prevent Android from dropping the
+        // connection to traffic receiver hotspots (e.g. Stratux) that have
+        // no internet access. Without this, Android detects "no internet"
+        // and disconnects or routes all traffic over mobile data.
+        //
+        // The NetworkRequest asks for TRANSPORT_WIFI without requiring
+        // NET_CAPABILITY_INTERNET — this tells Android we explicitly want
+        // the WiFi network even if it has no internet connectivity.
+        m_connectivityManager = (ConnectivityManager) getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        if (m_connectivityManager != null) {
+            NetworkRequest networkRequest = new NetworkRequest.Builder()
+                    .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                    .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                    .build();
+
+            m_networkCallback = new ConnectivityManager.NetworkCallback() {
+                @Override
+                public void onAvailable(Network network) {
+                    // Bind the app's network traffic to this WiFi network.
+                    // This ensures TCP/UDP connections to the traffic receiver
+                    // go over WiFi rather than being routed over mobile data.
+                    m_connectivityManager.bindProcessToNetwork(network);
+                }
+
+                @Override
+                public void onLost(Network network) {
+                    // WiFi network lost — unbind so the system can route
+                    // traffic over whatever network is available.
+                    m_connectivityManager.bindProcessToNetwork(null);
+                }
+            };
+
+            m_connectivityManager.requestNetwork(networkRequest, m_networkCallback);
+        }
+
+        // START_STICKY tells Android to restart this service if it gets killed
+        // due to memory pressure. The service will be restarted with a null
+        // intent, so we don't rely on intent extras.
+        return START_STICKY;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // This service is started (not bound), so we return null.
+        return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        // Unregister the network callback and unbind from the WiFi network.
+        if (m_connectivityManager != null && m_networkCallback != null) {
+            m_connectivityManager.bindProcessToNetwork(null);
+            m_connectivityManager.unregisterNetworkCallback(m_networkCallback);
+            m_networkCallback = null;
+        }
+
+        // Remove the persistent notification when the service stops.
+        // STOP_FOREGROUND_REMOVE ensures the notification is dismissed
+        // rather than left behind as a regular notification.
+        stopForeground(STOP_FOREGROUND_REMOVE);
+        super.onDestroy();
+    }
+
+    /**
+     * Create the notification channel for flight recording notifications.
+     *
+     * IMPORTANCE_LOW means no sound or vibration — appropriate for a
+     * long-running background indicator that doesn't need to interrupt
+     * the user.
+     */
+    private void createNotificationChannel() {
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (manager == null) {
+            return;
+        }
+
+        // IMPORTANCE_DEFAULT shows the icon in the status bar (top bar).
+        // IMPORTANCE_LOW would hide it. We suppress the sound so the
+        // notification doesn't make noise every time the service starts.
+        NotificationChannel channel = new NotificationChannel(
+                CHANNEL_ID,
+                "Flight Recording",
+                NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setDescription("Keeps flight recording active in the background");
+        channel.setSound(null, null);
+        manager.createNotificationChannel(channel);
+
+        // High-priority channel for takeoff/landing events (plays sound,
+        // shows heads-up banner). The user can configure or mute this
+        // channel in Android system settings independently.
+        NotificationChannel eventChannel = new NotificationChannel(
+                EVENT_CHANNEL_ID,
+                "Flight Events",
+                NotificationManager.IMPORTANCE_HIGH);
+        eventChannel.setDescription("Takeoff and landing notifications");
+        eventChannel.enableVibration(true);
+        manager.createNotificationChannel(eventChannel);
+    }
+
+    /**
+     * Start the foreground service.
+     *
+     * Called from C++ via JNI (QJniObject::callStaticMethod) when the user
+     * enables the "Automatic flight detection" setting.
+     * Uses startForegroundService() which is required on Android 8+ (API 26)
+     * for services that will call startForeground().
+     *
+     * On Android 13+ (API 33), requests the POST_NOTIFICATIONS runtime
+     * permission first. Without it, the foreground service notification
+     * (and takeoff/landing alerts) would be silently suppressed.
+     */
+    public static void start(Context context) {
+        // On Android 13+, POST_NOTIFICATIONS is a runtime permission that
+        // defaults to denied. Request it before starting the service.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (context.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                if (context instanceof Activity) {
+                    ((Activity) context).requestPermissions(
+                            new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                            1001);
+                }
+            }
+        }
+
+        Intent intent = new Intent(context, FlightLogService.class);
+        context.startForegroundService(intent);
+    }
+
+    /**
+     * Stop the foreground service.
+     *
+     * Called from C++ via JNI when the user disables the "Automatic flight
+     * detection" setting. This removes the notification and allows Android
+     * to suspend the app normally.
+     */
+    public static void stop(Context context) {
+        Intent intent = new Intent(context, FlightLogService.class);
+        context.stopService(intent);
+    }
+
+    /**
+     * Post a notification for a flight event (takeoff or landing).
+     *
+     * Uses IMPORTANCE_HIGH channel so the notification plays the default
+     * notification sound and shows as a heads-up banner, even when the
+     * app is in the background. Called from C++ via JNI.
+     *
+     * @param context  Application context
+     * @param title    Notification title (e.g. "Takeoff Detected")
+     * @param message  Notification body (e.g. "Departed EDTF at 14:32 UTC")
+     */
+    public static void notifyEvent(Context context, String title, String message) {
+        // Ensure the event notification channel exists. This is safe to
+        // call multiple times — Android ignores duplicate channel creation.
+        NotificationChannel eventChannel = new NotificationChannel(
+                EVENT_CHANNEL_ID,
+                "Flight Events",
+                NotificationManager.IMPORTANCE_HIGH);
+        eventChannel.setDescription("Takeoff and landing notifications");
+        eventChannel.enableVibration(true);
+        // Set the default notification sound — required on some devices
+        // for heads-up (floating banner) display to trigger.
+        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        eventChannel.setSound(defaultSound,
+                new android.media.AudioAttributes.Builder()
+                        .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                        .build());
+
+        NotificationManager manager = context.getSystemService(NotificationManager.class);
+        if (manager == null) {
+            return;
+        }
+        manager.createNotificationChannel(eventChannel);
+
+        // Tapping the notification brings the user back to the app.
+        Intent notificationIntent = new Intent(context, MobileAdaptor.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context, 1, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        // CATEGORY_ALARM ensures Android treats this as time-critical and
+        // displays it as a heads-up banner with sound.
+        // CATEGORY_NAVIGATION would be a better fit for a
+        // flight navigation app, but it does NOT trigger heads-up display
+        // on most devices.
+        Notification notification = new Notification.Builder(context, EVENT_CHANNEL_ID)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setCategory(Notification.CATEGORY_ALARM)
+                .build();
+
+        manager.notify(EVENT_NOTIFICATION_ID, notification);
+    }
+}

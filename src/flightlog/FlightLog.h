@@ -182,6 +182,12 @@ private slots:
     // Process position updates — delegates to the active FlightDetector
     void onPositionUpdated();
 
+    // Handle detection state change — forwards signal
+    void onDetectionStateChanged();
+
+    // Handle auto-detection setting change — manages Android foreground service
+    void onAutoFlightDetectionChanged();
+
     // Handle takeoff detected by the FlightDetector
     void onTakeoffDetected(const Flightlog::Flight& flight, const QString& timeStr);
 
@@ -213,6 +219,11 @@ private:
 
     // The active flight detector (owned by this object)
     FlightDetector* m_detector {nullptr};
+
+#ifdef Q_OS_ANDROID
+    // Tracks whether the Android foreground service is running
+    bool m_foregroundServiceRunning {false};
+#endif
 
     // Persistence
     const QString m_fileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/flightlog.json"_s};

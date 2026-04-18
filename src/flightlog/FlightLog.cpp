@@ -87,6 +87,15 @@ void Flightlog::FlightLog::removeFlight(int index)
     if (index < 0 || index >= m_flights.size()) {
         return;
     }
+
+    // If the preliminary in-progress flight (index 0) is removed while
+    // detection is active, reset the detector so it doesn't later
+    // complete a landing onto the wrong flight entry.
+    if (index == 0 && m_detector != nullptr
+        && m_detector->detectionState() != FlightDetector::Idle) {
+        m_detector->resetDetection();
+    }
+
     m_flights.removeAt(index);
     save();
     emit flightsChanged();

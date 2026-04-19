@@ -62,6 +62,13 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
             return;
         }
 
+        // If already well above the airfield, this is not a takeoff
+        auto airfieldElevation = Units::Distance::fromM(closestAD.coordinate().altitude());
+        if (altitudeAMSL.isFinite() && airfieldElevation.isFinite()
+            && (altitudeAMSL - airfieldElevation) > Units::Distance::fromFT(maxTakeoffAltitudeAGLFT)) {
+            return;
+        }
+
         // Near airfield and speed above threshold → enter takeoff phase
         m_pendingDepartureICAO = closestAD.ICAOCode();
         m_pendingDepartureCoordinate = closestAD.coordinate();

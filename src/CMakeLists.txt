@@ -73,6 +73,8 @@ set(SOURCES
     flightlog/FlightDetector.h
     flightlog/AirplaneFlightDetector.h
     flightlog/FlightLog.h
+    flightlog/FlightRecorder.h
+    flightlog/TrackPoint.h
     navigation/Leg.h
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
@@ -178,6 +180,7 @@ set(SOURCES
     flightlog/Flight.cpp
     flightlog/AirplaneFlightDetector.cpp
     flightlog/FlightLog.cpp
+    flightlog/FlightRecorder.cpp
     navigation/FlightRoute.cpp
     navigation/FlightRoute_GPX.cpp
     navigation/Leg.cpp

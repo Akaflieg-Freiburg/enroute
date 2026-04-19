@@ -26,6 +26,7 @@
 #include "GlobalObject.h"
 #include "flightlog/Flight.h"
 #include "flightlog/FlightDetector.h"
+#include "flightlog/FlightRecorder.h"
 #include "geomaps/Waypoint.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -183,6 +184,21 @@ public:
      */
     Q_INVOKABLE static GeoMaps::Waypoint nearestAirfield(const QGeoCoordinate& position = {});
 
+    /*! \brief Export a flight's track as IGC file via the platform share dialog
+     *
+     *  @param index The index of the flight to export
+     */
+    Q_INVOKABLE void exportToIGC(int index);
+
+    /*! \brief Delete the recorded track for a flight
+     *
+     *  Removes the IGC file from disk and clears the trackFile
+     *  property on the flight entry.
+     *
+     *  @param index The index of the flight whose track to delete
+     */
+    Q_INVOKABLE void removeTrack(int index);
+
 signals:
     /*! \brief Notifier signal */
     void flightsChanged();
@@ -247,6 +263,9 @@ private:
 
     // The active flight detector (owned by this object)
     FlightDetector* m_detector {nullptr};
+
+    // The flight recorder (owned by this object)
+    FlightRecorder m_recorder {this};
 
 #ifdef Q_OS_ANDROID
     // Tracks whether the Android foreground service is running

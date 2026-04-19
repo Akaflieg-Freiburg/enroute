@@ -305,13 +305,47 @@ Page {
             }
 
             ToolButton {
-                id: deleteButton
+                id: cptMenuButton
 
-                icon.source: "/icons/material/ic_delete.svg"
+                icon.source: "/icons/material/ic_more_horiz.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    removeDialog.flightIndex = index
-                    removeDialog.open()
+                    cptMenu.open()
+                }
+
+                AutoSizingMenu {
+                    id: cptMenu
+
+                    Action {
+                        text: qsTr("Export to IGC…")
+                        enabled: modelData.hasTrack
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            FlightLog.exportToIGC(index)
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("Delete IGC Track…")
+                        enabled: modelData.hasTrack
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            removeTrackDialog.flightIndex = index
+                            removeTrackDialog.open()
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("Remove…")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            removeDialog.flightIndex = index
+                            removeDialog.open()
+                        }
+                    }
                 }
             }
         }
@@ -354,6 +388,25 @@ Page {
     //
     // Dialogs
     //
+
+    LongTextDialog {
+        id: removeTrackDialog
+
+        property int flightIndex: -1
+
+        title: qsTr("Delete Track?")
+        text: qsTr("Once deleted, the recorded track data cannot be restored.")
+        standardButtons: Dialog.No | Dialog.Yes
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            FlightLog.removeTrack(removeTrackDialog.flightIndex)
+            toast.doToast(qsTr("Track deleted"))
+        }
+        onRejected: {
+            PlatformAdaptor.vibrateBrief()
+        }
+    }
 
     LongTextDialog {
         id: removeDialog

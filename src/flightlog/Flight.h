@@ -25,6 +25,7 @@
 #include <QJsonObject>
 #include <QQmlEngine>
 
+#include "flightlog/TrackPoint.h"
 #include "units/Distance.h"
 
 namespace Flightlog {
@@ -70,6 +71,12 @@ class Flight
 
     /*! \brief Number of landings (touch-and-goes + final landing) */
     Q_PROPERTY(int landingCount READ landingCount WRITE setLandingCount)
+
+    /*! \brief Whether this flight has a recorded track */
+    Q_PROPERTY(bool hasTrack READ hasTrack)
+
+    /*! \brief Filename of the track file (relative to tracks directory) */
+    Q_PROPERTY(QString trackFile READ trackFile)
 
 public:
     /*! \brief Default constructor */
@@ -151,6 +158,24 @@ public:
      */
     [[nodiscard]] auto arrivalCoordinate() const -> QGeoCoordinate { return m_arrivalCoordinate; }
 
+    /*! \brief Check if this flight has a recorded GPS track
+     *
+     *  @returns True if a track file is associated with this flight
+     */
+    [[nodiscard]] auto hasTrack() const -> bool { return !m_trackFile.isEmpty(); }
+
+    /*! \brief Get the track file name
+     *
+     *  @returns The track file name (relative to tracks directory), or empty
+     */
+    [[nodiscard]] auto trackFile() const -> QString { return m_trackFile; }
+
+    /*! \brief Get the recorded track points
+     *
+     *  @returns The list of track points
+     */
+    [[nodiscard]] auto track() const -> const QList<TrackPoint>& { return m_track; }
+
     //
     // Setters
     //
@@ -227,6 +252,24 @@ public:
      */
     void setArrivalCoordinate(const QGeoCoordinate& coord) { m_arrivalCoordinate = coord; }
 
+    /*! \brief Append a track point to the flight track
+     *
+     *  @param point The track point to add
+     */
+    void addTrackPoint(const TrackPoint& point) { m_track.append(point); }
+
+    /*! \brief Set the track file name
+     *
+     *  @param fileName The track file name (relative to tracks directory)
+     */
+    void setTrackFile(const QString& fileName) { m_trackFile = fileName; }
+
+    /*! \brief Set the in-memory track points (e.g. after loading from IGC)
+     *
+     *  @param track The list of track points
+     */
+    void setTrack(const QList<TrackPoint>& track) { m_track = track; }
+
     //
     // Calculated properties
     //
@@ -282,6 +325,8 @@ private:
     int m_landingCount {0};
     QGeoCoordinate m_departureCoordinate;
     QGeoCoordinate m_arrivalCoordinate;
+    QString m_trackFile;
+    QList<TrackPoint> m_track;
 };
 
 } // namespace Flightlog

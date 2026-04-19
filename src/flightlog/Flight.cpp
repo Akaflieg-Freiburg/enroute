@@ -87,6 +87,10 @@ auto Flightlog::Flight::toJSON() const -> QJsonObject
         json[u"arrivalLon"_s] = m_arrivalCoordinate.longitude();
     }
 
+    if (!m_trackFile.isEmpty()) {
+        json[u"trackFile"_s] = m_trackFile;
+    }
+
     return json;
 }
 
@@ -121,6 +125,8 @@ auto Flightlog::Flight::fromJSON(const QJsonObject& json) -> Flight
             json.value(u"arrivalLon"_s).toDouble());
     }
 
+    f.m_trackFile = json.value(u"trackFile"_s).toString();
+
     return f;
 }
 
@@ -138,3 +144,6 @@ auto Flightlog::Flight::operator==(const Flightlog::Flight& other) const -> bool
         && m_comments == other.m_comments
         && m_landingCount == other.m_landingCount;
 }
+
+
+

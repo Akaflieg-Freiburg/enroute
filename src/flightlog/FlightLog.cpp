@@ -50,6 +50,19 @@ Flightlog::FlightLog::FlightLog(QObject *parent) : GlobalObject(parent)
     // Create the default detector (airplane mode)
     m_detector = new AirplaneFlightDetector(this);
     connectDetector(m_detector);
+
+    // When the recorder finishes, save the track and persist
+    connect(&m_recorder, &FlightRecorder::recordingFinished, this, [this]() {
+        if (!m_flights.isEmpty()) {
+            auto track = m_recorder.takeTrack();
+            if (!track.isEmpty()) {
+                m_flights[0].setTrack(track);
+                m_recorder.saveTrack(m_flights[0]);
+                save();
+                emit flightsChanged();
+            }
+        }
+    });
 }
 
 
@@ -222,6 +235,28 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position) -> Ge
 }
 
 
+void Flightlog::FlightLog::exportToIGC(int index)
+{
+    if (index < 0 || index >= m_flights.size()) {
+        return;
+    }
+    m_recorder.exportToIGC(m_flights.at(index));
+}
+
+
+void Flightlog::FlightLog::removeTrack(int index)
+{
+    if (index < 0 || index >= m_flights.size()) {
+        return;
+    }
+
+    m_recorder.removeTrack(m_flights[index]);
+
+    save();
+    emit flightsChanged();
+}
+
+
 //
 // Coordinate resolution
 //
@@ -391,6 +426,7 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
         }
         flight.setLandingTime(landingTime);
         flight.setLandingCount(landingCount);
+
         save();
         emit flightsChanged();
     }
@@ -436,6 +472,10 @@ void Flightlog::FlightLog::onPositionUpdated()
 
     auto info = GlobalObject::positionProvider()->positionInfo();
     m_detector->processPositionUpdate(info);
+
+    // Forward to recorder — it manages preflight/inflight/postlanding internally
+    auto pressAlt = GlobalObject::positionProvider()->pressureAltitude();
+    m_recorder.processPositionUpdate(m_detector->detectionState(), info, pressAlt);
 }
 
 

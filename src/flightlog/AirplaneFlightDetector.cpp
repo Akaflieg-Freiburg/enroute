@@ -168,10 +168,18 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
                 auto elev = Units::Distance::fromM(closestAD2.coordinate().altitude());
                 if (elev.isFinite()
                     && (altitudeAMSL - elev) > Units::Distance::fromFT(altitudeGainFT)) {
-                    // Close the current leg
+                    // Close the current leg by going through Idle first.
+                    // This ensures onLandingDetected saves the track while
+                    // m_flights[0] is still the current leg.
                     auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
                     auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
-                    emit landingDetected(closestAD2.ICAOCode(), closestAD2.coordinate(), landingTime, m_landingCount, timeStr);
+                    auto landingCount = m_landingCount;
+
+                    m_detectionState = Idle;
+                    m_landingPhaseEntryTime = {};
+                    m_landingCount = 0;
+                    emit detectionStateChanged();
+                    emit landingDetected(closestAD2.ICAOCode(), closestAD2.coordinate(), landingTime, landingCount, timeStr);
 
                     // Start a new leg from the touch-and-go airport
                     Flight newLeg;
@@ -184,8 +192,6 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
                     m_pendingDepartureCoordinate = closestAD2.coordinate();
                     m_pendingDepartureElevation = elev;
                     m_pendingStartTime = landingTime;
-                    m_landingPhaseEntryTime = {};
-                    m_landingCount = 0;
                     m_detectionState = InFlight;
                     emit detectionStateChanged();
                     emit takeoffDetected(newLeg, timeStr);

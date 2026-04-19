@@ -51,28 +51,6 @@ Flightlog::FlightLog::FlightLog(QObject *parent) : GlobalObject(parent)
     m_detector = new AirplaneFlightDetector(this);
     connectDetector(m_detector);
 
-    // When the recorder finishes, save the track and persist
-    connect(&m_recorder, &FlightRecorder::recordingFinished, this, [this]() {
-        if (!m_flights.isEmpty()) {
-            // Save IGC file (uses recorder's internal track + flight metadata)
-            m_recorder.saveTrack(m_flights[0]);
-
-            // After final landing, show the saved track.
-            // After touch-and-go, onDetectionStateChanged already set index to -1.
-            if (m_detector->detectionState() == FlightDetector::Idle) {
-                m_displayedTrackPath = m_recorder.trackGeoPath();
-                m_displayedTrackIndex = m_displayedTrackPath.isEmpty() ? -1 : 0;
-            }
-
-            // Free track data from recorder RAM
-            m_recorder.clearTrack();
-
-            save();
-            emit flightsChanged();
-        }
-        emit displayedTrackPathChanged();
-    });
-
     // Forward live track updates to the map when no saved track is selected
     connect(&m_recorder, &FlightRecorder::trackGeoPathChanged, this, [this]() {
         if (m_displayedTrackIndex == -1) {
@@ -488,8 +466,17 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
         flight.setLandingTime(landingTime);
         flight.setLandingCount(landingCount);
 
+        // Save the track from the recorder to an IGC file
+        m_recorder.saveTrack(flight);
+
+        // Cache the geo path for map display, then free recorder RAM
+        m_displayedTrackPath = m_recorder.trackGeoPath();
+        m_displayedTrackIndex = m_displayedTrackPath.isEmpty() ? -1 : 0;
+        m_recorder.clearTrack();
+
         save();
         emit flightsChanged();
+        emit displayedTrackPathChanged();
     }
 
     emit landingDetected(timeStr);

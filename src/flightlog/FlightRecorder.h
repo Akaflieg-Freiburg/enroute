@@ -44,9 +44,10 @@ namespace Flightlog {
  *  recorded during TakeoffPhase, InFlight, and LandingPhase states.
  *
  *  - **TakeoffPhase → abort (Idle)**: Track is discarded on next cycle.
- *  - **LandingPhase → Idle**: Recording ends, recordingFinished() is emitted.
- *  - **LandingPhase → InFlight**: Touch-and-go — recordingFinished() is
- *    emitted for the current leg and a fresh track is started.
+ *  - **LandingPhase → Idle**: Recording ends. Track saving is handled
+ *    externally by FlightLog::onLandingDetected.
+ *  - **LandingPhase → InFlight**: Touch-and-go — same as above, the
+ *    detector transitions through Idle first.
  */
 class FlightRecorder : public QObject
 {
@@ -155,15 +156,6 @@ public:
     static auto trackFromIGC(const QByteArray& igcData, const QDate& date = {}) -> QList<TrackPoint>;
 
 signals:
-    /*! \brief Emitted when recording for a flight leg has ended
-     *
-     *  Emitted on LandingPhase → Idle (confirmed landing) and on
-     *  LandingPhase → InFlight (touch-and-go, new leg starting).
-     *  The FlightLog should call takeTrack() to retrieve the complete
-     *  track, set it on the flight, save to IGC, and persist.
-     */
-    void recordingFinished();
-
     /*! \brief Emitted when a new track point has been recorded
      *
      *  Use this to update the live track display on the map.

@@ -97,14 +97,11 @@ void Flightlog::FlightRecorder::processPositionUpdate(FlightDetector::DetectionS
             m_lastCoordinate = {};
             m_lastTimestamp = {};
             m_track.clear();
-        } else if (state == FlightDetector::InFlight && m_previousState == FlightDetector::LandingPhase) {
-            // Touch-and-go — finish current leg's recording, start fresh
-            emit recordingFinished();
+        } else if (m_previousState == FlightDetector::LandingPhase) {
+            // Landing or touch-and-go — reset for next recording.
+            // Track saving is handled by FlightLog::onLandingDetected.
             m_lastCoordinate = {};
             m_lastTimestamp = {};
-        } else if (state == FlightDetector::Idle && m_previousState == FlightDetector::LandingPhase) {
-            // Landing confirmed — finish recording
-            emit recordingFinished();
         }
         m_previousState = state;
     }

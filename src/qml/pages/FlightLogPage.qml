@@ -131,13 +131,17 @@ Page {
 
             font.pixelSize: 14
             opacity: 0.8
-            color: FlightLog.detectionState === FlightDetector.InFlight ? "#4CAF50" : "#FF9800"
+            color: FlightLog.detectionState === FlightDetector.InFlight ? "#4CAF50"
+                 : FlightLog.detectionState === FlightDetector.LandingPhase ? "#2196F3"
+                 : "#FF9800"
             text: {
                 switch (FlightLog.detectionState) {
                 case FlightDetector.TakeoffPhase:
                     return "✈ " + qsTr("Takeoff detected — confirming altitude…")
                 case FlightDetector.InFlight:
                     return "✈ " + qsTr("In flight — recording…")
+                case FlightDetector.LandingPhase:
+                    return "✈ " + qsTr("Landing detected — confirming…")
                 default:
                     return ""
                 }
@@ -152,6 +156,7 @@ Page {
             Layout.bottomMargin: 4
 
             visible: FlightLog.detectionState === FlightDetector.InFlight
+                  || FlightLog.detectionState === FlightDetector.LandingPhase
             text: qsTr("End Flight")
             icon.source: "/icons/material/ic_flight_land.svg"
             highlighted: true
@@ -259,6 +264,8 @@ Page {
                                 parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
                             if (modelData.aircraftCallsign !== "")
                                 parts.push(modelData.aircraftCallsign)
+                            if (modelData.landingCount > 1)
+                                parts.push(qsTr("Landings: %1").arg(modelData.landingCount))
                             if (modelData.pilotName !== "")
                                 parts.push(modelData.pilotName)
                             if (modelData.comments !== "")

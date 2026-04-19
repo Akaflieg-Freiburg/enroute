@@ -68,6 +68,9 @@ class Flight
     /*! \brief Free-text comments (optional) */
     Q_PROPERTY(QString comments READ comments WRITE setComments)
 
+    /*! \brief Number of landings (touch-and-goes + final landing) */
+    Q_PROPERTY(int landingCount READ landingCount WRITE setLandingCount)
+
 public:
     /*! \brief Default constructor */
     Flight() = default;
@@ -129,6 +132,12 @@ public:
      *  @returns Property comments
      */
     [[nodiscard]] auto comments() const -> QString { return m_comments; }
+
+    /*! \brief Getter function for property of the same name
+     *
+     *  @returns Property landingCount
+     */
+    [[nodiscard]] auto landingCount() const -> int { return m_landingCount; }
 
     /*! \brief Coordinate of the departure airport
      *
@@ -200,6 +209,12 @@ public:
      */
     void setComments(const QString& text) { m_comments = text; }
 
+    /*! \brief Setter function for property of the same name
+     *
+     *  @param count Property landingCount
+     */
+    void setLandingCount(int count) { m_landingCount = count; }
+
     /*! \brief Set departure coordinate
      *
      *  @param coord The departure airport coordinate
@@ -264,6 +279,7 @@ private:
     QString m_pilotName;
     QString m_aircraftCallsign;
     QString m_comments;
+    int m_landingCount {0};
     QGeoCoordinate m_departureCoordinate;
     QGeoCoordinate m_arrivalCoordinate;
 };

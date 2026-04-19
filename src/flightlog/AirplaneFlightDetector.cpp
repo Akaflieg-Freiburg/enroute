@@ -124,18 +124,74 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
             return;
         }
 
-        // Near airport and low altitude → landing detected
-        auto landingTime = info.timestamp();
-        auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
-
-        // Reset state before emitting signal
-        m_detectionState = Idle;
-        m_pendingDepartureICAO.clear();
-        m_pendingDepartureCoordinate = {};
-        m_pendingDepartureElevation = {};
-        m_pendingStartTime = {};
+        // Near airport and low altitude → enter landing phase
+        m_landingPhaseEntryTime = info.timestamp();
+        m_landingCount++;
+        m_detectionState = LandingPhase;
         emit detectionStateChanged();
-        emit landingDetected(closestAD.ICAOCode(), closestAD.coordinate(), landingTime, timeStr);
+        break;
+    }
+
+    case LandingPhase: {
+        // Confirmed landing: speed drops below threshold or timeout
+        if ((groundSpeed.isFinite() && groundSpeed < Units::Speed::fromKMH(landingConfirmSpeedKMH))
+            || (m_landingPhaseEntryTime.isValid() && m_landingPhaseEntryTime.secsTo(info.timestamp()) > 60)) {
+            // Use the time we first went low as the landing time
+            auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
+            auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
+            QString arrivalICAO;
+            QGeoCoordinate arrivalCoordinate;
+            auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+            if (closestAD.isValid()) {
+                arrivalICAO = closestAD.ICAOCode();
+                arrivalCoordinate = closestAD.coordinate();
+            }
+            auto landingCount = m_landingCount;
+
+            // Reset state before emitting signal
+            m_detectionState = Idle;
+            m_pendingDepartureICAO.clear();
+            m_pendingDepartureCoordinate = {};
+            m_pendingDepartureElevation = {};
+            m_pendingStartTime = {};
+            m_landingPhaseEntryTime = {};
+            m_landingCount = 0;
+            emit detectionStateChanged();
+            emit landingDetected(arrivalICAO, arrivalCoordinate, landingTime, landingCount, timeStr);
+            break;
+        }
+
+        // Go-around / touch-and-go: altitude gain above airfield → end current leg, start new one
+        if (altitudeAMSL.isFinite()) {
+            auto closestAD2 = FlightLog::nearestAirfield(info.coordinate());
+            if (closestAD2.isValid()) {
+                auto elev = Units::Distance::fromM(closestAD2.coordinate().altitude());
+                if (elev.isFinite()
+                    && (altitudeAMSL - elev) > Units::Distance::fromFT(altitudeGainFT)) {
+                    // Close the current leg
+                    auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
+                    auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
+                    emit landingDetected(closestAD2.ICAOCode(), closestAD2.coordinate(), landingTime, m_landingCount, timeStr);
+
+                    // Start a new leg from the touch-and-go airport
+                    Flight newLeg;
+                    newLeg.setDepartureICAO(closestAD2.ICAOCode());
+                    newLeg.setDepartureCoordinate(closestAD2.coordinate());
+                    newLeg.setStartTime(landingTime);
+                    newLeg.setAircraftCallsign(GlobalObject::navigator()->aircraft().name());
+
+                    m_pendingDepartureICAO = closestAD2.ICAOCode();
+                    m_pendingDepartureCoordinate = closestAD2.coordinate();
+                    m_pendingDepartureElevation = elev;
+                    m_pendingStartTime = landingTime;
+                    m_landingPhaseEntryTime = {};
+                    m_landingCount = 0;
+                    m_detectionState = InFlight;
+                    emit detectionStateChanged();
+                    emit takeoffDetected(newLeg, timeStr);
+                }
+            }
+        }
         break;
     }
 
@@ -145,7 +201,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
 
 void Flightlog::AirplaneFlightDetector::endFlight()
 {
-    if (m_detectionState != InFlight) {
+    if (m_detectionState != InFlight && m_detectionState != LandingPhase) {
         return;
     }
 
@@ -154,7 +210,6 @@ void Flightlog::AirplaneFlightDetector::endFlight()
     // Try to find the nearest airport based on current position
     QString arrivalICAO;
     QGeoCoordinate arrivalCoordinate;
-
     auto* positionProvider = GlobalObject::positionProvider();
     if (positionProvider != nullptr) {
         auto info = positionProvider->positionInfo();
@@ -166,6 +221,7 @@ void Flightlog::AirplaneFlightDetector::endFlight()
             }
         }
     }
+    auto landingCount = (m_detectionState == LandingPhase) ? m_landingCount : 1;
 
     auto timeStr = now.time().toString(u"HH:mm"_s);
 
@@ -175,8 +231,10 @@ void Flightlog::AirplaneFlightDetector::endFlight()
     m_pendingDepartureCoordinate = {};
     m_pendingDepartureElevation = {};
     m_pendingStartTime = {};
+    m_landingPhaseEntryTime = {};
+    m_landingCount = 0;
     emit detectionStateChanged();
-    emit landingDetected(arrivalICAO, arrivalCoordinate, now, timeStr);
+    emit landingDetected(arrivalICAO, arrivalCoordinate, now, landingCount, timeStr);
 }
 
 
@@ -191,5 +249,7 @@ void Flightlog::AirplaneFlightDetector::resetDetection()
     m_pendingDepartureCoordinate = {};
     m_pendingDepartureElevation = {};
     m_pendingStartTime = {};
+    m_landingPhaseEntryTime = {};
+    m_landingCount = 0;
     emit detectionStateChanged();
 }

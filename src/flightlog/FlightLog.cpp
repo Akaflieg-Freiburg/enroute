@@ -165,6 +165,7 @@ auto Flightlog::FlightLog::createFlight(
     f.setPilotName(pilotName);
     f.setAircraftCallsign(aircraftCallsign);
     f.setComments(comments);
+    f.setLandingCount(1);
     return f;
 }
 
@@ -376,6 +377,7 @@ void Flightlog::FlightLog::onTakeoffDetected(const Flightlog::Flight& flight, co
 void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
                                                 const QGeoCoordinate& arrivalCoordinate,
                                                 const QDateTime& landingTime,
+                                                int landingCount,
                                                 const QString& timeStr)
 {
     // Complete the preliminary entry at index 0 (most recent flight)
@@ -388,6 +390,7 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
             flight.setArrivalCoordinate(arrivalCoordinate);
         }
         flight.setLandingTime(landingTime);
+        flight.setLandingCount(landingCount);
         save();
         emit flightsChanged();
     }

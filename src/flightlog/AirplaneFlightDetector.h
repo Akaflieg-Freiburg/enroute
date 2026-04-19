@@ -37,7 +37,10 @@ namespace Flightlog {
  *    confirmed by altitude gain of at least 200 ft above airfield elevation
  *    within 60 seconds.
  *  - **Landing**: Altitude below 100 ft above airfield elevation within
- *    5 km of an airfield.
+ *    5 km of an airfield, confirmed by speed dropping below 60 km/h.
+ *  - **Go-around**: While in LandingPhase, altitude gain > 200 ft above
+ *    airfield elevation ends the current flight leg and starts a new one
+ *    from the touch-and-go airport.
  *  - **Abort**: Speed drops below 25 km/h or 60 seconds elapse in
  *    TakeoffPhase without altitude confirmation.
  */
@@ -68,11 +71,15 @@ private:
 
     DetectionState m_detectionState {Idle};
 
-    // Pending data accumulated during TakeoffPhase / InFlight
+    // Pending data accumulated during TakeoffPhase / InFlight / LandingPhase
     QString m_pendingDepartureICAO;
     QGeoCoordinate m_pendingDepartureCoordinate;
     QDateTime m_pendingStartTime;
     Units::Distance m_pendingDepartureElevation;
+
+    // Pending data accumulated during LandingPhase
+    QDateTime m_landingPhaseEntryTime;
+    int m_landingCount {0};
 
     // Detection thresholds
     static constexpr double takeoffSpeedKMH = 50.0;          ///< Minimum ground speed to trigger takeoff detection
@@ -81,6 +88,7 @@ private:
     static constexpr double airfieldProximityM = 5000.0;     ///< Maximum distance to an airfield for detection
     static constexpr double maxTakeoffAltitudeAGLFT = 500.0; ///< Maximum altitude above airfield to consider a takeoff
     static constexpr double takeoffAbortSpeedFactor = 0.5;   ///< Speed drop factor to abort takeoff detection
+    static constexpr double landingConfirmSpeedKMH = 60.0;   ///< Maximum speed to confirm landing
 };
 
 } // namespace Flightlog

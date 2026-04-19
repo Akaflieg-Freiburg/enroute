@@ -34,10 +34,11 @@ namespace Flightlog {
  *  detection. Concrete subclasses implement detection logic appropriate
  *  for different types of flying (e.g. powered aircraft, paragliders).
  *
- *  The detection state machine has three states:
+ *  The detection state machine has four states:
  *  - **Idle**: On the ground, monitoring for takeoff.
  *  - **TakeoffPhase**: Takeoff indicators detected, waiting for confirmation.
  *  - **InFlight**: Confirmed airborne, monitoring for landing.
+ *  - **LandingPhase**: Landing indicators detected, waiting for confirmation.
  *
  *  Subclasses decide how to transition between these states based on
  *  position, speed, altitude, and other sensor data.
@@ -57,7 +58,8 @@ public:
     {
         Idle,          /*!< On ground, monitoring for takeoff */
         TakeoffPhase,  /*!< Takeoff indicators detected, waiting for confirmation */
-        InFlight       /*!< Confirmed airborne, monitoring for landing */
+        InFlight,      /*!< Confirmed airborne, monitoring for landing */
+        LandingPhase   /*!< Landing indicators detected, waiting for confirmation */
     };
     Q_ENUM(DetectionState)
 
@@ -113,16 +115,21 @@ signals:
      */
     void takeoffDetected(const Flightlog::Flight& flight, const QString& timeStr);
 
-    /*! \brief Emitted when a landing is detected
+    /*! \brief Emitted when a landing is confirmed
+     *
+     *  Emitted on LandingPhase → Idle transition, after speed drops below
+     *  the confirmation threshold.
      *
      *  @param arrivalICAO ICAO code of the arrival airport (may be empty)
      *  @param arrivalCoordinate Coordinate of the arrival airport
      *  @param landingTime The landing time
+     *  @param landingCount Number of landings (1 for normal, >1 for touch-and-go)
      *  @param timeStr The landing time as a human-readable UTC string (HH:mm)
      */
     void landingDetected(const QString& arrivalICAO,
                          const QGeoCoordinate& arrivalCoordinate,
                          const QDateTime& landingTime,
+                         int landingCount,
                          const QString& timeStr);
 
 private:

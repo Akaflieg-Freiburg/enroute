@@ -219,6 +219,7 @@ private slots:
     void onLandingDetected(const QString& arrivalICAO,
                            const QGeoCoordinate& arrivalCoordinate,
                            const QDateTime& landingTime,
+                           int landingCount,
                            const QString& timeStr);
 
 private:

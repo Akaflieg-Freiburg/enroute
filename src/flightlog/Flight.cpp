@@ -74,6 +74,9 @@ auto Flightlog::Flight::toJSON() const -> QJsonObject
     json[u"pilotName"_s] = m_pilotName;
     json[u"aircraftCallsign"_s] = m_aircraftCallsign;
     json[u"comments"_s] = m_comments;
+    if (m_landingCount > 0) {
+        json[u"landingCount"_s] = m_landingCount;
+    }
 
     if (m_departureCoordinate.isValid()) {
         json[u"departureLat"_s] = m_departureCoordinate.latitude();
@@ -105,6 +108,7 @@ auto Flightlog::Flight::fromJSON(const QJsonObject& json) -> Flight
     f.m_pilotName = json.value(u"pilotName"_s).toString();
     f.m_aircraftCallsign = json.value(u"aircraftCallsign"_s).toString();
     f.m_comments = json.value(u"comments"_s).toString();
+    f.m_landingCount = json.value(u"landingCount"_s).toInt(0);
 
     if (json.contains(u"departureLat"_s) && json.contains(u"departureLon"_s)) {
         f.m_departureCoordinate = QGeoCoordinate(
@@ -131,5 +135,6 @@ auto Flightlog::Flight::operator==(const Flightlog::Flight& other) const -> bool
         && m_onBlockTime == other.m_onBlockTime
         && m_pilotName == other.m_pilotName
         && m_aircraftCallsign == other.m_aircraftCallsign
-        && m_comments == other.m_comments;
+        && m_comments == other.m_comments
+        && m_landingCount == other.m_landingCount;
 }

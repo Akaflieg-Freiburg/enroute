@@ -124,6 +124,7 @@ NOTAM::NOTAM::NOTAM(const QJsonObject& jsonObject)
     m_maximumFL = notamObject[u"maximumFL"_s].toString();
     m_minimumFL = notamObject[u"minimumFL"_s].toString();
     m_number = notamObject[u"number"_s].toString();
+    m_selectionCode = notamObject[u"selectionCode"_s].toString();
     m_text = notamObject[u"text"_s].toString();
     m_traffic = notamObject[u"traffic"_s].toString();
     m_radius = Units::Distance::fromNM(notamObject[u"radius"_s].toString().toDouble());
@@ -200,18 +201,34 @@ bool NOTAM::NOTAM::isValid() const
 
 QString NOTAM::NOTAM::category() const
 {
-    if (m_text.contains(u"PJE"_s))
+    // Categorize by ICAO Q-code (selectionCode), 2nd+3rd letter = subject.
+    // See ICAO Doc 8400, Chapter 7.
+    if (m_selectionCode.size() >= 3)
     {
-        return u"NOTAM-PJE"_s;
+        auto subject = QStringView{m_selectionCode}.mid(1, 2);
+
+        // OB = Obstacle, OL = Obstacle lights
+        if (subject == u"OB" || subject == u"OL")
+        {
+            return u"NOTAM-OBST"_s;
+        }
+        // WP = Parachute jumping / paragliding / hang gliding
+        if (subject == u"WP")
+        {
+            return u"NOTAM-PJE"_s;
+        }
+        // WU = Unmanned aircraft, WZ = Model flying
+        if (subject == u"WU" || subject == u"WZ")
+        {
+            return u"NOTAM-UAS"_s;
+        }
+        // R_ = Airspace restrictions (RD=Danger, RP=Prohibited, RR=Restricted, RT=Temporary restricted)
+        if (subject.startsWith(u'R'))
+        {
+            return u"NOTAM-RA"_s;
+        }
     }
-    if (m_text.contains(u"OBST"_s) || m_text.contains(u"CRANE"_s) || m_text.contains(u"WINDMILL"_s))
-    {
-        return u"NOTAM-OBST"_s;
-    }
-    if (m_text.contains(u"UAS "_s) || m_text.contains(u"UAV "_s) || m_text.contains(u"UNMANNED"_s))
-    {
-        return u"NOTAM-UAS"_s;
-    }
+
     return u"NOTAM"_s;
 }
 
@@ -398,6 +415,7 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM& notam)
     stream << notam.m_region;
     stream << notam.m_schedule;
     stream << notam.m_sectionTitle;
+    stream << notam.m_selectionCode;
     stream << notam.m_text;
     stream << notam.m_traffic;
 
@@ -421,6 +439,7 @@ QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM& notam)
     stream >> notam.m_region;
     stream >> notam.m_schedule;
     stream >> notam.m_sectionTitle;
+    stream >> notam.m_selectionCode;
     stream >> notam.m_text;
     stream >> notam.m_traffic;
 

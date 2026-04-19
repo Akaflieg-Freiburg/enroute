@@ -115,7 +115,7 @@
         "height": 30,
         "pixelRatio": 2,
         "width": 30,
-        "x": 30,
+        "x": 60,
         "y": 170
     },
     "NOTAM-OBST": {
@@ -132,109 +132,116 @@
         "x": 226,
         "y": 120
     },
-    "NOTAM-UAS": {
+    "NOTAM-RA": {
         "height": 30,
         "pixelRatio": 2,
         "width": 30,
         "x": 0,
+        "y": 170
+    },
+    "NOTAM-UAS": {
+        "height": 30,
+        "pixelRatio": 2,
+        "width": 30,
+        "x": 30,
         "y": 170
     },
     "RP": {
         "height": 50,
         "pixelRatio": 2,
         "width": 50,
-        "x": 60,
+        "x": 90,
         "y": 170
     },
     "VOR": {
         "height": 39,
         "pixelRatio": 2,
         "width": 44,
-        "x": 154,
+        "x": 184,
         "y": 170
     },
     "VOR-DME": {
         "height": 39,
         "pixelRatio": 2,
         "width": 44,
-        "x": 110,
+        "x": 140,
         "y": 170
     },
     "VORTAC": {
         "height": 44,
         "pixelRatio": 2,
         "width": 52,
-        "x": 198,
-        "y": 170
+        "x": 0,
+        "y": 220
     },
     "WP": {
         "height": 40,
         "pixelRatio": 2,
         "width": 40,
-        "x": 40,
+        "x": 92,
         "y": 220
     },
     "WP-map": {
         "height": 40,
         "pixelRatio": 2,
         "width": 40,
-        "x": 0,
+        "x": 52,
         "y": 220
     },
     "default_1": {
         "height": 36,
         "pixelRatio": 2,
         "width": 36,
-        "x": 80,
+        "x": 132,
         "y": 220
     },
     "default_2": {
         "height": 36,
         "pixelRatio": 2,
         "width": 50,
-        "x": 116,
+        "x": 168,
         "y": 220
     },
     "default_3": {
         "height": 36,
         "pixelRatio": 2,
         "width": 65,
-        "x": 166,
+        "x": 218,
         "y": 220
     },
     "default_4": {
         "height": 36,
         "pixelRatio": 2,
         "width": 78,
-        "x": 231,
-        "y": 220
+        "x": 0,
+        "y": 264
     },
     "default_5": {
         "height": 36,
         "pixelRatio": 2,
         "width": 90,
-        "x": 0,
-        "y": 260
+        "x": 78,
+        "y": 264
     },
     "default_6": {
         "height": 36,
         "pixelRatio": 2,
         "width": 100,
-        "x": 90,
-        "y": 260
+        "x": 168,
+        "y": 264
     },
     "dot_9": {
         "height": 18,
         "pixelRatio": 2,
         "width": 18,
-        "x": 190,
-        "y": 260
+        "x": 268,
+        "y": 264
     },
     "triangle_11": {
         "height": 30,
         "pixelRatio": 2,
         "width": 30,
-        "x": 208,
-        "y": 260
+        "x": 286,
+        "y": 264
     }
 }

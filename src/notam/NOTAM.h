@@ -186,10 +186,11 @@ public:
 
     /*! \brief Category of this NOTAM for map icon selection
      *
-     *  Returns a category string based on the NOTAM text content.
+     *  Returns a category string based on the ICAO Q-code (selectionCode).
+     *  See ICAO Doc 8400, Chapter 7.
      *  Possible values: "NOTAM" (default), "NOTAM-PJE" (parachute jumping),
-     *  "NOTAM-OBST" (obstacle such as crane or wind turbine),
-     *  "NOTAM-UAS" (unmanned aircraft system).
+     *  "NOTAM-OBST" (obstacle), "NOTAM-UAS" (unmanned aircraft / model flying),
+     *  "NOTAM-RA" (restricted/prohibited/danger area).
      *
      *  @returns Category string for sprite selection
      */
@@ -242,6 +243,7 @@ private:
     Units::Distance m_radius;
     QString         m_sectionTitle;
     QString         m_schedule;
+    QString         m_selectionCode;
     QString         m_text;
     QString         m_traffic;
 

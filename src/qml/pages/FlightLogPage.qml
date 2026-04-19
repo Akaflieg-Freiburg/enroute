@@ -323,9 +323,20 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     addFlightEditor.flightIndex = -1
+
+                    // Prefill aircraft callsign from current aircraft
                     var acName = Navigator.aircraft.name
+
+                    // Prefill departure with last arrival of this aircraft
                     var lastArr = FlightLog.lastArrivalICAO(acName)
-                    addFlightEditor.editFlight = FlightLog.createFlight(lastArr, "", "", "", "", "", "", "", acName, "")
+
+                    // Prefill arrival with currently nearest airfield (if not in flight and GPS available)
+                    var nearestAD = ""
+                    if (FlightLog.detectionState === FlightDetector.Idle) {
+                        nearestAD = FlightLog.nearestAirfield().ICAOCode
+                    }
+
+                    addFlightEditor.editFlight = FlightLog.createFlight(lastArr, nearestAD, "", "", "", "", "", "", acName, "")
                     addFlightEditor.open()
                 }
             }

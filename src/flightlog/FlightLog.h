@@ -26,6 +26,7 @@
 #include "GlobalObject.h"
 #include "flightlog/Flight.h"
 #include "flightlog/FlightDetector.h"
+#include "geomaps/Waypoint.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -169,6 +170,18 @@ public:
      *  @returns Arrival ICAO of the most recent matching flight
      */
     Q_INVOKABLE QString lastArrivalICAO(const QString& aircraftCallsign) const;
+
+    /*! \brief Find the nearest airfield within 5 km
+     *
+     *  Returns the closest airfield (type "AD") to the given position,
+     *  provided it is within 5 km. Returns an invalid Waypoint if none found.
+     *  If no position is given (or an invalid one), the last valid coordinate
+     *  from PositionProvider is used.
+     *
+     *  @param position The geographic position to search near (default: current GPS position)
+     *  @returns The nearest airfield, or an invalid Waypoint
+     */
+    Q_INVOKABLE static GeoMaps::Waypoint nearestAirfield(const QGeoCoordinate& position = {});
 
 signals:
     /*! \brief Notifier signal */

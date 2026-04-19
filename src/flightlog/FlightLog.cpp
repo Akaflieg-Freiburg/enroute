@@ -188,6 +188,39 @@ auto Flightlog::FlightLog::lastArrivalICAO(const QString& aircraftCallsign) cons
 }
 
 
+auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position) -> GeoMaps::Waypoint
+{
+    auto coord = position;
+    if (!coord.isValid()) {
+        auto* positionProvider = GlobalObject::positionProvider();
+        if (positionProvider == nullptr) {
+            return {};
+        }
+        coord = positionProvider->lastValidCoordinate();
+        if (!coord.isValid()) {
+            return {};
+        }
+    }
+
+    auto* geoMapProvider = GlobalObject::geoMapProvider();
+    if (geoMapProvider == nullptr) {
+        return {};
+    }
+
+    auto nearby = geoMapProvider->nearbyWaypoints(coord, u"AD"_s);
+    if (nearby.isEmpty()) {
+        return {};
+    }
+
+    auto closest = nearby.first();
+    if (coord.distanceTo(closest.coordinate()) > 5000.0) {
+        return {};
+    }
+
+    return closest;
+}
+
+
 //
 // Coordinate resolution
 //

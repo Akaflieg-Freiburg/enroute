@@ -19,9 +19,8 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
-#include "geomaps/GeoMapProvider.h"
-#include "geomaps/Waypoint.h"
 #include "flightlog/AirplaneFlightDetector.h"
+#include "flightlog/FlightLog.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "units/Speed.h"
@@ -38,11 +37,6 @@ Flightlog::AirplaneFlightDetector::AirplaneFlightDetector(QObject* parent)
 void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::PositionInfo info)
 {
     if (!info.isValid()) {
-        return;
-    }
-
-    auto* geoMapProvider = GlobalObject::geoMapProvider();
-    if (geoMapProvider == nullptr) {
         return;
     }
 
@@ -63,14 +57,8 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         }
 
         // Check if near an airfield
-        auto nearby = geoMapProvider->nearbyWaypoints(info.coordinate(), u"AD"_s);
-        if (nearby.isEmpty()) {
-            return;
-        }
-
-        auto closestAD = nearby.first();
-        auto distToAD = info.coordinate().distanceTo(closestAD.coordinate());
-        if (distToAD > airfieldProximityM) {
+        auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+        if (!closestAD.isValid()) {
             return;
         }
 
@@ -117,14 +105,8 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         }
 
         // Check if near an airport
-        auto nearby = geoMapProvider->nearbyWaypoints(info.coordinate(), u"AD"_s);
-        if (nearby.isEmpty()) {
-            return;
-        }
-
-        auto closestAD = nearby.first();
-        auto distToAD = info.coordinate().distanceTo(closestAD.coordinate());
-        if (distToAD > airfieldProximityM) {
+        auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+        if (!closestAD.isValid()) {
             return;
         }
 
@@ -167,18 +149,13 @@ void Flightlog::AirplaneFlightDetector::endFlight()
     QGeoCoordinate arrivalCoordinate;
 
     auto* positionProvider = GlobalObject::positionProvider();
-    auto* geoMapProvider = GlobalObject::geoMapProvider();
-    if ((positionProvider != nullptr) && (geoMapProvider != nullptr)) {
+    if (positionProvider != nullptr) {
         auto info = positionProvider->positionInfo();
         if (info.isValid()) {
-            auto nearby = geoMapProvider->nearbyWaypoints(info.coordinate(), u"AD"_s);
-            if (!nearby.isEmpty()) {
-                auto closestAD = nearby.first();
-                auto distToAD = info.coordinate().distanceTo(closestAD.coordinate());
-                if (distToAD < airfieldProximityM) {
-                    arrivalICAO = closestAD.ICAOCode();
-                    arrivalCoordinate = closestAD.coordinate();
-                }
+            auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+            if (closestAD.isValid()) {
+                arrivalICAO = closestAD.ICAOCode();
+                arrivalCoordinate = closestAD.coordinate();
             }
         }
     }

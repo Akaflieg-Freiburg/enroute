@@ -57,9 +57,12 @@ Flightlog::FlightLog::FlightLog(QObject *parent) : GlobalObject(parent)
             // Save IGC file (uses recorder's internal track + flight metadata)
             m_recorder.saveTrack(m_flights[0]);
 
-            // Cache the geo path for map display before clearing recorder
-            m_displayedTrackPath = m_recorder.trackGeoPath();
-            m_displayedTrackIndex = m_displayedTrackPath.isEmpty() ? -1 : 0;
+            // After final landing, show the saved track.
+            // After touch-and-go, onDetectionStateChanged already set index to -1.
+            if (m_detector->detectionState() == FlightDetector::Idle) {
+                m_displayedTrackPath = m_recorder.trackGeoPath();
+                m_displayedTrackIndex = m_displayedTrackPath.isEmpty() ? -1 : 0;
+            }
 
             // Free track data from recorder RAM
             m_recorder.clearTrack();
@@ -433,6 +436,10 @@ void Flightlog::FlightLog::connectDetector(FlightDetector* detector)
 
 void Flightlog::FlightLog::onDetectionStateChanged()
 {
+    if (m_detector->detectionState() == FlightDetector::InFlight) {
+        m_displayedTrackIndex = -1;
+        emit displayedTrackPathChanged();
+    }
     emit detectionStateChanged();
 }
 

@@ -102,6 +102,15 @@ void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
     emit flightsChanged();
 }
 
+void Flightlog::FlightLog::setTrackRecording(bool enabled)
+{
+    if (m_trackRecording == enabled) {
+        return;
+    }
+    m_trackRecording = enabled;
+    emit trackRecordingChanged();
+}
+
 
 void Flightlog::FlightLog::removeFlight(int index)
 {
@@ -467,12 +476,14 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
         flight.setLandingCount(landingCount);
 
         // Save the track from the recorder to an IGC file
-        m_recorder.saveTrack(flight);
+        if (m_trackRecording) {
+            m_recorder.saveTrack(flight);
 
-        // Cache the geo path for map display, then free recorder RAM
-        m_displayedTrackPath = m_recorder.trackGeoPath();
-        m_displayedTrackIndex = m_displayedTrackPath.isEmpty() ? -1 : 0;
-        m_recorder.clearTrack();
+            // Cache the geo path for map display, then free recorder RAM
+            m_displayedTrackPath = m_recorder.trackGeoPath();
+            m_displayedTrackIndex = m_displayedTrackPath.isEmpty() ? -1 : 0;
+            m_recorder.clearTrack();
+        }
 
         save();
         emit flightsChanged();
@@ -522,8 +533,10 @@ void Flightlog::FlightLog::onPositionUpdated()
     m_detector->processPositionUpdate(info);
 
     // Forward to recorder — it manages preflight/inflight/postlanding internally
-    auto pressAlt = GlobalObject::positionProvider()->pressureAltitude();
-    m_recorder.processPositionUpdate(m_detector->detectionState(), info, pressAlt);
+    if (m_trackRecording) {
+        auto pressAlt = GlobalObject::positionProvider()->pressureAltitude();
+        m_recorder.processPositionUpdate(m_detector->detectionState(), info, pressAlt);
+    }
 }
 
 

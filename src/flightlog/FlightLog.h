@@ -110,6 +110,15 @@ public:
     Q_PROPERTY(int displayedTrackIndex READ displayedTrackIndex NOTIFY displayedTrackPathChanged)
     [[nodiscard]] auto displayedTrackIndex() const -> int { return m_displayedTrackIndex; }
 
+    /*! \brief Whether GPS track recording is enabled
+     *
+     *  When true, the recorder captures track points during flight
+     *  and saves them as IGC files on landing. Default is true.
+     */
+    Q_PROPERTY(bool trackRecording READ trackRecording WRITE setTrackRecording NOTIFY trackRecordingChanged)
+    [[nodiscard]] auto trackRecording() const -> bool { return m_trackRecording; }
+    void setTrackRecording(bool enabled);
+
 
     //
     // Methods
@@ -237,6 +246,9 @@ signals:
     /*! \brief Notifier signal for displayedTrackPath and displayedTrackIndex */
     void displayedTrackPathChanged();
 
+    /*! \brief Notifier signal */
+    void trackRecordingChanged();
+
     /*! \brief Emitted when a takeoff is detected
      *
      *  @param time The takeoff time as a human-readable UTC string (HH:mm)
@@ -297,6 +309,9 @@ private:
 
     // Cached geo path for the displayed saved track
     QList<QGeoCoordinate> m_displayedTrackPath;
+
+    // Whether track recording is enabled
+    bool m_trackRecording {true};
 
     // The active flight detector (owned by this object)
     FlightDetector* m_detector {nullptr};

@@ -25,7 +25,6 @@
 #include <QJsonObject>
 #include <QQmlEngine>
 
-#include "flightlog/TrackPoint.h"
 #include "units/Distance.h"
 
 namespace Flightlog {
@@ -170,12 +169,6 @@ public:
      */
     [[nodiscard]] auto trackFile() const -> QString { return m_trackFile; }
 
-    /*! \brief Get the recorded track points
-     *
-     *  @returns The list of track points
-     */
-    [[nodiscard]] auto track() const -> const QList<TrackPoint>& { return m_track; }
-
     //
     // Setters
     //
@@ -252,23 +245,11 @@ public:
      */
     void setArrivalCoordinate(const QGeoCoordinate& coord) { m_arrivalCoordinate = coord; }
 
-    /*! \brief Append a track point to the flight track
-     *
-     *  @param point The track point to add
-     */
-    void addTrackPoint(const TrackPoint& point) { m_track.append(point); }
-
     /*! \brief Set the track file name
      *
      *  @param fileName The track file name (relative to tracks directory)
      */
     void setTrackFile(const QString& fileName) { m_trackFile = fileName; }
-
-    /*! \brief Set the in-memory track points (e.g. after loading from IGC)
-     *
-     *  @param track The list of track points
-     */
-    void setTrack(const QList<TrackPoint>& track) { m_track = track; }
 
     //
     // Calculated properties
@@ -326,7 +307,6 @@ private:
     QGeoCoordinate m_departureCoordinate;
     QGeoCoordinate m_arrivalCoordinate;
     QString m_trackFile;
-    QList<TrackPoint> m_track;
 };
 
 } // namespace Flightlog

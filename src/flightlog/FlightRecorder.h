@@ -21,10 +21,10 @@
 #pragma once
 
 #include <QStandardPaths>
-#include <QTimer>
 
 #include "flightlog/Flight.h"
 #include "flightlog/FlightDetector.h"
+#include "flightlog/TrackPoint.h"
 #include "positioning/PositionInfo.h"
 #include "units/Distance.h"
 
@@ -40,13 +40,13 @@ namespace Flightlog {
  *  number of recorded points reasonable.
  *
  *  Recording is driven by calling processPositionUpdate() with the
- *  current detection state on every position update. The recorder
- *  manages its own internal state machine:
- *  - **TakeoffPhase**: Points are buffered internally.
- *  - **InFlight**: Points are accumulated (preflight buffer is prepended
- *    on transition from TakeoffPhase).
- *  - **Landing detected → post-landing**: Recording continues for 20s
- *    to capture the rollout, then recordingFinished() is emitted.
+ *  current detection state on every position update. Track points are
+ *  recorded during TakeoffPhase, InFlight, and LandingPhase states.
+ *
+ *  - **TakeoffPhase → abort (Idle)**: Track is discarded on next cycle.
+ *  - **LandingPhase → Idle**: Recording ends, recordingFinished() is emitted.
+ *  - **LandingPhase → InFlight**: Touch-and-go — recordingFinished() is
+ *    emitted for the current leg and a fresh track is started.
  */
 class FlightRecorder : public QObject
 {
@@ -76,34 +76,32 @@ public:
                                const Positioning::PositionInfo& info,
                                Units::Distance pressureAltitude = {});
 
-    /*! \brief Take the accumulated track points
+    /*! \brief Save the recorded track to an IGC file
      *
-     *  Returns the recorded track and clears the internal buffer.
-     *  Call this after recordingFinished() to get the complete track.
+     *  Writes the recorder's in-memory track as an IGC file in the tracks
+     *  directory, using metadata from the flight. Sets the trackFile
+     *  property on the flight.
      *
-     *  @returns The recorded track points
-     */
-    auto takeTrack() -> QList<TrackPoint>;
-
-    /*! \brief Save in-memory track points to an IGC file
-     *
-     *  Writes the flight's track as an IGC file in the tracks
-     *  directory. Sets the trackFile property on the flight and
-     *  clears the in-memory track data.
-     *
-     *  @param flight The flight whose track to save
+     *  @param flight The flight whose metadata to use for the IGC headers
      */
     void saveTrack(Flight& flight);
 
-    /*! \brief Load track points from an IGC file into a flight
+    /*! \brief Clear the in-memory track data
+     *
+     *  Frees the recorded track points from RAM. Call after saveTrack()
+     *  and after caching the geo path for display.
+     */
+    void clearTrack();
+
+    /*! \brief Load a track's coordinates from an IGC file
      *
      *  Reads the IGC file referenced by the flight's trackFile
-     *  property and populates the in-memory track data.
-     *  Does nothing if no trackFile is set or track is already loaded.
+     *  property and returns the coordinates for map display.
      *
-     *  @param flight The flight to load the track into
+     *  @param flight The flight whose track to load
+     *  @returns List of coordinates from the track, or empty if not available
      */
-    void loadTrack(Flight& flight) const;
+    [[nodiscard]] auto loadTrackPath(const Flight& flight) const -> QList<QGeoCoordinate>;
 
     /*! \brief Export a flight's track via the platform share dialog
      *
@@ -114,10 +112,10 @@ public:
      */
     void exportToIGC(const Flight& flight);
 
-    /*! \brief Delete the track file from disk and clear track data
+    /*! \brief Delete the track file from disk
      *
      *  Removes the IGC file referenced by the flight's trackFile
-     *  property and clears the trackFile and in-memory track data.
+     *  property and clears the trackFile.
      *  Does nothing if no trackFile is set.
      *
      *  @param flight The flight whose track to delete
@@ -133,16 +131,17 @@ public:
      */
     [[nodiscard]] auto trackGeoPath() const -> QList<QGeoCoordinate>;
 
-    /*! \brief Generate IGC file content from a flight's track
+    /*! \brief Generate IGC file content from flight metadata and track points
      *
      *  Creates a complete IGC file with A-record, H-records (date,
      *  pilot, aircraft, recorder type), and B-records for each
      *  track point.
      *
-     *  @param flight The flight to generate IGC content for
+     *  @param flight The flight whose metadata to use for headers
+     *  @param track The track points to write as B-records
      *  @returns IGC file content, or empty if no track
      */
-    static auto toIGC(const Flight& flight) -> QByteArray;
+    static auto toIGC(const Flight& flight, const QList<TrackPoint>& track) -> QByteArray;
 
     /*! \brief Parse track points from IGC file content
      *
@@ -156,8 +155,10 @@ public:
     static auto trackFromIGC(const QByteArray& igcData, const QDate& date = {}) -> QList<TrackPoint>;
 
 signals:
-    /*! \brief Emitted when the post-landing recording period has ended
+    /*! \brief Emitted when recording for a flight leg has ended
      *
+     *  Emitted on LandingPhase → Idle (confirmed landing) and on
+     *  LandingPhase → InFlight (touch-and-go, new leg starting).
      *  The FlightLog should call takeTrack() to retrieve the complete
      *  track, set it on the flight, save to IGC, and persist.
      */
@@ -178,8 +179,8 @@ private:
     // Check if a point should be recorded based on distance/time thresholds
     [[nodiscard]] auto shouldRecord(const Positioning::PositionInfo& info) const -> bool;
 
-    // Record a point to the given list if thresholds are met
-    void recordFiltered(const Positioning::PositionInfo& info, Units::Distance pressureAltitude, QList<TrackPoint>& target);
+    // Record a point if thresholds are met
+    void recordFiltered(const Positioning::PositionInfo& info, Units::Distance pressureAltitude);
 
     // Last recorded point for distance/time filtering
     QGeoCoordinate m_lastCoordinate;
@@ -188,19 +189,12 @@ private:
     // Previous detection state for transition detection
     FlightDetector::DetectionState m_previousState {FlightDetector::Idle};
 
-    // Pre-flight buffer for TakeoffPhase points
-    QList<TrackPoint> m_preflightBuffer;
-
-    // Accumulated track points (InFlight + post-landing)
+    // Accumulated track points
     QList<TrackPoint> m_track;
-
-    // Post-landing timer (20 seconds after landing detection)
-    QTimer m_postLandingTimer;
 
     // Recording thresholds
     static constexpr double minDistanceM = 300.0;
     static constexpr int minIntervalSecs = 10;
-    static constexpr int postLandingDurationMs = 20000;
 
     // Tracks directory
     const QString m_trackDir {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/tracks"_s};

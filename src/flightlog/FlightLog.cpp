@@ -54,15 +54,19 @@ Flightlog::FlightLog::FlightLog(QObject *parent) : GlobalObject(parent)
     // When the recorder finishes, save the track and persist
     connect(&m_recorder, &FlightRecorder::recordingFinished, this, [this]() {
         if (!m_flights.isEmpty()) {
-            auto track = m_recorder.takeTrack();
-            if (!track.isEmpty()) {
-                m_flights[0].setTrack(track);
-                m_recorder.saveTrack(m_flights[0]);
-                save();
-                emit flightsChanged();
-            }
+            // Save IGC file (uses recorder's internal track + flight metadata)
+            m_recorder.saveTrack(m_flights[0]);
+
+            // Cache the geo path for map display before clearing recorder
+            m_displayedTrackPath = m_recorder.trackGeoPath();
+            m_displayedTrackIndex = m_displayedTrackPath.isEmpty() ? -1 : 0;
+
+            // Free track data from recorder RAM
+            m_recorder.clearTrack();
+
+            save();
+            emit flightsChanged();
         }
-        // Live track display ends when recording finishes
         emit displayedTrackPathChanged();
     });
 
@@ -292,14 +296,8 @@ void Flightlog::FlightLog::showTrack(int index)
         return;
     }
 
-    // Load track data from IGC file if not already loaded
-    m_recorder.loadTrack(m_flights[index]);
-
-    // Cache the geo path
-    m_displayedTrackPath.clear();
-    for (const auto& pt : m_flights[index].track()) {
-        m_displayedTrackPath.append(pt.coordinate);
-    }
+    // Load track coordinates directly from IGC file
+    m_displayedTrackPath = m_recorder.loadTrackPath(m_flights[index]);
     m_displayedTrackIndex = index;
     emit displayedTrackPathChanged();
 }

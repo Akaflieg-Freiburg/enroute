@@ -31,9 +31,6 @@ using namespace Qt::Literals::StringLiterals;
 Flightlog::FlightRecorder::FlightRecorder(QObject* parent)
     : QObject(parent)
 {
-    m_postLandingTimer.setSingleShot(true);
-    m_postLandingTimer.setInterval(postLandingDurationMs);
-    connect(&m_postLandingTimer, &QTimer::timeout, this, &FlightRecorder::recordingFinished);
 }
 
 
@@ -76,13 +73,13 @@ auto Flightlog::FlightRecorder::shouldRecord(const Positioning::PositionInfo& in
 }
 
 
-void Flightlog::FlightRecorder::recordFiltered(const Positioning::PositionInfo& info, Units::Distance pressureAltitude, QList<TrackPoint>& target)
+void Flightlog::FlightRecorder::recordFiltered(const Positioning::PositionInfo& info, Units::Distance pressureAltitude)
 {
     if (!shouldRecord(info)) {
         return;
     }
 
-    target.append(makeTrackPoint(info, pressureAltitude));
+    m_track.append(makeTrackPoint(info, pressureAltitude));
     m_lastCoordinate = info.coordinate();
     m_lastTimestamp = info.timestamp();
     emit trackGeoPathChanged();
@@ -99,34 +96,32 @@ void Flightlog::FlightRecorder::processPositionUpdate(FlightDetector::DetectionS
             // New detection cycle — clear everything
             m_lastCoordinate = {};
             m_lastTimestamp = {};
-            m_preflightBuffer.clear();
             m_track.clear();
-        } else if (state == FlightDetector::InFlight && m_previousState == FlightDetector::TakeoffPhase) {
-            // Takeoff confirmed — prepend preflight buffer to track
-            m_preflightBuffer.append(m_track);
-            m_track = std::move(m_preflightBuffer);
-            m_preflightBuffer.clear();
-        } else if (state == FlightDetector::Idle && m_previousState == FlightDetector::InFlight) {
-            // Landing detected — start post-landing recording
-            m_postLandingTimer.start();
+        } else if (state == FlightDetector::InFlight && m_previousState == FlightDetector::LandingPhase) {
+            // Touch-and-go — finish current leg's recording, start fresh
+            emit recordingFinished();
+            m_lastCoordinate = {};
+            m_lastTimestamp = {};
+        } else if (state == FlightDetector::Idle && m_previousState == FlightDetector::LandingPhase) {
+            // Landing confirmed — finish recording
+            emit recordingFinished();
         }
         m_previousState = state;
     }
 
     // Record based on current state
-    if (state == FlightDetector::TakeoffPhase) {
-        recordFiltered(info, pressureAltitude, m_preflightBuffer);
-    } else if (state == FlightDetector::InFlight || m_postLandingTimer.isActive()) {
-        recordFiltered(info, pressureAltitude, m_track);
+    if (state == FlightDetector::TakeoffPhase
+        || state == FlightDetector::InFlight
+        || state == FlightDetector::LandingPhase) {
+        recordFiltered(info, pressureAltitude);
     }
 }
 
 
-auto Flightlog::FlightRecorder::takeTrack() -> QList<TrackPoint>
+void Flightlog::FlightRecorder::clearTrack()
 {
-    auto track = std::move(m_track);
     m_track.clear();
-    return track;
+    m_track.squeeze();
 }
 
 
@@ -143,7 +138,7 @@ auto Flightlog::FlightRecorder::trackGeoPath() const -> QList<QGeoCoordinate>
 
 void Flightlog::FlightRecorder::saveTrack(Flight& flight)
 {
-    if (flight.track().isEmpty()) {
+    if (m_track.isEmpty()) {
         return;
     }
 
@@ -157,34 +152,39 @@ void Flightlog::FlightRecorder::saveTrack(Flight& flight)
         : QDateTime::currentDateTimeUtc().toString(u"yyyyMMdd_HHmm"_s);
     auto trackFileName = u"track_%1.igc"_s.arg(dateTimeStr);
 
-    auto igcData = toIGC(flight);
+    auto igcData = toIGC(flight, m_track);
     QFile file(m_trackDir + u"/"_s + trackFileName);
     if (file.open(QIODevice::WriteOnly)) {
         file.write(igcData);
         file.close();
         flight.setTrackFile(trackFileName);
-        // Clear in-memory track data to free memory
-        flight.setTrack({});
     }
 }
 
 
-void Flightlog::FlightRecorder::loadTrack(Flight& flight) const
+auto Flightlog::FlightRecorder::loadTrackPath(const Flight& flight) const -> QList<QGeoCoordinate>
 {
-    if (flight.trackFile().isEmpty() || !flight.track().isEmpty()) {
-        return; // No file to load, or already loaded
+    if (flight.trackFile().isEmpty()) {
+        return {};
     }
 
     QFile file(m_trackDir + u"/"_s + flight.trackFile());
     if (!file.open(QIODevice::ReadOnly)) {
-        return;
+        return {};
     }
 
     auto igcData = file.readAll();
     file.close();
 
     auto date = flight.startTime().isValid() ? flight.startTime().toUTC().date() : QDate();
-    flight.setTrack(trackFromIGC(igcData, date));
+    auto trackPoints = trackFromIGC(igcData, date);
+
+    QList<QGeoCoordinate> path;
+    path.reserve(trackPoints.size());
+    for (const auto& pt : trackPoints) {
+        path.append(pt.coordinate);
+    }
+    return path;
 }
 
 
@@ -225,13 +225,11 @@ void Flightlog::FlightRecorder::removeTrack(Flight& flight)
 
     QFile::remove(m_trackDir + u"/"_s + flight.trackFile());
     flight.setTrackFile({});
-    flight.setTrack({});
 }
 
 
-auto Flightlog::FlightRecorder::toIGC(const Flight& flight) -> QByteArray
+auto Flightlog::FlightRecorder::toIGC(const Flight& flight, const QList<TrackPoint>& track) -> QByteArray
 {
-    const auto& track = flight.track();
     if (track.isEmpty()) {
         return {};
     }

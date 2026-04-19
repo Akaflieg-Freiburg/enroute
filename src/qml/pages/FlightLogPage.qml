@@ -317,6 +317,20 @@ Page {
                     id: cptMenu
 
                     Action {
+                        text: FlightLog.displayedTrackIndex === index ? qsTr("Hide from Map") : qsTr("Show on Map")
+                        enabled: modelData.hasTrack
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            if (FlightLog.displayedTrackIndex === index) {
+                                FlightLog.hideTrack()
+                            } else {
+                                FlightLog.showTrack(index)
+                            }
+                        }
+                    }
+
+                    Action {
                         text: qsTr("Export to IGC…")
                         enabled: modelData.hasTrack
 

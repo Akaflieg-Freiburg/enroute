@@ -62,6 +62,15 @@ Flightlog::FlightLog::FlightLog(QObject *parent) : GlobalObject(parent)
                 emit flightsChanged();
             }
         }
+        // Live track display ends when recording finishes
+        emit displayedTrackPathChanged();
+    });
+
+    // Forward live track updates to the map when no saved track is selected
+    connect(&m_recorder, &FlightRecorder::trackGeoPathChanged, this, [this]() {
+        if (m_displayedTrackIndex == -1) {
+            emit displayedTrackPathChanged();
+        }
     });
 }
 
@@ -250,10 +259,57 @@ void Flightlog::FlightLog::removeTrack(int index)
         return;
     }
 
+    // If this track is currently displayed, hide it first
+    if (m_displayedTrackIndex == index) {
+        hideTrack();
+    }
+
     m_recorder.removeTrack(m_flights[index]);
 
     save();
     emit flightsChanged();
+}
+
+
+auto Flightlog::FlightLog::displayedTrackPath() const -> QList<QGeoCoordinate>
+{
+    // If a saved track is selected, return its cached path
+    if (m_displayedTrackIndex >= 0) {
+        return m_displayedTrackPath;
+    }
+
+    // Otherwise return the live recording track (empty if not recording)
+    return m_recorder.trackGeoPath();
+}
+
+
+void Flightlog::FlightLog::showTrack(int index)
+{
+    if (index < 0 || index >= m_flights.size()) {
+        return;
+    }
+    if (!m_flights.at(index).hasTrack()) {
+        return;
+    }
+
+    // Load track data from IGC file if not already loaded
+    m_recorder.loadTrack(m_flights[index]);
+
+    // Cache the geo path
+    m_displayedTrackPath.clear();
+    for (const auto& pt : m_flights[index].track()) {
+        m_displayedTrackPath.append(pt.coordinate);
+    }
+    m_displayedTrackIndex = index;
+    emit displayedTrackPathChanged();
+}
+
+
+void Flightlog::FlightLog::hideTrack()
+{
+    m_displayedTrackIndex = -1;
+    m_displayedTrackPath.clear();
+    emit displayedTrackPathChanged();
 }
 
 

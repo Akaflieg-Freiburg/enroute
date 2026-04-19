@@ -806,6 +806,18 @@ Map {
     }
 
     MapPolyline {
+        id: recordedTrack
+        visible: FlightLog.displayedTrackPath.length > 0
+        line.width: 3
+        line.color: "#2196F3"
+        path: {
+            var array = []
+            FlightLog.displayedTrackPath.forEach(element => array.push(element))
+            return array
+        }
+    }
+
+    MapPolyline {
         id: toNextWP
         visible: PositionProvider.lastValidCoordinate.isValid &&
                  (Navigator.remainingRouteInfo.status === RemainingRouteInfo.OnRoute)

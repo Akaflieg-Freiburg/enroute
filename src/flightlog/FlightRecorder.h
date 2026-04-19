@@ -124,6 +124,15 @@ public:
      */
     void removeTrack(Flight& flight);
 
+    /*! \brief Get the current track as a list of coordinates
+     *
+     *  Returns the coordinates of all recorded track points.
+     *  Suitable for binding to a MapPolyline in QML.
+     *
+     *  @returns List of coordinates from the current track
+     */
+    [[nodiscard]] auto trackGeoPath() const -> QList<QGeoCoordinate>;
+
     /*! \brief Generate IGC file content from a flight's track
      *
      *  Creates a complete IGC file with A-record, H-records (date,
@@ -153,6 +162,12 @@ signals:
      *  track, set it on the flight, save to IGC, and persist.
      */
     void recordingFinished();
+
+    /*! \brief Emitted when a new track point has been recorded
+     *
+     *  Use this to update the live track display on the map.
+     */
+    void trackGeoPathChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(FlightRecorder)

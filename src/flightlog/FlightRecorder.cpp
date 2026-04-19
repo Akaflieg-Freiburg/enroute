@@ -85,6 +85,7 @@ void Flightlog::FlightRecorder::recordFiltered(const Positioning::PositionInfo& 
     target.append(makeTrackPoint(info, pressureAltitude));
     m_lastCoordinate = info.coordinate();
     m_lastTimestamp = info.timestamp();
+    emit trackGeoPathChanged();
 }
 
 
@@ -126,6 +127,17 @@ auto Flightlog::FlightRecorder::takeTrack() -> QList<TrackPoint>
     auto track = std::move(m_track);
     m_track.clear();
     return track;
+}
+
+
+auto Flightlog::FlightRecorder::trackGeoPath() const -> QList<QGeoCoordinate>
+{
+    QList<QGeoCoordinate> path;
+    path.reserve(m_track.size());
+    for (const auto& pt : m_track) {
+        path.append(pt.coordinate);
+    }
+    return path;
 }
 
 

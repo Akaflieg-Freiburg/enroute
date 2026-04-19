@@ -94,6 +94,22 @@ public:
     Q_PROPERTY(int count READ count NOTIFY flightsChanged)
     [[nodiscard]] auto count() const -> int { return static_cast<int>(m_flights.size()); }
 
+    /*! \brief Coordinates of the track currently displayed on the map
+     *
+     *  Returns the geo path of the selected saved track, or the live
+     *  recording track if in flight and no saved track is selected.
+     *  Empty when no track is displayed.
+     */
+    Q_PROPERTY(QList<QGeoCoordinate> displayedTrackPath READ displayedTrackPath NOTIFY displayedTrackPathChanged)
+    [[nodiscard]] auto displayedTrackPath() const -> QList<QGeoCoordinate>;
+
+    /*! \brief Index of the flight whose track is displayed, or -1 if none
+     *
+     *  Set to -1 when showing the live track or no track.
+     */
+    Q_PROPERTY(int displayedTrackIndex READ displayedTrackIndex NOTIFY displayedTrackPathChanged)
+    [[nodiscard]] auto displayedTrackIndex() const -> int { return m_displayedTrackIndex; }
+
 
     //
     // Methods
@@ -199,12 +215,27 @@ public:
      */
     Q_INVOKABLE void removeTrack(int index);
 
+    /*! \brief Show a flight's track on the map
+     *
+     *  Loads the track if needed and sets it as the displayed track.
+     *  Only one track can be displayed at a time.
+     *
+     *  @param index The index of the flight whose track to show
+     */
+    Q_INVOKABLE void showTrack(int index);
+
+    /*! \brief Hide the currently displayed track from the map */
+    Q_INVOKABLE void hideTrack();
+
 signals:
     /*! \brief Notifier signal */
     void flightsChanged();
 
     /*! \brief Notifier signal */
     void detectionStateChanged();
+
+    /*! \brief Notifier signal for displayedTrackPath and displayedTrackIndex */
+    void displayedTrackPathChanged();
 
     /*! \brief Emitted when a takeoff is detected
      *
@@ -260,6 +291,12 @@ private:
     static auto parseDateTime(const QString& date, const QString& timeStr) -> QDateTime;
 
     QList<Flight> m_flights;
+
+    // Index of the flight whose saved track is displayed, or -1
+    int m_displayedTrackIndex {-1};
+
+    // Cached geo path for the displayed saved track
+    QList<QGeoCoordinate> m_displayedTrackPath;
 
     // The active flight detector (owned by this object)
     FlightDetector* m_detector {nullptr};

@@ -1,0 +1,4 @@
+### Added
+- Improve NOTAM classification. (#629)
+
+- Display magnetic variation of waypoints. (#633)

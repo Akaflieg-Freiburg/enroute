@@ -74,7 +74,7 @@ CenteringDialog {
     }
 
     function resultFlight() {
-        return FlightLog.createFlight(
+        var f = FlightLog.createFlight(
             newDepartureICAO,
             newArrivalICAO,
             newDate,
@@ -86,6 +86,8 @@ CenteringDialog {
             newAircraftCallsign,
             newComments
         )
+        f.landingCount = parseInt(landingsField.text) || 1
+        return f
     }
 
     onAboutToShow: {
@@ -120,6 +122,7 @@ CenteringDialog {
         pilotField.text = editFlight.pilotName
         callsignField.text = editFlight.aircraftCallsign
         commentsField.text = editFlight.comments
+        landingsField.text = editFlight.landingCount > 0 ? editFlight.landingCount.toString() : "1"
         depField.focus = true
     }
 
@@ -273,6 +276,19 @@ CenteringDialog {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 placeholderText: qsTr("Optional comments")
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Landings")
+            }
+            MyTextField {
+                id: landingsField
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                placeholderText: "1"
+                inputMethodHints: Qt.ImhDigitsOnly
+                validator: IntValidator { bottom: 0; top: 99 }
             }
 
             // Separator

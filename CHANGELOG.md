@@ -1,6 +1,12 @@
 # Changelog
 
-## [3.2.1] - 2026-04-xx
+## [3.2.2] - 2026-04-xx
+
+### Added
+- Improve NOTAM classification. (#638)
+
+
+## [3.2.1] - 2026-04-19
 
 ### Added
 - Improve NOTAM classification. (#629)

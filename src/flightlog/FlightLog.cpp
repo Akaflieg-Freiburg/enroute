@@ -111,6 +111,16 @@ void Flightlog::FlightLog::setTrackRecording(bool enabled)
     emit trackRecordingChanged();
 }
 
+void Flightlog::FlightLog::setShowCurrentFlightTrace(bool enabled)
+{
+    if (m_showCurrentFlightTrace == enabled) {
+        return;
+    }
+    m_showCurrentFlightTrace = enabled;
+    emit showCurrentFlightTraceChanged();
+    emit displayedTrackPathChanged();
+}
+
 
 void Flightlog::FlightLog::removeFlight(int index)
 {
@@ -272,7 +282,12 @@ auto Flightlog::FlightLog::displayedTrackPath() const -> QList<QGeoCoordinate>
         return m_displayedTrackPath;
     }
 
-    // Otherwise return the live recording track (empty if not recording)
+    // Otherwise return the live recording track when enabled
+    if (!m_showCurrentFlightTrace) {
+        return {};
+    }
+
+    // Live recording track (empty if not recording)
     return m_recorder.trackGeoPath();
 }
 

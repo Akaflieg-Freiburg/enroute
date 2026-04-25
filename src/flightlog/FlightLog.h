@@ -119,6 +119,15 @@ public:
     [[nodiscard]] auto trackRecording() const -> bool { return m_trackRecording; }
     void setTrackRecording(bool enabled);
 
+    /*! \brief Whether the live trace of the current flight is shown on map
+     *
+     *  When true, the current in-memory live track is exposed through
+     *  displayedTrackPath while no saved track is selected. Default is true.
+     */
+    Q_PROPERTY(bool showCurrentFlightTrace READ showCurrentFlightTrace WRITE setShowCurrentFlightTrace NOTIFY showCurrentFlightTraceChanged)
+    [[nodiscard]] auto showCurrentFlightTrace() const -> bool { return m_showCurrentFlightTrace; }
+    void setShowCurrentFlightTrace(bool enabled);
+
 
     //
     // Methods
@@ -249,6 +258,9 @@ signals:
     /*! \brief Notifier signal */
     void trackRecordingChanged();
 
+    /*! \brief Notifier signal */
+    void showCurrentFlightTraceChanged();
+
     /*! \brief Emitted when a takeoff is detected
      *
      *  @param time The takeoff time as a human-readable UTC string (HH:mm)
@@ -312,6 +324,9 @@ private:
 
     // Whether track recording is enabled
     bool m_trackRecording {true};
+
+    // Whether live trace of current flight is shown on map
+    bool m_showCurrentFlightTrace {true};
 
     // The active flight detector (owned by this object)
     FlightDetector* m_detector {nullptr};

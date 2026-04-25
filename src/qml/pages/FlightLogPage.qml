@@ -84,6 +84,17 @@ Page {
                 cascade: true
 
                 MenuItem {
+                    text: qsTr("Hide Track from Map")
+                    enabled: FlightLog.displayedTrackIndex >= 0
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        FlightLog.hideTrack()
+                    }
+                }
+
+                MenuItem {
                     text: qsTr("Clear Flight Log")
                     enabled: FlightLog.count > 0
 
@@ -117,6 +128,38 @@ Page {
             }
         }
 
+        // Track recording toggle
+        SwitchDelegate {
+            id: trackRecordingSwitch
+
+            Layout.fillWidth: true
+
+            text: qsTr("Record GPS track")
+            enabled: autoDetectSwitch.checked
+            checked: autoDetectSwitch.checked && FlightLog.trackRecording
+
+            onToggled: {
+                PlatformAdaptor.vibrateBrief()
+                FlightLog.trackRecording = checked
+            }
+        }
+
+        // Live trace visibility toggle
+        SwitchDelegate {
+            id: liveTraceSwitch
+
+            Layout.fillWidth: true
+
+            text: qsTr("Show live flight trace on map")
+            enabled: trackRecordingSwitch.checked
+            checked: trackRecordingSwitch.checked && FlightLog.showCurrentFlightTrace
+
+            onToggled: {
+                PlatformAdaptor.vibrateBrief()
+                FlightLog.showCurrentFlightTrace = checked
+            }
+        }
+
         // Detection status indicator
         Label {
             id: detectionStatusLabel
@@ -139,9 +182,12 @@ Page {
                 case FlightDetector.TakeoffPhase:
                     return "✈ " + qsTr("Takeoff detected — confirming altitude…")
                 case FlightDetector.InFlight:
-                    return "✈ " + qsTr("In flight — recording…")
+                    return "✈ " + (FlightLog.trackRecording
+                        ? qsTr("In flight — recording…")
+                        : qsTr("In flight"))
                 case FlightDetector.LandingPhase:
                     return "✈ " + qsTr("Landing detected — confirming…")
+                case FlightDetector.Idle:
                 default:
                     return ""
                 }

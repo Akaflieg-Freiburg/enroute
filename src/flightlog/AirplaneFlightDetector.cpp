@@ -70,7 +70,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         }
 
         // Near airfield and speed above threshold → enter takeoff phase
-        m_pendingDepartureICAO = closestAD.ICAOCode();
+        m_pendingDepartureICAO = closestAD.shortName();
         m_pendingDepartureCoordinate = closestAD.coordinate();
         m_pendingDepartureElevation = Units::Distance::fromM(closestAD.coordinate().altitude());
         m_pendingStartTime = info.timestamp();
@@ -143,7 +143,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
             QGeoCoordinate arrivalCoordinate;
             auto closestAD = FlightLog::nearestAirfield(info.coordinate());
             if (closestAD.isValid()) {
-                arrivalICAO = closestAD.ICAOCode();
+                arrivalICAO = closestAD.shortName();
                 arrivalCoordinate = closestAD.coordinate();
             }
             auto landingCount = m_landingCount;
@@ -179,16 +179,16 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
                     m_landingPhaseEntryTime = {};
                     m_landingCount = 0;
                     emit detectionStateChanged();
-                    emit landingDetected(closestAD2.ICAOCode(), closestAD2.coordinate(), landingTime, landingCount, timeStr);
+                    emit landingDetected(closestAD2.shortName(), closestAD2.coordinate(), landingTime, landingCount, timeStr);
 
                     // Start a new leg from the touch-and-go airport
                     Flight newLeg;
-                    newLeg.setDepartureICAO(closestAD2.ICAOCode());
+                    newLeg.setDepartureICAO(closestAD2.shortName());
                     newLeg.setDepartureCoordinate(closestAD2.coordinate());
                     newLeg.setStartTime(landingTime);
                     newLeg.setAircraftCallsign(GlobalObject::navigator()->aircraft().name());
 
-                    m_pendingDepartureICAO = closestAD2.ICAOCode();
+                    m_pendingDepartureICAO = closestAD2.shortName();
                     m_pendingDepartureCoordinate = closestAD2.coordinate();
                     m_pendingDepartureElevation = elev;
                     m_pendingStartTime = landingTime;
@@ -222,7 +222,7 @@ void Flightlog::AirplaneFlightDetector::endFlight()
         if (info.isValid()) {
             auto closestAD = FlightLog::nearestAirfield(info.coordinate());
             if (closestAD.isValid()) {
-                arrivalICAO = closestAD.ICAOCode();
+                arrivalICAO = closestAD.shortName();
                 arrivalCoordinate = closestAD.coordinate();
             }
         }

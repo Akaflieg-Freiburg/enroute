@@ -62,33 +62,22 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
         results << callSign();
     }
 
+    // Show aircraft type only when no specific icon exists (generic triangle is used)
     switch(type()) {
     case Traffic::Aircraft:
-        results << tr("Aircraft");
-        break;
+    case Traffic::Balloon:
+    case Traffic::Copter:
+    case Traffic::Drone:
+    case Traffic::Glider:
+    case Traffic::HangGlider:
+    case Traffic::Jet:
+    case Traffic::Paraglider:
+        break; // icon conveys the type
     case Traffic::Airship:
         results << tr("Airship");
         break;
-    case Traffic::Balloon:
-        results << tr("Balloon");
-        break;
-    case Traffic::Copter:
-        results << tr("Copter");
-        break;
-    case Traffic::Drone:
-        results << tr("Drone");
-        break;
-    case Traffic::Glider:
-        results << tr("Glider");
-        break;
-    case Traffic::HangGlider:
-        results << tr("Hang glider");
-        break;
-    case Traffic::Jet:
-        results << tr("Jet");
-        break;
-    case Traffic::Paraglider:
-        results << tr("Paraglider");
+    case Traffic::TowPlane:
+        results << tr("Tow Plane");
         break;
     case Traffic::Skydiver:
         results << tr("Skydiver");
@@ -96,11 +85,8 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
     case Traffic::StaticObstacle:
         results << tr("Static Obstacle");
         break;
-    case Traffic::TowPlane:
-        results << tr("Tow Plane");
-        break;
     default:
-        results << tr("Traffic");
+        // Default: Show no type information, previously we showed "Traffic".
         break;
     }
 

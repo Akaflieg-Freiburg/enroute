@@ -61,13 +61,13 @@ MapQuickItem {
         Image {
             id: image
 
+            width: 30
+            height: 30
             x: -width/2.0
             y: -height/2.0
 
             source: trafficInfo.icon
 
-            sourceSize.width: 30
-            sourceSize.height: 30
         }
     }
 }

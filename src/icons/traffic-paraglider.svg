@@ -1,31 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <title>para_glider</title>
+  <path stroke="black" stroke-width="10" d="M 64.12 88.32 L 54.31 111.71 L 78.1 104.69 L 83.18 78.52 Z"/>
+  <path stroke="black" stroke-width="10" d="M 116.82 78.52 L 121.9 104.69 L 145.69 111.71 L 135.88 88.32 Z"/>
+  <path stroke="black" stroke-width="10" d="M30,115.05v.11c0,1.82,2.09,3.1,4.09,2.51l11.33-3.34,8.77-20.91-15,7.72C33.49,104.07,30,109.35,30,115.05Z"/>
+  <path stroke="black" stroke-width="10" d="M160.82,101.14l-15-7.72,8.77,20.91,11.33,3.34c2,.59,4.09-.69,4.09-2.51v-.11C170,109.35,166.51,104.07,160.82,101.14Z"/>
+  <path stroke="black" stroke-width="10" d="M107,100.31l7,2-5.38-27.73a27,27,0,0,0-17.28,0L86,102.36l7-2A25,25,0,0,1,107,100.31Z"/>
+  <path stroke="black" stroke-width="10" d="M117.32,116.26H82.68c-2.42,0-4.39,2.36-4.39,5.26s2,5.27,4.39,5.27h34.64c2.42,0,4.39-2.36,4.39-5.27S119.74,116.26,117.32,116.26Z"/>
 
-<svg
-   width="50mm"
-   height="50mm"
-   viewBox="0 0 50 50">
+  <path stroke="white" stroke-width="8" d="M 64.12 88.32 L 54.31 111.71 L 78.1 104.69 L 83.18 78.52 Z"/>
+  <path stroke="white" stroke-width="8" d="M 116.82 78.52 L 121.9 104.69 L 145.69 111.71 L 135.88 88.32 Z"/>
+  <path stroke="white" stroke-width="8" d="M30,115.05v.11c0,1.82,2.09,3.1,4.09,2.51l11.33-3.34,8.77-20.91-15,7.72C33.49,104.07,30,109.35,30,115.05Z"/>
+  <path stroke="white" stroke-width="8" d="M160.82,101.14l-15-7.72,8.77,20.91,11.33,3.34c2,.59,4.09-.69,4.09-2.51v-.11C170,109.35,166.51,104.07,160.82,101.14Z"/>
+  <path stroke="white" stroke-width="8" d="M107,100.31l7,2-5.38-27.73a27,27,0,0,0-17.28,0L86,102.36l7-2A25,25,0,0,1,107,100.31Z"/>
+  <path stroke="white" stroke-width="8" d="M117.32,116.26H82.68c-2.42,0-4.39,2.36-4.39,5.26s2,5.27,4.39,5.27h34.64c2.42,0,4.39-2.36,4.39-5.27S119.74,116.26,117.32,116.26Z"/>
 
-  <!-- Top-down paraglider: wide elliptical ram-air canopy + lines + pilot -->
-  <!-- Canopy: wide curved wing shape seen from above -->
-  <path d="M3 14 C3 8 15 4 25 4 C35 4 47 8 47 14 C47 20 35 22 25 22 C15 22 3 20 3 14 Z"
-	style="fill:none;stroke:#000000;stroke-width:4"/>
-  <path d="M3 14 C3 8 15 4 25 4 C35 4 47 8 47 14 C47 20 35 22 25 22 C15 22 3 20 3 14 Z"
-	style="fill:none;stroke:#ffffff;stroke-width:2"/>
-  <path d="M3 14 C3 8 15 4 25 4 C35 4 47 8 47 14 C47 20 35 22 25 22 C15 22 3 20 3 14 Z"
-	style="fill:pink;stroke:none"/>
-  <!-- Cell ribs on canopy -->
-  <path d="M13 6.5 L13 21 M19 5.2 L19 22 M25 4.5 L25 22 M31 5.2 L31 22 M37 6.5 L37 21"
-	style="fill:none;stroke:#000000;stroke-width:1.2;stroke-opacity:0.5"/>
-  <!-- Suspension lines -->
-  <path d="M10 18 L23 38 M25 22 L25 38 M40 18 L27 38"
-	style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round"/>
-  <path d="M10 18 L23 38 M25 22 L25 38 M40 18 L27 38"
-	style="fill:none;stroke:#ffffff;stroke-width:1;stroke-linecap:round"/>
-  <!-- Pilot -->
-  <circle cx="25" cy="40" r="5"
-	style="fill:none;stroke:#000000;stroke-width:4"/>
-  <circle cx="25" cy="40" r="5"
-	style="fill:none;stroke:#ffffff;stroke-width:2"/>
-  <circle cx="25" cy="40" r="5"
-	style="fill:pink;stroke:none"/>
+  <path fill="pink" d="M 64.12 88.32 L 54.31 111.71 L 78.1 104.69 L 83.18 78.52 Z"/>
+  <path fill="pink" d="M 116.82 78.52 L 121.9 104.69 L 145.69 111.71 L 135.88 88.32 Z"/>
+  <path fill="pink" d="M30,115.05v.11c0,1.82,2.09,3.1,4.09,2.51l11.33-3.34,8.77-20.91-15,7.72C33.49,104.07,30,109.35,30,115.05Z"/>
+  <path fill="pink" d="M160.82,101.14l-15-7.72,8.77,20.91,11.33,3.34c2,.59,4.09-.69,4.09-2.51v-.11C170,109.35,166.51,104.07,160.82,101.14Z"/>
+  <path fill="pink" d="M107,100.31l7,2-5.38-27.73a27,27,0,0,0-17.28,0L86,102.36l7-2A25,25,0,0,1,107,100.31Z"/>
+  <path fill="pink" d="M117.32,116.26H82.68c-2.42,0-4.39,2.36-4.39,5.26s2,5.27,4.39,5.27h34.64c2.42,0,4.39-2.36,4.39-5.27S119.74,116.26,117.32,116.26Z"/>
+
 </svg>

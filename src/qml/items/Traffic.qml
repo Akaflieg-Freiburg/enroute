@@ -61,8 +61,8 @@ MapQuickItem {
         Image {
             id: image
 
-            width: 30
-            height: 30
+            width: 60
+            height: 60
             x: -width/2.0
             y: -height/2.0
 

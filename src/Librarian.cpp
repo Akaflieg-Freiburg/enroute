@@ -315,7 +315,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += u"<p>"_s
-                  + tr("For most airfields and navaids, the waypoint info dialog now shows the magnetic variation.")
+                  + tr("The moving map now shows specialized icons for the various traffic types.")
                   + u"</p>"_s;
         result += u"<p>"_s
                   + tr("There are now specialized icons for obstacle NOTAMs and NOTAMs about drone flights. We thank Christian Engelhardt for the implementation!")

@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.3] - 2026-xx
+
+### Added
+- In moving map, use different for different types of traffic.
+
+- Avoid showing traffic twice.
+
+
 ## [3.2.2] - 2026-04-22
 
 ### Added

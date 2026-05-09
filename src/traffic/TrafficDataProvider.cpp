@@ -383,7 +383,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
     // Check if the traffic is one of the known factors.
     for(auto* target : std::as_const(m_trafficObjects))
     {
-        if (factor.ID() == target->ID())
+        if (factor.ID().right(6) == target->ID().right(6))
         {
             // Replace the entry by the factor.
             target->setAnimate(true);

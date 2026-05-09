@@ -63,6 +63,7 @@ MapQuickItem {
 
             width: 40
             height: 40
+            fillMode: Image.PreserveAspectFit
             x: -width/2.0
             y: -height/2.0
 

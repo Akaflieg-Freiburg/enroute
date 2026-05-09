@@ -194,7 +194,7 @@ void Traffic::TrafficFactor_WithPosition::updateIcon()
     }
     QString svgContent = QString::fromUtf8(svgFile.readAll());
     const QString fillColor = colorMap.value(color(), QStringLiteral("#a00000"));
-    svgContent.replace(QStringLiteral("#ffc0cb"), fillColor);
+    svgContent.replace(QStringLiteral("#000040"), fillColor);
     auto newIcon = u"data:image/svg+xml;base64,"_s
                    + QString::fromLatin1(svgContent.toUtf8().toBase64());
     iconCache.insert(cacheKey, newIcon);

@@ -40,6 +40,8 @@ namespace Traffic {
  *  The length of the lifetime is specified in the constant "lifeTime". You can (re)start an object's lifetime
  *  startLiveTime(). Once the life-time of an object is expired, the property "valid" will alway contain
  *  the word "false", regardless of the object's other properties.
+ *
+ *  Classes that inherit from TrafficFactor_Abstract need to provide a binding for the property 'description'.
  */
 
 class TrafficFactor_Abstract : public QObject {
@@ -80,7 +82,6 @@ public:
         setID(other.ID());
         setType(other.type());
         setVDist(other.vDist());
-        updateDescription();
     }
 
     /*! \brief Estimates if this traffic object has higher priority than other
@@ -163,7 +164,7 @@ public:
      *  traffic. This is a rich-text string of the form "Glider<br>+15 0m" or
      *  "Airship<br>Position unknown<br>-45 ft".
      */
-    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
+    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged BINDABLE bindableDescription)
 
     /*! \brief Horizontal distance from own position to the traffic, at the time of report
      *
@@ -179,7 +180,7 @@ public:
      *  the FLARM device that reported the traffic. This can be the FLARM ID, or
      *  an empty string if no meaningful ID can be assigned.
      */
-    Q_PROPERTY(QString ID READ ID WRITE setID NOTIFY IDChanged)
+    Q_PROPERTY(QString ID READ ID WRITE setID NOTIFY IDChanged BINDABLE bindableID)
 
     /*! \brief Indicates relevant traffic
      *
@@ -275,10 +276,13 @@ public:
      *
      *  @returns Property description
      */
-    [[nodiscard]] QString description() const
-    {
-        return m_description;
-    }
+    [[nodiscard]] QString description() const {return m_description.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property description
+     */
+    [[nodiscard]] QBindable<QString> bindableDescription() const {return &m_description;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -296,10 +300,13 @@ public:
      *
      *  @returns Property ID
      */
-    [[nodiscard]] QString ID() const
-    {
-        return m_ID;
-    }
+    [[nodiscard]] QString ID() const {return m_ID.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property ID
+     */
+    [[nodiscard]] QBindable<QString> bindableID() const {return &m_ID;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -414,13 +421,7 @@ public:
      *
      *  @param newID Property ID
      */
-    void setID(const QString& newID) {
-        if (m_ID == newID) {
-            return;
-        }
-        m_ID = newID;
-        emit IDChanged();
-    }
+    void setID(const QString& newID) {m_ID = newID;}
 
     /*! \brief Setter function for property with the same name
      *
@@ -493,12 +494,7 @@ protected:
     void dispatchUpdateValid();
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, bool, m_valid, false, &Traffic::TrafficFactor_Abstract::validChanged);
 
-    // Setter function for the property "description". This function is virtual and must not be
-    // called or accessed from the constructor. For this reason, we have a special function
-    // "dispatchUpdateDescription", which whose address is already known to the constructor.
-    virtual void updateDescription();
-    void dispatchUpdateDescription();
-    QString m_description;
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, QString, m_description, &Traffic::TrafficFactor_Abstract::descriptionChanged);
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_Abstract)
@@ -511,7 +507,7 @@ private:
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, QString, m_callSign, QString(), &Traffic::TrafficFactor_Abstract::callSignChanged);
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, QString, m_color, QStringLiteral("red"), &Traffic::TrafficFactor_Abstract::colorChanged);
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_hDist, &Traffic::TrafficFactor_Abstract::hDistChanged);
-    QString m_ID;
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, QString, m_ID, &Traffic::TrafficFactor_Abstract::IDChanged);
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, Traffic::AircraftType, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);
     QProperty<bool> m_relevant {false};
     QProperty<QString> m_relevantString;

@@ -31,9 +31,6 @@ using namespace Qt::Literals::StringLiterals;
 
 Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent) : TrafficFactor_Abstract(parent)
 {  
-    // Bindings for property description
-    connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::dispatchUpdateDescription);
-
     // Bindings for property icon
     connect(this, &Traffic::TrafficFactor_Abstract::colorChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
     connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
@@ -41,6 +38,73 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
     // Bindings for property valid
     connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::dispatchUpdateValid);
+
+    m_description.setBinding([this]() {
+        QStringList results;
+
+        if (!callSign().isEmpty())
+        {
+            results << callSign();
+        }
+
+        // Show aircraft type only when no specific icon exists (generic triangle is used)
+        switch(type())
+        {
+        case Traffic::Aircraft:
+        case Traffic::Balloon:
+        case Traffic::Copter:
+        case Traffic::Drone:
+        case Traffic::Glider:
+        case Traffic::HangGlider:
+        case Traffic::Jet:
+        case Traffic::Paraglider:
+            break; // icon conveys the type
+        case Traffic::Airship:
+            results << tr("Airship");
+            break;
+        case Traffic::TowPlane:
+            results << tr("Tow Plane");
+            break;
+        case Traffic::Skydiver:
+            results << tr("Skydiver");
+            break;
+        case Traffic::StaticObstacle:
+            results << tr("Static Obstacle");
+            break;
+        default:
+            // Default: Show no type information, previously we showed "Traffic".
+            break;
+        }
+
+        if (!positionInfo().coordinate().isValid())
+        {
+            results << tr("Position unknown");
+        }
+
+        if (vDist().isFinite())
+        {
+            QString result = GlobalObject::navigator()->aircraft().verticalDistanceToString(vDist(), true);
+            auto climbRateMPS = m_positionInfo.verticalSpeed().toMPS();
+            if (qIsFinite(climbRateMPS))
+            {
+                if (climbRateMPS < -1.0)
+                {
+                    result += QStringLiteral(" ↘");
+                }
+                if ((climbRateMPS >= -1.0) && (climbRateMPS <= +1.0))
+                {
+                    result += QStringLiteral(" →");
+                }
+                if (climbRateMPS > 1.0) {
+                    result += QStringLiteral(" ↗");
+                }
+            }
+            results << result;
+        }
+
+        return results.join(u"<br>");
+    });
+
 }
 
 
@@ -51,73 +115,6 @@ void Traffic::TrafficFactor_WithPosition::setPositionInfo(const Positioning::Pos
     }
     m_positionInfo = newPositionInfo;
     emit positionInfoChanged();
-}
-
-
-void Traffic::TrafficFactor_WithPosition::updateDescription()
-{
-    QStringList results;
-
-    if (!callSign().isEmpty()) {
-        results << callSign();
-    }
-
-    // Show aircraft type only when no specific icon exists (generic triangle is used)
-    switch(type()) {
-    case Traffic::Aircraft:
-    case Traffic::Balloon:
-    case Traffic::Copter:
-    case Traffic::Drone:
-    case Traffic::Glider:
-    case Traffic::HangGlider:
-    case Traffic::Jet:
-    case Traffic::Paraglider:
-        break; // icon conveys the type
-    case Traffic::Airship:
-        results << tr("Airship");
-        break;
-    case Traffic::TowPlane:
-        results << tr("Tow Plane");
-        break;
-    case Traffic::Skydiver:
-        results << tr("Skydiver");
-        break;
-    case Traffic::StaticObstacle:
-        results << tr("Static Obstacle");
-        break;
-    default:
-        // Default: Show no type information, previously we showed "Traffic".
-        break;
-    }
-
-    if (!positionInfo().coordinate().isValid()) {
-        results << tr("Position unknown");
-    }
-
-    if (vDist().isFinite()) {       
-        QString result = GlobalObject::navigator()->aircraft().verticalDistanceToString(vDist(), true);
-        auto climbRateMPS = m_positionInfo.verticalSpeed().toMPS();
-        if ( qIsFinite(climbRateMPS) ) {
-            if (climbRateMPS < -1.0) {
-                result += QStringLiteral(" ↘");
-            }
-            if ((climbRateMPS >= -1.0) && (climbRateMPS <= +1.0)) {
-                result += QStringLiteral(" →");
-            }
-            if (climbRateMPS > 1.0) {
-                result += QStringLiteral(" ↗");
-            }
-        }
-        results << result;
-    }
-
-    // Set property value
-    auto newDescription = results.join(u"<br>");
-    if (m_description == newDescription) {
-        return;
-    }
-    m_description = newDescription;
-    emit descriptionChanged();
 }
 
 

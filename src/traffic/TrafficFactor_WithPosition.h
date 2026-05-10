@@ -119,9 +119,6 @@ signals:
 
 
 protected:
-    // See documentation in base class
-    void updateDescription() override;
-
     // Updates property icon
     void updateIcon();
 

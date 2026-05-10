@@ -18,9 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "GlobalObject.h"
-#include "navigation/Navigator.h"
 #include "traffic/TrafficFactor_Abstract.h"
+
+
+using namespace Qt::Literals::StringLiterals;
 
 
 Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObject(parent)
@@ -40,11 +41,6 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
         }
         return u"red"_s;
     });
-
-    // Binding for property description
-    connect(this, &Traffic::TrafficFactor_Abstract::callSignChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);
-    connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);
-    connect(this, &Traffic::TrafficFactor_Abstract::vDistChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);
 
     // Bindings for property valid
     connect(&lifeTimeCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
@@ -112,12 +108,6 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
 }
 
 
-void Traffic::TrafficFactor_Abstract::dispatchUpdateDescription()
-{
-    updateDescription();
-}
-
-
 void Traffic::TrafficFactor_Abstract::dispatchUpdateValid()
 {
     updateValid();
@@ -176,76 +166,6 @@ void Traffic::TrafficFactor_Abstract::startLiveTime()
     lifeTimeCounter.start();
     updateValid();
 
-}
-
-
-void Traffic::TrafficFactor_Abstract::updateDescription()
-{
-    QStringList results;
-
-    // CallSign
-    if (!callSign().isEmpty()) {
-        results << callSign();
-    }
-
-    // Aircraft type
-    switch(type()) {
-    case Aircraft:
-        results << tr("Aircraft");
-        break;
-    case Airship:
-        results << tr("Airship");
-        break;
-    case Balloon:
-        results << tr("Balloon");
-        break;
-    case Copter:
-        results << tr("Copter");
-        break;
-    case Drone:
-        results << tr("Drone");
-        break;
-    case Glider:
-        results << tr("Glider");
-        break;
-    case HangGlider:
-        results << tr("Hang glider");
-        break;
-    case Jet:
-        results << tr("Jet");
-        break;
-    case Paraglider:
-        results << tr("Paraglider");
-        break;
-    case Skydiver:
-        results << tr("Skydiver");
-        break;
-    case StaticObstacle:
-        results << tr("Static Obstacle");
-        break;
-    case TowPlane:
-        results << tr("Tow Plane");
-        break;
-    default:
-        results << tr("Traffic");
-        break;
-    }
-
-    // Position
-    results << tr("Position unknown");
-
-    // Vertical distance
-    if (vDist().isFinite()) {
-        results << GlobalObject::navigator()->aircraft().verticalDistanceToString(vDist(), true);
-    }
-
-    // Set property value
-    auto newDescription = results.join(u"<br>");
-    if (m_description == newDescription) {
-        return;
-    }
-    m_description = newDescription;
-    emit descriptionChanged();
 }
 
 

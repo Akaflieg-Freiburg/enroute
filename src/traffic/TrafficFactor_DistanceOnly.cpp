@@ -20,6 +20,7 @@
 
 #include <GlobalSettings.h>
 
+#include "navigation/Navigator.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
 
 
@@ -27,6 +28,69 @@ Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent)
 {  
     // Bindings for property valid
     connect(this, &Traffic::TrafficFactor_DistanceOnly::coordinateChanged, this, &Traffic::TrafficFactor_DistanceOnly::dispatchUpdateValid);
+
+    m_description.setBinding([this]() {
+        QStringList results;
+
+        // CallSign
+        if (!callSign().isEmpty()) {
+            results << callSign();
+        }
+
+        // Aircraft type
+        switch(type()) {
+        case Aircraft:
+            results << tr("Aircraft");
+            break;
+        case Airship:
+            results << tr("Airship");
+            break;
+        case Balloon:
+            results << tr("Balloon");
+            break;
+        case Copter:
+            results << tr("Copter");
+            break;
+        case Drone:
+            results << tr("Drone");
+            break;
+        case Glider:
+            results << tr("Glider");
+            break;
+        case HangGlider:
+            results << tr("Hang glider");
+            break;
+        case Jet:
+            results << tr("Jet");
+            break;
+        case Paraglider:
+            results << tr("Paraglider");
+            break;
+        case Skydiver:
+            results << tr("Skydiver");
+            break;
+        case StaticObstacle:
+            results << tr("Static Obstacle");
+            break;
+        case TowPlane:
+            results << tr("Tow Plane");
+            break;
+        default:
+            results << tr("Traffic");
+            break;
+        }
+
+        // Position
+        results << tr("Position unknown");
+
+        // Vertical distance
+        if (vDist().isFinite()) {
+            results << GlobalObject::navigator()->aircraft().verticalDistanceToString(vDist(), true);
+        }
+
+        return results.join(u"<br>");
+    });
+
 }
 
 

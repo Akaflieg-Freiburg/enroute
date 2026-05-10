@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,8 +23,8 @@
 #include <QObjectBindableProperty>
 #include <QTimer>
 
-#include "units/Distance.h"
 #include "TrafficFactorAircraftType.h"
+#include "units/Distance.h"
 
 using namespace std::chrono_literals;
 
@@ -38,7 +38,7 @@ namespace Traffic {
  *
  *  Since the real-world traffic situation changes continuously, instances of this class have a limited lifetime.
  *  The length of the lifetime is specified in the constant "lifeTime". You can (re)start an object's lifetime
- *  startLiveTime(). Once the lift-time of an object is expired, the property "valid" will alway contain
+ *  startLiveTime(). Once the life-time of an object is expired, the property "valid" will alway contain
  *  the word "false", regardless of the object's other properties.
  */
 
@@ -57,6 +57,7 @@ public:
 
     // Standard destructor
     ~TrafficFactor_Abstract() override = default;
+
 
     //
     // Methods
@@ -95,7 +96,7 @@ public:
      *
      * @returns Boolean with the result
      */
-    [[nodiscard]] auto hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const -> bool;
+    [[nodiscard]] bool hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const;
 
     /*! \brief Starts or extends the lifetime of this object
      *
@@ -138,13 +139,13 @@ public:
      *  the position change of an aircraft.  It is typically set to "false" before data of a new
      *  aircraft set.
      */
-    Q_PROPERTY(bool animate READ animate WRITE setAnimate NOTIFY animateChanged)
+    Q_PROPERTY(bool animate READ animate WRITE setAnimate NOTIFY animateChanged BINDABLE bindableAnimate)
 
     /*! \brief Call sign
      *
      *  If known, this property holds the call sign of the traffic.  Otherwise, it contains an empty string
      */
-    Q_PROPERTY(QString callSign READ callSign WRITE setCallSign NOTIFY callSignChanged)
+    Q_PROPERTY(QString callSign READ callSign WRITE setCallSign NOTIFY callSignChanged BINDABLE bindableCallSign)
 
     /*! \brief Suggested color for GUI representation of the traffic
      *
@@ -154,7 +155,7 @@ public:
      *  - alarmLevel == 1: yellow
      *  - alarmLevel >= 2: red
      */
-    Q_PROPERTY(QString color READ color NOTIFY colorChanged)
+    Q_PROPERTY(QString color READ color NOTIFY colorChanged BINDABLE bindableColor)
 
     /*! \brief Description of the traffic, for use in GUI
      *
@@ -187,7 +188,10 @@ public:
      */
     Q_PROPERTY(bool relevant READ relevant BINDABLE bindableRelevant)
 
-    /*! \brief Translated string containing the 'relevant' property */
+    /*! \brief Translated string containing the 'relevant' property
+     *
+     *  The content of the string is a translated version of "Relevant Traffic" or "Irrelevant Traffic".
+     */
     Q_PROPERTY(QString relevantString READ relevantString BINDABLE bindableRelevantString)
 
     /*! \brief Type of aircraft, as reported by the traffic receiver */
@@ -235,40 +239,43 @@ public:
      *
      *  @returns Property animate
      */
-    [[nodiscard]] auto animate() const -> bool
-    {
-        return m_animate;
-    }
+    [[nodiscard]] bool animate() const {return m_animate.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property animate
+     */
+    [[nodiscard]] QBindable<bool> bindableAnimate() {return &m_animate;}
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property callSign
      */
-    [[nodiscard]] auto callSign() const -> QString
-    {
-        return m_callSign;
-    }
+    [[nodiscard]] QString callSign() const {return m_callSign.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property callSign
+     */
+    [[nodiscard]] QBindable<QString> bindableCallSign() const {return &m_callSign;}
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property color
      */
-    [[nodiscard]] auto color() const -> QString
-    {
-        if (m_alarmLevel == 0) {
-            return QStringLiteral("green");
-        }
-        if (m_alarmLevel == 1) {
-            return QStringLiteral("yellow");
-        }
-        return QStringLiteral("red");
-    }
+    [[nodiscard]] QString color() const {return m_color.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property color
+     */
+    [[nodiscard]] QBindable<QString> bindableColor() const {return &m_color;}
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property description
      */
-    [[nodiscard]] auto description() const -> QString
+    [[nodiscard]] QString description() const
     {
         return m_description;
     }
@@ -289,7 +296,7 @@ public:
      *
      *  @returns Property ID
      */
-    [[nodiscard]] auto ID() const -> QString
+    [[nodiscard]] QString ID() const
     {
         return m_ID;
     }
@@ -389,25 +396,13 @@ public:
      *
      *  @param newAnimate Property animate
      */
-    void setAnimate(bool newAnimate) {
-        if (m_animate == newAnimate) {
-            return;
-        }
-        m_animate = newAnimate;
-        emit animateChanged();
-    }
+    void setAnimate(bool newAnimate) {m_animate = newAnimate;}
 
     /*! \brief Setter function for property with the same name
      *
      *  @param newCallSign Property callSign
      */
-    void setCallSign(const QString& newCallSign) {
-        if (m_callSign == newCallSign) {
-            return;
-        }
-        m_callSign = newCallSign;
-        emit callSignChanged();
-    }
+    void setCallSign(const QString& newCallSign) {m_callSign = newCallSign;}
 
     /*! \brief Setter function for property with the same name
      *
@@ -512,9 +507,9 @@ private:
     // Property values
     //
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, int, m_alarmLevel, 0, &Traffic::TrafficFactor_Abstract::alarmLevelChanged);
-    bool m_animate {false};
-    QString m_callSign;
-    QString m_color{QStringLiteral("red")};
+    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, bool, m_animate, false, &Traffic::TrafficFactor_Abstract::animateChanged);
+    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, QString, m_callSign, QString(), &Traffic::TrafficFactor_Abstract::callSignChanged);
+    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, QString, m_color, QStringLiteral("red"), &Traffic::TrafficFactor_Abstract::colorChanged);
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_hDist, &Traffic::TrafficFactor_Abstract::hDistChanged);
     QString m_ID;
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, Traffic::AircraftType, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);

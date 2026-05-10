@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -86,7 +86,7 @@ public:
      *
      *  @returns Property coordinate
      */
-    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
+    [[nodiscard]] QGeoCoordinate coordinate() const
     {
         return m_coordinate;
     }

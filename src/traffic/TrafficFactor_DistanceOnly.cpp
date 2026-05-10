@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 
 #include <GlobalSettings.h>
 

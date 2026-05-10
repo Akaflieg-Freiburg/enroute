@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@ namespace Traffic {
 /*! \brief Traffic factor whose precise position is known
  *
  *  Objects of this class represent traffic factors whose precise position is known.
- *  Other properties of the traffic, such as heading and ground speed, mifght also
+ *  Other properties of the traffic, such as heading and ground speed, might also
  *  be known.  Compared to TrafficFactor_Abstract, instances of this class hold
  *  important additional property, namely the positionInfo for the traffic.
  */
@@ -84,7 +84,7 @@ public:
      *
      *  @returns Property icon
      */
-    [[nodiscard]] auto icon() const -> QString
+    [[nodiscard]] QString icon() const
     {
         return m_icon;
     }
@@ -96,7 +96,7 @@ public:
      *
      *  @returns Property positionInfo
      */
-    [[nodiscard]] auto positionInfo() const -> Positioning::PositionInfo
+    [[nodiscard]] Positioning::PositionInfo positionInfo() const
     {
         return m_positionInfo;
     }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -45,4 +45,5 @@ namespace Traffic {
         TowPlane /*!< Tow plane */
     };
     Q_ENUM_NS(AircraftType) // Register the enum with Qt's meta-object system
-}
+
+} // namespace Traffic

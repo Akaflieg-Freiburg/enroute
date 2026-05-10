@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,7 +29,17 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
     lifeTimeCounter.setInterval(lifeTime);
 
     // Binding for property color
-    connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::colorChanged);
+    m_color.setBinding([this]() {
+        if (m_alarmLevel == 0)
+        {
+            return u"green"_s;
+        }
+        if (m_alarmLevel == 1)
+        {
+            return u"yellow"_s;
+        }
+        return u"red"_s;
+    });
 
     // Binding for property description
     connect(this, &Traffic::TrafficFactor_Abstract::callSignChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);

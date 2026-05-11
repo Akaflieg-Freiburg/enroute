@@ -1,0 +1,4 @@
+### Added
+- In moving map, use different for different types of traffic.
+
+- Avoid showing traffic twice.

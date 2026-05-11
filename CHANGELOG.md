@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.2.3] - 2026-xx
+## [3.3.0] - 2026-05-11
 
 ### Added
 - In moving map, use different for different types of traffic.

@@ -150,7 +150,8 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
             emit requestMapBearingPolicy(1);
             emit requestShowSideView(false);
 
-            auto language = GlobalObject::platformAdaptor()->language();
+            auto language = QLocale::system().name();
+            qWarning() << "lang" << language;
             {
                 if (device == u"phone"_s)
                 {

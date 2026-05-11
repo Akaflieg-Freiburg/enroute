@@ -150,7 +150,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
             emit requestMapBearingPolicy(1);
             emit requestShowSideView(false);
 
-            auto language = QLocale::system().name();
+            auto language = QLocale::system().name().replace(u"_"_s, u"-"_s);
             qWarning() << "lang" << language;
             {
                 if (device == u"phone"_s)
@@ -224,6 +224,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
                 }
+                exit(-1);
 
                 // Approaching EDDS with side view
                 {

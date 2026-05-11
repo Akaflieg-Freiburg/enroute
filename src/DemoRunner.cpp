@@ -182,28 +182,6 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                 const QDir dir;
                 dir.mkpath(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
 
-                // Route on Map
-                {
-                    qWarning() << "… Route on Map";
-                    trafficSimulator->setCoordinate( {48.8, 8.5, Units::Distance::fromFT(0).toM()} );
-                    trafficSimulator->setBarometricHeight( Units::Distance::fromFT(0) );
-                    trafficSimulator->setTT( Units::Angle::fromDEG(0) );
-                    trafficSimulator->setGS( Units::Speed::fromKN(0) );
-
-                    GlobalObject::navigator()->flightRoute()->clear();
-                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTL")) );
-                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("KRH")) );
-                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
-
-                    emit requestZoomLevel(10);
-                    emit requestFollowGPS(true);
-                    emit requestMapBearingPolicy(0);
-                    emit requestMapBearing(0);
-                    delay(8s);
-                    saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
-                    GlobalObject::navigator()->flightRoute()->clear();
-                }
-
                 // Enroute near EDSB
                 {
                     qWarning() << "… En route near EDSB";
@@ -224,7 +202,6 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
                 }
-                exit(-1);
 
                 // Approaching EDDS with side view
                 {

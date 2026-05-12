@@ -41,7 +41,8 @@ namespace Traffic {
  *  startLiveTime(). Once the life-time of an object is expired, the property "valid" will alway contain
  *  the word "false", regardless of the object's other properties.
  *
- *  Classes that inherit from TrafficFactor_Abstract need to provide a binding for the property 'description'.
+ *  Classes that inherit from TrafficFactor_Abstract need to provide a binding for the properties 'description'
+ *  and 'valid'.
  */
 
 class TrafficFactor_Abstract : public QObject {
@@ -82,6 +83,7 @@ public:
         setID(other.ID());
         setType(other.type());
         setVDist(other.vDist());
+#warning need clear criteria when lifeTimer is restartet
     }
 
     /*! \brief Estimates if this traffic object has higher priority than other
@@ -487,14 +489,12 @@ signals:
 
 
 protected:
-    // Setter function for the property valid.  This function is virtual and must not be
-    // called or accessed from the constructor. For this reason, we have a special function
-    // "dispatchUpdateValid", which whose address is already known to the constructor.
-    virtual void updateValid();
-    void dispatchUpdateValid();
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, bool, m_valid, false, &Traffic::TrafficFactor_Abstract::validChanged);
 
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, QString, m_description, &Traffic::TrafficFactor_Abstract::descriptionChanged);
+
+    // Indicates that the instance is valid as an abstract traffic factor
+    QProperty<bool> m_validAbstractTrafficFactor;
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_Abstract)

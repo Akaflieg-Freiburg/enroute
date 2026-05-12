@@ -42,10 +42,10 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
         return u"red"_s;
     });
 
-    // Bindings for property valid
-    connect(&lifeTimeCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
-    connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
-    connect(this, &Traffic::TrafficFactor_Abstract::hDistChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
+    // Binding for property validAbstractTrafficFactor
+    m_validAbstractTrafficFactor.setBinding([this]() {
+        return (m_alarmLevel >= 0) && (m_alarmLevel <= 3) && lifeTimeCounter.isActive() && hDist().isFinite();
+    });
 
     // Binding for property typeString
     m_typeString.setBinding([this]() {
@@ -108,12 +108,6 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
 }
 
 
-void Traffic::TrafficFactor_Abstract::dispatchUpdateValid()
-{
-    updateValid();
-}
-
-
 bool Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const
 {
     // Criterion: Valid instances have higher priority than invalid ones
@@ -162,29 +156,5 @@ bool Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_
 
 void Traffic::TrafficFactor_Abstract::startLiveTime()
 {
-
     lifeTimeCounter.start();
-    updateValid();
-
-}
-
-
-void Traffic::TrafficFactor_Abstract::updateValid()
-{
-    bool newValid = true;
-    if (m_alarmLevel < 0) {
-        newValid = false;
-    }
-    if (m_alarmLevel > 3) {
-        newValid = false;
-    }
-    if (!lifeTimeCounter.isActive()) {
-        newValid = false;
-    }
-    if (!hDist().isFinite()) {
-        newValid = false;
-    }
-
-    // Update property
-    m_valid = newValid;
 }

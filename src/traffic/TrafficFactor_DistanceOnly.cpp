@@ -27,7 +27,9 @@
 Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent) : Traffic::TrafficFactor_Abstract(parent)
 {  
     // Bindings for property valid
-    connect(this, &Traffic::TrafficFactor_DistanceOnly::coordinateChanged, this, &Traffic::TrafficFactor_DistanceOnly::dispatchUpdateValid);
+    m_valid.setBinding([this]() {
+        return m_validAbstractTrafficFactor && coordinate().isValid();
+    });
 
     m_description.setBinding([this]() {
         QStringList results;
@@ -90,19 +92,4 @@ Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent)
 
         return results.join(u"<br>");
     });
-
-}
-
-
-void Traffic::TrafficFactor_DistanceOnly::updateValid()
-{
-    if (!coordinate().isValid()) {
-        if (m_valid) {
-            m_valid = false;
-            emit validChanged();
-        }
-        return;
-    }
-
-    TrafficFactor_Abstract::updateValid();
 }

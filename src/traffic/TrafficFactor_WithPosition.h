@@ -65,7 +65,7 @@ public:
     void copyFrom(const TrafficFactor_WithPosition& other)
     {
         setPositionInfo(other.positionInfo());
-        TrafficFactor_Abstract::copyFrom(other); // This will also call updateDescription
+        TrafficFactor_Abstract::copyFrom(other);
     }
 
 
@@ -78,28 +78,34 @@ public:
      *  Depending on alarm level and movement of the traffic opponent, this
      *  property suggests an icon for GUI representation of the traffic.
      */
-    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged)
+    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged BINDABLE bindableIcon)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property icon
      */
-    [[nodiscard]] QString icon() const
-    {
-        return m_icon;
-    }
+    [[nodiscard]] QString icon() const {return m_icon.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property icon
+     */
+    [[nodiscard]] QBindable<QString> bindableIcon() const {return &m_icon;}
 
     /*! \brief PositionInfo of the traffic */
-    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo WRITE setPositionInfo NOTIFY positionInfoChanged)
+    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo WRITE setPositionInfo NOTIFY positionInfoChanged BINDABLE bindablePositionInfo)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property positionInfo
      */
-    [[nodiscard]] Positioning::PositionInfo positionInfo() const
-    {
-        return m_positionInfo;
-    }
+    [[nodiscard]] Positioning::PositionInfo positionInfo() const {return m_positionInfo.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    [[nodiscard]] QBindable<Positioning::PositionInfo> bindablePositionInfo() const {return &m_positionInfo;}
 
     /*! \brief Setter function for property with the same name
      *
@@ -107,7 +113,7 @@ public:
      *
      *  @param newPositionInfo Property positionInfo
      */
-    void setPositionInfo(const Positioning::PositionInfo& newPositionInfo);
+    void setPositionInfo(const Positioning::PositionInfo& newPositionInfo) {m_positionInfo = newPositionInfo;}
 
 
 signals:
@@ -117,26 +123,14 @@ signals:
     /*! \brief Notifier signal */
     void positionInfoChanged();
 
-
-protected:
-    // Updates property icon
-    void updateIcon();
-
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_WithPosition)
-
-    // Setter function for the property valid. Implementors of this class must bind this to the
-    // notifier signals of all the properties that validity depends on.
-    void updateValid() override;
 
     //
     // Property values
     //
-    QString m_icon;
-    Positioning::PositionInfo m_positionInfo;
-    Units::Distance m_vDist;
-    Units::Distance m_hDist;
-
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, QString, m_icon, &Traffic::TrafficFactor_WithPosition::iconChanged);
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, Positioning::PositionInfo, m_positionInfo, &Traffic::TrafficFactor_WithPosition::positionInfoChanged);
 };
 
 } // namespace Traffic

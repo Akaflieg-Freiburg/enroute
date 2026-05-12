@@ -74,39 +74,31 @@ public:
     // PROPERTIES
     //
 
-
     /*! \brief Center coordinate
      *
      *  This property contains the coordinate of the center of the cylinder
      *  where the traffic is most likely located.
      */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged)
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged BINDABLE bindableCoordinate)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property coordinate
      */
-    [[nodiscard]] QGeoCoordinate coordinate() const
-    {
-        return m_coordinate;
-    }
+    [[nodiscard]] QGeoCoordinate coordinate() const {return m_coordinate.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property coordinate
+     */
+    [[nodiscard]] QBindable<QGeoCoordinate> bindableCoordinate() const {return &m_coordinate;}
 
     /*! \brief Setter function for property with the same name
      *
-     *  Setting a new position info does not update the hDist or vDist properties.
-     *
      *  @param newCoordinate Property coordinate
      */
-    void setCoordinate(const QGeoCoordinate& newCoordinate)
-    {
-        if (m_coordinate == newCoordinate) {
-            return;
-        }
-
-        m_coordinate = newCoordinate;
-        emit coordinateChanged();
-    }
-
+    void setCoordinate(const QGeoCoordinate& newCoordinate) {m_coordinate = newCoordinate;}
+#warning figure out where hDist is actually set!
 
 signals:
     /*! \brief Notifier signal */
@@ -116,14 +108,10 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_DistanceOnly)
 
-    // Setter function for the property valid. Implementors of this class must bind this to the
-    // notifier signals of all the properties that validity depends on.
-    void updateValid() override;
-
     //
     // Property values
     //
-    QGeoCoordinate m_coordinate;
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_DistanceOnly, QGeoCoordinate, m_coordinate, &Traffic::TrafficFactor_DistanceOnly::coordinateChanged);
 };
 
 } // namespace Traffic

@@ -49,9 +49,6 @@ class TrafficFactor_Abstract : public QObject {
     Q_OBJECT
 
 public:
-    /*! \brief Length of lifetime for objects of this class */
-    static constexpr auto lifeTime = 10s;
-
     /*! \brief Default constructor
      *
      * @param parent The standard QObject parent pointer
@@ -441,6 +438,9 @@ public:
     //
     // Constants
     //
+
+    /*! \brief Length of lifetime for objects of this class */
+    static constexpr auto lifeTime = 45s;
 
     /*! \brief Maximal vertical distance for relevant traffic
      *

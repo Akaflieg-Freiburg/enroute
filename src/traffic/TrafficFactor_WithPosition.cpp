@@ -28,17 +28,14 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-// To not store each traffic icon in multiple colors,
-// use a lazy cache keyed by "<shape>-<color>"
-static QHash<QString, QString> iconCache;
+namespace {
+// To not store each traffic icon in multiple colors, use a lazy cache keyed by "<shape>-<color>"
+using StringStringHash = QHash<QString, QString>;
+Q_GLOBAL_STATIC(StringStringHash, iconCache)
 
 // Map alarm color name to hex color code for use with SVG template files
-static const QHash<QString, QString> colorMap =
-    {
-    { QStringLiteral("green"),  QStringLiteral("#00a000") },
-    { QStringLiteral("yellow"), QStringLiteral("#f0f000") },
-    { QStringLiteral("red"),    QStringLiteral("#a00000") },
-    };
+Q_GLOBAL_STATIC(StringStringHash, colorMap, {{ QStringLiteral("green"),  QStringLiteral("#00a000") }, { QStringLiteral("yellow"), QStringLiteral("#f0f000") }, { QStringLiteral("red"),    QStringLiteral("#a00000") }})
+}
 
 Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent) : TrafficFactor_Abstract(parent)
 {
@@ -93,8 +90,8 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
         // Use icon from Cache if exists, e.g. "glider-green" or "copter-red"
         const QString cacheKey = baseType + u'-' + color();
-        const auto cachedIcon = iconCache.constFind(cacheKey);
-        if (cachedIcon != iconCache.constEnd())
+        const auto cachedIcon = iconCache->constFind(cacheKey);
+        if (cachedIcon != iconCache->constEnd())
         {
             return  *cachedIcon;
         }
@@ -107,10 +104,10 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
             return QString();
         }
         QString svgContent = QString::fromUtf8(svgFile.readAll());
-        const QString fillColor = colorMap.value(color(), QStringLiteral("#a00000"));
+        const QString fillColor = colorMap->value(color(), QStringLiteral("#a00000"));
         svgContent.replace(QStringLiteral("#000040"), fillColor);
         auto newIcon = u"data:image/svg+xml;base64,"_s + QString::fromLatin1(svgContent.toUtf8().toBase64());
-        iconCache.insert(cacheKey, newIcon);
+        iconCache->insert(cacheKey, newIcon);
         return newIcon;
     });
 

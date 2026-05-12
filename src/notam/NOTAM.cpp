@@ -33,7 +33,6 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace {
 
-
 // In cancel notams the text starts as "A0029/23 NOTAMC A0027/23"
 Q_GLOBAL_STATIC(QRegularExpression, cancelNotamStart, u"^[A-Z]\\d{4}/\\d{2} NOTAMC [A-Z]\\d{4}/\\d{2}"_s)
 

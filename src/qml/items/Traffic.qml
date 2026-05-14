@@ -31,14 +31,10 @@ MapQuickItem {
     property Map map: ({})
     property var trafficInfo: ({})
 
-    coordinate: trafficInfo.positionInfo.coordinate()
-    Behavior on coordinate {
-        CoordinateAnimation { duration: 1000 }
-        enabled: trafficInfo.animate
-    }
-
+    coordinate: trafficInfo.extrapolatedCoordinate
     visible: trafficInfo.relevant
 
+    /*
     Connections {
         // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
         // is not updated when the height of the map changes. It does get updated when the
@@ -46,10 +42,14 @@ MapQuickItem {
         target: map
         function onHeightChanged() { traffic1MapItem.polishAndUpdate() }
     }
+    */
 
     sourceItem: Item {
         rotation: trafficInfo.positionInfo.trueTrack().isFinite() ? trafficInfo.positionInfo.trueTrack().toDEG()-map.bearing : 0
-
+        Behavior on rotation {
+            RotationAnimation { direction: RotationAnimation.Shortest; duration: 1000 }
+            enabled: trafficInfo.animate
+        }
         FlightVector {
             width: 3
             pixelPerTenKM: map.pixelPer10km

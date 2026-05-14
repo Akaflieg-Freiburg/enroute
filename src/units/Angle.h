@@ -171,14 +171,16 @@ namespace Units {
          */
         [[nodiscard]] Q_INVOKABLE double toDEG() const
         {
-            if (!qIsFinite(m_angleInRAD)) {
+            if (!isFinite())
+            {
                 return qQNaN();
             }
 
             auto d = std::fmod(qRadiansToDegrees(m_angleInRAD), 360.0);
-            if (d > 0) {
+            if (d > 0)
+            {
                 return d;
-}
+            }
             return d+360.0;
         }
 

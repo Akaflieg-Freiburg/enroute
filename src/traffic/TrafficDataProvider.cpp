@@ -34,12 +34,19 @@ using namespace Qt::Literals::StringLiterals;
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     : QObject(parent), m_receivingHeartbeat(false)
 {
+#warning Need to throttle the time interval somehow, depending on OS and whether the app is in the background of foreground
+    auto* l_timer = new QTimer(this);
+    l_timer->setInterval(100);
+    l_timer->start();
+
     // Create traffic objects
     const int numTrafficObjects = 20;
     m_trafficObjects.reserve(numTrafficObjects);
     for(int i = 0; i<numTrafficObjects; i++)
     {
-        auto *trafficObject = new Traffic::TrafficFactor_WithPosition(this);
+        auto* trafficObject = new Traffic::TrafficFactor_WithPosition(this);
+        connect(l_timer, &QTimer::timeout, trafficObject, &Traffic::TrafficFactor_WithPosition::updateExtrapolatedData);
+
         QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
         m_trafficObjects.append( trafficObject );
     }

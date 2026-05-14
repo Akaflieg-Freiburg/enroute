@@ -64,6 +64,10 @@ public:
      */
     void copyFrom(const TrafficFactor_WithPosition& other)
     {
+        if (other.positionInfo().timestamp() < m_positionInfo.value().timestamp())
+        {
+            return;
+        }
         setPositionInfo(other.positionInfo());
         TrafficFactor_Abstract::copyFrom(other);
     }
@@ -73,12 +77,34 @@ public:
     // PROPERTIES
     //
 
+    /*! \brief Extrapolated Coordinate
+     *
+     *  Extrapolated coordinate of the traffic, for use in the GUI. For performance reasons, instances
+     *  of this class do not have their own timer/animation logic to update the property. Instead, the
+     *  property is set whenever the positionInfo changes and whenever the slot
+     *  updatedExtrapolatedData() is called.  The owner of this class (= TrafficDataProvider) is responsible
+     *  to call updatedExtrapolatedData() at regular intervals.
+     */
+    Q_PROPERTY(QGeoCoordinate extrapolatedCoordinate READ extrapolatedCoordinate BINDABLE bindableExtrapolatedCoordinate)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property extrapolatedCoordinate
+     */
+    [[nodiscard]] QGeoCoordinate extrapolatedCoordinate() const {return m_extrapolatedCoordinate.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property extrapolatedCoordinate
+     */
+    [[nodiscard]] QBindable<QGeoCoordinate> bindableExtrapolatedCoordinate() const {return &m_extrapolatedCoordinate;}
+
     /*! \brief Suggested icon
      *
-     *  Depending on alarm level and movement of the traffic opponent, this
+     *  Depending on alarm level, type and movement of the traffic opponent, this
      *  property suggests an icon for GUI representation of the traffic.
      */
-    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged BINDABLE bindableIcon)
+    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged)
 
     /*! \brief Getter method for property with the same name
      *
@@ -123,12 +149,20 @@ signals:
     /*! \brief Notifier signal */
     void positionInfoChanged();
 
+public slots:
+    /*! \brief Update extrapolated data
+     *
+     *  This method extrapolates the position of the aircraft and sets the property extrapolatedCoordinate appropriately.
+     */
+    void updateExtrapolatedData();
+
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_WithPosition)
 
     //
     // Property values
     //
+    QProperty<QGeoCoordinate> m_extrapolatedCoordinate;
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, QString, m_icon, &Traffic::TrafficFactor_WithPosition::iconChanged);
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, Positioning::PositionInfo, m_positionInfo, &Traffic::TrafficFactor_WithPosition::positionInfoChanged);
 };

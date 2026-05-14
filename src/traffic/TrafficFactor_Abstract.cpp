@@ -86,6 +86,8 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
         {
             return false;
         }
+#warning
+        return true;
         if (m_vDist.value().isFinite() && (m_vDist.value() > maxVerticalDistance))
         {
             return false;

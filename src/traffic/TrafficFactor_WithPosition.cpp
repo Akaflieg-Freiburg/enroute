@@ -29,16 +29,21 @@
 using namespace Qt::Literals::StringLiterals;
 
 namespace {
+
 // To not store each traffic icon in multiple colors, use a lazy cache keyed by "<shape>-<color>"
 using StringStringHash = QHash<QString, QString>;
 Q_GLOBAL_STATIC(StringStringHash, iconCache)
 
 // Map alarm color name to hex color code for use with SVG template files
 Q_GLOBAL_STATIC(StringStringHash, colorMap, {{ QStringLiteral("green"),  QStringLiteral("#00a000") }, { QStringLiteral("yellow"), QStringLiteral("#f0f000") }, { QStringLiteral("red"),    QStringLiteral("#a00000") }})
-}
+
+} // namespace
 
 Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent) : TrafficFactor_Abstract(parent)
 {
+    // Update the extrapolated data at least whenever the position info changes.
+    connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::updateExtrapolatedData);
+
     // Bindings for property valid
     m_valid.setBinding([this]() {
         return positionInfo().isValid() && m_validAbstractTrafficFactor;
@@ -177,4 +182,27 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
         return results.join(u"<br>");
     });
+}
+
+void Traffic::TrafficFactor_WithPosition::updateExtrapolatedData()
+{
+    if (!m_valid.value())
+    {
+        m_extrapolatedCoordinate = QGeoCoordinate();
+        return;
+    }
+    if (!m_positionInfo.value().groundSpeed().isFinite())
+    {
+        m_extrapolatedCoordinate = m_positionInfo.value().coordinate();
+        return;
+    }
+    if (!m_positionInfo.value().trueTrack().isFinite())
+    {
+        m_extrapolatedCoordinate = m_positionInfo.value().coordinate();
+        return;
+    }
+
+    auto secondsElapsed = m_positionInfo.value().timestamp().msecsTo(QDateTime::currentDateTimeUtc())/1000.0;
+    auto vdistance_in_meters = (double)m_positionInfo.value().groundSpeed().toMPS()*secondsElapsed;
+    m_extrapolatedCoordinate = m_positionInfo.value().coordinate().atDistanceAndAzimuth(vdistance_in_meters, m_positionInfo.value().trueTrack().toDEG(), 0);
 }

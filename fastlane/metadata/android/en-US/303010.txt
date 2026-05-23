@@ -1,0 +1,7 @@
+### Fixed
+- Reporting Point shows Name (NAM) instead of Radio Code (SCO) (#648)
+
+- Fixes crash on Android when receiving geo URLs
+
+### Added
+- Animate traffic on moving map

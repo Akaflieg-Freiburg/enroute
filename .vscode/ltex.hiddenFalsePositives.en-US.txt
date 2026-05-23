@@ -4,3 +4,4 @@
 {"rule":"DATE_NEW_YEAR","sentence":"^\\Q2.32.0 - 2024-11-11\\E$"}
 {"rule":"DATE_NEW_YEAR","sentence":"^\\Q2.31.15 - 2024-10-27\\E$"}
 {"rule":"DATE_NEW_YEAR","sentence":"^\\Q2.31.14 - 2024-10-22\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QFixes crash on Android when receiving geo URLs\\E$"}

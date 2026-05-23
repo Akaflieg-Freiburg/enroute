@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.3.1] - 2026-05-xx
+
+### Fixed
+- Reporting Point shows Name (NAM) instead of Radio Code (SCO) (#648)
+
+
 ## [3.3.0] - 2026-05-11
 
 ### Added

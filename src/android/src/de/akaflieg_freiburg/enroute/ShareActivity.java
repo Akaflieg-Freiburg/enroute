@@ -210,8 +210,17 @@ public class ShareActivity extends QtActivity
         {
             intentUri = intent.getData();
 
+            // Handle geo: URIs (e.g. from Organic Maps) — these are not files
+            if ("geo".equals(intentUri.getScheme())) 
+            {
+                setTextReceived(intentUri.toString());
+                return;
+            }
+
             DocumentFile docFile = DocumentFile.fromSingleUri(this, intentUri);
-            setFileReceived(intentUri.toString(), docFile.getName());
+            // getName() can return null if the URI has no backing content provider
+            String name = (docFile != null && docFile.getName() != null) ? docFile.getName() : "";
+            setFileReceived(intentUri.toString(), name);
             return;
         }
 

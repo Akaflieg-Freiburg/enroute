@@ -49,6 +49,13 @@ MapQuickItem {
 
     sourceItem: Item {
         rotation: trafficInfo.positionInfo.trueTrack().isFinite() ? trafficInfo.positionInfo.trueTrack().toDEG()-map.bearing : 0
+        Behavior on rotation {
+            RotationAnimation {
+                direction: RotationAnimation.Shortest
+                duration: 1000
+            }
+            enabled: trafficInfo.animate
+        }
 
         FlightVector {
             width: 3

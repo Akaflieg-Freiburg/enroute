@@ -77,7 +77,10 @@ public:
         setCallSign(other.callSign());
         setHDist(other.hDist());
         setID(other.ID());
-        setType(other.type());
+        if (other.type() != Traffic::AircraftType::unknown)
+        {
+            setType(other.type());
+        }
         setVDist(other.vDist());
         updateDescription();
     }

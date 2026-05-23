@@ -427,6 +427,18 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     }
 
     // PositionInfo
+    auto timestampString = QString::fromUtf8(m_ognMessage.timestamp);
+    auto hour   = timestampString.mid(0, 2).toInt();
+    auto minute = timestampString.mid(2, 2).toInt();
+    auto second = timestampString.mid(4, 2).toInt();
+    auto today = QDateTime::currentDateTimeUtc().date();
+    QDateTime timestamp(today, QTime(hour, minute, second), QTimeZone::UTC);
+    // If the time appears more than 12 hours in the future, it likely belongs to the previous day
+    if (timestamp > QDateTime::currentDateTimeUtc().addSecs(12LL * 3600))
+    {
+        timestamp = timestamp.addDays(-1);
+    }
+
     QGeoPositionInfo pInfo(QGeoCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude), QDateTime::currentDateTimeUtc());
     pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course);  // Already in degrees
     pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, m_ognMessage.speed * 0.514444);  // Convert knots to m/s

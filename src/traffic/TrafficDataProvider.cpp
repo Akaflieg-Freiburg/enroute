@@ -385,10 +385,13 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
     {
         if (factor.ID().right(6) == target->ID().right(6))
         {
-            // Replace the entry by the factor.
-            target->setAnimate(true);
-            target->copyFrom(factor);
-            target->startLiveTime();
+            if (target->positionInfo().timestamp() < factor.positionInfo().timestamp())
+            {
+                // Replace the entry by the factor.
+                target->setAnimate(true);
+                target->copyFrom(factor);
+                target->startLiveTime();
+            }
             return;
         }
     }

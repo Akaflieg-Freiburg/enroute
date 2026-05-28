@@ -77,12 +77,6 @@ public:
 
     /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract
      *
-     * @param coordinate Location whose sat view should be shown.
-     */
-    void openSatView(const QGeoCoordinate& coordinate) override;
-
-    /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract
-     *
      *  @returns QVector with connection infos
      */
     QVector<Traffic::ConnectionInfo> serialPortConnectionInfos() override;

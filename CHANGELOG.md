@@ -8,6 +8,9 @@
 ### Added
 - Location sharing with the app "mapy.com"
 
+### Removed
+- Removed support for location sharing with Google Earth
+ 
 
 ## [3.3.1] - 2026-05-23
 

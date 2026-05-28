@@ -116,8 +116,7 @@ public:
      *
      *  This implementation uses QDesktopServices::openUrl() to open the
      *  location in Google Maps, either in a native app or in an external web
-     *  browser winde. The Android implementation tries Google Earth first and
-     *  falls back to Google Maps if Google Earth is not installed.
+     *  browser window.
      *
      * @param coordinate Location whose sat view should be shown.
      */

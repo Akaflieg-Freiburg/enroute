@@ -91,8 +91,6 @@ void&#160;</td><td class="memItemRight"><b>disableScreenSaver</b> () override</t
 <tr class="memdesc:aa576dfcc599121d187d40999654a67a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements a pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>. <br /></td></tr>
 <tr class="memitem:ab3e670851224649b0eb2cead871fe50a" id="r_ab3e670851224649b0eb2cead871fe50a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ab3e670851224649b0eb2cead871fe50a">lockWifi</a> (bool lock) override</td></tr>
 <tr class="memdesc:ab3e670851224649b0eb2cead871fe50a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements s pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>.  <br /></td></tr>
-<tr class="memitem:a7d5439442c0cdcb42851227970e27e89" id="r_a7d5439442c0cdcb42851227970e27e89"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7d5439442c0cdcb42851227970e27e89">openSatView</a> (const QGeoCoordinate &amp;coordinate) override</td></tr>
-<tr class="memdesc:a7d5439442c0cdcb42851227970e27e89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implements a virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>.  <br /></td></tr>
 <tr class="memitem:a726be52285346ba84aea712dca45b9c9" id="r_a726be52285346ba84aea712dca45b9c9"><td class="memItemLeft">QVector&lt; <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a726be52285346ba84aea712dca45b9c9">serialPortConnectionInfos</a> () override</td></tr>
 <tr class="memdesc:a726be52285346ba84aea712dca45b9c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implements a virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>.  <br /></td></tr>
 <tr class="memitem:a6a75411333db6748fb7e06e71fd50bc6" id="r_a6a75411333db6748fb7e06e71fd50bc6"><td class="memItemLeft">QString&#160;</td><td class="memItemRight"><a class="el" href="#a6a75411333db6748fb7e06e71fd50bc6">systemInfo</a> () override</td></tr>
@@ -189,6 +187,8 @@ void&#160;</td><td class="memItemRight"><b>onGUISetupCompleted</b> () override</
 <tr class="inherit_header pub_methods_classPlatform_1_1PlatformAdaptor__Abstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classPlatform_1_1PlatformAdaptor__Abstract')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html">Platform::PlatformAdaptor_Abstract</a></td></tr>
 <tr class="memitem:aac61d7122ddaae8c2fefd030826a655c inherit pub_methods_classPlatform_1_1PlatformAdaptor__Abstract" id="r_aac61d7122ddaae8c2fefd030826a655c"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#aac61d7122ddaae8c2fefd030826a655c">PlatformAdaptor_Abstract</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:aac61d7122ddaae8c2fefd030826a655c inherit pub_methods_classPlatform_1_1PlatformAdaptor__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
+<tr class="memitem:ade510e669568d6c9fb3fa77994f7a303 inherit pub_methods_classPlatform_1_1PlatformAdaptor__Abstract" id="r_ade510e669568d6c9fb3fa77994f7a303"><td class="memItemLeft">virtual Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#ade510e669568d6c9fb3fa77994f7a303">openSatView</a> (const QGeoCoordinate &amp;coordinate)</td></tr>
+<tr class="memdesc:ade510e669568d6c9fb3fa77994f7a303 inherit pub_methods_classPlatform_1_1PlatformAdaptor__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open an external app or web site showing a satellite view.  <br /></td></tr>
 <tr class="inherit_header pub_methods_classGlobalObject"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classGlobalObject')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
 <tr class="memitem:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject" id="r_ac8dfa53c492975de42fa7972e77abbc1"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
@@ -844,41 +844,6 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Reimplemented from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#acedc161efcac0e8c88b0374869665910">Platform::PlatformAdaptor_Abstract</a>.</p>
-
-</div>
-</div>
-<a id="a7d5439442c0cdcb42851227970e27e89" name="a7d5439442c0cdcb42851227970e27e89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d5439442c0cdcb42851227970e27e89">&#9670;&#160;</a></span>openSatView()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Platform::PlatformAdaptor::openSatView </td>
-          <td>(</td>
-          <td class="paramtype">const QGeoCoordinate &amp;</td>          <td class="paramname"><span class="paramname"><em>coordinate</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Re-implements a virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">coordinate</td><td>Location whose sat view should be shown. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#ade510e669568d6c9fb3fa77994f7a303">Platform::PlatformAdaptor_Abstract</a>.</p>
 
 </div>
 </div>

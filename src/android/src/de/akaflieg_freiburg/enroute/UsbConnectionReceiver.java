@@ -22,7 +22,21 @@ public class UsbConnectionReceiver extends BroadcastReceiver
         {
             return;
         }
-        onSerialPortConnectionsChanged();
+
+        try
+        {
+            onSerialPortConnectionsChanged();
+        }
+        catch (UnsatisfiedLinkError e)
+        {
+            Intent launch = context.getPackageManager()
+                    .getLaunchIntentForPackage(context.getPackageName());
+            if (launch != null)
+            {
+                launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(launch);
+            }
+        }
     }
 
     // Native methods implemented in C++

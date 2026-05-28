@@ -26,6 +26,7 @@ using namespace Qt::Literals::StringLiterals;
 namespace {
 Q_GLOBAL_STATIC(QRegularExpression, regexGoogleMap1, u"@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_s)
 Q_GLOBAL_STATIC(QRegularExpression, regexGoogleMap2, u"!3d(-?\\d+\\.\\d+)!4d(-?\\d+\\.\\d+)"_s)
+Q_GLOBAL_STATIC(QRegularExpression, regexMapyCz, u"(-?\\d+\\.\\d+)([NS]),\\s*(-?\\d+\\.\\d+)([EW])"_s)
 Q_GLOBAL_STATIC(QRegularExpression, regexOpenStreetMap, u"#map=\\d+/(-?\\d+\\.\\d+)/(-?\\d+\\.\\d+)"_s)
 Q_GLOBAL_STATIC(QRegularExpression, regexWeGo1, u"map=(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_s)
 Q_GLOBAL_STATIC(QRegularExpression, regexWeGo2, u"l/(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_s)
@@ -39,7 +40,22 @@ Q_GLOBAL_STATIC(QRegularExpression, regexGeo, u"geo:(-?\\d+\\.\\d+),(-?\\d+\\.\\
 
 
 FileFormats::MapURL::MapURL(const QString& urlName)
-{
+{ 
+    {
+        // Try to parse a geo: URL
+        auto match = regexGeo->match(urlName);
+        if (match.hasMatch()) {
+            auto latitude = match.captured(1);
+            auto longitude = match.captured(2);
+            GeoMaps::Waypoint const waypoint({latitude.toDouble(), longitude.toDouble()});
+            if (waypoint.isValid())
+            {
+                m_waypoint = waypoint;
+                return;
+            }
+        }
+    }
+
     {
         // Try to parse a Google Map URL
         auto match = regexGoogleMap1->match(urlName);
@@ -116,12 +132,14 @@ FileFormats::MapURL::MapURL(const QString& urlName)
     }
 
     {
-        // Try to parse a geo: URL
-        auto match = regexGeo->match(urlName);
+        // Try to parse a mapy.com URL
+        auto match = regexMapyCz->match(urlName);
         if (match.hasMatch()) {
-            auto latitude = match.captured(1);
-            auto longitude = match.captured(2);
-            GeoMaps::Waypoint const waypoint({latitude.toDouble(), longitude.toDouble()});
+            double latitude  = match.captured(1).toDouble();
+            double longitude = match.captured(3).toDouble();
+            if (match.captured(2) == u"S"_s) { latitude  = -latitude;  }
+            if (match.captured(4) == u"W"_s) { longitude = -longitude; }
+            GeoMaps::Waypoint const waypoint({latitude, longitude});
             if (waypoint.isValid())
             {
                 m_waypoint = waypoint;

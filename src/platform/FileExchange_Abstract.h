@@ -108,9 +108,7 @@ public:
 
     /*! \brief View content
      *
-     * This method is supposed open the content in an appropriate app.  Example:
-     * if the content is GeoJSON, the content might be opened in Google Earth,
-     * or in a mobile mapping application.
+     * This method is supposed open the content in an appropriate app.
      *
      * @param content content text
      *

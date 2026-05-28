@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.3.2] - 2026-05-28
+
+### Fixed
+- Fixes sporadic crash on Android when connecting devices via USB
+
+### Added
+- Location sharing with the app "mapy.com"
+
+
 ## [3.3.1] - 2026-05-23
 
 ### Fixed

@@ -104,8 +104,6 @@ Page {
 
             WordWrappingItemDelegate {
                 width: parent.width
-                leftPadding: SafeInsets.left
-                rightPadding: SafeInsets.right
 
                 id: idel
                 text: {
@@ -553,7 +551,6 @@ Page {
 
                             text: parent.section
                             font.pixelSize: parent.font.pixelSize*1.2
-                            //font.bold: true
                         }
                     }
                 }

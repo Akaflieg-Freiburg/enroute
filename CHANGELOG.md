@@ -5,6 +5,8 @@
 ### Fixed
 - Fixes sporadic crash on Android when connecting devices via USB
 
+- Fixes minor text layout issue on "Traffic" page
+
 ### Added
 - Location sharing with the app "mapy.com"
 

@@ -47,7 +47,7 @@ public:
     explicit TrafficFactor_WithPosition(QObject *parent = nullptr);
 
     // Standard destructor
-    ~TrafficFactor_WithPosition() override = default;
+    ~TrafficFactor_WithPosition();
 
     //
     // Methods

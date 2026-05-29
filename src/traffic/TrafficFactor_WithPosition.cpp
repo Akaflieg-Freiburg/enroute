@@ -35,7 +35,7 @@ using StringStringHash = QHash<QString, QString>;
 Q_GLOBAL_STATIC(StringStringHash, iconCache)
 
 // Map alarm color name to hex color code for use with SVG template files
-Q_GLOBAL_STATIC(StringStringHash, colorMap, {{ QStringLiteral("green"),  QStringLiteral("#00a000") }, { QStringLiteral("yellow"), QStringLiteral("#f0f000") }, { QStringLiteral("red"),    QStringLiteral("#a00000") }})
+Q_GLOBAL_STATIC(StringStringHash, colorMap, {{ QStringLiteral("green"),  QStringLiteral("#00a000") }, { QStringLiteral("yellow"), QStringLiteral("#f0f000") }, { QStringLiteral("red"), QStringLiteral("#a00000") }})
 
 } // namespace
 
@@ -182,6 +182,14 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
         return results.join(u"<br>");
     });
+}
+
+Traffic::TrafficFactor_WithPosition::~TrafficFactor_WithPosition()
+{
+    // Break all bindings before destruction proceeds
+    m_valid.takeBinding();
+    m_icon.takeBinding();
+    m_description.takeBinding();
 }
 
 void Traffic::TrafficFactor_WithPosition::updateExtrapolatedData()

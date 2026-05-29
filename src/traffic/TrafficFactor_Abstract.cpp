@@ -110,6 +110,17 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
 }
 
 
+Traffic::TrafficFactor_Abstract::~TrafficFactor_Abstract()
+{
+    // Break all bindings before destruction proceeds
+    m_color.takeBinding();
+    m_validAbstractTrafficFactor.takeBinding();
+    m_typeString.takeBinding();
+    m_relevant.takeBinding();
+    m_relevantString.takeBinding();
+}
+
+
 bool Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const
 {
     // Criterion: Valid instances have higher priority than invalid ones

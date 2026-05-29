@@ -56,7 +56,7 @@ public:
     explicit TrafficFactor_Abstract(QObject* parent = nullptr);
 
     // Standard destructor
-    ~TrafficFactor_Abstract() override = default;
+    ~TrafficFactor_Abstract();
 
 
     //
@@ -83,7 +83,7 @@ public:
             setType(other.type());
         }
         setVDist(other.vDist());
-#warning need clear criteria when lifeTimer is restartet
+#warning need clear criteria when lifeTimer is restarted
     }
 
     /*! \brief Estimates if this traffic object has higher priority than other

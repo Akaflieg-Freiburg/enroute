@@ -1,5 +1,30 @@
 # Changelog
 
+## [3.3.2] - 2026-05-28
+
+### Fixed
+- Fixes sporadic crash on Android when connecting devices via USB
+
+- Fixes minor text layout issue on "Traffic" page
+
+### Added
+- Location sharing with the app "mapy.com"
+
+### Removed
+- Removed support for location sharing with Google Earth
+ 
+
+## [3.3.1] - 2026-05-23
+
+### Fixed
+- Reporting Point shows Name (NAM) instead of Radio Code (SCO) (#648)
+
+- Fixes crash on Android when receiving geo URLs
+
+### Added
+- Animate traffic on moving map
+
+
 ## [3.3.0] - 2026-05-11
 
 ### Added

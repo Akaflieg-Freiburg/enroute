@@ -27,6 +27,7 @@ import akaflieg_freiburg.enroute
 import "../dialogs"
 import "../items"
 
+
 Page {
     id: trafficReceiverPage
     objectName: "TrafficReceiverPage"
@@ -91,9 +92,10 @@ Page {
         id: trafficDelegate
 
         Item {
-            width: sView.width
+            width: listView.width
             height: idel.height
 
+            // Background
             Rectangle {
                 anchors.fill: parent
                 color: model.modelData.color
@@ -102,8 +104,6 @@ Page {
 
             WordWrappingItemDelegate {
                 width: parent.width
-                leftPadding: SafeInsets.left+16
-                rightPadding: SafeInsets.right+16
 
                 id: idel
                 text: {
@@ -529,6 +529,7 @@ Page {
             }
 
             ListView {
+                id: listView
                 Layout.fillWidth: true
                 Layout.preferredHeight: contentHeight
                 Layout.columnSpan: 3
@@ -538,7 +539,7 @@ Page {
                 delegate: trafficDelegate
                 ScrollIndicator.vertical: ScrollIndicator {}
 
-                section.property: "modelData.relevantString"
+                section.property: "relevantString"
                 section.delegate: Component {
                     Control {
                         required property string section
@@ -548,10 +549,8 @@ Page {
                         Label {
                             id: lbl
 
-                            //x: font.pixelSize
                             text: parent.section
-                            //font.pixelSize: parent.font.pixelSize*1.2
-                            //font.bold: true
+                            font.pixelSize: parent.font.pixelSize*1.2
                         }
                     }
                 }

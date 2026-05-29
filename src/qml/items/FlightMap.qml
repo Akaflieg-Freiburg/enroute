@@ -271,7 +271,7 @@ Map {
 
             layout: {
                 "icon-image": ["get", "CAT"],
-                "text-field": ["get", "NAM"],
+                "text-field": ["get", "SCO"],
                 "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
                 "text-offset": [0, 1],

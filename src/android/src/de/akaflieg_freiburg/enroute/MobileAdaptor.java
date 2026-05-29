@@ -407,23 +407,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
     return customStartActivity(intent);
   }
 
-  private static boolean openInGoogleEarth(String geoUrl) {
-    if (m_instance == null) {
-      return false;
-    }
-    Uri gmmIntentUri = Uri.parse(geoUrl);
-    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-    mapIntent.setPackage("com.google.earth");
-
-    try {
-      m_instance.startActivity(mapIntent);
-    } catch (Exception e) {
-      // Google Earth is not installed
-      return false;
-    }
-    return true;
-  }
-
   /**
    * Open a file picker to select a file.
    *

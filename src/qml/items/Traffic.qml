@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 import QtLocation
-import QtPositioning
 import QtQuick
 
 import akaflieg_freiburg.enroute
@@ -28,37 +27,28 @@ import akaflieg_freiburg.enroute
 MapQuickItem {
     id: traffic1MapItem
 
-    property Map map: ({})
-    property var trafficInfo: ({})
+    property double bearing
+    property double pixelPer10km
+    property var trafficInfo
 
     coordinate: trafficInfo.extrapolatedCoordinate
     visible: trafficInfo.relevant
 
-    /*
-    Connections {
-        // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
-        // is not updated when the height of the map changes. It does get updated when the
-        // width of the map changes. We use the undocumented method polishAndUpdate() here.
-        target: map
-        function onHeightChanged() { traffic1MapItem.polishAndUpdate() }
-    }
-    */
-
     sourceItem: Item {
-        rotation: trafficInfo.positionInfo.trueTrack().isFinite() ? trafficInfo.positionInfo.trueTrack().toDEG()-map.bearing : 0
+        rotation: traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite() ? traffic1MapItem.trafficInfo.positionInfo.trueTrack().toDEG() - traffic1MapItem.bearing : 0
         Behavior on rotation {
             RotationAnimation {
                 direction: RotationAnimation.Shortest
                 duration: 1000
             }
-            enabled: trafficInfo.animate
+            enabled: traffic1MapItem.trafficInfo.animate
         }
 
         FlightVector {
             width: 3
-            pixelPerTenKM: map.pixelPer10km
-            groundSpeedInMetersPerSecond: trafficInfo.positionInfo.groundSpeed().toMPS()
-            visible: (groundSpeedInMetersPerSecond > 5) && (trafficInfo.positionInfo.trueTrack().isFinite())
+            pixelPerTenKM: traffic1MapItem.pixelPer10km
+            groundSpeedInMetersPerSecond: traffic1MapItem.trafficInfo.positionInfo.groundSpeed().toMPS()
+            visible: (groundSpeedInMetersPerSecond > 5) && (traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite())
             opacity: 0.8
         }
 
@@ -71,8 +61,7 @@ MapQuickItem {
             x: -width/2.0
             y: -height/2.0
 
-            source: trafficInfo.icon
-
+            source: traffic1MapItem.trafficInfo.icon
         }
     }
 }

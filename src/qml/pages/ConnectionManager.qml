@@ -140,7 +140,7 @@ Page {
 
                     onClicked: {
                         Global.dialogLoader.active = false
-                        Global.dialogLoader.setSource("../dialogs/ConnectionInfo.qml", {connection: model.modelData})
+                        Global.dialogLoader.setSource("../dialogs/ConnectionInfoDialog.qml", {connection: model.modelData})
                         Global.dialogLoader.active = true
                     }
                 }

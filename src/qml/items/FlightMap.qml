@@ -788,6 +788,7 @@ Map {
         model: TrafficDataProvider.trafficObjects
         delegate: Component {
             TrafficLabel {
+                bearing: flightMap.bearing
                 trafficInfo: modelData
             }
         }
@@ -875,7 +876,8 @@ Map {
         model: TrafficDataProvider.trafficObjects
         delegate: Component {
             Traffic {
-                map: flightMap
+                bearing: flightMap.bearing
+                pixelPer10km: flightMap.pixelPer10km
                 trafficInfo: modelData
             }
         }

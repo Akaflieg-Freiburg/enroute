@@ -197,20 +197,25 @@ void Traffic::TrafficFactor_WithPosition::updateExtrapolatedData()
     if (!m_valid.value())
     {
         m_extrapolatedCoordinate = QGeoCoordinate();
+        m_extrapolatedTrueTrack = Units::Angle();
         return;
     }
     if (!m_positionInfo.value().groundSpeed().isFinite())
     {
         m_extrapolatedCoordinate = m_positionInfo.value().coordinate();
+        m_extrapolatedTrueTrack = Units::Angle();
         return;
     }
     if (!m_positionInfo.value().trueTrack().isFinite())
     {
         m_extrapolatedCoordinate = m_positionInfo.value().coordinate();
+        m_extrapolatedTrueTrack = Units::Angle();
         return;
     }
 
     auto secondsElapsed = m_positionInfo.value().timestamp().msecsTo(QDateTime::currentDateTimeUtc())/1000.0;
     auto vdistance_in_meters = (double)m_positionInfo.value().groundSpeed().toMPS()*secondsElapsed;
+    const QScopedPropertyUpdateGroup updateGroup;
     m_extrapolatedCoordinate = m_positionInfo.value().coordinate().atDistanceAndAzimuth(vdistance_in_meters, m_positionInfo.value().trueTrack().toDEG(), 0);
+    m_extrapolatedTrueTrack = m_positionInfo.value().trueTrack();
 }

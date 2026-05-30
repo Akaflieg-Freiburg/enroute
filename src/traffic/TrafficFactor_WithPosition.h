@@ -47,7 +47,7 @@ public:
     explicit TrafficFactor_WithPosition(QObject *parent = nullptr);
 
     // Standard destructor
-    ~TrafficFactor_WithPosition();
+    ~TrafficFactor_WithPosition() override;
 
     //
     // Methods
@@ -98,6 +98,28 @@ public:
      *  @returns Property extrapolatedCoordinate
      */
     [[nodiscard]] QBindable<QGeoCoordinate> bindableExtrapolatedCoordinate() const {return &m_extrapolatedCoordinate;}
+
+    /*! \brief Extrapolated True Track
+     *
+     *  Extrapolated true track of the traffic, for use in the GUI. For performance reasons, instances
+     *  of this class do not have their own timer/animation logic to update the property. Instead, the
+     *  property is set whenever the positionInfo changes and whenever the slot
+     *  updatedExtrapolatedData() is called.  The owner of this class (= TrafficDataProvider) is responsible
+     *  to call updatedExtrapolatedData() at regular intervals.
+     */
+    Q_PROPERTY(Units::Angle extrapolatedTrueTrack READ extrapolatedTrueTrack BINDABLE bindableExtrapolatedTrueTrack)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property extrapolatedTrueTrack
+     */
+    [[nodiscard]] Units::Angle extrapolatedTrueTrack() const {return m_extrapolatedTrueTrack.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property extrapolatedTrueTrack
+     */
+    [[nodiscard]] QBindable<Units::Angle> bindableExtrapolatedTrueTrack() const {return &m_extrapolatedTrueTrack;}
 
     /*! \brief Suggested icon
      *
@@ -163,6 +185,7 @@ private:
     // Property values
     //
     QProperty<QGeoCoordinate> m_extrapolatedCoordinate;
+    QProperty<Units::Angle> m_extrapolatedTrueTrack;
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, QString, m_icon, &Traffic::TrafficFactor_WithPosition::iconChanged);
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, Positioning::PositionInfo, m_positionInfo, &Traffic::TrafficFactor_WithPosition::positionInfoChanged);
 };

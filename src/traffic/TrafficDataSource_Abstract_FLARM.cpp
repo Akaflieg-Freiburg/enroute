@@ -23,7 +23,6 @@
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_Abstract.h"
-#include "traffic/TrafficFactorAircraftType.h"
 #include "units/Pressure.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -388,60 +387,60 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
     }
 
     // Target type is optional
-    auto type = Traffic::unknown;
+    auto type = TrafficFactor_Abstract::unknown;
     {
         const auto &targetType = arguments[10];
         if (targetType == u"1")
         {
-            type = Traffic::Glider;
+            type = TrafficFactor_Abstract::Glider;
         }
         if (targetType == u"2")
         {
-            type = Traffic::TowPlane;
+            type = TrafficFactor_Abstract::TowPlane;
         }
         if (targetType == u"3")
         {
-            type = Traffic::Copter;
+            type = TrafficFactor_Abstract::Copter;
         }
         if (targetType == u"4")
         {
-            type = Traffic::Skydiver;
+            type = TrafficFactor_Abstract::Skydiver;
         }
         if (targetType == u"5")
         {
-            type = Traffic::Aircraft;
+            type = TrafficFactor_Abstract::Aircraft;
         }
         if (targetType == u"6")
         {
-            type = Traffic::HangGlider;
+            type = TrafficFactor_Abstract::HangGlider;
         }
         if (targetType == u"7")
         {
-            type = Traffic::Paraglider;
+            type = TrafficFactor_Abstract::Paraglider;
         }
         if (targetType == u"8")
         {
-            type = Traffic::Aircraft;
+            type = TrafficFactor_Abstract::Aircraft;
         }
         if (targetType == u"9")
         {
-            type = Traffic::Jet;
+            type = TrafficFactor_Abstract::Jet;
         }
         if (targetType == u"B")
         {
-            type = Traffic::Balloon;
+            type = TrafficFactor_Abstract::Balloon;
         }
         if (targetType == u"C")
         {
-            type = Traffic::Airship;
+            type = TrafficFactor_Abstract::Airship;
         }
         if (targetType == u"D")
         {
-            type = Traffic::Drone;
+            type = TrafficFactor_Abstract::Drone;
         }
         if (targetType == u"F")
         {
-            type = Traffic::StaticObstacle;
+            type = TrafficFactor_Abstract::StaticObstacle;
         }
     }
 

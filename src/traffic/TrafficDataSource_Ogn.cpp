@@ -27,7 +27,6 @@
 #include "traffic/ConnectionInfo.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_AbstractSocket.h"
-#include "traffic/TrafficFactorAircraftType.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "traffic/TransponderDB.h"
 
@@ -61,46 +60,46 @@ using namespace Qt::Literals::StringLiterals;
 namespace {
 
 // Helper function to convert OgnAircraftType to Traffic::AircraftType
-Traffic::AircraftType convertOgnAircraftType(Ogn::OgnAircraftType ognType)
+Traffic::TrafficFactor_Abstract::Type convertOgnAircraftType(Ogn::OgnAircraftType ognType)
 {
     using namespace Ogn;
     switch (ognType) {
-        case OgnAircraftType::unknown:         return Traffic::AircraftType::unknown;
-        case OgnAircraftType::Aircraft:        return Traffic::AircraftType::Aircraft;
-        case OgnAircraftType::Airship:         return Traffic::AircraftType::Airship;
-        case OgnAircraftType::Balloon:         return Traffic::AircraftType::Balloon;
-        case OgnAircraftType::Copter:          return Traffic::AircraftType::Copter;
-        case OgnAircraftType::Drone:           return Traffic::AircraftType::Drone;
-        case OgnAircraftType::Glider:          return Traffic::AircraftType::Glider;
-        case OgnAircraftType::HangGlider:      return Traffic::AircraftType::HangGlider;
-        case OgnAircraftType::Jet:             return Traffic::AircraftType::Jet;
-        case OgnAircraftType::Paraglider:      return Traffic::AircraftType::Paraglider;
-        case OgnAircraftType::Skydiver:        return Traffic::AircraftType::Skydiver;
-        case OgnAircraftType::StaticObstacle:  return Traffic::AircraftType::StaticObstacle;
-        case OgnAircraftType::TowPlane:        return Traffic::AircraftType::TowPlane;
-        default:                               return Traffic::AircraftType::unknown;
+        case OgnAircraftType::unknown:         return Traffic::TrafficFactor_Abstract::unknown;
+        case OgnAircraftType::Aircraft:        return Traffic::TrafficFactor_Abstract::Aircraft;
+        case OgnAircraftType::Airship:         return Traffic::TrafficFactor_Abstract::Airship;
+        case OgnAircraftType::Balloon:         return Traffic::TrafficFactor_Abstract::Balloon;
+        case OgnAircraftType::Copter:          return Traffic::TrafficFactor_Abstract::Copter;
+        case OgnAircraftType::Drone:           return Traffic::TrafficFactor_Abstract::Drone;
+        case OgnAircraftType::Glider:          return Traffic::TrafficFactor_Abstract::Glider;
+        case OgnAircraftType::HangGlider:      return Traffic::TrafficFactor_Abstract::HangGlider;
+        case OgnAircraftType::Jet:             return Traffic::TrafficFactor_Abstract::Jet;
+        case OgnAircraftType::Paraglider:      return Traffic::TrafficFactor_Abstract::Paraglider;
+        case OgnAircraftType::Skydiver:        return Traffic::TrafficFactor_Abstract::Skydiver;
+        case OgnAircraftType::StaticObstacle:  return Traffic::TrafficFactor_Abstract::StaticObstacle;
+        case OgnAircraftType::TowPlane:        return Traffic::TrafficFactor_Abstract::TowPlane;
+        default:                               return Traffic::TrafficFactor_Abstract::unknown;
     }
 }
 
 // Helper function to convert Traffic::AircraftType to OgnAircraftType
-Ogn::OgnAircraftType convertToOgnAircraftType(Traffic::AircraftType trafficType)
+Ogn::OgnAircraftType convertToOgnAircraftType(Traffic::TrafficFactor_Abstract::Type trafficType)
 {
     using namespace Ogn;
     switch (trafficType) {
-        case Traffic::AircraftType::unknown:        return OgnAircraftType::unknown;
-        case Traffic::AircraftType::Aircraft:       return OgnAircraftType::Aircraft;
-        case Traffic::AircraftType::Airship:        return OgnAircraftType::Airship;
-        case Traffic::AircraftType::Balloon:        return OgnAircraftType::Balloon;
-        case Traffic::AircraftType::Copter:         return OgnAircraftType::Copter;
-        case Traffic::AircraftType::Drone:          return OgnAircraftType::Drone;
-        case Traffic::AircraftType::Glider:         return OgnAircraftType::Glider;
-        case Traffic::AircraftType::HangGlider:     return OgnAircraftType::HangGlider;
-        case Traffic::AircraftType::Jet:            return OgnAircraftType::Jet;
-        case Traffic::AircraftType::Paraglider:     return OgnAircraftType::Paraglider;
-        case Traffic::AircraftType::Skydiver:       return OgnAircraftType::Skydiver;
-        case Traffic::AircraftType::StaticObstacle: return OgnAircraftType::StaticObstacle;
-        case Traffic::AircraftType::TowPlane:       return OgnAircraftType::TowPlane;
-        default:                                    return OgnAircraftType::unknown;
+        case Traffic::TrafficFactor_Abstract::unknown:        return OgnAircraftType::unknown;
+        case Traffic::TrafficFactor_Abstract::Aircraft:       return OgnAircraftType::Aircraft;
+        case Traffic::TrafficFactor_Abstract::Airship:        return OgnAircraftType::Airship;
+        case Traffic::TrafficFactor_Abstract::Balloon:        return OgnAircraftType::Balloon;
+        case Traffic::TrafficFactor_Abstract::Copter:         return OgnAircraftType::Copter;
+        case Traffic::TrafficFactor_Abstract::Drone:          return OgnAircraftType::Drone;
+        case Traffic::TrafficFactor_Abstract::Glider:         return OgnAircraftType::Glider;
+        case Traffic::TrafficFactor_Abstract::HangGlider:     return OgnAircraftType::HangGlider;
+        case Traffic::TrafficFactor_Abstract::Jet:            return OgnAircraftType::Jet;
+        case Traffic::TrafficFactor_Abstract::Paraglider:     return OgnAircraftType::Paraglider;
+        case Traffic::TrafficFactor_Abstract::Skydiver:       return OgnAircraftType::Skydiver;
+        case Traffic::TrafficFactor_Abstract::StaticObstacle: return OgnAircraftType::StaticObstacle;
+        case Traffic::TrafficFactor_Abstract::TowPlane:       return OgnAircraftType::TowPlane;
+        default:                                              return OgnAircraftType::unknown;
     }
 }
 

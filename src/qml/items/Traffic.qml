@@ -35,7 +35,15 @@ MapQuickItem {
     visible: trafficInfo.relevant
 
     sourceItem: Item {
-        rotation: traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite() ? traffic1MapItem.trafficInfo.positionInfo.trueTrack().toDEG() - traffic1MapItem.bearing : 0
+        rotation: {
+            if (traffic1MapItem.trafficInfo.type === TrafficFactor_Abstract.Balloon)
+                return 0
+            if (traffic1MapItem.trafficInfo.type === TrafficFactor_Abstract.StaticObstacle)
+                return 0
+            if (!traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite())
+                return 0
+            return traffic1MapItem.trafficInfo.positionInfo.trueTrack().toDEG() - traffic1MapItem.bearing
+        }
         Behavior on rotation {
             RotationAnimation {
                 direction: RotationAnimation.Shortest
@@ -56,7 +64,7 @@ MapQuickItem {
             id: image
 
             width: 40
-            height: 40
+            height: width
             fillMode: Image.PreserveAspectFit
             x: -width/2.0
             y: -height/2.0

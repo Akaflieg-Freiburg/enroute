@@ -40,7 +40,6 @@
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
 #include "traffic/TrafficFactor_WithPosition.h"
-#include "traffic/TrafficFactorAircraftType.h"
 
 #endif
 
@@ -253,7 +252,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
                     trafficFactor1->setAlarmLevel(0);
                     trafficFactor1->setID(QStringLiteral("newID"));
-                    trafficFactor1->setType(Traffic::Aircraft);
+                    trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
                     trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo, u"DemoRunner"_s) );
                     trafficFactor1->setHDist( Units::Distance::fromM(1000) );
                     trafficFactor1->setVDist( Units::Distance::fromM(17) );
@@ -525,7 +524,7 @@ void DemoRunner::generateManualScreenshots()
         auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
         trafficFactor1->setAlarmLevel(0);
         trafficFactor1->setID(QStringLiteral("newID"));
-        trafficFactor1->setType(Traffic::Aircraft);
+        trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
         trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo, u"DemoRunner"_s) );
         trafficFactor1->setHDist( Units::Distance::fromM(1000) );
         trafficFactor1->setVDist( Units::Distance::fromM(17) );
@@ -535,7 +534,7 @@ void DemoRunner::generateManualScreenshots()
         trafficFactor2->setAlarmLevel(1);
         trafficFactor2->setID(QStringLiteral("newID"));
         trafficFactor2->setHDist( Units::Distance::fromM(1000) );
-        trafficFactor2->setType( Traffic::Aircraft );
+        trafficFactor2->setType(Traffic::TrafficFactor_Abstract::Aircraft);
         trafficFactor2->setCallSign({});
         trafficFactor2->setCoordinate(ownPosition);
         trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);

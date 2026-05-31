@@ -23,7 +23,6 @@
 #include <QObjectBindableProperty>
 #include <QTimer>
 
-#include "TrafficFactorAircraftType.h"
 #include "units/Distance.h"
 
 using namespace std::chrono_literals;
@@ -47,8 +46,31 @@ namespace Traffic {
 
 class TrafficFactor_Abstract : public QObject {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
+    /*! \brief Aircraft type
+     *
+     *  This enum defines a few aircraft types. The list is modeled after the FLARM/NMEA specification.
+     */
+    enum Type
+    {
+        unknown, /*!< Unknown aircraft type */
+        Aircraft, /*!< Fixed wing aircraft */
+        Airship, /*!< Airship, such as a zeppelin or a blimp */
+        Balloon, /*!< Balloon */
+        Copter, /*!< Helicopter, gyrocopter or rotorcraft */
+        Drone, /*!< Drone */
+        Glider, /*!< Glider, including powered gliders and touring motor gliders */
+        HangGlider, /*!< Hang glider */
+        Jet, /*!< Jet aircraft */
+        Paraglider, /*!< Paraglider */
+        Skydiver, /*!< Skydiver */
+        StaticObstacle, /*!< Static obstacle */
+        TowPlane /*!< Tow plane */
+    };
+    Q_ENUM(Type) // Register the enum with Qt's meta-object system
+
     /*! \brief Default constructor
      *
      * @param parent The standard QObject parent pointer
@@ -56,7 +78,7 @@ public:
     explicit TrafficFactor_Abstract(QObject* parent = nullptr);
 
     // Standard destructor
-    ~TrafficFactor_Abstract();
+    ~TrafficFactor_Abstract() override;
 
 
     //
@@ -78,7 +100,7 @@ public:
         setCallSign(other.callSign());
         setHDist(other.hDist());
         setID(other.ID());
-        if (other.type() != Traffic::AircraftType::unknown)
+        if (other.type() != TrafficFactor_Abstract::Type::unknown)
         {
             setType(other.type());
         }
@@ -198,7 +220,7 @@ public:
     Q_PROPERTY(QString relevantString READ relevantString BINDABLE bindableRelevantString)
 
     /*! \brief Type of aircraft, as reported by the traffic receiver */
-    Q_PROPERTY(AircraftType type READ type WRITE setType NOTIFY typeChanged BINDABLE bindableType)
+    Q_PROPERTY(Type type READ type WRITE setType NOTIFY typeChanged BINDABLE bindableType)
 
     /*! \brief Type of aircraft, as reported by the traffic receiver
      *
@@ -338,13 +360,13 @@ public:
      *
      *  @returns Property type
      */
-    [[nodiscard]] Traffic::AircraftType type() const {return m_type.value();}
+    [[nodiscard]] TrafficFactor_Abstract::Type type() const {return m_type.value();}
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property type
      */
-    [[nodiscard]] QBindable<Traffic::AircraftType> bindableType() {return &m_type;}
+    [[nodiscard]] QBindable<TrafficFactor_Abstract::Type> bindableType() {return &m_type;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -429,7 +451,7 @@ public:
      *
      *  @param newType Property type
      */
-    void setType(Traffic::AircraftType newType) {m_type = newType;}
+    void setType(TrafficFactor_Abstract::Type newType) {m_type = newType;}
 
     /*! \brief Setter function for property with the same name
      *
@@ -511,7 +533,7 @@ private:
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, QString, m_color, QStringLiteral("red"), &Traffic::TrafficFactor_Abstract::colorChanged);
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_hDist, &Traffic::TrafficFactor_Abstract::hDistChanged);
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, QString, m_ID, &Traffic::TrafficFactor_Abstract::IDChanged);
-    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, Traffic::AircraftType, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);
+    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, TrafficFactor_Abstract::Type, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);
     QProperty<bool> m_relevant {false};
     QProperty<QString> m_relevantString;
     QProperty<QString> m_typeString;

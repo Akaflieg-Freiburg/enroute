@@ -172,7 +172,7 @@ private:
     QString m_callSign;
 
     // our own AircraftType
-    Traffic::AircraftType m_aircraftType = {Traffic::AircraftType::Aircraft};
+    TrafficFactor_Abstract::Type m_aircraftType = {TrafficFactor_Abstract::Aircraft};
 
     // Radius around the approximate position for which traffic data is requested.
     static constexpr Units::Distance m_receiveRadius = Units::Distance::fromNM(20.0);

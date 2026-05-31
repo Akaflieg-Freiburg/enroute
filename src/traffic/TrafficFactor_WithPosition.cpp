@@ -61,29 +61,29 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
             {
                 switch(type())
                 {
-                case Traffic::Aircraft:
-                case Traffic::TowPlane:
+                case Aircraft:
+                case TowPlane:
                     baseType = QStringLiteral("aircraft");
                     break;
-                case Traffic::Glider:
+                case Glider:
                     baseType = QStringLiteral("glider");
                     break;
-                case Traffic::Paraglider:
+                case Paraglider:
                     baseType = QStringLiteral("paraglider");
                     break;
-                case Traffic::HangGlider:
+                case HangGlider:
                     baseType = QStringLiteral("hangGlider");
                     break;
-                case Traffic::Jet:
+                case Jet:
                     baseType = QStringLiteral("jet");
                     break;
-                case Traffic::Copter:
+                case Copter:
                     baseType = QStringLiteral("copter");
                     break;
-                case Traffic::Drone:
+                case Drone:
                     baseType = QStringLiteral("drone");
                     break;
-                case Traffic::Balloon:
+                case Balloon:
                     baseType = QStringLiteral("balloon");
                     break;
                 default:
@@ -128,25 +128,25 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
         // Show aircraft type only when no specific icon exists (generic triangle is used)
         switch(type())
         {
-        case Traffic::Aircraft:
-        case Traffic::Balloon:
-        case Traffic::Copter:
-        case Traffic::Drone:
-        case Traffic::Glider:
-        case Traffic::HangGlider:
-        case Traffic::Jet:
-        case Traffic::Paraglider:
+        case Aircraft:
+        case Balloon:
+        case Copter:
+        case Drone:
+        case Glider:
+        case HangGlider:
+        case Jet:
+        case Paraglider:
             break; // icon conveys the type
-        case Traffic::Airship:
+        case Airship:
             results << tr("Airship");
             break;
-        case Traffic::TowPlane:
+        case TowPlane:
             results << tr("Tow Plane");
             break;
-        case Traffic::Skydiver:
+        case Skydiver:
             results << tr("Skydiver");
             break;
-        case Traffic::StaticObstacle:
+        case StaticObstacle:
             results << tr("Static Obstacle");
             break;
         default:

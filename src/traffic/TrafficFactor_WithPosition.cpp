@@ -119,10 +119,12 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
     m_description.setBinding([this]() {
         QStringList results;
 
+/*
         if (!callSign().isEmpty())
         {
             results << callSign();
         }
+*/
 
         // Show aircraft type only when no specific icon exists (generic triangle is used)
         switch(type())
@@ -160,20 +162,40 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
         if (vDist().isFinite())
         {
-            QString result = GlobalObject::navigator()->aircraft().verticalDistanceToString(vDist(), true);
-            auto climbRateMPS = m_positionInfo.value().verticalSpeed().toMPS();
-            if (qIsFinite(climbRateMPS))
+            QString result;
+            if (vDist() > Units::Distance::fromM(500))
             {
-                if (climbRateMPS < -1.0)
+                result = u"++"_s;
+            }
+            else if (vDist() > Units::Distance::fromM(400))
+            {
+                result = u"+"_s;
+            }
+            else if  (vDist() < Units::Distance::fromM(-500))
+            {
+                result = u"--"_s;
+            }
+            else if  (vDist() < Units::Distance::fromM(-400))
+            {
+                result = u"-"_s;
+            }
+            else
+            {
+                result = GlobalObject::navigator()->aircraft().verticalDistanceToString(vDist(), true);
+                auto climbRateMPS = m_positionInfo.value().verticalSpeed().toMPS();
+                if (qIsFinite(climbRateMPS))
                 {
-                    result += QStringLiteral(" ↘");
-                }
-                if ((climbRateMPS >= -1.0) && (climbRateMPS <= +1.0))
-                {
-                    result += QStringLiteral(" →");
-                }
-                if (climbRateMPS > 1.0) {
-                    result += QStringLiteral(" ↗");
+                    if (climbRateMPS < -1.0)
+                    {
+                        result += QStringLiteral(" ↘");
+                    }
+                    if ((climbRateMPS >= -1.0) && (climbRateMPS <= +1.0))
+                    {
+                        result += QStringLiteral(" →");
+                    }
+                    if (climbRateMPS > 1.0) {
+                        result += QStringLiteral(" ↗");
+                    }
                 }
             }
             results << result;

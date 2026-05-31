@@ -163,6 +163,25 @@ public:
      */
     void setPositionInfo(const Positioning::PositionInfo& newPositionInfo) {m_positionInfo = newPositionInfo;}
 
+    /*! \brief Uncertainty radius
+     *
+     *  If the last position update is less than 30s ago, this property holds the value zero.
+     *  If the last position update is more than 30s ago, this property holds the radius of the "uncertainty circle" that should be drawn around the extrapolated position,
+     *  to notify the user that the position data is stale.
+     */
+    Q_PROPERTY(Units::Distance uncertaintyRadius READ uncertaintyRadius BINDABLE bindableUncertaintyRadius)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property uncertaintyRadius
+     */
+    [[nodiscard]] Units::Distance uncertaintyRadius() const {return m_uncertainityRadius.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property uncertaintyRadius
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindableUncertaintyRadius() const {return &m_uncertainityRadius;}
 
 signals:
     /*! \brief Notifier signal */
@@ -186,6 +205,7 @@ private:
     //
     QProperty<QGeoCoordinate> m_extrapolatedCoordinate;
     QProperty<Units::Angle> m_extrapolatedTrueTrack;
+    QProperty<Units::Distance> m_uncertainityRadius;
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, QString, m_icon, &Traffic::TrafficFactor_WithPosition::iconChanged);
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, Positioning::PositionInfo, m_positionInfo, &Traffic::TrafficFactor_WithPosition::positionInfoChanged);
 };

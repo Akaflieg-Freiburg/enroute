@@ -51,7 +51,6 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
     // Bindings for property icon
     m_icon.setBinding([this]() {
-
         // Determine base icon shape from direction availability and aircraft type
         auto baseType = QStringLiteral("noDirection");
         if (m_positionInfo.value().groundSpeed().isFinite() && m_positionInfo.value().trueTrack().isFinite())
@@ -214,8 +213,17 @@ void Traffic::TrafficFactor_WithPosition::updateExtrapolatedData()
     }
 
     auto secondsElapsed = m_positionInfo.value().timestamp().msecsTo(QDateTime::currentDateTimeUtc())/1000.0;
-    auto vdistance_in_meters = (double)m_positionInfo.value().groundSpeed().toMPS()*secondsElapsed;
+
     const QScopedPropertyUpdateGroup updateGroup;
+    if (secondsElapsed < 30.0)
+    {
+        m_uncertainityRadius = Units::Distance::fromM(0);
+    }
+    else
+    {
+        m_uncertainityRadius = m_positionInfo.value().groundSpeed() * Units::Timespan::fromS(secondsElapsed);
+    }
+    auto vdistance_in_meters = (double)m_positionInfo.value().groundSpeed().toMPS()*secondsElapsed;
     m_extrapolatedCoordinate = m_positionInfo.value().coordinate().atDistanceAndAzimuth(vdistance_in_meters, m_positionInfo.value().trueTrack().toDEG(), 0);
     m_extrapolatedTrueTrack = m_positionInfo.value().trueTrack();
 }

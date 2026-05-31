@@ -25,6 +25,9 @@
 #include <QQmlEngine>
 #include <QtMath>
 
+#include "units/Distance.h"
+#include "units/Timespan.h"
+
 
 namespace Units {
 
@@ -248,11 +251,36 @@ namespace Units {
  *
  *  @returns Multiplies speed
  */
-inline auto operator*(double lhs, Units::Speed rhs ) -> Units::Speed
+inline Units::Speed operator*(double lhs, Units::Speed rhs)
 {
-    return Units::Speed::fromMPS( lhs*rhs.toMPS() );
+    return Units::Speed::fromMPS(lhs*rhs.toMPS());
 }
 
+/*! \brief Multiplication with timespan
+ *
+ *  @param lhs Timespan
+ *
+ *  @param rhs Speed
+ *
+ *  @returns Distance
+ */
+inline Units::Distance operator*(Units::Timespan lhs, Units::Speed rhs)
+{
+    return Units::Distance::fromM(lhs.toS() * rhs.toMPS());
+}
+
+/*! \brief Multiplication with timespan
+ *
+ *  @param lhs Speed
+ *
+ *  @param rhs Timespan
+ *
+ *  @returns Distance
+ */
+inline Units::Distance operator*(Units::Speed lhs, Units::Timespan rhs)
+{
+    return Units::Distance::fromM(rhs.toS() * lhs.toMPS());
+}
 
 /*! \brief Serialization of a speed object into a QDataStream
  *
@@ -262,8 +290,7 @@ inline auto operator*(double lhs, Units::Speed rhs ) -> Units::Speed
  *
  * @returns Reference to the QDataStream
  */
-auto operator<<(QDataStream &out, Units::Speed speed) -> QDataStream &;
-
+QDataStream & operator<<(QDataStream &out, Units::Speed speed);
 
 /*! \brief Deserialization of a speed object into a QDataStream
  *

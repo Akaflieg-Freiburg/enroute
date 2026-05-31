@@ -52,12 +52,22 @@ MapQuickItem {
             enabled: traffic1MapItem.trafficInfo.animate
         }
 
+        Rectangle {
+            opacity: 0.2
+            width: traffic1MapItem.trafficInfo.uncertaintyRadius.toM() * traffic1MapItem.pixelPer10km / 5000
+            height: width
+            x: -width/2
+            y: -height/2
+            radius: width/2
+            color: traffic1MapItem.trafficInfo.color
+        }
+
         FlightVector {
             width: 3
+            opacity: traffic1MapItem.trafficInfo.uncertaintyRadius.toM() > 0 ? 0.7 : 0.8
             pixelPerTenKM: traffic1MapItem.pixelPer10km
             groundSpeedInMetersPerSecond: traffic1MapItem.trafficInfo.positionInfo.groundSpeed().toMPS()
             visible: (groundSpeedInMetersPerSecond > 5) && (traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite())
-            opacity: 0.8
         }
 
         Image {
@@ -69,6 +79,7 @@ MapQuickItem {
             x: -width/2.0
             y: -height/2.0
 
+            opacity: traffic1MapItem.trafficInfo.uncertaintyRadius.toM() > 0 ? 0.7 : 1.0
             source: traffic1MapItem.trafficInfo.icon
         }
     }

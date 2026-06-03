@@ -507,9 +507,9 @@ void Flightlog::FlightLog::onTakeoffDetected(const Flightlog::Flight& flight, co
 #ifdef Q_OS_ANDROID
     // Post a notification with sound so the pilot knows takeoff was detected,
     // even if the app is in the background.
-    auto title = tr(u"Takeoff Detected"_s);
-    auto message = tr(u"Departed %1 at %2 UTC"_s).arg(
-        flight.departureICAO().isEmpty() ? tr(u"unknown"_s) : flight.departureICAO(),
+    auto title = tr("Takeoff Detected");
+    auto message = tr("Departed %1 at %2 UTC").arg(
+        flight.departureICAO().isEmpty() ? tr("unknown") : flight.departureICAO(),
         timeStr);
     QJniObject context = QNativeInterface::QAndroidApplication::context();
     QJniObject::callStaticMethod<void>(
@@ -565,9 +565,9 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
 
 #ifdef Q_OS_ANDROID
     // Post a notification with sound so the pilot knows landing was detected.
-    auto title = tr(u"Landing Detected"_s);
-    auto message = tr(u"Landed %1 at %2 UTC"_s).arg(
-        arrivalICAO.isEmpty() ? tr(u"unknown"_s) : arrivalICAO,
+    auto title = tr("Landing Detected");
+    auto message = tr("Landed %1 at %2 UTC").arg(
+        arrivalICAO.isEmpty() ? tr("unknown") : arrivalICAO,
         timeStr);
     QJniObject context = QNativeInterface::QAndroidApplication::context();
     QJniObject::callStaticMethod<void>(

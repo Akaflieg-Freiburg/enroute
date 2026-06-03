@@ -53,7 +53,7 @@ Flightlog::FlightLog::FlightLog(QObject *parent) : GlobalObject(parent)
 
     // Forward live track updates to the map when no saved track is selected
     connect(&m_recorder, &FlightRecorder::trackGeoPathChanged, this, [this]() {
-        if (m_displayedTrackIndex == -1) {
+        if (m_displayedTrackFile.isEmpty()) {
             emit displayedTrackPathChanged();
         }
     });
@@ -78,6 +78,20 @@ void Flightlog::FlightLog::deferredInitialization()
 //
 // Properties
 //
+
+auto Flightlog::FlightLog::displayedTrackIndex() const -> int
+{
+    if (m_displayedTrackFile.isEmpty()) {
+        return -1;
+    }
+    for (int i = 0; i < m_flights.size(); ++i) {
+        if (m_flights[i].trackFile() == m_displayedTrackFile) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 
 auto Flightlog::FlightLog::detectionState() const -> FlightDetector::DetectionState
 {
@@ -126,6 +140,12 @@ void Flightlog::FlightLog::removeFlight(int index)
 {
     if (index < 0 || index >= m_flights.size()) {
         return;
+    }
+
+    // If this flight's track is currently displayed, hide it first
+    if (!m_displayedTrackFile.isEmpty()
+        && m_flights[index].trackFile() == m_displayedTrackFile) {
+        hideTrack();
     }
 
     // If the preliminary in-progress flight (index 0) is removed while
@@ -264,7 +284,8 @@ void Flightlog::FlightLog::removeTrack(int index)
     }
 
     // If this track is currently displayed, hide it first
-    if (m_displayedTrackIndex == index) {
+    if (!m_displayedTrackFile.isEmpty()
+        && m_flights[index].trackFile() == m_displayedTrackFile) {
         hideTrack();
     }
 
@@ -278,7 +299,7 @@ void Flightlog::FlightLog::removeTrack(int index)
 auto Flightlog::FlightLog::displayedTrackPath() const -> QList<QGeoCoordinate>
 {
     // If a saved track is selected, return its cached path
-    if (m_displayedTrackIndex >= 0) {
+    if (!m_displayedTrackFile.isEmpty()) {
         return m_displayedTrackPath;
     }
 
@@ -303,14 +324,14 @@ void Flightlog::FlightLog::showTrack(int index)
 
     // Load track coordinates directly from IGC file
     m_displayedTrackPath = m_recorder.loadTrackPath(m_flights[index]);
-    m_displayedTrackIndex = index;
+    m_displayedTrackFile = m_flights[index].trackFile();
     emit displayedTrackPathChanged();
 }
 
 
 void Flightlog::FlightLog::hideTrack()
 {
-    m_displayedTrackIndex = -1;
+    m_displayedTrackFile.clear();
     m_displayedTrackPath.clear();
     emit displayedTrackPathChanged();
 }
@@ -439,7 +460,8 @@ void Flightlog::FlightLog::connectDetector(FlightDetector* detector)
 void Flightlog::FlightLog::onDetectionStateChanged()
 {
     if (m_detector->detectionState() == FlightDetector::InFlight) {
-        m_displayedTrackIndex = -1;
+        m_displayedTrackFile.clear();
+        m_displayedTrackPath.clear();
         emit displayedTrackPathChanged();
     }
     emit detectionStateChanged();
@@ -496,7 +518,7 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
 
             // Cache the geo path for map display, then free recorder RAM
             m_displayedTrackPath = m_recorder.trackGeoPath();
-            m_displayedTrackIndex = m_displayedTrackPath.isEmpty() ? -1 : 0;
+            m_displayedTrackFile = m_displayedTrackPath.isEmpty() ? QString{} : flight.trackFile();
             m_recorder.clearTrack();
         }
 

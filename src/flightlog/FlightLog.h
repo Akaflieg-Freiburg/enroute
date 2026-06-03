@@ -105,10 +105,11 @@ public:
 
     /*! \brief Index of the flight whose track is displayed, or -1 if none
      *
-     *  Set to -1 when showing the live track or no track.
+     *  Computed from the displayed track file. Returns -1 when showing the
+     *  live track or no track.
      */
     Q_PROPERTY(int displayedTrackIndex READ displayedTrackIndex NOTIFY displayedTrackPathChanged)
-    [[nodiscard]] auto displayedTrackIndex() const -> int { return m_displayedTrackIndex; }
+    [[nodiscard]] auto displayedTrackIndex() const -> int;
 
     /*! \brief Whether GPS track recording is enabled
      *
@@ -316,8 +317,8 @@ private:
 
     QList<Flight> m_flights;
 
-    // Index of the flight whose saved track is displayed, or -1
-    int m_displayedTrackIndex {-1};
+    // Filename of the flight whose saved track is displayed, or empty
+    QString m_displayedTrackFile;
 
     // Cached geo path for the displayed saved track
     QList<QGeoCoordinate> m_displayedTrackPath;

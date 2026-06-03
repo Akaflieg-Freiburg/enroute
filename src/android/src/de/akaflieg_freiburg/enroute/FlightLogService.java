@@ -32,7 +32,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.Uri;
@@ -60,6 +59,7 @@ public class FlightLogService extends Service {
     // Unique ID for the persistent notification. Android requires each
     // foreground service to display a notification with a stable ID.
     private static final int NOTIFICATION_ID = 1001;
+    private static final int PERMISSION_REQUEST_CODE = 1001;
 
     // Separate ID for event notifications so they don't replace the
     // persistent service notification.
@@ -100,8 +100,8 @@ public class FlightLogService extends Service {
         // Build the persistent notification shown in the status bar.
         // setOngoing(true) prevents the user from swiping it away.
         Notification notification = new Notification.Builder(this, CHANNEL_ID)
-                .setContentTitle("Enroute Flight Navigation")
-                .setContentText("Flight recording in progress")
+                .setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_text))
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
@@ -121,7 +121,7 @@ public class FlightLogService extends Service {
         // naturally (local Stratux → WiFi, internet traffic → mobile/other networks).
         m_connectivityManager = (ConnectivityManager) getSystemService(
                 Context.CONNECTIVITY_SERVICE);
-        if (m_connectivityManager != null) {
+        if (m_connectivityManager != null && m_networkCallback == null) {
             NetworkRequest networkRequest = new NetworkRequest.Builder()
                     .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
                     .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
@@ -162,9 +162,8 @@ public class FlightLogService extends Service {
     /**
      * Create the notification channel for flight recording notifications.
      *
-     * IMPORTANCE_LOW means no sound or vibration — appropriate for a
-     * long-running background indicator that doesn't need to interrupt
-     * the user.
+     * IMPORTANCE_DEFAULT means sound enabled — required for reliable
+     * notification delivery and heads-up display on most devices.
      */
     private void createNotificationChannel() {
         NotificationManager manager = getSystemService(NotificationManager.class);
@@ -194,10 +193,8 @@ public class FlightLogService extends Service {
         eventChannel.enableVibration(true);
         // Set the default notification sound — required on some devices
         // for heads-up (floating banner) display to trigger.
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);        eventChannel.setSound(defaultSound,
-                new android.media.AudioAttributes.Builder()
-                        .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_EVENT)
-                        .build());        eventChannel.setSound(defaultSound,
+        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        eventChannel.setSound(defaultSound,
                 new android.media.AudioAttributes.Builder()
                         .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_EVENT)
                         .build());
@@ -225,7 +222,7 @@ public class FlightLogService extends Service {
                 if (context instanceof Activity) {
                     ((Activity) context).requestPermissions(
                             new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
-                            1001);
+                            PERMISSION_REQUEST_CODE);
                 }
             }
         }

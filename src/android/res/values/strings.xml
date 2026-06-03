@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Flight recording service notification strings -->
+    <string name="notification_title">Enroute Flight Navigation</string>
+    <string name="notification_text">Flight recording in progress</string>
+</resources>

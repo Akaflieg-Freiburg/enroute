@@ -228,6 +228,26 @@ auto main(int argc, char *argv[]) -> int
     engine->load(u"qrc:/qml/main.qml"_s);
 #if defined(Q_OS_ANDROID)
     QNativeInterface::QAndroidApplication::hideSplashScreen(1);
+
+    // Guard against rendering after the Android Surface is destroyed.
+    //
+    // android.app.background_running = true keeps the Qt event loop running
+    // after the app is backgrounded, which is required for flight recording.
+    // However, signals fired in the background can trigger QML repaints. With
+    // the "basic" render loop (QSG_RENDER_LOOP=basic), Qt's platform plugin
+    // already suspends rendering on onPause() before the Surface is destroyed,
+    // so there is no race condition. We additionally hide the QQuickWindow on
+    // Qt::ApplicationSuspended to prevent any queued repaints from executing
+    // against the destroyed Surface.
+    {
+        auto* window = qobject_cast<QQuickWindow*>(engine->rootObjects().value(0));
+        if (window != nullptr) {
+            QObject::connect(qGuiApp, &QGuiApplication::applicationStateChanged,
+                             window, [window](Qt::ApplicationState state) {
+                                 window->setVisible(state != Qt::ApplicationSuspended);
+                             });
+        }
+    }
 #endif
 
     if (parser.isSet(googlePlayScreenshotOption))

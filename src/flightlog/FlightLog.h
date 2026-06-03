@@ -317,6 +317,9 @@ private:
 
     QList<Flight> m_flights;
 
+    // Index of the flight currently being recorded, or -1 if none
+    int m_currentFlightIndex {-1};
+
     // Filename of the flight whose saved track is displayed, or empty
     QString m_displayedTrackFile;
 

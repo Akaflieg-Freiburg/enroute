@@ -148,12 +148,18 @@ void Flightlog::FlightLog::removeFlight(int index)
         hideTrack();
     }
 
-    // If the preliminary in-progress flight (index 0) is removed while
-    // detection is active, reset the detector so it doesn't later
-    // complete a landing onto the wrong flight entry.
-    if (index == 0 && m_detector != nullptr
+    // If the in-progress flight is being removed while detection is active,
+    // reset the detector so it doesn't later complete a landing onto wrong flight
+    if (index == m_currentFlightIndex && m_detector != nullptr
         && m_detector->detectionState() != FlightDetector::Idle) {
+        m_currentFlightIndex = -1;
         m_detector->resetDetection();
+    } else if (index < m_currentFlightIndex) {
+        // If removing a flight before the current one, adjust the index
+        --m_currentFlightIndex;
+    } else if (index == m_currentFlightIndex) {
+        // Removing the current flight, reset tracking
+        m_currentFlightIndex = -1;
     }
 
     m_flights.removeAt(index);
@@ -366,10 +372,32 @@ void Flightlog::FlightLog::resolveCoordinates(Flight& flight)
 
 void Flightlog::FlightLog::sortFlights()
 {
+    // Remember the current flight before sorting (if any)
+    Flight currentFlight;
+    const bool hasCurrentFlight = (m_currentFlightIndex >= 0 && m_currentFlightIndex < m_flights.size());
+    if (hasCurrentFlight) {
+        currentFlight = m_flights[m_currentFlightIndex];
+    }
+
+    // Sort by start time, most recent first
     std::sort(m_flights.begin(), m_flights.end(),
               [](const Flight& a, const Flight& b) {
                   return a.startTime() > b.startTime();
               });
+
+    // Find the current flight's new position after sorting
+    if (hasCurrentFlight) {
+        for (int i = 0; i < m_flights.size(); ++i) {
+            // Match by both startTime and trackFile to uniquely identify the flight
+            if (m_flights[i].startTime() == currentFlight.startTime() &&
+                m_flights[i].trackFile() == currentFlight.trackFile()) {
+                m_currentFlightIndex = i;
+                return;
+            }
+        }
+        // If we couldn't find it (shouldn't happen), reset the index
+        m_currentFlightIndex = -1;
+    }
 }
 
 
@@ -473,6 +501,9 @@ void Flightlog::FlightLog::onTakeoffDetected(const Flightlog::Flight& flight, co
     // Add the preliminary flight entry so it appears in the list immediately
     addFlight(flight);
 
+    // Track that a flight is now in progress (always at index 0 due to prepending in addFlight)
+    m_currentFlightIndex = 0;
+
 #ifdef Q_OS_ANDROID
     // Post a notification with sound so the pilot knows takeoff was detected,
     // even if the app is in the background.
@@ -500,9 +531,9 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
                                                 int landingCount,
                                                 const QString& timeStr)
 {
-    // Complete the preliminary entry at index 0 (most recent flight)
-    if (!m_flights.isEmpty()) {
-        auto& flight = m_flights[0];
+    // Complete the in-progress flight using m_currentFlightIndex
+    if (m_currentFlightIndex >= 0 && m_currentFlightIndex < m_flights.size()) {
+        auto& flight = m_flights[m_currentFlightIndex];
         if (!arrivalICAO.isEmpty()) {
             flight.setArrivalICAO(arrivalICAO);
         }
@@ -526,6 +557,9 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
         emit flightsChanged();
         emit displayedTrackPathChanged();
     }
+
+    // Flight recording is complete
+    m_currentFlightIndex = -1;
 
     emit landingDetected(timeStr);
 

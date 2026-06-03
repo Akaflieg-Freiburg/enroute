@@ -215,6 +215,15 @@ public class FlightLogService extends Service {
                 NotificationManager.IMPORTANCE_HIGH);
         eventChannel.setDescription("Takeoff and landing notifications");
         eventChannel.enableVibration(true);
+        // Set the default notification sound — required on some devices
+        // for heads-up (floating banner) display to trigger.
+        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);        eventChannel.setSound(defaultSound,
+                new android.media.AudioAttributes.Builder()
+                        .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                        .build());        eventChannel.setSound(defaultSound,
+                new android.media.AudioAttributes.Builder()
+                        .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                        .build());
         manager.createNotificationChannel(eventChannel);
     }
 
@@ -272,27 +281,13 @@ public class FlightLogService extends Service {
      * @param message  Notification body (e.g. "Departed EDTF at 14:32 UTC")
      */
     public static void notifyEvent(Context context, String title, String message) {
-        // Ensure the event notification channel exists. This is safe to
-        // call multiple times — Android ignores duplicate channel creation.
-        NotificationChannel eventChannel = new NotificationChannel(
-                EVENT_CHANNEL_ID,
-                "Flight Events",
-                NotificationManager.IMPORTANCE_HIGH);
-        eventChannel.setDescription("Takeoff and landing notifications");
-        eventChannel.enableVibration(true);
-        // Set the default notification sound — required on some devices
-        // for heads-up (floating banner) display to trigger.
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        eventChannel.setSound(defaultSound,
-                new android.media.AudioAttributes.Builder()
-                        .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_EVENT)
-                        .build());
+        // The event notification channel is already created in createNotificationChannel(),
+        // so we just need to build and post the notification.
 
         NotificationManager manager = context.getSystemService(NotificationManager.class);
         if (manager == null) {
             return;
         }
-        manager.createNotificationChannel(eventChannel);
 
         // Tapping the notification brings the user back to the app.
         Intent notificationIntent = new Intent(context, MobileAdaptor.class);

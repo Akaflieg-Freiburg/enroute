@@ -252,6 +252,28 @@ void GlobalSettings::setShowAltitudeAGL(bool newShowAltitudeAGL)
 }
 
 
+void GlobalSettings::setShowCurrentFlightTrace(bool newShowCurrentFlightTrace)
+{
+    if (newShowCurrentFlightTrace == showCurrentFlightTrace())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("FlightLog/showCurrentFlightTrace"), newShowCurrentFlightTrace);
+    emit showCurrentFlightTraceChanged();
+}
+
+
+void GlobalSettings::setTrackRecording(bool newTrackRecording)
+{
+    if (newTrackRecording == trackRecording())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("FlightLog/trackRecording"), newTrackRecording);
+    emit trackRecordingChanged();
+}
+
+
 void GlobalSettings::setVoiceNotifications(uint newVoiceNotifications)
 {
     if (newVoiceNotifications == voiceNotifications())

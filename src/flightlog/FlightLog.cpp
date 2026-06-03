@@ -118,21 +118,39 @@ void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
 
 void Flightlog::FlightLog::setTrackRecording(bool enabled)
 {
-    if (m_trackRecording == enabled) {
-        return;
+    auto* settings = GlobalObject::globalSettings();
+    if (settings != nullptr) {
+        settings->setTrackRecording(enabled);
     }
-    m_trackRecording = enabled;
     emit trackRecordingChanged();
+}
+
+bool Flightlog::FlightLog::trackRecording() const
+{
+    auto* settings = GlobalObject::globalSettings();
+    if (settings != nullptr) {
+        return settings->trackRecording();
+    }
+    return true; // default
 }
 
 void Flightlog::FlightLog::setShowCurrentFlightTrace(bool enabled)
 {
-    if (m_showCurrentFlightTrace == enabled) {
-        return;
+    auto* settings = GlobalObject::globalSettings();
+    if (settings != nullptr) {
+        settings->setShowCurrentFlightTrace(enabled);
     }
-    m_showCurrentFlightTrace = enabled;
     emit showCurrentFlightTraceChanged();
     emit displayedTrackPathChanged();
+}
+
+bool Flightlog::FlightLog::showCurrentFlightTrace() const
+{
+    auto* settings = GlobalObject::globalSettings();
+    if (settings != nullptr) {
+        return settings->showCurrentFlightTrace();
+    }
+    return true; // default
 }
 
 
@@ -310,7 +328,7 @@ auto Flightlog::FlightLog::displayedTrackPath() const -> QList<QGeoCoordinate>
     }
 
     // Otherwise return the live recording track when enabled
-    if (!m_showCurrentFlightTrace) {
+    if (!showCurrentFlightTrace()) {
         return {};
     }
 
@@ -544,7 +562,7 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
         flight.setLandingCount(landingCount);
 
         // Save the track from the recorder to an IGC file
-        if (m_trackRecording) {
+        if (trackRecording()) {
             m_recorder.saveTrack(flight);
 
             // Cache the geo path for map display, then free recorder RAM
@@ -604,7 +622,7 @@ void Flightlog::FlightLog::onPositionUpdated()
     m_detector->processPositionUpdate(info);
 
     // Forward to recorder — it manages preflight/inflight/postlanding internally
-    if (m_trackRecording) {
+    if (trackRecording()) {
         auto pressAlt = GlobalObject::positionProvider()->pressureAltitude();
         m_recorder.processPositionUpdate(m_detector->detectionState(), info, pressAlt);
     }

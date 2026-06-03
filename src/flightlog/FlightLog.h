@@ -117,7 +117,7 @@ public:
      *  and saves them as IGC files on landing. Default is true.
      */
     Q_PROPERTY(bool trackRecording READ trackRecording WRITE setTrackRecording NOTIFY trackRecordingChanged)
-    [[nodiscard]] auto trackRecording() const -> bool { return m_trackRecording; }
+    [[nodiscard]] auto trackRecording() const -> bool;
     void setTrackRecording(bool enabled);
 
     /*! \brief Whether the live trace of the current flight is shown on map
@@ -126,7 +126,7 @@ public:
      *  displayedTrackPath while no saved track is selected. Default is true.
      */
     Q_PROPERTY(bool showCurrentFlightTrace READ showCurrentFlightTrace WRITE setShowCurrentFlightTrace NOTIFY showCurrentFlightTraceChanged)
-    [[nodiscard]] auto showCurrentFlightTrace() const -> bool { return m_showCurrentFlightTrace; }
+    [[nodiscard]] auto showCurrentFlightTrace() const -> bool;
     void setShowCurrentFlightTrace(bool enabled);
 
 
@@ -327,10 +327,6 @@ private:
     QList<QGeoCoordinate> m_displayedTrackPath;
 
     // Whether track recording is enabled
-    bool m_trackRecording {true};
-
-    // Whether live trace of current flight is shown on map
-    bool m_showCurrentFlightTrace {true};
 
     // The active flight detector (owned by this object)
     FlightDetector* m_detector {nullptr};

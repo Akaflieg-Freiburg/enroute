@@ -65,11 +65,8 @@ public class FlightLogService extends Service {
     // persistent service notification.
     private static final int EVENT_NOTIFICATION_ID = 1002;
 
-    // ConnectivityManager and NetworkCallback for keeping the WiFi network
-    // alive. On modern Android, the OS disconnects from WiFi networks without
-    // internet access (like Stratux hotspots). By requesting a network with
-    // TRANSPORT_WIFI, we tell Android that we actively need the WiFi
-    // connection even without internet validation.
+    // ConnectivityManager for requesting WiFi networks without internet access.
+    // Keeps local hotspots like Stratux connected even when they have no internet.
     private ConnectivityManager m_connectivityManager;
     private ConnectivityManager.NetworkCallback m_networkCallback;
 
@@ -118,14 +115,10 @@ public class FlightLogService extends Service {
         startForeground(NOTIFICATION_ID, notification,
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
 
-        // Request a WiFi network to prevent Android from dropping the
-        // connection to traffic receiver hotspots (e.g. Stratux) that have
-        // no internet access. Without this, Android detects "no internet"
-        // and disconnects or routes all traffic over mobile data.
-        //
-        // The NetworkRequest asks for TRANSPORT_WIFI without requiring
-        // NET_CAPABILITY_INTERNET — this tells Android we explicitly want
-        // the WiFi network even if it has no internet connectivity.
+        // Request WiFi networks without internet access (e.g. Stratux hotspots).
+        // This tells Android to keep these connections alive. We don't bind the
+        // process to a specific network — the kernel routing table handles traffic
+        // naturally (local Stratux → WiFi, internet traffic → mobile/other networks).
         m_connectivityManager = (ConnectivityManager) getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         if (m_connectivityManager != null) {
@@ -134,23 +127,8 @@ public class FlightLogService extends Service {
                     .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                     .build();
 
-            m_networkCallback = new ConnectivityManager.NetworkCallback() {
-                @Override
-                public void onAvailable(Network network) {
-                    // Bind the app's network traffic to this WiFi network.
-                    // This ensures TCP/UDP connections to the traffic receiver
-                    // go over WiFi rather than being routed over mobile data.
-                    m_connectivityManager.bindProcessToNetwork(network);
-                }
-
-                @Override
-                public void onLost(Network network) {
-                    // WiFi network lost — unbind so the system can route
-                    // traffic over whatever network is available.
-                    m_connectivityManager.bindProcessToNetwork(null);
-                }
-            };
-
+            // Minimal callback that just monitors; no binding or special handling.
+            m_networkCallback = new ConnectivityManager.NetworkCallback();
             m_connectivityManager.requestNetwork(networkRequest, m_networkCallback);
         }
 
@@ -168,9 +146,8 @@ public class FlightLogService extends Service {
 
     @Override
     public void onDestroy() {
-        // Unregister the network callback and unbind from the WiFi network.
+        // Unregister the network callback.
         if (m_connectivityManager != null && m_networkCallback != null) {
-            m_connectivityManager.bindProcessToNetwork(null);
             m_connectivityManager.unregisterNetworkCallback(m_networkCallback);
             m_networkCallback = null;
         }

@@ -85,29 +85,6 @@ public:
     // Methods
     //
 
-    /*! \brief Copy data from other object
-     *
-     *  This method copies all properties from the other object, with two notable exceptions.
-     *
-     *  - The property "animate" is not copied, the property "animate" of this class is not touched.
-     *  - The lifeTime of this object is not changed.
-     *
-     *  @param other Instance whose properties are copied
-     */
-    void copyFrom(const TrafficFactor_Abstract& other)
-    {
-        setAlarmLevel(other.alarmLevel());
-        setCallSign(other.callSign());
-        setHDist(other.hDist());
-        setID(other.ID());
-        if (other.type() != TrafficFactor_Abstract::Type::unknown)
-        {
-            setType(other.type());
-        }
-        setVDist(other.vDist());
-#warning need clear criteria when lifeTimer is restarted
-    }
-
     /*! \brief Estimates if this traffic object has higher priority than other
      *  traffic object
      *
@@ -164,7 +141,7 @@ public:
      *  the position change of an aircraft.  It is typically set to "false" before data of a new
      *  aircraft set.
      */
-    Q_PROPERTY(bool animate READ animate WRITE setAnimate NOTIFY animateChanged BINDABLE bindableAnimate)
+    Q_PROPERTY(bool animate READ animate NOTIFY animateChanged BINDABLE bindableAnimate)
 
     /*! \brief Call sign
      *
@@ -425,12 +402,6 @@ public:
 
     /*! \brief Setter function for property with the same name
      *
-     *  @param newAnimate Property animate
-     */
-    void setAnimate(bool newAnimate) {m_animate = newAnimate;}
-
-    /*! \brief Setter function for property with the same name
-     *
      *  @param newCallSign Property callSign
      */
     void setCallSign(const QString& newCallSign) {m_callSign = newCallSign;}
@@ -520,6 +491,20 @@ protected:
 
     // Indicates that the instance is valid as an abstract traffic factor
     QProperty<bool> m_validAbstractTrafficFactor;
+
+    /*! \brief Copy data from other object
+     *
+     *  This method copies all properties from the other object, with notable exceptions.
+     *  If both *this and other are valid, and if the rightmost six characters if the IDs
+     *  agree, then the method treats the call as an update of existing data. In this case,
+     *
+     *  - the property "animate" of *this is set to true
+     *  - the callsign is copied only if the callsign of *this is empty.
+     *  - the type is copied only if the type of *this is unknown.
+     *
+     *  @param other Instance whose properties are copied
+     */
+    void copyFrom(const TrafficFactor_Abstract& other);
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_Abstract)

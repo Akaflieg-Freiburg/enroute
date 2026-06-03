@@ -56,17 +56,16 @@ public:
 
     /*! \brief Copy data from other object
      *
-     *  This method copies all properties from the other object, with two notable exceptions.
-     *
-     *  - The property "animate" is not copied, the property "animate" of this class is not touched.
-     *  - The lifeTime of this object is not changed.
+     *  This method copies all properties from the other object.
      *
      *  @param other Instance whose properties are copied
      */
+#warning docu
     void copyFrom(const TrafficFactor_DistanceOnly& other)
     {
+        const QScopedPropertyUpdateGroup updateGroup;
         setCoordinate(other.coordinate());
-        TrafficFactor_Abstract::copyFrom(other); // This will also call updateDescription
+        TrafficFactor_Abstract::copyFrom(other);
     }
 
 

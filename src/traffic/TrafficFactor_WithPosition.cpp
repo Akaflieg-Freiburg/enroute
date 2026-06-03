@@ -219,22 +219,18 @@ void Traffic::TrafficFactor_WithPosition::updateExtrapolatedData()
     {
         m_extrapolatedCoordinate = QGeoCoordinate();
         m_extrapolatedTrueTrack = Units::Angle();
+        m_uncertainityRadius = Units::Distance::fromM(0);
         return;
     }
-    if (!m_positionInfo.value().groundSpeed().isFinite())
+    if (!m_positionInfo.value().groundSpeed().isFinite() || !m_positionInfo.value().trueTrack().isFinite())
     {
         m_extrapolatedCoordinate = m_positionInfo.value().coordinate();
         m_extrapolatedTrueTrack = Units::Angle();
-        return;
-    }
-    if (!m_positionInfo.value().trueTrack().isFinite())
-    {
-        m_extrapolatedCoordinate = m_positionInfo.value().coordinate();
-        m_extrapolatedTrueTrack = Units::Angle();
+        m_uncertainityRadius = Units::Distance::fromM(0);
         return;
     }
 
-    auto secondsElapsed = m_positionInfo.value().timestamp().msecsTo(QDateTime::currentDateTimeUtc())/1000.0;
+    auto secondsElapsed = static_cast<double>(m_positionInfo.value().timestamp().msecsTo(QDateTime::currentDateTimeUtc()))/1000.0;
 
     const QScopedPropertyUpdateGroup updateGroup;
     if (secondsElapsed < 30.0)

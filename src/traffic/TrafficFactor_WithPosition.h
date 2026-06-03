@@ -62,6 +62,7 @@ public:
      *
      *  @param other Instance whose properties are copied
      */
+#warning docu
     void copyFrom(const TrafficFactor_WithPosition& other)
     {
         if (other.positionInfo().timestamp() < m_positionInfo.value().timestamp())

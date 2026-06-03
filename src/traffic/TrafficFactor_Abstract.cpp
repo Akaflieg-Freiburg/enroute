@@ -86,7 +86,7 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
         {
             return false;
         }
-#warning
+#warning For debug purposes, show all aircraft
         return true;
         if (m_vDist.value().isFinite() && (m_vDist.value() > maxVerticalDistance))
         {
@@ -118,6 +118,25 @@ Traffic::TrafficFactor_Abstract::~TrafficFactor_Abstract()
     m_typeString.takeBinding();
     m_relevant.takeBinding();
     m_relevantString.takeBinding();
+}
+
+
+void Traffic::TrafficFactor_Abstract::copyFrom(const TrafficFactor_Abstract& other)
+{
+    auto update = valid() && other.valid() && (other.ID().right(6) == ID().right(6));
+    setAlarmLevel(other.alarmLevel());
+    if (m_callSign.value().isEmpty() || !update)
+    {
+        setCallSign(other.callSign());
+    }
+    setHDist(other.hDist());
+    setID(other.ID());
+    if ((m_type.value() == TrafficFactor_Abstract::Type::unknown) || !update)
+    {
+        setType(other.type());
+    }
+    setVDist(other.vDist());
+    m_animate = update;
 }
 
 

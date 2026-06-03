@@ -370,19 +370,8 @@ void Traffic::TrafficDataProvider::onCurrentSourceChanged()
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor)
 {
-    if (factor.ID() == m_trafficObjectWithoutPosition->ID())
-    {
-        m_trafficObjectWithoutPosition->setAnimate(true);
-        m_trafficObjectWithoutPosition->copyFrom(factor);
-        m_trafficObjectWithoutPosition->startLiveTime();
-    }
-
-    if (factor.hasHigherPriorityThan(*m_trafficObjectWithoutPosition))
-    {
-        m_trafficObjectWithoutPosition->setAnimate(false);
-        m_trafficObjectWithoutPosition->copyFrom(factor);
-        m_trafficObjectWithoutPosition->startLiveTime();
-    }
+    m_trafficObjectWithoutPosition->copyFrom(factor);
+    m_trafficObjectWithoutPosition->startLiveTime();
 }
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor)
@@ -395,7 +384,6 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
             if (target->positionInfo().timestamp() < factor.positionInfo().timestamp())
             {
                 // Replace the entry by the factor.
-                target->setAnimate(true);
                 target->copyFrom(factor);
                 target->startLiveTime();
             }
@@ -403,6 +391,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
         }
     }
 
+    // Get lowest priority target
     auto* lowestPriObject = m_trafficObjects.at(0);
     for(auto* target : std::as_const(m_trafficObjects))
     {
@@ -411,9 +400,10 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
             lowestPriObject = target;
         }
     }
+
+    // Replace the lowest priority target
     if (factor.hasHigherPriorityThan(*lowestPriObject))
     {
-        lowestPriObject->setAnimate(false);
         lowestPriObject->copyFrom(factor);
         lowestPriObject->startLiveTime();
     }

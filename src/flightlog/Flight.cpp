@@ -125,7 +125,10 @@ auto Flightlog::Flight::fromJSON(const QJsonObject& json) -> Flight
             json.value(u"arrivalLon"_s).toDouble());
     }
 
-    f.m_trackFile = json.value(u"trackFile"_s).toString();
+    auto trackFile = json.value(u"trackFile"_s).toString();
+    if (!trackFile.isEmpty() && !trackFile.contains(u'/') && !trackFile.contains(u'\\')) {
+        f.m_trackFile = trackFile;
+    }
 
     return f;
 }

@@ -382,18 +382,18 @@ Page {
                         text: {
                             var parts = []
                             var ft = modelData.flightTime()
+                            if (modelData.aircraftCallsign !== "")
+                                parts.push(modelData.aircraftCallsign)
                             if (ft !== "")
                                 parts.push(qsTr("Duration: %1").arg(ft))
                             var bt = modelData.blockTime()
                             if (bt !== "")
                                 parts.push(qsTr("Block: %1").arg(bt))
                             var dist = modelData.distance()
-                            if (dist.isFinite())
-                                parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
-                            if (modelData.aircraftCallsign !== "")
-                                parts.push(modelData.aircraftCallsign)
                             if (modelData.landingCount > 1)
                                 parts.push(qsTr("Landings: %1").arg(modelData.landingCount))
+                            if (dist.isFinite() && dist.toNM() >= 0.1)
+                                parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
                             if (modelData.pilotName !== "")
                                 parts.push(modelData.pilotName)
                             if (modelData.comments !== "")
@@ -472,16 +472,6 @@ Page {
                     }
 
                     Action {
-                        text: qsTr("Export to IGC…")
-                        enabled: modelData.hasTrack
-
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            FlightLog.exportToIGC(index)
-                        }
-                    }
-
-                    Action {
                         text: qsTr("Export as ForeFlight CSV…")
 
                         onTriggered: {
@@ -496,6 +486,16 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             FlightLog.exportToJSON([index])
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("Export to IGC…")
+                        enabled: modelData.hasTrack
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            FlightLog.exportToIGC(index)
                         }
                     }
 

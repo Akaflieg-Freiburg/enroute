@@ -314,7 +314,7 @@ auto Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices) -> QB
         toExport = m_flights;
     } else {
         for (const QVariant& v : indices) {
-            int idx = v.toInt();
+            const int idx = v.toInt();
             if (idx >= 0 && idx < m_flights.size()) {
                 toExport.append(m_flights.at(idx));
             }
@@ -444,7 +444,7 @@ auto Flightlog::FlightLog::exportToJSON(const QVariantList& indices) -> QByteArr
         toExport = m_flights;
     } else {
         for (const QVariant& v : indices) {
-            int idx = v.toInt();
+            const int idx = v.toInt();
             if (idx >= 0 && idx < m_flights.size()) {
                 toExport.append(m_flights.at(idx));
             }

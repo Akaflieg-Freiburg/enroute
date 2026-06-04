@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDateTime>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -34,6 +35,7 @@
 #include "geomaps/Waypoint.h"
 #include "flightlog/AirplaneFlightDetector.h"
 #include "flightlog/FlightLog.h"
+#include "platform/FileExchange.h"
 #include "positioning/PositionProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -301,6 +303,166 @@ void Flightlog::FlightLog::exportToIGC(int index)
 }
 
 
+void Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices)
+{
+    // Collect flights to export (empty indices = export all)
+    QList<Flight> toExport;
+    if (indices.isEmpty()) {
+        toExport = m_flights;
+    } else {
+        for (const QVariant& v : indices) {
+            int idx = v.toInt();
+            if (idx >= 0 && idx < m_flights.size()) {
+                toExport.append(m_flights.at(idx));
+            }
+        }
+    }
+    if (toExport.isEmpty()) {
+        return;
+    }
+
+    // Wrap a CSV field in double-quotes if it contains commas, quotes, or line breaks
+    auto csvField = [](const QString& s) -> QString {
+        if (s.contains(u',') || s.contains(u'"') || s.contains(u'\n') || s.contains(u'\r')) {
+            return u'"' + QString(s).replace(u'"', u"\"\""_s) + u'"';
+        }
+        return s;
+    };
+
+    // Format a QDateTime as HH:MM UTC; empty string if invalid
+    auto timeHHMM = [](const QDateTime& dt) -> QString {
+        return dt.isValid() ? dt.toUTC().toString(u"HH:mm"_s) : QString();
+    };
+
+    // ForeFlight mandatory magic header line followed by a blank line,
+    // then the exact column-header row from the ForeFlight Flights table spec.
+    QString csv;
+    csv += u"ForeFlight Logbook Import\r\n"_s;
+    csv += u"\r\n"_s;
+    csv += u"Date,AircraftID,From,To,Route,"
+           u"TimeOut,TimeOff,TimeOn,TimeIn,OnDuty,OffDuty,"
+           u"TotalTime,PIC,SIC,Night,Solo,CrossCountry,PICUS,MultiPilot,"
+           u"IFR,Examiner,NVG,NVGOps,Distance,"
+           u"Takeoff Day,Takeoff Night,"
+           u"Landing Full-Stop Day,Landing Full-Stop Night,"
+           u"Landing Touch-and-Go Day,Landing Touch-and-Go Night,"
+           u"ActualInstrument,SimulatedInstrument,"
+           u"GroundTraining,GroundTrainingGiven,"
+           u"HobbsStart,HobbsEnd,TachStart,TachEnd,Holds,"
+           u"Approach1,Approach2,Approach3,Approach4,Approach5,Approach6,"
+           u"DualGiven,DualReceived,SimulatedFlight,"
+           u"InstructorName,InstructorComments,"
+           u"Person1,Person2,Person3,Person4,Person5,Person6,"
+           u"PilotComments,Flight Review,IPC,Checkride,FAA 61.58,NVG Proficiency\r\n"_s;
+
+    for (const auto& flight : std::as_const(toExport)) {
+        const QString date = flight.startTime().isValid()
+            ? flight.startTime().toUTC().date().toString(u"yyyy-MM-dd"_s)
+            : QString();
+
+        // Landing count: all landings go into "Landing Full-Stop Day" as we
+        // don't track day/night or touch-and-go split.
+        const QString landings = flight.landingCount() > 0
+            ? QString::number(flight.landingCount()) : QString();
+
+        csv += csvField(date)                               + u","_s; // Date
+        csv += csvField(flight.aircraftCallsign())          + u","_s; // AircraftID
+        csv += csvField(flight.departureICAO())             + u","_s; // From
+        csv += csvField(flight.arrivalICAO())               + u","_s; // To
+        csv +=                                                u","_s; // Route
+        csv += csvField(timeHHMM(flight.offBlockTime()))   + u","_s; // TimeOut
+        csv += csvField(timeHHMM(flight.startTime()))      + u","_s; // TimeOff
+        csv += csvField(timeHHMM(flight.landingTime()))    + u","_s; // TimeOn
+        csv += csvField(timeHHMM(flight.onBlockTime()))    + u","_s; // TimeIn
+        csv +=                                                u","_s; // OnDuty
+        csv +=                                                u","_s; // OffDuty
+        csv +=                                                u","_s; // TotalTime (derived by ForeFlight from block/airborne times)
+        csv +=                                                u","_s; // PIC
+        csv +=                                                u","_s; // SIC
+        csv +=                                                u","_s; // Night
+        csv +=                                                u","_s; // Solo
+        csv +=                                                u","_s; // CrossCountry
+        csv +=                                                u","_s; // PICUS
+        csv +=                                                u","_s; // MultiPilot
+        csv +=                                                u","_s; // IFR
+        csv +=                                                u","_s; // Examiner
+        csv +=                                                u","_s; // NVG
+        csv +=                                                u","_s; // NVGOps
+        csv +=                                                u","_s; // Distance
+        csv +=                                                u","_s; // Takeoff Day
+        csv +=                                                u","_s; // Takeoff Night
+        csv += csvField(landings)                           + u","_s; // Landing Full-Stop Day
+        csv +=                                                u","_s; // Landing Full-Stop Night
+        csv +=                                                u","_s; // Landing Touch-and-Go Day
+        csv +=                                                u","_s; // Landing Touch-and-Go Night
+        csv +=                                                u","_s; // ActualInstrument
+        csv +=                                                u","_s; // SimulatedInstrument
+        csv +=                                                u","_s; // GroundTraining
+        csv +=                                                u","_s; // GroundTrainingGiven
+        csv +=                                                u","_s; // HobbsStart
+        csv +=                                                u","_s; // HobbsEnd
+        csv +=                                                u","_s; // TachStart
+        csv +=                                                u","_s; // TachEnd
+        csv +=                                                u","_s; // Holds
+        csv +=                                                u","_s; // Approach1
+        csv +=                                                u","_s; // Approach2
+        csv +=                                                u","_s; // Approach3
+        csv +=                                                u","_s; // Approach4
+        csv +=                                                u","_s; // Approach5
+        csv +=                                                u","_s; // Approach6
+        csv +=                                                u","_s; // DualGiven
+        csv +=                                                u","_s; // DualReceived
+        csv +=                                                u","_s; // SimulatedFlight
+        csv +=                                                u","_s; // InstructorName
+        csv +=                                                u","_s; // InstructorComments
+        csv += csvField(flight.pilotName())                 + u","_s; // Person1
+        csv +=                                                u","_s; // Person2
+        csv +=                                                u","_s; // Person3
+        csv +=                                                u","_s; // Person4
+        csv +=                                                u","_s; // Person5
+        csv +=                                                u","_s; // Person6
+        csv += csvField(flight.comments())                  + u","_s; // PilotComments
+        csv +=                                                u","_s; // Flight Review
+        csv +=                                                u","_s; // IPC
+        csv +=                                                u","_s; // Checkride
+        csv +=                                                u","_s; // FAA 61.58
+        csv +=                                              u"\r\n"_s; // NVG Proficiency (last column)
+    }
+
+    auto* fileExchange = GlobalObject::fileExchange();
+    if (fileExchange != nullptr) {
+        fileExchange->shareContent(csv.toUtf8(), u"text/csv"_s, u"csv"_s, u"FlightLog"_s);
+    }
+}
+
+
+void Flightlog::FlightLog::exportToJSON(const QVariantList& indices)
+{
+    // Collect flights to export (empty indices = export all)
+    QList<Flight> toExport;
+    if (indices.isEmpty()) {
+        toExport = m_flights;
+    } else {
+        for (const QVariant& v : indices) {
+            int idx = v.toInt();
+            if (idx >= 0 && idx < m_flights.size()) {
+                toExport.append(m_flights.at(idx));
+            }
+        }
+    }
+    if (toExport.isEmpty()) {
+        return;
+    }
+
+    const QJsonDocument doc = flightsToJsonDocument(toExport);
+
+    auto* fileExchange = GlobalObject::fileExchange();
+    if (fileExchange != nullptr) {
+        fileExchange->shareContent(doc.toJson(), u"application/json"_s, u"json"_s, u"FlightLog"_s);
+    }
+}
+
+
 void Flightlog::FlightLog::removeTrack(int index)
 {
     if (index < 0 || index >= m_flights.size()) {
@@ -425,18 +587,7 @@ void Flightlog::FlightLog::sortFlights()
 
 void Flightlog::FlightLog::save()
 {
-    QJsonArray array;
-    for (const auto& flight : m_flights) {
-        array.append(flight.toJSON());
-    }
-
-    QJsonObject root;
-    root[u"content"_s] = u"flightLog"_s;
-    root[u"version"_s] = 1;
-    root[u"exportDate"_s] = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
-    root[u"flights"_s] = array;
-
-    const QJsonDocument doc(root);
+    const QJsonDocument doc = flightsToJsonDocument(m_flights);
     QFile file(m_fileName);
     if (file.open(QIODevice::WriteOnly)) {
         file.write(doc.toJson());
@@ -472,6 +623,23 @@ void Flightlog::FlightLog::load()
         }
     }
     sortFlights();
+}
+
+
+auto Flightlog::FlightLog::flightsToJsonDocument(const QList<Flight>& flights) -> QJsonDocument
+{
+    QJsonArray array;
+    for (const auto& flight : flights) {
+        array.append(flight.toJSON());
+    }
+
+    QJsonObject root;
+    root[u"content"_s] = u"flightLog"_s;
+    root[u"version"_s] = 1;
+    root[u"exportDate"_s] = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+    root[u"flights"_s] = array;
+
+    return QJsonDocument(root);
 }
 
 

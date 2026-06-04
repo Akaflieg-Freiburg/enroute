@@ -31,6 +31,26 @@ Page {
     id: page
     title: qsTr("Flight Log")
 
+    // Selection state
+    property bool selectionMode: false
+    property var selectedIndices: []
+
+    function toggleSelection(idx) {
+        var arr = page.selectedIndices.slice()
+        var pos = arr.indexOf(idx)
+        if (pos >= 0) {
+            arr.splice(pos, 1)
+        } else {
+            arr.push(idx)
+        }
+        page.selectedIndices = arr
+    }
+
+    function exitSelectionMode() {
+        page.selectionMode = false
+        page.selectedIndices = []
+    }
+
     header: PageHeader {
 
         height: 60 + SafeInsets.top
@@ -48,7 +68,11 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                if (page.selectionMode) {
+                    page.exitSelectionMode()
+                } else {
+                    stackView.pop()
+                }
             }
         }
 
@@ -61,7 +85,11 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: page.selectionMode
+                  ? (page.selectedIndices.length === 0
+                     ? qsTr("Select flights")
+                     : qsTr("%1 selected").arg(page.selectedIndices.length))
+                  : stackView.currentItem.title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -84,6 +112,30 @@ Page {
                 cascade: true
 
                 MenuItem {
+                    text: qsTr("Export as ForeFlight CSV…")
+                    enabled: FlightLog.count > 0
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        FlightLog.exportToForeFlight(page.selectedIndices)
+                        page.exitSelectionMode()
+                    }
+                }
+
+                MenuItem {
+                    text: qsTr("Export as JSON…")
+                    enabled: FlightLog.count > 0
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        FlightLog.exportToJSON(page.selectedIndices)
+                        page.exitSelectionMode()
+                    }
+                }
+
+                MenuItem {
                     text: qsTr("Hide Track from Map")
                     enabled: FlightLog.displayedTrackIndex >= 0
 
@@ -95,13 +147,17 @@ Page {
                 }
 
                 MenuItem {
-                    text: qsTr("Clear Flight Log")
-                    enabled: FlightLog.count > 0
+                    text: page.selectionMode ? qsTr("Remove Selected Flights…") : qsTr("Clear Flight Log")
+                    enabled: page.selectionMode ? page.selectedIndices.length > 0 : FlightLog.count > 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        clearDialog.open()
+                        if (page.selectionMode) {
+                            removeSelectedDialog.open()
+                        } else {
+                            clearDialog.open()
+                        }
                     }
                 }
             }
@@ -254,6 +310,16 @@ Page {
             width: flightList.width
             height: iDel.height
 
+            // Checkbox visible in selection mode
+            CheckBox {
+                visible: page.selectionMode
+                checked: page.selectedIndices.indexOf(index) >= 0
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    page.toggleSelection(index)
+                }
+            }
+
             SwipeToDeleteDelegate {
                 id: iDel
                 Layout.fillWidth: true
@@ -326,9 +392,20 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    flightEditor.flightIndex = index
-                    flightEditor.editFlight = modelData
-                    flightEditor.open()
+                    if (page.selectionMode) {
+                        page.toggleSelection(index)
+                    }
+                }
+
+                TapHandler {
+                    longPressThreshold: 0.8
+                    onLongPressed: {
+                        PlatformAdaptor.vibrateBrief()
+                        if (!page.selectionMode) {
+                            page.selectionMode = true
+                        }
+                        page.toggleSelection(index)
+                    }
                 }
 
                 swipe.onCompleted: {
@@ -341,6 +418,7 @@ Page {
             ToolButton {
                 id: editButton
 
+                visible: !page.selectionMode
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
@@ -353,6 +431,7 @@ Page {
             ToolButton {
                 id: cptMenuButton
 
+                visible: !page.selectionMode
                 icon.source: "/icons/material/ic_more_horiz.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
@@ -500,6 +579,28 @@ Page {
                 FlightLog.removeFlight(0)
             }
             toast.doToast(qsTr("Flight log cleared"))
+        }
+    }
+
+    LongTextDialog {
+        id: removeSelectedDialog
+
+        title: qsTr("Remove Selected Flights?")
+        text: qsTr("Once removed, the selected flight records cannot be restored.")
+        standardButtons: Dialog.No | Dialog.Yes
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            // Remove in descending order so indices stay valid
+            var sorted = page.selectedIndices.slice().sort(function(a, b) { return b - a })
+            for (var i = 0; i < sorted.length; i++) {
+                FlightLog.removeFlight(sorted[i])
+            }
+            toast.doToast(qsTr("Flights removed"))
+            page.exitSelectionMode()
+        }
+        onRejected: {
+            PlatformAdaptor.vibrateBrief()
         }
     }
 

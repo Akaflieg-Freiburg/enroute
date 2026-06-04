@@ -22,6 +22,7 @@
 
 #include <QQmlEngine>
 #include <QStandardPaths>
+#include <QVariant>
 
 #include "GlobalObject.h"
 #include "flightlog/Flight.h"
@@ -225,6 +226,27 @@ public:
      */
     Q_INVOKABLE void exportToIGC(int index);
 
+    /*! \brief Export selected flights as ForeFlight CSV via the platform share dialog
+     *
+     *  Exports in the ForeFlight logbook CSV import format. Fields that cannot
+     *  be derived from the available data are left blank.
+     *
+     *  If @p indices is empty, all flights are exported.
+     *
+     *  @param indices Indices of the flights to export; empty means export all
+     */
+    Q_INVOKABLE void exportToForeFlight(const QVariantList& indices);
+
+    /*! \brief Export selected flights as JSON via the platform share dialog
+     *
+     *  Uses the same internal JSON format as the persisted flight log file.
+     *
+     *  If @p indices is empty, all flights are exported.
+     *
+     *  @param indices Indices of the flights to export; empty means export all
+     */
+    Q_INVOKABLE void exportToJSON(const QVariantList& indices);
+
     /*! \brief Delete the recorded track for a flight
      *
      *  Removes the IGC file from disk and clears the trackFile
@@ -311,6 +333,9 @@ private:
 
     // Sort m_flights by startTime, most recent first
     void sortFlights();
+
+    // Build a QJsonDocument from a list of flights (shared by save() and exportToJSON())
+    static auto flightsToJsonDocument(const QList<Flight>& flights) -> QJsonDocument;
 
     // Helper to parse a date+time string to QDateTime
     static auto parseDateTime(const QString& date, const QString& timeStr) -> QDateTime;

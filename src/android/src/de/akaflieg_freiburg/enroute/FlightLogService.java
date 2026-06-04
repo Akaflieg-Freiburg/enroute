@@ -23,6 +23,7 @@ package de.akaflieg_freiburg.enroute;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
+import androidx.core.app.ActivityCompat;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -37,6 +38,7 @@ import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import org.qtproject.qt.android.QtNative;
 
 /**
  * Foreground service that keeps the app alive while recording a flight.
@@ -216,14 +218,18 @@ public class FlightLogService extends Service {
     public static void start(Context context) {
         // On Android 13+, POST_NOTIFICATIONS is a runtime permission that
         // defaults to denied. Request it before starting the service.
+        // We use QtNative.activity() because the context passed from C++ via JNI
+        // is the application context, not an Activity, so requestPermissions()
+        // would be a no-op on it.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (context.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                if (context instanceof Activity) {
-                    ((Activity) context).requestPermissions(
-                            new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
-                            PERMISSION_REQUEST_CODE);
-                }
+            Activity activity = QtNative.activity();
+            if (activity != null &&
+                    activity.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                            != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                        activity,
+                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                        PERMISSION_REQUEST_CODE);
             }
         }
 

@@ -20,16 +20,13 @@
 
 package de.akaflieg_freiburg.enroute;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
-import androidx.core.app.ActivityCompat;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
@@ -38,7 +35,6 @@ import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import org.qtproject.qt.android.QtNative;
 
 /**
  * Foreground service that keeps the app alive while recording a flight.
@@ -217,21 +213,10 @@ public class FlightLogService extends Service {
      */
     public static void start(Context context) {
         // On Android 13+, POST_NOTIFICATIONS is a runtime permission that
-        // defaults to denied. Request it before starting the service.
-        // We use QtNative.activity() because the context passed from C++ via JNI
-        // is the application context, not an Activity, so requestPermissions()
-        // would be a no-op on it.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Activity activity = QtNative.activity();
-            if (activity != null &&
-                    activity.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
-                            != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                        activity,
-                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
-                        PERMISSION_REQUEST_CODE);
-            }
-        }
+        // defaults to denied. Request it via MobileAdaptor which holds the
+        // Activity reference, since the context passed from C++ via JNI is
+        // only an application context and cannot call requestPermissions().
+        MobileAdaptor.requestNotificationPermission();
 
         Intent intent = new Intent(context, FlightLogService.class);
         context.startForegroundService(intent);

@@ -72,6 +72,20 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
   private static final int PICK_FILE_REQUEST = 1;
 
+  /**
+   * Request POST_NOTIFICATIONS permission on Android 13+.
+   * Safe to call from any context — uses m_instance which IS the Activity.
+   */
+  public static void requestNotificationPermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+        && m_instance != null
+        && m_instance.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+               != PackageManager.PERMISSION_GRANTED) {
+      m_instance.requestPermissions(
+          new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 0);
+    }
+  }
+
   public MobileAdaptor() 
   {
     m_instance = this;

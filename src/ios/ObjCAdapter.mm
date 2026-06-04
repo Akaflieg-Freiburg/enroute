@@ -108,7 +108,7 @@ void ObjCAdapter::requestNotificationPermission() {
     }];
 }
 
-void ObjCAdapter::postFlightNotification(const QString& title, const QString& body) {
+void ObjCAdapter::postNotification(const QString& title, const QString& body) {
     UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
     content.title = title.toNSString();
     content.body = body.toNSString();

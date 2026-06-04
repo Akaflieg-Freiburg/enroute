@@ -557,7 +557,9 @@ Page {
                     // Prefill arrival with currently nearest airfield (if not in flight and GPS available)
                     var nearestAD = ""
                     if (FlightLog.detectionState === FlightDetector.Idle) {
-                        nearestAD = FlightLog.nearestAirfield().shortName
+                        var wp = FlightLog.nearestAirfield()
+                        if (wp.isValid)
+                            nearestAD = wp.shortName
                     }
 
                     addFlightEditor.editFlight = FlightLog.createFlight(lastArr, nearestAD, "", "", "", "", "", "", acName, "")

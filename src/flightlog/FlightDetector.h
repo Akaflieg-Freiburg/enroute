@@ -23,7 +23,6 @@
 #include <QObject>
 #include <QQmlEngine>
 
-#include "flightlog/Flight.h"
 #include "positioning/PositionInfo.h"
 
 namespace Flightlog {
@@ -107,13 +106,17 @@ signals:
 
     /*! \brief Emitted when a takeoff is confirmed
      *
-     *  The flight parameter contains a preliminary flight entry with
-     *  departure information and start time filled in.
-     *
-     *  @param flight The preliminary flight entry
+     *  @param departureICAO ICAO code of the departure airport (may be empty)
+     *  @param departureCoordinate Coordinate of the departure airport
+     *  @param startTime The takeoff time
+     *  @param aircraftCallsign Callsign of the aircraft
      *  @param timeStr The takeoff time as a human-readable UTC string (HH:mm)
      */
-    void takeoffDetected(const Flightlog::Flight& flight, const QString& timeStr);
+    void takeoffDetected(const QString& departureICAO,
+                         const QGeoCoordinate& departureCoordinate,
+                         const QDateTime& startTime,
+                         const QString& aircraftCallsign,
+                         const QString& timeStr);
 
     /*! \brief Emitted when a landing is confirmed
      *

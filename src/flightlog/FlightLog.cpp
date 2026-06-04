@@ -674,8 +674,18 @@ void Flightlog::FlightLog::onDetectionStateChanged()
 }
 
 
-void Flightlog::FlightLog::onTakeoffDetected(const Flightlog::Flight& flight, const QString& timeStr)
+void Flightlog::FlightLog::onTakeoffDetected(const QString& departureICAO,
+                                              const QGeoCoordinate& departureCoordinate,
+                                              const QDateTime& startTime,
+                                              const QString& aircraftCallsign,
+                                              const QString& timeStr)
 {
+    Flight flight;
+    flight.setDepartureICAO(departureICAO);
+    flight.setDepartureCoordinate(departureCoordinate);
+    flight.setStartTime(startTime);
+    flight.setAircraftCallsign(aircraftCallsign);
+
     // Add the preliminary flight entry so it appears in the list immediately
     addFlight(flight);
 
@@ -687,7 +697,7 @@ void Flightlog::FlightLog::onTakeoffDetected(const Flightlog::Flight& flight, co
     // even if the app is in the background.
     auto title = tr("Takeoff Detected");
     auto message = tr("Departed %1 at %2 UTC").arg(
-        flight.departureICAO().isEmpty() ? tr("unknown") : flight.departureICAO(),
+        departureICAO.isEmpty() ? tr("unknown") : departureICAO,
         timeStr);
     QJniObject context = QNativeInterface::QAndroidApplication::context();
     QJniObject::callStaticMethod<void>(

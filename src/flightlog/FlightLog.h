@@ -311,7 +311,11 @@ private slots:
     void onAutoFlightDetectionChanged();
 
     // Handle takeoff detected by the FlightDetector
-    void onTakeoffDetected(const Flightlog::Flight& flight, const QString& timeStr);
+    void onTakeoffDetected(const QString& departureICAO,
+                           const QGeoCoordinate& departureCoordinate,
+                           const QDateTime& startTime,
+                           const QString& aircraftCallsign,
+                           const QString& timeStr);
 
     // Handle landing detected by the FlightDetector
     void onLandingDetected(const QString& arrivalICAO,

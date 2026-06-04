@@ -91,16 +91,13 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         // Check if altitude has gained enough above the airfield to confirm takeoff
         if (altitudeAMSL.isFinite() && m_pendingDepartureElevation.isFinite()
             && (altitudeAMSL - m_pendingDepartureElevation) > Units::Distance::fromFT(altitudeGainFT)) {
-            // Build the preliminary flight entry
-            Flight prelimFlight;
-            prelimFlight.setDepartureICAO(m_pendingDepartureICAO);
-            prelimFlight.setDepartureCoordinate(m_pendingDepartureCoordinate);
-            prelimFlight.setStartTime(m_pendingStartTime);
-            prelimFlight.setAircraftCallsign(GlobalObject::navigator()->aircraft().name());
-
             m_detectionState = InFlight;
             emit detectionStateChanged();
-            emit takeoffDetected(prelimFlight, m_pendingStartTime.toUTC().time().toString(u"HH:mm"_s));
+            emit takeoffDetected(m_pendingDepartureICAO,
+                                 m_pendingDepartureCoordinate,
+                                 m_pendingStartTime,
+                                 GlobalObject::navigator()->aircraft().name(),
+                                 m_pendingStartTime.toUTC().time().toString(u"HH:mm"_s));
         }
         break;
     }
@@ -182,19 +179,17 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
                     emit landingDetected(closestAD2.shortName(), closestAD2.coordinate(), landingTime, landingCount, timeStr);
 
                     // Start a new leg from the touch-and-go airport
-                    Flight newLeg;
-                    newLeg.setDepartureICAO(closestAD2.shortName());
-                    newLeg.setDepartureCoordinate(closestAD2.coordinate());
-                    newLeg.setStartTime(landingTime);
-                    newLeg.setAircraftCallsign(GlobalObject::navigator()->aircraft().name());
-
                     m_pendingDepartureICAO = closestAD2.shortName();
                     m_pendingDepartureCoordinate = closestAD2.coordinate();
                     m_pendingDepartureElevation = elev;
                     m_pendingStartTime = landingTime;
                     m_detectionState = InFlight;
                     emit detectionStateChanged();
-                    emit takeoffDetected(newLeg, timeStr);
+                    emit takeoffDetected(closestAD2.shortName(),
+                                         closestAD2.coordinate(),
+                                         landingTime,
+                                         GlobalObject::navigator()->aircraft().name(),
+                                         timeStr);
                 }
             }
         }

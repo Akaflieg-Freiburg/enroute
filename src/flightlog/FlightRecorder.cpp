@@ -141,7 +141,7 @@ void Flightlog::FlightRecorder::saveTrack(Flight& flight)
     }
 
     // Ensure tracks directory exists
-    QDir dir;
+    const QDir dir;
     dir.mkpath(m_trackDir);
 
     // Generate filename from start time
@@ -253,18 +253,18 @@ auto Flightlog::FlightRecorder::toIGC(const Flight& flight, const QList<TrackPoi
         // Latitude: DDMMmmmN/S
         auto latChar = lat >= 0 ? 'N' : 'S';
         lat = std::abs(lat);
-        int latDeg = static_cast<int>(lat);
-        int latMin = static_cast<int>((lat - latDeg) * 60000);
+        const int latDeg = static_cast<int>(lat);
+        const int latMin = static_cast<int>((lat - latDeg) * 60000);
 
         // Longitude: DDDMMmmmE/W
         auto lonChar = lon >= 0 ? 'E' : 'W';
         lon = std::abs(lon);
-        int lonDeg = static_cast<int>(lon);
-        int lonMin = static_cast<int>((lon - lonDeg) * 60000);
+        const int lonDeg = static_cast<int>(lon);
+        const int lonMin = static_cast<int>((lon - lonDeg) * 60000);
 
         // Pressure altitude and GPS altitude from coordinate
-        int gpsAlt = !qIsNaN(pt.coordinate.altitude()) ? static_cast<int>(std::round(pt.coordinate.altitude())) : 0;
-        int pressAlt = std::isfinite(pt.pressureAltitude) ? static_cast<int>(std::round(pt.pressureAltitude)) : 0;
+        const int gpsAlt = !qIsNaN(pt.coordinate.altitude()) ? static_cast<int>(std::round(pt.coordinate.altitude())) : 0;
+        const int pressAlt = std::isfinite(pt.pressureAltitude) ? static_cast<int>(std::round(pt.pressureAltitude)) : 0;
 
         // B-record: BHHMMSSDDMMmmmNDDDMMmmmEAPPPPPGGGGG
         igc.append(QStringLiteral("B%1%2%3%4%5%6%7%8%9A%10%11\r\n")
@@ -305,9 +305,9 @@ auto Flightlog::FlightRecorder::trackFromIGC(const QByteArray& igcData, const QD
                 dayStart = 10;
             }
             if (line.size() >= dayStart + 6) {
-                int dd = line.mid(dayStart, 2).toInt();
-                int mm = line.mid(dayStart + 2, 2).toInt();
-                int yy = line.mid(dayStart + 4, 2).toInt();
+                const int dd = line.mid(dayStart, 2).toInt();
+                const int mm = line.mid(dayStart + 2, 2).toInt();
+                const int yy = line.mid(dayStart + 4, 2).toInt();
                 flightDate = QDate(2000 + yy, mm, dd);
             }
         }
@@ -318,23 +318,23 @@ auto Flightlog::FlightRecorder::trackFromIGC(const QByteArray& igcData, const QD
             continue;
         }
 
-        int hh = line.mid(1, 2).toInt();
-        int mm = line.mid(3, 2).toInt();
-        int ss = line.mid(5, 2).toInt();
+        const int hh = line.mid(1, 2).toInt();
+        const int mm = line.mid(3, 2).toInt();
+        const int ss = line.mid(5, 2).toInt();
 
         // Latitude: DDMMmmmN/S
-        int latDeg = line.mid(7, 2).toInt();
-        int latMin = line.mid(9, 5).toInt(); // in thousandths of minutes
-        char latHem = line[14];
+        const int latDeg = line.mid(7, 2).toInt();
+        const int latMin = line.mid(9, 5).toInt(); // in thousandths of minutes
+        const char latHem = line[14];
         double lat = latDeg + latMin / 60000.0;
         if (latHem == 'S') {
             lat = -lat;
         }
 
         // Longitude: DDDMMmmmE/W
-        int lonDeg = line.mid(15, 3).toInt();
-        int lonMin = line.mid(18, 5).toInt();
-        char lonHem = line[23];
+        const int lonDeg = line.mid(15, 3).toInt();
+        const int lonMin = line.mid(18, 5).toInt();
+        const char lonHem = line[23];
         double lon = lonDeg + lonMin / 60000.0;
         if (lonHem == 'W') {
             lon = -lon;
@@ -342,8 +342,8 @@ auto Flightlog::FlightRecorder::trackFromIGC(const QByteArray& igcData, const QD
 
         // Validity flag at position 24
         // Pressure altitude at 25-29, GPS altitude at 30-34
-        int pressAlt = line.mid(25, 5).toInt();
-        int gpsAlt = line.mid(30, 5).toInt();
+        const int pressAlt = line.mid(25, 5).toInt();
+        const int gpsAlt = line.mid(30, 5).toInt();
 
         TrackPoint pt;
         if (gpsAlt != 0) {

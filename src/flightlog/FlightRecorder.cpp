@@ -117,6 +117,9 @@ void Flightlog::FlightRecorder::clearTrack()
 {
     m_track.clear();
     m_track.squeeze();
+    m_previousState = FlightDetector::Idle;
+    m_lastCoordinate = {};
+    m_lastTimestamp = {};
 }
 
 

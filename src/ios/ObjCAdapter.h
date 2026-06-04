@@ -17,4 +17,6 @@ class ObjCAdapter {
         static QString shareContent(const QByteArray&, const QString&, const QString&, const QString&);
         static QString preferredLanguage();
         static void saveToGallery(QString&);
+        static void requestNotificationPermission();
+        static void postNotification(const QString& title, const QString& body);
 };

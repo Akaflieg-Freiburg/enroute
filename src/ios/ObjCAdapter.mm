@@ -96,3 +96,33 @@ void ObjCAdapter::saveToGallery(QString& path) {
     UIImageWriteToSavedPhotosAlbum(image, Nil, Nil, Nil);
 }
 
+
+//MARK: Flight Notifications
+
+void ObjCAdapter::requestNotificationPermission() {
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound)
+                          completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        Q_UNUSED(granted)
+        Q_UNUSED(error)
+    }];
+}
+
+void ObjCAdapter::postFlightNotification(const QString& title, const QString& body) {
+    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+    content.title = title.toNSString();
+    content.body = body.toNSString();
+    content.sound = [UNNotificationSound defaultSound];
+
+    // A nil trigger delivers the notification immediately.
+    UNNotificationRequest *request = [UNNotificationRequest
+        requestWithIdentifier:[[NSUUID UUID] UUIDString]
+        content:content
+        trigger:nil];
+
+    [[UNUserNotificationCenter currentNotificationCenter]
+        addNotificationRequest:request
+         withCompletionHandler:nil];
+    [content release];
+}
+

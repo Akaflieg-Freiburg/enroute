@@ -352,5 +352,14 @@
         </dict>
 
      </array>
+
+    <!-- Enable continuous location updates when the app is in the background.
+         This is required so the flight detector keeps receiving GPS fixes
+         even after the pilot switches away from the app during a flight. -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+    </array>
+
 </dict>
 </plist>

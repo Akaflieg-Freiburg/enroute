@@ -29,6 +29,10 @@
 #include <QCoreApplication>
 #endif
 
+#ifdef Q_OS_IOS
+#include "ios/ObjCAdapter.h"
+#endif
+
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
@@ -709,6 +713,14 @@ void Flightlog::FlightLog::onTakeoffDetected(const QString& departureICAO,
         QJniObject::fromString(message).object<jstring>());
 #endif
 
+#ifdef Q_OS_IOS
+    ObjCAdapter::postNotification(
+        tr("Takeoff Detected"),
+        tr("Departed %1 at %2 UTC").arg(
+            departureICAO.isEmpty() ? tr("unknown") : departureICAO,
+            timeStr));
+#endif
+
     emit takeoffDetected(timeStr);
 }
 
@@ -766,6 +778,14 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
         QJniObject::fromString(title).object<jstring>(),
         QJniObject::fromString(message).object<jstring>());
 #endif
+
+#ifdef Q_OS_IOS
+    ObjCAdapter::postNotification(
+        tr("Landing Detected"),
+        tr("Landed %1 at %2 UTC").arg(
+            arrivalICAO.isEmpty() ? tr("unknown") : arrivalICAO,
+            timeStr));
+#endif
 }
 
 
@@ -801,6 +821,15 @@ void Flightlog::FlightLog::onPositionUpdated()
 
 void Flightlog::FlightLog::onAutoFlightDetectionChanged()
 {
+#ifdef Q_OS_IOS
+    // Request local notification permission when the user first enables
+    // automatic flight detection. The system shows the dialog at most once;
+    // subsequent calls are no-ops if permission was already granted or denied.
+    if (GlobalObject::globalSettings()->autoFlightDetection()) {
+        ObjCAdapter::requestNotificationPermission();
+    }
+#endif
+
 #ifdef Q_OS_ANDROID
     bool enabled = GlobalObject::globalSettings()->autoFlightDetection();
 

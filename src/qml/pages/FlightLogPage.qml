@@ -124,7 +124,7 @@ Page {
                 }
 
                 MenuItem {
-                    text: qsTr("Export as JSON…")
+                    text: qsTr("Export as Flightlog JSON…")
                     enabled: FlightLog.count > 0
 
                     onTriggered: {
@@ -371,6 +371,9 @@ Page {
                             var ft = modelData.flightTime()
                             if (ft !== "")
                                 parts.push(qsTr("Duration: %1").arg(ft))
+                            var bt = modelData.blockTime()
+                            if (bt !== "")
+                                parts.push(qsTr("Block: %1").arg(bt))
                             var dist = modelData.distance()
                             if (dist.isFinite())
                                 parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
@@ -462,6 +465,24 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             FlightLog.exportToIGC(index)
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("Export as ForeFlight CSV…")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            FlightLog.exportToForeFlight([index])
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("Export as Flightlog JSON…")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            FlightLog.exportToJSON([index])
                         }
                     }
 

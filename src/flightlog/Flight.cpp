@@ -41,6 +41,21 @@ auto Flightlog::Flight::flightTimeSeconds() const -> qint64
 }
 
 
+auto Flightlog::Flight::blockTime() const -> QString
+{
+    if (!m_offBlockTime.isValid() || !m_onBlockTime.isValid()) {
+        return {};
+    }
+    auto secs = m_offBlockTime.secsTo(m_onBlockTime);
+    if (secs < 0) {
+        return {};
+    }
+    auto hours = secs / 3600;
+    auto minutes = (secs % 3600) / 60;
+    return u"%1:%2"_s.arg(hours).arg(minutes, 2, 10, QChar(u'0'));
+}
+
+
 auto Flightlog::Flight::flightTime() const -> QString
 {
     auto secs = flightTimeSeconds();

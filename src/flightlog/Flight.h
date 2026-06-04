@@ -266,7 +266,14 @@ public:
      *  @returns The flight time string, or an empty string if times are invalid
      */
     [[nodiscard]] Q_INVOKABLE QString flightTime() const;
-
+    /*! \brief Block time as a formatted string
+     *
+     *  Returns the block time (off-block to on-block) formatted as h:mm.
+     *  Returns an empty string if either time is invalid or if block time is negative.
+     *
+     *  @returns Block time string, e.g. "1:23", or empty string
+     */
+    [[nodiscard]] Q_INVOKABLE QString blockTime() const;
     /*! \brief Flight duration in seconds
      *
      *  @returns The duration in seconds, or -1 if times are invalid

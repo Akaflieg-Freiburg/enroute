@@ -506,6 +506,9 @@ void Flightlog::FlightLog::showTrack(int index)
 
     // Load track coordinates directly from IGC file
     m_displayedTrackPath = m_recorder.loadTrackPath(m_flights[index]);
+    if (m_displayedTrackPath.isEmpty()) {
+        return;
+    }
     m_displayedTrackFile = m_flights[index].trackFile();
     emit displayedTrackPathChanged();
 }

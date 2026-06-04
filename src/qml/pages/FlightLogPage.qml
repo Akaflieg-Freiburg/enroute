@@ -114,6 +114,40 @@ Page {
                 cascade: true
 
                 MenuItem {
+                    text: qsTr("Automatic flight detection")
+                    checkable: true
+                    checked: GlobalSettings.autoFlightDetection
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        GlobalSettings.autoFlightDetection = checked
+                    }
+                }
+
+                MenuItem {
+                    text: qsTr("Record GPS track")
+                    checkable: true
+                    enabled: GlobalSettings.autoFlightDetection
+                    checked: GlobalSettings.autoFlightDetection && FlightLog.trackRecording
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        FlightLog.trackRecording = checked
+                    }
+                }
+
+                MenuItem {
+                    text: qsTr("Show live flight trace on map")
+                    checkable: true
+                    enabled: GlobalSettings.autoFlightDetection && FlightLog.trackRecording
+                    checked: GlobalSettings.autoFlightDetection && FlightLog.trackRecording && FlightLog.showCurrentFlightTrace
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        FlightLog.showCurrentFlightTrace = checked
+                    }
+                }
+
+                MenuSeparator {}
+
+                MenuItem {
                     text: page.isAndroidOrIos ? qsTr("Share as ForeFlight CSV…") : qsTr("Export as ForeFlight CSV…")
                     enabled: FlightLog.count > 0
 

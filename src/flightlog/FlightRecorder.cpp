@@ -21,9 +21,7 @@
 #include <QDir>
 #include <QFile>
 
-#include "GlobalObject.h"
 #include "flightlog/FlightRecorder.h"
-#include "platform/FileExchange.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -185,32 +183,17 @@ auto Flightlog::FlightRecorder::loadTrackPath(const Flight& flight) const -> QLi
 }
 
 
-void Flightlog::FlightRecorder::exportToIGC(const Flight& flight)
+auto Flightlog::FlightRecorder::exportToIGC(const Flight& flight) -> QByteArray
 {
     if (flight.trackFile().isEmpty()) {
-        return;
+        return {};
     }
 
-    // Read the IGC file directly — no conversion needed
     QFile file(m_trackDir + u"/"_s + flight.trackFile());
     if (!file.open(QIODevice::ReadOnly)) {
-        return;
+        return {};
     }
-    auto igcData = file.readAll();
-    file.close();
-
-    // Build a display filename from departure, arrival, and date
-    auto dep = flight.departureICAO().isEmpty() ? u"XXXX"_s : flight.departureICAO();
-    auto arr = flight.arrivalICAO().isEmpty() ? u"XXXX"_s : flight.arrivalICAO();
-    auto dateStr = flight.startTime().isValid()
-        ? flight.startTime().toUTC().date().toString(u"yyyy-MM-dd"_s)
-        : u"unknown"_s;
-    auto fileName = u"%1_%2-%3"_s.arg(dateStr, dep, arr);
-
-    auto* fileExchange = GlobalObject::fileExchange();
-    if (fileExchange != nullptr) {
-        fileExchange->shareContent(igcData, u"application/x-igc"_s, u"igc"_s, fileName);
-    }
+    return file.readAll();
 }
 
 

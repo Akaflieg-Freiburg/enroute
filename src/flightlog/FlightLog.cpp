@@ -35,7 +35,6 @@
 #include "geomaps/Waypoint.h"
 #include "flightlog/AirplaneFlightDetector.h"
 #include "flightlog/FlightLog.h"
-#include "platform/FileExchange.h"
 #include "positioning/PositionProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -294,16 +293,16 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position) -> Ge
 }
 
 
-void Flightlog::FlightLog::exportToIGC(int index)
+auto Flightlog::FlightLog::exportToIGC(int index) -> QByteArray
 {
     if (index < 0 || index >= m_flights.size()) {
-        return;
+        return {};
     }
-    m_recorder.exportToIGC(m_flights.at(index));
+    return m_recorder.exportToIGC(m_flights.at(index));
 }
 
 
-void Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices)
+auto Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices) -> QByteArray
 {
     // Collect flights to export (empty indices = export all)
     QList<Flight> toExport;
@@ -318,7 +317,7 @@ void Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices)
         }
     }
     if (toExport.isEmpty()) {
-        return;
+        return {};
     }
 
     // Wrap a CSV field in double-quotes if it contains commas, quotes, or line breaks
@@ -429,14 +428,11 @@ void Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices)
         csv +=                                              u"\r\n"_s; // NVG Proficiency (last column)
     }
 
-    auto* fileExchange = GlobalObject::fileExchange();
-    if (fileExchange != nullptr) {
-        fileExchange->shareContent(csv.toUtf8(), u"text/csv"_s, u"csv"_s, u"FlightLog"_s);
-    }
+    return csv.toUtf8();
 }
 
 
-void Flightlog::FlightLog::exportToJSON(const QVariantList& indices)
+auto Flightlog::FlightLog::exportToJSON(const QVariantList& indices) -> QByteArray
 {
     // Collect flights to export (empty indices = export all)
     QList<Flight> toExport;
@@ -451,15 +447,11 @@ void Flightlog::FlightLog::exportToJSON(const QVariantList& indices)
         }
     }
     if (toExport.isEmpty()) {
-        return;
+        return {};
     }
 
     const QJsonDocument doc = flightsToJsonDocument(toExport);
-
-    auto* fileExchange = GlobalObject::fileExchange();
-    if (fileExchange != nullptr) {
-        fileExchange->shareContent(doc.toJson(), u"application/json"_s, u"json"_s, u"FlightLog"_s);
-    }
+    return doc.toJson();
 }
 
 

@@ -220,32 +220,36 @@ public:
      */
     Q_INVOKABLE static GeoMaps::Waypoint nearestAirfield(const QGeoCoordinate& position = {});
 
-    /*! \brief Export a flight's track as IGC file via the platform share dialog
+    /*! \brief Get IGC track content for a flight
+     *
+     *  Returns the raw IGC file bytes ready for sharing.
+     *  Returns an empty array if the flight has no track or the file cannot be read.
      *
      *  @param index The index of the flight to export
+     *  @returns IGC file content, or empty
      */
-    Q_INVOKABLE void exportToIGC(int index);
+    Q_INVOKABLE QByteArray exportToIGC(int index);
 
-    /*! \brief Export selected flights as ForeFlight CSV via the platform share dialog
+    /*! \brief Generate ForeFlight CSV content for selected flights
      *
-     *  Exports in the ForeFlight logbook CSV import format. Fields that cannot
-     *  be derived from the available data are left blank.
+     *  Returns the CSV bytes ready for sharing. If @p indices is empty,
+     *  all flights are included.
      *
-     *  If @p indices is empty, all flights are exported.
-     *
-     *  @param indices Indices of the flights to export; empty means export all
+     *  @param indices Indices of the flights to include; empty means all
+     *  @returns CSV content as UTF-8, or empty if no matching flights
      */
-    Q_INVOKABLE void exportToForeFlight(const QVariantList& indices);
+    Q_INVOKABLE QByteArray exportToForeFlight(const QVariantList& indices);
 
-    /*! \brief Export selected flights as JSON via the platform share dialog
+    /*! \brief Generate JSON content for selected flights
      *
-     *  Uses the same internal JSON format as the persisted flight log file.
+     *  Returns the JSON bytes ready for sharing. Uses the same internal
+     *  format as the persisted flight log file. If @p indices is empty,
+     *  all flights are included.
      *
-     *  If @p indices is empty, all flights are exported.
-     *
-     *  @param indices Indices of the flights to export; empty means export all
+     *  @param indices Indices of the flights to include; empty means all
+     *  @returns JSON content, or empty if no matching flights
      */
-    Q_INVOKABLE void exportToJSON(const QVariantList& indices);
+    Q_INVOKABLE QByteArray exportToJSON(const QVariantList& indices);
 
     /*! \brief Delete the recorded track for a flight
      *

@@ -106,12 +106,12 @@ public:
 
     /*! \brief Export a flight's track via the platform share dialog
      *
-     *  Reads the IGC file and shares it using the platform's native
-     *  share mechanism (Android intent, desktop file dialog, etc.).
+     *  Reads the IGC file and returns its raw content.
      *
      *  @param flight The flight whose track to export
+     *  @returns IGC file content, or empty if no track file or file not readable
      */
-    void exportToIGC(const Flight& flight);
+    QByteArray exportToIGC(const Flight& flight);
 
     /*! \brief Delete the track file from disk
      *

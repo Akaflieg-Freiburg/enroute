@@ -31,6 +31,8 @@ Page {
     id: page
     title: qsTr("Flight Log")
 
+    property bool isAndroidOrIos: Qt.platform.os === "android" || Qt.platform.os === "ios"
+
     // Selection state
     property bool selectionMode: false
     property var selectedIndices: []
@@ -112,25 +114,31 @@ Page {
                 cascade: true
 
                 MenuItem {
-                    text: qsTr("Export as ForeFlight CSV…")
+                    text: page.isAndroidOrIos ? qsTr("Share as ForeFlight CSV…") : qsTr("Export as ForeFlight CSV…")
                     enabled: FlightLog.count > 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        FlightLog.exportToForeFlight(page.selectedIndices)
+                        var errorString = FileExchange.shareContent(FlightLog.exportToForeFlight(page.selectedIndices), "text/*", "csv", qsTr("FlightLog"))
+                        if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                        if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
+                        toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
                         page.exitSelectionMode()
                     }
                 }
 
                 MenuItem {
-                    text: qsTr("Export as Flightlog JSON…")
+                    text: page.isAndroidOrIos ? qsTr("Share as Flightlog JSON…") : qsTr("Export as Flightlog JSON…")
                     enabled: FlightLog.count > 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        FlightLog.exportToJSON(page.selectedIndices)
+                        var errorString = FileExchange.shareContent(FlightLog.exportToJSON(page.selectedIndices), "text/*", "json", qsTr("FlightLog"))
+                        if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                        if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
+                        toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
                         page.exitSelectionMode()
                     }
                 }
@@ -168,53 +176,6 @@ Page {
         anchors.fill: parent
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
-
-        // Auto-detection toggle
-        SwitchDelegate {
-            id: autoDetectSwitch
-
-            Layout.fillWidth: true
-
-            text: qsTr("Automatic flight detection")
-            checked: GlobalSettings.autoFlightDetection
-
-            onToggled: {
-                PlatformAdaptor.vibrateBrief()
-                GlobalSettings.autoFlightDetection = checked
-            }
-        }
-
-        // Track recording toggle
-        SwitchDelegate {
-            id: trackRecordingSwitch
-
-            Layout.fillWidth: true
-
-            text: qsTr("Record GPS track")
-            enabled: autoDetectSwitch.checked
-            checked: autoDetectSwitch.checked && FlightLog.trackRecording
-
-            onToggled: {
-                PlatformAdaptor.vibrateBrief()
-                FlightLog.trackRecording = checked
-            }
-        }
-
-        // Live trace visibility toggle
-        SwitchDelegate {
-            id: liveTraceSwitch
-
-            Layout.fillWidth: true
-
-            text: qsTr("Show live flight trace on map")
-            enabled: trackRecordingSwitch.checked
-            checked: trackRecordingSwitch.checked && FlightLog.showCurrentFlightTrace
-
-            onToggled: {
-                PlatformAdaptor.vibrateBrief()
-                FlightLog.showCurrentFlightTrace = checked
-            }
-        }
 
         // Detection status indicator
         Label {
@@ -400,6 +361,7 @@ Page {
                                 parts.push(modelData.comments)
                             return parts.join("  |  ")
                         }
+                        wrapMode: Text.Wrap
                         font.pixelSize: iDel.font.pixelSize * 0.85
                         opacity: 0.6
                         elide: Text.ElideRight
@@ -472,30 +434,39 @@ Page {
                     }
 
                     Action {
-                        text: qsTr("Export as ForeFlight CSV…")
+                        text: page.isAndroidOrIos ? qsTr("Share as ForeFlight CSV…") : qsTr("Export as ForeFlight CSV…")
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            FlightLog.exportToForeFlight([index])
+                            var errorString = FileExchange.shareContent(FlightLog.exportToForeFlight([index]), "text/*", "csv", qsTr("FlightLog"))
+                            if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                            if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
+                            toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
                         }
                     }
 
                     Action {
-                        text: qsTr("Export as Flightlog JSON…")
+                        text: page.isAndroidOrIos ? qsTr("Share as Flightlog JSON…") : qsTr("Export as Flightlog JSON…")
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            FlightLog.exportToJSON([index])
+                            var errorString = FileExchange.shareContent(FlightLog.exportToJSON([index]), "text/*", "json", qsTr("FlightLog"))
+                            if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                            if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
+                            toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
                         }
                     }
 
                     Action {
-                        text: qsTr("Export to IGC…")
+                        text: page.isAndroidOrIos ? qsTr("Share to IGC…") : qsTr("Export to IGC…")
                         enabled: modelData.hasTrack
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            FlightLog.exportToIGC(index)
+                            var errorString = FileExchange.shareContent(FlightLog.exportToIGC(index), "text/*", "igc", qsTr("FlightLog"))
+                            if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                            if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
+                            toast.doToast(page.isAndroidOrIos ? qsTr("Track shared") : qsTr("Track exported"))
                         }
                     }
 
@@ -561,6 +532,13 @@ Page {
     //
     // Dialogs
     //
+
+    LongTextDialog {
+        id: shareErrorDialog
+
+        title: qsTr("Error Sharing Data…")
+        standardButtons: Dialog.Ok
+    }
 
     LongTextDialog {
         id: removeTrackDialog

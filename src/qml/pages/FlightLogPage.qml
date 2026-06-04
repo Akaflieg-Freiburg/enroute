@@ -332,16 +332,29 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: 2
 
-                    Label {
+                    RowLayout {
                         Layout.fillWidth: true
-                        text: {
-                            var dep = modelData.departureICAO !== "" ? modelData.departureICAO : "?"
-                            var arr = modelData.arrivalICAO !== "" ? modelData.arrivalICAO : "?"
-                            return dep + "  →  " + arr
+                        spacing: 4
+
+                        Label {
+                            Layout.fillWidth: true
+                            text: {
+                                var dep = modelData.departureICAO !== "" ? modelData.departureICAO : "?"
+                                var arr = modelData.arrivalICAO !== "" ? modelData.arrivalICAO : "?"
+                                return dep + "  \u2192  " + arr
+                            }
+                            font.bold: true
+                            font.pixelSize: iDel.font.pixelSize * 1.1
+                            elide: Text.ElideRight
                         }
-                        font.bold: true
-                        font.pixelSize: iDel.font.pixelSize * 1.1
-                        elide: Text.ElideRight
+
+                        Image {
+                            visible: modelData.hasTrack
+                            source: "/icons/material/ic_timeline.svg"
+                            sourceSize.width: iDel.font.pixelSize * 1.1
+                            sourceSize.height: iDel.font.pixelSize * 1.1
+                            opacity: 0.55
+                        }
                     }
 
                     Label {

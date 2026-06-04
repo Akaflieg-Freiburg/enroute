@@ -500,6 +500,7 @@ if (IOS)
     qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        "-framework UserNotifications"
         Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core

@@ -43,6 +43,40 @@
 
 using namespace Qt::Literals::StringLiterals;
 
+#ifdef Q_OS_ANDROID
+namespace {
+
+// Notification IDs — must match FlightLogService.NOTIFICATION_ID_* Java constants.
+constexpr jint NOTIFICATION_ID_EVENT  = 1002;
+constexpr jint NOTIFICATION_ID_NO_GPS = 1004;
+
+void postAndroidNotification(jint id, const QString& title, const QString& message)
+{
+    QJniObject context = QNativeInterface::QAndroidApplication::context();
+    QJniObject::callStaticMethod<void>(
+        "de/akaflieg_freiburg/enroute/FlightLogService",
+        "postNotification",
+        "(Landroid/content/Context;ILjava/lang/String;Ljava/lang/String;)V",
+        context.object(),
+        id,
+        QJniObject::fromString(title).object<jstring>(),
+        QJniObject::fromString(message).object<jstring>());
+}
+
+void cancelAndroidNotification(jint id)
+{
+    QJniObject context = QNativeInterface::QAndroidApplication::context();
+    QJniObject::callStaticMethod<void>(
+        "de/akaflieg_freiburg/enroute/FlightLogService",
+        "cancelNotification",
+        "(Landroid/content/Context;I)V",
+        context.object(),
+        id);
+}
+
+} // namespace
+#endif
+
 
 //
 // Constructors and destructors
@@ -72,6 +106,27 @@ void Flightlog::FlightLog::deferredInitialization()
 
     connect(GlobalObject::globalSettings(), &GlobalSettings::autoFlightDetectionChanged,
             this, &Flightlog::FlightLog::onAutoFlightDetectionChanged);
+
+#ifdef Q_OS_ANDROID
+    // After a 30-second grace period, post a notification if auto-detection is
+    // on but still no position data (e.g. GPS disabled, no traffic receiver).
+    m_noGPSTimer.setInterval(30000);
+    m_noGPSTimer.setSingleShot(true);
+    connect(&m_noGPSTimer, &QTimer::timeout, this, [this]() {
+        if (!GlobalObject::globalSettings()->autoFlightDetection()) {
+            return;
+        }
+        if (GlobalObject::positionProvider()->receivingPositionInfo()) {
+            return;
+        }
+        postAndroidNotification(NOTIFICATION_ID_NO_GPS,
+            tr("No Position Data"),
+            tr("Automatic flight detection is active but no GPS or traffic receiver data is being received. Enable Location Service."));
+    });
+
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged,
+            this, &Flightlog::FlightLog::onReceivingPositionInfoChanged);
+#endif
 
     // If auto-detection was already enabled (persisted setting), start the service now
     if (GlobalObject::globalSettings()->autoFlightDetection()) {
@@ -748,14 +803,7 @@ void Flightlog::FlightLog::onTakeoffDetected(const QString& departureICAO,
     auto message = tr("Departed %1 at %2 UTC").arg(
         departureICAO.isEmpty() ? tr("unknown") : departureICAO,
         timeStr);
-    QJniObject context = QNativeInterface::QAndroidApplication::context();
-    QJniObject::callStaticMethod<void>(
-        "de/akaflieg_freiburg/enroute/FlightLogService",
-        "notifyEvent",
-        "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V",
-        context.object(),
-        QJniObject::fromString(title).object<jstring>(),
-        QJniObject::fromString(message).object<jstring>());
+    postAndroidNotification(NOTIFICATION_ID_EVENT, title, message);
 #endif
 
 #ifdef Q_OS_IOS
@@ -814,14 +862,7 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
     auto message = tr("Landed %1 at %2 UTC").arg(
         arrivalICAO.isEmpty() ? tr("unknown") : arrivalICAO,
         timeStr);
-    QJniObject context = QNativeInterface::QAndroidApplication::context();
-    QJniObject::callStaticMethod<void>(
-        "de/akaflieg_freiburg/enroute/FlightLogService",
-        "notifyEvent",
-        "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V",
-        context.object(),
-        QJniObject::fromString(title).object<jstring>(),
-        QJniObject::fromString(message).object<jstring>());
+    postAndroidNotification(NOTIFICATION_ID_EVENT, title, message);
 #endif
 
 #ifdef Q_OS_IOS
@@ -905,5 +946,34 @@ void Flightlog::FlightLog::onAutoFlightDetectionChanged()
             context.object());
         m_foregroundServiceRunning = false;
     }
+
+    // Manage the "no GPS" warning notification.
+    if (enabled && !GlobalObject::positionProvider()->receivingPositionInfo()) {
+        // Start grace-period timer — notification fires only if GPS doesn't
+        // arrive within 30 seconds (avoids false alarm at startup).
+        m_noGPSTimer.start();
+    } else {
+        // Detection disabled or GPS already available: stop any pending timer
+        // and cancel an existing notification.
+        m_noGPSTimer.stop();
+        cancelAndroidNotification(NOTIFICATION_ID_NO_GPS);
+    }
 #endif
 }
+
+
+#ifdef Q_OS_ANDROID
+void Flightlog::FlightLog::onReceivingPositionInfoChanged(bool receiving)
+{
+    if (receiving) {
+        // Position arrived — stop the timer and clear any existing warning.
+        m_noGPSTimer.stop();
+        cancelAndroidNotification(NOTIFICATION_ID_NO_GPS);
+    } else {
+        // Position lost — start the grace-period timer if auto-detection is on.
+        if (GlobalObject::globalSettings()->autoFlightDetection()) {
+            m_noGPSTimer.start();
+        }
+    }
+}
+#endif

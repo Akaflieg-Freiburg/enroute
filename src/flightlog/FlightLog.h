@@ -22,6 +22,7 @@
 
 #include <QQmlEngine>
 #include <QStandardPaths>
+#include <QTimer>
 #include <QVariant>
 
 #include "GlobalObject.h"
@@ -310,6 +311,12 @@ private slots:
     // Handle auto-detection setting change — manages Android foreground service
     void onAutoFlightDetectionChanged();
 
+#ifdef Q_OS_ANDROID
+    // Posted after a grace period when auto-detection is on but no position
+    // data is arriving. Cancelled when GPS resumes or detection is disabled.
+    void onReceivingPositionInfoChanged(bool receiving);
+#endif
+
     // Handle takeoff detected by the FlightDetector
     void onTakeoffDetected(const QString& departureICAO,
                            const QGeoCoordinate& departureCoordinate,
@@ -370,6 +377,11 @@ private:
 #ifdef Q_OS_ANDROID
     // Tracks whether the Android foreground service is running
     bool m_foregroundServiceRunning {false};
+
+    // Fires after a grace period to post the "no GPS" notification. Started
+    // when auto-detection is enabled with no position data; cancelled when
+    // position arrives or auto-detection is disabled.
+    QTimer m_noGPSTimer;
 #endif
 
     // Persistence

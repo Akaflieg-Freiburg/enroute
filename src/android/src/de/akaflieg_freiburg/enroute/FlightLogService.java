@@ -59,13 +59,13 @@ public class FlightLogService extends Service {
     private static final int NOTIFICATION_ID = 1001;
     private static final int PERMISSION_REQUEST_CODE = 1001;
 
-    // Separate ID for event notifications so they don't replace the
-    // persistent service notification.
-    private static final int EVENT_NOTIFICATION_ID = 1002;
+    // Public notification IDs — referenced from C++ via JNI to post and
+    // cancel individual notifications independently.
+    public static final int NOTIFICATION_ID_EVENT   = 1002; // takeoff / landing
+    public static final int NOTIFICATION_ID_NO_GPS  = 1004; // no position data warning
 
-    // Separate ID for the "app was killed" restart warning so that canceling
-    // it in start() never accidentally dismisses a real flight event.
-    private static final int RESTART_NOTIFICATION_ID = 1003;
+    // Used only internally (notifyRestart / start).
+    private static final int NOTIFICATION_ID_RESTART = 1003;
 
     // ConnectivityManager for requesting WiFi networks without internet access.
     // Keeps local hotspots like Stratux connected even when they have no internet.
@@ -233,10 +233,7 @@ public class FlightLogService extends Service {
 
         // Qt is now running again — dismiss the "app was killed" warning if
         // it is still visible.
-        NotificationManager manager = context.getSystemService(NotificationManager.class);
-        if (manager != null) {
-            manager.cancel(RESTART_NOTIFICATION_ID);
-        }
+        cancelNotification(context, NOTIFICATION_ID_RESTART);
 
         Intent intent = new Intent(context, FlightLogService.class);
         context.startForegroundService(intent);
@@ -255,37 +252,33 @@ public class FlightLogService extends Service {
     }
 
     /**
-     * Post a notification for a flight event (takeoff or landing).
+     * Post a notification on the flight events channel.
      *
-     * Uses IMPORTANCE_HIGH channel so the notification plays the default
-     * notification sound and shows as a heads-up banner, even when the
-     * app is in the background. Called from C++ via JNI.
+     * Use the NOTIFICATION_ID_* constants to address individual notifications
+     * independently. Called from C++ via JNI.
      *
-     * @param context  Application context
-     * @param title    Notification title (e.g. "Takeoff Detected")
-     * @param message  Notification body (e.g. "Departed EDTF at 14:32 UTC")
+     * @param context        Application context
+     * @param notificationId One of the NOTIFICATION_ID_* constants
+     * @param title          Notification title
+     * @param message        Notification body text
      */
-    public static void notifyEvent(Context context, String title, String message) {
-        // The event notification channel is already created in createNotificationChannel(),
-        // so we just need to build and post the notification.
-
+    public static void postNotification(Context context, int notificationId, String title, String message) {
         NotificationManager manager = context.getSystemService(NotificationManager.class);
         if (manager == null) {
             return;
         }
 
         // Tapping the notification brings the user back to the app.
+        // Use notificationId as the request code so each notification gets
+        // its own distinct PendingIntent.
         Intent notificationIntent = new Intent(context, MobileAdaptor.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                context, 1, notificationIntent,
+                context, notificationId, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // CATEGORY_ALARM ensures Android treats this as time-critical and
         // displays it as a heads-up banner with sound.
-        // CATEGORY_NAVIGATION would be a better fit for a
-        // flight navigation app, but it does NOT trigger heads-up display
-        // on most devices.
         Notification notification = new Notification.Builder(context, EVENT_CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(message)
@@ -295,7 +288,22 @@ public class FlightLogService extends Service {
                 .setCategory(Notification.CATEGORY_ALARM)
                 .build();
 
-        manager.notify(EVENT_NOTIFICATION_ID, notification);
+        manager.notify(notificationId, notification);
+    }
+
+    /**
+     * Cancel a notification by ID.
+     *
+     * Use the NOTIFICATION_ID_* constants. Called from C++ via JNI.
+     *
+     * @param context        Application context
+     * @param notificationId One of the NOTIFICATION_ID_* constants
+     */
+    public static void cancelNotification(Context context, int notificationId) {
+        NotificationManager manager = context.getSystemService(NotificationManager.class);
+        if (manager != null) {
+            manager.cancel(notificationId);
+        }
     }
 
     /**
@@ -312,26 +320,8 @@ public class FlightLogService extends Service {
      * a heads-up banner when the screen is on.
      */
     private void notifyRestart() {
-        NotificationManager manager = getSystemService(NotificationManager.class);
-        if (manager == null) {
-            return;
-        }
-
-        Intent activityIntent = new Intent(this, MobileAdaptor.class);
-        activityIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 2, activityIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-        Notification notification = new Notification.Builder(this, EVENT_CHANNEL_ID)
-                .setContentTitle(getString(R.string.notification_restart_title))
-                .setContentText(getString(R.string.notification_restart_text))
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .setCategory(Notification.CATEGORY_ALARM)
-                .build();
-
-        manager.notify(RESTART_NOTIFICATION_ID, notification);
+        postNotification(this, NOTIFICATION_ID_RESTART,
+                getString(R.string.notification_restart_title),
+                getString(R.string.notification_restart_text));
     }
 }

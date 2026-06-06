@@ -875,6 +875,16 @@ void Flightlog::FlightLog::onAutoFlightDetectionChanged()
     }
 #endif
 
+    // Ensure the satellite GPS source is running whenever auto-detection is
+    // enabled. QML calls startUpdates() on Component.onCompleted, but if the
+    // process was killed and restarted by the Android foreground service
+    // (START_STICKY) the QML engine may not re-execute that handler.
+    // Calling startUpdates() here guarantees GPS flows into the detector
+    // regardless of whether the UI is visible.
+    if (GlobalObject::globalSettings()->autoFlightDetection()) {
+        GlobalObject::positionProvider()->startUpdates();
+    }
+
 #ifdef Q_OS_ANDROID
     bool enabled = GlobalObject::globalSettings()->autoFlightDetection();
 

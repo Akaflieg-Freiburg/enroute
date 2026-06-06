@@ -3,4 +3,9 @@
     <!-- Flight recording service notification strings -->
     <string name="notification_title">Enroute Flight Navigation</string>
     <string name="notification_text">Flight recording in progress</string>
+
+    <!-- Shown when Android killed the app and the service was restarted
+         without the Qt runtime — flight recording is inactive. -->
+    <string name="notification_restart_title">Flight Recording Interrupted</string>
+    <string name="notification_restart_text">Android stopped the app. Tap to reopen and resume flight recording.</string>
 </resources>

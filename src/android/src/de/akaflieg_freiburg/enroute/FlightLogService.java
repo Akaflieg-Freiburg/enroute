@@ -63,6 +63,10 @@ public class FlightLogService extends Service {
     // persistent service notification.
     private static final int EVENT_NOTIFICATION_ID = 1002;
 
+    // Separate ID for the "app was killed" restart warning so that canceling
+    // it in start() never accidentally dismisses a real flight event.
+    private static final int RESTART_NOTIFICATION_ID = 1003;
+
     // ConnectivityManager for requesting WiFi networks without internet access.
     // Keeps local hotspots like Stratux connected even when they have no internet.
     private ConnectivityManager m_connectivityManager;
@@ -79,6 +83,15 @@ public class FlightLogService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // When Android kills the process and START_STICKY causes the service to
+        // restart, it delivers a null intent. In that state the Qt application
+        // is NOT running — only this Java service is alive. GPS processing and
+        // flight detection are inactive. Alert the user so they know to reopen
+        // the app and resume recording.
+        if (intent == null) {
+            notifyRestart();
+        }
+
         // Build an intent that brings the user back to the app when they
         // tap the notification. MobileAdaptor is the app's main Activity.
         // FLAG_ACTIVITY_SINGLE_TOP avoids creating a second instance if
@@ -218,6 +231,13 @@ public class FlightLogService extends Service {
         // only an application context and cannot call requestPermissions().
         MobileAdaptor.requestNotificationPermission();
 
+        // Qt is now running again — dismiss the "app was killed" warning if
+        // it is still visible.
+        NotificationManager manager = context.getSystemService(NotificationManager.class);
+        if (manager != null) {
+            manager.cancel(RESTART_NOTIFICATION_ID);
+        }
+
         Intent intent = new Intent(context, FlightLogService.class);
         context.startForegroundService(intent);
     }
@@ -276,5 +296,42 @@ public class FlightLogService extends Service {
                 .build();
 
         manager.notify(EVENT_NOTIFICATION_ID, notification);
+    }
+
+    /**
+     * Post a heads-up notification warning that Android killed the app and
+     * flight recording is no longer active. Uses RESTART_NOTIFICATION_ID
+     * so it can be dismissed independently of real flight-event notifications.
+     *
+     * This is called from onStartCommand() when intent == null, which is the
+     * signal that Android restarted the service via START_STICKY after killing
+     * the process. In that state Qt is not running: there is no GPS processing
+     * and no flight detection. The user must reopen the app to resume.
+     *
+     * Uses the EVENT_CHANNEL_ID (IMPORTANCE_HIGH) so the alert is shown as
+     * a heads-up banner when the screen is on.
+     */
+    private void notifyRestart() {
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (manager == null) {
+            return;
+        }
+
+        Intent activityIntent = new Intent(this, MobileAdaptor.class);
+        activityIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this, 2, activityIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        Notification notification = new Notification.Builder(this, EVENT_CHANNEL_ID)
+                .setContentTitle(getString(R.string.notification_restart_title))
+                .setContentText(getString(R.string.notification_restart_text))
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setCategory(Notification.CATEGORY_ALARM)
+                .build();
+
+        manager.notify(RESTART_NOTIFICATION_ID, notification);
     }
 }

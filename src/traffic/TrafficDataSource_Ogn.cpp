@@ -405,7 +405,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     {
         const QGeoCoordinate ognCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude);
         hDist = Units::Distance::fromM(m_currentPosition.distanceTo(ognCoordinate));
-        vDist = Units::Distance::fromM(qFabs(m_ognMessage.altitude - m_currentPosition.altitude()));
+        vDist = Units::Distance::fromM(m_ognMessage.altitude - m_currentPosition.altitude());
         
         // Only set alarm level if we're using actual GPS position, not map center
         if (m_usingGps)

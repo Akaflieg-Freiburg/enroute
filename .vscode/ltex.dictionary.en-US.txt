@@ -19,3 +19,4 @@ NMEA
 Changelog
 NOTAMs
 NOTAM
+ownship

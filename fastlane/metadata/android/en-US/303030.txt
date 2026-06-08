@@ -1,0 +1,2 @@
+### Fixed
+- Fixes sign error that makes OGN traffic always appear above the ownship position.

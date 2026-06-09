@@ -42,6 +42,14 @@ class SideviewQuickItem : public QQuickItem
     QML_NAMED_ELEMENT(SideviewQuickItem)
 
 public:
+
+    /*! \brief Display mode for the side view */
+    enum class Mode {
+        Track, /*!< Show terrain/airspaces along current position and track (default) */
+        Route  /*!< Show terrain/airspaces along the planned flight route */
+    };
+    Q_ENUM(Mode)
+
     explicit SideviewQuickItem(QQuickItem *parent = nullptr);
 
     ~SideviewQuickItem() override = default;
@@ -83,6 +91,16 @@ public:
      */
     Q_PROPERTY(QPointF fiveMinuteBar READ fiveMinuteBar BINDABLE bindableFiveMinuteBar)
 
+    /*! \brief Display mode
+     *
+     * Controls whether the side view is computed along the current track
+     * (Mode::Track, default) or along the planned flight route (Mode::Route).
+     * In Route mode the ownship marker is placed at the aircraft's projected
+     * position along the route; the horizontal extent of the view covers the
+     * full route from first to last waypoint.
+     */
+    Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
+
     /*! \brief Position of the own aircraft
      *
      * This property holds the position of the own aircraft, in pixel
@@ -96,6 +114,22 @@ public:
      * flightmap in order to synchronize the scales.
      */
     Q_PROPERTY(double pixelPer10km READ pixelPer10km WRITE setPixelPer10km BINDABLE bindablePixelPer10km REQUIRED)
+
+    /*! \brief Width (in pixels) used for horizontal coordinate computation.
+     *
+     * Set this to the Flickable contentWidth to enable horizontal scrolling.
+     * When ≤ 0 the item's own width() is used instead.
+     */
+    Q_PROPERTY(double renderWidth READ renderWidth WRITE setRenderWidth NOTIFY renderWidthChanged)
+
+    /*! \brief Maximum altitude shown on the Y axis, in feet */
+    Q_PROPERTY(double scaleMaxAltFt READ scaleMaxAltFt NOTIFY scaleRangeChanged)
+
+    /*! \brief Minimum altitude shown on the Y axis, in feet */
+    Q_PROPERTY(double scaleMinAltFt READ scaleMinAltFt NOTIFY scaleRangeChanged)
+
+    /*! \brief Total route length shown on the X axis, in kilometres (0 in Track mode) */
+    Q_PROPERTY(double scaleTotalDistKm READ scaleTotalDistKm NOTIFY scaleRangeChanged)
 
     /*! \brief Terrain polygons
      *
@@ -117,128 +151,87 @@ public:
     // Getter and Setter Methods
     //
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property airspaces
-     */
     QVariantMap airspaces() const {return m_airspaces.value();}
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property airspaces
-     */
     QBindable<QVariantMap> bindableAirspaces() const {return &m_airspaces;}
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property error
-     */
     QString error() const {return m_error.value();}
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property error
-     */
     QBindable<QString> bindableError() const {return &m_error;}
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property fiveMinuteBar
-     */
     QPointF fiveMinuteBar() const {return m_fiveMinuteBar.value();}
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property fiveMinuteBar
-     */
     QBindable<QPointF> bindableFiveMinuteBar() const {return &m_fiveMinuteBar;}
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property ownshipPosition
-     */
-    QPointF ownshipPosition() const {return m_ownshipPosition.value();}
+    Mode mode() const { return m_mode; }
+    void setMode(Mode newMode);
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property ownshipPosition
-     */
+    QPointF ownshipPosition() const {return m_ownshipPosition.value();}
     QBindable<QPointF> bindableOwnshipPosition() const {return &m_ownshipPosition;}
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property pixelPer10km
-     */
     double pixelPer10km() const {return m_pixelPer10km.value();}
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property pixelPer10km
-     */
     QBindable<double> bindablePixelPer10km() {return &m_pixelPer10km;}
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @param newVal Property pixelPer10km
-     */
     void setPixelPer10km(double newVal) {m_pixelPer10km = newVal;}
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property track
-     */
-    QString track() const {return m_track.value();}
+    double renderWidth() const { auto v = m_renderWidth.value(); return v > 0 ? v : width(); }
+    void setRenderWidth(double v) { m_renderWidth = v; }
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property track
-     */
+    double scaleMaxAltFt() const { return m_scaleMaxAltFt.value(); }
+    double scaleMinAltFt() const { return m_scaleMinAltFt.value(); }
+    double scaleTotalDistKm() const { return m_scaleTotalDistKm.value(); }
+
+    QString track() const {return m_track.value();}
     QBindable<QString> bindableTrack() const {return &m_track;}
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property terrain
-     */
     QPolygonF terrain() const {return m_terrain.value();}
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property terrain
-     */
     QBindable<QPolygonF> bindableTerrain() const {return &m_terrain;}
 
+signals:
+    void modeChanged();
+    void renderWidthChanged();
+    void scaleRangeChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(SideviewQuickItem)
 
-    // Timers used for rate-limiting, used to ensure that the expensive method
-    // updateProperties() runs at most every minimumUpdateInterval_ms.
+    // Timers used for rate-limiting
     QElapsedTimer m_elapsedTimer;
     QTimer m_timer;
     static constexpr int minimumUpdateInterval_ms = 700;
 
-    // Compute
     void updateProperties();
+    void updatePropertiesTrack();
+    void updatePropertiesRoute();
 
+    // Returns renderWidth if set, else actual item width.
+    double rw() const { auto v = m_renderWidth.value(); return v > 0 ? v : width(); }
+
+    // Shared helper: build airspace polygons along a sampled geo-path.
+    // xCoordinates and geoCoordinates must be the same length.
+    // elevations must be the same length.
+    // Returns a QVariantMap with the same keys as m_airspaces.
+    QVariantMap buildAirspacePolygons(
+        const QList<int>& xCoordinates,
+        const QList<QGeoCoordinate>& geoCoordinates,
+        const QList<Units::Distance>& elevations,
+        Units::Distance ownshipGeometricAltitude,
+        Units::Distance ownshipPressureAltitude,
+        std::function<double(Units::Distance)> altToY);
+
+    Mode m_mode {Mode::Track};
 
     QProperty<QString> m_error;
-
     QProperty<QString> m_track;
-
     QProperty<double> m_pixelPer10km;
-
     QProperty<QPointF> m_ownshipPosition;
-
     QProperty<QPointF> m_fiveMinuteBar;
-
     QProperty<QPolygonF> m_terrain;
-
     QProperty<QVariantMap> m_airspaces;
+    QProperty<double> m_renderWidth   {0.0};
+    QProperty<double> m_scaleMaxAltFt {0.0};
+    QProperty<double> m_scaleMinAltFt {0.0};
+    QProperty<double> m_scaleTotalDistKm {0.0};
 
     Navigation::BaroCache* m_baroCache;
 
     std::vector<QPropertyNotifier> notifiers;
-
 };
 
 } // namespace Ui

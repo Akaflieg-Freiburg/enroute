@@ -936,4 +936,39 @@ Map {
         delegate: waypointComponent
     }
 
+    // METAR flight-category color dots
+    ObserverList {
+        id: metarObservers
+    }
+
+    MapItemView {
+        model: metarObservers.observers
+        delegate: Component {
+            MapQuickItem {
+                id: metarDot
+
+                coordinate: modelData.waypoint.coordinate
+
+                anchorPoint.x: 6
+                anchorPoint.y: 6
+
+                Connections {
+                    target: flightMap
+                    function onHeightChanged() { metarDot.polishAndUpdate() }
+                }
+
+                sourceItem: Rectangle {
+                    width:  12
+                    height: 12
+                    radius: 6
+                    color: modelData.metar.isValid ? modelData.metar.flightCategoryColor : "transparent"
+                    border.color: "white"
+                    border.width: 1.5
+                    visible: modelData.metar.isValid
+                             && modelData.metar.flightCategoryColor !== "transparent"
+                }
+            }
+        }
+    }
+
 } // End of FlightMap

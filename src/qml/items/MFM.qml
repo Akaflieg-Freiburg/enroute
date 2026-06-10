@@ -612,6 +612,22 @@ Item {
                         }
 
                         MapButton {
+                            id: weatherLayerButton
+
+                            checkable: true
+                            checked: flightMap.showWeatherLayer
+                            icon.source: "/icons/material/ic_cloud_queue.svg"
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                flightMap.showWeatherLayer = !flightMap.showWeatherLayer
+                                if (flightMap.showWeatherLayer) {
+                                    WeatherDataProvider.requestUpdate()
+                                }
+                            }
+                        }
+
+                        MapButton {
                             id: rasterMapButton
 
                             icon.source: "/icons/material/ic_layers.svg"

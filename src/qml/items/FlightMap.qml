@@ -40,6 +40,9 @@ Map {
     */
     property real pixelPer10km: 0.0
 
+    /*! \brief Show METAR weather layer (flight category dots + wind barbs) */
+    property bool showWeatherLayer: false
+
     /* Handle changes in zoom level */
     onZoomLevelChanged: {
         var vec1 = flightMap.fromCoordinate(flightMap.center, false)
@@ -934,6 +937,117 @@ Map {
         id: midFieldWaypoints
         model: Navigator.flightRoute.midFieldWaypoints
         delegate: waypointComponent
+    }
+
+    ObserverList {
+        id: weatherObservers
+    }
+
+    MapItemView { // METAR flight category dots and wind barbs
+        visible: flightMap.showWeatherLayer
+        model: weatherObservers.observers
+        delegate: Component {
+            MapQuickItem {
+                id: metarItem
+
+                property var obs: modelData
+                property var met: obs.metar
+
+                anchorPoint.x: 14
+                anchorPoint.y: 14
+                coordinate: met.coordinate
+                visible: met.isValid
+
+                sourceItem: Canvas {
+                    id: metarCanvas
+                    width: 70
+                    height: 70
+
+                    onPaint: {
+                        var ctx = getContext("2d")
+                        ctx.clearRect(0, 0, width, height)
+
+                        // Flight category dot with transparency
+                        var dotColor = met.flightCategoryColor === "transparent" ? "gray" : met.flightCategoryColor
+                        ctx.beginPath()
+                        ctx.arc(14, 14, 12, 0, 2*Math.PI)
+                        ctx.globalAlpha = 0.55
+                        ctx.fillStyle = dotColor
+                        ctx.fill()
+                        ctx.globalAlpha = 1.0
+                        ctx.strokeStyle = "white"
+                        ctx.lineWidth = 2
+                        ctx.stroke()
+
+                        // Wind barb
+                        if (!met.windSpeed.isFinite() || !met.windDirection.isFinite()) return
+                        var spd = met.windSpeed.toKN()
+                        if (spd < 1) return
+
+                        var dirRad = met.windDirection.toRAD() + Math.PI // barb points into wind
+                        var cx = 14, cy = 14
+                        var len = 32
+                        var ex = cx + len * Math.sin(dirRad)
+                        var ey = cy - len * Math.cos(dirRad)
+
+                        // Staff
+                        ctx.beginPath()
+                        ctx.moveTo(cx, cy)
+                        ctx.lineTo(ex, ey)
+                        ctx.strokeStyle = "black"
+                        ctx.lineWidth = 2
+                        ctx.stroke()
+
+                        // Barbs: each full barb = 10 kt, half barb = 5 kt, pennant = 50 kt
+                        var remaining = Math.round(spd)
+                        var perpX = Math.cos(dirRad)
+                        var perpY = Math.sin(dirRad)
+                        var bx = ex, by = ey
+                        var stepX = -Math.sin(dirRad) * 6
+                        var stepY =  Math.cos(dirRad) * 6
+                        var barbLen = 13
+
+                        // Pennants (50 kt)
+                        while (remaining >= 50) {
+                            ctx.beginPath()
+                            ctx.moveTo(bx, by)
+                            ctx.lineTo(bx + stepX*2 + perpX*barbLen, by + stepY*2 + perpY*barbLen)
+                            ctx.lineTo(bx + stepX*2, by + stepY*2)
+                            ctx.closePath()
+                            ctx.fillStyle = "black"
+                            ctx.fill()
+                            bx += stepX*2; by += stepY*2
+                            remaining -= 50
+                        }
+                        // Full barbs (10 kt)
+                        while (remaining >= 10) {
+                            ctx.beginPath()
+                            ctx.moveTo(bx, by)
+                            ctx.lineTo(bx + perpX*barbLen, by + perpY*barbLen)
+                            ctx.strokeStyle = "black"
+                            ctx.lineWidth = 2
+                            ctx.stroke()
+                            bx += stepX; by += stepY
+                            remaining -= 10
+                        }
+                        // Half barb (5 kt)
+                        if (remaining >= 5) {
+                            ctx.beginPath()
+                            ctx.moveTo(bx, by)
+                            ctx.lineTo(bx + perpX*barbLen*0.5, by + perpY*barbLen*0.5)
+                            ctx.stroke()
+                        }
+                    }
+
+                    Connections {
+                        target: metarItem.obs
+                        function onMetarChanged() { metarCanvas.requestPaint() }
+                    }
+
+                    Component.onCompleted: requestPaint()
+                }
+            }
+        }
     }
 
 } // End of FlightMap

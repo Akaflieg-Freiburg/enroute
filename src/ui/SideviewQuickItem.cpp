@@ -21,6 +21,7 @@
 #include "GeoMapProvider.h"
 #include "PositionProvider.h"
 #include "SideviewQuickItem.h"
+#include "navigation/Navigator.h"
 #include "weather/WeatherDataProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -40,7 +41,25 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePressureAltitude().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
-    updateProperties();   
+    notifiers.push_back(m_renderWidth.addNotifier([this]() { emit renderWidthChanged(); updateProperties(); }));
+    notifiers.push_back(m_scaleMaxAltFt.addNotifier([this]() { emit scaleRangeChanged(); }));
+    notifiers.push_back(m_scaleMinAltFt.addNotifier([this]() { emit scaleRangeChanged(); }));
+    notifiers.push_back(m_scaleTotalDistKm.addNotifier([this]() { emit scaleRangeChanged(); }));
+
+    // React to route changes when in Route mode
+    notifiers.push_back(GlobalObject::navigator()->flightRoute()->bindableGeoPath().addNotifier([this]() {
+        if (m_mode == Mode::Route) { updateProperties(); }
+    }));
+
+    updateProperties();
+}
+
+void Ui::SideviewQuickItem::setMode(Mode newMode)
+{
+    if (m_mode == newMode) { return; }
+    m_mode = newMode;
+    emit modeChanged();
+    updateProperties();
 }
 
 void Ui::SideviewQuickItem::updateProperties()
@@ -61,10 +80,111 @@ void Ui::SideviewQuickItem::updateProperties()
     }
     m_elapsedTimer.start();
 
+    if (m_mode == Mode::Route)
+    {
+        updatePropertiesRoute();
+    }
+    else
+    {
+        updatePropertiesTrack();
+    }
+}
+
+
+// ---------------------------------------------------------------------------
+// Shared helper: build airspace polygons along a sampled geo-path
+// ---------------------------------------------------------------------------
+QVariantMap Ui::SideviewQuickItem::buildAirspacePolygons(
+    const QList<int>& xCoordinates,
+    const QList<QGeoCoordinate>& geoCoordinates,
+    const QList<Units::Distance>& elevations,
+    Units::Distance ownshipGeometricAltitude,
+    Units::Distance ownshipPressureAltitude,
+    std::function<double(Units::Distance)> altToY)
+{
+    const QVector<QPolygonF> empty;
+    QVariantMap result;
+    result[u"A"_s]   = QVariant::fromValue(empty);
+    result[u"CTR"_s] = QVariant::fromValue(empty);
+    result[u"R"_s]   = QVariant::fromValue(empty);
+    result[u"RMZ"_s] = QVariant::fromValue(empty);
+    result[u"NRA"_s] = QVariant::fromValue(empty);
+    result[u"PJE"_s] = QVariant::fromValue(empty);
+    result[u"TMZ"_s] = QVariant::fromValue(empty);
+
+    auto QNH = GlobalObject::weatherDataProvider()->QNH();
+    if (!QNH.isFinite()) { return result; }
+
+    QVector<QPolygonF> polyA, polyCTR, polyR, polyRMZ, polyNRA, polyPJE, polyTMZ;
+
+    auto airspaces = GlobalObject::geoMapProvider()->airspaces();
+    QGeoRectangle const viewBBox(QList({geoCoordinates.constFirst(), geoCoordinates.constLast()}));
+
+    for (const auto& airspace : std::as_const(airspaces))
+    {
+        if (!airspaceCategories.contains(airspace.CAT())) { continue; }
+        if (!airspace.polygon().boundingGeoRectangle().intersects(viewBBox)) { continue; }
+
+        QList<QPointF> upper, lower;
+        auto airspacePolygon = airspace.polygon();
+
+        for (int i = 0; i < xCoordinates.size(); i++)
+        {
+            auto x = xCoordinates[i];
+            const auto& gc = geoCoordinates[i];
+            if ((i != xCoordinates.size()-1) && airspacePolygon.contains(gc))
+            {
+                auto u = airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude);
+                auto l = airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude);
+                if (l < u)
+                {
+                    upper << QPointF(x, altToY(u));
+                    lower << QPointF(x, altToY(l));
+                    continue;
+                }
+            }
+
+            if (!upper.isEmpty())
+            {
+                std::reverse(lower.begin(), lower.end());
+                QPolygonF poly(upper + lower);
+                poly << upper[0];
+
+                auto cat = airspace.CAT();
+                if (cat == u"A"_s || cat == u"B"_s || cat == u"C"_s || cat == u"D"_s) { polyA   << poly; }
+                if (cat == u"CTR"_s)                                                   { polyCTR << poly; }
+                if (cat == u"R"_s  || cat == u"P"_s  || cat == u"DNG"_s)              { polyR   << poly; }
+                if (cat == u"ATZ"_s|| cat == u"RMZ"_s|| cat == u"TIA"_s|| cat == u"TIZ"_s) { polyRMZ << poly; }
+                if (cat == u"NRA"_s)                                                   { polyNRA << poly; }
+                if (cat == u"PJE"_s|| cat == u"SUA"_s)                                { polyPJE << poly; }
+                if (cat == u"TMZ"_s)                                                   { polyTMZ << poly; }
+
+                upper.clear();
+                lower.clear();
+            }
+        }
+    }
+
+    result[u"A"_s]   = QVariant::fromValue(polyA);
+    result[u"CTR"_s] = QVariant::fromValue(polyCTR);
+    result[u"R"_s]   = QVariant::fromValue(polyR);
+    result[u"RMZ"_s] = QVariant::fromValue(polyRMZ);
+    result[u"NRA"_s] = QVariant::fromValue(polyNRA);
+    result[u"PJE"_s] = QVariant::fromValue(polyPJE);
+    result[u"TMZ"_s] = QVariant::fromValue(polyTMZ);
+    return result;
+}
+
+
+// ---------------------------------------------------------------------------
+// Mode::Track  — original logic, unchanged except extracted to own method
+// ---------------------------------------------------------------------------
+void Ui::SideviewQuickItem::updatePropertiesTrack()
+{
+    const QScopedPropertyUpdateGroup updateLock;
     //
     // Set all properties to default values. We update those depending on the data we have available.
     //
-    const QScopedPropertyUpdateGroup updateLock;
     m_fiveMinuteBar = {0, 0};
     m_ownshipPosition = {-100, -100};
     m_track = QString();
@@ -178,13 +298,14 @@ void Ui::SideviewQuickItem::updateProperties()
         }
     }
 
+    const double renderW = rw();
     //
     // Compute array of x-coordinates in pixels.
     //
     const int step = 4.0;
     QList<int> xCoordinates;
-    xCoordinates.reserve( qRound((width()+20)/step) );
-    for(int x = -10; x <= width()+10; x += step)
+    xCoordinates.reserve( qRound((renderW+20)/step) );
+    for(int x = -10; x <= renderW+10; x += step)
     {
         xCoordinates << x;
     }
@@ -196,7 +317,7 @@ void Ui::SideviewQuickItem::updateProperties()
     geoCoordinates.reserve(xCoordinates.size());
     for(auto x : std::as_const(xCoordinates))
     {
-        auto dist = 10000.0*(x-0.2*width())/(m_pixelPer10km.value());
+        auto dist = 10000.0*(x-0.2*renderW)/(m_pixelPer10km.value());
         auto geoCoordinate = ownshipCoordinate.atDistanceAndAzimuth(dist, ownshipTrack.toDEG());
         geoCoordinates << geoCoordinate;
     }
@@ -249,12 +370,16 @@ void Ui::SideviewQuickItem::updateProperties()
         return ((double)height())*(sideview_maxAlt - alt) / (sideview_maxAlt - sideview_minAlt);
     };
 
+    m_scaleMinAltFt  = sideview_minAlt.toFeet();
+    m_scaleMaxAltFt  = sideview_maxAlt.toFeet();
+    m_scaleTotalDistKm = 0.0;
+
     //
     // Compute graphics data
     //
 
     // Ownship position
-    m_ownshipPosition = {width()*0.2, altToYCoordinate(ownshipGeometricAltitude)};
+    m_ownshipPosition = {renderW*0.2, altToYCoordinate(ownshipGeometricAltitude)};
 
     // 5-Minute-Bar
     if (ownshipVSpeed.isFinite() && ownshipHSpeed.isFinite())
@@ -269,98 +394,247 @@ void Ui::SideviewQuickItem::updateProperties()
     {
         polygon << QPointF(xCoordinates[i], altToYCoordinate(elevations[i]));
     }
-    polygon  << QPointF(width(), height()+2000) << QPointF(-20, height()+2000);
+    polygon << QPointF(renderW, height()+2000) << QPointF(-20, height()+2000);
     m_terrain = polygon;
-    //qWarning() << "SideviewQuickItem terrain" << m_elapsedTimer.elapsed();
 
-    // Airspaces
-    auto airspaces = GlobalObject::geoMapProvider()->airspaces();
-    QVector<QPolygonF> airspacePolygonsA;
-    QVector<QPolygonF> airspacePolygonsCTR;
-    QVector<QPolygonF> airspacePolygonsR;
-    QVector<QPolygonF> airspacePolygonsRMZ;
-    QVector<QPolygonF> airspacePolygonsNRA;
-    QVector<QPolygonF> airspacePolygonsPJE;
-    QVector<QPolygonF> airspacePolygonsTMZ;
-    QList<QPointF> upper;
-    QList<QPointF> lower;
-    QGeoRectangle const viewBBox(QList({geoCoordinates.constFirst(), geoCoordinates.constLast()}));
-    for(const auto& airspace : std::as_const(airspaces))
+    m_airspaces = buildAirspacePolygons(xCoordinates, geoCoordinates, elevations,
+                                         ownshipGeometricAltitude, ownshipPressureAltitude, altToYCoordinate);
+}
+
+
+// ---------------------------------------------------------------------------
+// Mode::Route  — terrain/airspaces along the planned flight route
+// ---------------------------------------------------------------------------
+void Ui::SideviewQuickItem::updatePropertiesRoute()
+{
+    const QScopedPropertyUpdateGroup updateLock;
+    m_fiveMinuteBar   = {0, 0};
+    m_ownshipPosition = {-100, -100};
+    m_track           = QString();
+    m_error           = QString();
+    m_terrain         = QPolygonF();
+
+    const QVector<QPolygonF> empty;
+    QVariantMap newAirspaces;
+    newAirspaces[u"A"_s]   = QVariant::fromValue(empty);
+    newAirspaces[u"CTR"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"R"_s]   = QVariant::fromValue(empty);
+    newAirspaces[u"RMZ"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"NRA"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"PJE"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"TMZ"_s] = QVariant::fromValue(empty);
+    m_airspaces = newAirspaces;
+
+    if (height() < 5.0) { return; }
+
+    // -----------------------------------------------------------------------
+    // 1. Get the planned route
+    // -----------------------------------------------------------------------
+    auto geoPath = GlobalObject::navigator()->flightRoute()->geoPath();
+    if (geoPath.size() < 2)
     {
-        if (!airspaceCategories.contains(airspace.CAT()))
-        {
-            continue;
-        }
-        auto bbox = airspace.polygon().boundingGeoRectangle();
-        if (!bbox.intersects(viewBBox))
-        {
-            continue;
-        }
+        m_error = tr("Unable to show side view: No flight route. Please plan a route first.");
+        return;
+    }
 
-        auto airspacePolygon = airspace.polygon();
-        for(int i=0; i < xCoordinates.size(); i++)
+    // -----------------------------------------------------------------------
+    // 2. Build cumulative distance table along the route polyline
+    //    cumulativeDist[i] = distance from geoPath[0] to geoPath[i], in metres
+    // -----------------------------------------------------------------------
+    QList<double> cumulativeDist;
+    cumulativeDist.reserve(geoPath.size());
+    cumulativeDist << 0.0;
+    for (qsizetype i = 1; i < geoPath.size(); i++)
+    {
+        cumulativeDist << cumulativeDist.last() + geoPath[i-1].distanceTo(geoPath[i]);
+    }
+    const double totalRouteLen = cumulativeDist.last();
+    if (totalRouteLen < 1.0)
+    {
+        m_error = tr("Unable to show side view: Flight route is too short.");
+        return;
+    }
+
+    // -----------------------------------------------------------------------
+    // 3. Helper: given a distance along the route, return the QGeoCoordinate
+    //    by linear interpolation between the nearest waypoints.
+    // -----------------------------------------------------------------------
+    auto coordAtDist = [&](double distM) -> QGeoCoordinate
+    {
+        distM = qBound(0.0, distM, totalRouteLen);
+        // Find the leg that contains distM
+        qsizetype seg = 0;
+        for (qsizetype i = 1; i < cumulativeDist.size(); i++)
         {
-            auto x = xCoordinates[i];
-            const auto& geoCoordinate = geoCoordinates[i];
-            if ((i != xCoordinates.size()-1) && airspacePolygon.contains(geoCoordinate))
+            if (cumulativeDist[i] >= distM)
             {
-                auto u = airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude);
-                auto l = airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude);
-                if (l < u)
-                {
-                    upper << QPointF(x, altToYCoordinate(u));
-                    lower << QPointF(x, altToYCoordinate(l));
-                    continue;
-                }
+                seg = i - 1;
+                break;
             }
+            seg = i - 1; // last segment
+        }
+        double segLen = cumulativeDist[seg+1] - cumulativeDist[seg];
+        if (segLen < 0.01) { return geoPath[seg]; }
+        double t = (distM - cumulativeDist[seg]) / segLen;
+        double az = geoPath[seg].azimuthTo(geoPath[seg+1]);
+        return geoPath[seg].atDistanceAndAzimuth(t * segLen, az);
+    };
 
-            if (!upper.isEmpty())
+    // -----------------------------------------------------------------------
+    // 4. Sample the route at pixel resolution
+    //    Each pixel column x maps to a distance proportional along the route.
+    // -----------------------------------------------------------------------
+    const double renderW = rw();
+    const int step = 4;
+    QList<int> xCoordinates;
+    xCoordinates.reserve(qRound((renderW+20)/step));
+    for (int x = -10; x <= renderW+10; x += step) { xCoordinates << x; }
+
+    QList<QGeoCoordinate> geoCoordinates;
+    geoCoordinates.reserve(xCoordinates.size());
+    for (auto x : std::as_const(xCoordinates))
+    {
+        double fraction = (double)x / renderW;
+        geoCoordinates << coordAtDist(fraction * totalRouteLen);
+    }
+
+    // -----------------------------------------------------------------------
+    // 5. Sample terrain elevations
+    // -----------------------------------------------------------------------
+    QList<Units::Distance> elevations;
+    elevations.reserve(geoCoordinates.size());
+    Units::Distance minElevation = Units::Distance::fromM(0.0);
+    Units::Distance maxElevation = Units::Distance::fromM(0.0);
+    bool firstElev = true;
+    for (const auto& gc : std::as_const(geoCoordinates))
+    {
+        auto elev = GlobalObject::geoMapProvider()->terrainElevationAMSL(gc);
+        if (!elev.isFinite())
+        {
+            elev = Units::Distance::fromM(0.0);
+            m_error = tr("Incomplete terrain data. Please install the relevant terrain maps.");
+        }
+        elevations << elev;
+        if (firstElev) { minElevation = maxElevation = elev; firstElev = false; }
+        else { minElevation = qMin(minElevation, elev); maxElevation = qMax(maxElevation, elev); }
+    }
+
+    // -----------------------------------------------------------------------
+    // 6. Determine vertical extent of the view
+    //    Centre vertically around the terrain + a comfortable margin above.
+    // -----------------------------------------------------------------------
+    Units::Distance sideview_minAlt = minElevation - Units::Distance::fromFT(200);
+    Units::Distance sideview_maxAlt = maxElevation + Units::Distance::fromFT(4000);
+
+    auto altToY = [this, sideview_minAlt, sideview_maxAlt](Units::Distance alt) {
+        return ((double)height()) * (sideview_maxAlt - alt) / (sideview_maxAlt - sideview_minAlt);
+    };
+
+    m_scaleMinAltFt    = sideview_minAlt.toFeet();
+    m_scaleMaxAltFt    = sideview_maxAlt.toFeet();
+    m_scaleTotalDistKm = totalRouteLen / 1000.0;
+
+    // -----------------------------------------------------------------------
+    // 7. Terrain polygon
+    // -----------------------------------------------------------------------
+    QPolygonF polygon;
+    polygon.reserve(elevations.size() + 4);
+    for (qsizetype i = 0; i < elevations.size(); i++)
+    {
+        polygon << QPointF(xCoordinates[i], altToY(elevations[i]));
+    }
+    polygon << QPointF(renderW, height()+2000) << QPointF(-10, height()+2000);
+    m_terrain = polygon;
+
+    // -----------------------------------------------------------------------
+    // 8. Ownship position — project current GPS fix onto the route polyline
+    //    by finding the closest point along all legs.
+    // -----------------------------------------------------------------------
+    auto ownshipCoordinate = Positioning::PositionProvider::lastValidCoordinate();
+    auto ownshipGeometricAltitude = Units::Distance::fromM(0.0);
+    auto ownshipPressureAltitude  = Units::Distance::fromM(0.0);
+
+    if (ownshipCoordinate.isValid())
+    {
+        // Find the leg with minimum perpendicular distance to ownship
+        double bestDistM = std::numeric_limits<double>::max();
+        double bestAlongRouteM = 0.0;
+
+        for (qsizetype i = 0; i+1 < geoPath.size(); i++)
+        {
+            // Project ownship onto this leg segment
+            double legLen = geoPath[i].distanceTo(geoPath[i+1]);
+            if (legLen < 1.0) { continue; }
+
+            double az      = geoPath[i].azimuthTo(geoPath[i+1]);
+            double azOwn   = geoPath[i].azimuthTo(ownshipCoordinate);
+            double distFromStart = geoPath[i].distanceTo(ownshipCoordinate);
+            double angleDiff = (azOwn - az) * M_PI / 180.0;
+            double along = distFromStart * std::cos(angleDiff);
+            along = qBound(0.0, along, legLen);
+
+            QGeoCoordinate projected = geoPath[i].atDistanceAndAzimuth(along, az);
+            double perp = projected.distanceTo(ownshipCoordinate);
+
+            if (perp < bestDistM)
             {
-                std::reverse(lower.begin(), lower.end());
-                QPolygonF polygon(upper + lower);
-                polygon << upper[0];
-                if ((airspace.CAT() == u"A"_s) || (airspace.CAT() == u"B"_s) || (airspace.CAT() == u"C"_s) || (airspace.CAT() == u"D"_s))
-                {
-                    airspacePolygonsA << polygon;
-                }
-                if (airspace.CAT() == u"CTR"_s)
-                {
-                    airspacePolygonsCTR << polygon;
-                }
-                if ((airspace.CAT() == u"R"_s) || (airspace.CAT() == u"P"_s) || (airspace.CAT() == u"DNG"_s))
-                {
-                    airspacePolygonsR << polygon;
-                }
-                if ((airspace.CAT() == u"ATZ"_s) || (airspace.CAT() == u"RMZ"_s) || (airspace.CAT() == u"TIA"_s) || (airspace.CAT() == u"TIZ"_s))
-                {
-                    airspacePolygonsRMZ << polygon;
-                }
-                if (airspace.CAT() == u"NRA"_s)
-                {
-                    airspacePolygonsNRA << polygon;
-                }
-                if ((airspace.CAT() == u"PJE"_s) || (airspace.CAT() == u"SUA"_s))
-                {
-                    airspacePolygonsPJE << polygon;
-                }
-                if (airspace.CAT() == u"TMZ"_s)
-                {
-                    airspacePolygonsTMZ << polygon;
-                }
-                upper.clear();
-                lower.clear();
+                bestDistM = perp;
+                bestAlongRouteM = cumulativeDist[i] + along;
+            }
+        }
+
+        double ownX = (bestAlongRouteM / totalRouteLen) * renderW;
+
+        ownshipGeometricAltitude = Units::Distance::fromM(ownshipCoordinate.altitude());
+        if (!ownshipGeometricAltitude.isFinite()) { ownshipGeometricAltitude = minElevation; }
+
+        ownshipPressureAltitude = GlobalObject::positionProvider()->pressureAltitude();
+        if (!ownshipPressureAltitude.isFinite())
+        {
+            ownshipPressureAltitude = m_baroCache->estimatedPressureAltitude(ownshipGeometricAltitude);
+        }
+        if (!ownshipPressureAltitude.isFinite())
+        {
+            ownshipPressureAltitude = ownshipGeometricAltitude;
+            m_error = tr("Unable to compute sufficiently precise vertical airspace boundaries because barometric altitude information is not available. <a href='xx'>Click here</a> for more information.");
+        }
+
+        // Clamp to terrain
+        auto ownTerrainElev = GlobalObject::geoMapProvider()->terrainElevationAMSL(ownshipCoordinate);
+        if (ownTerrainElev.isFinite() && ownshipGeometricAltitude < ownTerrainElev)
+        {
+            ownshipGeometricAltitude = ownTerrainElev;
+        }
+
+        double ownY = altToY(ownshipGeometricAltitude);
+        m_ownshipPosition = {ownX, ownY};
+
+        // 5-minute bar: use current speed/vspeed projected along the route
+        auto posInfo = GlobalObject::positionProvider()->positionInfo();
+        if (posInfo.isValid())
+        {
+            auto hSpeed = posInfo.groundSpeed();
+            auto vSpeed = posInfo.verticalSpeed();
+            if (hSpeed.isFinite() && hSpeed >= Units::Speed::fromKN(10) && vSpeed.isFinite())
+            {
+                double dxPixels = (hSpeed.toMPS() * 5.0 * 60.0 / totalRouteLen) * renderW;
+                double dyPixels = -height() * vSpeed.toFPM() * 5.0 / (sideview_maxAlt - sideview_minAlt).toFeet();
+                m_fiveMinuteBar = {dxPixels, dyPixels};
             }
         }
     }
 
-    newAirspaces[u"A"_s] = QVariant::fromValue(airspacePolygonsA);
-    newAirspaces[u"CTR"_s] = QVariant::fromValue(airspacePolygonsCTR);
-    newAirspaces[u"R"_s] = QVariant::fromValue(airspacePolygonsR);
-    newAirspaces[u"RMZ"_s] = QVariant::fromValue(airspacePolygonsRMZ);
-    newAirspaces[u"NRA"_s] = QVariant::fromValue(airspacePolygonsNRA);
-    newAirspaces[u"PJE"_s] = QVariant::fromValue(airspacePolygonsPJE);
-    newAirspaces[u"TMZ"_s] = QVariant::fromValue(airspacePolygonsTMZ);
-
-    m_airspaces = newAirspaces;
-    //qWarning() << "SideviewQuickItem full" << m_elapsedTimer.elapsed();
+    // -----------------------------------------------------------------------
+    // 9. Airspace polygons
+    // -----------------------------------------------------------------------
+    if (!GlobalObject::weatherDataProvider()->QNH().isFinite())
+    {
+        m_error = tr("Unable to compute sufficiently precise vertical airspace boundaries because the QNH is not available. Please wait while QNH information is downloaded from the internet.");
+        // Still show terrain — don't return early
+    }
+    else
+    {
+        m_airspaces = buildAirspacePolygons(xCoordinates, geoCoordinates, elevations,
+                                             ownshipGeometricAltitude, ownshipPressureAltitude, altToY);
+    }
 }

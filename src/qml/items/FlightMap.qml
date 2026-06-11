@@ -696,6 +696,14 @@ Map {
             }
         }
 
+        // White veil between OFM tiles and forecast layers — dims the chart without touching overlays
+        LayerParameter {
+            styleId: "ofmDimmer"
+            type: "background"
+            layout: { "visibility": flightMap.showWindLayer ? 'visible' : 'none' }
+            paint: { "background-color": "white", "background-opacity": 0.55 }
+        }
+
         LayerParameter {
             id: forecastRainLayer
             styleId: "forecastRainLayer"
@@ -770,15 +778,6 @@ Map {
         }
     }
 
-
-    // Dim the base map when the wind layer is active so barbs stand out
-    Rectangle {
-        anchors.fill: parent
-        color: "white"
-        opacity: flightMap.showWindLayer ? 0.55 : 0.0
-        z: 0
-        Behavior on opacity { NumberAnimation { duration: 300 } }
-    }
 
     //
     // Additional Map Items

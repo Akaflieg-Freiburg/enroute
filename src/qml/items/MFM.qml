@@ -636,54 +636,38 @@ Item {
                                 }
 
                                 CheckDelegate {
-                                    text: qsTr("Rain forecast") + (ForecastMapProvider.rainUnits ? "  [" + ForecastMapProvider.rainUnits + "]" : "")
+                                    text: qsTr("Rain forecast")
                                     checked: flightMap.showRainLayer
                                     onClicked: flightMap.showRainLayer = checked
-                                    contentItem: Row {
-                                        spacing: 8
-                                        Label {
-                                            text: parent.parent.text
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            elide: Text.ElideRight
-                                        }
-                                        Rectangle {
-                                            visible: ForecastMapProvider.rainColors.length > 1
-                                            width: 60; height: 8
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            gradient: Gradient {
-                                                orientation: Gradient.Horizontal
-                                                GradientStop { position: 0.0; color: ForecastMapProvider.rainColors[0] || "transparent" }
-                                                GradientStop { position: 0.33; color: ForecastMapProvider.rainColors[1] || "transparent" }
-                                                GradientStop { position: 0.66; color: ForecastMapProvider.rainColors[2] || "transparent" }
-                                                GradientStop { position: 1.0; color: ForecastMapProvider.rainColors[3] || "transparent" }
-                                            }
-                                        }
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showRainLayer && ForecastMapProvider.rainColors.length >= 4
+                                    width: parent ? parent.width : 300
+                                    topPadding: 0; bottomPadding: 6
+                                    contentItem: ColorScaleLegend {
+                                        colors: ForecastMapProvider.rainColors
+                                        vmin: ForecastMapProvider.rainVmin
+                                        vmax: ForecastMapProvider.rainVmax
+                                        units: ForecastMapProvider.rainUnits
                                     }
                                 }
 
                                 CheckDelegate {
-                                    text: qsTr("Cloud base forecast") + (ForecastMapProvider.cloudbaseUnits ? "  [" + ForecastMapProvider.cloudbaseUnits + "]" : "")
+                                    text: qsTr("Cloud base forecast")
                                     checked: flightMap.showCloudbaseLayer
                                     onClicked: flightMap.showCloudbaseLayer = checked
-                                    contentItem: Row {
-                                        spacing: 8
-                                        Label {
-                                            text: parent.parent.text
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            elide: Text.ElideRight
-                                        }
-                                        Rectangle {
-                                            visible: ForecastMapProvider.cloudbaseColors.length > 1
-                                            width: 60; height: 8
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            gradient: Gradient {
-                                                orientation: Gradient.Horizontal
-                                                GradientStop { position: 0.0; color: ForecastMapProvider.cloudbaseColors[0] || "transparent" }
-                                                GradientStop { position: 0.33; color: ForecastMapProvider.cloudbaseColors[1] || "transparent" }
-                                                GradientStop { position: 0.66; color: ForecastMapProvider.cloudbaseColors[2] || "transparent" }
-                                                GradientStop { position: 1.0; color: ForecastMapProvider.cloudbaseColors[3] || "transparent" }
-                                            }
-                                        }
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showCloudbaseLayer && ForecastMapProvider.cloudbaseColors.length >= 4
+                                    width: parent ? parent.width : 300
+                                    topPadding: 0; bottomPadding: 6
+                                    contentItem: ColorScaleLegend {
+                                        colors: ForecastMapProvider.cloudbaseColors
+                                        vmin: ForecastMapProvider.cloudbaseVmin
+                                        vmax: ForecastMapProvider.cloudbaseVmax
+                                        units: ForecastMapProvider.cloudbaseUnits
                                     }
                                 }
 

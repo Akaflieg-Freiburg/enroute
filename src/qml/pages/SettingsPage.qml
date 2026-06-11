@@ -402,6 +402,7 @@ Page {
                 TextField {
                     id: serverUrlField
                     Layout.fillWidth: true
+                    Layout.preferredWidth: 0
                     placeholderText: "http://192.168.1.x:8765/meteo"
                     text: ForecastMapProvider.serverUrl
                     inputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText

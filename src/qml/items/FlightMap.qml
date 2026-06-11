@@ -705,6 +705,7 @@ Map {
             property string source: "waypointlib"
 
             layout: {
+                "visibility": flightMap.showWindLayer ? 'none' : 'visible',
                 "icon-image": '["get", "CAT"]',
                 "text-field": '["get", "NAM"]',
                 "text-size": 0.85*GlobalSettings.fontSize,
@@ -729,6 +730,7 @@ Map {
             property string source: "notams"
 
             layout: {
+                "visibility": flightMap.showWindLayer ? 'none' : 'visible',
                 "icon-ignore-placement": true,
                 "icon-image": ["get", "CAT"],
                 "text-field": ["get", "NAM"],
@@ -745,7 +747,7 @@ Map {
             }
         }
 
-        // White veil between OFM/NOTAMs and forecast layers — dims everything below when wind is active
+        // White veil between OFM tiles and forecast layers — dims the chart when wind is active
         LayerParameter {
             styleId: "ofmDimmer"
             type: "background"

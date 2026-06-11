@@ -392,9 +392,7 @@ Page {
 
             ColumnLayout {
                 Layout.fillWidth: true
-                Layout.columnSpan: 2
                 Layout.leftMargin: settingsPage.font.pixelSize
-                Layout.rightMargin: settingsPage.font.pixelSize
                 spacing: 4
 
                 Label {
@@ -421,12 +419,14 @@ Page {
                     color: "#606060"
                     font.pixelSize: settingsPage.font.pixelSize * 0.85
                 }
-                Button {
-                    text: ForecastMapProvider.status === ForecastMapProvider.Refreshing
-                          ? qsTr("Refreshing…") : qsTr("Refresh now")
-                    enabled: ForecastMapProvider.status !== ForecastMapProvider.Refreshing
-                             && ForecastMapProvider.serverUrl !== ""
-                    onClicked: ForecastMapProvider.refresh()
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_refresh.svg"
+                enabled: ForecastMapProvider.status !== ForecastMapProvider.Refreshing
+                         && ForecastMapProvider.serverUrl !== ""
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    ForecastMapProvider.refresh()
                 }
             }
 

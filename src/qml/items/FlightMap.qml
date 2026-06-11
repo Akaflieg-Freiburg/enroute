@@ -682,10 +682,6 @@ Map {
                 "raster-resampling": 'linear'
             }
 
-            paint: ({
-                "raster-opacity":         flightMap.showWindLayer ? 0.35 : 1.0,
-                "raster-brightness-max":  flightMap.showWindLayer ? 0.7  : 1.0
-            })
         }
 
         LayerParameter {
@@ -774,6 +770,15 @@ Map {
         }
     }
 
+
+    // Dim the base map when the wind layer is active so barbs stand out
+    Rectangle {
+        anchors.fill: parent
+        color: "white"
+        opacity: flightMap.showWindLayer ? 0.55 : 0.0
+        z: 0
+        Behavior on opacity { NumberAnimation { duration: 300 } }
+    }
 
     //
     // Additional Map Items

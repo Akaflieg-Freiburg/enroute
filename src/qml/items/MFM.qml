@@ -615,14 +615,147 @@ Item {
                             id: weatherLayerButton
 
                             checkable: true
-                            checked: flightMap.showWeatherLayer
+                            checked: flightMap.showWeatherLayer || flightMap.showRainLayer || flightMap.showCloudbaseLayer || flightMap.showWindLayer
                             icon.source: "/icons/material/ic_cloud_queue.svg"
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                flightMap.showWeatherLayer = !flightMap.showWeatherLayer
-                                if (flightMap.showWeatherLayer) {
-                                    WeatherDataProvider.requestUpdate()
+                                weatherMenu.popup()
+                            }
+
+                            AutoSizingMenu {
+                                id: weatherMenu
+
+                                CheckDelegate {
+                                    text: qsTr("METAR (flight category + wind)")
+                                    checked: flightMap.showWeatherLayer
+                                    onClicked: {
+                                        flightMap.showWeatherLayer = checked
+                                        if (checked) { WeatherDataProvider.requestUpdate() }
+                                    }
+                                }
+
+                                CheckDelegate {
+                                    text: qsTr("Rain forecast") + (ForecastMapProvider.rainUnits ? "  [" + ForecastMapProvider.rainUnits + "]" : "")
+                                    checked: flightMap.showRainLayer
+                                    onClicked: flightMap.showRainLayer = checked
+                                    contentItem: Row {
+                                        spacing: 8
+                                        Label {
+                                            text: parent.parent.text
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            elide: Text.ElideRight
+                                        }
+                                        Rectangle {
+                                            visible: ForecastMapProvider.rainColors.length > 1
+                                            width: 60; height: 8
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            gradient: Gradient {
+                                                orientation: Gradient.Horizontal
+                                                GradientStop { position: 0.0; color: ForecastMapProvider.rainColors[0] || "transparent" }
+                                                GradientStop { position: 0.33; color: ForecastMapProvider.rainColors[1] || "transparent" }
+                                                GradientStop { position: 0.66; color: ForecastMapProvider.rainColors[2] || "transparent" }
+                                                GradientStop { position: 1.0; color: ForecastMapProvider.rainColors[3] || "transparent" }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                CheckDelegate {
+                                    text: qsTr("Cloud base forecast") + (ForecastMapProvider.cloudbaseUnits ? "  [" + ForecastMapProvider.cloudbaseUnits + "]" : "")
+                                    checked: flightMap.showCloudbaseLayer
+                                    onClicked: flightMap.showCloudbaseLayer = checked
+                                    contentItem: Row {
+                                        spacing: 8
+                                        Label {
+                                            text: parent.parent.text
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            elide: Text.ElideRight
+                                        }
+                                        Rectangle {
+                                            visible: ForecastMapProvider.cloudbaseColors.length > 1
+                                            width: 60; height: 8
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            gradient: Gradient {
+                                                orientation: Gradient.Horizontal
+                                                GradientStop { position: 0.0; color: ForecastMapProvider.cloudbaseColors[0] || "transparent" }
+                                                GradientStop { position: 0.33; color: ForecastMapProvider.cloudbaseColors[1] || "transparent" }
+                                                GradientStop { position: 0.66; color: ForecastMapProvider.cloudbaseColors[2] || "transparent" }
+                                                GradientStop { position: 1.0; color: ForecastMapProvider.cloudbaseColors[3] || "transparent" }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                CheckDelegate {
+                                    text: qsTr("Wind forecast") + (ForecastMapProvider.windUnits ? "  [" + ForecastMapProvider.windUnits + "]" : "")
+                                    checked: flightMap.showWindLayer
+                                    onClicked: flightMap.showWindLayer = checked
+                                }
+
+                                MenuSeparator { visible: flightMap.showWindLayer }
+
+                                Instantiator {
+                                    model: ForecastMapProvider.windPressureLevels
+                                    delegate: RadioDelegate {
+                                        visible: flightMap.showWindLayer
+                                        text: modelData + " hPa"
+                                        checked: ForecastMapProvider.currentWindPressureLevel === modelData
+                                        onClicked: ForecastMapProvider.currentWindPressureLevel = modelData
+                                    }
+                                    onObjectAdded: (index, object) => weatherMenu.insertItem(index + 5, object)
+                                    onObjectRemoved: (index, object) => weatherMenu.removeItem(object)
+                                }
+
+                                MenuSeparator {
+                                    visible: flightMap.showRainLayer || flightMap.showCloudbaseLayer || flightMap.showWindLayer
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showRainLayer || flightMap.showCloudbaseLayer || flightMap.showWindLayer
+                                    width: parent ? parent.width : 300
+                                    contentItem: Column {
+                                        spacing: 4
+                                        Label {
+                                            text: ForecastMapProvider.currentTimestampLabel
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            font.bold: true
+                                        }
+                                        Slider {
+                                            width: parent.width
+                                            from: 0
+                                            to: Math.max(0, ForecastMapProvider.timestamps.length - 1)
+                                            stepSize: 1
+                                            value: ForecastMapProvider.currentIndex
+                                            onMoved: ForecastMapProvider.currentIndex = Math.round(value)
+                                        }
+                                        Label {
+                                            visible: ForecastMapProvider.referenceTimeLabel !== ""
+                                            text: qsTr("Model run: ") + ForecastMapProvider.referenceTimeLabel
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            font.pixelSize: parent.font ? parent.font.pixelSize * 0.85 : 11
+                                            opacity: 0.7
+                                        }
+                                    }
+                                }
+
+                                MenuSeparator {}
+
+                                ItemDelegate {
+                                    width: parent ? parent.width : 300
+                                    contentItem: Row {
+                                        spacing: 8
+                                        ToolButton {
+                                            icon.source: "/icons/material/ic_refresh.svg"
+                                            enabled: ForecastMapProvider.status !== 1  // not Refreshing
+                                            onClicked: ForecastMapProvider.refresh()
+                                        }
+                                        Label {
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            text: ForecastMapProvider.lastRefreshLabel
+                                            color: ForecastMapProvider.status === 2 ? "red" : palette.text  // Error
+                                        }
+                                    }
                                 }
                             }
                         }

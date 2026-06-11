@@ -81,6 +81,29 @@ void Weather::ForecastMapProvider::refresh()
         setStatus(Status::Error);
         return;
     }
+
+    // Local directory mode: file:///path/to/generated_maps
+    const QUrl url(m_serverUrl);
+    if (url.isLocalFile()) {
+        setStatus(Status::Refreshing);
+        m_localScanDir = url.toLocalFile();
+
+        // Parse index.json from the local directory if present
+        QFile idxFile(m_localScanDir + u"/index.json"_s);
+        if (idxFile.open(QIODevice::ReadOnly)) {
+            const auto doc = QJsonDocument::fromJson(idxFile.readAll());
+            if (doc.isObject())
+                parseMetadata(doc.object());
+        }
+
+        m_lastRefreshTime = QDateTime::currentDateTimeUtc();
+        QSettings().setValue(u"ForecastMapProvider/lastRefreshTime"_s, m_lastRefreshTime);
+        setStatus(Status::Idle);
+        emit lastRefreshLabelChanged();
+        scan();
+        return;
+    }
+
     setStatus(Status::Refreshing);
     fetchIndex();
 }
@@ -108,9 +131,13 @@ void Weather::ForecastMapProvider::fetchIndex()
             return;
         }
 
+        const auto root = doc.object();
+
         QStringList serverFiles;
-        for (const auto& v : doc.object()[u"files"_s].toArray())
+        for (const auto& v : root[u"files"_s].toArray())
             serverFiles << v.toString();
+
+        parseMetadata(root);
 
         // Only download files not already in cache
         const QDir dir(cacheDir());
@@ -202,6 +229,47 @@ void Weather::ForecastMapProvider::abortRefresh()
 
 
 // ---------------------------------------------------------------------------
+// Metadata parsing
+// ---------------------------------------------------------------------------
+
+void Weather::ForecastMapProvider::parseMetadata(const QJsonObject& root)
+{
+    m_referenceTime = root[u"reference_time"_s].toString();
+
+    const auto layers = root[u"layers"_s].toObject();
+
+    auto readColors = [](const QJsonObject& layer) {
+        QStringList out;
+        for (const auto& v : layer[u"colors"_s].toArray())
+            out << v.toString();
+        return out;
+    };
+
+    const auto rain = layers[u"rain"_s].toObject();
+    if (!rain.isEmpty()) {
+        m_rainUnits  = rain[u"units"_s].toString(m_rainUnits);
+        m_rainVmin   = rain[u"vmin"_s].toDouble(m_rainVmin);
+        m_rainVmax   = rain[u"vmax"_s].toDouble(m_rainVmax);
+        m_rainColors = readColors(rain);
+    }
+
+    const auto cb = layers[u"cloudbase"_s].toObject();
+    if (!cb.isEmpty()) {
+        m_cloudbaseUnits  = cb[u"units"_s].toString(m_cloudbaseUnits);
+        m_cloudbaseVmin   = cb[u"vmin"_s].toDouble(m_cloudbaseVmin);
+        m_cloudbaseVmax   = cb[u"vmax"_s].toDouble(m_cloudbaseVmax);
+        m_cloudbaseColors = readColors(cb);
+    }
+
+    const auto wind = layers[u"wind"_s].toObject();
+    if (!wind.isEmpty())
+        m_windUnits = wind[u"units"_s].toString(m_windUnits);
+
+    emit metadataChanged();
+}
+
+
+// ---------------------------------------------------------------------------
 // Directory scan
 // ---------------------------------------------------------------------------
 
@@ -211,7 +279,7 @@ void Weather::ForecastMapProvider::scan()
     m_cloudbaseMaps.clear();
     m_windMaps.clear();
 
-    const QDir dir(cacheDir());
+    const QDir dir(m_localScanDir.isEmpty() ? cacheDir() : m_localScanDir);
     for (const auto& name : dir.entryList(QStringList{u"*.png"_s}, QDir::Files)) {
         auto m = re_rain.match(name);
         if (m.hasMatch()) {
@@ -270,6 +338,8 @@ void Weather::ForecastMapProvider::setServerUrl(const QString& url)
 {
     if (m_serverUrl == url) return;
     m_serverUrl = url;
+    if (!QUrl(url).isLocalFile())
+        m_localScanDir.clear();
     QSettings().setValue(u"ForecastMapProvider/serverUrl"_s, url);
     emit serverUrlChanged();
 }
@@ -294,6 +364,16 @@ void Weather::ForecastMapProvider::setCurrentWindPressureLevel(const QString& le
 // ---------------------------------------------------------------------------
 // Getters
 // ---------------------------------------------------------------------------
+
+QString Weather::ForecastMapProvider::referenceTimeLabel() const
+{
+    if (m_referenceTime.isEmpty())
+        return {};
+    const auto dt = QDateTime::fromString(m_referenceTime, Qt::ISODate);
+    if (!dt.isValid())
+        return m_referenceTime;
+    return dt.toUTC().toString(u"ddd dd MMM HH:mm"_s) + u" UTC"_s;
+}
 
 QString Weather::ForecastMapProvider::lastRefreshLabel() const
 {

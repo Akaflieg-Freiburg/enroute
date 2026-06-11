@@ -701,7 +701,7 @@ Map {
             styleId: "ofmDimmer"
             type: "background"
             layout: { "visibility": flightMap.showWindLayer ? 'visible' : 'none' }
-            paint: { "background-color": "white", "background-opacity": 0.55 }
+            paint: { "background-color": "white", "background-opacity": 0.68 }
         }
 
         LayerParameter {

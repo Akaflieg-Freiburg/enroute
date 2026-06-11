@@ -643,9 +643,10 @@ Item {
 
                                 ItemDelegate {
                                     visible: flightMap.showRainLayer && ForecastMapProvider.rainColors.length >= 4
-                                    width: parent ? parent.width : 300
+                                    implicitWidth: 280
                                     topPadding: 0; bottomPadding: 6
                                     contentItem: ColorScaleLegend {
+                                        width: parent.width
                                         colors: ForecastMapProvider.rainColors
                                         vmin: ForecastMapProvider.rainVmin
                                         vmax: ForecastMapProvider.rainVmax
@@ -661,9 +662,10 @@ Item {
 
                                 ItemDelegate {
                                     visible: flightMap.showCloudbaseLayer && ForecastMapProvider.cloudbaseColors.length >= 4
-                                    width: parent ? parent.width : 300
+                                    implicitWidth: 280
                                     topPadding: 0; bottomPadding: 6
                                     contentItem: ColorScaleLegend {
+                                        width: parent.width
                                         colors: ForecastMapProvider.cloudbaseColors
                                         vmin: ForecastMapProvider.cloudbaseVmin
                                         vmax: ForecastMapProvider.cloudbaseVmax
@@ -679,9 +681,10 @@ Item {
 
                                 ItemDelegate {
                                     visible: flightMap.showWindLayer && ForecastMapProvider.windPressureLevels.length > 1
-                                    width: parent ? parent.width : 300
+                                    implicitWidth: 280
                                     topPadding: 0; bottomPadding: 6
                                     contentItem: Column {
+                                        width: parent.width
                                         spacing: 2
                                         Label {
                                             width: parent.width

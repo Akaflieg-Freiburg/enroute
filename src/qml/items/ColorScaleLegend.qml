@@ -18,7 +18,7 @@ Item {
     // Gradient bar
     Rectangle {
         id: bar
-        anchors { left: parent.left; right: parent.right }
+        width: root.width
         height: 10
         radius: 2
         border.color: Qt.rgba(0, 0, 0, 0.15)
@@ -36,7 +36,8 @@ Item {
     // Tick labels: vmin | stop1 | stop2 | vmax [units]
     Row {
         id: ticks
-        anchors { left: parent.left; right: parent.right; top: bar.bottom; topMargin: 2 }
+        width: root.width
+        anchors { top: bar.bottom; topMargin: 2 }
 
         readonly property double range: root.vmax - root.vmin
         readonly property double v1: root.vmin + range * 0.33

@@ -623,6 +623,11 @@ Item {
                                 weatherMenu.popup()
                             }
 
+                            function hpaToFL(hpa) {
+                                var ft = (1 - Math.pow(parseFloat(hpa) / 1013.25, 0.190284)) * 145366.45
+                                return "FL" + Math.round(ft / 100).toString().padStart(3, "0")
+                            }
+
                             AutoSizingMenu {
                                 id: weatherMenu
 
@@ -642,7 +647,7 @@ Item {
                                 }
 
                                 ItemDelegate {
-                                    visible: flightMap.showRainLayer && ForecastMapProvider.rainColors.length >= 4
+                                    visible: flightMap.showRainLayer
                                     implicitWidth: 280
                                     topPadding: 0; bottomPadding: 6
                                     contentItem: ColorScaleLegend {
@@ -661,7 +666,7 @@ Item {
                                 }
 
                                 ItemDelegate {
-                                    visible: flightMap.showCloudbaseLayer && ForecastMapProvider.cloudbaseColors.length >= 4
+                                    visible: flightMap.showCloudbaseLayer
                                     implicitWidth: 280
                                     topPadding: 0; bottomPadding: 6
                                     contentItem: ColorScaleLegend {
@@ -688,7 +693,8 @@ Item {
                                         spacing: 2
                                         Label {
                                             width: parent.width
-                                            text: ForecastMapProvider.currentWindPressureLevel + " hPa"
+                                            text: weatherLayerButton.hpaToFL(ForecastMapProvider.currentWindPressureLevel)
+                                                  + "  (" + ForecastMapProvider.currentWindPressureLevel + " hPa)"
                                             font.pixelSize: 9
                                             horizontalAlignment: Text.AlignHCenter
                                             opacity: 0.7
@@ -708,7 +714,7 @@ Item {
                                                 model: ForecastMapProvider.windPressureLevels
                                                 Label {
                                                     width: parent.width / ForecastMapProvider.windPressureLevels.length
-                                                    text: modelData + " hPa"
+                                                    text: weatherLayerButton.hpaToFL(modelData)
                                                     font.pixelSize: 9
                                                     horizontalAlignment: index === 0 ? Text.AlignLeft
                                                         : index === ForecastMapProvider.windPressureLevels.length - 1 ? Text.AlignRight

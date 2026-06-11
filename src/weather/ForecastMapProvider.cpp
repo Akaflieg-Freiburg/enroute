@@ -48,6 +48,10 @@ static const QRegularExpression re_wind(
 Weather::ForecastMapProvider::ForecastMapProvider(QObject* parent)
     : QObject(parent)
 {
+    // Default colors match config.py LAYER_META (Qt #AARRGGBB format)
+    m_rainColors      = {u"#9900B2E6"_s, u"#990000CC"_s, u"#9900CC00"_s, u"#9900CCCC"_s};
+    m_cloudbaseColors = {u"#40404040"_s, u"#40808080"_s, u"#40BFBFBF"_s, u"#00FFFFFF"_s};
+
     QSettings s;
     m_serverUrl       = s.value(u"ForecastMapProvider/serverUrl"_s).toString();
     m_lastRefreshTime = s.value(u"ForecastMapProvider/lastRefreshTime"_s).toDateTime();

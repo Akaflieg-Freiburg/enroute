@@ -43,6 +43,15 @@ Map {
     /*! \brief Show METAR weather layer (flight category dots + wind barbs) */
     property bool showWeatherLayer: false
 
+    /*! \brief Show Météo-France rain forecast layer */
+    property bool showRainLayer: false
+
+    /*! \brief Show Météo-France cloud base forecast layer */
+    property bool showCloudbaseLayer: false
+
+    /*! \brief Show Météo-France wind forecast layer */
+    property bool showWindLayer: false
+
     /* Handle changes in zoom level */
     onZoomLevelChanged: {
         var vec1 = flightMap.fromCoordinate(flightMap.center, false)
@@ -108,6 +117,31 @@ Map {
                 // return [ [7, 48], [8, 48], [8, 47], [7, 47] ]
             }
 
+        }
+
+        // Météo-France forecast image sources (fixed bounding box: 10W–15E, 38N–55N)
+        SourceParameter {
+            id: forecastRainSource
+            styleId: "forecastRain"
+            type: "image"
+            property string url: ForecastMapProvider.currentRainMap !== "" ? "file://" + ForecastMapProvider.currentRainMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
+        }
+
+        SourceParameter {
+            id: forecastCloudbaseSource
+            styleId: "forecastCloudbase"
+            type: "image"
+            property string url: ForecastMapProvider.currentCloudbaseMap !== "" ? "file://" + ForecastMapProvider.currentCloudbaseMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
+        }
+
+        SourceParameter {
+            id: forecastWindSource
+            styleId: "forecastWind"
+            type: "image"
+            property string url: ForecastMapProvider.currentWindMap !== "" ? "file://" + ForecastMapProvider.currentWindMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
         }
 
         SourceParameter {
@@ -662,6 +696,30 @@ Map {
         }
 
         LayerParameter {
+            id: forecastRainLayer
+            styleId: "forecastRainLayer"
+            type: "raster"
+            property string source: "forecastRain"
+            layout: { "visibility": flightMap.showRainLayer && ForecastMapProvider.currentRainMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastCloudbaseLayer
+            styleId: "forecastCloudbaseLayer"
+            type: "raster"
+            property string source: "forecastCloudbase"
+            layout: { "visibility": flightMap.showCloudbaseLayer && ForecastMapProvider.currentCloudbaseMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastWindLayer
+            styleId: "forecastWindLayer"
+            type: "raster"
+            property string source: "forecastWind"
+            layout: { "visibility": flightMap.showWindLayer && ForecastMapProvider.currentWindMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
             id: waypointLibParam
 
             styleId: "waypoint-layer"
@@ -952,16 +1010,17 @@ Map {
 
                 property var obs: modelData
                 property var met: obs.metar
+                onMetChanged: metarCanvas.requestPaint()
 
-                anchorPoint.x: 14
-                anchorPoint.y: 14
+                anchorPoint.x: 40
+                anchorPoint.y: 40
                 coordinate: met.coordinate
                 visible: met.isValid
 
                 sourceItem: Canvas {
                     id: metarCanvas
-                    width: 70
-                    height: 70
+                    width: 80
+                    height: 80
 
                     onPaint: {
                         var ctx = getContext("2d")
@@ -970,7 +1029,7 @@ Map {
                         // Flight category dot with transparency
                         var dotColor = met.flightCategoryColor === "transparent" ? "gray" : met.flightCategoryColor
                         ctx.beginPath()
-                        ctx.arc(14, 14, 12, 0, 2*Math.PI)
+                        ctx.arc(40, 40, 12, 0, 2*Math.PI)
                         ctx.globalAlpha = 0.55
                         ctx.fillStyle = dotColor
                         ctx.fill()
@@ -984,8 +1043,8 @@ Map {
                         var spd = met.windSpeed.toKN()
                         if (spd < 1) return
 
-                        var dirRad = met.windDirection.toRAD() + Math.PI // barb points into wind
-                        var cx = 14, cy = 14
+                        var dirRad = met.windDirection.toRAD() // staff points toward wind source; barbs drawn at tip
+                        var cx = 40, cy = 40
                         var len = 32
                         var ex = cx + len * Math.sin(dirRad)
                         var ey = cy - len * Math.cos(dirRad)
@@ -1037,11 +1096,6 @@ Map {
                             ctx.lineTo(bx + perpX*barbLen*0.5, by + perpY*barbLen*0.5)
                             ctx.stroke()
                         }
-                    }
-
-                    Connections {
-                        target: metarItem.obs
-                        function onMetarChanged() { metarCanvas.requestPaint() }
                     }
 
                     Component.onCompleted: requestPaint()

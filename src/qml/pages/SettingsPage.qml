@@ -390,12 +390,12 @@ Page {
                 font.bold: true
             }
 
-            Icon {
-                source: "/icons/material/ic_cloud.svg"
-            }
             ColumnLayout {
                 Layout.fillWidth: true
-                spacing: 0
+                Layout.columnSpan: 2
+                Layout.leftMargin: settingsPage.font.pixelSize
+                Layout.rightMargin: settingsPage.font.pixelSize
+                spacing: 4
 
                 Label {
                     text: qsTr("Server URL")
@@ -421,17 +421,13 @@ Page {
                     color: "#606060"
                     font.pixelSize: settingsPage.font.pixelSize * 0.85
                 }
-            }
-
-            Item { Layout.preferredHeight: 4 }  // spacer
-
-            Item { /* empty icon column */ }
-            Button {
-                text: ForecastMapProvider.status === ForecastMapProvider.Refreshing
-                      ? qsTr("Refreshing…") : qsTr("Refresh now")
-                enabled: ForecastMapProvider.status !== ForecastMapProvider.Refreshing
-                         && ForecastMapProvider.serverUrl !== ""
-                onClicked: ForecastMapProvider.refresh()
+                Button {
+                    text: ForecastMapProvider.status === ForecastMapProvider.Refreshing
+                          ? qsTr("Refreshing…") : qsTr("Refresh now")
+                    enabled: ForecastMapProvider.status !== ForecastMapProvider.Refreshing
+                             && ForecastMapProvider.serverUrl !== ""
+                    onClicked: ForecastMapProvider.refresh()
+                }
             }
 
             Item { // Spacer

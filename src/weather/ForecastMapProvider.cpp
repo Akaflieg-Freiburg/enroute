@@ -64,7 +64,7 @@ Weather::ForecastMapProvider* Weather::ForecastMapProvider::create(QQmlEngine*, 
 
 QString Weather::ForecastMapProvider::cacheDir() const
 {
-    return QStandardPaths::writableLocation(QStandardPaths::AppCacheLocation)
+    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
            + u"/meteo_france"_s;
 }
 

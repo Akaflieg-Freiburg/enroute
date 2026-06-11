@@ -11,6 +11,9 @@ Item {
     property double vmin: 0
     property double vmax: 1
     property string units: ""
+    // Optional custom label formatter: function(value, isLast) → string
+    // When set, overrides the default fmt() + units logic
+    property var    labelFunc: null
 
     implicitHeight: bar.height + ticks.height + 2
     implicitWidth:  200
@@ -43,36 +46,38 @@ Item {
         readonly property double v1: root.vmin + range * 0.33
         readonly property double v2: root.vmin + range * 0.66
 
-        function fmt(v) {
-            return v >= 1000 ? Math.round(v).toString()
-                 : v < 1    ? v.toFixed(1)
-                 :             Math.round(v).toString()
+        function fmt(v, isLast) {
+            if (root.labelFunc) return root.labelFunc(v)
+            var s = v >= 1000 ? Math.round(v).toString()
+                  : v < 1    ? v.toFixed(1)
+                  :             Math.round(v).toString()
+            return isLast && root.units ? s + " " + root.units : s
         }
 
         Label {
             width: parent.width * 0.25
-            text: ticks.fmt(root.vmin)
+            text: ticks.fmt(root.vmin, false)
             font.pixelSize: 9
             horizontalAlignment: Text.AlignLeft
             opacity: 0.7
         }
         Label {
             width: parent.width * 0.25
-            text: ticks.fmt(ticks.v1)
+            text: ticks.fmt(ticks.v1, false)
             font.pixelSize: 9
             horizontalAlignment: Text.AlignHCenter
             opacity: 0.7
         }
         Label {
             width: parent.width * 0.25
-            text: ticks.fmt(ticks.v2)
+            text: ticks.fmt(ticks.v2, false)
             font.pixelSize: 9
             horizontalAlignment: Text.AlignHCenter
             opacity: 0.7
         }
         Label {
             width: parent.width * 0.25
-            text: ticks.fmt(root.vmax) + (root.units ? " " + root.units : "")
+            text: ticks.fmt(root.vmax, true)
             font.pixelSize: 9
             horizontalAlignment: Text.AlignRight
             opacity: 0.7

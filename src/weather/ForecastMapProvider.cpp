@@ -310,10 +310,10 @@ void Weather::ForecastMapProvider::scan()
     m_timestamps = tsSet.values();
     m_timestamps.sort();
 
-    // Wind pressure levels sorted ascending (700 first = highest altitude)
+    // Wind pressure levels sorted descending (1000 first = FL000 on left of slider)
     QStringList levels = m_windMaps.keys();
     std::sort(levels.begin(), levels.end(),
-              [](const QString& a, const QString& b) { return a.toDouble() < b.toDouble(); });
+              [](const QString& a, const QString& b) { return a.toDouble() > b.toDouble(); });
     m_windPressureLevels = levels;
 
     if (m_currentWindPressureLevel.isEmpty() && !levels.isEmpty())

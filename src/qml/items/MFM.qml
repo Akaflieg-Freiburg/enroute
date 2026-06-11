@@ -677,18 +677,44 @@ Item {
                                     onClicked: flightMap.showWindLayer = checked
                                 }
 
-                                MenuSeparator { visible: flightMap.showWindLayer }
-
-                                Instantiator {
-                                    model: ForecastMapProvider.windPressureLevels
-                                    delegate: RadioDelegate {
-                                        visible: flightMap.showWindLayer
-                                        text: modelData + " hPa"
-                                        checked: ForecastMapProvider.currentWindPressureLevel === modelData
-                                        onClicked: ForecastMapProvider.currentWindPressureLevel = modelData
+                                ItemDelegate {
+                                    visible: flightMap.showWindLayer && ForecastMapProvider.windPressureLevels.length > 1
+                                    width: parent ? parent.width : 300
+                                    topPadding: 0; bottomPadding: 6
+                                    contentItem: Column {
+                                        spacing: 2
+                                        Label {
+                                            width: parent.width
+                                            text: ForecastMapProvider.currentWindPressureLevel + " hPa"
+                                            font.pixelSize: 9
+                                            horizontalAlignment: Text.AlignHCenter
+                                            opacity: 0.7
+                                        }
+                                        Slider {
+                                            width: parent.width
+                                            from: 0
+                                            to: Math.max(0, ForecastMapProvider.windPressureLevels.length - 1)
+                                            stepSize: 1
+                                            value: ForecastMapProvider.windPressureLevels.indexOf(ForecastMapProvider.currentWindPressureLevel)
+                                            onMoved: ForecastMapProvider.currentWindPressureLevel =
+                                                ForecastMapProvider.windPressureLevels[Math.round(value)]
+                                        }
+                                        Row {
+                                            width: parent.width
+                                            Repeater {
+                                                model: ForecastMapProvider.windPressureLevels
+                                                Label {
+                                                    width: parent.width / ForecastMapProvider.windPressureLevels.length
+                                                    text: modelData + " hPa"
+                                                    font.pixelSize: 9
+                                                    horizontalAlignment: index === 0 ? Text.AlignLeft
+                                                        : index === ForecastMapProvider.windPressureLevels.length - 1 ? Text.AlignRight
+                                                        : Text.AlignHCenter
+                                                    opacity: ForecastMapProvider.currentWindPressureLevel === modelData ? 1.0 : 0.5
+                                                }
+                                            }
+                                        }
                                     }
-                                    onObjectAdded: (index, object) => weatherMenu.insertItem(index + 5, object)
-                                    onObjectRemoved: (index, object) => weatherMenu.removeItem(object)
                                 }
 
                                 MenuSeparator {

@@ -696,45 +696,6 @@ Map {
             }
         }
 
-        // White veil between OFM tiles and forecast layers — dims the chart without touching overlays
-        LayerParameter {
-            styleId: "ofmDimmer"
-            type: "background"
-            layout: { "visibility": flightMap.showWindLayer ? 'visible' : 'none' }
-            paint: { "background-color": "white", "background-opacity": 0.68 }
-        }
-
-        LayerParameter {
-            id: forecastRainLayer
-            styleId: "forecastRainLayer"
-            type: "raster"
-            property string source: "forecastRain"
-            layout: { "visibility": flightMap.showRainLayer && ForecastMapProvider.currentRainMap !== "" ? 'visible' : 'none' }
-        }
-
-        LayerParameter {
-            id: forecastCloudbaseLayer
-            styleId: "forecastCloudbaseLayer"
-            type: "raster"
-            property string source: "forecastCloudbase"
-            layout: { "visibility": flightMap.showCloudbaseLayer && ForecastMapProvider.currentCloudbaseMap !== "" ? 'visible' : 'none' }
-        }
-
-        LayerParameter {
-            id: forecastWindLayer
-            styleId: "forecastWindLayer"
-            type: "raster"
-            property string source: "forecastWind"
-            layout: { "visibility": flightMap.showWindLayer && ForecastMapProvider.currentWindMap !== "" ? 'visible' : 'none' }
-        }
-
-        LayerParameter {
-            styleId: "notamDimmer"
-            type: "background"
-            layout: { "visibility": flightMap.showWindLayer ? 'visible' : 'none' }
-            paint: { "background-color": "white", "background-opacity": 0.45 }
-        }
-
         LayerParameter {
             id: waypointLibParam
 
@@ -782,6 +743,38 @@ Map {
                 "text-halo-width": 2,
                 "text-halo-color": "white"
             }
+        }
+
+        // White veil between OFM/NOTAMs and forecast layers — dims everything below when wind is active
+        LayerParameter {
+            styleId: "ofmDimmer"
+            type: "background"
+            layout: { "visibility": flightMap.showWindLayer ? 'visible' : 'none' }
+            paint: { "background-color": "white", "background-opacity": 0.68 }
+        }
+
+        LayerParameter {
+            id: forecastRainLayer
+            styleId: "forecastRainLayer"
+            type: "raster"
+            property string source: "forecastRain"
+            layout: { "visibility": flightMap.showRainLayer && ForecastMapProvider.currentRainMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastCloudbaseLayer
+            styleId: "forecastCloudbaseLayer"
+            type: "raster"
+            property string source: "forecastCloudbase"
+            layout: { "visibility": flightMap.showCloudbaseLayer && ForecastMapProvider.currentCloudbaseMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastWindLayer
+            styleId: "forecastWindLayer"
+            type: "raster"
+            property string source: "forecastWind"
+            layout: { "visibility": flightMap.showWindLayer && ForecastMapProvider.currentWindMap !== "" ? 'visible' : 'none' }
         }
     }
 

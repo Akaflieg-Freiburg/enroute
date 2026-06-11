@@ -376,7 +376,7 @@ QString Weather::ForecastMapProvider::referenceTimeLabel() const
     const auto dt = QDateTime::fromString(m_referenceTime, Qt::ISODate);
     if (!dt.isValid())
         return m_referenceTime;
-    return dt.toUTC().toString(u"ddd dd MMM HH:mm"_s) + u" UTC"_s;
+    return dt.toUTC().toString(u"dd MMM HH:mm'Z'"_s);
 }
 
 QString Weather::ForecastMapProvider::lastRefreshLabel() const

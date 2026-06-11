@@ -760,10 +760,16 @@ Item {
                                         }
                                         Label {
                                             visible: ForecastMapProvider.referenceTimeLabel !== ""
-                                            text: qsTr("Model run: ") + ForecastMapProvider.referenceTimeLabel
+                                            text: "AROME " + ForecastMapProvider.referenceTimeLabel
                                             anchors.horizontalCenter: parent.horizontalCenter
                                             font.pixelSize: parent.font ? parent.font.pixelSize * 0.85 : 11
                                             opacity: 0.7
+                                        }
+                                        Label {
+                                            text: "© Météo-France"
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            font.pixelSize: parent.font ? parent.font.pixelSize * 0.8 : 10
+                                            opacity: 0.5
                                         }
                                     }
                                 }

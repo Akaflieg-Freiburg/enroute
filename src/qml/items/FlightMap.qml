@@ -681,6 +681,11 @@ Map {
                 "visibility": 'visible', // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
                 "raster-resampling": 'linear'
             }
+
+            paint: ({
+                "raster-opacity":         flightMap.showWindLayer ? 0.35 : 1.0,
+                "raster-brightness-max":  flightMap.showWindLayer ? 0.7  : 1.0
+            })
         }
 
         LayerParameter {

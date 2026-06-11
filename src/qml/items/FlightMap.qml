@@ -729,6 +729,13 @@ Map {
         }
 
         LayerParameter {
+            styleId: "notamDimmer"
+            type: "background"
+            layout: { "visibility": flightMap.showWindLayer ? 'visible' : 'none' }
+            paint: { "background-color": "white", "background-opacity": 0.45 }
+        }
+
+        LayerParameter {
             id: waypointLibParam
 
             styleId: "waypoint-layer"

@@ -1,6 +1,7 @@
 name: Compile on Android
 
 on:
+  workflow_dispatch:
   push:
     branches: [ develop ]
     paths-ignore: &paths-ignore

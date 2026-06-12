@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path'); case \"$f\" in *.qml) qmlformat -i \"$f\";; *.cpp|*.cc|*.h|*.hpp) clang-format -i \"$f\";; esac"
+          }
+        ]
+      }
+    ]
+  }
+}

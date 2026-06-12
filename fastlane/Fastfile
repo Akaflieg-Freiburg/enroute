@@ -80,14 +80,25 @@ platform :android do
   lane :validate do
     build
     metadata
-    upload_to_play_store(aab: 'build/enroute.aab', track: 'beta', validate_only: true)
+    upload_to_play_store(
+      aab: 'build/enroute.aab',
+      track: 'beta',
+      validate_only: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
   end
 
   desc "Deploy a new version to Google Play - Beta"
   lane :deployBeta do
     build
     metadata
-    upload_to_play_store(aab: 'build/enroute.aab', track: 'beta')
+    upload_to_play_store(
+      aab: 'build/enroute.aab',
+      track: 'beta',
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
   end
 
   desc "Promote Beta to Release"
@@ -96,7 +107,13 @@ platform :android do
     latest_version, changelog_text = matches.first
     major, minor, patch = latest_version.split('.').map(&:to_i)
     version_code = 100000 * major + 1000 * minor + 10 * patch
-    upload_to_play_store(track: 'beta', track_promote_to: 'production', version_code: "#{version_code}")
+    upload_to_play_store(
+      track: 'beta',
+      track_promote_to: 'production',
+      version_code: "#{version_code}",
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
   end
 end
 
@@ -241,7 +258,17 @@ lane :flathubRelease do
   sh(cmake_config_cmd)
   
   manifest_path = '../build/build-linux-release/packaging/flatpak/de.akaflieg_freiburg.enroute.json'
- 
+
+  # The Flathub build runs packaging/flatpak/inject_releases.py to splice the
+  # changelog into the AppStream metainfo, which is how release notes are
+  # presented to Flathub users. Run the same script here on the locally
+  # configured metainfo, so a malformed CHANGELOG.md fails the lane early
+  # instead of breaking the Flathub build.
+  UI.message('Validating changelog conversion to AppStream release notes...')
+  appdata_path = '../build/build-linux-release/metadata/de.akaflieg_freiburg.enroute.appdata.xml'
+  sh("python3 ../packaging/flatpak/inject_releases.py ../CHANGELOG.md #{appdata_path}")
+  sh("python3 -c \"import xml.dom.minidom, sys; xml.dom.minidom.parse('#{appdata_path}')\"")
+
   # Get current git commit hash
   commit_hash = sh("git rev-parse --short HEAD").strip
   

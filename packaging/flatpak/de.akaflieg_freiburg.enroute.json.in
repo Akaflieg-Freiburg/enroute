@@ -100,7 +100,8 @@
       ],
       "post-install": [
         "mkdir -p /app/usr/share/icons",
-        "cp /app/share/icons/hicolor/scalable/apps/de.akaflieg_freiburg.enroute.svg /app/usr/share/icons/de.akaflieg_freiburg.enroute.svg"
+        "cp /app/share/icons/hicolor/scalable/apps/de.akaflieg_freiburg.enroute.svg /app/usr/share/icons/de.akaflieg_freiburg.enroute.svg",
+        "python3 /run/build/enroute/packaging/flatpak/inject_releases.py /run/build/enroute/CHANGELOG.md /app/share/metainfo/de.akaflieg_freiburg.enroute.appdata.xml"
       ]
     }
   ]

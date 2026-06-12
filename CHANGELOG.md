@@ -455,7 +455,7 @@
 - Icons for reporting points no longer rotate along with the moving map (#453)
 
 
-## [2.31.16] - 2024-11-4
+## [2.31.16] - 2024-11-04
 
 ### Added
 - Enroute can now import PLN and FPL files as flight routes (#443, #342)

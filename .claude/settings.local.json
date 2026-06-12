@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk -F: '{print $2}')",
+      "Read(//tmp/**)",
+      "Bash(appstreamcli validate *)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(sed -e 's/\\\\${APP_ID}/de.akaflieg_freiburg.enroute/g' -e 's/\\\\${PROJECT_VERSION}/3.3.3/g' -e 's/\\\\${GIT_DATE}/2026-06-08/g' -e 's/\\\\${PROJECT_NAME}/enroute/g' /home/kebekus/Software/projects/enroute/3rdParty/enrouteText/desktop/linux/de.akaflieg_freiburg.enroute.appdata.xml.in)",
+      "Bash(python3 /home/kebekus/Software/projects/enroute/packaging/flatpak/inject_releases.py /home/kebekus/Software/projects/enroute/CHANGELOG.md test_appdata.xml)",
+      "Bash(sed -n '312p' test_appdata.xml)",
+      "Bash(sed -n '50,68p' test_appdata.xml)",
+      "Bash(ruby -c /home/kebekus/Software/projects/enroute/fastlane/Fastfile)",
+      "Bash(python3 -c \"import json; json.load\\(open\\('/tmp/m.json'\\)\\)\")",
+      "Bash(sed 's/@GIT_COMMIT@/abc123/' /home/kebekus/Software/projects/enroute/packaging/flatpak/de.akaflieg_freiburg.enroute.json.in)",
+      "Bash(python3 -c \"import json; json.load\\(open\\('/tmp/m.json'\\)\\); print\\('manifest JSON OK'\\)\")"
+    ]
+  }
+}

@@ -26,6 +26,7 @@
 #include <QXmlStreamReader>
 
 #include "navigation/Aircraft.h"
+#include "units/Angle.h"
 #include "units/Distance.h"
 #include "units/Pressure.h"
 #include "units/Speed.h"
@@ -179,6 +180,18 @@ public:
      */
     Q_PROPERTY(QString rawText READ rawText CONSTANT)
 
+    /*! \brief Wind direction (true north)
+     *
+     * Set to NaN if wind direction is not reported (calm or variable).
+     */
+    Q_PROPERTY(Units::Angle windDirection READ windDirection CONSTANT)
+
+    /*! \brief Wind speed
+     *
+     * Set to NaN if no wind data is available.
+     */
+    Q_PROPERTY(Units::Speed windSpeed READ windSpeed CONSTANT)
+
 
     //
     // Getter Methods
@@ -256,6 +269,24 @@ public:
         return m_rawText;
     }
 
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property windDirection
+     */
+    [[nodiscard]] Units::Angle windDirection() const
+    {
+        return m_windDirection;
+    }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property windSpeed
+     */
+    [[nodiscard]] Units::Speed windSpeed() const
+    {
+        return m_wind;
+    }
+
 
     //
     // Methods
@@ -330,6 +361,9 @@ private:
 
     // Raw METAR text, as returned by the Aviation Weather Center
     QString m_rawText;
+
+    // Wind direction (true north), as returned by the Aviation Weather Center
+    Units::Angle m_windDirection;
 
     // Wind speed, as returned by the Aviation Weather Center
     Units::Speed m_wind;

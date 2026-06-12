@@ -612,6 +612,190 @@ Item {
                         }
 
                         MapButton {
+                            id: weatherLayerButton
+
+                            checkable: true
+                            checked: flightMap.showWeatherLayer || flightMap.showRainLayer || flightMap.showCloudbaseLayer || flightMap.showWindLayer
+                            icon.source: "/icons/material/ic_cloud_queue.svg"
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                weatherMenu.popup()
+                            }
+
+                            // Cheated but pilot-friendly FL labels for the 4 AROME pressure levels
+                            function hpaToFL(hpa) {
+                                var lookup = { "1000": "FL000", "900": "FL033", "800": "FL065", "700": "FL100" }
+                                return lookup[String(Math.round(parseFloat(hpa)))] ?? ("FL" + Math.round(
+                                    (1 - Math.pow(parseFloat(hpa)/1013.25, 0.190284)) * 145366.45 / 100
+                                ).toString().padStart(3,"0"))
+                            }
+
+                            // Convert cloudbase metres to the aircraft's configured altitude unit
+                            function cbLabel(metres) {
+                                if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters)
+                                    return metres.toFixed(0) + " m"
+                                return Math.round(metres * 3.28084) + " ft"
+                            }
+
+                            AutoSizingMenu {
+                                id: weatherMenu
+
+                                CheckDelegate {
+                                    text: qsTr("METAR (flight category + wind)")
+                                    checked: flightMap.showWeatherLayer
+                                    onClicked: {
+                                        flightMap.showWeatherLayer = checked
+                                        if (checked) { WeatherDataProvider.requestUpdate() }
+                                    }
+                                }
+
+                                CheckDelegate {
+                                    text: qsTr("Rain forecast")
+                                    checked: flightMap.showRainLayer
+                                    onClicked: flightMap.showRainLayer = checked
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showRainLayer
+                                    implicitWidth: 280
+                                    topPadding: 0; bottomPadding: 6
+                                    contentItem: ColorScaleLegend {
+                                        width: parent.width
+                                        colors: ForecastMapProvider.rainColors
+                                        vmin: ForecastMapProvider.rainVmin
+                                        vmax: ForecastMapProvider.rainVmax
+                                        units: ForecastMapProvider.rainUnits
+                                    }
+                                }
+
+                                CheckDelegate {
+                                    text: qsTr("Cloud base forecast")
+                                    checked: flightMap.showCloudbaseLayer
+                                    onClicked: flightMap.showCloudbaseLayer = checked
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showCloudbaseLayer
+                                    implicitWidth: 280
+                                    topPadding: 0; bottomPadding: 6
+                                    contentItem: ColorScaleLegend {
+                                        width: parent.width
+                                        colors: ForecastMapProvider.cloudbaseColors
+                                        vmin: ForecastMapProvider.cloudbaseVmin
+                                        vmax: ForecastMapProvider.cloudbaseVmax
+                                        labelFunc: function(v) { return weatherLayerButton.cbLabel(v) }
+                                    }
+                                }
+
+                                CheckDelegate {
+                                    text: qsTr("Wind forecast") + (ForecastMapProvider.windUnits ? "  [" + ForecastMapProvider.windUnits + "]" : "")
+                                    checked: flightMap.showWindLayer
+                                    onClicked: flightMap.showWindLayer = checked
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showWindLayer && ForecastMapProvider.windPressureLevels.length > 1
+                                    implicitWidth: 280
+                                    topPadding: 0; bottomPadding: 6
+                                    contentItem: Column {
+                                        width: parent.width
+                                        spacing: 2
+                                        Label {
+                                            width: parent.width
+                                            text: weatherLayerButton.hpaToFL(ForecastMapProvider.currentWindPressureLevel)
+                                                  + "  (" + ForecastMapProvider.currentWindPressureLevel + " hPa)"
+                                            font.pixelSize: 9
+                                            horizontalAlignment: Text.AlignHCenter
+                                            opacity: 0.7
+                                        }
+                                        Slider {
+                                            width: parent.width
+                                            from: 0
+                                            to: Math.max(0, ForecastMapProvider.windPressureLevels.length - 1)
+                                            stepSize: 1
+                                            value: ForecastMapProvider.windPressureLevels.indexOf(ForecastMapProvider.currentWindPressureLevel)
+                                            onMoved: ForecastMapProvider.currentWindPressureLevel =
+                                                ForecastMapProvider.windPressureLevels[Math.round(value)]
+                                        }
+                                        Row {
+                                            width: parent.width
+                                            Repeater {
+                                                model: ForecastMapProvider.windPressureLevels
+                                                Label {
+                                                    width: parent.width / ForecastMapProvider.windPressureLevels.length
+                                                    text: weatherLayerButton.hpaToFL(modelData)
+                                                    font.pixelSize: 9
+                                                    horizontalAlignment: index === 0 ? Text.AlignLeft
+                                                        : index === ForecastMapProvider.windPressureLevels.length - 1 ? Text.AlignRight
+                                                        : Text.AlignHCenter
+                                                    opacity: ForecastMapProvider.currentWindPressureLevel === modelData ? 1.0 : 0.5
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                MenuSeparator {
+                                    visible: flightMap.showRainLayer || flightMap.showCloudbaseLayer || flightMap.showWindLayer
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showRainLayer || flightMap.showCloudbaseLayer || flightMap.showWindLayer
+                                    width: parent ? parent.width : 300
+                                    contentItem: Column {
+                                        spacing: 4
+                                        Label {
+                                            text: ForecastMapProvider.currentTimestampLabel
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            font.bold: true
+                                        }
+                                        Slider {
+                                            width: parent.width
+                                            from: 0
+                                            to: Math.max(0, ForecastMapProvider.timestamps.length - 1)
+                                            stepSize: 1
+                                            value: ForecastMapProvider.currentIndex
+                                            onMoved: ForecastMapProvider.currentIndex = Math.round(value)
+                                        }
+                                        Label {
+                                            visible: ForecastMapProvider.referenceTimeLabel !== ""
+                                            text: "AROME " + ForecastMapProvider.referenceTimeLabel
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            font.pixelSize: parent.font ? parent.font.pixelSize * 0.85 : 11
+                                            opacity: 0.7
+                                        }
+                                        Label {
+                                            text: "© Météo-France"
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            font.pixelSize: parent.font ? parent.font.pixelSize * 0.8 : 10
+                                            opacity: 0.5
+                                        }
+                                    }
+                                }
+
+                                MenuSeparator {}
+
+                                ItemDelegate {
+                                    width: parent ? parent.width : 300
+                                    contentItem: Row {
+                                        spacing: 8
+                                        ToolButton {
+                                            icon.source: "/icons/material/ic_refresh.svg"
+                                            enabled: ForecastMapProvider.status !== 1  // not Refreshing
+                                            onClicked: ForecastMapProvider.refresh()
+                                        }
+                                        Label {
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            text: ForecastMapProvider.lastRefreshLabel
+                                            color: ForecastMapProvider.status === 2 ? "red" : palette.text  // Error
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        MapButton {
                             id: rasterMapButton
 
                             icon.source: "/icons/material/ic_layers.svg"

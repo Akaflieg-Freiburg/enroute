@@ -40,6 +40,18 @@ Map {
     */
     property real pixelPer10km: 0.0
 
+    /*! \brief Show METAR weather layer (flight category dots + wind barbs) */
+    property bool showWeatherLayer: false
+
+    /*! \brief Show Météo-France rain forecast layer */
+    property bool showRainLayer: false
+
+    /*! \brief Show Météo-France cloud base forecast layer */
+    property bool showCloudbaseLayer: false
+
+    /*! \brief Show Météo-France wind forecast layer */
+    property bool showWindLayer: false
+
     /* Handle changes in zoom level */
     onZoomLevelChanged: {
         var vec1 = flightMap.fromCoordinate(flightMap.center, false)
@@ -105,6 +117,31 @@ Map {
                 // return [ [7, 48], [8, 48], [8, 47], [7, 47] ]
             }
 
+        }
+
+        // Météo-France forecast image sources (fixed bounding box: 10W–15E, 38N–55N)
+        SourceParameter {
+            id: forecastRainSource
+            styleId: "forecastRain"
+            type: "image"
+            property string url: ForecastMapProvider.currentRainMap !== "" ? "file://" + ForecastMapProvider.currentRainMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
+        }
+
+        SourceParameter {
+            id: forecastCloudbaseSource
+            styleId: "forecastCloudbase"
+            type: "image"
+            property string url: ForecastMapProvider.currentCloudbaseMap !== "" ? "file://" + ForecastMapProvider.currentCloudbaseMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
+        }
+
+        SourceParameter {
+            id: forecastWindSource
+            styleId: "forecastWind"
+            type: "image"
+            property string url: ForecastMapProvider.currentWindMap !== "" ? "file://" + ForecastMapProvider.currentWindMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
         }
 
         SourceParameter {
@@ -644,6 +681,7 @@ Map {
                 "visibility": 'visible', // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
                 "raster-resampling": 'linear'
             }
+
         }
 
         LayerParameter {
@@ -667,6 +705,7 @@ Map {
             property string source: "waypointlib"
 
             layout: {
+                "visibility": flightMap.showWindLayer ? 'none' : 'visible',
                 "icon-image": '["get", "CAT"]',
                 "text-field": '["get", "NAM"]',
                 "text-size": 0.85*GlobalSettings.fontSize,
@@ -691,6 +730,7 @@ Map {
             property string source: "notams"
 
             layout: {
+                "visibility": flightMap.showWindLayer ? 'none' : 'visible',
                 "icon-ignore-placement": true,
                 "icon-image": ["get", "CAT"],
                 "text-field": ["get", "NAM"],
@@ -705,6 +745,38 @@ Map {
                 "text-halo-width": 2,
                 "text-halo-color": "white"
             }
+        }
+
+        // White veil between OFM tiles and forecast layers — dims the chart when wind is active
+        LayerParameter {
+            styleId: "ofmDimmer"
+            type: "background"
+            layout: { "visibility": flightMap.showWindLayer ? 'visible' : 'none' }
+            paint: { "background-color": "white", "background-opacity": 0.68 }
+        }
+
+        LayerParameter {
+            id: forecastCloudbaseLayer
+            styleId: "forecastCloudbaseLayer"
+            type: "raster"
+            property string source: "forecastCloudbase"
+            layout: { "visibility": flightMap.showCloudbaseLayer && ForecastMapProvider.currentCloudbaseMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastRainLayer
+            styleId: "forecastRainLayer"
+            type: "raster"
+            property string source: "forecastRain"
+            layout: { "visibility": flightMap.showRainLayer && ForecastMapProvider.currentRainMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastWindLayer
+            styleId: "forecastWindLayer"
+            type: "raster"
+            property string source: "forecastWind"
+            layout: { "visibility": flightMap.showWindLayer && ForecastMapProvider.currentWindMap !== "" ? 'visible' : 'none' }
         }
     }
 
@@ -934,6 +1006,113 @@ Map {
         id: midFieldWaypoints
         model: Navigator.flightRoute.midFieldWaypoints
         delegate: waypointComponent
+    }
+
+    ObserverList {
+        id: weatherObservers
+    }
+
+    MapItemView { // METAR flight category dots and wind barbs
+        visible: flightMap.showWeatherLayer
+        model: weatherObservers.observers
+        delegate: Component {
+            MapQuickItem {
+                id: metarItem
+
+                property var obs: modelData
+                property var met: obs.metar
+                onMetChanged: metarCanvas.requestPaint()
+
+                anchorPoint.x: 40
+                anchorPoint.y: 40
+                coordinate: met.coordinate
+                visible: met.isValid
+
+                sourceItem: Canvas {
+                    id: metarCanvas
+                    width: 80
+                    height: 80
+
+                    onPaint: {
+                        var ctx = getContext("2d")
+                        ctx.clearRect(0, 0, width, height)
+
+                        // Flight category dot with transparency
+                        var dotColor = met.flightCategoryColor === "transparent" ? "gray" : met.flightCategoryColor
+                        ctx.beginPath()
+                        ctx.arc(40, 40, 12, 0, 2*Math.PI)
+                        ctx.globalAlpha = 0.55
+                        ctx.fillStyle = dotColor
+                        ctx.fill()
+                        ctx.globalAlpha = 1.0
+                        ctx.strokeStyle = "white"
+                        ctx.lineWidth = 2
+                        ctx.stroke()
+
+                        // Wind barb
+                        if (!met.windSpeed.isFinite() || !met.windDirection.isFinite()) return
+                        var spd = met.windSpeed.toKN()
+                        if (spd < 1) return
+
+                        var dirRad = met.windDirection.toRAD() // staff points toward wind source; barbs drawn at tip
+                        var cx = 40, cy = 40
+                        var len = 32
+                        var ex = cx + len * Math.sin(dirRad)
+                        var ey = cy - len * Math.cos(dirRad)
+
+                        // Staff
+                        ctx.beginPath()
+                        ctx.moveTo(cx, cy)
+                        ctx.lineTo(ex, ey)
+                        ctx.strokeStyle = "black"
+                        ctx.lineWidth = 2
+                        ctx.stroke()
+
+                        // Barbs: each full barb = 10 kt, half barb = 5 kt, pennant = 50 kt
+                        var remaining = Math.round(spd)
+                        var perpX = Math.cos(dirRad)
+                        var perpY = Math.sin(dirRad)
+                        var bx = ex, by = ey
+                        var stepX = -Math.sin(dirRad) * 6
+                        var stepY =  Math.cos(dirRad) * 6
+                        var barbLen = 13
+
+                        // Pennants (50 kt)
+                        while (remaining >= 50) {
+                            ctx.beginPath()
+                            ctx.moveTo(bx, by)
+                            ctx.lineTo(bx + stepX*2 + perpX*barbLen, by + stepY*2 + perpY*barbLen)
+                            ctx.lineTo(bx + stepX*2, by + stepY*2)
+                            ctx.closePath()
+                            ctx.fillStyle = "black"
+                            ctx.fill()
+                            bx += stepX*2; by += stepY*2
+                            remaining -= 50
+                        }
+                        // Full barbs (10 kt)
+                        while (remaining >= 10) {
+                            ctx.beginPath()
+                            ctx.moveTo(bx, by)
+                            ctx.lineTo(bx + perpX*barbLen, by + perpY*barbLen)
+                            ctx.strokeStyle = "black"
+                            ctx.lineWidth = 2
+                            ctx.stroke()
+                            bx += stepX; by += stepY
+                            remaining -= 10
+                        }
+                        // Half barb (5 kt)
+                        if (remaining >= 5) {
+                            ctx.beginPath()
+                            ctx.moveTo(bx, by)
+                            ctx.lineTo(bx + perpX*barbLen*0.5, by + perpY*barbLen*0.5)
+                            ctx.stroke()
+                        }
+                    }
+
+                    Component.onCompleted: requestPaint()
+                }
+            }
+        }
     }
 
 } // End of FlightMap

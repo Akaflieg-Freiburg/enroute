@@ -385,6 +385,60 @@ Page {
             Label {
                 Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
+                text: qsTr("Forecast Maps")
+                font.pixelSize: settingsPage.font.pixelSize*1.2
+                font.bold: true
+            }
+
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: settingsPage.font.pixelSize
+                spacing: 4
+
+                Label {
+                    text: qsTr("Server URL")
+                    font.pixelSize: settingsPage.font.pixelSize
+                }
+                TextField {
+                    id: serverUrlField
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: 0
+                    placeholderText: "http://192.168.1.x:8765/meteo"
+                    text: ForecastMapProvider.serverUrl
+                    inputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText
+                    onEditingFinished: ForecastMapProvider.serverUrl = text.trim()
+                }
+                Label {
+                    visible: ForecastMapProvider.status === ForecastMapProvider.Error
+                    text: qsTr("Last refresh failed — showing cached data")
+                    color: "red"
+                    font.pixelSize: settingsPage.font.pixelSize * 0.85
+                }
+                Label {
+                    visible: ForecastMapProvider.status !== ForecastMapProvider.Error
+                    text: qsTr("Last updated: ") + ForecastMapProvider.lastRefreshLabel
+                    color: "#606060"
+                    font.pixelSize: settingsPage.font.pixelSize * 0.85
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_refresh.svg"
+                enabled: ForecastMapProvider.status !== ForecastMapProvider.Refreshing
+                         && ForecastMapProvider.serverUrl !== ""
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    ForecastMapProvider.refresh()
+                }
+            }
+
+            Item { // Spacer
+                Layout.columnSpan: 2
+                Layout.preferredHeight: 3
+            }
+
+            Label {
+                Layout.leftMargin: settingsPage.font.pixelSize
+                Layout.columnSpan: 2
                 text: qsTr("Help")
                 font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true

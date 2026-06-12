@@ -125,6 +125,7 @@ set(SOURCES
     units/VolumeFlow.h
     weather/Decoder.h
     weather/DensityAltitude.h
+    weather/ForecastMapProvider.h
     weather/METAR.h
     weather/Observer.h
     weather/ObserverList.h
@@ -229,6 +230,7 @@ set(SOURCES
     units/VolumeFlow.cpp
     weather/Decoder.cpp
     weather/DensityAltitude.cpp
+    weather/ForecastMapProvider.cpp
     weather/METAR.cpp
     weather/Observer.cpp
     weather/ObserverList.cpp
@@ -604,6 +606,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/AppWindow.qml
     qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml
+    qml/items/ColorScaleLegend.qml
     qml/items/DecoratedListView.qml
     qml/items/DecoratedScrollView.qml
     qml/items/DegreeInput.qml

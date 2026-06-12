@@ -97,6 +97,14 @@ Weather::METAR::METAR(QXmlStreamReader& xml)
             continue;
         }
 
+        // Wind direction
+        if (xml.isStartElement() && name == u"wind_dir_degrees"_s)
+        {
+            auto content = xml.readElementText();
+            m_windDirection = Units::Angle::fromDEG(content.toDouble());
+            continue;
+        }
+
         // Gust
         if (xml.isStartElement() && name == u"wind_gust_kt"_s)
         {
@@ -411,6 +419,7 @@ QDataStream& Weather::operator<<(QDataStream& outstream, const Weather::METAR& m
     outstream << metar.m_qnh;
     outstream << metar.m_rawText;
     outstream << metar.m_wind;
+    outstream << metar.m_windDirection.toDEG();
     outstream << metar.m_gust;
     outstream << metar.m_temperature;
     outstream << metar.m_dewpoint;
@@ -429,6 +438,7 @@ QDataStream& Weather::operator>>(QDataStream& instream, Weather::METAR& metar)
     instream >> metar.m_qnh;
     instream >> metar.m_rawText;
     instream >> metar.m_wind;
+    double windDirDeg; instream >> windDirDeg; metar.m_windDirection = Units::Angle::fromDEG(windDirDeg);
     instream >> metar.m_gust;
     instream >> metar.m_temperature;
     instream >> metar.m_dewpoint;

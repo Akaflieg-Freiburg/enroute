@@ -756,19 +756,19 @@ Map {
         }
 
         LayerParameter {
-            id: forecastRainLayer
-            styleId: "forecastRainLayer"
-            type: "raster"
-            property string source: "forecastRain"
-            layout: { "visibility": flightMap.showRainLayer && ForecastMapProvider.currentRainMap !== "" ? 'visible' : 'none' }
-        }
-
-        LayerParameter {
             id: forecastCloudbaseLayer
             styleId: "forecastCloudbaseLayer"
             type: "raster"
             property string source: "forecastCloudbase"
             layout: { "visibility": flightMap.showCloudbaseLayer && ForecastMapProvider.currentCloudbaseMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastRainLayer
+            styleId: "forecastRainLayer"
+            type: "raster"
+            property string source: "forecastRain"
+            layout: { "visibility": flightMap.showRainLayer && ForecastMapProvider.currentRainMap !== "" ? 'visible' : 'none' }
         }
 
         LayerParameter {

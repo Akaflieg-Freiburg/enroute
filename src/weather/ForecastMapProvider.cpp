@@ -141,6 +141,14 @@ void Weather::ForecastMapProvider::fetchIndex()
         for (const auto& v : root[u"files"_s].toArray())
             serverFiles << v.toString();
 
+        // If the model run changed, wipe the cache so stale files are replaced
+        const QString newRefTime = root[u"reference_time"_s].toString();
+        if (!newRefTime.isEmpty() && newRefTime != m_referenceTime) {
+            QDir dir(cacheDir());
+            for (const auto& name : dir.entryList(QStringList{u"*.png"_s}, QDir::Files))
+                dir.remove(name);
+        }
+
         parseMetadata(root);
 
         // Only download files not already in cache

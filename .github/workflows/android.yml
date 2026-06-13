@@ -16,6 +16,9 @@ on:
     branches: [ main, develop ]
     paths-ignore: *paths-ignore
 
+permissions:
+  contents: write
+
 jobs:
   build:
 

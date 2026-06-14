@@ -52,7 +52,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         }
 
         // Speed must exceed takeoff threshold
-        if (groundSpeed < Units::Speed::fromKMH(takeoffSpeedKMH)) {
+        if (groundSpeed < aircraftMinimumSpeed()) {
             return;
         }
 
@@ -82,7 +82,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
     case TakeoffPhase: {
         // Abort takeoff detection if speed drops significantly
         // or if more than 1 minute has elapsed without altitude confirmation
-        if ((groundSpeed.isFinite() && groundSpeed < Units::Speed::fromKMH(takeoffSpeedKMH * takeoffAbortSpeedFactor))
+        if ((groundSpeed.isFinite() && groundSpeed < takeoffAbortSpeedFactor * aircraftMinimumSpeed())
             || (m_pendingStartTime.isValid() && m_pendingStartTime.secsTo(info.timestamp()) > 60)) {
             resetDetection();
             return;
@@ -131,7 +131,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
 
     case LandingPhase: {
         // Confirmed landing: speed drops below threshold or timeout
-        if ((groundSpeed.isFinite() && groundSpeed < Units::Speed::fromKMH(landingConfirmSpeedKMH))
+        if ((groundSpeed.isFinite() && groundSpeed < aircraftMinimumSpeed())
             || (m_landingPhaseEntryTime.isValid() && m_landingPhaseEntryTime.secsTo(info.timestamp()) > 60)) {
             // Use the time we first went low as the landing time
             auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
@@ -253,4 +253,14 @@ void Flightlog::AirplaneFlightDetector::resetDetection()
     m_landingPhaseEntryTime = {};
     m_landingCount = 0;
     emit detectionStateChanged();
+}
+
+
+auto Flightlog::AirplaneFlightDetector::aircraftMinimumSpeed() const -> Units::Speed
+{
+    auto minSpeed = GlobalObject::navigator()->aircraft().minimumSpeed();
+    if (minSpeed.isFinite()) {
+        return minSpeed;
+    }
+    return Units::Speed::fromKMH(defaultTakeoffSpeedKMH);
 }

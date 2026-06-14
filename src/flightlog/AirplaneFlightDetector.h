@@ -33,16 +33,17 @@ namespace Flightlog {
  *  and proximity to ICAO airfields to detect takeoff and landing.
  *
  *  Detection criteria:
- *  - **Takeoff**: Ground speed > 50 km/h within 5 km of an airfield,
- *    confirmed by altitude gain of at least 200 ft above airfield elevation
- *    within 60 seconds.
+ *  - **Takeoff**: Ground speed exceeds the aircraft's configured minimum speed
+ *    (default 50 km/h) within 5 km of an airfield, confirmed by altitude gain
+ *    of at least 200 ft above airfield elevation within 60 seconds.
  *  - **Landing**: Altitude below 100 ft above airfield elevation within
- *    5 km of an airfield, confirmed by speed dropping below 60 km/h.
+ *    5 km of an airfield, confirmed by speed dropping below the aircraft's
+ *    configured minimum speed (default 50 km/h).
  *  - **Go-around**: While in LandingPhase, altitude gain > 200 ft above
  *    airfield elevation ends the current flight leg and starts a new one
  *    from the touch-and-go airport.
- *  - **Abort**: Speed drops below 25 km/h or 60 seconds elapse in
- *    TakeoffPhase without altitude confirmation.
+ *  - **Abort**: Speed drops below half the takeoff threshold or 60 seconds
+ *    elapse in TakeoffPhase without altitude confirmation.
  */
 class AirplaneFlightDetector : public FlightDetector
 {
@@ -82,13 +83,15 @@ private:
     int m_landingCount {0};
 
     // Detection thresholds
-    static constexpr double takeoffSpeedKMH = 50.0;          ///< Minimum ground speed to trigger takeoff detection
+    static constexpr double defaultTakeoffSpeedKMH = 50.0;   ///< Fallback takeoff speed when aircraft has no minimum speed configured
     static constexpr double altitudeGainFT = 200.0;          ///< Minimum altitude above airfield elevation to confirm takeoff
     static constexpr double landingAltitudeAGLFT = 100.0;    ///< Maximum altitude above airfield elevation to detect landing
     static constexpr double airfieldProximityM = 5000.0;     ///< Maximum distance to an airfield for detection
     static constexpr double maxTakeoffAltitudeAGLFT = 500.0; ///< Maximum altitude above airfield to consider a takeoff
     static constexpr double takeoffAbortSpeedFactor = 0.5;   ///< Speed drop factor to abort takeoff detection
-    static constexpr double landingConfirmSpeedKMH = 60.0;   ///< Maximum speed to confirm landing
+
+    // Helpers
+    [[nodiscard]] auto aircraftMinimumSpeed() const -> Units::Speed;
 };
 
 } // namespace Flightlog

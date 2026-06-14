@@ -138,6 +138,22 @@ public:
      */
     Q_PROPERTY(QPolygonF terrain READ terrain BINDABLE bindableTerrain)
 
+    /*! \brief Planned altitude profile (route mode only)
+     *
+     * A polyline of (x, y) points in content-pixel coordinates, one point per
+     * route waypoint, representing the planned cruise altitude. Used to draw the
+     * profile line. Empty in Track mode.
+     */
+    Q_PROPERTY(QPolygonF plannedProfile READ plannedProfile BINDABLE bindablePlannedProfile)
+
+    /*! \brief Planned altitude profile points, as a list (route mode only)
+     *
+     * The same points as plannedProfile, but as a QVariantList of QPointF so
+     * that a QML Repeater can iterate them to place the clickable altitude
+     * markers. Empty in Track mode.
+     */
+    Q_PROPERTY(QVariantList plannedProfilePoints READ plannedProfilePoints BINDABLE bindablePlannedProfilePoints)
+
     /*! \brief Track string
      *
      * If the own aircraft is not moving sufficiently fast, this property holds
@@ -251,6 +267,30 @@ public:
      */
     QBindable<QPolygonF> bindableTerrain() const {return &m_terrain;}
 
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property plannedProfile
+     */
+    QPolygonF plannedProfile() const {return m_plannedProfile.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property plannedProfile
+     */
+    QBindable<QPolygonF> bindablePlannedProfile() const {return &m_plannedProfile;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property plannedProfilePoints
+     */
+    QVariantList plannedProfilePoints() const {return m_plannedProfilePoints.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property plannedProfilePoints
+     */
+    QBindable<QVariantList> bindablePlannedProfilePoints() const {return &m_plannedProfilePoints;}
+
 signals:
     void modeChanged();
     void renderWidthChanged();
@@ -298,6 +338,10 @@ private:
     QProperty<QPointF> m_fiveMinuteBar;
 
     QProperty<QPolygonF> m_terrain;
+
+    QProperty<QPolygonF> m_plannedProfile;
+
+    QProperty<QVariantList> m_plannedProfilePoints;
 
     QProperty<QVariantMap> m_airspaces;
 

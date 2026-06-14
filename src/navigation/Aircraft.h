@@ -78,6 +78,17 @@ public:
     /*! \brief Preferred units of measurement for vertical distances */
     Q_PROPERTY(bool cabinPressureEqualsStaticPressure READ cabinPressureEqualsStaticPressure WRITE setCabinPressureEqualsStaticPressure)
 
+    /*! \brief Default cruise altitude
+     *
+     * This property holds the default planned cruise altitude of the aircraft.
+     * It is used as the fallback when a route waypoint has no explicit planned
+     * altitude set. The value is NaN if no default has been set.
+     */
+    Q_PROPERTY(Units::Distance cruiseAltitude READ cruiseAltitude WRITE setCruiseAltitude)
+
+    /*! \brief Default cruise altitude in meters (NaN if not set), for QML use */
+    Q_PROPERTY(double cruiseAltitudeM READ cruiseAltitudeM WRITE setCruiseAltitudeM)
+
     /*! \brief Cruise Speed
      *
      * This property holds the cruise speed of the aircraft. This lies in the interval [minAircraftSpeed,
@@ -161,6 +172,18 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @returns Property cruiseAltitude (NaN if not set)
+     */
+    [[nodiscard]] Units::Distance cruiseAltitude() const { return m_cruiseAltitude; }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property cruiseAltitudeM (NaN if not set)
+     */
+    [[nodiscard]] double cruiseAltitudeM() const { return m_cruiseAltitude.toM(); }
+
+    /*! \brief Getter function for property of the same name
+     *
      * @returns Property descentSpeed
      */
     [[nodiscard]] Units::Speed descentSpeed() const { return m_descentSpeed; }
@@ -227,6 +250,18 @@ public:
      * @param newSpeed Property cruise speed
      */
     void setCruiseSpeed(Units::Speed newSpeed);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newAltitude Default cruise altitude (NaN to clear)
+     */
+    void setCruiseAltitude(Units::Distance newAltitude) { m_cruiseAltitude = newAltitude; }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param altitudeM Default cruise altitude in meters (NaN to clear)
+     */
+    void setCruiseAltitudeM(double altitudeM) { m_cruiseAltitude = Units::Distance::fromM(altitudeM); }
 
     /*! \brief Setter function for property of the same name
      *
@@ -415,6 +450,7 @@ private:
     static constexpr Units::VolumeFlow maxValidFuelConsumption = Units::VolumeFlow::fromLPH(300.0);
 
     bool m_cabinPressureEqualsStaticPressure {false};
+    Units::Distance m_cruiseAltitude {};
     Units::Speed m_cruiseSpeed {};
     Units::Speed m_descentSpeed {};
     Units::VolumeFlow m_fuelConsumption {};

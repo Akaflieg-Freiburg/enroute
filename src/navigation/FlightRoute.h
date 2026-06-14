@@ -329,6 +329,27 @@ namespace Navigation
         /*! \brief Reverse the route */
         Q_INVOKABLE void reverse();
 
+        /*! \brief Planned cruise altitude at a route waypoint
+         *
+         * The planned altitude is owned by the route (keyed by waypoint
+         * identity), not stored on the waypoint itself.
+         *
+         * @param idx Index of the waypoint in waypoints()
+         *
+         * @returns Planned altitude in meters AMSL, or NaN if none has been set
+         * for this waypoint.
+         */
+        [[nodiscard]] Q_INVOKABLE double plannedAltitude(int idx) const;
+
+        /*! \brief Set the planned cruise altitude at a route waypoint
+         *
+         * @param idx Index of the waypoint in waypoints()
+         *
+         * @param altitudeM Planned altitude in meters AMSL, or NaN to clear the
+         * value (so that the waypoint falls back to the default).
+         */
+        Q_INVOKABLE void setPlannedAltitude(int idx, double altitudeM);
+
         /*! \brief Saves flight route to a file
          *
          * This method saves the flight route as a GeoJSON file.  The file
@@ -408,6 +429,9 @@ namespace Navigation
         /*! \brief Notification signal for the property with the same name */
         void summaryChanged();
 
+        /*! \brief Notification signal, emitted when a planned altitude changes */
+        void plannedAltitudesChanged();
+
     private slots:
 
     private:
@@ -415,6 +439,14 @@ namespace Navigation
 
         // Helper function for method toGPX
         [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
+
+        // Stable identity key for a waypoint, used to key m_plannedAltitudes so
+        // that planned altitudes follow their waypoint across reordering.
+        [[nodiscard]] static QString waypointKey(const GeoMaps::Waypoint& waypoint);
+
+        // Planned cruise altitudes, owned by the route. Keyed by waypointKey(),
+        // value is altitude in meters AMSL.
+        QMap<QString, double> m_plannedAltitudes;
 
         QProperty<QList<QGeoCoordinate>> m_geoPath;
         QList<QGeoCoordinate> computeGeoPath();

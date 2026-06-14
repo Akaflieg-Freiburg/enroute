@@ -20,9 +20,11 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
+import "../dialogs"
 
 SideviewQuickItem {
     id: rawSideView
@@ -427,6 +429,52 @@ SideviewQuickItem {
                     relativeY: 0.2*shp.animatedFiveMinuteBarY
                 }
             }
+
+            // Planned cruise-altitude profile (route mode only). Sloped segments
+            // connecting the planned altitude at each waypoint.
+            ShapePath {
+                strokeWidth: 3
+                strokeColor: Global.flightRouteColor
+                fillColor: "transparent"
+                PathPolyline { path: rawSideView.plannedProfile }
+            }
+        }
+
+        // Clickable altitude points, one per waypoint (route mode only). Tapping
+        // a point opens a popup to specify the planned altitude. Placed in
+        // Flickable content space, aligned with the profile polyline.
+        Repeater {
+            model: rawSideView.mode === SideviewQuickItem.Route ? rawSideView.plannedProfilePoints : 0
+
+            delegate: Item {
+                id: handle
+                required property int index
+                required property var modelData
+
+                width: 28
+                height: 28
+                x: modelData.x - width/2
+                y: modelData.y - height/2
+
+                // Same marker as the route turnpoints on the moving map.
+                Image {
+                    anchors.centerIn: parent
+                    source: "/icons/waypoints/WP-map.svg"
+                    sourceSize.width: 14
+                    sourceSize.height: 14
+                    scale: tapArea.pressed ? 1.25 : 1.0
+                }
+
+                MouseArea {
+                    id: tapArea
+                    anchors.fill: parent
+                    onDoubleClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        sideviewAltEditor.index = handle.index
+                        sideviewAltEditor.open()
+                    }
+                }
+            }
         }
 
         Image {
@@ -569,6 +617,46 @@ SideviewQuickItem {
             } else {
                 rawSideView.mode = SideviewQuickItem.Route
             }
+        }
+    }
+
+    // Popup to specify the planned altitude of a waypoint, opened by tapping a
+    // blue altitude point.
+    CenteringDialog {
+        id: sideviewAltEditor
+
+        property int index: -1 // Index of waypoint in flight route
+
+        title: qsTr("Planned Altitude")
+        modal: true
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        onAboutToShow: {
+            var m = Navigator.flightRoute.plannedAltitude(sideviewAltEditor.index)
+            sideviewAltField.valueMeter = isNaN(m) ? Navigator.aircraft.cruiseAltitudeM : m
+        }
+
+        ColumnLayout {
+            width: parent.width
+
+            Label {
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+                text: qsTr("Planned cruise altitude at this waypoint. Leave empty to use the aircraft's default cruise altitude.")
+            }
+
+            ElevationInput {
+                id: sideviewAltField
+                Layout.fillWidth: true
+                currentIndex: Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? 1 : 0
+                onAccepted: sideviewAltEditor.accept()
+            }
+        }
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            sideviewAltField.commit()
+            Navigator.flightRoute.setPlannedAltitude(sideviewAltEditor.index, sideviewAltField.valueMeter)
         }
     }
 }

@@ -39,6 +39,14 @@ Page {
     property angle staticAngle
     property speed staticSpeed
 
+    // Bumped whenever a planned altitude changes, so the per-row altitude
+    // labels (bound to the Q_INVOKABLE plannedAltitude) re-evaluate.
+    property int plannedAltRevision: 0
+    Connections {
+        target: Navigator.flightRoute
+        function onPlannedAltitudesChanged() { flightRoutePage.plannedAltRevision++ }
+    }
+
     Component {
         id: waypointComponent
 
@@ -53,6 +61,42 @@ Page {
             WaypointDelegate {
                 Layout.fillWidth: true
                 waypoint: waypointLayout.waypoint
+            }
+
+            ToolButton {
+                id: altButton
+
+                // Resolved planned altitude in meters: stored value, else the
+                // aircraft default. NaN if neither is set.
+                readonly property double resolvedM: {
+                    flightRoutePage.plannedAltRevision // dependency
+                    var m = Navigator.flightRoute.plannedAltitude(waypointLayout.index)
+                    if (!isNaN(m)) return m
+                    return Navigator.aircraft.cruiseAltitudeM
+                }
+                readonly property bool isDefault: {
+                    flightRoutePage.plannedAltRevision // dependency
+                    return isNaN(Navigator.flightRoute.plannedAltitude(waypointLayout.index))
+                }
+
+                contentItem: Label {
+                    text: {
+                        if (isNaN(altButton.resolvedM)) return "––"
+                        if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters)
+                            return Math.round(altButton.resolvedM) + " m"
+                        return Math.round(altButton.resolvedM * 3.281) + " ft"
+                    }
+                    color: altButton.isDefault ? "#808080" : Global.flightRouteColor
+                    font.pixelSize: flightRoutePage.font.pixelSize*0.9
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    altEditor.index = waypointLayout.index
+                    altEditor.open()
+                }
             }
 
             ToolButton {
@@ -957,6 +1001,44 @@ Page {
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             Navigator.flightRoute.replaceWaypoint(index, newWP)
             wpEditor.close()
+        }
+    }
+
+    CenteringDialog {
+        id: altEditor
+
+        property int index: -1 // Index of waypoint in flight route
+
+        title: qsTr("Planned Altitude")
+        modal: true
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        onAboutToShow: {
+            var m = Navigator.flightRoute.plannedAltitude(altEditor.index)
+            altField.valueMeter = isNaN(m) ? Navigator.aircraft.cruiseAltitudeM : m
+        }
+
+        ColumnLayout {
+            width: parent.width
+
+            Label {
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+                text: qsTr("Planned cruise altitude at this waypoint. Leave empty to use the aircraft's default cruise altitude.")
+            }
+
+            ElevationInput {
+                id: altField
+                Layout.fillWidth: true
+                currentIndex: Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? 1 : 0
+                onAccepted: altEditor.accept()
+            }
+        }
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            altField.commit()
+            Navigator.flightRoute.setPlannedAltitude(altEditor.index, altField.valueMeter)
         }
     }
 } // Page

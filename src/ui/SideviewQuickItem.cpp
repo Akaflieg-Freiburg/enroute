@@ -50,6 +50,9 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     notifiers.push_back(GlobalObject::navigator()->flightRoute()->bindableGeoPath().addNotifier([this]() {
         if (m_mode == Mode::Route) { updateProperties(); }
     }));
+    connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::plannedAltitudesChanged, this, [this]() {
+        if (m_mode == Mode::Route) { updateProperties(); }
+    });
 
     updateProperties();
 }
@@ -190,6 +193,8 @@ void Ui::SideviewQuickItem::updatePropertiesTrack()
     m_track = QString();
     m_error = QString();
     m_terrain = QPolygonF();
+    m_plannedProfile = QPolygonF();
+    m_plannedProfilePoints = QVariantList();
 
     QVariantMap newAirspaces;
     const QVector<QPolygonF> empty;
@@ -413,6 +418,8 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
     m_track           = QString();
     m_error           = QString();
     m_terrain         = QPolygonF();
+    m_plannedProfile  = QPolygonF();
+    m_plannedProfilePoints = QVariantList();
 
     const QVector<QPolygonF> empty;
     QVariantMap newAirspaces;
@@ -526,6 +533,29 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
     Units::Distance sideview_minAlt = minElevation - Units::Distance::fromFT(200);
     Units::Distance sideview_maxAlt = maxElevation + Units::Distance::fromFT(4000);
 
+    // -----------------------------------------------------------------------
+    // 6b. Resolve the planned altitude at each waypoint (stored value, else
+    //     aircraft cruise altitude, else terrain + 1000ft) and expand the
+    //     vertical extent so the whole profile is visible.
+    // -----------------------------------------------------------------------
+    auto* flightRoute = GlobalObject::navigator()->flightRoute();
+    const auto routeWaypoints = flightRoute->waypoints();
+    const Units::Distance defaultCruiseAlt = GlobalObject::navigator()->aircraft().cruiseAltitude();
+    const Units::Distance fallbackAlt = maxElevation + Units::Distance::fromFT(1000);
+
+    QList<Units::Distance> plannedAlts;
+    plannedAlts.reserve(routeWaypoints.size());
+    for (int i = 0; i < routeWaypoints.size(); i++)
+    {
+        double storedM = flightRoute->plannedAltitude(i);
+        Units::Distance alt = !qIsNaN(storedM) ? Units::Distance::fromM(storedM)
+                            : defaultCruiseAlt.isFinite() ? defaultCruiseAlt
+                            : fallbackAlt;
+        plannedAlts << alt;
+        sideview_maxAlt = qMax(sideview_maxAlt, alt + Units::Distance::fromFT(200));
+        sideview_minAlt = qMin(sideview_minAlt, alt - Units::Distance::fromFT(200));
+    }
+
     auto altToY = [this, sideview_minAlt, sideview_maxAlt](Units::Distance alt) {
         return ((double)height()) * (sideview_maxAlt - alt) / (sideview_maxAlt - sideview_minAlt);
     };
@@ -533,6 +563,22 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
     m_scaleMinAltFt    = sideview_minAlt.toFeet();
     m_scaleMaxAltFt    = sideview_maxAlt.toFeet();
     m_scaleTotalDistKm = totalRouteLen / 1000.0;
+
+    // Build the planned-altitude polyline: one point per waypoint, at the
+    // waypoint's x position along the route.
+    QPolygonF profile;
+    QVariantList profilePoints;
+    profile.reserve(plannedAlts.size());
+    profilePoints.reserve(plannedAlts.size());
+    for (qsizetype i = 0; (i < plannedAlts.size()) && (i < cumulativeDist.size()); i++)
+    {
+        double x = (cumulativeDist[i] / totalRouteLen) * renderW;
+        QPointF pt(x, altToY(plannedAlts[i]));
+        profile << pt;
+        profilePoints << pt;
+    }
+    m_plannedProfile = profile;
+    m_plannedProfilePoints = profilePoints;
 
     // -----------------------------------------------------------------------
     // 7. Terrain polygon

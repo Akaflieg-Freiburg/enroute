@@ -429,6 +429,26 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
         }
     }
     m_waypoints = newWaypoints;
+
+    // Planned altitudes are stored as a top-level object in our own GeoJSON
+    // files. Read them back if present (other formats simply have none).
+    m_plannedAltitudes.clear();
+    {
+        QFile jsonFile(myFileName);
+        if (jsonFile.open(QIODevice::ReadOnly))
+        {
+            auto doc = QJsonDocument::fromJson(jsonFile.readAll());
+            if (doc.isObject())
+            {
+                auto altObj = doc.object().value(QStringLiteral("plannedAltitudes")).toObject();
+                for (auto it = altObj.constBegin(); it != altObj.constEnd(); ++it)
+                {
+                    m_plannedAltitudes.insert(it.key(), it.value().toDouble());
+                }
+            }
+        }
+    }
+    emit plannedAltitudesChanged();
     return {};
 }
 
@@ -499,6 +519,46 @@ void Navigation::FlightRoute::reverse()
     auto newWaypoints = m_waypoints.value();
     std::reverse(newWaypoints.begin(), newWaypoints.end());
     m_waypoints = newWaypoints;
+}
+
+QString Navigation::FlightRoute::waypointKey(const GeoMaps::Waypoint& waypoint)
+{
+    auto icao = waypoint.ICAOCode();
+    if (!icao.isEmpty())
+    {
+        return icao;
+    }
+    auto coord = waypoint.coordinate();
+    return u"%1,%2"_s.arg(coord.latitude(), 0, 'f', 6).arg(coord.longitude(), 0, 'f', 6);
+}
+
+double Navigation::FlightRoute::plannedAltitude(int idx) const
+{
+    const auto wps = m_waypoints.value();
+    if ((idx < 0) || (idx >= wps.size()))
+    {
+        return qQNaN();
+    }
+    return m_plannedAltitudes.value(waypointKey(wps.at(idx)), qQNaN());
+}
+
+void Navigation::FlightRoute::setPlannedAltitude(int idx, double altitudeM)
+{
+    const auto wps = m_waypoints.value();
+    if ((idx < 0) || (idx >= wps.size()))
+    {
+        return;
+    }
+    auto key = waypointKey(wps.at(idx));
+    if (qIsNaN(altitudeM))
+    {
+        m_plannedAltitudes.remove(key);
+    }
+    else
+    {
+        m_plannedAltitudes.insert(key, altitudeM);
+    }
+    emit plannedAltitudesChanged();
 }
 
 auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
@@ -609,10 +669,30 @@ auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
         }
     }
 
+    // Planned altitudes, owned by the route. Pruned to the keys of the current
+    // valid waypoints.
+    QJsonObject plannedAltitudes;
+    foreach(const auto& waypoint, m_waypoints.value())
+    {
+        if (!waypoint.isValid())
+        {
+            continue;
+        }
+        auto key = waypointKey(waypoint);
+        if (m_plannedAltitudes.contains(key))
+        {
+            plannedAltitudes.insert(key, m_plannedAltitudes.value(key));
+        }
+    }
+
     QJsonObject jsonObj;
     jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
     jsonObj.insert(QStringLiteral("enroute"), GeoMaps::GeoJSON::indicatorFlightRoute());
     jsonObj.insert(QStringLiteral("features"), waypointArray);
+    if (!plannedAltitudes.isEmpty())
+    {
+        jsonObj.insert(QStringLiteral("plannedAltitudes"), plannedAltitudes);
+    }
 
     QJsonDocument doc;
     doc.setObject(jsonObj);

@@ -35,6 +35,10 @@ Item {
     property vac currentVAC
     property vac defaultVAC
 
+    // Color used to draw the planned flight route, both on the moving map and
+    // in the sideview planned-altitude profile.
+    readonly property color flightRouteColor: "#ff00ff"
+
     //
     // GUI Warnings
     //

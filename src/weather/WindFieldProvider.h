@@ -36,13 +36,17 @@ namespace Weather {
  * exposes interpolated wind at any (lat, lon, altitude). Falls back to invalid
  * wind when the grid is empty or stale, so callers can revert to manual wind.
  *
- * JSON schema:
+ * JSON schema (time-indexed):
  *   {
- *     "valid_time": "2026-06-15T12:00Z",
- *     "levels_ft": [2000, 5000, 10000],
- *     "grid": [ { "lat":48.0, "lon":7.5, "u":[...], "v":[...] }, ... ]
+ *     "reference_time": "2026-06-15T12:00:00Z",
+ *     "times": ["2026-06-15T12:00:00Z", ...],
+ *     "levels_ft": [0, 3300, 6500, 10000],
+ *     "grid": [ { "lat":48.0, "lon":7.5,
+ *                 "u":[[u_t0_l0,...],...],   // [time][level]
+ *                 "v":[[...],...] }, ... ]
  *   }
- * u/v are wind components in m/s (meteorological convention), indexed by levels_ft.
+ * u/v are wind components in m/s (meteorological convention). Lookups
+ * interpolate trilinearly: bilinear in lat/lon, linear in altitude and time.
  */
 class WindFieldProvider : public QObject {
     Q_OBJECT
@@ -88,19 +92,22 @@ public:
     // Wind lookup
     //
 
-    /*! \brief Interpolated wind at a location and altitude.
+    /*! \brief Interpolated wind at a location, altitude and time.
      *
-     *  Bilinear interpolation in lat/lon, linear in altitude (clamped to the
-     *  available level range). Returns an invalid Wind when no usable data.
+     *  Bilinear in lat/lon, linear in altitude and time (each clamped to the
+     *  available range). Returns an invalid Wind when no usable data.
      */
+    [[nodiscard]] Q_INVOKABLE Weather::Wind windAt(double lat, double lon, double altFt, const QDateTime& time) const;
+
+    /*! \brief As windAt(), using the time nearest "now" (for the map layer) */
     [[nodiscard]] Q_INVOKABLE Weather::Wind windAt(double lat, double lon, double altFt) const;
 
-    /*! \brief Interpolated (u, v) wind components in KNOTS at a location/altitude.
+    /*! \brief Interpolated (u, v) wind components in KNOTS at a location/altitude/time.
      *
      *  Meteorological convention: u eastward, v northward. Returns a point with
      *  NaN components when no usable data. Used for vector averaging.
      */
-    [[nodiscard]] QPointF uvKnotsAt(double lat, double lon, double altFt) const;
+    [[nodiscard]] QPointF uvKnotsAt(double lat, double lon, double altFt, const QDateTime& time) const;
 
     /*! \brief Construct a Weather::Wind from (u, v) components in knots */
     [[nodiscard]] static Weather::Wind windFromUV(double uKnots, double vKnots);
@@ -116,26 +123,25 @@ private:
     struct GridPoint {
         double lat {};
         double lon {};
-        QList<double> u; // m/s, per level
-        QList<double> v; // m/s, per level
+        QList<QList<double>> u; // m/s, [time][level]
+        QList<QList<double>> v; // m/s, [time][level]
     };
 
     void parse(const QByteArray& bytes);
 
-    // Linear-in-altitude interpolation of a single grid point's u/v (m/s)
-    [[nodiscard]] QPointF uvAtLevelInterp(const GridPoint& p, double altFt) const;
+    // (u, v) in m/s for one grid point, interpolated in time then altitude
+    [[nodiscard]] QPointF uvAtCorner(const GridPoint& p, int ti, double tFrac, double altFt) const;
 
     QNetworkAccessManager m_nam;
 
-    QDateTime    m_validTime;
-    QList<int>   m_levelsFt;        // ascending
+    QDateTime        m_referenceTime;
+    QList<QDateTime> m_times;        // ascending
+    QList<int>       m_levelsFt;     // ascending
     QList<GridPoint> m_grid;
 
     // Grid geometry (assumes a regular lat/lon grid)
     QList<double> m_lats;           // sorted unique, ascending
     QList<double> m_lons;           // sorted unique, ascending
-
-    static constexpr qint64 staleSeconds = 2 * 60 * 60; // 2 h
 };
 
 } // namespace Weather

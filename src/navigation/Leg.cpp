@@ -250,7 +250,7 @@ auto Navigation::Leg::description(Weather::Wind wind, const Navigation::Aircraft
 }
 
 
-auto Navigation::Leg::averageWind(const Weather::WindFieldProvider* wfp, double altFt) const -> Weather::Wind
+auto Navigation::Leg::averageWind(const Weather::WindFieldProvider* wfp, double altFt, const QDateTime& time) const -> Weather::Wind
 {
     if ((wfp == nullptr) || !wfp->isUsable() || !isValid()) {
         return {};
@@ -261,7 +261,7 @@ auto Navigation::Leg::averageWind(const Weather::WindFieldProvider* wfp, double 
     const double distM = start.distanceTo(end);
     if (distM < minLegLength.toM()) {
         // Too short to sample meaningfully — use the start point only
-        const QPointF uv = wfp->uvKnotsAt(start.latitude(), start.longitude(), altFt);
+        const QPointF uv = wfp->uvKnotsAt(start.latitude(), start.longitude(), altFt, time);
         return Weather::WindFieldProvider::windFromUV(uv.x(), uv.y());
     }
 
@@ -274,7 +274,7 @@ auto Navigation::Leg::averageWind(const Weather::WindFieldProvider* wfp, double 
     for (int i = 0; i < nSamples; ++i) {
         const double f = (i + 0.5) / nSamples; // sample at sub-segment midpoints
         const auto p = start.atDistanceAndAzimuth(f * distM, az);
-        const QPointF uv = wfp->uvKnotsAt(p.latitude(), p.longitude(), altFt);
+        const QPointF uv = wfp->uvKnotsAt(p.latitude(), p.longitude(), altFt, time);
         if (qIsFinite(uv.x()) && qIsFinite(uv.y())) {
             sumU += uv.x();
             sumV += uv.y();

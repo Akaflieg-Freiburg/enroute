@@ -84,18 +84,19 @@ Weather::WindFieldProvider* Weather::WindFieldProvider::instance()
 
 bool Weather::WindFieldProvider::isStale() const
 {
-    if (m_grid.isEmpty() || !m_validTime.isValid()) {
+    if (m_grid.isEmpty() || m_times.isEmpty()) {
         return true;
     }
-    return m_validTime.secsTo(QDateTime::currentDateTimeUtc()) > staleSeconds;
+    // Stale once "now" is past the last forecast step (no more coverage)
+    return QDateTime::currentDateTimeUtc() > m_times.last();
 }
 
 QString Weather::WindFieldProvider::validTimeLabel() const
 {
-    if (!m_validTime.isValid()) {
+    if (m_times.isEmpty()) {
         return {};
     }
-    return m_validTime.toUTC().toString(u"dd MMM HH:mm'Z'"_s);
+    return m_times.first().toUTC().toString(u"dd MMM HH:mm'Z'"_s);
 }
 
 
@@ -141,12 +142,29 @@ void Weather::WindFieldProvider::parse(const QByteArray& bytes)
     }
     const auto root = doc.object();
 
-    QDateTime validTime = QDateTime::fromString(root[u"valid_time"_s].toString(), Qt::ISODate);
+    const QDateTime referenceTime = QDateTime::fromString(root[u"reference_time"_s].toString(), Qt::ISODate);
+
+    QList<QDateTime> times;
+    for (const auto& v : root[u"times"_s].toArray()) {
+        times << QDateTime::fromString(v.toString(), Qt::ISODate).toUTC();
+    }
 
     QList<int> levels;
     for (const auto& v : root[u"levels_ft"_s].toArray()) {
         levels << v.toInt();
     }
+
+    auto readSeries = [](const QJsonArray& outer) {
+        QList<QList<double>> series;
+        for (const auto& step : outer) {
+            QList<double> perLevel;
+            for (const auto& x : step.toArray()) {
+                perLevel << x.toDouble();
+            }
+            series << perLevel;
+        }
+        return series;
+    };
 
     QList<GridPoint> grid;
     QList<double> lats;
@@ -156,12 +174,8 @@ void Weather::WindFieldProvider::parse(const QByteArray& bytes)
         GridPoint p;
         p.lat = o[u"lat"_s].toDouble();
         p.lon = o[u"lon"_s].toDouble();
-        for (const auto& uu : o[u"u"_s].toArray()) {
-            p.u << uu.toDouble();
-        }
-        for (const auto& vv : o[u"v"_s].toArray()) {
-            p.v << vv.toDouble();
-        }
+        p.u = readSeries(o[u"u"_s].toArray());
+        p.v = readSeries(o[u"v"_s].toArray());
         grid << p;
         if (!lats.contains(p.lat)) {
             lats << p.lat;
@@ -171,18 +185,19 @@ void Weather::WindFieldProvider::parse(const QByteArray& bytes)
         }
     }
 
-    if (grid.isEmpty() || levels.isEmpty()) {
+    if (grid.isEmpty() || levels.isEmpty() || times.isEmpty()) {
         return;
     }
 
     std::sort(lats.begin(), lats.end());
     std::sort(lons.begin(), lons.end());
 
-    m_validTime = validTime;
-    m_levelsFt  = levels;
-    m_grid      = grid;
-    m_lats      = lats;
-    m_lons      = lons;
+    m_referenceTime = referenceTime;
+    m_times         = times;
+    m_levelsFt      = levels;
+    m_grid          = grid;
+    m_lats          = lats;
+    m_lons          = lons;
 
     emit dataChanged();
 }
@@ -192,17 +207,29 @@ void Weather::WindFieldProvider::parse(const QByteArray& bytes)
 // Interpolation
 // ---------------------------------------------------------------------------
 
-QPointF Weather::WindFieldProvider::uvAtLevelInterp(const GridPoint& p, double altFt) const
+QPointF Weather::WindFieldProvider::uvAtCorner(const GridPoint& p, int ti, double tFrac, double altFt) const
 {
     const int nLev = m_levelsFt.size();
-    if (nLev == 0 || p.u.isEmpty()) {
+    if (nLev == 0 || ti < 0 || ti >= p.u.size()) {
         return {qQNaN(), qQNaN()};
     }
-    if (nLev == 1) {
-        return {p.u.value(0), p.v.value(0)};
+
+    // Time-interpolate the per-level arrays into a single profile (m/s)
+    const int tj = qMin(ti + 1, int(p.u.size()) - 1);
+    QList<double> uLev;
+    QList<double> vLev;
+    uLev.reserve(nLev);
+    vLev.reserve(nLev);
+    for (int l = 0; l < nLev; ++l) {
+        uLev << p.u[ti].value(l) * (1 - tFrac) + p.u[tj].value(l) * tFrac;
+        vLev << p.v[ti].value(l) * (1 - tFrac) + p.v[tj].value(l) * tFrac;
     }
 
-    // Bracket altitude between two levels (levels are ascending)
+    if (nLev == 1) {
+        return {uLev[0], vLev[0]};
+    }
+
+    // Altitude-interpolate the profile
     QList<double> levelsD;
     levelsD.reserve(nLev);
     for (int lvl : m_levelsFt) {
@@ -210,22 +237,42 @@ QPointF Weather::WindFieldProvider::uvAtLevelInterp(const GridPoint& p, double a
     }
     const int i = bracket(levelsD, altFt);
     if (i < 0) {
-        return {p.u.value(0), p.v.value(0)};
+        return {uLev[0], vLev[0]};
     }
-
     const double a0 = levelsD[i];
     const double a1 = levelsD[i + 1];
     const double t  = (a1 > a0) ? qBound(0.0, (altFt - a0) / (a1 - a0), 1.0) : 0.0;
-
-    const double u = p.u.value(i) * (1 - t) + p.u.value(i + 1) * t;
-    const double v = p.v.value(i) * (1 - t) + p.v.value(i + 1) * t;
-    return {u, v};
+    return {uLev[i] * (1 - t) + uLev[i + 1] * t,
+            vLev[i] * (1 - t) + vLev[i + 1] * t};
 }
 
-QPointF Weather::WindFieldProvider::uvKnotsAt(double lat, double lon, double altFt) const
+QPointF Weather::WindFieldProvider::uvKnotsAt(double lat, double lon, double altFt, const QDateTime& time) const
 {
     if (!isUsable()) {
         return {qQNaN(), qQNaN()};
+    }
+
+    // Bracket time (m_times ascending). Clamp outside the range.
+    int ti = 0;
+    double tFrac = 0.0;
+    const int nT = m_times.size();
+    if (nT >= 2 && time.isValid()) {
+        if (time <= m_times.first()) {
+            ti = 0;
+            tFrac = 0.0;
+        } else if (time >= m_times.last()) {
+            ti = nT - 1;
+            tFrac = 0.0;
+        } else {
+            for (int k = 0; k < nT - 1; ++k) {
+                if (time >= m_times[k] && time <= m_times[k + 1]) {
+                    ti = k;
+                    const qint64 span = m_times[k].secsTo(m_times[k + 1]);
+                    tFrac = (span > 0) ? double(m_times[k].secsTo(time)) / double(span) : 0.0;
+                    break;
+                }
+            }
+        }
     }
 
     const int iLat = bracket(m_lats, lat);
@@ -239,7 +286,6 @@ QPointF Weather::WindFieldProvider::uvKnotsAt(double lat, double lon, double alt
     const double lon0 = m_lons[iLon];
     const double lon1 = m_lons[iLon + 1];
 
-    // Look up the 4 corner grid points
     auto corner = [this](double la, double lo) -> const GridPoint* {
         for (const auto& p : m_grid) {
             if (qFuzzyCompare(p.lat, la) && qFuzzyCompare(p.lon, lo)) {
@@ -259,10 +305,10 @@ QPointF Weather::WindFieldProvider::uvKnotsAt(double lat, double lon, double alt
     const double tx = (lon1 > lon0) ? qBound(0.0, (lon - lon0) / (lon1 - lon0), 1.0) : 0.0;
     const double ty = (lat1 > lat0) ? qBound(0.0, (lat - lat0) / (lat1 - lat0), 1.0) : 0.0;
 
-    const QPointF uv00 = uvAtLevelInterp(*c00, altFt);
-    const QPointF uv01 = uvAtLevelInterp(*c01, altFt);
-    const QPointF uv10 = uvAtLevelInterp(*c10, altFt);
-    const QPointF uv11 = uvAtLevelInterp(*c11, altFt);
+    const QPointF uv00 = uvAtCorner(*c00, ti, tFrac, altFt);
+    const QPointF uv01 = uvAtCorner(*c01, ti, tFrac, altFt);
+    const QPointF uv10 = uvAtCorner(*c10, ti, tFrac, altFt);
+    const QPointF uv11 = uvAtCorner(*c11, ti, tFrac, altFt);
 
     // Bilinear blend (m/s)
     const QPointF top = uv00 * (1 - tx) + uv01 * tx;
@@ -291,8 +337,13 @@ Weather::Wind Weather::WindFieldProvider::windFromUV(double uKnots, double vKnot
     return w;
 }
 
+Weather::Wind Weather::WindFieldProvider::windAt(double lat, double lon, double altFt, const QDateTime& time) const
+{
+    const QPointF uv = uvKnotsAt(lat, lon, altFt, time);
+    return windFromUV(uv.x(), uv.y());
+}
+
 Weather::Wind Weather::WindFieldProvider::windAt(double lat, double lon, double altFt) const
 {
-    const QPointF uv = uvKnotsAt(lat, lon, altFt);
-    return windFromUV(uv.x(), uv.y());
+    return windAt(lat, lon, altFt, QDateTime::currentDateTimeUtc());
 }

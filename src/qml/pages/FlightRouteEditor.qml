@@ -196,6 +196,7 @@ Page {
             id: grid
 
             property leg leg: ({});
+            property int legIndex: -1
 
             Layout.fillWidth: true
 
@@ -207,15 +208,19 @@ Page {
                     // Mention units
                     Navigator.aircraft.horizontalDistanceUnit
                     Navigator.aircraft.fuelConsumptionUnit
+                    // Re-evaluate when the wind field reloads or inputs change
+                    Navigator.windSource
+                    Navigator.cruiseAltitudeFt
+                    Navigator.departureTime
 
                     if (leg == null)
                         return ""
 
-                    // Use the spatially-resolved wind field when available, else
-                    // fall back to the manually-entered uniform wind.
-                    var wind = Navigator.windSource === "field"
-                        ? leg.averageWind(Navigator.windField(), Navigator.cruiseAltitudeFt)
-                        : Navigator.wind
+                    // ETA-aware wind from the field (falls back to manual wind
+                    // internally when the field has no usable data).
+                    var wind = Navigator.flightRoute.legWind(
+                        grid.legIndex, Navigator.windField(), Navigator.wind,
+                        Navigator.aircraft, Navigator.departureTime, Navigator.cruiseAltitudeFt)
 
                     var txt = leg.description(wind, Navigator.aircraft)
 
@@ -630,7 +635,7 @@ Page {
                             var legs = Navigator.flightRoute.legs
                             var j
                             for (j=0; j<legs.length; j++) {
-                                legComponent.createObject(co, {leg: legs[j]});
+                                legComponent.createObject(co, {leg: legs[j], legIndex: j});
                                 waypointComponent.createObject(co, {waypoint: legs[j].endPoint, index: j+1});
                             }
                         }

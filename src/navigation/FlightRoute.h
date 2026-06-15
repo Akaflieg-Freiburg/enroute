@@ -194,6 +194,27 @@ namespace Navigation
         // METHODS
         //
 
+        /*! \brief ETA-aware wind for a leg, from a wind field.
+         *
+         *  Walks the route from \a departure, accumulating ETE leg by leg using
+         *  the wind sampled at each leg's mid-time, and returns the wind used
+         *  for the leg at \a index. Falls back to \a manualWind when the field
+         *  has no usable data (or yields no sample) for a leg.
+         *
+         *  @param index Leg index
+         *  @param wfp Wind field provider (may be null)
+         *  @param manualWind Fallback wind
+         *  @param aircraft Aircraft in use
+         *  @param departure Departure time (UTC)
+         *  @param altFt Cruise altitude in feet
+         */
+        [[nodiscard]] Q_INVOKABLE Weather::Wind legWind(int index,
+                                                        const Weather::WindFieldProvider* wfp,
+                                                        Weather::Wind manualWind,
+                                                        const Navigation::Aircraft& aircraft,
+                                                        const QDateTime& departure,
+                                                        double altFt) const;
+
         /*! \brief Adds a waypoint to the end of the route
          *
          * @param waypoint Waypoint to be added

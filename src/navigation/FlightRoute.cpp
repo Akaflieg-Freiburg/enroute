@@ -34,6 +34,66 @@ using namespace Qt::Literals::StringLiterals;
 
 
 //
+// ETA-aware wind
+//
+
+Weather::Wind Navigation::FlightRoute::legWind(int index,
+                                               const Weather::WindFieldProvider* wfp,
+                                               Weather::Wind manualWind,
+                                               const Navigation::Aircraft& aircraft,
+                                               const QDateTime& departure,
+                                               double altFt) const
+{
+    const auto theLegs = m_legs.value();
+    if (index < 0 || index >= theLegs.size())
+    {
+        return manualWind;
+    }
+
+    const bool haveField = (wfp != nullptr) && wfp->isUsable();
+    QDateTime t = departure.isValid() ? departure : QDateTime::currentDateTimeUtc();
+
+    // Wind for one leg at a given start time: sampled at the leg's mid-time.
+    // A single fixed-point step refines the mid-time using a first ETE estimate.
+    auto windForLeg = [&](const Navigation::Leg& leg, const QDateTime& start) -> Weather::Wind {
+        if (!haveField)
+        {
+            return manualWind;
+        }
+        auto w0 = leg.averageWind(wfp, altFt, start);
+        if (!w0.speed().isFinite() || !w0.directionFrom().isFinite())
+        {
+            return manualWind;
+        }
+        const auto ete0 = leg.ETE(w0, aircraft);
+        if (!ete0.isFinite())
+        {
+            return w0;
+        }
+        const QDateTime mid = start.addSecs(qRound64(ete0.toS() / 2.0));
+        auto wMid = leg.averageWind(wfp, altFt, mid);
+        if (!wMid.speed().isFinite() || !wMid.directionFrom().isFinite())
+        {
+            return w0;
+        }
+        return wMid;
+    };
+
+    // Accumulate to the requested leg
+    for (int k = 0; k < index; ++k)
+    {
+        const auto w = windForLeg(theLegs[k], t);
+        const auto ete = theLegs[k].ETE(w, aircraft);
+        if (ete.isFinite())
+        {
+            t = t.addSecs(qRound64(ete.toS()));
+        }
+    }
+    return windForLeg(theLegs[index], t);
+}
+
+
+//
 // Constructors and destructors
 //
 

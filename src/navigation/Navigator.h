@@ -138,6 +138,14 @@ public:
     [[nodiscard]] double cruiseAltitudeFt() const { return m_cruiseAltitudeFt; }
     void setCruiseAltitudeFt(double newAltFt);
 
+    /*! \brief Planned departure time (UTC), used for ETA-aware wind selection.
+     *
+     *  Defaults to the current time; not persisted across sessions.
+     */
+    Q_PROPERTY(QDateTime departureTime READ departureTime WRITE setDepartureTime NOTIFY departureTimeChanged)
+    [[nodiscard]] QDateTime departureTime() const { return m_departureTime; }
+    void setDepartureTime(const QDateTime& newTime);
+
     /*! \brief Active wind source: "field" (server wind field) or "manual" */
     Q_PROPERTY(QString windSource READ windSource NOTIFY windSourceChanged)
     [[nodiscard]] QString windSource() const;
@@ -171,6 +179,9 @@ signals:
 
     /*! \brief Notifier signal */
     void cruiseAltitudeFtChanged();
+
+    /*! \brief Notifier signal */
+    void departureTimeChanged();
 
     /*! \brief Notifier signal */
     void windSourceChanged();
@@ -207,11 +218,12 @@ private:
 
     Weather::Wind m_wind {};
 
-    // Effective wind for a leg: averaged field wind at cruise altitude when the
-    // wind field is usable, otherwise the manual wind m_wind.
-    [[nodiscard]] Weather::Wind effectiveWind(const Navigation::Leg& leg) const;
+    // Effective wind for a leg at a given time: averaged field wind at cruise
+    // altitude when the wind field is usable, otherwise the manual wind m_wind.
+    [[nodiscard]] Weather::Wind effectiveWindAtTime(const Navigation::Leg& leg, const QDateTime& time) const;
 
     double m_cruiseAltitudeFt {5000.0};
+    QDateTime m_departureTime {QDateTime::currentDateTimeUtc()};
 
     QString m_aircraftFileName;
 

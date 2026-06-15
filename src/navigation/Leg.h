@@ -29,6 +29,7 @@
 #include "units/Angle.h"
 #include "units/Units.h"
 #include "weather/Wind.h"
+#include "weather/WindFieldProvider.h"
 
 namespace Navigation {
 
@@ -212,6 +213,36 @@ public:
      *  @returns Estimated WCA on leg
      */
     [[nodiscard]] Q_INVOKABLE Units::Angle WCA(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
+
+
+    /*! \brief Track-averaged wind from a wind field, sampled along the leg.
+     *
+     *  Samples the field at several points along the leg's great circle at the
+     *  given cruise altitude and averages the (u, v) components. Returns an
+     *  invalid Wind when the provider is null or has no usable data.
+     *
+     *  @param wfp Wind field provider (may be null)
+     *  @param altFt Cruise altitude in feet
+     */
+    [[nodiscard]] Q_INVOKABLE Weather::Wind averageWind(const Weather::WindFieldProvider* wfp, double altFt) const;
+
+    /*! \brief ETE using a wind field at the given cruise altitude */
+    [[nodiscard]] Q_INVOKABLE Units::Timespan ETE(const Weather::WindFieldProvider* wfp, double altFt, const Navigation::Aircraft& aircraft) const
+    {
+        return ETE(averageWind(wfp, altFt), aircraft);
+    }
+
+    /*! \brief Estimated ground speed using a wind field at the given cruise altitude */
+    [[nodiscard]] Q_INVOKABLE Units::Speed GS(const Weather::WindFieldProvider* wfp, double altFt, const Navigation::Aircraft& aircraft) const
+    {
+        return GS(averageWind(wfp, altFt), aircraft);
+    }
+
+    /*! \brief Estimated fuel consumption using a wind field at the given cruise altitude */
+    [[nodiscard]] Q_INVOKABLE Units::Volume Fuel(const Weather::WindFieldProvider* wfp, double altFt, const Navigation::Aircraft& aircraft) const
+    {
+        return Fuel(averageWind(wfp, altFt), aircraft);
+    }
 
 
     //

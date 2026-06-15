@@ -783,7 +783,7 @@ Item {
                                         ToolButton {
                                             icon.source: "/icons/material/ic_refresh.svg"
                                             enabled: ForecastMapProvider.status !== 1  // not Refreshing
-                                            onClicked: ForecastMapProvider.refresh()
+                                            onClicked: { ForecastMapProvider.refresh(); WindFieldProvider.refresh() }
                                         }
                                         Label {
                                             anchors.verticalCenter: parent.verticalCenter

@@ -210,7 +210,25 @@ Page {
 
                     if (leg == null)
                         return ""
-                    return leg.description(Navigator.wind, Navigator.aircraft)
+
+                    // Use the spatially-resolved wind field when available, else
+                    // fall back to the manually-entered uniform wind.
+                    var wind = Navigator.windSource === "field"
+                        ? leg.averageWind(Navigator.windField(), Navigator.cruiseAltitudeFt)
+                        : Navigator.wind
+
+                    var txt = leg.description(wind, Navigator.aircraft)
+
+                    var gs = leg.GS(wind, Navigator.aircraft)
+                    if (gs.isFinite())
+                        txt += " • GS " + Navigator.aircraft.horizontalSpeedToString(gs)
+
+                    if (wind.speed.isFinite() && wind.directionFrom.isFinite() && wind.speed.toKN() > 0.5) {
+                        var dir = Math.round(wind.directionFrom.toDEG())
+                        txt += " • W/V " + dir + "°/" + Navigator.aircraft.horizontalSpeedToString(wind.speed)
+                    }
+
+                    return txt
                 }
             }
 
@@ -541,8 +559,39 @@ Page {
                 text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
 
+            // Wind-source banner: shows when a server wind field is loaded, and
+            // warns when it is stale (computation falls back to manual wind).
+            Rectangle {
+                id: windBanner
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+
+                visible: WindFieldProvider.hasData
+                height: visible ? windBannerLabel.implicitHeight + 12 : 0
+
+                color: WindFieldProvider.isStale ? "#fff3cd" : "#d1e7dd"
+
+                Label {
+                    id: windBannerLabel
+                    anchors.centerIn: parent
+                    width: parent.width - 24
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.Wrap
+                    color: "black"
+                    text: WindFieldProvider.isStale
+                        ? qsTr("Wind field stale (%1) — using manual wind").arg(WindFieldProvider.validTimeLabel)
+                        : qsTr("Using wind field — valid %1, FL%2")
+                            .arg(WindFieldProvider.validTimeLabel)
+                            .arg(Math.round(Navigator.cruiseAltitudeFt/100))
+                }
+            }
+
             DecoratedScrollView {
-                anchors.fill: parent
+                anchors.top: windBanner.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
 
                 contentWidth: availableWidth
 

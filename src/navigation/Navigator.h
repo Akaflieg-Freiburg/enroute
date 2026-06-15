@@ -27,6 +27,7 @@
 #include "GlobalObject.h"
 #include "navigation/FlightRoute.h"
 #include "navigation/RemainingRouteInfo.h"
+#include "weather/WindFieldProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -127,10 +128,25 @@ public:
     [[nodiscard]] Navigation::RemainingRouteInfo remainingRouteInfo() const {return m_remainingRouteInfo.value();}
     [[nodiscard]] QBindable<Navigation::RemainingRouteInfo> bindableRemainingRouteInfo() {return &m_remainingRouteInfo;}
 
-    /*! \brief Current wind */
+    /*! \brief Current (manual) wind, used as fallback when no wind field is available */
     Q_PROPERTY(Weather::Wind wind READ wind WRITE setWind NOTIFY windChanged)
     [[nodiscard]] Weather::Wind wind() const { return m_wind; }
     void setWind(Weather::Wind newWind);
+
+    /*! \brief Planned cruise altitude in feet, used to sample the wind field */
+    Q_PROPERTY(double cruiseAltitudeFt READ cruiseAltitudeFt WRITE setCruiseAltitudeFt NOTIFY cruiseAltitudeFtChanged)
+    [[nodiscard]] double cruiseAltitudeFt() const { return m_cruiseAltitudeFt; }
+    void setCruiseAltitudeFt(double newAltFt);
+
+    /*! \brief Active wind source: "field" (server wind field) or "manual" */
+    Q_PROPERTY(QString windSource READ windSource NOTIFY windSourceChanged)
+    [[nodiscard]] QString windSource() const;
+
+    /*! \brief The application-wide wind field provider, for use in QML leg calls.
+     *
+     *  QML ownership set to CppOwnership; do not delete.
+     */
+    Q_INVOKABLE Weather::WindFieldProvider* windField() const;
 
 signals:
     /*! \brief Notifier signal */
@@ -152,6 +168,12 @@ signals:
 
     /*! \brief Notifier signal */
     void windChanged();
+
+    /*! \brief Notifier signal */
+    void cruiseAltitudeFtChanged();
+
+    /*! \brief Notifier signal */
+    void windSourceChanged();
 
 private slots:
     // Check if altitude limit for flight maps needs to be lifted. Connected to positioning source.
@@ -184,6 +206,12 @@ private:
     const QString m_flightRouteFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/flight route.geojson"_s};
 
     Weather::Wind m_wind {};
+
+    // Effective wind for a leg: averaged field wind at cruise altitude when the
+    // wind field is usable, otherwise the manual wind m_wind.
+    [[nodiscard]] Weather::Wind effectiveWind(const Navigation::Leg& leg) const;
+
+    double m_cruiseAltitudeFt {5000.0};
 
     QString m_aircraftFileName;
 

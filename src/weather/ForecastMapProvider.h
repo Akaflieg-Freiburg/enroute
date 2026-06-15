@@ -51,6 +51,9 @@ public:
     explicit ForecastMapProvider(QObject* parent = nullptr);
     static Weather::ForecastMapProvider* create(QQmlEngine*, QJSEngine*);
 
+    /*! \brief Application-wide singleton instance, for C++ callers */
+    static Weather::ForecastMapProvider* instance() { return create(nullptr, nullptr); }
+
     //
     // Map data properties
     //

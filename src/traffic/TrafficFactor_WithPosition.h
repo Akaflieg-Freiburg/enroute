@@ -65,7 +65,8 @@ public:
 #warning docu
     void copyFrom(const TrafficFactor_WithPosition& other)
     {
-        if (other.positionInfo().timestamp() < m_positionInfo.value().timestamp())
+        const QScopedPropertyUpdateGroup updateGroup;
+        if (!other.valid() || (other.positionInfo().timestamp() < m_positionInfo.value().timestamp()))
         {
             return;
         }

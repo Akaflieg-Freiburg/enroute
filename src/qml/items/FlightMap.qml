@@ -55,6 +55,15 @@ Map {
     /*! \brief Altitude (ft) at which the wind-barb layer samples the wind field */
     property real windAltitudeFt: 3000
 
+    /*! \brief Forecast time driving the wind-barb layer (from the layer-menu time slider) */
+    property var windForecastTime: {
+        var ts = ForecastMapProvider.timestamps
+        var i = ForecastMapProvider.currentIndex
+        if (ts && ts.length > 0 && i >= 0 && i < ts.length)
+            return new Date(ts[i])
+        return new Date()
+    }
+
     /* Handle changes in zoom level */
     onZoomLevelChanged: {
         var vec1 = flightMap.fromCoordinate(flightMap.center, false)
@@ -1121,18 +1130,18 @@ Map {
                 return Math.abs(rl - Math.round(rl)) < 0.05 && Math.abs(ro - Math.round(ro)) < 0.05
             }
 
-            property var wind: WindFieldProvider.windAt(modelData.lat, modelData.lon, flightMap.windAltitudeFt)
+            property var wind: WindFieldProvider.windAt(modelData.lat, modelData.lon, flightMap.windAltitudeFt, flightMap.windForecastTime)
             onWindChanged: windCanvas.requestPaint()
 
             coordinate: QtPositioning.coordinate(modelData.lat, modelData.lon)
-            anchorPoint.x: 30
-            anchorPoint.y: 30
+            anchorPoint.x: 40
+            anchorPoint.y: 40
             visible: showHere && wind.speed.isFinite() && wind.directionFrom.isFinite()
 
             sourceItem: Canvas {
                 id: windCanvas
-                width: 60
-                height: 60
+                width: 80
+                height: 80
 
                 onPaint: {
                     var ctx = getContext("2d")
@@ -1142,25 +1151,25 @@ Map {
                         return
                     var spd = windItem.wind.speed.toKN()
 
-                    var cx = 30, cy = 30
+                    var cx = 40, cy = 40
                     // Calm: small circle
                     if (spd < 2.5) {
                         ctx.beginPath()
-                        ctx.arc(cx, cy, 3, 0, 2*Math.PI)
+                        ctx.arc(cx, cy, 4, 0, 2*Math.PI)
                         ctx.strokeStyle = "#1a3a8a"
-                        ctx.lineWidth = 1.5
+                        ctx.lineWidth = 1.8
                         ctx.stroke()
                         return
                     }
 
                     var dirRad = windItem.wind.directionFrom.toRAD() // staff toward wind source
-                    var len = 22
+                    var len = 30
                     var ex = cx + len * Math.sin(dirRad)
                     var ey = cy - len * Math.cos(dirRad)
 
                     ctx.strokeStyle = "#1a3a8a"
                     ctx.fillStyle = "#1a3a8a"
-                    ctx.lineWidth = 1.5
+                    ctx.lineWidth = 1.8
 
                     // Staff
                     ctx.beginPath()
@@ -1172,9 +1181,9 @@ Map {
                     var remaining = Math.round(spd / 5) * 5
                     var perpX = Math.cos(dirRad)
                     var perpY = Math.sin(dirRad)
-                    var stepX = -Math.sin(dirRad) * 5
-                    var stepY =  Math.cos(dirRad) * 5
-                    var barbLen = 11
+                    var stepX = -Math.sin(dirRad) * 6.5
+                    var stepY =  Math.cos(dirRad) * 6.5
+                    var barbLen = 15
                     var bx = ex, by = ey
 
                     while (remaining >= 50) {

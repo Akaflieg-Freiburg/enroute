@@ -477,82 +477,83 @@ SideviewQuickItem {
             }
         }
 
-        // Wind projected onto the route profile: a horizontal barb per sample
-        // point at the planned altitude. Red = headwind, green = tailwind;
-        // feathers encode the along-track component magnitude.
-        Repeater {
-            model: (rawSideView.mode === SideviewQuickItem.Route && rawSideView.showWind) ? rawSideView.windProfile : 0
+        // Wind projected onto the route profile, drawn as a single overlay over
+        // the whole content. Each sample is a horizontal barb: red = headwind,
+        // green = tailwind, feathers encode the along-track component.
+        Canvas {
+            id: windOverlay
 
-            delegate: Canvas {
-                id: windBarb
-                required property var modelData
+            width: flickable.contentWidth
+            height: flickable.contentHeight
+            visible: rawSideView.mode === SideviewQuickItem.Route && rawSideView.showWind
 
-                width: 60
-                height: 44
-                x: modelData.x - width/2
-                y: modelData.y - height - 6   // sit just above the profile point
+            property var pts: rawSideView.windProfile
+            onPtsChanged: requestPaint()
+            onWidthChanged: requestPaint()
+            onVisibleChanged: if (visible) requestPaint()
+            Component.onCompleted: requestPaint()
 
-                onModelDataChanged: requestPaint()
-                Component.onCompleted: requestPaint()
+            function drawBarb(ctx, x, y, alongKn) {
+                var mag = Math.abs(alongKn)
+                var color = alongKn >= 0 ? "#b00020" : "#2e7d32"
+                ctx.strokeStyle = color
+                ctx.fillStyle = color
+                ctx.lineWidth = 1.5
 
-                onPaint: {
-                    var ctx = getContext("2d")
-                    ctx.clearRect(0, 0, width, height)
-
-                    var along = modelData.alongKn          // + headwind, − tailwind
-                    var mag = Math.abs(along)
-                    var cx = width/2, cy = height - 6
-                    var color = along >= 0 ? "#b00020" : "#2e7d32"
-                    ctx.strokeStyle = color
-                    ctx.fillStyle = color
-                    ctx.lineWidth = 1.5
-
-                    if (mag < 2.5) {
-                        ctx.beginPath()
-                        ctx.arc(cx, cy, 3, 0, 2*Math.PI)
-                        ctx.stroke()
-                        return
-                    }
-
-                    var dir = along >= 0 ? 1 : -1          // headwind staff points toward source (ahead = right)
-                    var L = 22, barbLen = 10, spacing = 5
-                    var ex = cx + dir*L, ey = cy
-
-                    // Staff
+                if (mag < 2.5) {
                     ctx.beginPath()
-                    ctx.moveTo(cx, cy)
-                    ctx.lineTo(ex, ey)
+                    ctx.arc(x, y, 3, 0, 2*Math.PI)
                     ctx.stroke()
-
-                    var remaining = Math.round(mag/5)*5
-                    var bx = ex, by = ey
-                    var stepX = -dir*spacing
-
-                    while (remaining >= 50) {
-                        ctx.beginPath()
-                        ctx.moveTo(bx, by)
-                        ctx.lineTo(bx + 2*stepX, by - barbLen)
-                        ctx.lineTo(bx + 2*stepX, by)
-                        ctx.closePath()
-                        ctx.fill()
-                        bx += 2*stepX
-                        remaining -= 50
-                    }
-                    while (remaining >= 10) {
-                        ctx.beginPath()
-                        ctx.moveTo(bx, by)
-                        ctx.lineTo(bx + stepX, by - barbLen)
-                        ctx.stroke()
-                        bx += stepX
-                        remaining -= 10
-                    }
-                    if (remaining >= 5) {
-                        ctx.beginPath()
-                        ctx.moveTo(bx, by)
-                        ctx.lineTo(bx + stepX*0.5, by - barbLen*0.5)
-                        ctx.stroke()
-                    }
+                    return
                 }
+
+                var dir = alongKn >= 0 ? 1 : -1   // headwind staff points toward source (ahead = right)
+                var L = 22, barbLen = 11, spacing = 5
+                var ex = x + dir*L, ey = y
+
+                ctx.beginPath()
+                ctx.moveTo(x, y)
+                ctx.lineTo(ex, ey)
+                ctx.stroke()
+
+                var remaining = Math.round(mag/5)*5
+                var bx = ex, by = ey
+                var stepX = -dir*spacing
+
+                while (remaining >= 50) {
+                    ctx.beginPath()
+                    ctx.moveTo(bx, by)
+                    ctx.lineTo(bx + 2*stepX, by - barbLen)
+                    ctx.lineTo(bx + 2*stepX, by)
+                    ctx.closePath()
+                    ctx.fill()
+                    bx += 2*stepX
+                    remaining -= 50
+                }
+                while (remaining >= 10) {
+                    ctx.beginPath()
+                    ctx.moveTo(bx, by)
+                    ctx.lineTo(bx + stepX, by - barbLen)
+                    ctx.stroke()
+                    bx += stepX
+                    remaining -= 10
+                }
+                if (remaining >= 5) {
+                    ctx.beginPath()
+                    ctx.moveTo(bx, by)
+                    ctx.lineTo(bx + stepX*0.5, by - barbLen*0.5)
+                    ctx.stroke()
+                }
+            }
+
+            onPaint: {
+                var ctx = getContext("2d")
+                ctx.clearRect(0, 0, width, height)
+                if (!visible)
+                    return
+                var p = pts
+                for (var i = 0; i < p.length; i++)
+                    drawBarb(ctx, p[i].x, p[i].y, p[i].alongKn)
             }
         }
 

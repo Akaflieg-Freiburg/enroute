@@ -481,7 +481,7 @@ SideviewQuickItem {
         // point at the planned altitude. Red = headwind, green = tailwind;
         // feathers encode the along-track component magnitude.
         Repeater {
-            model: rawSideView.mode === SideviewQuickItem.Route ? rawSideView.windProfile : 0
+            model: (rawSideView.mode === SideviewQuickItem.Route && rawSideView.showWind) ? rawSideView.windProfile : 0
 
             delegate: Canvas {
                 id: windBarb
@@ -697,6 +697,32 @@ SideviewQuickItem {
                 rawSideView.mode = SideviewQuickItem.Route
             }
         }
+    }
+
+    // Wind toggle button — only in Route mode; shows the projected wind barbs
+    RoundButton {
+        id: windToggle
+
+        anchors.right:   modeToggle.left
+        anchors.top:     parent.top
+        anchors.margins: 4
+        z: 10
+
+        width:  32
+        height: 32
+        padding: 0
+
+        visible: rawSideView.mode === SideviewQuickItem.Route
+        checkable: true
+        checked: rawSideView.showWind
+        onToggled: rawSideView.showWind = checked
+
+        text: "🌫"
+        font.pixelSize: 16
+        opacity: checked ? 1.0 : 0.55
+
+        ToolTip.text: qsTr("Show wind")
+        ToolTip.visible: hovered
     }
 
     // Popup to specify the planned altitude of a waypoint, opened by tapping a

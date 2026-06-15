@@ -71,6 +71,14 @@ void Ui::SideviewQuickItem::setMode(Mode newMode)
     updateProperties();
 }
 
+void Ui::SideviewQuickItem::setShowWind(bool newShowWind)
+{
+    if (m_showWind == newShowWind) { return; }
+    m_showWind = newShowWind;
+    emit showWindChanged();
+    updateProperties();
+}
+
 void Ui::SideviewQuickItem::updateProperties()
 {
     // Rate-limiting code. Ensure that this expensive method runs at most every minimumUpdateInterval_ms and not more often.
@@ -589,8 +597,9 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
     m_plannedProfilePoints = profilePoints;
 
     // -----------------------------------------------------------------------
-    // 6c. Wind barbs projected onto the route profile: sample the wind field
-    //     along the route at the planned altitude and project onto the track.
+    // 6c. Wind barbs projected onto the route profile (when enabled): sample
+    //     the field on a grid of distance × altitude and project onto the
+    //     track. Altitude rows span the visible Y range.
     // -----------------------------------------------------------------------
     {
         const auto* wfp = Weather::WindFieldProvider::instance();
@@ -598,44 +607,18 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
         const Weather::Wind manualWind = GlobalObject::navigator()->wind();
         const bool haveManual = manualWind.speed().isFinite() && manualWind.directionFrom().isFinite();
 
-        // Planned altitude (metres) at a distance along the route
-        auto plannedAltAtDist = [&](double distM) -> Units::Distance {
-            qsizetype seg = 0;
-            for (qsizetype i = 1; i < cumulativeDist.size(); i++)
-            {
-                if (cumulativeDist[i] >= distM) { seg = i - 1; break; }
-                seg = i - 1;
-            }
-            if (seg + 1 >= plannedAlts.size()) { return plannedAlts.isEmpty() ? Units::Distance() : plannedAlts.last(); }
-            const double segLen = cumulativeDist[seg+1] - cumulativeDist[seg];
-            const double t = (segLen > 0.01) ? (distM - cumulativeDist[seg]) / segLen : 0.0;
-            return plannedAlts[seg] + (plannedAlts[seg+1] - plannedAlts[seg]) * qBound(0.0, t, 1.0);
-        };
-
         QVariantList windPts;
-        if ((haveField || haveManual) && (totalRouteLen > 1.0))
+        if (m_showWind && (haveField || haveManual) && (totalRouteLen > 1.0))
         {
-            // One sample roughly every 80 px, clamped to a sane count
-            const int nSamples = qBound(3, int(renderW / 80.0), 16);
+            const int nCols = qBound(3, int(renderW / 90.0), 14);
+            const int nRows = 5; // altitude rows across the visible range
             const QDateTime now = QDateTime::currentDateTimeUtc();
-            for (int s = 0; s < nSamples; s++)
+
+            for (int c = 0; c < nCols; c++)
             {
-                const double frac = (s + 0.5) / nSamples;
+                const double frac = (c + 0.5) / nCols;
                 const double distM = frac * totalRouteLen;
                 const auto coord = coordAtDist(distM);
-                const auto alt = plannedAltAtDist(distM);
-
-                Weather::Wind w = haveField
-                    ? wfp->windAt(coord.latitude(), coord.longitude(), alt.toFeet(), now)
-                    : Weather::Wind();
-                if (!w.speed().isFinite() || !w.directionFrom().isFinite())
-                {
-                    w = manualWind;
-                }
-                if (!w.speed().isFinite() || !w.directionFrom().isFinite())
-                {
-                    continue;
-                }
 
                 // Track azimuth at this distance
                 qsizetype seg = 0;
@@ -646,18 +629,36 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
                 }
                 const double trackDeg = geoPath[seg].azimuthTo(geoPath[qMin(seg+1, geoPath.size()-1)]);
 
-                const double spdKn = w.speed().toKN();
-                const double dirDeg = w.directionFrom().toDEG();
-                // Headwind component (+) = wind blowing from ahead along the track
-                const double alongKn = spdKn * qCos(qDegreesToRadians(dirDeg - trackDeg));
+                for (int rrow = 0; rrow < nRows; rrow++)
+                {
+                    const Units::Distance alt = sideview_minAlt
+                        + (sideview_maxAlt - sideview_minAlt) * ((rrow + 0.5) / nRows);
 
-                QVariantMap m;
-                m[QStringLiteral("x")]          = frac * renderW;
-                m[QStringLiteral("y")]          = altToY(alt);
-                m[QStringLiteral("speedKn")]    = spdKn;
-                m[QStringLiteral("dirFromDeg")] = dirDeg;
-                m[QStringLiteral("alongKn")]    = alongKn;
-                windPts << m;
+                    Weather::Wind w = haveField
+                        ? wfp->windAt(coord.latitude(), coord.longitude(), alt.toFeet(), now)
+                        : Weather::Wind();
+                    if (!w.speed().isFinite() || !w.directionFrom().isFinite())
+                    {
+                        w = manualWind;
+                    }
+                    if (!w.speed().isFinite() || !w.directionFrom().isFinite())
+                    {
+                        continue;
+                    }
+
+                    const double spdKn = w.speed().toKN();
+                    const double dirDeg = w.directionFrom().toDEG();
+                    // Headwind component (+) = wind blowing from ahead along the track
+                    const double alongKn = spdKn * qCos(qDegreesToRadians(dirDeg - trackDeg));
+
+                    QVariantMap m;
+                    m[QStringLiteral("x")]          = frac * renderW;
+                    m[QStringLiteral("y")]          = altToY(alt);
+                    m[QStringLiteral("speedKn")]    = spdKn;
+                    m[QStringLiteral("dirFromDeg")] = dirDeg;
+                    m[QStringLiteral("alongKn")]    = alongKn;
+                    windPts << m;
+                }
             }
         }
         m_windProfile = windPts;

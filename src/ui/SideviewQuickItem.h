@@ -165,6 +165,9 @@ public:
      */
     Q_PROPERTY(QVariantList windProfile READ windProfile BINDABLE bindableWindProfile)
 
+    /*! \brief Whether to compute and show the projected wind barbs (route mode) */
+    Q_PROPERTY(bool showWind READ showWind WRITE setShowWind NOTIFY showWindChanged)
+
     /*! \brief Track string
      *
      * If the own aircraft is not moving sufficiently fast, this property holds
@@ -314,10 +317,17 @@ public:
      */
     QBindable<QVariantList> bindableWindProfile() const {return &m_windProfile;}
 
+    /*! \brief Getter for property showWind */
+    bool showWind() const {return m_showWind;}
+
+    /*! \brief Setter for property showWind */
+    void setShowWind(bool newShowWind);
+
 signals:
     void modeChanged();
     void renderWidthChanged();
     void scaleRangeChanged();
+    void showWindChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(SideviewQuickItem)
@@ -366,6 +376,7 @@ private:
 
     QProperty<QVariantList> m_plannedProfilePoints;
     QProperty<QVariantList> m_windProfile;
+    bool m_showWind {false};
 
     QProperty<QVariantMap> m_airspaces;
 

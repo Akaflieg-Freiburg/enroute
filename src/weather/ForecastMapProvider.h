@@ -63,9 +63,6 @@ public:
     Q_PROPERTY(QString currentTimestampLabel READ currentTimestampLabel NOTIFY currentIndexChanged)
     Q_PROPERTY(QString currentRainMap READ currentRainMap NOTIFY currentIndexChanged)
     Q_PROPERTY(QString currentCloudbaseMap READ currentCloudbaseMap NOTIFY currentIndexChanged)
-    Q_PROPERTY(QString currentWindMap READ currentWindMap NOTIFY currentWindMapChanged)
-    Q_PROPERTY(QStringList windPressureLevels READ windPressureLevels NOTIFY timestampsChanged)
-    Q_PROPERTY(QString currentWindPressureLevel READ currentWindPressureLevel WRITE setCurrentWindPressureLevel NOTIFY currentWindMapChanged)
 
     //
     // Layer metadata (from index.json)
@@ -92,9 +89,6 @@ public:
     /*! \brief vmax for cloudbase color scale */
     Q_PROPERTY(double cloudbaseVmax READ cloudbaseVmax NOTIFY metadataChanged)
 
-    /*! \brief Units string for the wind layer, e.g. "kt" */
-    Q_PROPERTY(QString windUnits READ windUnits NOTIFY metadataChanged)
-
     //
     // Sync / connectivity properties
     //
@@ -118,9 +112,6 @@ public:
     [[nodiscard]] QString currentTimestampLabel() const;
     [[nodiscard]] QString currentRainMap() const;
     [[nodiscard]] QString currentCloudbaseMap() const;
-    [[nodiscard]] QString currentWindMap() const;
-    [[nodiscard]] QStringList windPressureLevels() const { return m_windPressureLevels; }
-    [[nodiscard]] QString currentWindPressureLevel() const { return m_currentWindPressureLevel; }
     [[nodiscard]] QString serverUrl() const { return m_serverUrl; }
     [[nodiscard]] Status status() const { return m_status; }
     [[nodiscard]] QString lastRefreshLabel() const;
@@ -134,7 +125,6 @@ public:
     [[nodiscard]] QStringList cloudbaseColors() const { return m_cloudbaseColors; }
     [[nodiscard]] double cloudbaseVmin() const        { return m_cloudbaseVmin; }
     [[nodiscard]] double cloudbaseVmax() const        { return m_cloudbaseVmax; }
-    [[nodiscard]] QString windUnits() const      { return m_windUnits; }
 
 
     //
@@ -142,7 +132,6 @@ public:
     //
 
     void setCurrentIndex(int idx);
-    void setCurrentWindPressureLevel(const QString& level);
     void setServerUrl(const QString& url);
 
     /*! \brief Fetch index.json from the server and download new maps. No-op if already refreshing. */
@@ -152,7 +141,6 @@ public:
 signals:
     void timestampsChanged();
     void currentIndexChanged();
-    void currentWindMapChanged();
     void serverUrlChanged();
     void statusChanged();
     void lastRefreshLabelChanged();
@@ -186,9 +174,6 @@ private:
     int         m_currentIndex {0};
     QMap<QString, QString>                  m_rainMaps;
     QMap<QString, QString>                  m_cloudbaseMaps;
-    QMap<QString, QMap<QString, QString>>   m_windMaps;      ///< outer key: pressure level string
-    QStringList m_windPressureLevels;
-    QString     m_currentWindPressureLevel;
 
     // Layer metadata from index.json
     QString     m_referenceTime;
@@ -200,7 +185,6 @@ private:
     QStringList m_cloudbaseColors;
     double      m_cloudbaseVmin   {0.0};
     double      m_cloudbaseVmax   {4000.0};
-    QString     m_windUnits       {QStringLiteral("kt")};
 };
 
 } // namespace Weather

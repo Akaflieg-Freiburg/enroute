@@ -623,14 +623,6 @@ Item {
                                 weatherMenu.popup()
                             }
 
-                            // Cheated but pilot-friendly FL labels for the 4 AROME pressure levels
-                            function hpaToFL(hpa) {
-                                var lookup = { "1000": "FL000", "900": "FL033", "800": "FL065", "700": "FL100" }
-                                return lookup[String(Math.round(parseFloat(hpa)))] ?? ("FL" + Math.round(
-                                    (1 - Math.pow(parseFloat(hpa)/1013.25, 0.190284)) * 145366.45 / 100
-                                ).toString().padStart(3,"0"))
-                            }
-
                             // Convert cloudbase metres to the aircraft's configured altitude unit
                             function cbLabel(metres) {
                                 if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters)

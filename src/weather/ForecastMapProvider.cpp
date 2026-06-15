@@ -37,8 +37,6 @@ static const QRegularExpression re_rain(
     u"^rain_map_(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z?)\\.png$"_s);
 static const QRegularExpression re_cloudbase(
     u"^cloudbase_map_(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z?)\\.png$"_s);
-static const QRegularExpression re_wind(
-    u"^wind_map_(\\d+(?:\\.\\d+)?)hPa_(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z?)\\.png$"_s);
 
 
 // ---------------------------------------------------------------------------
@@ -273,10 +271,6 @@ void Weather::ForecastMapProvider::parseMetadata(const QJsonObject& root)
         m_cloudbaseColors = readColors(cb);
     }
 
-    const auto wind = layers[u"wind"_s].toObject();
-    if (!wind.isEmpty())
-        m_windUnits = wind[u"units"_s].toString(m_windUnits);
-
     emit metadataChanged();
 }
 
@@ -289,7 +283,6 @@ void Weather::ForecastMapProvider::scan()
 {
     m_rainMaps.clear();
     m_cloudbaseMaps.clear();
-    m_windMaps.clear();
 
     const QDir dir(m_localScanDir.isEmpty() ? cacheDir() : m_localScanDir);
     for (const auto& name : dir.entryList(QStringList{u"*.png"_s}, QDir::Files)) {
@@ -301,37 +294,21 @@ void Weather::ForecastMapProvider::scan()
         m = re_cloudbase.match(name);
         if (m.hasMatch()) {
             m_cloudbaseMaps[m.captured(1)] = dir.absoluteFilePath(name);
-            continue;
         }
-        m = re_wind.match(name);
-        if (m.hasMatch())
-            m_windMaps[m.captured(1)][m.captured(2)] = dir.absoluteFilePath(name);
     }
 
     // Union of all timestamps across all map types
     QSet<QString> tsSet;
     for (const auto& k : m_rainMaps.keys())      tsSet << k;
     for (const auto& k : m_cloudbaseMaps.keys()) tsSet << k;
-    for (const auto& level : std::as_const(m_windMaps))
-        for (const auto& k : level.keys())       tsSet << k;
 
     m_timestamps = tsSet.values();
     m_timestamps.sort();
-
-    // Wind pressure levels sorted descending (1000 first = FL000 on left of slider)
-    QStringList levels = m_windMaps.keys();
-    std::sort(levels.begin(), levels.end(),
-              [](const QString& a, const QString& b) { return a.toDouble() > b.toDouble(); });
-    m_windPressureLevels = levels;
-
-    if (m_currentWindPressureLevel.isEmpty() && !levels.isEmpty())
-        m_currentWindPressureLevel = levels.first();
 
     m_currentIndex = qBound(0, m_currentIndex, qMax(0, int(m_timestamps.size()) - 1));
 
     emit timestampsChanged();
     emit currentIndexChanged();
-    emit currentWindMapChanged();
 }
 
 
@@ -362,14 +339,6 @@ void Weather::ForecastMapProvider::setCurrentIndex(int idx)
     if (m_currentIndex == idx) return;
     m_currentIndex = idx;
     emit currentIndexChanged();
-    emit currentWindMapChanged();
-}
-
-void Weather::ForecastMapProvider::setCurrentWindPressureLevel(const QString& level)
-{
-    if (m_currentWindPressureLevel == level) return;
-    m_currentWindPressureLevel = level;
-    emit currentWindMapChanged();
 }
 
 
@@ -415,11 +384,4 @@ QString Weather::ForecastMapProvider::currentCloudbaseMap() const
 {
     if (m_timestamps.isEmpty() || m_currentIndex >= m_timestamps.size()) return {};
     return m_cloudbaseMaps.value(m_timestamps[m_currentIndex]);
-}
-
-QString Weather::ForecastMapProvider::currentWindMap() const
-{
-    if (m_timestamps.isEmpty() || m_currentIndex >= m_timestamps.size()
-            || m_currentWindPressureLevel.isEmpty()) return {};
-    return m_windMaps.value(m_currentWindPressureLevel).value(m_timestamps[m_currentIndex]);
 }

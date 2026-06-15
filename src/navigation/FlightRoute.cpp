@@ -34,62 +34,64 @@ using namespace Qt::Literals::StringLiterals;
 
 
 //
-// ETA-aware wind
+// ETA-aware, wind-integrated leg nav
 //
 
-Weather::Wind Navigation::FlightRoute::legWind(int index,
-                                               const Weather::WindFieldProvider* wfp,
-                                               Weather::Wind manualWind,
-                                               const Navigation::Aircraft& aircraft,
-                                               const QDateTime& departure,
-                                               double altFt) const
+QVariantMap Navigation::FlightRoute::legNav(int index,
+                                            const Weather::WindFieldProvider* wfp,
+                                            Weather::Wind manualWind,
+                                            const Navigation::Aircraft& aircraft,
+                                            const QDateTime& departure) const
 {
     const auto theLegs = m_legs.value();
     if (index < 0 || index >= theLegs.size())
     {
-        return manualWind;
+        return {};
     }
 
-    const bool haveField = (wfp != nullptr) && wfp->isUsable();
-    QDateTime t = departure.isValid() ? departure : QDateTime::currentDateTimeUtc();
-
-    // Wind for one leg at a given start time: sampled at the leg's mid-time.
-    // A single fixed-point step refines the mid-time using a first ETE estimate.
-    auto windForLeg = [&](const Navigation::Leg& leg, const QDateTime& start) -> Weather::Wind {
-        if (!haveField)
+    // Planned altitude (ft) at waypoint wpIdx: stored value, else aircraft
+    // default cruise, else a sane fallback so the field can still be sampled.
+    auto altFtAt = [&](int wpIdx) -> double {
+        double m = plannedAltitude(wpIdx);
+        if (!qIsFinite(m))
         {
-            return manualWind;
+            m = aircraft.cruiseAltitudeM();
         }
-        auto w0 = leg.averageWind(wfp, altFt, start);
-        if (!w0.speed().isFinite() || !w0.directionFrom().isFinite())
+        if (!qIsFinite(m))
         {
-            return manualWind;
+            return 3000.0;
         }
-        const auto ete0 = leg.ETE(w0, aircraft);
-        if (!ete0.isFinite())
-        {
-            return w0;
-        }
-        const QDateTime mid = start.addSecs(qRound64(ete0.toS() / 2.0));
-        auto wMid = leg.averageWind(wfp, altFt, mid);
-        if (!wMid.speed().isFinite() || !wMid.directionFrom().isFinite())
-        {
-            return w0;
-        }
-        return wMid;
+        return Units::Distance::fromM(m).toFeet();
     };
 
-    // Accumulate to the requested leg
-    for (int k = 0; k < index; ++k)
+    QDateTime t = departure.isValid() ? departure : QDateTime::currentDateTimeUtc();
+
+    // Walk preceding legs to accumulate the start time of the requested leg
+    Navigation::LegIntegration res;
+    for (int k = 0; k <= index; ++k)
     {
-        const auto w = windForLeg(theLegs[k], t);
-        const auto ete = theLegs[k].ETE(w, aircraft);
-        if (ete.isFinite())
+        res = theLegs[k].integrate(wfp, manualWind, aircraft, t, altFtAt(k), altFtAt(k + 1));
+        if (k == index)
         {
-            t = t.addSecs(qRound64(ete.toS()));
+            break;
+        }
+        if (res.isValid && res.ete.isFinite())
+        {
+            t = t.addSecs(qRound64(res.ete.toS()));
         }
     }
-    return windForLeg(theLegs[index], t);
+
+    QVariantMap out;
+    out[u"ete"_s]  = QVariant::fromValue(res.ete);
+    out[u"gs"_s]   = QVariant::fromValue(res.gs);
+    out[u"wind"_s] = QVariant::fromValue(res.wind);
+    Units::Volume fuel;
+    if (aircraft.fuelConsumption().isFinite() && res.ete.isFinite())
+    {
+        fuel = aircraft.fuelConsumption() * res.ete;
+    }
+    out[u"fuel"_s] = QVariant::fromValue(fuel);
+    return out;
 }
 
 

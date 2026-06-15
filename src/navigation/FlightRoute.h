@@ -27,6 +27,7 @@
 #include <QLocale>
 #include <QPointer>
 #include <QQmlEngine>
+#include <QVariant>
 #include <QXmlStreamReader>
 
 #include "geomaps/Waypoint.h"
@@ -194,26 +195,29 @@ namespace Navigation
         // METHODS
         //
 
-        /*! \brief ETA-aware wind for a leg, from a wind field.
+        /*! \brief ETA-aware, wind-integrated nav data for a leg.
          *
-         *  Walks the route from \a departure, accumulating ETE leg by leg using
-         *  the wind sampled at each leg's mid-time, and returns the wind used
-         *  for the leg at \a index. Falls back to \a manualWind when the field
-         *  has no usable data (or yields no sample) for a leg.
+         *  Walks the route from \a departure, integrating each leg's wind effect
+         *  (4-D field sampling, altitude ramping between the waypoints' planned
+         *  altitudes, advancing clock) to accumulate the start time of the leg
+         *  at \a index, then integrates that leg. Falls back to \a manualWind
+         *  where the field has no usable sample.
+         *
+         *  @returns A map with keys "ete" (Units::Timespan), "gs"
+         *  (Units::Speed), "wind" (Weather::Wind) and "fuel" (Units::Volume).
+         *  Empty when the leg index is invalid or inputs are insufficient.
          *
          *  @param index Leg index
          *  @param wfp Wind field provider (may be null)
          *  @param manualWind Fallback wind
          *  @param aircraft Aircraft in use
          *  @param departure Departure time (UTC)
-         *  @param altFt Cruise altitude in feet
          */
-        [[nodiscard]] Q_INVOKABLE Weather::Wind legWind(int index,
-                                                        const Weather::WindFieldProvider* wfp,
-                                                        Weather::Wind manualWind,
-                                                        const Navigation::Aircraft& aircraft,
-                                                        const QDateTime& departure,
-                                                        double altFt) const;
+        [[nodiscard]] Q_INVOKABLE QVariantMap legNav(int index,
+                                                     const Weather::WindFieldProvider* wfp,
+                                                     Weather::Wind manualWind,
+                                                     const Navigation::Aircraft& aircraft,
+                                                     const QDateTime& departure) const;
 
         /*! \brief Adds a waypoint to the end of the route
          *

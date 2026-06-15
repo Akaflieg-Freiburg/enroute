@@ -34,6 +34,14 @@
 
 namespace Navigation {
 
+/*! \brief Result of integrating wind effect along a leg */
+struct LegIntegration {
+    Units::Timespan ete;   ///< time enroute
+    Units::Speed    gs;    ///< effective (distance/time) ground speed
+    Weather::Wind   wind;  ///< track-representative wind (vector-averaged)
+    bool isValid {false};
+};
+
 /*! \brief Leg in a flight route */
 
 class Leg {
@@ -234,6 +242,29 @@ public:
     {
         return averageWind(wfp, altFt, QDateTime::currentDateTimeUtc());
     }
+
+    /*! \brief Integrate the wind effect along the leg.
+     *
+     *  Steps along the great circle; at each sub-segment the altitude ramps
+     *  linearly from \a startAltFt to \a endAltFt, the wind is sampled from the
+     *  field in 4-D (lat, lon, alt, time) with the clock advancing as the
+     *  integration proceeds, and the local ground speed comes from the wind
+     *  triangle. ETE is the integral of ds/GS. Falls back to \a manualWind
+     *  where the field has no usable sample.
+     *
+     *  @param wfp Wind field provider (may be null)
+     *  @param manualWind Fallback wind
+     *  @param aircraft Aircraft in use
+     *  @param startTime Clock at the start of the leg (UTC)
+     *  @param startAltFt Altitude at the leg's start waypoint (ft)
+     *  @param endAltFt Altitude at the leg's end waypoint (ft)
+     */
+    [[nodiscard]] LegIntegration integrate(const Weather::WindFieldProvider* wfp,
+                                           Weather::Wind manualWind,
+                                           const Navigation::Aircraft& aircraft,
+                                           const QDateTime& startTime,
+                                           double startAltFt,
+                                           double endAltFt) const;
 
 
     //

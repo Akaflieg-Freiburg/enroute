@@ -208,27 +208,39 @@ Page {
                     // Mention units
                     Navigator.aircraft.horizontalDistanceUnit
                     Navigator.aircraft.fuelConsumptionUnit
-                    // Re-evaluate when the wind field reloads or inputs change
+                    // Re-evaluate when the wind field, altitudes or departure change
                     Navigator.windSource
-                    Navigator.cruiseAltitudeFt
                     Navigator.departureTime
+                    flightRoutePage.plannedAltRevision
 
                     if (leg == null)
                         return ""
 
-                    // ETA-aware wind from the field (falls back to manual wind
-                    // internally when the field has no usable data).
-                    var wind = Navigator.flightRoute.legWind(
+                    // ETA-aware, wind-integrated nav for this leg (4-D field
+                    // sampling along the leg, altitude ramp between waypoints,
+                    // advancing clock; falls back to manual wind internally).
+                    var nav = Navigator.flightRoute.legNav(
                         grid.legIndex, Navigator.windField(), Navigator.wind,
-                        Navigator.aircraft, Navigator.departureTime, Navigator.cruiseAltitudeFt)
+                        Navigator.aircraft, Navigator.departureTime)
+                    var wind = nav.wind
 
-                    var txt = leg.description(wind, Navigator.aircraft)
+                    var txt = Navigator.aircraft.horizontalDistanceToString(leg.distance)
 
-                    var gs = leg.GS(wind, Navigator.aircraft)
-                    if (gs.isFinite())
-                        txt += " • GS " + Navigator.aircraft.horizontalSpeedToString(gs)
+                    if (nav.ete !== undefined && nav.ete.isFinite())
+                        txt += " • ETE " + nav.ete.toHoursAndMinutes() + " h"
 
-                    if (wind.speed.isFinite() && wind.directionFrom.isFinite() && wind.speed.toKN() > 0.5) {
+                    var tcDeg = leg.TC.toDEG()
+                    if (!isNaN(tcDeg))
+                        txt += " • TC " + Math.round(tcDeg) + "°"
+
+                    var thDeg = leg.TH(wind, Navigator.aircraft).toDEG()
+                    if (!isNaN(thDeg))
+                        txt += " • TH " + Math.round(thDeg) + "°"
+
+                    if (nav.gs !== undefined && nav.gs.isFinite())
+                        txt += " • GS " + Navigator.aircraft.horizontalSpeedToString(nav.gs)
+
+                    if (wind !== undefined && wind.speed.isFinite() && wind.directionFrom.isFinite() && wind.speed.toKN() > 0.5) {
                         var dir = Math.round(wind.directionFrom.toDEG())
                         txt += " • W/V " + dir + "°/" + Navigator.aircraft.horizontalSpeedToString(wind.speed)
                     }

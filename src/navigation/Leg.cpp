@@ -289,6 +289,92 @@ auto Navigation::Leg::averageWind(const Weather::WindFieldProvider* wfp, double 
 }
 
 
+auto Navigation::Leg::integrate(const Weather::WindFieldProvider* wfp,
+                                Weather::Wind manualWind,
+                                const Navigation::Aircraft& aircraft,
+                                const QDateTime& startTime,
+                                double startAltFt,
+                                double endAltFt) const -> Navigation::LegIntegration
+{
+    LegIntegration r;
+    if (!isValid() || !aircraft.cruiseSpeed().isFinite()) {
+        return r;
+    }
+
+    const auto start = m_start.coordinate();
+    const auto end = m_end.coordinate();
+    const double distM = start.distanceTo(end);
+    const double tasMPS = aircraft.cruiseSpeed().toMPS();
+    if (tasMPS <= 0.0) {
+        return r;
+    }
+
+    const bool haveField = (wfp != nullptr) && wfp->isUsable();
+
+    auto sampleWind = [&](double lat, double lon, double altFt, const QDateTime& t) -> Weather::Wind {
+        if (haveField) {
+            auto w = wfp->windAt(lat, lon, altFt, t);
+            if (w.speed().isFinite() && w.directionFrom().isFinite()) {
+                return w;
+            }
+        }
+        return manualWind;
+    };
+
+    // Trivial short leg: single sample, GS from the wind triangle
+    if (distM < minLegLength.toM()) {
+        auto w = sampleWind(start.latitude(), start.longitude(), startAltFt, startTime);
+        auto gs = GS(w, aircraft);
+        const double gsMPS = gs.isFinite() ? gs.toMPS() : tasMPS;
+        r.wind = w;
+        r.gs = Units::Speed::fromMPS(gsMPS);
+        r.ete = Units::Timespan::fromS(distM / gsMPS);
+        r.isValid = true;
+        return r;
+    }
+
+    const double az = start.azimuthTo(end);
+    const int nSteps = qBound(4, int(distM / Units::Distance::fromNM(5.0).toM()), 24);
+    const double ds = distM / nSteps;
+
+    double totalSec = 0.0;
+    double sumU = 0.0; // knots, meteorological eastward
+    double sumV = 0.0; // knots, meteorological northward
+    int wc = 0;
+
+    for (int i = 0; i < nSteps; ++i) {
+        const double f = (i + 0.5) / nSteps;
+        const auto p = start.atDistanceAndAzimuth(f * distM, az);
+        const double altFt = startAltFt + (endAltFt - startAltFt) * f;
+        const QDateTime t = startTime.addSecs(qRound64(totalSec));
+
+        const auto w = sampleWind(p.latitude(), p.longitude(), altFt, t);
+        const auto gs = GS(w, aircraft);
+        const double gsMPS = gs.isFinite() ? gs.toMPS() : tasMPS;
+        if (gsMPS <= 0.0) {
+            return r; // headwind ≥ TAS: leg not flyable as planned
+        }
+        totalSec += ds / gsMPS;
+
+        if (w.speed().isFinite() && w.directionFrom().isFinite()) {
+            const double spd = w.speed().toKN();
+            const double dirRad = w.directionFrom().toDEG() * M_PI / 180.0;
+            sumU += -spd * sin(dirRad);
+            sumV += -spd * cos(dirRad);
+            ++wc;
+        }
+    }
+
+    r.ete = Units::Timespan::fromS(totalSec);
+    r.gs = Units::Speed::fromMPS(distM / totalSec);
+    if (wc > 0) {
+        r.wind = Weather::WindFieldProvider::windFromUV(sumU / wc, sumV / wc);
+    }
+    r.isValid = true;
+    return r;
+}
+
+
 auto Navigation::Leg::hasDataForWindTriangle(Weather::Wind wind, const Navigation::Aircraft& aircraft) -> bool
 {
 

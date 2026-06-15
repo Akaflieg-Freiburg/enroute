@@ -49,8 +49,11 @@ Map {
     /*! \brief Show Météo-France cloud base forecast layer */
     property bool showCloudbaseLayer: false
 
-    /*! \brief Show Météo-France wind forecast layer */
+    /*! \brief Show wind forecast layer (client-drawn vector barbs) */
     property bool showWindLayer: false
+
+    /*! \brief Altitude (ft) at which the wind-barb layer samples the wind field */
+    property real windAltitudeFt: 3000
 
     /* Handle changes in zoom level */
     onZoomLevelChanged: {
@@ -133,14 +136,6 @@ Map {
             styleId: "forecastCloudbase"
             type: "image"
             property string url: ForecastMapProvider.currentCloudbaseMap !== "" ? "file://" + ForecastMapProvider.currentCloudbaseMap : "qrc:/icons/appIcon.png"
-            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
-        }
-
-        SourceParameter {
-            id: forecastWindSource
-            styleId: "forecastWind"
-            type: "image"
-            property string url: ForecastMapProvider.currentWindMap !== "" ? "file://" + ForecastMapProvider.currentWindMap : "qrc:/icons/appIcon.png"
             property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
         }
 
@@ -771,13 +766,6 @@ Map {
             layout: { "visibility": flightMap.showRainLayer && ForecastMapProvider.currentRainMap !== "" ? 'visible' : 'none' }
         }
 
-        LayerParameter {
-            id: forecastWindLayer
-            styleId: "forecastWindLayer"
-            type: "raster"
-            property string source: "forecastWind"
-            layout: { "visibility": flightMap.showWindLayer && ForecastMapProvider.currentWindMap !== "" ? 'visible' : 'none' }
-        }
     }
 
 
@@ -1111,6 +1099,112 @@ Map {
 
                     Component.onCompleted: requestPaint()
                 }
+            }
+        }
+    }
+
+    MapItemView { // Wind field barbs (client-drawn vector layer)
+        id: windBarbLayer
+        visible: flightMap.showWindLayer
+        model: flightMap.showWindLayer ? WindFieldProvider.gridPoints : []
+        delegate: MapQuickItem {
+            id: windItem
+
+            required property var modelData
+
+            // Grid is ~0.5°; show a coarser subset as we zoom out to avoid clutter
+            readonly property real thinStep: flightMap.zoomLevel >= 8.5 ? 0.5
+                                           : flightMap.zoomLevel >= 6.5 ? 1.0 : 2.0
+            readonly property bool showHere: {
+                var rl = modelData.lat / thinStep
+                var ro = modelData.lon / thinStep
+                return Math.abs(rl - Math.round(rl)) < 0.05 && Math.abs(ro - Math.round(ro)) < 0.05
+            }
+
+            property var wind: WindFieldProvider.windAt(modelData.lat, modelData.lon, flightMap.windAltitudeFt)
+            onWindChanged: windCanvas.requestPaint()
+
+            coordinate: QtPositioning.coordinate(modelData.lat, modelData.lon)
+            anchorPoint.x: 30
+            anchorPoint.y: 30
+            visible: showHere && wind.speed.isFinite() && wind.directionFrom.isFinite()
+
+            sourceItem: Canvas {
+                id: windCanvas
+                width: 60
+                height: 60
+
+                onPaint: {
+                    var ctx = getContext("2d")
+                    ctx.clearRect(0, 0, width, height)
+
+                    if (!windItem.wind.speed.isFinite() || !windItem.wind.directionFrom.isFinite())
+                        return
+                    var spd = windItem.wind.speed.toKN()
+
+                    var cx = 30, cy = 30
+                    // Calm: small circle
+                    if (spd < 2.5) {
+                        ctx.beginPath()
+                        ctx.arc(cx, cy, 3, 0, 2*Math.PI)
+                        ctx.strokeStyle = "#1a3a8a"
+                        ctx.lineWidth = 1.5
+                        ctx.stroke()
+                        return
+                    }
+
+                    var dirRad = windItem.wind.directionFrom.toRAD() // staff toward wind source
+                    var len = 22
+                    var ex = cx + len * Math.sin(dirRad)
+                    var ey = cy - len * Math.cos(dirRad)
+
+                    ctx.strokeStyle = "#1a3a8a"
+                    ctx.fillStyle = "#1a3a8a"
+                    ctx.lineWidth = 1.5
+
+                    // Staff
+                    ctx.beginPath()
+                    ctx.moveTo(cx, cy)
+                    ctx.lineTo(ex, ey)
+                    ctx.stroke()
+
+                    // Barbs from the tip, back toward the staff origin
+                    var remaining = Math.round(spd / 5) * 5
+                    var perpX = Math.cos(dirRad)
+                    var perpY = Math.sin(dirRad)
+                    var stepX = -Math.sin(dirRad) * 5
+                    var stepY =  Math.cos(dirRad) * 5
+                    var barbLen = 11
+                    var bx = ex, by = ey
+
+                    while (remaining >= 50) {
+                        ctx.beginPath()
+                        ctx.moveTo(bx, by)
+                        ctx.lineTo(bx + stepX*2 + perpX*barbLen, by + stepY*2 + perpY*barbLen)
+                        ctx.lineTo(bx + stepX*2, by + stepY*2)
+                        ctx.closePath()
+                        ctx.fill()
+                        bx += stepX*2; by += stepY*2
+                        remaining -= 50
+                    }
+                    while (remaining >= 10) {
+                        ctx.beginPath()
+                        ctx.moveTo(bx, by)
+                        ctx.lineTo(bx + perpX*barbLen, by + perpY*barbLen)
+                        ctx.stroke()
+                        bx += stepX; by += stepY
+                        remaining -= 10
+                    }
+                    if (remaining >= 5) {
+                        // Half barb sits one notch in from the tip if it's the only feather
+                        if (Math.round(spd) < 10) { bx += stepX; by += stepY }
+                        ctx.beginPath()
+                        ctx.moveTo(bx, by)
+                        ctx.lineTo(bx + perpX*barbLen*0.5, by + perpY*barbLen*0.5)
+                        ctx.stroke()
+                    }
+                }
+                Component.onCompleted: requestPaint()
             }
         }
     }

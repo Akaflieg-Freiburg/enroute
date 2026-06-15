@@ -25,6 +25,7 @@
 #include <QObject>
 #include <QPointF>
 #include <QQmlEngine>
+#include <QVariantList>
 
 #include "weather/Wind.h"
 
@@ -76,6 +77,12 @@ public:
     /*! \brief Available altitude levels in feet, ascending */
     Q_PROPERTY(QList<int> levelsFt READ levelsFt NOTIFY dataChanged)
 
+    /*! \brief Grid point coordinates as a model for the map wind-barb layer.
+     *
+     *  Each entry is a map with "lat" and "lon" (degrees). Empty when no data.
+     */
+    Q_PROPERTY(QVariantList gridPoints READ gridPoints NOTIFY dataChanged)
+
     //
     // Getters
     //
@@ -84,6 +91,7 @@ public:
     [[nodiscard]] bool hasData() const { return !m_grid.isEmpty(); }
     [[nodiscard]] QString validTimeLabel() const;
     [[nodiscard]] QList<int> levelsFt() const { return m_levelsFt; }
+    [[nodiscard]] QVariantList gridPoints() const;
 
     /*! \brief Returns true when usable (non-empty, non-stale) data is present */
     [[nodiscard]] bool isUsable() const { return hasData() && !isStale(); }

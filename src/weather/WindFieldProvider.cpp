@@ -26,6 +26,7 @@
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QUrl>
+#include <QVariantMap>
 #include <QtMath>
 
 using namespace Qt::Literals::StringLiterals;
@@ -97,6 +98,16 @@ QString Weather::WindFieldProvider::validTimeLabel() const
         return {};
     }
     return m_times.first().toUTC().toString(u"dd MMM HH:mm'Z'"_s);
+}
+
+QVariantList Weather::WindFieldProvider::gridPoints() const
+{
+    QVariantList out;
+    out.reserve(m_grid.size());
+    for (const auto& p : m_grid) {
+        out << QVariantMap{{u"lat"_s, p.lat}, {u"lon"_s, p.lon}};
+    }
+    return out;
 }
 
 

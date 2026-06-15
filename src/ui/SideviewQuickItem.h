@@ -154,6 +154,17 @@ public:
      */
     Q_PROPERTY(QVariantList plannedProfilePoints READ plannedProfilePoints BINDABLE bindablePlannedProfilePoints)
 
+    /*! \brief Wind barbs projected onto the route profile (route mode only)
+     *
+     * A QVariantList of maps, sampled along the route at the planned altitude:
+     *   "x", "y"          pixel position on the profile
+     *   "speedKn"         total wind speed (kt)
+     *   "dirFromDeg"      wind direction (° from)
+     *   "alongKn"         along-track component (kt, + = headwind, − = tailwind)
+     * Empty in Track mode or when no wind data is available.
+     */
+    Q_PROPERTY(QVariantList windProfile READ windProfile BINDABLE bindableWindProfile)
+
     /*! \brief Track string
      *
      * If the own aircraft is not moving sufficiently fast, this property holds
@@ -291,6 +302,18 @@ public:
      */
     QBindable<QVariantList> bindablePlannedProfilePoints() const {return &m_plannedProfilePoints;}
 
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property windProfile
+     */
+    QVariantList windProfile() const {return m_windProfile.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property windProfile
+     */
+    QBindable<QVariantList> bindableWindProfile() const {return &m_windProfile;}
+
 signals:
     void modeChanged();
     void renderWidthChanged();
@@ -342,6 +365,7 @@ private:
     QProperty<QPolygonF> m_plannedProfile;
 
     QProperty<QVariantList> m_plannedProfilePoints;
+    QProperty<QVariantList> m_windProfile;
 
     QProperty<QVariantMap> m_airspaces;
 

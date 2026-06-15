@@ -23,6 +23,9 @@
 #include "SideviewQuickItem.h"
 #include "navigation/Navigator.h"
 #include "weather/WeatherDataProvider.h"
+#include "weather/WindFieldProvider.h"
+
+#include <QtMath>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -51,6 +54,9 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
         if (m_mode == Mode::Route) { updateProperties(); }
     }));
     connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::plannedAltitudesChanged, this, [this]() {
+        if (m_mode == Mode::Route) { updateProperties(); }
+    });
+    connect(Weather::WindFieldProvider::instance(), &Weather::WindFieldProvider::dataChanged, this, [this]() {
         if (m_mode == Mode::Route) { updateProperties(); }
     });
 
@@ -195,6 +201,7 @@ void Ui::SideviewQuickItem::updatePropertiesTrack()
     m_terrain = QPolygonF();
     m_plannedProfile = QPolygonF();
     m_plannedProfilePoints = QVariantList();
+    m_windProfile = QVariantList();
 
     QVariantMap newAirspaces;
     const QVector<QPolygonF> empty;
@@ -420,6 +427,7 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
     m_terrain         = QPolygonF();
     m_plannedProfile  = QPolygonF();
     m_plannedProfilePoints = QVariantList();
+    m_windProfile     = QVariantList();
 
     const QVector<QPolygonF> empty;
     QVariantMap newAirspaces;
@@ -579,6 +587,81 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
     }
     m_plannedProfile = profile;
     m_plannedProfilePoints = profilePoints;
+
+    // -----------------------------------------------------------------------
+    // 6c. Wind barbs projected onto the route profile: sample the wind field
+    //     along the route at the planned altitude and project onto the track.
+    // -----------------------------------------------------------------------
+    {
+        const auto* wfp = Weather::WindFieldProvider::instance();
+        const bool haveField = wfp->isUsable();
+        const Weather::Wind manualWind = GlobalObject::navigator()->wind();
+        const bool haveManual = manualWind.speed().isFinite() && manualWind.directionFrom().isFinite();
+
+        // Planned altitude (metres) at a distance along the route
+        auto plannedAltAtDist = [&](double distM) -> Units::Distance {
+            qsizetype seg = 0;
+            for (qsizetype i = 1; i < cumulativeDist.size(); i++)
+            {
+                if (cumulativeDist[i] >= distM) { seg = i - 1; break; }
+                seg = i - 1;
+            }
+            if (seg + 1 >= plannedAlts.size()) { return plannedAlts.isEmpty() ? Units::Distance() : plannedAlts.last(); }
+            const double segLen = cumulativeDist[seg+1] - cumulativeDist[seg];
+            const double t = (segLen > 0.01) ? (distM - cumulativeDist[seg]) / segLen : 0.0;
+            return plannedAlts[seg] + (plannedAlts[seg+1] - plannedAlts[seg]) * qBound(0.0, t, 1.0);
+        };
+
+        QVariantList windPts;
+        if ((haveField || haveManual) && (totalRouteLen > 1.0))
+        {
+            // One sample roughly every 80 px, clamped to a sane count
+            const int nSamples = qBound(3, int(renderW / 80.0), 16);
+            const QDateTime now = QDateTime::currentDateTimeUtc();
+            for (int s = 0; s < nSamples; s++)
+            {
+                const double frac = (s + 0.5) / nSamples;
+                const double distM = frac * totalRouteLen;
+                const auto coord = coordAtDist(distM);
+                const auto alt = plannedAltAtDist(distM);
+
+                Weather::Wind w = haveField
+                    ? wfp->windAt(coord.latitude(), coord.longitude(), alt.toFeet(), now)
+                    : Weather::Wind();
+                if (!w.speed().isFinite() || !w.directionFrom().isFinite())
+                {
+                    w = manualWind;
+                }
+                if (!w.speed().isFinite() || !w.directionFrom().isFinite())
+                {
+                    continue;
+                }
+
+                // Track azimuth at this distance
+                qsizetype seg = 0;
+                for (qsizetype i = 1; i < cumulativeDist.size(); i++)
+                {
+                    if (cumulativeDist[i] >= distM) { seg = i - 1; break; }
+                    seg = i - 1;
+                }
+                const double trackDeg = geoPath[seg].azimuthTo(geoPath[qMin(seg+1, geoPath.size()-1)]);
+
+                const double spdKn = w.speed().toKN();
+                const double dirDeg = w.directionFrom().toDEG();
+                // Headwind component (+) = wind blowing from ahead along the track
+                const double alongKn = spdKn * qCos(qDegreesToRadians(dirDeg - trackDeg));
+
+                QVariantMap m;
+                m[QStringLiteral("x")]          = frac * renderW;
+                m[QStringLiteral("y")]          = altToY(alt);
+                m[QStringLiteral("speedKn")]    = spdKn;
+                m[QStringLiteral("dirFromDeg")] = dirDeg;
+                m[QStringLiteral("alongKn")]    = alongKn;
+                windPts << m;
+            }
+        }
+        m_windProfile = windPts;
+    }
 
     // -----------------------------------------------------------------------
     // 7. Terrain polygon

@@ -26,8 +26,12 @@ import QtQuick.Layouts
 // Set currentIndex to 0 for "feet" and 1 for "meter"
 
 StackLayout {
+    id: elevationInput
 
     property double valueMeter: NaN
+
+    // Emitted when the user confirms the input with the Enter/Return key.
+    signal accepted()
 
     function setTexts() {
         if (isNaN(valueMeter)) {
@@ -38,6 +42,17 @@ StackLayout {
 
         ft_d.text = Math.round(valueMeter*3.281)
         m_d.text = Math.round(valueMeter)
+    }
+
+    // Commit the currently-visible field's text into valueMeter. Call this
+    // before reading valueMeter when the user may not have pressed Enter (e.g.
+    // when accepting a dialog by clicking OK).
+    function commit() {
+        if (currentIndex === 1) {
+            valueMeter = m_d.acceptableInput ? Number.fromLocaleString(Qt.locale(), m_d.text) : NaN
+        } else {
+            valueMeter = ft_d.acceptableInput ? Number.fromLocaleString(Qt.locale(), ft_d.text)/3.281 : NaN
+        }
     }
 
     Component.onCompleted: setTexts()
@@ -68,6 +83,7 @@ StackLayout {
                 else
                     valueMeter = NaN
             }
+            onAccepted: elevationInput.accepted()
         }
         Label {
             id: colorGlean
@@ -98,6 +114,7 @@ StackLayout {
                 else
                     valueMeter = NaN
             }
+            onAccepted: elevationInput.accepted()
         }
         Label { text: "m" }
     }

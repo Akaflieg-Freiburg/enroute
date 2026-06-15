@@ -868,7 +868,7 @@ Map {
     MapPolyline {
         id: flightPath
         line.width: 4
-        line.color: "#ff00ff"
+        line.color: Global.flightRouteColor
         path: {
             var array = []
             //Looks weird, but is necessary. geoPath is an 'object' not an array

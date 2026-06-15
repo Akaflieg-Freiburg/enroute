@@ -86,6 +86,7 @@ Navigation::FlightRoute* Navigation::Navigator::flightRoute()
         m_flightRoute = new FlightRoute(this);
         m_flightRoute->load(m_flightRouteFileName);
         connect(m_flightRoute, &Navigation::FlightRoute::waypointsChanged, this, [this]() {if (m_flightRoute != nullptr) {(void)m_flightRoute->save(m_flightRouteFileName);}});
+        connect(m_flightRoute, &Navigation::FlightRoute::plannedAltitudesChanged, this, [this]() {if (m_flightRoute != nullptr) {(void)m_flightRoute->save(m_flightRouteFileName);}});
         QQmlEngine::setObjectOwnership(m_flightRoute, QQmlEngine::CppOwnership);
     }
     return m_flightRoute;

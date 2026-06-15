@@ -137,6 +137,10 @@ private:
 
     void parse(const QByteArray& bytes);
 
+    // Path of the on-disk cache copy of wind.json (survives restarts/offline)
+    [[nodiscard]] static QString cacheFilePath();
+    void saveToCache(const QByteArray& bytes) const;
+
     // (u, v) in m/s for one grid point, interpolated in time then altitude
     [[nodiscard]] QPointF uvAtCorner(const GridPoint& p, int ti, double tFrac, double altFt) const;
 

@@ -20,11 +20,14 @@
 #include "weather/WindFieldProvider.h"
 #include "weather/ForecastMapProvider.h"
 
+#include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkReply>
+#include <QStandardPaths>
 #include <QUrl>
 #include <QVariantMap>
 #include <QtMath>
@@ -65,6 +68,31 @@ int bracket(const QList<double>& sorted, double value)
 Weather::WindFieldProvider::WindFieldProvider(QObject* parent)
     : QObject(parent)
 {
+    // Load the cached wind field so data is available offline at startup
+    QFile f(cacheFilePath());
+    if (f.open(QIODevice::ReadOnly)) {
+        parse(f.readAll());
+    }
+}
+
+QString Weather::WindFieldProvider::cacheFilePath()
+{
+    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
+           + u"/meteo_france/wind.json"_s;
+}
+
+void Weather::WindFieldProvider::saveToCache(const QByteArray& bytes) const
+{
+    const QString path = cacheFilePath();
+    QDir().mkpath(QFileInfo(path).absolutePath());
+    // Atomic write: tmp → rename, so a partial write never replaces good data
+    const QString tmp = path + u".tmp"_s;
+    QFile f(tmp);
+    if (f.open(QIODevice::WriteOnly)) {
+        f.write(bytes);
+        f.close();
+        QFile::rename(tmp, path);
+    }
 }
 
 Weather::WindFieldProvider* Weather::WindFieldProvider::create(QQmlEngine*, QJSEngine*)
@@ -135,7 +163,9 @@ void Weather::WindFieldProvider::refresh()
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         reply->deleteLater();
         if (reply->error() == QNetworkReply::NoError) {
-            parse(reply->readAll());
+            const QByteArray bytes = reply->readAll();
+            saveToCache(bytes);
+            parse(bytes);
         }
     });
 }

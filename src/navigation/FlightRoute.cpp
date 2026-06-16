@@ -95,6 +95,44 @@ QVariantMap Navigation::FlightRoute::legNav(int index,
 }
 
 
+QList<QDateTime> Navigation::FlightRoute::waypointETAs(const Weather::WindFieldProvider* wfp,
+                                                       Weather::Wind manualWind,
+                                                       const Navigation::Aircraft& aircraft,
+                                                       const QDateTime& departure) const
+{
+    const auto theLegs = m_legs.value();
+
+    auto altFtAt = [&](int wpIdx) -> double {
+        double m = plannedAltitude(wpIdx);
+        if (!qIsFinite(m))
+        {
+            m = aircraft.cruiseAltitudeM();
+        }
+        if (!qIsFinite(m))
+        {
+            return 3000.0;
+        }
+        return Units::Distance::fromM(m).toFeet();
+    };
+
+    QDateTime t = departure.isValid() ? departure : QDateTime::currentDateTimeUtc();
+
+    QList<QDateTime> etas;
+    etas.reserve(theLegs.size() + 1);
+    etas << t; // arrival at first waypoint = departure
+    for (int k = 0; k < theLegs.size(); ++k)
+    {
+        const auto res = theLegs[k].integrate(wfp, manualWind, aircraft, t, altFtAt(k), altFtAt(k + 1));
+        if (res.isValid && res.ete.isFinite())
+        {
+            t = t.addSecs(qRound64(res.ete.toS()));
+        }
+        etas << t;
+    }
+    return etas;
+}
+
+
 //
 // Constructors and destructors
 //

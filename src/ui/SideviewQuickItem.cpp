@@ -59,6 +59,9 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     connect(Weather::WindFieldProvider::instance(), &Weather::WindFieldProvider::dataChanged, this, [this]() {
         if (m_mode == Mode::Route) { updateProperties(); }
     });
+    connect(GlobalObject::navigator(), &Navigation::Navigator::departureTimeChanged, this, [this]() {
+        if (m_mode == Mode::Route) { updateProperties(); }
+    });
 
     updateProperties();
 }
@@ -612,7 +615,13 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
         {
             const int nCols = qBound(3, int(renderW / 90.0), 14);
             const int nRows = 5; // altitude rows across the visible range
-            const QDateTime now = QDateTime::currentDateTimeUtc();
+
+            // ETA-aware sampling: the trip starts at departureTime (driven by the
+            // weather time slider) and the clock advances along the route.
+            auto* nav = GlobalObject::navigator();
+            QDateTime departure = nav->departureTime();
+            if (!departure.isValid()) { departure = QDateTime::currentDateTimeUtc(); }
+            const auto etas = flightRoute->waypointETAs(wfp, manualWind, nav->aircraft(), departure);
 
             for (int c = 0; c < nCols; c++)
             {
@@ -629,13 +638,23 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
                 }
                 const double trackDeg = geoPath[seg].azimuthTo(geoPath[qMin(seg+1, geoPath.size()-1)]);
 
+                // Time of arrival at this distance: interpolate between the
+                // bracketing waypoints' ETAs by distance fraction within the leg.
+                QDateTime eta = departure;
+                if ((seg + 1) < etas.size() && etas[seg].isValid() && etas[seg + 1].isValid())
+                {
+                    const double segLen = cumulativeDist[seg + 1] - cumulativeDist[seg];
+                    const double segFrac = (segLen > 0.01) ? qBound(0.0, (distM - cumulativeDist[seg]) / segLen, 1.0) : 0.0;
+                    eta = etas[seg].addSecs(qRound64(etas[seg].secsTo(etas[seg + 1]) * segFrac));
+                }
+
                 for (int rrow = 0; rrow < nRows; rrow++)
                 {
                     const Units::Distance alt = sideview_minAlt
                         + (sideview_maxAlt - sideview_minAlt) * ((rrow + 0.5) / nRows);
 
                     Weather::Wind w = haveField
-                        ? wfp->windAt(coord.latitude(), coord.longitude(), alt.toFeet(), now)
+                        ? wfp->windAt(coord.latitude(), coord.longitude(), alt.toFeet(), eta)
                         : Weather::Wind();
                     if (!w.speed().isFinite() || !w.directionFrom().isFinite())
                     {

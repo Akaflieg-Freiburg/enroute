@@ -38,6 +38,20 @@ Item {
 
     enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
 
+    // The weather time slider doubles as the trip-start time: the selected
+    // forecast step drives Navigator.departureTime, which the route tab and the
+    // side view integrate forward from.
+    function syncDepartureTime() {
+        var ts = ForecastMapProvider.timestamps
+        var i = ForecastMapProvider.currentIndex
+        if (ts && ts.length > 0 && i >= 0 && i < ts.length)
+            Navigator.departureTime = new Date(ts[i])
+    }
+    Connections {
+        target: ForecastMapProvider
+        function onCurrentIndexChanged() { page.syncDepartureTime() }
+        function onTimestampsChanged() { page.syncDepartureTime() }
+    }
 
     Connections {
         target: DemoRunner

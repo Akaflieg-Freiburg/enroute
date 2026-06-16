@@ -219,6 +219,18 @@ namespace Navigation
                                                      const Navigation::Aircraft& aircraft,
                                                      const QDateTime& departure) const;
 
+        /*! \brief Estimated time of arrival at each waypoint.
+         *
+         *  Returns a list of size waypoints().size(): the departure time at the
+         *  first waypoint, then the accumulated ETA at each subsequent one,
+         *  using the same wind-integrated ETE as legNav(). Used to give the
+         *  side-view its ETA-aware sampling time at each point along the route.
+         */
+        [[nodiscard]] Q_INVOKABLE QList<QDateTime> waypointETAs(const Weather::WindFieldProvider* wfp,
+                                                               Weather::Wind manualWind,
+                                                               const Navigation::Aircraft& aircraft,
+                                                               const QDateTime& departure) const;
+
         /*! \brief Adds a waypoint to the end of the route
          *
          * @param waypoint Waypoint to be added

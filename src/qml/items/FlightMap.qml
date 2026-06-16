@@ -1131,13 +1131,16 @@ Map {
                 return Math.abs(rl - Math.round(rl)) < 0.05 && Math.abs(ro - Math.round(ro)) < 0.05
             }
 
-            property var wind: WindFieldProvider.windAt(modelData.lat, modelData.lon, flightMap.windAltitudeFt, flightMap.windForecastTime)
+            // Only interpolate for points actually shown at this zoom level
+            property var wind: showHere
+                ? WindFieldProvider.windAt(modelData.lat, modelData.lon, flightMap.windAltitudeFt, flightMap.windForecastTime)
+                : null
             onWindChanged: windCanvas.requestPaint()
 
             coordinate: QtPositioning.coordinate(modelData.lat, modelData.lon)
             anchorPoint.x: 40
             anchorPoint.y: 40
-            visible: showHere && wind.speed.isFinite() && wind.directionFrom.isFinite()
+            visible: showHere && wind && wind.speed.isFinite() && wind.directionFrom.isFinite()
 
             sourceItem: Canvas {
                 id: windCanvas
@@ -1148,7 +1151,7 @@ Map {
                     var ctx = getContext("2d")
                     ctx.clearRect(0, 0, width, height)
 
-                    if (!windItem.wind.speed.isFinite() || !windItem.wind.directionFrom.isFinite())
+                    if (!windItem.wind || !windItem.wind.speed.isFinite() || !windItem.wind.directionFrom.isFinite())
                         return
                     var spd = windItem.wind.speed.toKN()
 

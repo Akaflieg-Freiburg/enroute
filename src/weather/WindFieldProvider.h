@@ -23,6 +23,7 @@
 #include <QList>
 #include <QNetworkAccessManager>
 #include <QObject>
+#include <QHash>
 #include <QPointF>
 #include <QQmlEngine>
 #include <QVariantList>
@@ -154,6 +155,10 @@ private:
     // Grid geometry (assumes a regular lat/lon grid)
     QList<double> m_lats;           // sorted unique, ascending
     QList<double> m_lons;           // sorted unique, ascending
+
+    // O(1) lookup from a quantized (lat, lon) key to the index in m_grid
+    QHash<qint64, int> m_index;
+    [[nodiscard]] static qint64 cellKey(double lat, double lon);
 };
 
 } // namespace Weather

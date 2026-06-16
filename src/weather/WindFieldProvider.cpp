@@ -39,6 +39,14 @@ constexpr double MPS_TO_KN = 1.94384;
 
 // Lower-bound bracket index in a sorted ascending list: returns i such that
 // list[i] <= value <= list[i+1], clamped to [0, n-2]. Returns -1 if list < 2.
+// Quantize lat/lon to 1e-3° and pack into a collision-free key
+qint64 makeCellKey(double lat, double lon)
+{
+    const qint64 la = llround(lat * 1000.0);
+    const qint64 lo = llround(lon * 1000.0) + 500000; // keep positive, < 1e6
+    return la * 1000000LL + lo;
+}
+
 int bracket(const QList<double>& sorted, double value)
 {
     const int n = sorted.size();
@@ -126,6 +134,11 @@ QString Weather::WindFieldProvider::validTimeLabel() const
         return {};
     }
     return m_times.first().toUTC().toString(u"dd MMM HH:mm'Z'"_s);
+}
+
+qint64 Weather::WindFieldProvider::cellKey(double lat, double lon)
+{
+    return makeCellKey(lat, lon);
 }
 
 QVariantList Weather::WindFieldProvider::gridPoints() const
@@ -240,6 +253,13 @@ void Weather::WindFieldProvider::parse(const QByteArray& bytes)
     m_lats          = lats;
     m_lons          = lons;
 
+    // Build the O(1) cell index for corner lookups
+    m_index.clear();
+    m_index.reserve(m_grid.size());
+    for (int i = 0; i < m_grid.size(); ++i) {
+        m_index.insert(makeCellKey(m_grid[i].lat, m_grid[i].lon), i);
+    }
+
     emit dataChanged();
 }
 
@@ -328,12 +348,8 @@ QPointF Weather::WindFieldProvider::uvKnotsAt(double lat, double lon, double alt
     const double lon1 = m_lons[iLon + 1];
 
     auto corner = [this](double la, double lo) -> const GridPoint* {
-        for (const auto& p : m_grid) {
-            if (qFuzzyCompare(p.lat, la) && qFuzzyCompare(p.lon, lo)) {
-                return &p;
-            }
-        }
-        return nullptr;
+        const int idx = m_index.value(makeCellKey(la, lo), -1);
+        return (idx >= 0) ? &m_grid[idx] : nullptr;
     };
     const GridPoint* c00 = corner(lat0, lon0);
     const GridPoint* c01 = corner(lat0, lon1);

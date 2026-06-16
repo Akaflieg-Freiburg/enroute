@@ -1,0 +1,38 @@
+name: Unit tests
+
+on:
+  push:
+    branches: [ develop ]
+    paths-ignore:
+      - ".gitignore"
+      - "README.md"
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  cpp-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Enroute
+      uses: actions/checkout@v4
+      with:
+        path: enroute
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        aqtversion: ==3.1.*
+        cache: 'true'
+        version: '6.9.3'
+
+    - name: Install Ninja
+      run: sudo apt-get update && sudo apt-get install -y ninja-build
+
+    - name: Configure and build tests
+      run: |
+        cmake -S enroute/tests -B build-tests -G Ninja -DCMAKE_PREFIX_PATH=$QT_ROOT_DIR
+        cmake --build build-tests
+
+    - name: Run tests
+      run: ctest --test-dir build-tests --output-on-failure

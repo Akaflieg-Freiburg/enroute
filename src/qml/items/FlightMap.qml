@@ -1131,9 +1131,10 @@ Map {
                 return Math.abs(rl - Math.round(rl)) < 0.05 && Math.abs(ro - Math.round(ro)) < 0.05
             }
 
-            // Only interpolate for points actually shown at this zoom level
+            // Native grid value at the nearest forecast step (no interpolation);
+            // only computed for points actually shown at this zoom level.
             property var wind: showHere
-                ? WindFieldProvider.windAt(modelData.lat, modelData.lon, flightMap.windAltitudeFt, flightMap.windForecastTime)
+                ? WindFieldProvider.windAtStep(modelData.lat, modelData.lon, flightMap.windAltitudeFt, flightMap.windForecastTime)
                 : null
             onWindChanged: windCanvas.requestPaint()
 

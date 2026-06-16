@@ -404,3 +404,29 @@ Weather::Wind Weather::WindFieldProvider::windAt(double lat, double lon, double 
 {
     return windAt(lat, lon, altFt, QDateTime::currentDateTimeUtc());
 }
+
+QDateTime Weather::WindFieldProvider::nearestStep(const QDateTime& time) const
+{
+    if (m_times.isEmpty()) {
+        return {};
+    }
+    if (!time.isValid()) {
+        return m_times.first();
+    }
+    const QDateTime* best = &m_times.first();
+    qint64 bestDiff = qAbs(m_times.first().secsTo(time));
+    for (const auto& t : m_times) {
+        const qint64 d = qAbs(t.secsTo(time));
+        if (d < bestDiff) {
+            bestDiff = d;
+            best = &t;
+        }
+    }
+    return *best;
+}
+
+Weather::Wind Weather::WindFieldProvider::windAtStep(double lat, double lon, double altFt, const QDateTime& time) const
+{
+    // Snap to the nearest forecast step: no time interpolation
+    return windAt(lat, lon, altFt, nearestStep(time));
+}

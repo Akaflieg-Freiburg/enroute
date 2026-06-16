@@ -111,6 +111,13 @@ public:
     /*! \brief As windAt(), using the time nearest "now" (for the map layer) */
     [[nodiscard]] Q_INVOKABLE Weather::Wind windAt(double lat, double lon, double altFt) const;
 
+    /*! \brief Wind at the nearest forecast time STEP (no time interpolation).
+     *
+     *  Used by the map layer, where the wind steps share the forecast model's
+     *  time grid: the requested time is snapped to the closest step.
+     */
+    [[nodiscard]] Q_INVOKABLE Weather::Wind windAtStep(double lat, double lon, double altFt, const QDateTime& time) const;
+
     /*! \brief Interpolated (u, v) wind components in KNOTS at a location/altitude/time.
      *
      *  Meteorological convention: u eastward, v northward. Returns a point with
@@ -137,6 +144,9 @@ private:
     };
 
     void parse(const QByteArray& bytes);
+
+    // Nearest forecast step to a given time (invalid if no data)
+    [[nodiscard]] QDateTime nearestStep(const QDateTime& time) const;
 
     // Path of the on-disk cache copy of wind.json (survives restarts/offline)
     [[nodiscard]] static QString cacheFilePath();

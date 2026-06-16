@@ -128,6 +128,13 @@ public:
     /*! \brief Construct a Weather::Wind from (u, v) components in knots */
     [[nodiscard]] static Weather::Wind windFromUV(double uKnots, double vKnots);
 
+    /*! \brief Load a wind.json document directly from bytes.
+     *
+     *  Bypasses the network (used by tests and could back the file:// path).
+     *  Returns true if a non-empty grid was parsed.
+     */
+    Q_INVOKABLE bool loadFromJson(const QByteArray& bytes);
+
 public slots:
     /*! \brief Fetch wind.json from the configured forecast server. */
     void refresh();

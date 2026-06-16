@@ -156,6 +156,9 @@ public:
     /*! \brief Show Altitude AGL */
     Q_PROPERTY(bool showAltitudeAGL READ showAltitudeAGL WRITE setShowAltitudeAGL NOTIFY showAltitudeAGLChanged)
 
+    /*! \brief Global toggle for the wind forecast layer (map and side view) */
+    Q_PROPERTY(bool showWindLayer READ showWindLayer WRITE setShowWindLayer NOTIFY showWindLayerChanged)
+
     /*! \brief Voice notifications that should be played
      *
      *  This property is an "or" of the entries of Notifications::Notification::Importance. It determines
@@ -263,6 +266,9 @@ public:
      * @returns Property positioningByTrafficDataReceiver
      */
     [[nodiscard]] auto showAltitudeAGL() const -> bool { return m_settings.value(QStringLiteral("showAltitudeAGL"), false).toBool(); }
+
+    /*! \brief Getter function for property of the same name */
+    [[nodiscard]] auto showWindLayer() const -> bool { return m_settings.value(QStringLiteral("showWindLayer"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -372,6 +378,12 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * @param newShowWindLayer Property showWindLayer
+     */
+    void setShowWindLayer(bool newShowWindLayer);
+
+    /*! \brief Setter function for property of the same name
+     *
      * @param newVoiceNotifications Property voiceNotifications
      */
     void setVoiceNotifications(uint newVoiceNotifications);
@@ -423,6 +435,9 @@ signals:
 
     /*! \brief Notifier signal */
     void showAltitudeAGLChanged();
+
+    /*! \brief Notifier signal */
+    void showWindLayerChanged();
 
     /*! \brief Notifier signal */
     void voiceNotificationsChanged();

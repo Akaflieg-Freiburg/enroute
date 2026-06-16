@@ -49,8 +49,9 @@ Map {
     /*! \brief Show Météo-France cloud base forecast layer */
     property bool showCloudbaseLayer: false
 
-    /*! \brief Show wind forecast layer (client-drawn vector barbs) */
-    property bool showWindLayer: false
+    /*! \brief Show wind forecast layer (client-drawn vector barbs).
+        Bound to the global setting so the map and side view share one toggle. */
+    property bool showWindLayer: GlobalSettings.showWindLayer
 
     /*! \brief Altitude (ft) at which the wind-barb layer samples the wind field */
     property real windAltitudeFt: 3000

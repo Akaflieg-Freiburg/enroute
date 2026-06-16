@@ -36,6 +36,9 @@ SideviewQuickItem {
     // coordinates in the Flickable's content space.
     renderWidth: flickable.contentWidth
 
+    // Wind barbs follow the global wind-layer toggle (shared with the map)
+    showWind: GlobalSettings.showWindLayer
+
     // Full-area sky background (scale panels sit on top of it)
     Rectangle {
         anchors.fill: parent
@@ -698,32 +701,6 @@ SideviewQuickItem {
                 rawSideView.mode = SideviewQuickItem.Route
             }
         }
-    }
-
-    // Wind toggle button — only in Route mode; shows the projected wind barbs
-    RoundButton {
-        id: windToggle
-
-        anchors.right:   modeToggle.left
-        anchors.top:     parent.top
-        anchors.margins: 4
-        z: 10
-
-        width:  32
-        height: 32
-        padding: 0
-
-        visible: rawSideView.mode === SideviewQuickItem.Route
-        checkable: true
-        checked: rawSideView.showWind
-        onToggled: rawSideView.showWind = checked
-
-        text: "🌫"
-        font.pixelSize: 16
-        opacity: checked ? 1.0 : 0.55
-
-        ToolTip.text: qsTr("Show wind")
-        ToolTip.visible: hovered
     }
 
     // Popup to specify the planned altitude of a waypoint, opened by tapping a

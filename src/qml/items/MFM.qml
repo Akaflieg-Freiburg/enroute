@@ -683,8 +683,8 @@ Item {
                                 CheckDelegate {
                                     text: qsTr("Wind") + "  [kt]"
                                     enabled: WindFieldProvider.hasData
-                                    checked: flightMap.showWindLayer
-                                    onClicked: flightMap.showWindLayer = checked
+                                    checked: GlobalSettings.showWindLayer
+                                    onClicked: GlobalSettings.showWindLayer = checked
                                 }
 
                                 ItemDelegate {

@@ -405,6 +405,12 @@ Weather::Wind Weather::WindFieldProvider::windAt(double lat, double lon, double 
     return windAt(lat, lon, altFt, QDateTime::currentDateTimeUtc());
 }
 
+bool Weather::WindFieldProvider::loadFromJson(const QByteArray& bytes)
+{
+    parse(bytes);
+    return hasData();
+}
+
 QDateTime Weather::WindFieldProvider::nearestStep(const QDateTime& time) const
 {
     if (m_times.isEmpty()) {

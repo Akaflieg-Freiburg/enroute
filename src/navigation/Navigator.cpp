@@ -26,6 +26,7 @@
 #include "dataManagement/DataManager.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
+#include "weather/WindFieldProvider.h"
 
 
 //
@@ -40,6 +41,7 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
     QSettings const settings;
     m_wind.setSpeed(Units::Speed::fromKN(settings.value(QStringLiteral("Wind/windSpeedInKT"), qQNaN()).toDouble()));
     m_wind.setDirectionFrom( Units::Angle::fromDEG(settings.value(QStringLiteral("Wind/windDirectionInDEG"), qQNaN()).toDouble()) );
+    m_cruiseAltitudeFt = settings.value(QStringLiteral("Wind/cruiseAltitudeFt"), 5000.0).toDouble();
 
     // Restore aircraft
     QFile file(m_aircraftFileName);
@@ -69,7 +71,18 @@ void Navigation::Navigator::deferredInitialization()
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
     connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(); });
+    connect(this, &Navigation::Navigator::cruiseAltitudeFtChanged, this, [this](){ updateRemainingRouteInfo(); });
+    connect(this, &Navigation::Navigator::departureTimeChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(); });
+
+    // When the wind field is (re)loaded, the active wind source and route info change
+    connect(Weather::WindFieldProvider::instance(), &Weather::WindFieldProvider::dataChanged, this, [this](){
+        emit windSourceChanged();
+        updateRemainingRouteInfo();
+    });
+
+    // Attempt an initial wind-field load (no-op if no server configured)
+    Weather::WindFieldProvider::instance()->refresh();
 
     m_hasAviationMapForCurrentLocation.setBinding([this]() {return computeHasAviationMapForCurrentLocation();});
 }
@@ -144,6 +157,58 @@ void Navigation::Navigator::setWind(Weather::Wind newWind)
     // Set new wind
     m_wind = newWind;
     emit windChanged();
+}
+
+
+void Navigation::Navigator::setCruiseAltitudeFt(double newAltFt)
+{
+    if (qFuzzyCompare(newAltFt, m_cruiseAltitudeFt))
+    {
+        return;
+    }
+    m_cruiseAltitudeFt = newAltFt;
+    QSettings().setValue(QStringLiteral("Wind/cruiseAltitudeFt"), newAltFt);
+    emit cruiseAltitudeFtChanged();
+}
+
+
+Weather::WindFieldProvider* Navigation::Navigator::windField() const
+{
+    auto* wfp = Weather::WindFieldProvider::instance();
+    QQmlEngine::setObjectOwnership(wfp, QQmlEngine::CppOwnership);
+    return wfp;
+}
+
+
+QString Navigation::Navigator::windSource() const
+{
+    return Weather::WindFieldProvider::instance()->isUsable() ? u"field"_s : u"manual"_s;
+}
+
+
+void Navigation::Navigator::setDepartureTime(const QDateTime& newTime)
+{
+    if (m_departureTime == newTime)
+    {
+        return;
+    }
+    m_departureTime = newTime;
+    emit departureTimeChanged();
+}
+
+
+Weather::Wind Navigation::Navigator::effectiveWindAtTime(const Navigation::Leg& leg, const QDateTime& time) const
+{
+    auto* wfp = Weather::WindFieldProvider::instance();
+    if (wfp->isUsable())
+    {
+        auto w = leg.averageWind(wfp, m_cruiseAltitudeFt, time);
+        if (w.speed().isFinite() && w.directionFrom().isFinite())
+        {
+            return w;
+        }
+    }
+    return m_wind;
 }
 
 
@@ -295,9 +360,12 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     //
     RemainingRouteInfo rri;
     rri.status = RemainingRouteInfo::OnRoute;
+    // ETA-aware: accumulate clock time from "now" as we walk the remaining route
+    QDateTime clock = QDateTime::currentDateTimeUtc();
+
     Leg const legToNextWP(info.coordinate(), legs[currentLeg].endPoint());
     auto dist = legToNextWP.distance();
-    auto ETE = legToNextWP.ETE(m_wind, m_aircraft);
+    auto ETE = legToNextWP.ETE(effectiveWindAtTime(legToNextWP, clock), m_aircraft);
 
     // If bearing is less than +/- 30°, then use current ground speed to
     // estimate ETE for leg to next waypoint
@@ -326,10 +394,19 @@ void Navigation::Navigator::updateRemainingRouteInfo()
 
     if (currentLeg < legs.size()-1)
     {
+        if (ETE.isFinite())
+        {
+            clock = clock.addSecs(qRound64(ETE.toS()));
+        }
         for(auto i=currentLeg+1; i<legs.size(); i++)
         {
             dist += legs[i].distance();
-            ETE += legs[i].ETE(m_wind, m_aircraft);
+            auto legETE = legs[i].ETE(effectiveWindAtTime(legs[i], clock), m_aircraft);
+            ETE += legETE;
+            if (legETE.isFinite())
+            {
+                clock = clock.addSecs(qRound64(legETE.toS()));
+            }
         }
 
         rri.finalWP = legs.last().endPoint();
@@ -346,13 +423,16 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     {
         complaints += tr("Cruise speed not specified.");
     }
-    if (!m_wind.speed().isFinite())
+    if (!Weather::WindFieldProvider::instance()->isUsable())
     {
-        complaints += tr("Wind speed not specified.");
-    }
-    if (!m_wind.directionFrom().isFinite())
-    {
-        complaints += tr("Wind direction not specified.");
+        if (!m_wind.speed().isFinite())
+        {
+            complaints += tr("Wind speed not specified.");
+        }
+        if (!m_wind.directionFrom().isFinite())
+        {
+            complaints += tr("Wind direction not specified.");
+        }
     }
     if (!complaints.isEmpty())
     {

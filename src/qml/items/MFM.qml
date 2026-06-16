@@ -38,6 +38,20 @@ Item {
 
     enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
 
+    // The weather time slider doubles as the trip-start time: the selected
+    // forecast step drives Navigator.departureTime, which the route tab and the
+    // side view integrate forward from.
+    function syncDepartureTime() {
+        var ts = ForecastMapProvider.timestamps
+        var i = ForecastMapProvider.currentIndex
+        if (ts && ts.length > 0 && i >= 0 && i < ts.length)
+            Navigator.departureTime = new Date(ts[i])
+    }
+    Connections {
+        target: ForecastMapProvider
+        function onCurrentIndexChanged() { page.syncDepartureTime() }
+        function onTimestampsChanged() { page.syncDepartureTime() }
+    }
 
     Connections {
         target: DemoRunner
@@ -623,14 +637,6 @@ Item {
                                 weatherMenu.popup()
                             }
 
-                            // Cheated but pilot-friendly FL labels for the 4 AROME pressure levels
-                            function hpaToFL(hpa) {
-                                var lookup = { "1000": "FL000", "900": "FL033", "800": "FL065", "700": "FL100" }
-                                return lookup[String(Math.round(parseFloat(hpa)))] ?? ("FL" + Math.round(
-                                    (1 - Math.pow(parseFloat(hpa)/1013.25, 0.190284)) * 145366.45 / 100
-                                ).toString().padStart(3,"0"))
-                            }
-
                             // Convert cloudbase metres to the aircraft's configured altitude unit
                             function cbLabel(metres) {
                                 if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters)
@@ -689,13 +695,14 @@ Item {
                                 }
 
                                 CheckDelegate {
-                                    text: qsTr("Wind forecast") + (ForecastMapProvider.windUnits ? "  [" + ForecastMapProvider.windUnits + "]" : "")
-                                    checked: flightMap.showWindLayer
-                                    onClicked: flightMap.showWindLayer = checked
+                                    text: qsTr("Wind") + "  [kt]"
+                                    enabled: WindFieldProvider.hasData
+                                    checked: GlobalSettings.showWindLayer
+                                    onClicked: GlobalSettings.showWindLayer = checked
                                 }
 
                                 ItemDelegate {
-                                    visible: flightMap.showWindLayer && ForecastMapProvider.windPressureLevels.length > 1
+                                    visible: flightMap.showWindLayer && WindFieldProvider.levelsFt.length > 1
                                     implicitWidth: 280
                                     topPadding: 0; bottomPadding: 6
                                     contentItem: Column {
@@ -703,8 +710,8 @@ Item {
                                         spacing: 2
                                         Label {
                                             width: parent.width
-                                            text: weatherLayerButton.hpaToFL(ForecastMapProvider.currentWindPressureLevel)
-                                                  + "  (" + ForecastMapProvider.currentWindPressureLevel + " hPa)"
+                                            text: "FL" + ("00" + Math.round(flightMap.windAltitudeFt/100)).slice(-3)
+                                                  + "  (" + Math.round(flightMap.windAltitudeFt) + " ft)"
                                             font.pixelSize: 9
                                             horizontalAlignment: Text.AlignHCenter
                                             opacity: 0.7
@@ -712,24 +719,24 @@ Item {
                                         Slider {
                                             width: parent.width
                                             from: 0
-                                            to: Math.max(0, ForecastMapProvider.windPressureLevels.length - 1)
+                                            to: Math.max(0, WindFieldProvider.levelsFt.length - 1)
                                             stepSize: 1
-                                            value: ForecastMapProvider.windPressureLevels.indexOf(ForecastMapProvider.currentWindPressureLevel)
-                                            onMoved: ForecastMapProvider.currentWindPressureLevel =
-                                                ForecastMapProvider.windPressureLevels[Math.round(value)]
+                                            value: WindFieldProvider.levelsFt.indexOf(flightMap.windAltitudeFt)
+                                            onMoved: flightMap.windAltitudeFt =
+                                                WindFieldProvider.levelsFt[Math.round(value)]
                                         }
                                         Row {
                                             width: parent.width
                                             Repeater {
-                                                model: ForecastMapProvider.windPressureLevels
+                                                model: WindFieldProvider.levelsFt
                                                 Label {
-                                                    width: parent.width / ForecastMapProvider.windPressureLevels.length
-                                                    text: weatherLayerButton.hpaToFL(modelData)
+                                                    width: parent.width / WindFieldProvider.levelsFt.length
+                                                    text: "FL" + ("00" + Math.round(modelData/100)).slice(-3)
                                                     font.pixelSize: 9
                                                     horizontalAlignment: index === 0 ? Text.AlignLeft
-                                                        : index === ForecastMapProvider.windPressureLevels.length - 1 ? Text.AlignRight
+                                                        : index === WindFieldProvider.levelsFt.length - 1 ? Text.AlignRight
                                                         : Text.AlignHCenter
-                                                    opacity: ForecastMapProvider.currentWindPressureLevel === modelData ? 1.0 : 0.5
+                                                    opacity: flightMap.windAltitudeFt === modelData ? 1.0 : 0.5
                                                 }
                                             }
                                         }
@@ -783,7 +790,7 @@ Item {
                                         ToolButton {
                                             icon.source: "/icons/material/ic_refresh.svg"
                                             enabled: ForecastMapProvider.status !== 1  // not Refreshing
-                                            onClicked: ForecastMapProvider.refresh()
+                                            onClicked: { ForecastMapProvider.refresh(); WindFieldProvider.refresh() }
                                         }
                                         Label {
                                             anchors.verticalCenter: parent.verticalCenter

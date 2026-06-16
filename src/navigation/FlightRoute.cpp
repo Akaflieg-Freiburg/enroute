@@ -34,6 +34,106 @@ using namespace Qt::Literals::StringLiterals;
 
 
 //
+// ETA-aware, wind-integrated leg nav
+//
+
+QVariantMap Navigation::FlightRoute::legNav(int index,
+                                            const Weather::WindFieldProvider* wfp,
+                                            Weather::Wind manualWind,
+                                            const Navigation::Aircraft& aircraft,
+                                            const QDateTime& departure) const
+{
+    const auto theLegs = m_legs.value();
+    if (index < 0 || index >= theLegs.size())
+    {
+        return {};
+    }
+
+    // Planned altitude (ft) at waypoint wpIdx: stored value, else aircraft
+    // default cruise, else a sane fallback so the field can still be sampled.
+    auto altFtAt = [&](int wpIdx) -> double {
+        double m = plannedAltitude(wpIdx);
+        if (!qIsFinite(m))
+        {
+            m = aircraft.cruiseAltitudeM();
+        }
+        if (!qIsFinite(m))
+        {
+            return 3000.0;
+        }
+        return Units::Distance::fromM(m).toFeet();
+    };
+
+    QDateTime t = departure.isValid() ? departure : QDateTime::currentDateTimeUtc();
+
+    // Walk preceding legs to accumulate the start time of the requested leg
+    Navigation::LegIntegration res;
+    for (int k = 0; k <= index; ++k)
+    {
+        res = theLegs[k].integrate(wfp, manualWind, aircraft, t, altFtAt(k), altFtAt(k + 1));
+        if (k == index)
+        {
+            break;
+        }
+        if (res.isValid && res.ete.isFinite())
+        {
+            t = t.addSecs(qRound64(res.ete.toS()));
+        }
+    }
+
+    QVariantMap out;
+    out[u"ete"_s]  = QVariant::fromValue(res.ete);
+    out[u"gs"_s]   = QVariant::fromValue(res.gs);
+    out[u"wind"_s] = QVariant::fromValue(res.wind);
+    Units::Volume fuel;
+    if (aircraft.fuelConsumption().isFinite() && res.ete.isFinite())
+    {
+        fuel = aircraft.fuelConsumption() * res.ete;
+    }
+    out[u"fuel"_s] = QVariant::fromValue(fuel);
+    return out;
+}
+
+
+QList<QDateTime> Navigation::FlightRoute::waypointETAs(const Weather::WindFieldProvider* wfp,
+                                                       Weather::Wind manualWind,
+                                                       const Navigation::Aircraft& aircraft,
+                                                       const QDateTime& departure) const
+{
+    const auto theLegs = m_legs.value();
+
+    auto altFtAt = [&](int wpIdx) -> double {
+        double m = plannedAltitude(wpIdx);
+        if (!qIsFinite(m))
+        {
+            m = aircraft.cruiseAltitudeM();
+        }
+        if (!qIsFinite(m))
+        {
+            return 3000.0;
+        }
+        return Units::Distance::fromM(m).toFeet();
+    };
+
+    QDateTime t = departure.isValid() ? departure : QDateTime::currentDateTimeUtc();
+
+    QList<QDateTime> etas;
+    etas.reserve(theLegs.size() + 1);
+    etas << t; // arrival at first waypoint = departure
+    for (int k = 0; k < theLegs.size(); ++k)
+    {
+        const auto res = theLegs[k].integrate(wfp, manualWind, aircraft, t, altFtAt(k), altFtAt(k + 1));
+        if (res.isValid && res.ete.isFinite())
+        {
+            t = t.addSecs(qRound64(res.ete.toS()));
+        }
+        etas << t;
+    }
+    return etas;
+}
+
+
+//
 // Constructors and destructors
 //
 

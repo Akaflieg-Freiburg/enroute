@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QDateTime>
 #include <QGeoPath>
 #include <QQmlEngine>
 
@@ -29,8 +30,17 @@
 #include "units/Angle.h"
 #include "units/Units.h"
 #include "weather/Wind.h"
+#include "weather/WindFieldProvider.h"
 
 namespace Navigation {
+
+/*! \brief Result of integrating wind effect along a leg */
+struct LegIntegration {
+    Units::Timespan ete;   ///< time enroute
+    Units::Speed    gs;    ///< effective (distance/time) ground speed
+    Weather::Wind   wind;  ///< track-representative wind (vector-averaged)
+    bool isValid {false};
+};
 
 /*! \brief Leg in a flight route */
 
@@ -212,6 +222,49 @@ public:
      *  @returns Estimated WCA on leg
      */
     [[nodiscard]] Q_INVOKABLE Units::Angle WCA(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
+
+
+    /*! \brief Track-averaged wind from a wind field, sampled along the leg.
+     *
+     *  Samples the field at several points along the leg's great circle at the
+     *  given cruise altitude and forecast time, averaging the (u, v)
+     *  components. Returns an invalid Wind when the provider is null or has no
+     *  usable data.
+     *
+     *  @param wfp Wind field provider (may be null)
+     *  @param altFt Cruise altitude in feet
+     *  @param time Forecast time at which to sample the field
+     */
+    [[nodiscard]] Weather::Wind averageWind(const Weather::WindFieldProvider* wfp, double altFt, const QDateTime& time) const;
+
+    /*! \brief As above, sampling the field at the time nearest "now" */
+    [[nodiscard]] Q_INVOKABLE Weather::Wind averageWind(const Weather::WindFieldProvider* wfp, double altFt) const
+    {
+        return averageWind(wfp, altFt, QDateTime::currentDateTimeUtc());
+    }
+
+    /*! \brief Integrate the wind effect along the leg.
+     *
+     *  Steps along the great circle; at each sub-segment the altitude ramps
+     *  linearly from \a startAltFt to \a endAltFt, the wind is sampled from the
+     *  field in 4-D (lat, lon, alt, time) with the clock advancing as the
+     *  integration proceeds, and the local ground speed comes from the wind
+     *  triangle. ETE is the integral of ds/GS. Falls back to \a manualWind
+     *  where the field has no usable sample.
+     *
+     *  @param wfp Wind field provider (may be null)
+     *  @param manualWind Fallback wind
+     *  @param aircraft Aircraft in use
+     *  @param startTime Clock at the start of the leg (UTC)
+     *  @param startAltFt Altitude at the leg's start waypoint (ft)
+     *  @param endAltFt Altitude at the leg's end waypoint (ft)
+     */
+    [[nodiscard]] LegIntegration integrate(const Weather::WindFieldProvider* wfp,
+                                           Weather::Wind manualWind,
+                                           const Navigation::Aircraft& aircraft,
+                                           const QDateTime& startTime,
+                                           double startAltFt,
+                                           double endAltFt) const;
 
 
     //

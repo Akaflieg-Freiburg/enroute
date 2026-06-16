@@ -154,6 +154,20 @@ public:
      */
     Q_PROPERTY(QVariantList plannedProfilePoints READ plannedProfilePoints BINDABLE bindablePlannedProfilePoints)
 
+    /*! \brief Wind barbs projected onto the route profile (route mode only)
+     *
+     * A QVariantList of maps, sampled along the route at the planned altitude:
+     *   "x", "y"          pixel position on the profile
+     *   "speedKn"         total wind speed (kt)
+     *   "dirFromDeg"      wind direction (° from)
+     *   "alongKn"         along-track component (kt, + = headwind, − = tailwind)
+     * Empty in Track mode or when no wind data is available.
+     */
+    Q_PROPERTY(QVariantList windProfile READ windProfile BINDABLE bindableWindProfile)
+
+    /*! \brief Whether to compute and show the projected wind barbs (route mode) */
+    Q_PROPERTY(bool showWind READ showWind WRITE setShowWind NOTIFY showWindChanged)
+
     /*! \brief Track string
      *
      * If the own aircraft is not moving sufficiently fast, this property holds
@@ -291,10 +305,29 @@ public:
      */
     QBindable<QVariantList> bindablePlannedProfilePoints() const {return &m_plannedProfilePoints;}
 
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property windProfile
+     */
+    QVariantList windProfile() const {return m_windProfile.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property windProfile
+     */
+    QBindable<QVariantList> bindableWindProfile() const {return &m_windProfile;}
+
+    /*! \brief Getter for property showWind */
+    bool showWind() const {return m_showWind;}
+
+    /*! \brief Setter for property showWind */
+    void setShowWind(bool newShowWind);
+
 signals:
     void modeChanged();
     void renderWidthChanged();
     void scaleRangeChanged();
+    void showWindChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(SideviewQuickItem)
@@ -342,6 +375,8 @@ private:
     QProperty<QPolygonF> m_plannedProfile;
 
     QProperty<QVariantList> m_plannedProfilePoints;
+    QProperty<QVariantList> m_windProfile;
+    bool m_showWind {false};
 
     QProperty<QVariantMap> m_airspaces;
 

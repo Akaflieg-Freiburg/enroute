@@ -27,6 +27,7 @@
 #include <QLocale>
 #include <QPointer>
 #include <QQmlEngine>
+#include <QVariant>
 #include <QXmlStreamReader>
 
 #include "geomaps/Waypoint.h"
@@ -193,6 +194,42 @@ namespace Navigation
         //
         // METHODS
         //
+
+        /*! \brief ETA-aware, wind-integrated nav data for a leg.
+         *
+         *  Walks the route from \a departure, integrating each leg's wind effect
+         *  (4-D field sampling, altitude ramping between the waypoints' planned
+         *  altitudes, advancing clock) to accumulate the start time of the leg
+         *  at \a index, then integrates that leg. Falls back to \a manualWind
+         *  where the field has no usable sample.
+         *
+         *  @returns A map with keys "ete" (Units::Timespan), "gs"
+         *  (Units::Speed), "wind" (Weather::Wind) and "fuel" (Units::Volume).
+         *  Empty when the leg index is invalid or inputs are insufficient.
+         *
+         *  @param index Leg index
+         *  @param wfp Wind field provider (may be null)
+         *  @param manualWind Fallback wind
+         *  @param aircraft Aircraft in use
+         *  @param departure Departure time (UTC)
+         */
+        [[nodiscard]] Q_INVOKABLE QVariantMap legNav(int index,
+                                                     const Weather::WindFieldProvider* wfp,
+                                                     Weather::Wind manualWind,
+                                                     const Navigation::Aircraft& aircraft,
+                                                     const QDateTime& departure) const;
+
+        /*! \brief Estimated time of arrival at each waypoint.
+         *
+         *  Returns a list of size waypoints().size(): the departure time at the
+         *  first waypoint, then the accumulated ETA at each subsequent one,
+         *  using the same wind-integrated ETE as legNav(). Used to give the
+         *  side-view its ETA-aware sampling time at each point along the route.
+         */
+        [[nodiscard]] Q_INVOKABLE QList<QDateTime> waypointETAs(const Weather::WindFieldProvider* wfp,
+                                                               Weather::Wind manualWind,
+                                                               const Navigation::Aircraft& aircraft,
+                                                               const QDateTime& departure) const;
 
         /*! \brief Adds a waypoint to the end of the route
          *

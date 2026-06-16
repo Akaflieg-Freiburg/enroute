@@ -196,6 +196,7 @@ Page {
             id: grid
 
             property leg leg: ({});
+            property int legIndex: -1
 
             Layout.fillWidth: true
 
@@ -207,10 +208,44 @@ Page {
                     // Mention units
                     Navigator.aircraft.horizontalDistanceUnit
                     Navigator.aircraft.fuelConsumptionUnit
+                    // Re-evaluate when the wind field, altitudes or departure change
+                    Navigator.windSource
+                    Navigator.departureTime
+                    flightRoutePage.plannedAltRevision
 
                     if (leg == null)
                         return ""
-                    return leg.description(Navigator.wind, Navigator.aircraft)
+
+                    // ETA-aware, wind-integrated nav for this leg (4-D field
+                    // sampling along the leg, altitude ramp between waypoints,
+                    // advancing clock; falls back to manual wind internally).
+                    var nav = Navigator.flightRoute.legNav(
+                        grid.legIndex, Navigator.windField(), Navigator.wind,
+                        Navigator.aircraft, Navigator.departureTime)
+                    var wind = nav.wind
+
+                    var txt = Navigator.aircraft.horizontalDistanceToString(leg.distance)
+
+                    if (nav.ete !== undefined && nav.ete.isFinite())
+                        txt += " • ETE " + nav.ete.toHoursAndMinutes() + " h"
+
+                    var tcDeg = leg.TC.toDEG()
+                    if (!isNaN(tcDeg))
+                        txt += " • TC " + Math.round(tcDeg) + "°"
+
+                    var thDeg = leg.TH(wind, Navigator.aircraft).toDEG()
+                    if (!isNaN(thDeg))
+                        txt += " • TH " + Math.round(thDeg) + "°"
+
+                    if (nav.gs !== undefined && nav.gs.isFinite())
+                        txt += " • GS " + Navigator.aircraft.horizontalSpeedToString(nav.gs)
+
+                    if (wind !== undefined && wind.speed.isFinite() && wind.directionFrom.isFinite() && wind.speed.toKN() > 0.5) {
+                        var dir = Math.round(wind.directionFrom.toDEG())
+                        txt += " • W/V " + dir + "°/" + Navigator.aircraft.horizontalSpeedToString(wind.speed)
+                    }
+
+                    return txt
                 }
             }
 
@@ -541,8 +576,39 @@ Page {
                 text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
 
+            // Wind-source banner: shows when a server wind field is loaded, and
+            // warns when it is stale (computation falls back to manual wind).
+            Rectangle {
+                id: windBanner
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+
+                visible: WindFieldProvider.hasData
+                height: visible ? windBannerLabel.implicitHeight + 12 : 0
+
+                color: WindFieldProvider.isStale ? "#fff3cd" : "#d1e7dd"
+
+                Label {
+                    id: windBannerLabel
+                    anchors.centerIn: parent
+                    width: parent.width - 24
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.Wrap
+                    color: "black"
+                    text: WindFieldProvider.isStale
+                        ? qsTr("Wind field stale (%1) — using manual wind").arg(WindFieldProvider.validTimeLabel)
+                        : qsTr("Using wind field — valid %1, FL%2")
+                            .arg(WindFieldProvider.validTimeLabel)
+                            .arg(Math.round(Navigator.cruiseAltitudeFt/100))
+                }
+            }
+
             DecoratedScrollView {
-                anchors.fill: parent
+                anchors.top: windBanner.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
 
                 contentWidth: availableWidth
 
@@ -581,7 +647,7 @@ Page {
                             var legs = Navigator.flightRoute.legs
                             var j
                             for (j=0; j<legs.length; j++) {
-                                legComponent.createObject(co, {leg: legs[j]});
+                                legComponent.createObject(co, {leg: legs[j], legIndex: j});
                                 waypointComponent.createObject(co, {waypoint: legs[j].endPoint, index: j+1});
                             }
                         }

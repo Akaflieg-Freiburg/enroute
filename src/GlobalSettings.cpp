@@ -239,6 +239,16 @@ void GlobalSettings::setShowAltitudeAGL(bool newShowAltitudeAGL)
     emit showAltitudeAGLChanged();
 }
 
+void GlobalSettings::setShowWindLayer(bool newShowWindLayer)
+{
+    if (newShowWindLayer == showWindLayer())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("showWindLayer"), newShowWindLayer);
+    emit showWindLayerChanged();
+}
+
 
 void GlobalSettings::setVoiceNotifications(uint newVoiceNotifications)
 {

@@ -23,6 +23,9 @@
 #include "SideviewQuickItem.h"
 #include "navigation/Navigator.h"
 #include "weather/WeatherDataProvider.h"
+#include "weather/WindFieldProvider.h"
+
+#include <QtMath>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -53,6 +56,12 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::plannedAltitudesChanged, this, [this]() {
         if (m_mode == Mode::Route) { updateProperties(); }
     });
+    connect(Weather::WindFieldProvider::instance(), &Weather::WindFieldProvider::dataChanged, this, [this]() {
+        if (m_mode == Mode::Route) { updateProperties(); }
+    });
+    connect(GlobalObject::navigator(), &Navigation::Navigator::departureTimeChanged, this, [this]() {
+        if (m_mode == Mode::Route) { updateProperties(); }
+    });
 
     updateProperties();
 }
@@ -62,6 +71,14 @@ void Ui::SideviewQuickItem::setMode(Mode newMode)
     if (m_mode == newMode) { return; }
     m_mode = newMode;
     emit modeChanged();
+    updateProperties();
+}
+
+void Ui::SideviewQuickItem::setShowWind(bool newShowWind)
+{
+    if (m_showWind == newShowWind) { return; }
+    m_showWind = newShowWind;
+    emit showWindChanged();
     updateProperties();
 }
 
@@ -195,6 +212,7 @@ void Ui::SideviewQuickItem::updatePropertiesTrack()
     m_terrain = QPolygonF();
     m_plannedProfile = QPolygonF();
     m_plannedProfilePoints = QVariantList();
+    m_windProfile = QVariantList();
 
     QVariantMap newAirspaces;
     const QVector<QPolygonF> empty;
@@ -420,6 +438,7 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
     m_terrain         = QPolygonF();
     m_plannedProfile  = QPolygonF();
     m_plannedProfilePoints = QVariantList();
+    m_windProfile     = QVariantList();
 
     const QVector<QPolygonF> empty;
     QVariantMap newAirspaces;
@@ -579,6 +598,90 @@ void Ui::SideviewQuickItem::updatePropertiesRoute()
     }
     m_plannedProfile = profile;
     m_plannedProfilePoints = profilePoints;
+
+    // -----------------------------------------------------------------------
+    // 6c. Wind barbs projected onto the route profile (when enabled): sample
+    //     the field on a grid of distance × altitude and project onto the
+    //     track. Altitude rows span the visible Y range.
+    // -----------------------------------------------------------------------
+    {
+        const auto* wfp = Weather::WindFieldProvider::instance();
+        const bool haveField = wfp->isUsable();
+        const Weather::Wind manualWind = GlobalObject::navigator()->wind();
+        const bool haveManual = manualWind.speed().isFinite() && manualWind.directionFrom().isFinite();
+
+        QVariantList windPts;
+        if (m_showWind && (haveField || haveManual) && (totalRouteLen > 1.0))
+        {
+            const int nCols = qBound(3, int(renderW / 90.0), 14);
+            const int nRows = 5; // altitude rows across the visible range
+
+            // ETA-aware sampling: the trip starts at departureTime (driven by the
+            // weather time slider) and the clock advances along the route.
+            auto* nav = GlobalObject::navigator();
+            QDateTime departure = nav->departureTime();
+            if (!departure.isValid()) { departure = QDateTime::currentDateTimeUtc(); }
+            const auto etas = flightRoute->waypointETAs(wfp, manualWind, nav->aircraft(), departure);
+
+            for (int c = 0; c < nCols; c++)
+            {
+                const double frac = (c + 0.5) / nCols;
+                const double distM = frac * totalRouteLen;
+                const auto coord = coordAtDist(distM);
+
+                // Track azimuth at this distance
+                qsizetype seg = 0;
+                for (qsizetype i = 1; i < cumulativeDist.size(); i++)
+                {
+                    if (cumulativeDist[i] >= distM) { seg = i - 1; break; }
+                    seg = i - 1;
+                }
+                const double trackDeg = geoPath[seg].azimuthTo(geoPath[qMin(seg+1, geoPath.size()-1)]);
+
+                // Time of arrival at this distance: interpolate between the
+                // bracketing waypoints' ETAs by distance fraction within the leg.
+                QDateTime eta = departure;
+                if ((seg + 1) < etas.size() && etas[seg].isValid() && etas[seg + 1].isValid())
+                {
+                    const double segLen = cumulativeDist[seg + 1] - cumulativeDist[seg];
+                    const double segFrac = (segLen > 0.01) ? qBound(0.0, (distM - cumulativeDist[seg]) / segLen, 1.0) : 0.0;
+                    eta = etas[seg].addSecs(qRound64(etas[seg].secsTo(etas[seg + 1]) * segFrac));
+                }
+
+                for (int rrow = 0; rrow < nRows; rrow++)
+                {
+                    const Units::Distance alt = sideview_minAlt
+                        + (sideview_maxAlt - sideview_minAlt) * ((rrow + 0.5) / nRows);
+
+                    Weather::Wind w = haveField
+                        ? wfp->windAt(coord.latitude(), coord.longitude(), alt.toFeet(), eta)
+                        : Weather::Wind();
+                    if (!w.speed().isFinite() || !w.directionFrom().isFinite())
+                    {
+                        w = manualWind;
+                    }
+                    if (!w.speed().isFinite() || !w.directionFrom().isFinite())
+                    {
+                        continue;
+                    }
+
+                    const double spdKn = w.speed().toKN();
+                    const double dirDeg = w.directionFrom().toDEG();
+                    // Headwind component (+) = wind blowing from ahead along the track
+                    const double alongKn = spdKn * qCos(qDegreesToRadians(dirDeg - trackDeg));
+
+                    QVariantMap m;
+                    m[QStringLiteral("x")]          = frac * renderW;
+                    m[QStringLiteral("y")]          = altToY(alt);
+                    m[QStringLiteral("speedKn")]    = spdKn;
+                    m[QStringLiteral("dirFromDeg")] = dirDeg;
+                    m[QStringLiteral("alongKn")]    = alongKn;
+                    windPts << m;
+                }
+            }
+        }
+        m_windProfile = windPts;
+    }
 
     // -----------------------------------------------------------------------
     // 7. Terrain polygon

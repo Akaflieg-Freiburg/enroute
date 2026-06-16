@@ -132,6 +132,7 @@ set(SOURCES
     weather/TAF.h
     weather/WeatherDataProvider.h
     weather/Wind.h
+    weather/WindFieldProvider.h
 
     # C++ files
     ../3rdParty/sunset/src/sunset.cpp
@@ -237,6 +238,7 @@ set(SOURCES
     weather/TAF.cpp
     weather/WeatherDataProvider.cpp
     weather/Wind.cpp
+    weather/WindFieldProvider.cpp
 
     ${HEADERS}
 )

@@ -93,3 +93,13 @@ Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent)
         return results.join(u"<br>");
     });
 }
+
+
+Traffic::TrafficFactor_DistanceOnly::~TrafficFactor_DistanceOnly()
+{
+    // Break all bindings before destruction proceeds. The bindings installed in
+    // the constructor capture 'this' and reference members of this derived class
+    // (e.g. coordinate()), which are destroyed before the base-class destructor runs.
+    m_valid.takeBinding();
+    m_description.takeBinding();
+}

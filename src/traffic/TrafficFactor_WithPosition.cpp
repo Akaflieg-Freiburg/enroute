@@ -56,7 +56,7 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
         if (m_positionInfo.value().groundSpeed().isFinite() && m_positionInfo.value().trueTrack().isFinite())
         {
             auto GS = m_positionInfo.value().groundSpeed();
-            if (GS.isFinite() && (GS.toKN() > 4))
+            if (GS.toKN() > 4)
             {
                 switch(type())
                 {
@@ -219,14 +219,14 @@ void Traffic::TrafficFactor_WithPosition::updateExtrapolatedData()
     {
         m_extrapolatedCoordinate = QGeoCoordinate();
         m_extrapolatedTrueTrack = Units::Angle();
-        m_uncertainityRadius = Units::Distance::fromM(0);
+        m_uncertaintyRadius = Units::Distance::fromM(0);
         return;
     }
     if (!m_positionInfo.value().groundSpeed().isFinite() || !m_positionInfo.value().trueTrack().isFinite())
     {
         m_extrapolatedCoordinate = m_positionInfo.value().coordinate();
         m_extrapolatedTrueTrack = Units::Angle();
-        m_uncertainityRadius = Units::Distance::fromM(0);
+        m_uncertaintyRadius = Units::Distance::fromM(0);
         return;
     }
 
@@ -235,13 +235,13 @@ void Traffic::TrafficFactor_WithPosition::updateExtrapolatedData()
     const QScopedPropertyUpdateGroup updateGroup;
     if (secondsElapsed < 30.0)
     {
-        m_uncertainityRadius = Units::Distance::fromM(0);
+        m_uncertaintyRadius = Units::Distance::fromM(0);
     }
     else
     {
-        m_uncertainityRadius = m_positionInfo.value().groundSpeed() * Units::Timespan::fromS(secondsElapsed);
+        m_uncertaintyRadius = m_positionInfo.value().groundSpeed() * Units::Timespan::fromS(secondsElapsed);
     }
-    auto vdistance_in_meters = (double)m_positionInfo.value().groundSpeed().toMPS()*secondsElapsed;
-    m_extrapolatedCoordinate = m_positionInfo.value().coordinate().atDistanceAndAzimuth(vdistance_in_meters, m_positionInfo.value().trueTrack().toDEG(), 0);
+    auto horizontalDistanceInMeters = (double)m_positionInfo.value().groundSpeed().toMPS()*secondsElapsed;
+    m_extrapolatedCoordinate = m_positionInfo.value().coordinate().atDistanceAndAzimuth(horizontalDistanceInMeters, m_positionInfo.value().trueTrack().toDEG(), 0);
     m_extrapolatedTrueTrack = m_positionInfo.value().trueTrack();
 }

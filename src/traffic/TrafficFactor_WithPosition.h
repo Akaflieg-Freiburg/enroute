@@ -55,14 +55,15 @@ public:
 
     /*! \brief Copy data from other object
      *
-     *  This method copies all properties from the other object, with two notable exceptions.
+     *  This method copies all properties from the other object, provided that the
+     *  other object is valid and its positionInfo is not older than the positionInfo
+     *  of this object. If these conditions are not met, the method does nothing.
      *
-     *  - The property "animate" is not copied, the property "animate" of this class is not touched.
-     *  - The lifeTime of this object is not changed.
+     *  As with TrafficFactor_Abstract::copyFrom(), a successful copy updates the
+     *  "animate" property and restarts the lifetime of this object.
      *
      *  @param other Instance whose properties are copied
      */
-#warning docu
     void copyFrom(const TrafficFactor_WithPosition& other)
     {
         const QScopedPropertyUpdateGroup updateGroup;
@@ -128,7 +129,7 @@ public:
      *  Depending on alarm level, type and movement of the traffic opponent, this
      *  property suggests an icon for GUI representation of the traffic.
      */
-    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged)
+    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged BINDABLE bindableIcon)
 
     /*! \brief Getter method for property with the same name
      *
@@ -177,13 +178,13 @@ public:
      *
      *  @returns Property uncertaintyRadius
      */
-    [[nodiscard]] Units::Distance uncertaintyRadius() const {return m_uncertainityRadius.value();}
+    [[nodiscard]] Units::Distance uncertaintyRadius() const {return m_uncertaintyRadius.value();}
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property uncertaintyRadius
      */
-    [[nodiscard]] QBindable<Units::Distance> bindableUncertaintyRadius() const {return &m_uncertainityRadius;}
+    [[nodiscard]] QBindable<Units::Distance> bindableUncertaintyRadius() const {return &m_uncertaintyRadius;}
 
 signals:
     /*! \brief Notifier signal */
@@ -207,7 +208,7 @@ private:
     //
     QProperty<QGeoCoordinate> m_extrapolatedCoordinate;
     QProperty<Units::Angle> m_extrapolatedTrueTrack;
-    QProperty<Units::Distance> m_uncertainityRadius;
+    QProperty<Units::Distance> m_uncertaintyRadius;
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, QString, m_icon, &Traffic::TrafficFactor_WithPosition::iconChanged);
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, Positioning::PositionInfo, m_positionInfo, &Traffic::TrafficFactor_WithPosition::positionInfoChanged);
 };

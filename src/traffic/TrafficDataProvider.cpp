@@ -381,12 +381,10 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
     {
         if (factor.ID().right(6) == target->ID().right(6))
         {
-            if (target->positionInfo().timestamp() < factor.positionInfo().timestamp())
-            {
-                // Replace the entry by the factor.
-                target->copyFrom(factor);
-                target->startLiveTime();
-            }
+            // Update the entry. copyFrom() ignores the factor if it is invalid or
+            // older than the data we already hold, so no timestamp check is needed here.
+            target->copyFrom(factor);
+            target->startLiveTime();
             return;
         }
     }

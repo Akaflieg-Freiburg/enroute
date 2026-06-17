@@ -48,7 +48,7 @@ public:
     explicit TrafficFactor_DistanceOnly(QObject *parent = nullptr);
 
     // Standard destructor
-    ~TrafficFactor_DistanceOnly() override = default;
+    ~TrafficFactor_DistanceOnly() override;
 
     //
     // Methods

@@ -884,7 +884,7 @@ Item {
 
                                     }
 
-                                    onObjectAdded: (index, object) => rasterMenu.insertItem(index + 5, object)
+                                    onObjectAdded: (index, object) => rasterMenu.insertItem(index + 6, object)
                                     onObjectRemoved: (index, object) => rasterMenu.removeItem(object)
                                 }
 

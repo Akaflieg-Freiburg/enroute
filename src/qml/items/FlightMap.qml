@@ -102,6 +102,22 @@ Map {
     property real animatedTT: PositionProvider.lastValidTT.toDEG()
     Behavior on animatedTT { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
 
+    Connections {
+        target: GlobalSettings
+        function onShowWaypointsLayerChanged() {
+            flightMap.showWaypointsLayer = GlobalSettings.showWaypointsLayer
+        }
+        function onShowNotamLayerChanged() {
+            flightMap.showNotamLayer = GlobalSettings.showNotamLayer
+        }
+        function onShowUltralightFieldsChanged() {
+            flightMap.showUltralightFields = GlobalSettings.showUltralightFields
+        }
+        function onShowAirspacesLayerChanged() {
+            flightMap.showAirspacesLayer = GlobalSettings.showAirspacesLayer
+        }
+    }
+
     MapLibre.style: Style {
         id: style
 
@@ -301,6 +317,14 @@ Map {
             }
         }
 
+        FilterParameter {
+            id: wpsFilter
+            styleId: "WPs"
+            expression: flightMap.showUltralightFields
+                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
+                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
+        }
+
 LayerParameter {
             id: wps
 
@@ -308,9 +332,7 @@ LayerParameter {
 
             type: "symbol"
             property string source: "aviation-data"
-            property var filter: flightMap.showUltralightFields
-                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
-                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
+            filterParameter: wpsFilter
 
             layout: {
                 "icon-image": ["get", "CAT"],
@@ -1197,7 +1219,7 @@ LayerParameter {
 
     MapItemView { // Wind field barbs (client-drawn vector layer)
         id: windBarbLayer
-        visible: flightMap.showWindLayer
+        visible: flightMap.showWindLayer && WindFieldProvider.hasData
         model: flightMap.showWindLayer ? WindFieldProvider.gridPoints : []
         
         Connections {
@@ -1205,6 +1227,7 @@ LayerParameter {
             function onDataChanged() {
                 // Force a refresh of the wind barbs by invalidating the model
                 // This will cause the delegate items to be recreated with fresh wind data
+                windBarbLayer.model = []
                 windBarbLayer.model = flightMap.showWindLayer ? WindFieldProvider.gridPoints : []
             }
         }

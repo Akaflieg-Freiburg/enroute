@@ -864,14 +864,7 @@ Item {
                                         onClicked: {
                                             PlatformAdaptor.vibrateBrief()
                                             rasterMenu.close()
-                                            // Preserve current zoom and center when changing raster map
-                                            var savedZoom = flightMap.zoomLevel
-                                            var savedCenter = flightMap.center
                                             GeoMapProvider.currentRasterMap = checked ? modelData : ""
-                                            flightMap.clearData()
-                                            // Restore zoom and center after the map data is cleared
-                                            flightMap.zoomLevel = savedZoom
-                                            flightMap.center = savedCenter
                                         }
 
                                     }

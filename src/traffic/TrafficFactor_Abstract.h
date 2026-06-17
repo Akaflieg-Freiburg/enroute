@@ -331,7 +331,7 @@ public:
      *
      *  @returns Property relevantString
      */
-    [[nodiscard]] QBindable<bool> bindableRelevantString() {return &m_relevantString;}
+    [[nodiscard]] QBindable<QString> bindableRelevantString() {return &m_relevantString;}
 
     /*! \brief Getter method for property with the same name
      *

@@ -637,6 +637,14 @@ Item {
                                 weatherMenu.popup()
                             }
 
+                            // Cheated but pilot-friendly FL labels for the 4 AROME pressure levels
+                            function hpaToFL(hpa) {
+                                var lookup = { "1000": "FL000", "900": "FL033", "800": "FL065", "700": "FL100" }
+                                return lookup[String(Math.round(parseFloat(hpa)))] ?? ("FL" + Math.round(
+                                    (1 - Math.pow(parseFloat(hpa)/1013.25, 0.190284)) * 145366.45 / 100
+                                ).toString().padStart(3,"0"))
+                            }
+
                             // Convert cloudbase metres to the aircraft's configured altitude unit
                             function cbLabel(metres) {
                                 if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters)
@@ -695,14 +703,13 @@ Item {
                                 }
 
                                 CheckDelegate {
-                                    text: qsTr("Wind") + "  [kt]"
-                                    enabled: WindFieldProvider.hasData
+                                    text: qsTr("Wind forecast") + (ForecastMapProvider.windPressureLevels.length > 0 ? "" : "")
                                     checked: GlobalSettings.showWindLayer
                                     onClicked: GlobalSettings.showWindLayer = checked
                                 }
 
                                 ItemDelegate {
-                                    visible: flightMap.showWindLayer && WindFieldProvider.levelsFt.length > 1
+                                    visible: flightMap.showWindLayer && ForecastMapProvider.windPressureLevels.length > 1
                                     implicitWidth: 280
                                     topPadding: 0; bottomPadding: 6
                                     contentItem: Column {
@@ -710,8 +717,8 @@ Item {
                                         spacing: 2
                                         Label {
                                             width: parent.width
-                                            text: "FL" + ("00" + Math.round(flightMap.windAltitudeFt/100)).slice(-3)
-                                                  + "  (" + Math.round(flightMap.windAltitudeFt) + " ft)"
+                                            text: weatherLayerButton.hpaToFL(ForecastMapProvider.currentWindPressureLevel)
+                                                  + "  (" + ForecastMapProvider.currentWindPressureLevel + " hPa)"
                                             font.pixelSize: 9
                                             horizontalAlignment: Text.AlignHCenter
                                             opacity: 0.7
@@ -719,24 +726,24 @@ Item {
                                         Slider {
                                             width: parent.width
                                             from: 0
-                                            to: Math.max(0, WindFieldProvider.levelsFt.length - 1)
+                                            to: Math.max(0, ForecastMapProvider.windPressureLevels.length - 1)
                                             stepSize: 1
-                                            value: WindFieldProvider.levelsFt.indexOf(flightMap.windAltitudeFt)
-                                            onMoved: flightMap.windAltitudeFt =
-                                                WindFieldProvider.levelsFt[Math.round(value)]
+                                            value: ForecastMapProvider.windPressureLevels.indexOf(ForecastMapProvider.currentWindPressureLevel)
+                                            onMoved: ForecastMapProvider.currentWindPressureLevel =
+                                                ForecastMapProvider.windPressureLevels[Math.round(value)]
                                         }
                                         Row {
                                             width: parent.width
                                             Repeater {
-                                                model: WindFieldProvider.levelsFt
+                                                model: ForecastMapProvider.windPressureLevels
                                                 Label {
-                                                    width: parent.width / WindFieldProvider.levelsFt.length
-                                                    text: "FL" + ("00" + Math.round(modelData/100)).slice(-3)
+                                                    width: parent.width / ForecastMapProvider.windPressureLevels.length
+                                                    text: weatherLayerButton.hpaToFL(modelData)
                                                     font.pixelSize: 9
                                                     horizontalAlignment: index === 0 ? Text.AlignLeft
-                                                        : index === WindFieldProvider.levelsFt.length - 1 ? Text.AlignRight
+                                                        : index === ForecastMapProvider.windPressureLevels.length - 1 ? Text.AlignRight
                                                         : Text.AlignHCenter
-                                                    opacity: flightMap.windAltitudeFt === modelData ? 1.0 : 0.5
+                                                    opacity: ForecastMapProvider.currentWindPressureLevel === modelData ? 1.0 : 0.5
                                                 }
                                             }
                                         }
@@ -823,6 +830,14 @@ Item {
                                     onClicked: {
                                         PlatformAdaptor.vibrateBrief()
                                         GlobalSettings.showWaypointsLayer = checked
+                                    }
+                                }
+                                CheckDelegate {
+                                    text: qsTr("User waypoints")
+                                    checked: GlobalSettings.showWaypointLibrary
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showWaypointLibrary = checked
                                     }
                                 }
                                 CheckDelegate {

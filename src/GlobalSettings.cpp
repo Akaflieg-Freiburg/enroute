@@ -261,6 +261,17 @@ void GlobalSettings::setShowWaypointsLayer(bool newShowWaypointsLayer)
 }
 
 
+void GlobalSettings::setShowWaypointLibrary(bool newShowWaypointLibrary)
+{
+    if (newShowWaypointLibrary == showWaypointLibrary())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("showWaypointLibrary"), newShowWaypointLibrary);
+    emit showWaypointLibraryChanged();
+}
+
+
 void GlobalSettings::setShowNotamLayer(bool newShowNotamLayer)
 {
     if (newShowNotamLayer == showNotamLayer())

@@ -162,6 +162,9 @@ public:
     /*! \brief Toggle for the waypoint and navaid map layer */
     Q_PROPERTY(bool showWaypointsLayer READ showWaypointsLayer WRITE setShowWaypointsLayer NOTIFY showWaypointsLayerChanged)
 
+    /*! \brief Toggle for the user waypoint library layer */
+    Q_PROPERTY(bool showWaypointLibrary READ showWaypointLibrary WRITE setShowWaypointLibrary NOTIFY showWaypointLibraryChanged)
+
     /*! \brief Toggle for the NOTAM map layer */
     Q_PROPERTY(bool showNotamLayer READ showNotamLayer WRITE setShowNotamLayer NOTIFY showNotamLayerChanged)
 
@@ -284,6 +287,9 @@ public:
 
     /*! \brief Getter function for property of the same name */
     [[nodiscard]] auto showWaypointsLayer() const -> bool { return m_settings.value(QStringLiteral("showWaypointsLayer"), true).toBool(); }
+
+    /*! \brief Getter function for property of the same name */
+    [[nodiscard]] auto showWaypointLibrary() const -> bool { return m_settings.value(QStringLiteral("showWaypointLibrary"), true).toBool(); }
 
     /*! \brief Getter function for property of the same name */
     [[nodiscard]] auto showNotamLayer() const -> bool { return m_settings.value(QStringLiteral("showNotamLayer"), true).toBool(); }
@@ -414,6 +420,12 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * @param newShowWaypointLibrary Property showWaypointLibrary
+     */
+    void setShowWaypointLibrary(bool newShowWaypointLibrary);
+
+    /*! \brief Setter function for property of the same name
+     *
      * @param newShowNotamLayer Property showNotamLayer
      */
     void setShowNotamLayer(bool newShowNotamLayer);
@@ -489,6 +501,9 @@ signals:
 
     /*! \brief Notifier signal */
     void showWaypointsLayerChanged();
+
+    /*! \brief Notifier signal */
+    void showWaypointLibraryChanged();
 
     /*! \brief Notifier signal */
     void showNotamLayerChanged();

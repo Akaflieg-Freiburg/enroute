@@ -55,6 +55,7 @@ Map {
 
     /*! \brief Declutter toggles, persisted globally */
     property bool showWaypointsLayer: GlobalSettings.showWaypointsLayer
+    property bool showWaypointLibrary: GlobalSettings.showWaypointLibrary
     property bool showNotamLayer: GlobalSettings.showNotamLayer
     property bool showUltralightFields: GlobalSettings.showUltralightFields
     property bool showAirspacesLayer: GlobalSettings.showAirspacesLayer
@@ -106,6 +107,9 @@ Map {
         target: GlobalSettings
         function onShowWaypointsLayerChanged() {
             flightMap.showWaypointsLayer = GlobalSettings.showWaypointsLayer
+        }
+        function onShowWaypointLibraryChanged() {
+            flightMap.showWaypointLibrary = GlobalSettings.showWaypointLibrary
         }
         function onShowNotamLayerChanged() {
             flightMap.showNotamLayer = GlobalSettings.showNotamLayer
@@ -168,6 +172,14 @@ Map {
             styleId: "forecastCloudbase"
             type: "image"
             property string url: ForecastMapProvider.currentCloudbaseMap !== "" ? "file://" + ForecastMapProvider.currentCloudbaseMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
+        }
+
+        SourceParameter {
+            id: forecastWindSource
+            styleId: "forecastWind"
+            type: "image"
+            property string url: ForecastMapProvider.currentWindMap !== "" ? "file://" + ForecastMapProvider.currentWindMap : "qrc:/icons/appIcon.png"
             property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
         }
 
@@ -317,16 +329,21 @@ Map {
             }
         }
 
-LayerParameter {
+        FilterParameter {
+            styleId: "WPs"
+            expression: flightMap.showUltralightFields
+                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
+                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
+        }
+
+        LayerParameter {
             id: wps
 
             styleId: "WPs"
 
             type: "symbol"
             property string source: "aviation-data"
-            property var filter: flightMap.showUltralightFields
-                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
-                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
+            property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
 
             layout: {
                 "icon-image": ["get", "CAT"],
@@ -808,7 +825,7 @@ LayerParameter {
             property string source: "waypointlib"
 
             layout: {
-                "visibility": (flightMap.showWindLayer || !flightMap.showWaypointsLayer) ? 'none' : 'visible',
+                "visibility": (flightMap.showWindLayer || !flightMap.showWaypointLibrary) ? 'none' : 'visible',
                 "icon-image": '["get", "CAT"]',
                 "text-field": '["get", "NAM"]',
                 "text-size": 0.85*GlobalSettings.fontSize,
@@ -864,6 +881,14 @@ LayerParameter {
             type: "raster"
             property string source: "forecastCloudbase"
             layout: { "visibility": flightMap.showCloudbaseLayer && ForecastMapProvider.currentCloudbaseMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastWindLayer
+            styleId: "forecastWindLayer"
+            type: "raster"
+            property string source: "forecastWind"
+            layout: { "visibility": flightMap.showWindLayer && ForecastMapProvider.currentWindMap !== "" ? 'visible' : 'none' }
         }
 
         LayerParameter {
@@ -1211,21 +1236,10 @@ LayerParameter {
         }
     }
 
-    MapItemView { // Wind field barbs (client-drawn vector layer)
+    MapItemView { // Wind field barbs — disabled; wind is now a server-side PNG raster layer
         id: windBarbLayer
-        visible: flightMap.showWindLayer
-        model: flightMap.showWindLayer ? WindFieldProvider.gridPoints : []
-        
-        Connections {
-            target: WindFieldProvider
-            function onDataChanged() {
-                // Force a refresh of the wind barbs by invalidating the model
-                // This will cause the delegate items to be recreated with fresh wind data
-                var saved = flightMap.showWindLayer
-                flightMap.showWindLayer = false
-                flightMap.showWindLayer = saved
-            }
-        }
+        visible: false
+        model: []
         delegate: MapQuickItem {
             id: windItem
 

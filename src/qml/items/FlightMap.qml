@@ -329,13 +329,6 @@ Map {
             }
         }
 
-        FilterParameter {
-            styleId: "WPs"
-            expression: flightMap.showUltralightFields
-                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
-                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
-        }
-
         LayerParameter {
             id: wps
 
@@ -359,6 +352,13 @@ Map {
                 "text-halo-width": 2,
                 "text-halo-color": "white"
             }
+        }
+
+        FilterParameter {
+            styleId: "WPs"
+            expression: flightMap.showUltralightFields
+                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
+                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
         }
 
         LayerParameter {

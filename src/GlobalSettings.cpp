@@ -250,6 +250,61 @@ void GlobalSettings::setShowWindLayer(bool newShowWindLayer)
 }
 
 
+void GlobalSettings::setShowWaypointsLayer(bool newShowWaypointsLayer)
+{
+    if (newShowWaypointsLayer == showWaypointsLayer())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("showWaypointsLayer"), newShowWaypointsLayer);
+    emit showWaypointsLayerChanged();
+}
+
+
+void GlobalSettings::setShowWaypointLibrary(bool newShowWaypointLibrary)
+{
+    if (newShowWaypointLibrary == showWaypointLibrary())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("showWaypointLibrary"), newShowWaypointLibrary);
+    emit showWaypointLibraryChanged();
+}
+
+
+void GlobalSettings::setShowNotamLayer(bool newShowNotamLayer)
+{
+    if (newShowNotamLayer == showNotamLayer())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("showNotamLayer"), newShowNotamLayer);
+    emit showNotamLayerChanged();
+}
+
+
+void GlobalSettings::setShowUltralightFields(bool newShowUltralightFields)
+{
+    if (newShowUltralightFields == showUltralightFields())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("showUltralightFields"), newShowUltralightFields);
+    emit showUltralightFieldsChanged();
+}
+
+
+void GlobalSettings::setShowAirspacesLayer(bool newShowAirspacesLayer)
+{
+    if (newShowAirspacesLayer == showAirspacesLayer())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("showAirspacesLayer"), newShowAirspacesLayer);
+    emit showAirspacesLayerChanged();
+}
+
+
 void GlobalSettings::setVoiceNotifications(uint newVoiceNotifications)
 {
     if (newVoiceNotifications == voiceNotifications())

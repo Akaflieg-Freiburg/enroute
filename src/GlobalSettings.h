@@ -159,6 +159,21 @@ public:
     /*! \brief Global toggle for the wind forecast layer (map and side view) */
     Q_PROPERTY(bool showWindLayer READ showWindLayer WRITE setShowWindLayer NOTIFY showWindLayerChanged)
 
+    /*! \brief Toggle for the waypoint and navaid map layer */
+    Q_PROPERTY(bool showWaypointsLayer READ showWaypointsLayer WRITE setShowWaypointsLayer NOTIFY showWaypointsLayerChanged)
+
+    /*! \brief Toggle for the user waypoint library layer */
+    Q_PROPERTY(bool showWaypointLibrary READ showWaypointLibrary WRITE setShowWaypointLibrary NOTIFY showWaypointLibraryChanged)
+
+    /*! \brief Toggle for the NOTAM map layer */
+    Q_PROPERTY(bool showNotamLayer READ showNotamLayer WRITE setShowNotamLayer NOTIFY showNotamLayerChanged)
+
+    /*! \brief Toggle for ultralight airfields on the map */
+    Q_PROPERTY(bool showUltralightFields READ showUltralightFields WRITE setShowUltralightFields NOTIFY showUltralightFieldsChanged)
+
+    /*! \brief Toggle for airspaces on the map */
+    Q_PROPERTY(bool showAirspacesLayer READ showAirspacesLayer WRITE setShowAirspacesLayer NOTIFY showAirspacesLayerChanged)
+
     /*! \brief Voice notifications that should be played
      *
      *  This property is an "or" of the entries of Notifications::Notification::Importance. It determines
@@ -269,6 +284,21 @@ public:
 
     /*! \brief Getter function for property of the same name */
     [[nodiscard]] auto showWindLayer() const -> bool { return m_settings.value(QStringLiteral("showWindLayer"), false).toBool(); }
+
+    /*! \brief Getter function for property of the same name */
+    [[nodiscard]] auto showWaypointsLayer() const -> bool { return m_settings.value(QStringLiteral("showWaypointsLayer"), true).toBool(); }
+
+    /*! \brief Getter function for property of the same name */
+    [[nodiscard]] auto showWaypointLibrary() const -> bool { return m_settings.value(QStringLiteral("showWaypointLibrary"), true).toBool(); }
+
+    /*! \brief Getter function for property of the same name */
+    [[nodiscard]] auto showNotamLayer() const -> bool { return m_settings.value(QStringLiteral("showNotamLayer"), true).toBool(); }
+
+    /*! \brief Getter function for property of the same name */
+    [[nodiscard]] auto showUltralightFields() const -> bool { return m_settings.value(QStringLiteral("showUltralightFields"), true).toBool(); }
+
+    /*! \brief Getter function for property of the same name */
+    [[nodiscard]] auto showAirspacesLayer() const -> bool { return m_settings.value(QStringLiteral("showAirspacesLayer"), true).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -384,6 +414,36 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * @param newShowWaypointsLayer Property showWaypointsLayer
+     */
+    void setShowWaypointsLayer(bool newShowWaypointsLayer);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newShowWaypointLibrary Property showWaypointLibrary
+     */
+    void setShowWaypointLibrary(bool newShowWaypointLibrary);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newShowNotamLayer Property showNotamLayer
+     */
+    void setShowNotamLayer(bool newShowNotamLayer);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newShowUltralightFields Property showUltralightFields
+     */
+    void setShowUltralightFields(bool newShowUltralightFields);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newShowAirspacesLayer Property showAirspacesLayer
+     */
+    void setShowAirspacesLayer(bool newShowAirspacesLayer);
+
+    /*! \brief Setter function for property of the same name
+     *
      * @param newVoiceNotifications Property voiceNotifications
      */
     void setVoiceNotifications(uint newVoiceNotifications);
@@ -438,6 +498,21 @@ signals:
 
     /*! \brief Notifier signal */
     void showWindLayerChanged();
+
+    /*! \brief Notifier signal */
+    void showWaypointsLayerChanged();
+
+    /*! \brief Notifier signal */
+    void showWaypointLibraryChanged();
+
+    /*! \brief Notifier signal */
+    void showNotamLayerChanged();
+
+    /*! \brief Notifier signal */
+    void showUltralightFieldsChanged();
+
+    /*! \brief Notifier signal */
+    void showAirspacesLayerChanged();
 
     /*! \brief Notifier signal */
     void voiceNotificationsChanged();

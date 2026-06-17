@@ -63,6 +63,9 @@ public:
     Q_PROPERTY(QString currentTimestampLabel READ currentTimestampLabel NOTIFY currentIndexChanged)
     Q_PROPERTY(QString currentRainMap READ currentRainMap NOTIFY currentIndexChanged)
     Q_PROPERTY(QString currentCloudbaseMap READ currentCloudbaseMap NOTIFY currentIndexChanged)
+    Q_PROPERTY(QString currentWindMap READ currentWindMap NOTIFY currentWindMapChanged)
+    Q_PROPERTY(QStringList windPressureLevels READ windPressureLevels NOTIFY timestampsChanged)
+    Q_PROPERTY(QString currentWindPressureLevel READ currentWindPressureLevel WRITE setCurrentWindPressureLevel NOTIFY currentWindMapChanged)
 
     //
     // Layer metadata (from index.json)
@@ -112,6 +115,9 @@ public:
     [[nodiscard]] QString currentTimestampLabel() const;
     [[nodiscard]] QString currentRainMap() const;
     [[nodiscard]] QString currentCloudbaseMap() const;
+    [[nodiscard]] QString currentWindMap() const;
+    [[nodiscard]] QStringList windPressureLevels() const { return m_windPressureLevels; }
+    [[nodiscard]] QString currentWindPressureLevel() const { return m_currentWindPressureLevel; }
     [[nodiscard]] QString serverUrl() const { return m_serverUrl; }
     [[nodiscard]] Status status() const { return m_status; }
     [[nodiscard]] QString lastRefreshLabel() const;
@@ -132,6 +138,7 @@ public:
     //
 
     void setCurrentIndex(int idx);
+    void setCurrentWindPressureLevel(const QString& level);
     void setServerUrl(const QString& url);
 
     /*! \brief Fetch index.json from the server and download new maps. No-op if already refreshing. */
@@ -141,6 +148,7 @@ public:
 signals:
     void timestampsChanged();
     void currentIndexChanged();
+    void currentWindMapChanged();
     void serverUrlChanged();
     void statusChanged();
     void lastRefreshLabelChanged();
@@ -174,6 +182,9 @@ private:
     int         m_currentIndex {0};
     QMap<QString, QString>                  m_rainMaps;
     QMap<QString, QString>                  m_cloudbaseMaps;
+    QMap<QString, QMap<QString, QString>>   m_windMaps;   // level → timestamp → path
+    QStringList                             m_windPressureLevels;
+    QString                                 m_currentWindPressureLevel;
 
     // Layer metadata from index.json
     QString     m_referenceTime;

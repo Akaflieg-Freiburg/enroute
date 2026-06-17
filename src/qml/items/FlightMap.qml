@@ -53,6 +53,13 @@ Map {
         Bound to the global setting so the map and side view share one toggle. */
     property bool showWindLayer: GlobalSettings.showWindLayer
 
+    /*! \brief Declutter toggles, persisted globally */
+    property bool showWaypointsLayer: GlobalSettings.showWaypointsLayer
+    property bool showWaypointLibrary: GlobalSettings.showWaypointLibrary
+    property bool showNotamLayer: GlobalSettings.showNotamLayer
+    property bool showUltralightFields: GlobalSettings.showUltralightFields
+    property bool showAirspacesLayer: GlobalSettings.showAirspacesLayer
+
     /*! \brief Altitude (ft) at which the wind-barb layer samples the wind field */
     property real windAltitudeFt: 3000
 
@@ -95,6 +102,25 @@ Map {
 
     property real animatedTT: PositionProvider.lastValidTT.toDEG()
     Behavior on animatedTT { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
+
+    Connections {
+        target: GlobalSettings
+        function onShowWaypointsLayerChanged() {
+            flightMap.showWaypointsLayer = GlobalSettings.showWaypointsLayer
+        }
+        function onShowWaypointLibraryChanged() {
+            flightMap.showWaypointLibrary = GlobalSettings.showWaypointLibrary
+        }
+        function onShowNotamLayerChanged() {
+            flightMap.showNotamLayer = GlobalSettings.showNotamLayer
+        }
+        function onShowUltralightFieldsChanged() {
+            flightMap.showUltralightFields = GlobalSettings.showUltralightFields
+        }
+        function onShowAirspacesLayerChanged() {
+            flightMap.showAirspacesLayer = GlobalSettings.showAirspacesLayer
+        }
+    }
 
     MapLibre.style: Style {
         id: style
@@ -150,6 +176,14 @@ Map {
         }
 
         SourceParameter {
+            id: forecastWindSource
+            styleId: "forecastWind"
+            type: "image"
+            property string url: ForecastMapProvider.currentWindMap !== "" ? "file://" + ForecastMapProvider.currentWindMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
+        }
+
+        SourceParameter {
             id: waypointLib
 
             styleId: "waypointlib"
@@ -177,6 +211,22 @@ Map {
 
         // Map layers, sorted according to importance, from low to high
 
+        // Raster base map (e.g. a contour-elevation chart). Kept at the bottom
+        // of the aviation stack so that airfields, waypoints and airspaces draw
+        // on top of it instead of being hidden underneath.
+        LayerParameter {
+            id: rasterTileLayer
+
+            styleId: "rasterTileLayer"
+            type: "raster"
+            property string source: "rasterTiles"
+
+            layout: {
+                "visibility": 'visible',
+                "raster-resampling": 'linear'
+            }
+        }
+
         LayerParameter {
             id:  airspaceLabels
 
@@ -188,6 +238,7 @@ Map {
             property string metadata: '{}'
 
             layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none',
                 "symbol-placement": "line",
                 "text-allow-overlap": false,
                 "text-anchor": "center",
@@ -263,6 +314,7 @@ Map {
             property var filter: ["==", ["get", "TYP"], "NAV"]
 
             layout: {
+                "visibility": flightMap.showWaypointsLayer ? 'visible' : 'none',
                 "text-field": ["get", "COD"],
                 "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
@@ -302,6 +354,13 @@ Map {
             }
         }
 
+        FilterParameter {
+            styleId: "WPs"
+            expression: flightMap.showUltralightFields
+                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
+                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
+        }
+
         LayerParameter {
             id: rps
 
@@ -312,6 +371,7 @@ Map {
             property var filter: ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]]
 
             layout: {
+                "visibility": flightMap.showWaypointsLayer ? 'visible' : 'none',
                 "icon-image": ["get", "CAT"],
                 "text-field": ["get", "SCO"],
                 "text-size": 0.85*GlobalSettings.fontSize,
@@ -364,6 +424,7 @@ Map {
             property var filter: ["==", ["get", "TYP"], "NAV"]
 
             layout: {
+                "visibility": flightMap.showWaypointsLayer ? 'visible' : 'none',
                 "icon-image": ["get", "CAT"],
                 "icon-ignore-placement": true,
                 "icon-allow-overlap": true
@@ -404,6 +465,10 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "FIR"], ["==", ["get", "CAT"], "FIS"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "green",
                 "line-width": 1.5
@@ -416,6 +481,10 @@ Map {
             type: "line"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "SUA"]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "line-color": "red",
@@ -431,6 +500,10 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "GLD"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "fill-color": "yellow",
                 "fill-opacity": 0.1
@@ -443,6 +516,10 @@ Map {
             type: "line"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "GLD"]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "line-color": "yellow",
@@ -458,6 +535,10 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "fill-color": "blue",
                 "fill-opacity": 0.2
@@ -470,6 +551,10 @@ Map {
             type: "line"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "line-color": "blue",
@@ -485,6 +570,10 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "TMZ"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "black",
                 "line-width": 2,
@@ -498,6 +587,10 @@ Map {
             type: "line"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "PJE"]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "line-color": "red",
@@ -513,6 +606,10 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "blue",
                 "line-width": 2
@@ -525,6 +622,10 @@ Map {
             type: "line"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "line-color": "blue",
@@ -541,6 +642,10 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "E"], ["==", ["get", "CAT"], "F"], ["==", ["get", "CAT"], "G"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "blue",
                 "line-width": 2
@@ -554,6 +659,10 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "CTR"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "fill-color": "red",
                 "fill-opacity": 0.2
@@ -566,6 +675,10 @@ Map {
             type: "line"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "CTR"]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "line-color": "blue",
@@ -581,6 +694,10 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "NRA"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "green",
                 "line-width": 2
@@ -593,6 +710,10 @@ Map {
             type: "line"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "NRA"]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "line-color": "green",
@@ -609,6 +730,10 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "red",
                 "line-width": 2,
@@ -622,6 +747,10 @@ Map {
             type: "line"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "line-color": "red",
@@ -676,20 +805,6 @@ Map {
         }
 
         LayerParameter {
-            id: rasterTileLayer
-
-            styleId: "rasterTileLayer"
-            type: "raster"
-            property string source: "rasterTiles"
-
-            layout: {
-                "visibility": 'visible', // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
-                "raster-resampling": 'linear'
-            }
-
-        }
-
-        LayerParameter {
             id: approachChartLayer
 
             styleId: "vacLayer"
@@ -710,7 +825,7 @@ Map {
             property string source: "waypointlib"
 
             layout: {
-                "visibility": flightMap.showWindLayer ? 'none' : 'visible',
+                "visibility": (flightMap.showWindLayer || !flightMap.showWaypointLibrary) ? 'none' : 'visible',
                 "icon-image": '["get", "CAT"]',
                 "text-field": '["get", "NAM"]',
                 "text-size": 0.85*GlobalSettings.fontSize,
@@ -735,7 +850,7 @@ Map {
             property string source: "notams"
 
             layout: {
-                "visibility": flightMap.showWindLayer ? 'none' : 'visible',
+                "visibility": (flightMap.showWindLayer || !flightMap.showNotamLayer) ? 'none' : 'visible',
                 "icon-ignore-placement": true,
                 "icon-image": ["get", "CAT"],
                 "text-field": ["get", "NAM"],
@@ -766,6 +881,14 @@ Map {
             type: "raster"
             property string source: "forecastCloudbase"
             layout: { "visibility": flightMap.showCloudbaseLayer && ForecastMapProvider.currentCloudbaseMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastWindLayer
+            styleId: "forecastWindLayer"
+            type: "raster"
+            property string source: "forecastWind"
+            layout: { "visibility": flightMap.showWindLayer && ForecastMapProvider.currentWindMap !== "" ? 'visible' : 'none' }
         }
 
         LayerParameter {
@@ -1113,10 +1236,10 @@ Map {
         }
     }
 
-    MapItemView { // Wind field barbs (client-drawn vector layer)
+    MapItemView { // Wind field barbs — disabled; wind is now a server-side PNG raster layer
         id: windBarbLayer
-        visible: flightMap.showWindLayer
-        model: flightMap.showWindLayer ? WindFieldProvider.gridPoints : []
+        visible: false
+        model: []
         delegate: MapQuickItem {
             id: windItem
 

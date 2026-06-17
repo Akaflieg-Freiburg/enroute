@@ -806,7 +806,6 @@ Item {
                             id: rasterMapButton
 
                             icon.source: "/icons/material/ic_layers.svg"
-                            visible: GeoMapProvider.availableRasterMaps.length !== 0
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
@@ -818,6 +817,43 @@ Item {
                                 id: rasterMenu
                                 cascade: true
 
+                                CheckDelegate {
+                                    text: qsTr("Waypoints & navaids")
+                                    checked: GlobalSettings.showWaypointsLayer
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showWaypointsLayer = checked
+                                    }
+                                }
+                                CheckDelegate {
+                                    text: qsTr("NOTAMs")
+                                    checked: GlobalSettings.showNotamLayer
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showNotamLayer = checked
+                                    }
+                                }
+                                CheckDelegate {
+                                    text: qsTr("Ultralight airfields")
+                                    checked: GlobalSettings.showUltralightFields
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showUltralightFields = checked
+                                    }
+                                }
+                                CheckDelegate {
+                                    text: qsTr("Airspaces")
+                                    checked: GlobalSettings.showAirspacesLayer
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showAirspacesLayer = checked
+                                    }
+                                }
+
+                                MenuSeparator {
+                                    visible: GeoMapProvider.availableRasterMaps.length !== 0
+                                }
+
                                 Instantiator {
                                     id: recentFilesInstantiator
                                     model: GeoMapProvider.availableRasterMaps
@@ -828,13 +864,19 @@ Item {
                                         onClicked: {
                                             PlatformAdaptor.vibrateBrief()
                                             rasterMenu.close()
+                                            // Preserve current zoom and center when changing raster map
+                                            var savedZoom = flightMap.zoomLevel
+                                            var savedCenter = flightMap.center
                                             GeoMapProvider.currentRasterMap = checked ? modelData : ""
                                             flightMap.clearData()
+                                            // Restore zoom and center after the map data is cleared
+                                            flightMap.zoomLevel = savedZoom
+                                            flightMap.center = savedCenter
                                         }
 
                                     }
 
-                                    onObjectAdded: (index, object) => rasterMenu.insertItem(index, object)
+                                    onObjectAdded: (index, object) => rasterMenu.insertItem(index + 5, object)
                                     onObjectRemoved: (index, object) => rasterMenu.removeItem(object)
                                 }
 

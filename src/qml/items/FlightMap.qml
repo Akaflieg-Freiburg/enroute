@@ -317,14 +317,6 @@ Map {
             }
         }
 
-        FilterParameter {
-            id: wpsFilter
-            styleId: "WPs"
-            expression: flightMap.showUltralightFields
-                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
-                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
-        }
-
 LayerParameter {
             id: wps
 
@@ -332,7 +324,9 @@ LayerParameter {
 
             type: "symbol"
             property string source: "aviation-data"
-            filterParameter: wpsFilter
+            property var filter: flightMap.showUltralightFields
+                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
+                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
 
             layout: {
                 "icon-image": ["get", "CAT"],
@@ -1219,7 +1213,7 @@ LayerParameter {
 
     MapItemView { // Wind field barbs (client-drawn vector layer)
         id: windBarbLayer
-        visible: flightMap.showWindLayer && WindFieldProvider.hasData
+        visible: flightMap.showWindLayer
         model: flightMap.showWindLayer ? WindFieldProvider.gridPoints : []
         
         Connections {
@@ -1227,8 +1221,9 @@ LayerParameter {
             function onDataChanged() {
                 // Force a refresh of the wind barbs by invalidating the model
                 // This will cause the delegate items to be recreated with fresh wind data
-                windBarbLayer.model = []
-                windBarbLayer.model = flightMap.showWindLayer ? WindFieldProvider.gridPoints : []
+                var saved = flightMap.showWindLayer
+                flightMap.showWindLayer = false
+                flightMap.showWindLayer = saved
             }
         }
         delegate: MapQuickItem {

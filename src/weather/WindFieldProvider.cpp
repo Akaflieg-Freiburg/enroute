@@ -81,6 +81,10 @@ Weather::WindFieldProvider::WindFieldProvider(QObject* parent)
     if (f.open(QIODevice::ReadOnly)) {
         parse(f.readAll());
     }
+
+    // Re-fetch when the server URL becomes available (e.g. loaded from QSettings after construction)
+    connect(ForecastMapProvider::instance(), &ForecastMapProvider::serverUrlChanged,
+            this, &WindFieldProvider::refresh);
 }
 
 QString Weather::WindFieldProvider::cacheFilePath()

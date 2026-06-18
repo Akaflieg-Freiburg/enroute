@@ -141,9 +141,6 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
         case Airship:
             results << tr("Airship");
             break;
-        case TowPlane:
-            results << tr("Tow Plane");
-            break;
         case Skydiver:
             results << tr("Skydiver");
             break;

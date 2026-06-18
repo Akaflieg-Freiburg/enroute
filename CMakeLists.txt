@@ -19,6 +19,13 @@ set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 
+# GCC 15+ enables -Wsfinae-incomplete by default; it fires for every forward-declared
+# QObject used in a moc-visible signature (Q_INVOKABLE/Q_PROPERTY/signals). Noise, not a
+# bug. GCC-only flag, so guard it (Clang on Android would reject it).
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    add_compile_options(-Wno-sfinae-incomplete)
+endif()
+
 
 #
 # Installation

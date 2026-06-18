@@ -394,7 +394,7 @@ QString Weather::ForecastMapProvider::lastRefreshLabel() const
 {
     if (!m_lastRefreshTime.isValid())
         return u"Never"_s;
-    return m_lastRefreshTime.toLocalTime().toString(u"dd MMM HH:mm"_s);
+    return m_lastRefreshTime.toUTC().toString(u"dd MMM HH:mm'Z'"_s);
 }
 
 QString Weather::ForecastMapProvider::currentTimestampLabel() const

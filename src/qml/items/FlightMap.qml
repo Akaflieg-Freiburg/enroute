@@ -406,7 +406,7 @@ Map {
 
             paint: {
                 "line-color": "green",
-                "line-width": 1.5
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.4, 9, 1.2, 12, 2.0]
             }
         }
 
@@ -419,7 +419,7 @@ Map {
 
             paint: {
                 "line-color": "red",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0]
             }
         }
@@ -446,7 +446,7 @@ Map {
 
             paint: {
                 "line-color": "yellow",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-opacity": 0.8
             }
         }
@@ -473,7 +473,7 @@ Map {
 
             paint: {
                 "line-color": "blue",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [3.0, 3.0]
             }
         }
@@ -487,7 +487,7 @@ Map {
 
             paint: {
                 "line-color": "black",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0, 0.5, 3.0]
             }
         }
@@ -501,7 +501,7 @@ Map {
 
             paint: {
                 "line-color": "red",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0]
             }
         }
@@ -515,7 +515,7 @@ Map {
 
             paint: {
                 "line-color": "blue",
-                "line-width": 2
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5]
             }
         }
 
@@ -529,8 +529,8 @@ Map {
             paint: {
                 "line-color": "blue",
                 "line-opacity": 0.2,
-                "line-width": 7,
-                "line-offset": 3.5
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1.5, 9, 4.0, 12, 8.0],
+                "line-offset": ["interpolate", ["linear"], ["zoom"], 6, 0.75, 9, 2.0, 12, 4.0]
             }
         }
 
@@ -543,7 +543,7 @@ Map {
 
             paint: {
                 "line-color": "blue",
-                "line-width": 2
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5]
             }
         }
 
@@ -569,7 +569,7 @@ Map {
 
             paint: {
                 "line-color": "blue",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0]
             }
         }
@@ -583,7 +583,7 @@ Map {
 
             paint: {
                 "line-color": "green",
-                "line-width": 2
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5]
             }
         }
 
@@ -597,8 +597,8 @@ Map {
             paint: {
                 "line-color": "green",
                 "line-opacity": 0.2,
-                "line-width": 7,
-                "line-offset": 3.5
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1.5, 9, 4.0, 12, 8.0],
+                "line-offset": ["interpolate", ["linear"], ["zoom"], 6, 0.75, 9, 2.0, 12, 4.0]
             }
         }
 
@@ -611,7 +611,7 @@ Map {
 
             paint: {
                 "line-color": "red",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0]
             }
         }
@@ -626,8 +626,8 @@ Map {
             paint: {
                 "line-color": "red",
                 "line-opacity": 0.2,
-                "line-width": 7,
-                "line-offset": 3.5
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1.5, 9, 4.0, 12, 8.0],
+                "line-offset": ["interpolate", ["linear"], ["zoom"], 6, 0.75, 9, 2.0, 12, 4.0]
             }
         }
 
@@ -641,7 +641,7 @@ Map {
 
             paint: {
                 "line-color": ["get", "GAC"],
-                "line-width": 3.0,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 8, 0.8, 10, 2.0, 13, 3.5],
                 "line-dasharray": [3.0, 3.0]
             }
         }
@@ -656,7 +656,7 @@ Map {
 
             paint: {
                 "line-color": ["get", "GAC"],
-                "line-width": 3.0,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 8, 0.8, 10, 2.0, 13, 3.5],
                 "line-dasharray": [9.0, 3.0]
             }
         }
@@ -671,7 +671,7 @@ Map {
 
             paint: {
                 "line-color": ["get", "GAC"],
-                "line-width": 3.0
+                "line-width": ["interpolate", ["linear"], ["zoom"], 8, 0.8, 10, 2.0, 13, 3.5]
             }
         }
 

@@ -21,6 +21,7 @@
 
 #include <QDateTime>
 #include <QDir>
+#include <QTimer>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -58,6 +59,13 @@ Weather::ForecastMapProvider::ForecastMapProvider(QObject* parent)
 
     QDir().mkpath(cacheDir());
     scan();
+
+    // Auto-refresh at startup and every 5 minutes.
+    // Only new files are downloaded; cached files are skipped.
+    auto* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &ForecastMapProvider::refresh);
+    timer->start(5 * 60 * 1000);
+    QTimer::singleShot(0, this, &ForecastMapProvider::refresh);
 }
 
 Weather::ForecastMapProvider* Weather::ForecastMapProvider::create(QQmlEngine*, QJSEngine*)
@@ -386,10 +394,7 @@ QString Weather::ForecastMapProvider::lastRefreshLabel() const
 {
     if (!m_lastRefreshTime.isValid())
         return u"Never"_s;
-    const auto secs = m_lastRefreshTime.secsTo(QDateTime::currentDateTimeUtc());
-    if (secs < 60)   return u"Just now"_s;
-    if (secs < 3600) return QString::number(secs / 60) + u" min ago"_s;
-    return QString::number(secs / 3600) + u" h ago"_s;
+    return m_lastRefreshTime.toLocalTime().toString(u"dd MMM HH:mm"_s);
 }
 
 QString Weather::ForecastMapProvider::currentTimestampLabel() const

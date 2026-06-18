@@ -82,9 +82,21 @@ Weather::WindFieldProvider::WindFieldProvider(QObject* parent)
         parse(f.readAll());
     }
 
-    // Re-fetch when the server URL becomes available (e.g. loaded from QSettings after construction)
+    // Re-fetch when the server URL changes (e.g. user edits it in Settings)
     connect(ForecastMapProvider::instance(), &ForecastMapProvider::serverUrlChanged,
             this, &WindFieldProvider::refresh);
+
+    // Refresh after every successful ForecastMapProvider refresh so wind.json
+    // stays in sync and is fetched even when our own m_nam had timing issues.
+    connect(ForecastMapProvider::instance(), &ForecastMapProvider::statusChanged,
+            this, [this]() {
+                if (ForecastMapProvider::instance()->status() == ForecastMapProvider::Status::Idle)
+                    refresh();
+            });
+
+    // ForecastMapProvider loads serverUrl from QSettings silently (no signal).
+    // Call refresh() now so we fetch on first startup when cache is empty.
+    refresh();
 }
 
 QString Weather::WindFieldProvider::cacheFilePath()

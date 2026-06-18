@@ -60,6 +60,11 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
 
 Traffic::TrafficDataSource_SerialPort::~TrafficDataSource_SerialPort()
 {
+    // Break all bindings before destruction proceeds. The binding for
+    // m_connectionInfo (declared in the base class) references members of this
+    // derived class, which are destroyed before the base-class property.
+    m_connectionInfo.takeBinding();
+
 #if defined(Q_OS_ANDROID)
     pollTimer.stop();
     UsbSerialHelper::callStaticMethod<jboolean>("close", m_portNameOrDescription);

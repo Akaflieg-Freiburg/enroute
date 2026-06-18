@@ -74,7 +74,7 @@ public:
     explicit Navigator() = delete;
 
     /*! \brief Standard destructor */
-    ~Navigator() override = default;
+    ~Navigator() override;
 
     // factory function for QML singleton
     static Navigation::Navigator* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)

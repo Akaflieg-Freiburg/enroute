@@ -52,7 +52,7 @@ public:
     explicit Observer(QObject* parent=nullptr);
 
     /*! \brief Standard destructor */
-    ~Observer() override = default;
+    ~Observer() override;
 
 
     //

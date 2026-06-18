@@ -70,7 +70,8 @@ public:
         return GlobalObject::trafficDataProvider();
     }
 
-    //~TrafficDataProvider();
+    // Standard destructor
+    ~TrafficDataProvider() override;
 
     //
     // Properties

@@ -22,6 +22,14 @@
 #include "weather/WeatherDataProvider.h"
 
 
+Weather::Observer::~Observer()
+{
+    // Break all bindings before destruction proceeds
+    m_metar.takeBinding();
+    m_taf.takeBinding();
+}
+
+
 Weather::Observer::Observer(QObject* parent)
     : QObject(parent)
 {

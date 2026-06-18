@@ -89,7 +89,7 @@ public:
     }
 
     /*! \brief Destructor */
-    ~GeoMapProvider() override = default;
+    ~GeoMapProvider() override;
 
 
 

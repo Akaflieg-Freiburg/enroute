@@ -26,6 +26,13 @@ using namespace Qt::Literals::StringLiterals;
 using namespace std::chrono_literals;
 
 
+DataManagement::Downloadable_Abstract::~Downloadable_Abstract()
+{
+    // Break all bindings before destruction proceeds
+    m_section.takeBinding();
+}
+
+
 DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
     : QObject(parent)
 {

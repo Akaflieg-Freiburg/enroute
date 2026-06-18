@@ -52,7 +52,7 @@ public:
     explicit TrafficObserver(QObject* parent=nullptr);
 
     /*! \brief Standard destructor */
-    ~TrafficObserver() override = default;
+    ~TrafficObserver() override;
 
 
     //

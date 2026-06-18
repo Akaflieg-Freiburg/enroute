@@ -49,7 +49,7 @@ public:
     explicit ObserverList(QObject* parent=nullptr);
 
     /*! \brief Standard destructor */
-    ~ObserverList() override = default;
+    ~ObserverList() override;
 
 
     //

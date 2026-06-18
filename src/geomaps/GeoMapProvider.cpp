@@ -38,6 +38,13 @@
 using namespace Qt::Literals::StringLiterals;
 
 
+GeoMaps::GeoMapProvider::~GeoMapProvider()
+{
+    // Break all bindings before destruction proceeds
+    m_availableRasterMaps.takeBinding();
+}
+
+
 GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     : GlobalObject(parent)
 {

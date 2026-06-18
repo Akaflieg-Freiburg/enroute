@@ -22,6 +22,14 @@
 #include "traffic/TrafficObserver.h"
 
 
+Traffic::TrafficObserver::~TrafficObserver()
+{
+    // Break all bindings before destruction proceeds
+    m_hasTraffic.takeBinding();
+    m_traffic.takeBinding();
+}
+
+
 Traffic::TrafficObserver::TrafficObserver(QObject* parent)
     : QObject(parent)
 {

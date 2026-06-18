@@ -32,6 +32,13 @@
 // Constructors and destructors
 //
 
+Navigation::Navigator::~Navigator()
+{
+    // Break all bindings before destruction proceeds
+    m_hasAviationMapForCurrentLocation.takeBinding();
+}
+
+
 Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 {
     m_aircraftFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/aircraft.json"_s;

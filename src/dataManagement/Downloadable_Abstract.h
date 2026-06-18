@@ -65,7 +65,7 @@ public:
     explicit Downloadable_Abstract(QObject* parent = nullptr);
 
     // standard destructor
-    ~Downloadable_Abstract() override = default;
+    ~Downloadable_Abstract() override;
 
 
 

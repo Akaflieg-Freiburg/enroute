@@ -63,7 +63,7 @@ public:
     explicit PositionProvider() = delete;
 
     /*! \brief Standard destructor */
-    ~PositionProvider() override = default;
+    ~PositionProvider() override;
 
 
     // factory function for QML singleton

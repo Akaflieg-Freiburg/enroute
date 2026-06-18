@@ -77,7 +77,7 @@ namespace Navigation
         explicit FlightRoute(QObject *parent = nullptr);
 
         // Standard destructor
-        ~FlightRoute() override = default;
+        ~FlightRoute() override;
 
         //
         // PROPERTIES

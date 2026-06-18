@@ -33,6 +33,15 @@
 using namespace Qt::Literals::StringLiterals;
 
 
+Positioning::PositionProvider::~PositionProvider()
+{
+    // Break all bindings before destruction proceeds
+    m_pressureAltitude.takeBinding();
+    m_statusString.takeBinding();
+    m_incomingPositionInfo.takeBinding();
+}
+
+
 Positioning::PositionProvider::PositionProvider(QObject* parent)
     : QObject(parent),
     m_receivingPositionInfo(false)

@@ -53,6 +53,9 @@ public:
      */
     explicit Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::UpdatePolicy updatePolicy, QObject *parent = nullptr);
 
+    // Standard destructor
+    ~Downloadable_MultiFile() override;
+
 
     //
     // PROPERTIES

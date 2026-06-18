@@ -37,6 +37,14 @@ using namespace Qt::Literals::StringLiterals;
 // Constructors and destructors
 //
 
+Navigation::FlightRoute::~FlightRoute()
+{
+    // Break all bindings before destruction proceeds
+    m_geoPath.takeBinding();
+    m_legs.takeBinding();
+}
+
+
 Navigation::FlightRoute::FlightRoute(QObject *parent)
     : QObject(parent)
 {

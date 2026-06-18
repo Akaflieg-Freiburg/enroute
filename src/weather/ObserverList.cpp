@@ -24,6 +24,14 @@
 #include "positioning/PositionProvider.h"
 
 
+Weather::ObserverList::~ObserverList()
+{
+    // Break all bindings before destruction proceeds
+    m_unsortedObservers.takeBinding();
+    m_observers.takeBinding();
+}
+
+
 Weather::ObserverList::ObserverList(QObject* parent)
     : QObject(parent)
 {

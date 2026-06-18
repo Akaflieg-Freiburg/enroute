@@ -25,6 +25,15 @@
 using namespace Qt::Literals::StringLiterals;
 
 
+DataManagement::Downloadable_MultiFile::~Downloadable_MultiFile()
+{
+    // Break all bindings before destruction proceeds. The binding for m_hasFile
+    // (declared in the base class) reads the derived member m_downloadables, which
+    // is destroyed before the base-class property.
+    m_hasFile.takeBinding();
+}
+
+
 DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::UpdatePolicy updatePolicy, QObject* parent)
     : Downloadable_Abstract(parent), m_updatePolicy(updatePolicy)
 {

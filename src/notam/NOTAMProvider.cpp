@@ -86,6 +86,12 @@ void NOTAM::NOTAMProvider::deferredInitialization()
 
 NOTAM::NOTAMProvider::~NOTAMProvider()
 {
+    // Break all bindings before destruction proceeds
+    m_controlPoints4FlightRoute.takeBinding();
+    m_geoJSON.takeBinding();
+    m_lastUpdate.takeBinding();
+    m_status.takeBinding();
+
     for(const auto& networkReply : m_networkReplies)
     {
         if (networkReply.isNull())

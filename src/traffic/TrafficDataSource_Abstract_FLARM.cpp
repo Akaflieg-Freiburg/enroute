@@ -472,15 +472,17 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
             pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
         }
 
-        m_factorDistanceOnly.setAlarmLevel(alarmLevel);
-        m_factorDistanceOnly.setCallSign( GlobalObject::flarmnetDB()->getRegistration(targetID) );
-        m_factorDistanceOnly.setCoordinate(Positioning::PositionProvider::lastValidCoordinate());
-        m_factorDistanceOnly.setID(targetID);
-        m_factorDistanceOnly.setHDist(hDist);
-        m_factorDistanceOnly.setType(type);
-        m_factorDistanceOnly.setVDist(vDist);
-        m_factorDistanceOnly.startLiveTime();
-        emit factorWithoutPosition(m_factorDistanceOnly);
+        emit factorWithoutPosition(TrafficFactorData_DistanceOnly{
+            .data = {
+                .alarmLevel = alarmLevel,
+                .callSign = GlobalObject::flarmnetDB()->getRegistration(targetID),
+                .hDist = hDist,
+                .ID = targetID,
+                .type = type,
+                .vDist = vDist,
+            },
+            .coordinate = Positioning::PositionProvider::lastValidCoordinate(),
+        });
         return;
     }
 
@@ -531,15 +533,17 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
     }
 
     // Construct a traffic object
-    m_factor.setAlarmLevel(alarmLevel);
-    m_factor.setCallSign( GlobalObject::flarmnetDB()->getRegistration(targetID) );
-    m_factor.setHDist(hDist);
-    m_factor.setID(targetID);
-    m_factor.setPositionInfo( Positioning::PositionInfo(pInfo, sourceName()) );
-    m_factor.setType(type);
-    m_factor.setVDist(vDist);
-    m_factor.startLiveTime();
-    emit factorWithPosition(m_factor);
+    emit factorWithPosition(TrafficFactorData_WithPosition{
+        .data = {
+            .alarmLevel = alarmLevel,
+            .callSign = GlobalObject::flarmnetDB()->getRegistration(targetID),
+            .hDist = hDist,
+            .ID = targetID,
+            .type = type,
+            .vDist = vDist,
+        },
+        .positionInfo = Positioning::PositionInfo(pInfo, sourceName()),
+    });
 }
 
 

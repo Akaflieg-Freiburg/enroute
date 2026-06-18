@@ -71,21 +71,15 @@ void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
         setReceivingHeartbeat(false);
     }
 
-    foreach(TrafficFactor_WithPosition* trafficFactor, trafficFactors)
+    // Re-emit the configured traffic once per second. The data records carry no
+    // lifetime of their own; each emission restarts the lifetime of the
+    // corresponding object in the TrafficDataProvider.
+    for (const auto& trafficFactor : std::as_const(trafficFactors))
     {
-        if (trafficFactor == nullptr)
-        {
-            continue;
-        }
-
-        trafficFactor->startLiveTime();
-        if (trafficFactor->valid())
-        {
-            emit factorWithPosition(*trafficFactor);
-        }
+        emit factorWithPosition(trafficFactor);
     }
 
-    if (!trafficFactor_DistanceOnly.isNull())
+    if (trafficFactor_DistanceOnly.has_value())
     {
         emit factorWithoutPosition(*trafficFactor_DistanceOnly);
     }

@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "traffic/TrafficFactor_Abstract.h"
+#include "traffic/TrafficFactorData.h"
 
 
 using namespace Qt::Literals::StringLiterals;
@@ -26,8 +27,8 @@ using namespace Qt::Literals::StringLiterals;
 
 Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObject(parent)
 {  
-    lifeTimeCounter.setSingleShot(true);
-    lifeTimeCounter.setInterval(lifeTime);
+    lifetimeCounter.setSingleShot(true);
+    lifetimeCounter.setInterval(lifetime);
 
     // Binding for property color
     m_color.setBinding([this]() {
@@ -44,7 +45,7 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
 
     // Binding for property validAbstractTrafficFactor
     m_validAbstractTrafficFactor.setBinding([this]() {
-        return (m_alarmLevel >= 0) && (m_alarmLevel <= 3) && lifeTimeCounter.isActive() && hDist().isFinite();
+        return (m_alarmLevel >= 0) && (m_alarmLevel <= 3) && lifetimeCounter.isActive() && hDist().isFinite();
     });
 
     // Binding for property typeString
@@ -82,21 +83,7 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
 
     // Binding for property relevant
     m_relevant.setBinding([this]() {
-        if (!m_valid.value())
-        {
-            return false;
-        }
-#warning For debug purposes, show all aircraft
-        return true;
-        if (m_vDist.value().isFinite() && (m_vDist.value() > maxVerticalDistance))
-        {
-            return false;
-        }
-        if (m_hDist.value().isFinite() && (m_hDist.value() > maxHorizontalDistance))
-        {
-            return false;
-        }
-        return true;
+        return m_valid.value() && isRelevant(m_hDist.value(), m_vDist.value());
     });
 
     // Binding for property relevantString
@@ -121,22 +108,59 @@ Traffic::TrafficFactor_Abstract::~TrafficFactor_Abstract()
 }
 
 
-void Traffic::TrafficFactor_Abstract::copyFrom(const TrafficFactor_Abstract& other)
+void Traffic::TrafficFactor_Abstract::updateFrom(const TrafficFactorData& data)
 {
-    auto update = valid() && other.valid() && (other.ID().right(6) == ID().right(6));
-    setAlarmLevel(other.alarmLevel());
-    if (m_callSign.value().isEmpty() || !update)
+    // If there is nothing to continue from, this is really a replacement: no
+    // established identity to preserve and no meaningful transition to animate.
+    if (!valid())
     {
-        setCallSign(other.callSign());
+        replaceBy(data);
+        return;
     }
-    setHDist(other.hDist());
-    setID(other.ID());
-    if ((m_type.value() == TrafficFactor_Abstract::Type::unknown) || !update)
+
+    setAlarmLevel(data.alarmLevel);
+    if (m_callSign.value().isEmpty())
     {
-        setType(other.type());
+        setCallSign(data.callSign);
     }
-    setVDist(other.vDist());
-    m_animate = update;
+    setHDist(data.hDist);
+    setID(data.ID);
+    if (m_type.value() == TrafficFactor_Abstract::Type::unknown)
+    {
+        setType(data.type);
+    }
+    setVDist(data.vDist);
+    m_animate = true;
+    startLifetime();
+}
+
+
+void Traffic::TrafficFactor_Abstract::replaceBy(const TrafficFactorData& data)
+{
+    setAlarmLevel(data.alarmLevel);
+    setCallSign(data.callSign);
+    setHDist(data.hDist);
+    setID(data.ID);
+    setType(data.type);
+    setVDist(data.vDist);
+    m_animate = false;
+    startLifetime();
+}
+
+
+bool Traffic::TrafficFactor_Abstract::isRelevant(Units::Distance hDist, Units::Distance vDist)
+{
+#warning For debug purposes, show all aircraft
+    return true;
+    if (vDist.isFinite() && (vDist > maxVerticalDistance))
+    {
+        return false;
+    }
+    if (hDist.isFinite() && (hDist > maxHorizontalDistance))
+    {
+        return false;
+    }
+    return true;
 }
 
 
@@ -186,7 +210,53 @@ bool Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_
 }
 
 
-void Traffic::TrafficFactor_Abstract::startLiveTime()
+void Traffic::TrafficFactor_Abstract::startLifetime()
 {
-    lifeTimeCounter.start();
+    lifetimeCounter.start();
+}
+
+
+bool Traffic::hasHigherPriorityThan(const TrafficFactorData& lhs, const TrafficFactor_Abstract& rhs)
+{
+    // A freshly received data record always carries current data and is therefore
+    // treated as valid. This mirrors TrafficFactor_Abstract::hasHigherPriorityThan().
+
+    // Criterion: Valid instances have higher priority than invalid ones
+    if (!rhs.valid())
+    {
+        return true;
+    }
+
+    // Criterion: Alarm level
+    if (lhs.alarmLevel > rhs.alarmLevel())
+    {
+        return true;
+    }
+    if (lhs.alarmLevel < rhs.alarmLevel())
+    {
+        return false;
+    }
+
+    // Criterion: Relevant instances have higher priority than irrelevant ones
+    const bool lhsRelevant = TrafficFactor_Abstract::isRelevant(lhs.hDist, lhs.vDist);
+    if (lhsRelevant && !rhs.relevant())
+    {
+        return true;
+    }
+    if (!lhsRelevant && rhs.relevant())
+    {
+        return false;
+    }
+
+    if (lhs.hDist.isFinite() && lhs.vDist.isFinite() && rhs.hDist().isFinite() && rhs.vDist().isFinite())
+    {
+        return (lhs.hDist.toM()*lhs.hDist.toM() < rhs.hDist().toM()*rhs.hDist().toM());
+    }
+
+    if (lhs.hDist.isFinite() && rhs.hDist().isFinite())
+    {
+        return (lhs.hDist < rhs.hDist());
+    }
+
+    return false;
 }

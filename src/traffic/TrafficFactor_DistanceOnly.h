@@ -23,6 +23,7 @@
 #include <QGeoCoordinate>
 
 #include "traffic/TrafficFactor_Abstract.h"
+#include "traffic/TrafficFactorData.h"
 
 
 namespace Traffic {
@@ -54,18 +55,21 @@ public:
     // Methods
     //
 
-    /*! \brief Copy data from other object
+    /*! \brief Replace this object by a different traffic factor
      *
-     *  This method copies all properties from the other object.
+     *  This single distance-only slot is reused for whichever position-less factor
+     *  was reported most recently. Successive reports generally describe different
+     *  factors, so each call is treated as a replacement rather than an update: the
+     *  coordinate is taken over and the remaining properties are replaced through
+     *  TrafficFactor_Abstract::replaceBy().
      *
-     *  @param other Instance whose properties are copied
+     *  @param data Data record whose contents replace the data of *this
      */
-#warning docu
-    void copyFrom(const TrafficFactor_DistanceOnly& other)
+    void replaceBy(const TrafficFactorData_DistanceOnly& data)
     {
         const QScopedPropertyUpdateGroup updateGroup;
-        setCoordinate(other.coordinate());
-        TrafficFactor_Abstract::copyFrom(other);
+        setCoordinate(data.coordinate);
+        TrafficFactor_Abstract::replaceBy(data.data);
     }
 
 

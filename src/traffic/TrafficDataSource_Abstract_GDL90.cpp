@@ -441,27 +441,31 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         // Expose data
         if ((callSign.compare(u"MODE S"_s, Qt::CaseInsensitive) == 0) || (callSign.compare(u"MODE-S"_s, Qt::CaseInsensitive) == 0))
         {
-            m_factorDistanceOnly.setAlarmLevel(alert);
-            m_factorDistanceOnly.setCallSign(callSign);
-            m_factorDistanceOnly.setCoordinate(Positioning::PositionProvider::lastValidCoordinate());
-            m_factorDistanceOnly.setHDist(hDist);
-            m_factorDistanceOnly.setID(id);
-            m_factorDistanceOnly.setType(type);
-            m_factorDistanceOnly.setVDist(vDist);
-            m_factorDistanceOnly.startLiveTime();
-            emit factorWithoutPosition(m_factorDistanceOnly);
+            emit factorWithoutPosition(TrafficFactorData_DistanceOnly{
+                .data = {
+                    .alarmLevel = alert,
+                    .callSign = callSign,
+                    .hDist = hDist,
+                    .ID = id,
+                    .type = type,
+                    .vDist = vDist,
+                },
+                .coordinate = Positioning::PositionProvider::lastValidCoordinate(),
+            });
         }
         else
         {
-            m_factor.setAlarmLevel(alert);
-            m_factor.setCallSign(callSign);
-            m_factor.setHDist(hDist);
-            m_factor.setID(id);
-            m_factor.setPositionInfo( Positioning::PositionInfo(pInfo, sourceName()) );
-            m_factor.setType(type);
-            m_factor.setVDist(vDist);
-            m_factor.startLiveTime();
-            emit factorWithPosition(m_factor);
+            emit factorWithPosition(TrafficFactorData_WithPosition{
+                .data = {
+                    .alarmLevel = alert,
+                    .callSign = callSign,
+                    .hDist = hDist,
+                    .ID = id,
+                    .type = type,
+                    .vDist = vDist,
+                },
+                .positionInfo = Positioning::PositionInfo(pInfo, sourceName()),
+            });
         }
     }
 

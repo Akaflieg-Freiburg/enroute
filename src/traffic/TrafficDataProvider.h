@@ -495,11 +495,11 @@ private slots:
     // Called if one of the sources indicates a heartbeat change
     void onCurrentSourceChanged();
 
-    // Called if one of the sources reports traffic (position unknown)
-    void onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition& factor);
-
     // Called if one of the sources reports traffic (position known)
-    void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly& factor);
+    void onTrafficFactorWithPosition(const Traffic::TrafficFactorData_WithPosition& factor);
+
+    // Called if one of the sources reports traffic (position unknown)
+    void onTrafficFactorWithoutPosition(const Traffic::TrafficFactorData_DistanceOnly& factor);
 
     // Resetter method
     void resetWarning();

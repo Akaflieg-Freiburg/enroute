@@ -137,15 +137,17 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
             }
         }
 
-        m_factor.setAlarmLevel(0);
-        m_factor.setCallSign(callsign);
-        m_factor.setHDist(hDist);
-        m_factor.setID(targetID);
-        m_factor.setPositionInfo( Positioning::PositionInfo(geoPositionInfo, sourceName()) );
-        m_factor.setType(TrafficFactor_Abstract::unknown);
-        m_factor.setVDist(vDist);
-        m_factor.startLiveTime();
-        emit factorWithPosition(m_factor);
+        emit factorWithPosition(TrafficFactorData_WithPosition{
+            .data = {
+                .alarmLevel = 0,
+                .callSign = callsign,
+                .hDist = hDist,
+                .ID = targetID,
+                .type = TrafficFactor_Abstract::unknown,
+                .vDist = vDist,
+            },
+            .positionInfo = Positioning::PositionInfo(geoPositionInfo, sourceName()),
+        });
         return;
     }
 

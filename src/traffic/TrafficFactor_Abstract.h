@@ -30,14 +30,17 @@ using namespace std::chrono_literals;
 
 namespace Traffic {
 
+// Plain-data record fed into updateFrom()/replaceBy(); defined in TrafficFactorData.h
+struct TrafficFactorData;
+
 /*! \brief Abstract base class for traffic factors
  *
  *  This is an abstract base class for traffic factors, as reported by traffic
  *  data receivers (e.g. FLARM devices).
  *
  *  Since the real-world traffic situation changes continuously, instances of this class have a limited lifetime.
- *  The length of the lifetime is specified in the constant "lifeTime". You can (re)start an object's lifetime
- *  startLiveTime(). Once the life-time of an object is expired, the property "valid" will alway contain
+ *  The length of the lifetime is specified in the constant "lifetime". You can (re)start an object's lifetime
+ *  startLifetime(). Once the lifetime of an object is expired, the property "valid" will alway contain
  *  the word "false", regardless of the object's other properties.
  *
  *  Classes that inherit from TrafficFactor_Abstract need to provide a binding for the properties 'description'
@@ -100,13 +103,29 @@ public:
      */
     [[nodiscard]] bool hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const;
 
+    /*! \brief Relevance criterion shared by the "relevant" property and priority logic
+     *
+     *  This helper holds the rule that decides whether traffic at the given
+     *  distances is relevant, i.e. close enough to be worth showing. It is used
+     *  both by the binding of the "relevant" property and by the free function
+     *  hasHigherPriorityThan(const TrafficFactorData&, const TrafficFactor_Abstract&),
+     *  so that both share a single definition.
+     *
+     *  @param hDist Horizontal distance to the traffic
+     *
+     *  @param vDist Vertical distance to the traffic
+     *
+     *  @returns True if traffic at these distances is considered relevant
+     */
+    [[nodiscard]] static bool isRelevant(Units::Distance hDist, Units::Distance vDist);
+
     /*! \brief Starts or extends the lifetime of this object
      *
      *  Traffic information is valantile, and is considered valid only
-     *  for "lifeTime" seconds.  This method starts or extends the
-     *  object's life time.
+     *  for "lifetime" seconds.  This method starts or extends the
+     *  object's lifetime.
      */
-    void startLiveTime();
+    void startLifetime();
 
 
     //
@@ -396,7 +415,7 @@ public:
         if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
             return;
         }
-        startLiveTime();
+        startLifetime();
         m_alarmLevel = newAlarmLevel;
     }
 
@@ -436,7 +455,7 @@ public:
     //
 
     /*! \brief Length of lifetime for objects of this class */
-    static constexpr auto lifeTime = 45s;
+    static constexpr auto lifetime = 45s;
 
     /*! \brief Maximal vertical distance for relevant traffic
      *
@@ -492,19 +511,47 @@ protected:
     // Indicates that the instance is valid as an abstract traffic factor
     QProperty<bool> m_validAbstractTrafficFactor;
 
-    /*! \brief Copy data from other object
+    /*! \brief Update this object with newer data for the same traffic factor
      *
-     *  This method copies all properties from the other object, with notable exceptions.
-     *  If both *this and other are valid, and if the rightmost six characters if the IDs
-     *  agree, then the method treats the call as an update of existing data. In this case,
+     *  This method is for the case where \a data describes the *same* traffic
+     *  factor as *this, observed again with (typically newer) data. The caller is
+     *  responsible for establishing that the two refer to the same factor.
      *
-     *  - the property "animate" of *this is set to true
-     *  - the callsign is copied only if the callsign of *this is empty.
-     *  - the type is copied only if the type of *this is unknown.
+     *  Identity data that is already established here is preserved, and the
+     *  transition is animated:
      *
-     *  @param other Instance whose properties are copied
+     *  - the "animate" property of *this is set to true, so that the GUI animates
+     *    the transition from the old to the new data;
+     *  - the callsign in \a data is taken over only if the callsign of *this is
+     *    still empty (an established callsign is never overwritten);
+     *  - the type in \a data is taken over only if the type of *this is still
+     *    unknown (an established type is never overwritten).
+     *
+     *  If there is nothing to continue from — *this is no longer valid, i.e. its
+     *  track had expired — there is no established identity to preserve and no
+     *  meaningful transition to animate. The call then degrades to replaceBy().
+     *
+     *  In all cases the lifetime of *this is (re)started, so the caller does not
+     *  need to call startLifetime() separately.
+     *
+     *  @param data Data record whose contents are used to update *this
      */
-    void copyFrom(const TrafficFactor_Abstract& other);
+    void updateFrom(const TrafficFactorData& data);
+
+    /*! \brief Replace this object by a different traffic factor
+     *
+     *  This method is for the case where *this is repurposed to represent a
+     *  *different* traffic factor, namely the one described by \a data. All
+     *  properties are overwritten unconditionally and the "animate" property is set
+     *  to false, since animating a transition between two unrelated factors would
+     *  be meaningless.
+     *
+     *  The lifetime of *this is (re)started, so the caller does not need to call
+     *  startLifetime() separately.
+     *
+     *  @param data Data record whose contents replace the data of *this
+     */
+    void replaceBy(const TrafficFactorData& data);
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_Abstract)
@@ -526,7 +573,7 @@ private:
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for longer than timeout.
-    QTimer lifeTimeCounter;
+    QTimer lifetimeCounter;
 };
 
 } // namespace Traffic

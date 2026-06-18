@@ -383,24 +383,23 @@ void Traffic::TrafficDataProvider::onCurrentSourceChanged()
     }
 }
 
-void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor)
+void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactorData_DistanceOnly &factor)
 {
-    m_trafficObjectWithoutPosition->copyFrom(factor);
-    m_trafficObjectWithoutPosition->startLiveTime();
+    m_trafficObjectWithoutPosition->replaceBy(factor);
 }
 
-void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor)
+void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactorData_WithPosition &factor)
 {
     // Check if the traffic is one of the known factors.
     for(auto* target : std::as_const(m_trafficObjects))
     {
-        if (factor.ID().right(6) == target->ID().right(6))
+        if (factor.data.ID.right(6) == target->ID().right(6))
         {
-            if (target->positionInfo().timestamp() < factor.positionInfo().timestamp())
+            // Same factor seen again: only adopt the message if it is newer than
+            // the data we already hold for this factor.
+            if (target->positionInfo().timestamp() < factor.positionInfo.timestamp())
             {
-                // Replace the entry by the factor.
-                target->copyFrom(factor);
-                target->startLiveTime();
+                target->updateFrom(factor);
             }
             return;
         }
@@ -416,11 +415,11 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
         }
     }
 
-    // Replace the lowest priority target
-    if (factor.hasHigherPriorityThan(*lowestPriObject))
+    // The factor is new to us: if it outranks the lowest-priority slot, let it
+    // take over that slot.
+    if (hasHigherPriorityThan(factor.data, *lowestPriObject))
     {
-        lowestPriObject->copyFrom(factor);
-        lowestPriObject->startLiveTime();
+        lowestPriObject->replaceBy(factor);
     }
 }
 

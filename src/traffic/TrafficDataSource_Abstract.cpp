@@ -29,8 +29,6 @@
 Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(bool isCanonical, QObject *parent)
     : QObject(parent), m_canonical(isCanonical)
 {
-    QQmlEngine::setObjectOwnership(&m_factor, QQmlEngine::CppOwnership);
-
     // Setup heartbeat timer
     m_heartbeatTimer.setSingleShot(true);
     m_heartbeatTimer.setInterval(5s);

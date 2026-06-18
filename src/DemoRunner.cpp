@@ -249,20 +249,22 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, Units::Speed::fromKN(70).toMPS() );
                     trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
                     trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
-                    auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
-                    trafficFactor1->setAlarmLevel(0);
-                    trafficFactor1->setID(QStringLiteral("newID"));
-                    trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
-                    trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo, u"DemoRunner"_s) );
-                    trafficFactor1->setHDist( Units::Distance::fromM(1000) );
-                    trafficFactor1->setVDist( Units::Distance::fromM(17) );
+                    Traffic::TrafficFactorData_WithPosition trafficFactor1{
+                        .data = {
+                            .alarmLevel = 0,
+                            .hDist = Units::Distance::fromM(1000),
+                            .ID = QStringLiteral("newID"),
+                            .type = Traffic::TrafficFactor_Abstract::Aircraft,
+                            .vDist = Units::Distance::fromM(17),
+                        },
+                        .positionInfo = Positioning::PositionInfo(trafficInfo, u"DemoRunner"_s),
+                    };
                     trafficSimulator->addTraffic(trafficFactor1);
 
                     delay(8s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
-                    trafficFactor1->setHDist( {} );
                     trafficSimulator->removeTraffic();
-                    trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
+                    trafficSimulator->clearTrafficFactor_DistanceOnly();
                     delay(20s);
                 }
 
@@ -521,29 +523,34 @@ void DemoRunner::generateManualScreenshots()
         trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, Units::Speed::fromKN(70).toMPS() );
         trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
         trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
-        auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
-        trafficFactor1->setAlarmLevel(0);
-        trafficFactor1->setID(QStringLiteral("newID"));
-        trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
-        trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo, u"DemoRunner"_s) );
-        trafficFactor1->setHDist( Units::Distance::fromM(1000) );
-        trafficFactor1->setVDist( Units::Distance::fromM(17) );
+        Traffic::TrafficFactorData_WithPosition trafficFactor1{
+            .data = {
+                .alarmLevel = 0,
+                .hDist = Units::Distance::fromM(1000),
+                .ID = QStringLiteral("newID"),
+                .type = Traffic::TrafficFactor_Abstract::Aircraft,
+                .vDist = Units::Distance::fromM(17),
+            },
+            .positionInfo = Positioning::PositionInfo(trafficInfo, u"DemoRunner"_s),
+        };
         trafficSimulator->addTraffic(trafficFactor1);
 
-        auto* trafficFactor2 = new Traffic::TrafficFactor_DistanceOnly(this);
-        trafficFactor2->setAlarmLevel(1);
-        trafficFactor2->setID(QStringLiteral("newID"));
-        trafficFactor2->setHDist( Units::Distance::fromM(1000) );
-        trafficFactor2->setType(Traffic::TrafficFactor_Abstract::Aircraft);
-        trafficFactor2->setCallSign({});
-        trafficFactor2->setCoordinate(ownPosition);
+        Traffic::TrafficFactorData_DistanceOnly trafficFactor2{
+            .data = {
+                .alarmLevel = 1,
+                .callSign = {},
+                .hDist = Units::Distance::fromM(1000),
+                .ID = QStringLiteral("newID"),
+                .type = Traffic::TrafficFactor_Abstract::Aircraft,
+            },
+            .coordinate = ownPosition,
+        };
         trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("02-01-01-traffic.png"));
-        trafficFactor1->setHDist( {} );
         trafficSimulator->removeTraffic();
-        trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
+        trafficSimulator->clearTrafficFactor_DistanceOnly();
         delay(40s);
     }
 

@@ -21,7 +21,8 @@
 #pragma once
 
 #include <QGeoPositionInfo>
-#include <QPointer>
+
+#include <optional>
 
 #include "traffic/TrafficDataSource_Abstract.h"
 
@@ -130,16 +131,17 @@ public slots:
 
     /*! \brief Set traffic factor (distance only) that is to be reported by this class
      *
-     *  @param factor Traffic factor, or nullptr to remove all distance-only
-     *  traffic. The traffic factor will be owned by this class.
+     *  @param factor Traffic factor data record to be reported
      */
-    void setTrafficFactor_DistanceOnly(Traffic::TrafficFactor_DistanceOnly* factor=nullptr)
+    void setTrafficFactor_DistanceOnly(const Traffic::TrafficFactorData_DistanceOnly& factor)
     {
-        delete trafficFactor_DistanceOnly;
-        if (factor != nullptr) {
-            factor->setParent( this );
-            trafficFactor_DistanceOnly = factor;
-        }
+        trafficFactor_DistanceOnly = factor;
+    }
+
+    /*! \brief Stop reporting distance-only traffic */
+    void clearTrafficFactor_DistanceOnly()
+    {
+        trafficFactor_DistanceOnly.reset();
     }
 
     /*! \brief Set speed that is to be reported by this class as the vertical speed of ownship
@@ -153,19 +155,16 @@ public slots:
 
     /*! \brief Add a traffic factor that is to be reported by this class
      *
-     *  @param factor Traffic factor to be added. The pointer must be valid. The
-     *  traffic factor will be owned by this class.
+     *  @param factor Traffic factor data record to be added
      */
-    void addTraffic(Traffic::TrafficFactor_WithPosition* factor)
+    void addTraffic(const Traffic::TrafficFactorData_WithPosition& factor)
     {
-        factor->setParent(this);
         trafficFactors.append(factor);
     }
 
     /*! \brief Remove all traffic factors (with position) */
     void removeTraffic()
     {
-        qDeleteAll(trafficFactors);
         trafficFactors.clear();
     }
 
@@ -181,8 +180,8 @@ private:
     QTimer simulatorTimer;
     QGeoPositionInfo geoInfo;
     Units::Distance barometricHeight;
-    QVector<QPointer<TrafficFactor_WithPosition>> trafficFactors;
-    QPointer<TrafficFactor_DistanceOnly> trafficFactor_DistanceOnly;
+    QVector<TrafficFactorData_WithPosition> trafficFactors;
+    std::optional<TrafficFactorData_DistanceOnly> trafficFactor_DistanceOnly;
 };
 
 } // namespace Traffic

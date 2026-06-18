@@ -448,15 +448,17 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     }
 
     // Prepare the factor object
-    Traffic::TrafficFactor_WithPosition factor;
-    factor.setAlarmLevel(alarmLevel);
-    factor.setCallSign(callsign);
-    factor.setID(QString::fromUtf8(m_ognMessage.sourceId.data(), static_cast<qsizetype>(m_ognMessage.sourceId.size())));
-    factor.setType(convertOgnAircraftType(m_ognMessage.aircraftType));
-    factor.setPositionInfo(Positioning::PositionInfo(pInfo, sourceName()));
-    factor.setHDist(hDist);
-    factor.setVDist(vDist);
-    factor.startLiveTime();
+    Traffic::TrafficFactorData_WithPosition factor{
+        .data = {
+            .alarmLevel = alarmLevel,
+            .callSign = callsign,
+            .hDist = hDist,
+            .ID = QString::fromUtf8(m_ognMessage.sourceId.data(), static_cast<qsizetype>(m_ognMessage.sourceId.size())),
+            .type = convertOgnAircraftType(m_ognMessage.aircraftType),
+            .vDist = vDist,
+        },
+        .positionInfo = Positioning::PositionInfo(pInfo, sourceName()),
+    };
 
     #if OGN_DEBUG
     qDebug() << "Emitting traffic factor - ID:" << QString::fromUtf8(m_ognMessage.sourceId.data(), static_cast<qsizetype>(m_ognMessage.sourceId.size()))
@@ -468,7 +470,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
              << " altitude:" << m_ognMessage.altitude << "m"
              << " hDist:" << hDist.toM() << "m"
              << " vDist:" << vDist.toFeet() << "ft"
-             << " valid:" << factor.positionInfo().isValid();
+             << " valid:" << factor.positionInfo.isValid();
     #endif
 
     // Emit the factorWithPosition signal

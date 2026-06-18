@@ -26,6 +26,7 @@
 #include "traffic/ConnectionInfo.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
 #include "traffic/TrafficFactor_WithPosition.h"
+#include "traffic/TrafficFactorData.h"
 #include "traffic/Warning.h"
 
 
@@ -328,7 +329,7 @@ signals:
      *
      *  \param factor Traffic factor.
      */
-    void factorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor);
+    void factorWithoutPosition(const Traffic::TrafficFactorData_DistanceOnly &factor);
 
     /*! \brief Traffic factor with position
      *
@@ -337,7 +338,7 @@ signals:
      *
      *  \param factor Traffic factor.
      */
-    void factorWithPosition(const Traffic::TrafficFactor_WithPosition& factor);
+    void factorWithPosition(const Traffic::TrafficFactorData_WithPosition& factor);
 
     /* \brief Password request
      *
@@ -569,10 +570,6 @@ private:
     // Heartbeat timer
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficDataSource_Abstract, bool, m_receivingHeartbeat, false, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged);
     QTimer m_heartbeatTimer;
-
-    // Targets
-    Traffic::TrafficFactor_WithPosition m_factor;
-    Traffic::TrafficFactor_DistanceOnly m_factorDistanceOnly;
 
     // Position Info for ownship
     QProperty<Positioning::PositionInfo> m_positionInfo;

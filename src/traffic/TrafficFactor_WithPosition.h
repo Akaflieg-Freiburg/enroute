@@ -22,6 +22,7 @@
 
 #include "positioning/PositionInfo.h"
 #include "traffic/TrafficFactor_Abstract.h"
+#include "traffic/TrafficFactorData.h"
 
 
 namespace Traffic {
@@ -53,26 +54,41 @@ public:
     // Methods
     //
 
-    /*! \brief Copy data from other object
+    /*! \brief Update this object with newer data for the same traffic factor
      *
-     *  This method copies all properties from the other object, provided that the
-     *  other object is valid and its positionInfo is not older than the positionInfo
-     *  of this object. If these conditions are not met, the method does nothing.
+     *  This method is for the case where \a data describes the *same* traffic
+     *  factor as *this, observed again with newer data. It takes over the
+     *  positionInfo of \a data and updates the remaining properties through
+     *  TrafficFactor_Abstract::updateFrom(); see there for how the "animate"
+     *  property, callsign and type are handled.
      *
-     *  As with TrafficFactor_Abstract::copyFrom(), a successful copy updates the
-     *  "animate" property and restarts the lifetime of this object.
+     *  @note This method does not itself check that \a data is newer than *this.
+     *  The caller is responsible for establishing that the two refer to the same
+     *  factor and that \a data carries the more recent data.
      *
-     *  @param other Instance whose properties are copied
+     *  @param data Data record whose contents are used to update *this
      */
-    void copyFrom(const TrafficFactor_WithPosition& other)
+    void updateFrom(const TrafficFactorData_WithPosition& data)
     {
         const QScopedPropertyUpdateGroup updateGroup;
-        if (!other.valid() || (other.positionInfo().timestamp() < m_positionInfo.value().timestamp()))
-        {
-            return;
-        }
-        setPositionInfo(other.positionInfo());
-        TrafficFactor_Abstract::copyFrom(other);
+        setPositionInfo(data.positionInfo);
+        TrafficFactor_Abstract::updateFrom(data.data);
+    }
+
+    /*! \brief Replace this object by a different traffic factor
+     *
+     *  This method is for the case where *this is repurposed to represent a
+     *  *different* traffic factor, namely the one described by \a data. It takes
+     *  over the positionInfo of \a data and replaces the remaining properties
+     *  through TrafficFactor_Abstract::replaceBy().
+     *
+     *  @param data Data record whose contents replace the data of *this
+     */
+    void replaceBy(const TrafficFactorData_WithPosition& data)
+    {
+        const QScopedPropertyUpdateGroup updateGroup;
+        setPositionInfo(data.positionInfo);
+        TrafficFactor_Abstract::replaceBy(data.data);
     }
 
 

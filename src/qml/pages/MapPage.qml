@@ -82,7 +82,9 @@ Page {
 
             interval: 200
             onTriggered: {
+                var savedZoom = Global.mapZoomLevel
                 mapLoader.active = false
+                Global.mapZoomLevel = savedZoom
                 mapLoader.source = "../items/MFM.qml"
                 mapLoader.active = true
             }

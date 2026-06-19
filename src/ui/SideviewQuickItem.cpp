@@ -49,10 +49,17 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     notifiers.push_back(m_scaleMinAltFt.addNotifier([this]() { emit scaleRangeChanged(); }));
     notifiers.push_back(m_scaleTotalDistKm.addNotifier([this]() { emit scaleRangeChanged(); }));
 
-    // React to route changes when in Route mode
+    // Auto-switch to Route mode when a route is defined; back to Track when cleared
     notifiers.push_back(GlobalObject::navigator()->flightRoute()->bindableGeoPath().addNotifier([this]() {
+        const bool hasRoute = !GlobalObject::navigator()->flightRoute()->geoPath().isEmpty();
+        if (hasRoute && m_mode == Mode::Track)       { setMode(Mode::Route); return; }
+        if (!hasRoute && m_mode == Mode::Route)      { setMode(Mode::Track); return; }
         if (m_mode == Mode::Route) { updateProperties(); }
     }));
+
+    // Set initial mode based on whether a route is already defined
+    if (!GlobalObject::navigator()->flightRoute()->geoPath().isEmpty())
+        m_mode = Mode::Route;
     connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::plannedAltitudesChanged, this, [this]() {
         if (m_mode == Mode::Route) { updateProperties(); }
     });

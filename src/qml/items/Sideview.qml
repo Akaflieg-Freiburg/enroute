@@ -441,7 +441,9 @@ SideviewQuickItem {
                 fillColor: "transparent"
                 PathPolyline { path: rawSideView.plannedProfile }
             }
+
         }
+
 
         // Clickable altitude points, one per waypoint (route mode only). Tapping
         // a point opens a popup to specify the planned altitude. Placed in
@@ -598,6 +600,12 @@ SideviewQuickItem {
         x: rawSideView.yScaleWidth + flickable.width*0.1
         text: rawSideView.track
         visible: rawSideView.track !== ""
+    }
+
+    Label {
+        x: rawSideView.yScaleWidth + flickable.width*0.1
+        text: qsTr("Direction of travel →")
+        visible: rawSideView.mode === SideviewQuickItem.Route
     }
 
     Label {

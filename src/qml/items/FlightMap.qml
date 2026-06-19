@@ -998,6 +998,63 @@ Map {
         }
     }
 
+    // Chevron arrows every ~50 km along the flight route.
+    MapItemView {
+        model: {
+            var pts = []
+            Navigator.flightRoute.geoPath.forEach(element => pts.push(element))
+            if (pts.length < 2) return []
+            var spacingM = 50000
+            var arrows = []
+            // distToNext: meters until the next chevron, measured from the start of the current segment
+            var distToNext = spacingM / 2
+            for (var i = 1; i < pts.length; i++) {
+                var segLen = pts[i-1].distanceTo(pts[i])
+                if (segLen < 1) continue
+                var bearing = pts[i-1].azimuthTo(pts[i])
+                // Mercator helpers — interpolate in projection space to match MapLibre rendering
+                var lat1 = pts[i-1].latitude,  lon1 = pts[i-1].longitude
+                var lat2 = pts[i].latitude,     lon2 = pts[i].longitude
+                var my1 = Math.log(Math.tan(Math.PI/4 + lat1 * Math.PI/360))
+                var my2 = Math.log(Math.tan(Math.PI/4 + lat2 * Math.PI/360))
+                var pos = distToNext
+                while (pos <= segLen) {
+                    var t = pos / segLen
+                    var lon = lon1 + t * (lon2 - lon1)
+                    var my  = my1  + t * (my2  - my1)
+                    var lat = (2 * Math.atan(Math.exp(my)) - Math.PI/2) * 180 / Math.PI
+                    arrows.push({coordinate: QtPositioning.coordinate(lat, lon), bearing: bearing})
+                    pos += spacingM
+                }
+                distToNext = pos - segLen  // always positive: remaining gap into next segment
+            }
+            return arrows
+        }
+
+        delegate: MapQuickItem {
+            required property var modelData
+            coordinate: modelData.coordinate
+            anchorPoint.x: 8
+            anchorPoint.y: 8
+            sourceItem: Canvas {
+                width: 16; height: 16
+                onPaint: {
+                    var ctx = getContext("2d")
+                    ctx.clearRect(0, 0, width, height)
+                    ctx.strokeStyle = Global.flightRouteColor
+                    ctx.lineWidth = 2
+                    ctx.translate(8, 8)
+                    // bearing: 0=north, clockwise. Canvas 0=east, clockwise. Offset -90°.
+                    ctx.rotate((modelData.bearing - 90) * Math.PI / 180)
+                    ctx.beginPath()
+                    ctx.moveTo(-6, -5); ctx.lineTo(6, 0); ctx.lineTo(-6, 5)
+                    ctx.stroke()
+                }
+                Component.onCompleted: requestPaint()
+            }
+        }
+    }
+
     MapPolyline {
         id: toNextWP
         visible: PositionProvider.lastValidCoordinate.isValid &&

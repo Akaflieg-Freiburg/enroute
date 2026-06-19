@@ -597,10 +597,9 @@ Page {
                     wrapMode: Text.Wrap
                     color: "black"
                     text: WindFieldProvider.isStale
-                        ? qsTr("Wind field stale (%1) — using manual wind").arg(WindFieldProvider.validTimeLabel)
-                        : qsTr("Using wind field — valid %1, FL%2")
-                            .arg(WindFieldProvider.validTimeLabel)
-                            .arg(Math.round(Navigator.cruiseAltitudeFt/100))
+                        ? qsTr("Wind field stale — using manual wind")
+                        : qsTr("Using wind field, departure %1")
+                            .arg((function() { var d = new Date(Navigator.departureTime); return ("0"+d.getUTCDate()).slice(-2) + ("0"+d.getUTCHours()).slice(-2) + ("0"+d.getUTCMinutes()).slice(-2) + "Z" }()))
                 }
             }
 

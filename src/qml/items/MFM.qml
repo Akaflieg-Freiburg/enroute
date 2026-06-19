@@ -351,7 +351,7 @@ Item {
                     // PROPERTY "zoomLevel"
                     //
 
-                    function onZoomLevelChanged(zoomLevel) {
+                    onZoomLevelChanged: {
                         if (defaultValuesSet)
                             Global.mapZoomLevel = zoomLevel
                     }
@@ -376,7 +376,7 @@ Item {
                         zoomLevelBehavior.enabled = false
                         zoomLevel = Global.mapZoomLevelRect
                         zoomLevelBehavior.enabled = true
-                        defaultValuesSet = true;
+                        defaultValuesSet = true
                     }
                     Component.onCompleted: {                        
                         // Oddly, this is necessary, or else the system will try to reset

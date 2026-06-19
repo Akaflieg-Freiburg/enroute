@@ -81,9 +81,9 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
 {
     QString gpx = u""_s;
 
-    // waypoints
-    //
-    for(const auto& _waypoint : m_waypoints.value()) {
+    const auto& wps = m_waypoints.value();
+    for (int i = 0; i < wps.size(); i++) {
+        const auto& _waypoint = wps.at(i);
 
         if (!_waypoint.isValid()) {
             continue; // skip silently
@@ -101,10 +101,11 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
         auto lon = QString::number(position.longitude(), 'f', 8);
         gpx += indent + "<" + tag + " lat='" + lat + "' lon='" + lon + "'>\n";
 
-        if (_waypoint.coordinate().type() == QGeoCoordinate::Coordinate3D) {
-
-            // elevation in meters always for gpx
-            //
+        // Planned altitude takes priority; fall back to waypoint geographic elevation
+        const double plannedM = plannedAltitude(i);
+        if (!qIsNaN(plannedM)) {
+            gpx += indent + "  <ele>" + QString::number(plannedM, 'f', 2) + "</ele>\n";
+        } else if (_waypoint.coordinate().type() == QGeoCoordinate::Coordinate3D) {
             auto elevation = QString::number(_waypoint.coordinate().altitude(), 'f', 2);
             gpx += indent + "  <ele>" + elevation + "</ele>\n";
         }

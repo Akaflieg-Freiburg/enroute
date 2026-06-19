@@ -509,6 +509,7 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
     }
 
     QVector<GeoMaps::Waypoint> newWaypoints;
+    QVector<double> importedAltitudes; // metres, NaN if not set
     foreach(auto waypoint, result)
     {
         if (!waypoint.isValid())
@@ -517,6 +518,8 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
         }
 
         auto pos = waypoint.coordinate();
+        importedAltitudes << (pos.type() == QGeoCoordinate::Coordinate3D ? pos.altitude() : qQNaN());
+
         auto distPos = pos.atDistanceAndAzimuth(1000.0, 0.0, 0.0);
         auto nearest = GlobalObject::geoMapProvider()->closestWaypoint(pos, distPos);
         if (nearest.type() == u"WP")
@@ -548,6 +551,18 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
             }
         }
     }
+
+    // If no planned altitudes were loaded (e.g. GPX import), restore from
+    // the <ele> values captured before waypoint snapping.
+    if (m_plannedAltitudes.isEmpty())
+    {
+        for (int i = 0; i < m_waypoints.value().size() && i < importedAltitudes.size(); i++)
+        {
+            if (!qIsNaN(importedAltitudes.at(i)))
+                setPlannedAltitude(i, importedAltitudes.at(i));
+        }
+    }
+
     emit plannedAltitudesChanged();
     return {};
 }

@@ -678,7 +678,7 @@ Item {
                                         width: parent.width
                                         colors: ForecastMapProvider.rainColors
                                         boundaries: ForecastMapProvider.rainBoundaries
-                                        ticks: [0.1, 0.5, 1, 5, 10, 30, 100, 200]
+                                        ticks: [0.1, 1, 5, 10, 30, 100]
                                         units: ForecastMapProvider.rainUnits
                                     }
                                 }

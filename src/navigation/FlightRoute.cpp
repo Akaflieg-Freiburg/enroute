@@ -209,18 +209,33 @@ auto Navigation::FlightRoute::summary() const -> QString
 
     const auto aircraft = GlobalObject::navigator()->aircraft();
     const auto wind = GlobalObject::navigator()->wind();
+    const auto* wfp = Weather::WindFieldProvider::instance();
     auto dist = Units::Distance::fromM(0.0);
     auto time = Units::Timespan::fromS(0.0);
     auto fuel = Units::Volume::fromL(0.0);
 
-    for(const auto& _leg : m_legs.value())
+    auto altFtAt = [&](int wpIdx) -> double {
+        double m = plannedAltitude(wpIdx);
+        if (!qIsFinite(m)) m = aircraft.cruiseAltitudeM();
+        if (!qIsFinite(m)) return 3000.0;
+        return Units::Distance::fromM(m).toFeet();
+    };
+
+    QDateTime t = GlobalObject::navigator()->departureTime();
+    if (!t.isValid()) t = QDateTime::currentDateTimeUtc();
+
+    const auto& legs = m_legs.value();
+    for (int k = 0; k < legs.size(); ++k)
     {
-        dist += _leg.distance();
-        if (dist.toM() > 100)
+        dist += legs[k].distance();
+        auto res = legs[k].integrate(wfp, wind, aircraft, t, altFtAt(k), altFtAt(k + 1));
+        if (res.isValid && res.ete.isFinite())
         {
-            time += _leg.ETE(wind, aircraft);
-            fuel += _leg.Fuel(wind, aircraft);
+            time += res.ete;
+            t = t.addSecs(qRound64(res.ete.toS()));
         }
+        if (aircraft.fuelConsumption().isFinite() && res.ete.isFinite())
+            fuel += aircraft.fuelConsumption() * res.ete;
     }
     if (!dist.isFinite()) {
         return {};

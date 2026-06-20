@@ -88,6 +88,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     addDataSource( new Traffic::TrafficDataSource_Udp(true, 49002, this));
 
     // Setup Bindings
+    m_dataSourcesCache.setBinding([this]() {return computeDataSources();});
     m_currentSource.setBinding([this]() {return computeCurrentSource();});
     m_receivingHeartbeat.setBinding([this]() {return computeReceivingHeartbeat();});
     m_statusString.setBinding([this]() {return computeStatusString();});
@@ -148,13 +149,11 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
                   const bool bIsOgn = qobject_cast<const TrafficDataSource_Ogn*>(second) != nullptr;
                   if (aIsOgn != bIsOgn)
                   {
-                      return !aIsOgn && bIsOgn;;
+                      return !aIsOgn && bIsOgn;
                   }
                   return first->sourceName() < second->sourceName();
               });
     m_dataSources = tmp;
-
-    emit dataSourcesChanged();
 }
 
 QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInfo &connectionInfo)
@@ -275,6 +274,11 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 
 QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSources() const
 {
+    return m_dataSourcesCache.value();
+}
+
+QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::computeDataSources()
+{
     QList<Traffic::TrafficDataSource_Abstract*> result;
     foreach(auto dataSource, m_dataSources.value())
     {
@@ -362,12 +366,19 @@ void Traffic::TrafficDataProvider::loadConnectionInfos()
 
 void Traffic::TrafficDataProvider::onCurrentSourceChanged()
 {
+    // Disconnect the traffic/warning signals from all sources, so that only the
+    // current source feeds this class. The passwordRequest/passwordStorageRequest
+    // forwarding connections set up in addDataSource() must stay intact, so we
+    // disconnect the three specific signals rather than everything.
     foreach(auto source, m_dataSources.value())
     {
-        if (!source.isNull())
+        if (source.isNull())
         {
-            source->disconnect(this);
+            continue;
         }
+        disconnect(source, &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, nullptr);
+        disconnect(source, &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, nullptr);
+        disconnect(source, &Traffic::TrafficDataSource_Abstract::warning, this, nullptr);
     }
     if (m_currentSource.value() != nullptr)
     {
@@ -385,7 +396,13 @@ void Traffic::TrafficDataProvider::onCurrentSourceChanged()
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactorData_DistanceOnly &factor)
 {
-    m_trafficObjectWithoutPosition->replaceBy(factor);
+    // Same target reported again (same ID): the slot adopts the record and the
+    // change is animated. Otherwise the record replaces whatever the single
+    // distance-only slot currently holds.
+    if (!m_trafficObjectWithoutPosition->updateFrom(factor))
+    {
+        m_trafficObjectWithoutPosition->replaceBy(factor);
+    }
 }
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactorData_WithPosition &factor)
@@ -492,7 +509,6 @@ void Traffic::TrafficDataProvider::removeDataSource(Traffic::TrafficDataSource_A
     tmp.removeAll(source);
     m_dataSources = tmp;
 
-    emit dataSourcesChanged();
     source->deleteLater();
 }
 
@@ -518,7 +534,6 @@ void Traffic::TrafficDataProvider::removeDataSources()
         dataSource->deleteLater();
     }
     m_dataSources = tmp;
-    emit dataSourcesChanged();
 }
 
 void Traffic::TrafficDataProvider::resetWarning()

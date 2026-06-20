@@ -714,9 +714,13 @@ Map {
     //
 
     MapCircle { // Circle for nondirectional traffic warning
-        center: PositionProvider.lastValidCoordinate
+        center: TrafficDataProvider.trafficObjectWithoutPosition.coordinate
+        Behavior on center {
+            CoordinateAnimation { duration: 1000 }
+            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
+        }
 
-        radius: Math.max(500, TrafficDataProvider.trafficObjectWithoutPosition.hDist.toM())
+        radius: Math.max(500, TrafficDataProvider.trafficObjectWithoutPosition.range.toM())
         Behavior on radius {
             NumberAnimation { duration: 1000 }
             enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate

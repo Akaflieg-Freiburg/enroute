@@ -44,9 +44,9 @@ namespace Traffic {
  *  This class also acts as a PositionInfoSource, and passes position data (that
  *  some traffic receivers provide) on to the the consumers of this class.
  *
- *  Following the standards established by the app ForeFlight, this classEnroute
+ *  Following the standards established by the app ForeFlight, Enroute
  *  broadcasts a UDP message on port 63093 every 5 seconds while the app is
- *  running in the foreground. This message allows devices to discover Enroute’s
+ *  running. This message allows devices to discover Enroute’s
  *  IP address, which can be used as the target of UDP unicast messages.
  */
 class TrafficDataProvider : public QObject {
@@ -133,8 +133,7 @@ public:
 
     /*! \brief Traffic objects whose position is known
      *
-     *  This property holds a list of the most relevant traffic objects, as a
-     *  QQmlListProperty for better cooperation with QML. Note that only the
+     *  This property holds a list of the most relevant traffic objects. Note that only the
      *  valid items in this list pertain to actual traffic. Invalid items should
      *  be ignored. The list is not sorted in any way. The items themselves are
      *  owned by this class.
@@ -531,6 +530,12 @@ private:
 
     // TrafficData Sources
     QProperty<QList<QPointer<Traffic::TrafficDataSource_Abstract>>> m_dataSources;
+
+    // Cached, alphabetically sorted view of m_dataSources exposed via the
+    // dataSources property. Recomputed (and dataSourcesChanged emitted) whenever
+    // m_dataSources changes.
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, QList<Traffic::TrafficDataSource_Abstract*>, m_dataSourcesCache, &Traffic::TrafficDataProvider::dataSourcesChanged);
+    QList<Traffic::TrafficDataSource_Abstract*> computeDataSources();
 
     QProperty<QPointer<Traffic::TrafficDataSource_Abstract>> m_currentSource;
     QPropertyNotifier m_currentSourceNotifier;

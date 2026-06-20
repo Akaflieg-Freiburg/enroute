@@ -438,7 +438,11 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         // Callsign of traffic
         auto callSign = QString::fromLatin1(message.mid(18,8)).simplified();
 
-        // Expose data
+        // Expose data. Targets with the callsign "MODE S" come from a Mode-S
+        // transponder, which provides no real position: the receiver synthesises a
+        // bearing, so the reported coordinate is unreliable. We therefore discard
+        // the position and report such targets as distance-only, keeping just the
+        // computed range (hDist) around the ownship position.
         if ((callSign.compare(u"MODE S"_s, Qt::CaseInsensitive) == 0) || (callSign.compare(u"MODE-S"_s, Qt::CaseInsensitive) == 0))
         {
             emit factorWithoutPosition(TrafficFactorData_DistanceOnly{

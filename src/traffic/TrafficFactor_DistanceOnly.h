@@ -28,13 +28,22 @@
 
 namespace Traffic {
 
-/*! \brief Traffic factor where only distance is known
+/*! \brief Traffic factor whose distance is known, but not its bearing
  *
- *  Objects of this class represent traffic factors, where only the horizontal distance to the traffic is known.
- *  This is typically the case for aircraft that report their position only through a Mode-S transponder.
- *  Compared to TrafficFactor_Abstract, instances of this class hold one additional property, namely
- *  the ownship position at the time of report.  The traffic must then be expected within a cylinder
- *  centered in coordinate with radius hDist.
+ *  Objects of this class represent traffic factors for which only the distance to
+ *  the traffic is known, not its bearing. This is typically the case for aircraft
+ *  seen through a Mode-S transponder, which reports altitude and range but no
+ *  position.
+ *
+ *  Geometrically, such a factor is described by a horizontal **range ring**: the
+ *  traffic is somewhere on a circle of radius range(), centered at coordinate()
+ *  — the ownship position at the time of report — and offset vertically by
+ *  vDist(). Compared to TrafficFactor_Abstract, this class therefore adds the
+ *  property coordinate (the center of the ring); the radius is exposed as range().
+ *
+ *  Note that a finite range() is required for the factor to be valid (see the
+ *  binding of the "valid" property), so a distance-only factor can only be shown
+ *  when both the range and the ownship position are known.
  */
 
 class TrafficFactor_DistanceOnly : public Traffic::TrafficFactor_Abstract {
@@ -55,12 +64,44 @@ public:
     // Methods
     //
 
+    /*! \brief Offer a data record to this object, for the same traffic factor
+     *
+     *  This method checks whether \a data describes the *same* traffic factor as
+     *  *this, by comparing identifiers. The intended use is that the caller offers
+     *  a freshly received record and falls back to replaceBy() if it is declined.
+     *
+     *  - If \a data refers to a *different* factor, it is declined and *this is
+     *    left unchanged.
+     *  - If \a data refers to the *same* factor, it is accepted: the coordinate is
+     *    taken over and the remaining properties are updated through
+     *    TrafficFactor_Abstract::updateFrom(), so that the transition is animated
+     *    (e.g. the range ring grows or shrinks smoothly as the target moves).
+     *
+     *  @param data Data record offered to *this
+     *
+     *  @returns True if \a data refers to the same factor and was accepted here,
+     *  false if it refers to a different factor and was declined
+     */
+    [[nodiscard]] bool updateFrom(const TrafficFactorData_DistanceOnly& data)
+    {
+        // Decline records that belong to a different factor.
+        if (ID().right(6) != data.data.ID.right(6))
+        {
+            return false;
+        }
+
+        const QScopedPropertyUpdateGroup updateGroup;
+        setCoordinate(data.coordinate);
+        TrafficFactor_Abstract::updateFrom(data.data);
+        return true;
+    }
+
     /*! \brief Replace this object by a different traffic factor
      *
-     *  This single distance-only slot is reused for whichever position-less factor
-     *  was reported most recently. Successive reports generally describe different
-     *  factors, so each call is treated as a replacement rather than an update: the
-     *  coordinate is taken over and the remaining properties are replaced through
+     *  This method is for the case where *this is repurposed to represent a
+     *  *different* position-less factor, namely the one described by \a data —
+     *  typically after updateFrom() has declined the record. The coordinate is
+     *  taken over and the remaining properties are replaced through
      *  TrafficFactor_Abstract::replaceBy().
      *
      *  @param data Data record whose contents replace the data of *this
@@ -77,10 +118,11 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Center coordinate
+    /*! \brief Center coordinate of the range ring
      *
-     *  This property contains the coordinate of the center of the cylinder
-     *  where the traffic is most likely located.
+     *  This property contains the center of the range ring, that is, the ownship
+     *  position at the time of report. The traffic is located somewhere on the
+     *  circle of radius range() around this coordinate.
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate BINDABLE bindableCoordinate)
 
@@ -101,7 +143,35 @@ public:
      *  @param newCoordinate Property coordinate
      */
     void setCoordinate(const QGeoCoordinate& newCoordinate) {m_coordinate = newCoordinate;}
-#warning figure out where hDist is actually set!
+
+    /*! \brief Range to the traffic — the radius of the range ring
+     *
+     *  This property holds the horizontal distance from the ownship to the
+     *  traffic, i.e. the radius of the range ring described in the class
+     *  documentation. It is the defining datum of a distance-only factor: it is
+     *  reported by the traffic receiver and set, together with the other data,
+     *  through replaceBy() (which forwards to TrafficFactor_Abstract::replaceBy()
+     *  and thus to setHDist()). A finite range is required for the factor to be
+     *  valid.
+     *
+     *  range() is the first-class, well-named view of the distance for this class.
+     *  It is backed by the inherited hDist property and always holds the same
+     *  value; hDist is retained because the base class TrafficFactor_Abstract uses
+     *  it for the "valid" property and for priority comparisons.
+     */
+    Q_PROPERTY(Units::Distance range READ range BINDABLE bindableRange)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property range
+     */
+    [[nodiscard]] Units::Distance range() const {return hDist();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property range
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindableRange() {return bindableHDist();}
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_DistanceOnly)

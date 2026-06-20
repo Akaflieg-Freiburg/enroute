@@ -93,7 +93,8 @@ Item {
                 }
                 readonly property double _frac: root._bounds.length > 1
                     ? _boundIdx / (root._bounds.length - 1) : 0
-                x: Math.round(Math.min(_frac * labels.width, labels.width - implicitWidth))
+                x: index === 0 ? 0
+                               : Math.round(Math.min(_frac * labels.width, labels.width - implicitWidth))
                 font.pixelSize: 9
                 opacity: 0.7
                 text: {

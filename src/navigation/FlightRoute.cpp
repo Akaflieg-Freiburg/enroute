@@ -29,6 +29,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/GPX.h"
 #include "navigation/Navigator.h"
+#include "weather/WindFieldProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -143,6 +144,7 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
     connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Navigation::FlightRoute::summaryChanged);
     connect(GlobalObject::navigator(), &Navigation::Navigator::windChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(Weather::WindFieldProvider::instance(), &Weather::WindFieldProvider::dataChanged, this, &Navigation::FlightRoute::summaryChanged);
 
     // Setup Bindings
     m_geoPath.setBinding([this]() {return this->computeGeoPath();});
@@ -245,13 +247,12 @@ auto Navigation::FlightRoute::summary() const -> QString
     {
         complaints += tr("Fuel consumption not specified.");
     }
-    if (!wind.speed().isFinite())
+    if (!Weather::WindFieldProvider::instance()->isUsable())
     {
-        complaints += tr("Wind speed not specified.");
-    }
-    if (!wind.directionFrom().isFinite())
-    {
-        complaints += tr("Wind direction not specified.");
+        if (!wind.speed().isFinite())
+            complaints += tr("Wind speed not specified.");
+        if (!wind.directionFrom().isFinite())
+            complaints += tr("Wind direction not specified.");
     }
 
     if (!complaints.isEmpty())

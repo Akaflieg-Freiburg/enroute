@@ -84,8 +84,15 @@ Item {
             model: root._activeTicks.length
 
             Label {
-                readonly property double _v:    root._activeTicks[index]
-                readonly property double _frac: (_v - labels._lo) / labels._range
+                readonly property double _v: root._activeTicks[index]
+                // Position by bin-boundary index so labels align with equal-width bins
+                readonly property int _boundIdx: {
+                    for (var i = 0; i < root._bounds.length; i++)
+                        if (Math.abs(root._bounds[i] - _v) < 1e-9) return i
+                    return 0
+                }
+                readonly property double _frac: root._bounds.length > 1
+                    ? _boundIdx / (root._bounds.length - 1) : 0
                 x: Math.round(Math.min(_frac * labels.width, labels.width - implicitWidth))
                 font.pixelSize: 9
                 opacity: 0.7

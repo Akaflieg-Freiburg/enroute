@@ -9,11 +9,11 @@ Item {
     // When boundaries is empty, falls back to evenly-spaced bins across [vmin, vmax].
     property var    colors:     []
     property var    boundaries: []   // preferred: actual bin-edge values
+    property var    ticks:      []   // subset of boundary values to label; [] means label all
     property double vmin:       0    // fallback when no boundaries
     property double vmax:       1    // fallback when no boundaries
     property string units:      ""
-    // Optional label formatter: function(value) → string
-    property var    labelFunc:  null
+    property var    labelFunc:  null // optional: function(value) → string
 
     implicitHeight: bar.height + labels.height + 2
     implicitWidth:  200
@@ -22,7 +22,6 @@ Item {
     readonly property var _bounds: {
         if (boundaries && boundaries.length >= 2)
             return boundaries
-        // Fallback: evenly spaced
         var n = colors.length || 4
         var step = (vmax - vmin) / n
         var b = []
@@ -34,10 +33,19 @@ Item {
 
     function _fmt(v) {
         if (root.labelFunc) return root.labelFunc(v)
-        if (v >= 10000) return Math.round(v / 1000) + "k"
-        if (v >= 1000)  return Math.round(v).toString()
-        if (v < 1)      return v.toFixed(1)
+        if (v >= 1000) return Math.round(v).toString()
+        if (v < 1)     return v.toFixed(1)
         return Math.round(v).toString()
+    }
+
+    // Which boundary values get a label
+    readonly property var _activeTicks: {
+        if (!ticks || ticks.length === 0) return _bounds
+        return _bounds.filter(function(b) {
+            for (var i = 0; i < ticks.length; i++)
+                if (Math.abs(ticks[i] - b) < 1e-9) return true
+            return false
+        })
     }
 
     // Colored bin rectangles
@@ -60,32 +68,33 @@ Item {
         }
     }
 
-    // Boundary labels: one label per boundary, positioned at the bin edge
+    // Labels positioned by value within [_bounds.first, _bounds.last]
     Item {
         id: labels
         anchors { top: bar.bottom; topMargin: 2 }
         width: root.width
-        height: boundaryRepeater.itemAt(0) ? boundaryRepeater.itemAt(0).implicitHeight : 12
+        height: tickRepeater.itemAt(0) ? tickRepeater.itemAt(0).implicitHeight : 12
+
+        readonly property double _lo:    root._bounds.length ? root._bounds[0] : 0
+        readonly property double _hi:    root._bounds.length ? root._bounds[root._bounds.length - 1] : 1
+        readonly property double _range: (_hi > _lo) ? (_hi - _lo) : 1
 
         Repeater {
-            id: boundaryRepeater
-            model: root._bounds.length
+            id: tickRepeater
+            model: root._activeTicks.length
 
             Label {
-                x: Math.round((index / (root._bounds.length - 1)) * (labels.width - width))
+                readonly property double _v:    root._activeTicks[index]
+                readonly property double _frac: (_v - labels._lo) / labels._range
+                x: Math.round(Math.min(_frac * labels.width, labels.width - implicitWidth))
                 font.pixelSize: 9
                 opacity: 0.7
                 text: {
-                    var v = root._bounds[index]
-                    var s = root._fmt(v)
-                    // Append units only to the last label
-                    if (index === root._bounds.length - 1 && root.units)
-                        return s + " " + root.units
+                    var s = root._fmt(_v)
+                    if (index === root._activeTicks.length - 1 && root.units)
+                        return s + " " + root.units
                     return s
                 }
-                horizontalAlignment: index === 0                         ? Text.AlignLeft
-                                   : index === root._bounds.length - 1  ? Text.AlignRight
-                                   :                                       Text.AlignHCenter
             }
         }
     }

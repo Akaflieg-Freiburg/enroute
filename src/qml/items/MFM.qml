@@ -678,6 +678,7 @@ Item {
                                         width: parent.width
                                         colors: ForecastMapProvider.rainColors
                                         boundaries: ForecastMapProvider.rainBoundaries
+                                        ticks: [0.1, 0.5, 1, 5, 10, 30, 100, 200]
                                         units: ForecastMapProvider.rainUnits
                                     }
                                 }
@@ -696,6 +697,7 @@ Item {
                                         width: parent.width
                                         colors: ForecastMapProvider.cloudbaseColors
                                         boundaries: ForecastMapProvider.cloudbaseBoundaries
+                                        ticks: [0, 1500, 3000, 6000]
                                         units: ForecastMapProvider.cloudbaseUnits
                                     }
                                 }

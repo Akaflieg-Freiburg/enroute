@@ -390,17 +390,12 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactorData_WithPosition &factor)
 {
-    // Check if the traffic is one of the known factors.
+    // If the factor is already known, the object that holds it accepts the record
+    // (adopting the data if it is newer) and we are done.
     for(auto* target : std::as_const(m_trafficObjects))
     {
-        if (factor.data.ID.right(6) == target->ID().right(6))
+        if (target->updateFrom(factor))
         {
-            // Same factor seen again: only adopt the message if it is newer than
-            // the data we already hold for this factor.
-            if (target->positionInfo().timestamp() < factor.positionInfo.timestamp())
-            {
-                target->updateFrom(factor);
-            }
             return;
         }
     }

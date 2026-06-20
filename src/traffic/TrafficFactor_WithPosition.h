@@ -54,25 +54,48 @@ public:
     // Methods
     //
 
-    /*! \brief Update this object with newer data for the same traffic factor
+    /*! \brief Offer a data record to this object, for the same traffic factor
      *
-     *  This method is for the case where \a data describes the *same* traffic
-     *  factor as *this, observed again with newer data. It takes over the
-     *  positionInfo of \a data and updates the remaining properties through
-     *  TrafficFactor_Abstract::updateFrom(); see there for how the "animate"
-     *  property, callsign and type are handled.
+     *  This method checks whether \a data describes the *same* traffic factor as
+     *  *this, by comparing identifiers. The intended use is that a caller offers a
+     *  freshly received record to each of its traffic objects in turn until one
+     *  accepts it.
      *
-     *  @note This method does not itself check that \a data is newer than *this.
-     *  The caller is responsible for establishing that the two refer to the same
-     *  factor and that \a data carries the more recent data.
+     *  - If \a data refers to a *different* factor, it is declined and *this is
+     *    left unchanged.
+     *  - If \a data refers to the *same* factor, it is accepted. The record is then
+     *    adopted only if it is newer than the data already held here: unless the
+     *    timestamp of the positionInfo of \a data is strictly newer than the
+     *    timestamp of the positionInfo of *this, the record is considered stale or
+     *    out-of-order and *this is left unchanged (its lifetime is not restarted
+     *    either). A stale record is still *accepted* — it belongs to this object,
+     *    there is simply nothing newer to apply.
      *
-     *  @param data Data record whose contents are used to update *this
+     *  When the record is adopted, the positionInfo is taken over and the remaining
+     *  properties are updated through TrafficFactor_Abstract::updateFrom(); see
+     *  there for how the "animate" property, callsign and type are handled.
+     *
+     *  @param data Data record offered to *this
+     *
+     *  @returns True if \a data refers to the same factor and was accepted here,
+     *  false if it refers to a different factor and was declined
      */
-    void updateFrom(const TrafficFactorData_WithPosition& data)
+    [[nodiscard]] bool updateFrom(const TrafficFactorData_WithPosition& data)
     {
-        const QScopedPropertyUpdateGroup updateGroup;
-        setPositionInfo(data.positionInfo);
-        TrafficFactor_Abstract::updateFrom(data.data);
+        // Decline records that belong to a different factor.
+        if (ID().right(6) != data.data.ID.right(6))
+        {
+            return false;
+        }
+
+        // Same factor: adopt the record if it is newer than what we already hold.
+        if (positionInfo().timestamp() < data.positionInfo.timestamp())
+        {
+            const QScopedPropertyUpdateGroup updateGroup;
+            setPositionInfo(data.positionInfo);
+            TrafficFactor_Abstract::updateFrom(data.data);
+        }
+        return true;
     }
 
     /*! \brief Replace this object by a different traffic factor

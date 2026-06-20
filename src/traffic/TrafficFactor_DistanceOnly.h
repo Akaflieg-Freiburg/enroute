@@ -82,7 +82,7 @@ public:
      *  This property contains the coordinate of the center of the cylinder
      *  where the traffic is most likely located.
      */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged BINDABLE bindableCoordinate)
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate BINDABLE bindableCoordinate)
 
     /*! \brief Getter method for property with the same name
      *
@@ -103,18 +103,13 @@ public:
     void setCoordinate(const QGeoCoordinate& newCoordinate) {m_coordinate = newCoordinate;}
 #warning figure out where hDist is actually set!
 
-signals:
-    /*! \brief Notifier signal */
-    void coordinateChanged();
-
-
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_DistanceOnly)
 
     //
     // Property values
     //
-    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_DistanceOnly, QGeoCoordinate, m_coordinate, &Traffic::TrafficFactor_DistanceOnly::coordinateChanged);
+    QProperty<QGeoCoordinate> m_coordinate;
 };
 
 } // namespace Traffic

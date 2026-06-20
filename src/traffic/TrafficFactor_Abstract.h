@@ -151,7 +151,7 @@ public:
      *  - 0 = no alarm
      *  - 1 = alarm
      */
-    Q_PROPERTY(int alarmLevel READ alarmLevel WRITE setAlarmLevel NOTIFY alarmLevelChanged BINDABLE bindableAlarmLevel)
+    Q_PROPERTY(int alarmLevel READ alarmLevel WRITE setAlarmLevel BINDABLE bindableAlarmLevel)
 
     /*! \brief Indicates if changes in properties should be animated in the GUI
      *
@@ -160,13 +160,13 @@ public:
      *  the position change of an aircraft.  It is typically set to "false" before data of a new
      *  aircraft set.
      */
-    Q_PROPERTY(bool animate READ animate NOTIFY animateChanged BINDABLE bindableAnimate)
+    Q_PROPERTY(bool animate READ animate BINDABLE bindableAnimate)
 
     /*! \brief Call sign
      *
      *  If known, this property holds the call sign of the traffic.  Otherwise, it contains an empty string
      */
-    Q_PROPERTY(QString callSign READ callSign WRITE setCallSign NOTIFY callSignChanged BINDABLE bindableCallSign)
+    Q_PROPERTY(QString callSign READ callSign WRITE setCallSign BINDABLE bindableCallSign)
 
     /*! \brief Suggested color for GUI representation of the traffic
      *
@@ -176,7 +176,7 @@ public:
      *  - alarmLevel == 1: yellow
      *  - alarmLevel >= 2: red
      */
-    Q_PROPERTY(QString color READ color NOTIFY colorChanged BINDABLE bindableColor)
+    Q_PROPERTY(QString color READ color BINDABLE bindableColor)
 
     /*! \brief Description of the traffic, for use in GUI
      *
@@ -184,7 +184,7 @@ public:
      *  traffic. This is a rich-text string of the form "Glider<br>+15 0m" or
      *  "Airship<br>Position unknown<br>-45 ft".
      */
-    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged BINDABLE bindableDescription)
+    Q_PROPERTY(QString description READ description BINDABLE bindableDescription)
 
     /*! \brief Horizontal distance from own position to the traffic, at the time of report
      *
@@ -192,7 +192,7 @@ public:
      *  position to the traffic, at the time of report.  Otherwise, it contains
      *  an invalid distance.
      */
-    Q_PROPERTY(Units::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged BINDABLE bindableHDist)
+    Q_PROPERTY(Units::Distance hDist READ hDist WRITE setHDist BINDABLE bindableHDist)
 
     /*! \brief Identifier string of the traffic
      *
@@ -200,7 +200,7 @@ public:
      *  the FLARM device that reported the traffic. This can be the FLARM ID, or
      *  an empty string if no meaningful ID can be assigned.
      */
-    Q_PROPERTY(QString ID READ ID WRITE setID NOTIFY IDChanged BINDABLE bindableID)
+    Q_PROPERTY(QString ID READ ID WRITE setID BINDABLE bindableID)
 
     /*! \brief Indicates relevant traffic
      *
@@ -216,7 +216,7 @@ public:
     Q_PROPERTY(QString relevantString READ relevantString BINDABLE bindableRelevantString)
 
     /*! \brief Type of aircraft, as reported by the traffic receiver */
-    Q_PROPERTY(Type type READ type WRITE setType NOTIFY typeChanged BINDABLE bindableType)
+    Q_PROPERTY(Type type READ type WRITE setType BINDABLE bindableType)
 
     /*! \brief Type of aircraft, as reported by the traffic receiver
      *
@@ -229,7 +229,7 @@ public:
      *  A traffic object is considered valid if the data is meaningful and if the
      *  lifetime is not expired.  Only valid traffic objects should be shown in the GUI.
      */
-    Q_PROPERTY(bool valid READ valid NOTIFY validChanged BINDABLE bindableValid)
+    Q_PROPERTY(bool valid READ valid BINDABLE bindableValid)
 
     /*! \brief Vertical distance from own position to the traffic, at the time of report
      *
@@ -237,7 +237,7 @@ public:
      *  position to the traffic, at the time of report.  Otherwise, it contains
      *  NaN.
      */
-    Q_PROPERTY(Units::Distance vDist READ vDist WRITE setVDist NOTIFY vDistChanged BINDABLE bindableVDist)
+    Q_PROPERTY(Units::Distance vDist READ vDist WRITE setVDist BINDABLE bindableVDist)
 
 
     //
@@ -471,42 +471,10 @@ public:
      */
     static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
 
-signals:
-    /*! \brief Notifier signal */
-    void alarmLevelChanged();
-
-    /*! \brief Notifier signal */
-    void animateChanged();
-
-    /*! \brief Notifier signal */
-    void callSignChanged();
-
-    /*! \brief Notifier signal */
-    void colorChanged();
-
-    /*! \brief Notifier signal */
-    void descriptionChanged();
-
-    /*! \brief Notifier signal */
-    void hDistChanged();
-
-    /*! \brief Notifier signal */
-    void IDChanged();
-
-    /*! \brief Notifier signal */
-    void typeChanged();
-
-    /*! \brief Notifier signal */
-    void vDistChanged();
-
-    /*! \brief Notifier signal */
-    void validChanged();
-
-
 protected:
-    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, bool, m_valid, false, &Traffic::TrafficFactor_Abstract::validChanged);
+    QProperty<bool> m_valid {false};
 
-    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, QString, m_description, &Traffic::TrafficFactor_Abstract::descriptionChanged);
+    QProperty<QString> m_description;
 
     // Indicates that the instance is valid as an abstract traffic factor
     QProperty<bool> m_validAbstractTrafficFactor;
@@ -559,17 +527,17 @@ private:
     //
     // Property values
     //
-    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, int, m_alarmLevel, 0, &Traffic::TrafficFactor_Abstract::alarmLevelChanged);
-    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, bool, m_animate, false, &Traffic::TrafficFactor_Abstract::animateChanged);
-    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, QString, m_callSign, QString(), &Traffic::TrafficFactor_Abstract::callSignChanged);
-    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, QString, m_color, QStringLiteral("red"), &Traffic::TrafficFactor_Abstract::colorChanged);
-    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_hDist, &Traffic::TrafficFactor_Abstract::hDistChanged);
-    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, QString, m_ID, &Traffic::TrafficFactor_Abstract::IDChanged);
-    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, TrafficFactor_Abstract::Type, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);
+    QProperty<int> m_alarmLevel {0};
+    QProperty<bool> m_animate {false};
+    QProperty<QString> m_callSign;
+    QProperty<QString> m_color {QStringLiteral("red")};
+    QProperty<Units::Distance> m_hDist;
+    QProperty<QString> m_ID;
+    QProperty<Type> m_type {unknown};
     QProperty<bool> m_relevant {false};
     QProperty<QString> m_relevantString;
     QProperty<QString> m_typeString;
-    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_vDist, &Traffic::TrafficFactor_Abstract::vDistChanged);
+    QProperty<Units::Distance> m_vDist;
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for longer than timeout.

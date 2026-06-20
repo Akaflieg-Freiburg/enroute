@@ -168,7 +168,7 @@ public:
      *  Depending on alarm level, type and movement of the traffic opponent, this
      *  property suggests an icon for GUI representation of the traffic.
      */
-    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged BINDABLE bindableIcon)
+    Q_PROPERTY(QString icon READ icon BINDABLE bindableIcon)
 
     /*! \brief Getter method for property with the same name
      *
@@ -227,9 +227,6 @@ public:
 
 signals:
     /*! \brief Notifier signal */
-    void iconChanged();
-
-    /*! \brief Notifier signal */
     void positionInfoChanged();
 
 public slots:
@@ -248,7 +245,7 @@ private:
     QProperty<QGeoCoordinate> m_extrapolatedCoordinate;
     QProperty<Units::Angle> m_extrapolatedTrueTrack;
     QProperty<Units::Distance> m_uncertaintyRadius;
-    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, QString, m_icon, &Traffic::TrafficFactor_WithPosition::iconChanged);
+    QProperty<QString> m_icon;
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_WithPosition, Positioning::PositionInfo, m_positionInfo, &Traffic::TrafficFactor_WithPosition::positionInfoChanged);
 };
 

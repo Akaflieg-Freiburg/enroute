@@ -86,13 +86,12 @@ Weather::WindFieldProvider::WindFieldProvider(QObject* parent)
     connect(ForecastMapProvider::instance(), &ForecastMapProvider::serverUrlChanged,
             this, &WindFieldProvider::refresh);
 
-    // Refresh after every successful ForecastMapProvider refresh so wind.json
-    // stays in sync and is fetched even when our own m_nam had timing issues.
-    connect(ForecastMapProvider::instance(), &ForecastMapProvider::statusChanged,
-            this, [this]() {
-                if (ForecastMapProvider::instance()->status() == ForecastMapProvider::Status::Idle)
-                    refresh();
-            });
+    // Refresh after ForecastMapProvider has successfully parsed its index —
+    // metadataChanged fires only after a good server response, so wind.json
+    // is guaranteed to exist by then. Using statusChanged→Idle was racy:
+    // it fired before the server finished writing wind.json.
+    connect(ForecastMapProvider::instance(), &ForecastMapProvider::metadataChanged,
+            this, &WindFieldProvider::refresh);
 
     // ForecastMapProvider loads serverUrl from QSettings silently (no signal).
     // Call refresh() now so we fetch on first startup when cache is empty.

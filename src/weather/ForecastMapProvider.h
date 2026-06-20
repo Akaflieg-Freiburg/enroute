@@ -21,6 +21,7 @@
 
 #include <QDateTime>
 #include <QJsonObject>
+#include <QList>
 #include <QMap>
 #include <QNetworkAccessManager>
 #include <QObject>
@@ -76,21 +77,17 @@ public:
 
     /*! \brief Units string for the rain layer, e.g. "mm/h" */
     Q_PROPERTY(QString rainUnits READ rainUnits NOTIFY metadataChanged)
-    /*! \brief Color stops for the rain legend, as "#RRGGBBAA" strings, low→high */
+    /*! \brief Color bins for the rain legend, one per boundary interval, low→high */
     Q_PROPERTY(QStringList rainColors READ rainColors NOTIFY metadataChanged)
-    /*! \brief vmin for rain color scale */
-    Q_PROPERTY(double rainVmin READ rainVmin NOTIFY metadataChanged)
-    /*! \brief vmax for rain color scale */
-    Q_PROPERTY(double rainVmax READ rainVmax NOTIFY metadataChanged)
+    /*! \brief Bin boundary values for rain (N+1 edges for N color bins), in rainUnits */
+    Q_PROPERTY(QList<double> rainBoundaries READ rainBoundaries NOTIFY metadataChanged)
 
-    /*! \brief Units string for the cloudbase layer, e.g. "m" */
+    /*! \brief Units string for the cloudbase layer, e.g. "ft" */
     Q_PROPERTY(QString cloudbaseUnits READ cloudbaseUnits NOTIFY metadataChanged)
-    /*! \brief Color stops for the cloudbase legend */
+    /*! \brief Color bins for the cloudbase legend, one per boundary interval */
     Q_PROPERTY(QStringList cloudbaseColors READ cloudbaseColors NOTIFY metadataChanged)
-    /*! \brief vmin for cloudbase color scale */
-    Q_PROPERTY(double cloudbaseVmin READ cloudbaseVmin NOTIFY metadataChanged)
-    /*! \brief vmax for cloudbase color scale */
-    Q_PROPERTY(double cloudbaseVmax READ cloudbaseVmax NOTIFY metadataChanged)
+    /*! \brief Bin boundary values for cloudbase (N+1 edges for N color bins), in cloudbaseUnits */
+    Q_PROPERTY(QList<double> cloudbaseBoundaries READ cloudbaseBoundaries NOTIFY metadataChanged)
 
     //
     // Sync / connectivity properties
@@ -123,14 +120,12 @@ public:
     [[nodiscard]] QString lastRefreshLabel() const;
 
     [[nodiscard]] QString referenceTimeLabel() const;
-    [[nodiscard]] QString rainUnits() const      { return m_rainUnits; }
-    [[nodiscard]] QStringList rainColors() const { return m_rainColors; }
-    [[nodiscard]] double rainVmin() const        { return m_rainVmin; }
-    [[nodiscard]] double rainVmax() const        { return m_rainVmax; }
-    [[nodiscard]] QString cloudbaseUnits() const      { return m_cloudbaseUnits; }
-    [[nodiscard]] QStringList cloudbaseColors() const { return m_cloudbaseColors; }
-    [[nodiscard]] double cloudbaseVmin() const        { return m_cloudbaseVmin; }
-    [[nodiscard]] double cloudbaseVmax() const        { return m_cloudbaseVmax; }
+    [[nodiscard]] QString rainUnits() const            { return m_rainUnits; }
+    [[nodiscard]] QStringList rainColors() const       { return m_rainColors; }
+    [[nodiscard]] QList<double> rainBoundaries() const { return m_rainBoundaries; }
+    [[nodiscard]] QString cloudbaseUnits() const            { return m_cloudbaseUnits; }
+    [[nodiscard]] QStringList cloudbaseColors() const       { return m_cloudbaseColors; }
+    [[nodiscard]] QList<double> cloudbaseBoundaries() const { return m_cloudbaseBoundaries; }
 
 
     //
@@ -188,14 +183,12 @@ private:
 
     // Layer metadata from index.json
     QString     m_referenceTime;
-    QString     m_rainUnits       {QStringLiteral("mm/h")};
+    QString     m_rainUnits        {QStringLiteral("mm/h")};
     QStringList m_rainColors;
-    double      m_rainVmin        {0.1};
-    double      m_rainVmax        {10.0};
-    QString     m_cloudbaseUnits  {QStringLiteral("m")};
+    QList<double> m_rainBoundaries {0, 0.1, 0.2, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 200};
+    QString     m_cloudbaseUnits   {QStringLiteral("ft")};
     QStringList m_cloudbaseColors;
-    double      m_cloudbaseVmin   {0.0};
-    double      m_cloudbaseVmax   {4000.0};
+    QList<double> m_cloudbaseBoundaries {0, 1500, 3000, 6000, 20000};
 };
 
 } // namespace Weather

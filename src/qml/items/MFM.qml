@@ -677,8 +677,7 @@ Item {
                                     contentItem: ColorScaleLegend {
                                         width: parent.width
                                         colors: ForecastMapProvider.rainColors
-                                        vmin: ForecastMapProvider.rainVmin
-                                        vmax: ForecastMapProvider.rainVmax
+                                        boundaries: ForecastMapProvider.rainBoundaries
                                         units: ForecastMapProvider.rainUnits
                                     }
                                 }
@@ -696,9 +695,8 @@ Item {
                                     contentItem: ColorScaleLegend {
                                         width: parent.width
                                         colors: ForecastMapProvider.cloudbaseColors
-                                        vmin: ForecastMapProvider.cloudbaseVmin
-                                        vmax: ForecastMapProvider.cloudbaseVmax
-                                        labelFunc: function(v) { return weatherLayerButton.cbLabel(v) }
+                                        boundaries: ForecastMapProvider.cloudbaseBoundaries
+                                        units: ForecastMapProvider.cloudbaseUnits
                                     }
                                 }
 

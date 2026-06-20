@@ -50,8 +50,13 @@ Weather::ForecastMapProvider::ForecastMapProvider(QObject* parent)
     : QObject(parent)
 {
     // Default colors match config.py LAYER_META (Qt #AARRGGBB format)
-    m_rainColors      = {u"#9900B2E6"_s, u"#990000CC"_s, u"#9900CC00"_s, u"#9900CCCC"_s};
-    m_cloudbaseColors = {u"#40404040"_s, u"#40808080"_s, u"#40BFBFBF"_s, u"#00FFFFFF"_s};
+    m_rainColors      = {u"#00FFFFFF"_s, u"#99B2E6FF"_s, u"#9980C8FF"_s, u"#994496FF"_s,
+                         u"#990000E6"_s, u"#990000B2"_s, u"#9900CC44"_s, u"#9900CC00"_s,
+                         u"#9966CC00"_s, u"#99AACC00"_s, u"#99CCCC00"_s, u"#99CCAA00"_s,
+                         u"#99CC7700"_s, u"#99CC4400"_s, u"#99CC1100"_s, u"#99CC0000"_s,
+                         u"#99AA0000"_s, u"#99880000"_s, u"#99660033"_s, u"#99440066"_s,
+                         u"#99220088"_s, u"#99AA0099"_s, u"#99CC00CC"_s};
+    m_cloudbaseColors = {u"#CC303030"_s, u"#994A4A4A"_s, u"#66787878"_s, u"#00FFFFFF"_s};
 
     QSettings s;
     m_serverUrl       = s.value(u"ForecastMapProvider/serverUrl"_s).toString();
@@ -265,20 +270,27 @@ void Weather::ForecastMapProvider::parseMetadata(const QJsonObject& root)
         return out;
     };
 
+    auto readBoundaries = [](const QJsonObject& layer) {
+        QList<double> out;
+        for (const auto& v : layer[u"boundaries"_s].toArray())
+            out << v.toDouble();
+        return out;
+    };
+
     const auto rain = layers[u"rain"_s].toObject();
     if (!rain.isEmpty()) {
-        m_rainUnits  = rain[u"units"_s].toString(m_rainUnits);
-        m_rainVmin   = rain[u"vmin"_s].toDouble(m_rainVmin);
-        m_rainVmax   = rain[u"vmax"_s].toDouble(m_rainVmax);
-        m_rainColors = readColors(rain);
+        m_rainUnits       = rain[u"units"_s].toString(m_rainUnits);
+        m_rainColors      = readColors(rain);
+        const auto b      = readBoundaries(rain);
+        if (!b.isEmpty()) m_rainBoundaries = b;
     }
 
     const auto cb = layers[u"cloudbase"_s].toObject();
     if (!cb.isEmpty()) {
-        m_cloudbaseUnits  = cb[u"units"_s].toString(m_cloudbaseUnits);
-        m_cloudbaseVmin   = cb[u"vmin"_s].toDouble(m_cloudbaseVmin);
-        m_cloudbaseVmax   = cb[u"vmax"_s].toDouble(m_cloudbaseVmax);
-        m_cloudbaseColors = readColors(cb);
+        m_cloudbaseUnits   = cb[u"units"_s].toString(m_cloudbaseUnits);
+        m_cloudbaseColors  = readColors(cb);
+        const auto b       = readBoundaries(cb);
+        if (!b.isEmpty()) m_cloudbaseBoundaries = b;
     }
 
     emit metadataChanged();

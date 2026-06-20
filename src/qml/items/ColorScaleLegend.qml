@@ -1,86 +1,92 @@
-// Color scale legend bar with labeled tick marks at each color stop.
-// Expects 4 colors at positions 0, 0.33, 0.66, 1.0 matching the server colormaps.
-
+// Stepped color scale legend: one colored rectangle per bin, boundary labels below.
 import QtQuick
 import QtQuick.Controls
 
 Item {
     id: root
 
-    property var    colors: []
-    property double vmin: 0
-    property double vmax: 1
-    property string units: ""
-    // Optional custom label formatter: function(value, isLast) → string
-    // When set, overrides the default fmt() + units logic
-    property var    labelFunc: null
+    // N colors + N+1 boundaries define N bins.
+    // When boundaries is empty, falls back to evenly-spaced bins across [vmin, vmax].
+    property var    colors:     []
+    property var    boundaries: []   // preferred: actual bin-edge values
+    property double vmin:       0    // fallback when no boundaries
+    property double vmax:       1    // fallback when no boundaries
+    property string units:      ""
+    // Optional label formatter: function(value) → string
+    property var    labelFunc:  null
 
-    implicitHeight: bar.height + ticks.height + 2
+    implicitHeight: bar.height + labels.height + 2
     implicitWidth:  200
 
-    // Gradient bar
-    Rectangle {
+    // Resolved boundaries (always N+1 entries for N color bins)
+    readonly property var _bounds: {
+        if (boundaries && boundaries.length >= 2)
+            return boundaries
+        // Fallback: evenly spaced
+        var n = colors.length || 4
+        var step = (vmax - vmin) / n
+        var b = []
+        for (var i = 0; i <= n; i++) b.push(vmin + i * step)
+        return b
+    }
+
+    readonly property int _nBins: Math.max(0, _bounds.length - 1)
+
+    function _fmt(v) {
+        if (root.labelFunc) return root.labelFunc(v)
+        if (v >= 10000) return Math.round(v / 1000) + "k"
+        if (v >= 1000)  return Math.round(v).toString()
+        if (v < 1)      return v.toFixed(1)
+        return Math.round(v).toString()
+    }
+
+    // Colored bin rectangles
+    Row {
         id: bar
         width: root.width
         height: 10
-        radius: 2
-        border.color: Qt.rgba(0, 0, 0, 0.15)
-        border.width: 1
+        spacing: 0
 
-        gradient: Gradient {
-            orientation: Gradient.Horizontal
-            GradientStop { position: 0.0;  color: root.colors[0] ?? "transparent" }
-            GradientStop { position: 0.33; color: root.colors[1] ?? "transparent" }
-            GradientStop { position: 0.66; color: root.colors[2] ?? "transparent" }
-            GradientStop { position: 1.0;  color: root.colors[3] ?? "transparent" }
+        Repeater {
+            model: root._nBins
+            Rectangle {
+                width:  index === root._nBins - 1
+                            ? bar.width - Math.floor(bar.width / root._nBins) * (root._nBins - 1)
+                            : Math.floor(bar.width / root._nBins)
+                height: bar.height
+                color:  root.colors[index] ?? "transparent"
+                radius: index === 0 ? 2 : (index === root._nBins - 1 ? 2 : 0)
+            }
         }
     }
 
-    // Tick labels: vmin | stop1 | stop2 | vmax [units]
-    Row {
-        id: ticks
-        width: root.width
+    // Boundary labels: one label per boundary, positioned at the bin edge
+    Item {
+        id: labels
         anchors { top: bar.bottom; topMargin: 2 }
+        width: root.width
+        height: boundaryRepeater.itemAt(0) ? boundaryRepeater.itemAt(0).implicitHeight : 12
 
-        readonly property double range: root.vmax - root.vmin
-        readonly property double v1: root.vmin + range * 0.33
-        readonly property double v2: root.vmin + range * 0.66
+        Repeater {
+            id: boundaryRepeater
+            model: root._bounds.length
 
-        function fmt(v, isLast) {
-            if (root.labelFunc) return root.labelFunc(v)
-            var s = v >= 1000 ? Math.round(v).toString()
-                  : v < 1    ? v.toFixed(1)
-                  :             Math.round(v).toString()
-            return isLast && root.units ? s + " " + root.units : s
-        }
-
-        Label {
-            width: parent.width * 0.25
-            text: ticks.fmt(root.vmin, false)
-            font.pixelSize: 9
-            horizontalAlignment: Text.AlignLeft
-            opacity: 0.7
-        }
-        Label {
-            width: parent.width * 0.25
-            text: ticks.fmt(ticks.v1, false)
-            font.pixelSize: 9
-            horizontalAlignment: Text.AlignHCenter
-            opacity: 0.7
-        }
-        Label {
-            width: parent.width * 0.25
-            text: ticks.fmt(ticks.v2, false)
-            font.pixelSize: 9
-            horizontalAlignment: Text.AlignHCenter
-            opacity: 0.7
-        }
-        Label {
-            width: parent.width * 0.25
-            text: ticks.fmt(root.vmax, true)
-            font.pixelSize: 9
-            horizontalAlignment: Text.AlignRight
-            opacity: 0.7
+            Label {
+                x: Math.round((index / (root._bounds.length - 1)) * (labels.width - width))
+                font.pixelSize: 9
+                opacity: 0.7
+                text: {
+                    var v = root._bounds[index]
+                    var s = root._fmt(v)
+                    // Append units only to the last label
+                    if (index === root._bounds.length - 1 && root.units)
+                        return s + " " + root.units
+                    return s
+                }
+                horizontalAlignment: index === 0                         ? Text.AlignLeft
+                                   : index === root._bounds.length - 1  ? Text.AlignRight
+                                   :                                       Text.AlignHCenter
+            }
         }
     }
 }

@@ -7,7 +7,9 @@ QML module URI: akaflieg_freiburg.enroute
 # The system Qt under /usr/lib64 is incomplete; build against the Qt online-installer
 # build under ~/Software/buildsystems/Qt. Auto-detect the newest version (it changes
 # over time) and pass it as the prefix — do NOT hardcode a version number.
-QTDIR=$(ls -d ~/Software/buildsystems/Qt/6.*/gcc_64 | sort -V | tail -1)
+# Development happens on both Linux (kit dir "gcc_64") and macOS (kit dir "macos"),
+# so detect whichever desktop kit is present — do NOT hardcode the platform either.
+QTDIR=$(find ~/Software/buildsystems/Qt -maxdepth 2 -type d \( -name gcc_64 -o -name macos \) | sort -V | tail -1)
 cmake -B build/claude -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_PREFIX_PATH="$QTDIR"
 cmake --build build/claude
 cmake --build build/claude --target all_qmllint   # lint all QML (resolves project modules)

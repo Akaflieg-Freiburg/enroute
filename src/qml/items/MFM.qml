@@ -123,6 +123,20 @@ Item {
                         property real startBearing: 0
                         property bool aboveRotationThreshold: false
                         property real startZoomLevel
+                        property point lastCentroidPos
+
+                        // Re-anchor the map so that the geo-coordinate captured at the start of the
+                        // gesture stays under the finger centroid. When a finger is lifted at the end of
+                        // a pinch, the centroid jumps from the midpoint of the two fingers to the single
+                        // remaining finger; re-anchoring to that jumped position would lurch the map
+                        // center by ~half the finger distance, so skip such large single-step jumps.
+                        function anchorToCentroid() {
+                            var c = pinch.centroid.position
+                            if (Math.hypot(c.x - pinch.lastCentroidPos.x, c.y - pinch.lastCentroidPos.y) < 50) {
+                                flightMap.alignCoordinateToPoint(pinch.startCentroid, c)
+                            }
+                            pinch.lastCentroidPos = c
+                        }
 
                         onActiveChanged: {
                             if (active) {
@@ -130,6 +144,7 @@ Item {
                                 // centered, so it deliberately does NOT switch off "Follow GPS". Only an
                                 // actual pan (the DragHandler below) does that.
                                 startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
+                                lastCentroidPos = pinch.centroid.position
                                 startZoomLevel = flightMap.zoomLevel
                                 rawBearing = flightMap.bearing
                                 startBearing = flightMap.bearing
@@ -156,7 +171,7 @@ Item {
                             // following the aircraft, leave the centering to the Follow-GPS binding, so
                             // the zoom happens around the aircraft and following is preserved.
                             if (!Global.followGPS) {
-                                flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                                pinch.anchorToCentroid()
                             }
                             zoomLevelBehavior.enabled = true
                         }
@@ -170,7 +185,7 @@ Item {
                                 flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
                                 // As in onScaleChanged: keep the aircraft centered while following.
                                 if (!Global.followGPS) {
-                                    flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                                    pinch.anchorToCentroid()
                                 }
                                 return
                             }
@@ -223,18 +238,27 @@ Item {
                         enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
 
                         onActiveTranslationChanged: function(delta) {
-                            flightMap.pan(-delta.x, -delta.y)
-                        }
-
-                        onActiveChanged: {
-                            if (active)
+                            // Switching "Follow GPS" off is deliberately NOT done in onActiveChanged:
+                            // the first finger of a two-finger pinch can be mistaken for a one-finger
+                            // pan for a few milliseconds before the second finger is registered. Only a
+                            // genuine pan – one that travels a noticeable distance while no pinch is in
+                            // progress – switches "Follow GPS" off.
+                            if (Global.followGPS)
                             {
+                                // Still deciding whether this is a genuine one-finger pan. Do NOT pan
+                                // yet: while "Follow GPS" is on, the center binding snaps the map back to
+                                // the aircraft every frame, so panning here would only cause flicker.
+                                if (pinch.active)
+                                    return
+                                if (Math.hypot(drag.activeTranslation.x, drag.activeTranslation.y) < 20)
+                                    return
                                 Global.followGPS = false
                                 if (Global.mapBearingPolicyRect === MFM.TTUp)
                                 {
                                     Global.mapBearingPolicy = MFM.UserDefinedBearingUp
                                 }
                             }
+                            flightMap.pan(-delta.x, -delta.y)
                         }
                     }
 

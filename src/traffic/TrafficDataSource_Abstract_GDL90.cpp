@@ -300,15 +300,17 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         quint32 const ddTmp = (dd0 << 4) + (dd1 >> 4);
         if (ddTmp != 0xFFF)
         {
-            m_pressureAltitude = Units::Distance::fromFT(25.0*ddTmp - 1000.0);
-            m_pressureAltitudeTimer.start();
+            // setPressureAltitude() stores the value and (re)starts the timer that
+            // invalidates it once it goes stale.
+            setPressureAltitude(Units::Distance::fromFT(25.0*ddTmp - 1000.0));
         }
         else
         {
-            m_pressureAltitude = Units::Distance::fromM( qQNaN() );
+            // No pressure altitude in this report: invalidate it now and stop the
+            // stale-timer.
             m_pressureAltitudeTimer.stop();
+            m_pressureAltitude = Units::Distance();
         }
-        setPressureAltitude(m_pressureAltitude);
 
         // Update position information and continue
         setPositionInfo( Positioning::PositionInfo(pInfo, sourceName()) );

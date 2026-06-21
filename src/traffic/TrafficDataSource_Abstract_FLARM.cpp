@@ -348,7 +348,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGxRMC(const QString
     {
         TT = qQNaN();
     }
-    if (TT != qQNaN())
+    if (qIsFinite(TT))
     {
         pInfo.setAttribute(QGeoPositionInfo::Direction, TT);
     }
@@ -859,34 +859,19 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePXCV(const QStringL
     // 12. Y.YY -- Acceleration in Y-Axis
     // 13. Z.ZZ -- Acceleration in Z-Axis
 
-    qWarning() << "PXCV with #args=" << arguments.length();
     if (arguments.length() < 14)
     {
         return;
     }
 
+    // Of the PXCV fields, only the static pressure (field 7) is used here, to
+    // derive the barometric altitude.
     bool ok = false;
-
-    const double vSpeed_ms = arguments[0].toDouble();
-    const double OAT_degC = arguments[5].toDouble();
     double staticPressure_hPa = arguments[7].toDouble(&ok);
     if (!ok)
     {
         staticPressure_hPa = qQNaN();
     }
-    const double dynamicPressure_Pa = arguments[8].toDouble();
-    const double rollAngle_deg = arguments[9].toDouble();
-    const double pitchAgle_deg = arguments[10].toDouble();
-    const double accel_x = arguments[11].toDouble();
-    const double accel_y = arguments[12].toDouble();
-    const double accel_z = arguments[13].toDouble();
-    qWarning() << "vSpeed (total energy compensated?)" << vSpeed_ms << "m/s";
-    qWarning() << "OAT" << OAT_degC << "°C";
-    qWarning() << "static pressure" << staticPressure_hPa << "hPa";
-    qWarning() << "dynamic pressure" << dynamicPressure_Pa << "Pa";
-    qWarning() << "roll angle" << rollAngle_deg << "°";
-    qWarning() << "pitch angle" << pitchAgle_deg << "°";
-    qWarning() << "accel x / y / z" << accel_x << accel_y << accel_z;
 
     auto barometricAlt = Navigation::Atmosphere::height(Units::Pressure::fromHPa(staticPressure_hPa));
     if (barometricAlt.isFinite())

@@ -158,8 +158,10 @@ void Traffic::TrafficFactor_Abstract::replaceBy(const TrafficFactorData& data)
 
 bool Traffic::TrafficFactor_Abstract::isRelevant(Units::Distance hDist, Units::Distance vDist)
 {
+/*
 #warning For debug purposes, show all aircraft
     return true;
+*/
     if (vDist.isFinite() && (vDist > maxVerticalDistance))
     {
         return false;

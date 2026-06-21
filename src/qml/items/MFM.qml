@@ -240,25 +240,51 @@ Item {
                         onActiveTranslationChanged: function(delta) {
                             // Switching "Follow GPS" off is deliberately NOT done in onActiveChanged:
                             // the first finger of a two-finger pinch can be mistaken for a one-finger
-                            // pan for a few milliseconds before the second finger is registered. Only a
-                            // genuine pan – one that travels a noticeable distance while no pinch is in
-                            // progress – switches "Follow GPS" off.
+                            // pan for a few milliseconds before the second finger is registered.
                             if (Global.followGPS)
                             {
                                 // Still deciding whether this is a genuine one-finger pan. Do NOT pan
                                 // yet: while "Follow GPS" is on, the center binding snaps the map back to
-                                // the aircraft every frame, so panning here would only cause flicker.
+                                // the aircraft every frame, so panning here would only cause flicker. And
+                                // do NOT switch "Follow GPS" off yet either: a pinch may still be forming.
+                                // Once the finger has travelled a bit, arm a short grace timer; it only
+                                // commits to a pan if no pinch has appeared by the time it fires (see
+                                // panCommitTimer). A pinch becoming active cancels it.
                                 if (pinch.active)
-                                    return
-                                if (Math.hypot(drag.activeTranslation.x, drag.activeTranslation.y) < 20)
-                                    return
-                                Global.followGPS = false
-                                if (Global.mapBearingPolicyRect === MFM.TTUp)
                                 {
-                                    Global.mapBearingPolicy = MFM.UserDefinedBearingUp
+                                    panCommitTimer.stop()
+                                    return
                                 }
+                                if ((Math.hypot(drag.activeTranslation.x, drag.activeTranslation.y) >= 20) && !panCommitTimer.running)
+                                    panCommitTimer.start()
+                                return
                             }
                             flightMap.pan(-delta.x, -delta.y)
+                        }
+
+                        onActiveChanged: {
+                            if (!active)
+                                panCommitTimer.stop()
+                        }
+                    }
+
+                    Timer {
+                        id: panCommitTimer
+
+                        // Grace period that lets a forming pinch (its second finger) register before a
+                        // one-finger drag is allowed to switch "Follow GPS" off. Long enough to cover the
+                        // gap between the two fingers touching down, short enough not to feel laggy.
+                        interval: 100
+
+                        onTriggered: {
+                            // Only commit if this is still a lone finger panning while following.
+                            if (!drag.active || pinch.active || !Global.followGPS)
+                                return
+                            Global.followGPS = false
+                            if (Global.mapBearingPolicyRect === MFM.TTUp)
+                            {
+                                Global.mapBearingPolicy = MFM.UserDefinedBearingUp
+                            }
                         }
                     }
 

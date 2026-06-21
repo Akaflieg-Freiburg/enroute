@@ -133,10 +133,12 @@ private:
     QPointer<QUdpSocket> m_socket;
     quint16 m_port;
 
-    // We use this vector to store the last 512 datatgram hashes in a circular
+    // We use this vector to store the last 512 datagram hashes in a circular
     // array. This is used to sort out doubly sent datagrams. The nextHashIndex
-    // points to the next vector entry that will be re-written.
-    QVector<size_t> receivedDatagramHashes {512, 0};
+    // points to the next vector entry that will be re-written. Note: use
+    // parenthesis-initialization here — brace-init would select the
+    // std::initializer_list constructor and create a two-element {512, 0} vector.
+    QVector<size_t> receivedDatagramHashes = QVector<size_t>(512, 0);
     qsizetype nextHashIndex {0};
 
     // GPS altitude of owncraft

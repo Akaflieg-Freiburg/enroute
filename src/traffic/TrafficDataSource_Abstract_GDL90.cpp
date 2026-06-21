@@ -320,6 +320,11 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     // Ownship geometric altitude
     if (messageID == 11)
     {
+        if (message.length() < 4)
+        {
+            return;
+        }
+
         // Find geometric alt and apply geoid correction
         auto dd0 = static_cast<quint8>(message.at(0));
         auto dd1 = static_cast<quint8>(message.at(1));
@@ -358,7 +363,14 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         auto id1 = static_cast<quint8>(message.at(1));
         auto id2 = static_cast<quint8>(message.at(2));
         auto id3 = static_cast<quint8>(message.at(3));
-        auto id = QString::number(id0, 16) + QString::number(id1, 16) + QString::number(id2, 16) + QString::number(id3, 16);
+        // Build a fixed-width hex ID (address-type nibble + three address bytes),
+        // zero-padding each byte to two digits so that low values are not
+        // collapsed (e.g. 0x0A → "0a", not "a"), which would otherwise produce
+        // ambiguous, colliding IDs.
+        auto id = QString::number(id0, 16)
+                + QString::number(id1, 16).rightJustified(2, QLatin1Char('0'))
+                + QString::number(id2, 16).rightJustified(2, QLatin1Char('0'))
+                + QString::number(id3, 16).rightJustified(2, QLatin1Char('0'));
 
         // Alert
         auto s0 = static_cast<quint8>(message.at(0)) >> 4;

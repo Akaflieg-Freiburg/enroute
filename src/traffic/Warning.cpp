@@ -27,6 +27,25 @@
 using namespace Qt::Literals::StringLiterals;
 
 
+namespace {
+
+// Distance/angle fields of a Warning default to "not set" (NaN). Their defaulted
+// comparison treats NaN as unequal to everything (including another NaN), so a
+// plain "==" would report two otherwise-identical warnings as different whenever a
+// field is unset. Treat two not-set values as equal.
+template<typename T>
+bool sameValue(const T& a, const T& b)
+{
+    if (!a.isFinite() && !b.isFinite())
+    {
+        return true;
+    }
+    return a == b;
+}
+
+} // namespace
+
+
 Traffic::Warning::Warning(
         const QString& AlarmLevel,
         const QString& RelativeBearing,
@@ -167,13 +186,13 @@ auto Traffic::Warning::operator==(const Traffic::Warning &rhs) -> bool
     if (m_alarmType!= rhs.m_alarmType) {
         return false;
     }
-    if (m_hDist != rhs.m_hDist) {
+    if (!sameValue(m_hDist, rhs.m_hDist)) {
         return false;
     }
-    if (m_relativeBearing != rhs.m_relativeBearing) {
+    if (!sameValue(m_relativeBearing, rhs.m_relativeBearing)) {
         return false;
     }
-    if (m_vDist != rhs.m_vDist) {
+    if (!sameValue(m_vDist, rhs.m_vDist)) {
         return false;
     }
     return true;

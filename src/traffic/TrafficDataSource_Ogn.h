@@ -165,6 +165,12 @@ private:
     QString m_hostName;
     quint16 m_port;
 
+    // True while a connection is wanted. The socket's "disconnected" signal only
+    // triggers an automatic reconnect while this is true, so that
+    // disconnectFromTrafficReceiver() can actually stop the connection — abort()
+    // emits "disconnected", which would otherwise reconnect immediately.
+    bool m_connectionDesired {false};
+
     QString m_lineBuffer;         // Reusable buffer for reading lines
     Ogn::OgnMessage m_ognMessage; // Reusable message structure
 

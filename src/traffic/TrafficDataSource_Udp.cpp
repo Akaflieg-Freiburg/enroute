@@ -101,14 +101,13 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
     {
         QByteArray const data = m_socket->receiveDatagram().data();
 
-        // Return immediately if the datagram has already been received.
+        // The same datagram is often delivered on several interfaces. Skip a
+        // duplicate, but continue with the remaining pending datagrams rather than
+        // returning (which would drop the rest of this batch).
         auto currentDatagramHash = qHash(data);
-        foreach(auto hash, receivedDatagramHashes)
+        if (receivedDatagramHashes.contains(currentDatagramHash))
         {
-            if (hash == currentDatagramHash)
-            {
-                return;
-            }
+            continue;
         }
         receivedDatagramHashes[nextHashIndex] = currentDatagramHash;
         nextHashIndex = (nextHashIndex+1) % receivedDatagramHashes.size();

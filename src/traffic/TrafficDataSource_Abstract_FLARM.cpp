@@ -360,6 +360,13 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGxRMC(const QString
 // Data on other proximate aircraft
 void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QStringList& arguments)
 {
+    // PFLAA carries 11 mandatory fields (indices 0…10). Reject truncated sentences
+    // before indexing into the list.
+    if (arguments.length() < 11)
+    {
+        return;
+    }
+
     // Helper variable
     bool ok = false;
 

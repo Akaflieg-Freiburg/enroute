@@ -163,7 +163,13 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
     connect(&m_socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Ogn::onErrorOccurred);
     connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Ogn::onReadyRead);
     connect(&m_socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Ogn::onStateChanged);
-    connect(&m_socket, &QAbstractSocket::disconnected, this, &Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver, Qt::ConnectionType::QueuedConnection);
+    connect(&m_socket, &QAbstractSocket::disconnected, this, [this]() {
+        // Auto-reconnect only while a connection is still wanted.
+        if (m_connectionDesired)
+        {
+            connectToTrafficReceiver();
+        }
+    }, Qt::ConnectionType::QueuedConnection);
 
     // Initialize properties
     onStateChanged(m_socket.state());
@@ -215,6 +221,8 @@ Traffic::TrafficDataSource_Ogn::~TrafficDataSource_Ogn()
 
 void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
 {
+    m_connectionDesired = true;
+
     // set Proxy
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
     const QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
@@ -249,6 +257,10 @@ void Traffic::TrafficDataSource_Ogn::disconnectFromTrafficReceiver()
     #if OGN_DEBUG
     qDebug() << "Disconnecting from OGN APRS-IS server";
     #endif
+
+    // No longer want a connection, so that aborting the socket below does not
+    // trigger the automatic reconnect wired to the "disconnected" signal.
+    m_connectionDesired = false;
 
     // Disconnect socket
     m_socket.abort();
@@ -438,7 +450,8 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
         timestamp = timestamp.addDays(-1);
     }
 
-    QGeoPositionInfo pInfo(QGeoCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude), QDateTime::currentDateTimeUtc());
+    QGeoPositionInfo pInfo(QGeoCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude),
+                           timestamp.isValid() ? timestamp : QDateTime::currentDateTimeUtc());
     pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course);  // Already in degrees
     pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, m_ognMessage.speed * 0.514444);  // Convert knots to m/s
     pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, m_ognMessage.verticalSpeed);

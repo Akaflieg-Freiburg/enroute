@@ -126,7 +126,9 @@ Item {
 
                         onActiveChanged: {
                             if (active) {
-                                Global.followGPS = false
+                                // Note: a pinch only zooms/rotates; it does not move where the map is
+                                // centered, so it deliberately does NOT switch off "Follow GPS". Only an
+                                // actual pan (the DragHandler below) does that.
                                 startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
                                 startZoomLevel = flightMap.zoomLevel
                                 rawBearing = flightMap.bearing
@@ -150,7 +152,12 @@ Item {
                             }
                             zoomLevelBehavior.enabled = false
                             flightMap.zoomLevel = newZoom
-                            flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                            // Anchor the zoom to the finger only when the user has manual control. While
+                            // following the aircraft, leave the centering to the Follow-GPS binding, so
+                            // the zoom happens around the aircraft and following is preserved.
+                            if (!Global.followGPS) {
+                                flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                            }
                             zoomLevelBehavior.enabled = true
                         }
 
@@ -161,7 +168,10 @@ Item {
                             {
                                 // snap to 0° if we're close enough
                                 flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
-                                flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                                // As in onScaleChanged: keep the aircraft centered while following.
+                                if (!Global.followGPS) {
+                                    flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                                }
                                 return
                             }
 
@@ -177,7 +187,8 @@ Item {
                         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
                         onWheel: function(event) {
                             const loc = flightMap.toCoordinate(wheel.point.position)
-                            Global.followGPS = false;
+                            // Like the pinch gesture, wheel zoom/rotate does not move the map center,
+                            // so it does not switch off "Follow GPS".
                             if (event.modifiers === Qt.NoModifier)
                             {
                                 zoomLevelBehavior.enabled = false
@@ -196,7 +207,11 @@ Item {
                                 Global.mapBearingPolicy = MFM.UserDefinedBearingUp
                                 flightMap.bearing += event.angleDelta.y / 10
                             }
-                            flightMap.alignCoordinateToPoint(loc, wheel.point.position)
+                            // Anchor to the cursor only when not following; otherwise keep the
+                            // aircraft centered (see the PinchHandler above).
+                            if (!Global.followGPS) {
+                                flightMap.alignCoordinateToPoint(loc, wheel.point.position)
+                            }
                         }
                     }
 

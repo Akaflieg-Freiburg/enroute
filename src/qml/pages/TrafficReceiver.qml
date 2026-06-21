@@ -92,13 +92,17 @@ Page {
         id: trafficDelegate
 
         Item {
-            width: listView.width
+            id: trafficItem
+
+            required property var modelData
+
+            width: ListView.view.width
             height: idel.height
 
             // Background
             Rectangle {
                 anchors.fill: parent
-                color: model.modelData.color
+                color: trafficItem.modelData.color
                 opacity: 0.2
             }
 
@@ -108,17 +112,17 @@ Page {
                 id: idel
                 text: {
                     var line1 = []
-                    if (model.modelData.callSign !== "")
-                        line1.push(model.modelData.callSign)
-                    line1.push(model.modelData.typeString)
-                    if (model.modelData.ID !== "")
-                        line1.push("ID: " + model.modelData.ID)
+                    if (trafficItem.modelData.callSign !== "")
+                        line1.push(trafficItem.modelData.callSign)
+                    line1.push(trafficItem.modelData.typeString)
+                    if (trafficItem.modelData.ID !== "")
+                        line1.push("ID: " + trafficItem.modelData.ID)
 
                     var line2 = []
-                    if (model.modelData.hDist.isFinite())
-                        line2.push(qsTr("hDist") + ": " + Navigator.aircraft.horizontalDistanceToString(model.modelData.hDist))
-                    if (model.modelData.vDist.isFinite())
-                        line2.push(qsTr("vDist") + ": " + Navigator.aircraft.verticalDistanceToString(model.modelData.vDist))
+                    if (trafficItem.modelData.hDist.isFinite())
+                        line2.push(qsTr("hDist") + ": " + Navigator.aircraft.horizontalDistanceToString(trafficItem.modelData.hDist))
+                    if (trafficItem.modelData.vDist.isFinite())
+                        line2.push(qsTr("vDist") + ": " + Navigator.aircraft.verticalDistanceToString(trafficItem.modelData.vDist))
                     return "<strong>" + line1.join(" • ") + "</strong><br><font size='2'>" + line2.join(" • ") + "</font>"
                 }
                 icon.source: "/icons/material/ic_airplanemode_active.svg"

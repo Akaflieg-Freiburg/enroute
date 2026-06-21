@@ -315,7 +315,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += u"<p>"_s
-                  + tr("The moving map now shows specialized icons for the various traffic types.")
+                  + tr("This is a beta-only release for testing improvements in the traffic display and gesture control of the moving map. Please try it out and tell us know how you feel about the changes.")
                   + u"</p>"_s;
         result += u"<p>"_s
                   + tr("There are now specialized icons for obstacle NOTAMs and NOTAMs about drone flights. We thank Christian Engelhardt for the implementation!")

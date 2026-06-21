@@ -30,10 +30,11 @@ namespace Traffic {
 
 /*! \brief Traffic factor whose precise position is known
  *
- *  Objects of this class represent traffic factors whose precise position is known.
- *  Other properties of the traffic, such as heading and ground speed, might also
- *  be known.  Compared to TrafficFactor_Abstract, instances of this class hold
- *  important additional property, namely the positionInfo for the traffic.
+ *  Objects of this class represent traffic factors whose precise position is
+ *  known. Other properties of the traffic, such as heading and ground speed,
+ *  might also be known.  Compared to TrafficFactor_Abstract, instances of this
+ *  class hold an important additional property, namely the positionInfo for the
+ *  traffic.
  */
 
 class TrafficFactor_WithPosition : public TrafficFactor_Abstract {
@@ -56,29 +57,30 @@ public:
 
     /*! \brief Offer a data record to this object, for the same traffic factor
      *
-     *  This method checks whether \a data describes the *same* traffic factor as
-     *  *this, by comparing identifiers. The intended use is that a caller offers a
-     *  freshly received record to each of its traffic objects in turn until one
-     *  accepts it.
+     *  This method checks whether \a data describes the *same* traffic factor
+     *  as *this, by comparing identifiers. The intended use is that a caller
+     *  offers a freshly received record to each of its traffic objects in turn
+     *  until one accepts it.
      *
      *  - If \a data refers to a *different* factor, it is declined and *this is
      *    left unchanged.
-     *  - If \a data refers to the *same* factor, it is accepted. The record is then
-     *    adopted only if it is newer than the data already held here: unless the
-     *    timestamp of the positionInfo of \a data is strictly newer than the
-     *    timestamp of the positionInfo of *this, the record is considered stale or
-     *    out-of-order and *this is left unchanged (its lifetime is not restarted
-     *    either). A stale record is still *accepted* — it belongs to this object,
-     *    there is simply nothing newer to apply.
+     *  - If \a data refers to the *same* factor, it is accepted. The record is
+     *    then adopted only if it is newer than the data already held here:
+     *    unless the timestamp of the positionInfo of \a data is strictly newer
+     *    than the timestamp of the positionInfo of *this, the record is
+     *    considered stale or out-of-order and *this is left unchanged (its
+     *    lifetime is not restarted either). A stale record is still *accepted*
+     *    — it belongs to this object, there is simply nothing newer to apply.
      *
-     *  When the record is adopted, the positionInfo is taken over and the remaining
-     *  properties are updated through TrafficFactor_Abstract::updateFrom(); see
-     *  there for how the "animate" property, callsign and type are handled.
+     *  When the record is adopted, the positionInfo is taken over and the
+     *  remaining properties are updated through
+     *  TrafficFactor_Abstract::updateFrom(); see there for how the "animate"
+     *  property, callsign and type are handled.
      *
      *  @param data Data record offered to *this
      *
-     *  @returns True if \a data refers to the same factor and was accepted here,
-     *  false if it refers to a different factor and was declined
+     *  @returns True if \a data refers to the same factor and was accepted
+     *  here, false if it refers to a different factor and was declined
      */
     [[nodiscard]] bool updateFrom(const TrafficFactorData_WithPosition& data)
     {
@@ -88,7 +90,8 @@ public:
             return false;
         }
 
-        // Same factor: adopt the record if it is newer than what we already hold.
+        // Same factor: adopt the record if it is newer than what we already
+        // hold.
         if (positionInfo().timestamp() < data.positionInfo.timestamp())
         {
             const QScopedPropertyUpdateGroup updateGroup;
@@ -101,9 +104,9 @@ public:
     /*! \brief Replace this object by a different traffic factor
      *
      *  This method is for the case where *this is repurposed to represent a
-     *  *different* traffic factor, namely the one described by \a data. It takes
-     *  over the positionInfo of \a data and replaces the remaining properties
-     *  through TrafficFactor_Abstract::replaceBy().
+     *  *different* traffic factor, namely the one described by \a data. It
+     *  takes over the positionInfo of \a data and replaces the remaining
+     *  properties through TrafficFactor_Abstract::replaceBy().
      *
      *  @param data Data record whose contents replace the data of *this
      */
@@ -121,11 +124,13 @@ public:
 
     /*! \brief Extrapolated Coordinate
      *
-     *  Extrapolated coordinate of the traffic, for use in the GUI. For performance reasons, instances
-     *  of this class do not have their own timer/animation logic to update the property. Instead, the
-     *  property is set whenever the positionInfo changes and whenever the slot
-     *  updatedExtrapolatedData() is called.  The owner of this class (= TrafficDataProvider) is responsible
-     *  to call updatedExtrapolatedData() at regular intervals.
+     *  Extrapolated coordinate of the traffic, for use in the GUI. For
+     *  performance reasons, instances of this class do not have their own
+     *  timer/animation logic to update the property. Instead, the property is
+     *  set whenever the positionInfo changes and whenever the slot
+     *  updatedExtrapolatedData() is called.  The owner of this class (=
+     *  TrafficDataProvider) is responsible to call updatedExtrapolatedData() at
+     *  regular intervals.
      */
     Q_PROPERTY(QGeoCoordinate extrapolatedCoordinate READ extrapolatedCoordinate BINDABLE bindableExtrapolatedCoordinate)
 
@@ -143,11 +148,13 @@ public:
 
     /*! \brief Extrapolated True Track
      *
-     *  Extrapolated true track of the traffic, for use in the GUI. For performance reasons, instances
-     *  of this class do not have their own timer/animation logic to update the property. Instead, the
-     *  property is set whenever the positionInfo changes and whenever the slot
-     *  updatedExtrapolatedData() is called.  The owner of this class (= TrafficDataProvider) is responsible
-     *  to call updatedExtrapolatedData() at regular intervals.
+     *  Extrapolated true track of the traffic, for use in the GUI. For
+     *  performance reasons, instances of this class do not have their own
+     *  timer/animation logic to update the property. Instead, the property is
+     *  set whenever the positionInfo changes and whenever the slot
+     *  updatedExtrapolatedData() is called.  The owner of this class (=
+     *  TrafficDataProvider) is responsible to call updatedExtrapolatedData() at
+     *  regular intervals.
      */
     Q_PROPERTY(Units::Angle extrapolatedTrueTrack READ extrapolatedTrueTrack BINDABLE bindableExtrapolatedTrueTrack)
 
@@ -165,8 +172,8 @@ public:
 
     /*! \brief Suggested icon
      *
-     *  Depending on alarm level, type and movement of the traffic opponent, this
-     *  property suggests an icon for GUI representation of the traffic.
+     *  Depending on alarm level, type and movement of the traffic opponent,
+     *  this property suggests an icon for GUI representation of the traffic.
      */
     Q_PROPERTY(QString icon READ icon BINDABLE bindableIcon)
 
@@ -199,7 +206,8 @@ public:
 
     /*! \brief Setter function for property with the same name
      *
-     *  @note Setting a new position info does not update the hDist or vDist properties.
+     *  @note Setting a new position info does not update the hDist or vDist
+     *  properties.
      *
      *  @param newPositionInfo Property positionInfo
      */
@@ -207,9 +215,12 @@ public:
 
     /*! \brief Uncertainty radius
      *
-     *  If the last position update is less than 30s ago, this property holds the value zero.
-     *  If the last position update is more than 30s ago, this property holds the radius of the "uncertainty circle" that should be drawn around the extrapolated position,
-     *  to notify the user that the position data is stale.
+     *  If the last position update is less than 30s ago, this property holds
+     *  the value zero. If the last position update is more than 30s ago, this
+     *  property holds the radius of the "uncertainty circle" that should be
+     *  drawn around the extrapolated position, to notify the user that the
+     *  position data is stale. The radius is also zero when the object is
+     *  invalid or has no finite groundSpeed/trueTrack.
      */
     Q_PROPERTY(Units::Distance uncertaintyRadius READ uncertaintyRadius BINDABLE bindableUncertaintyRadius)
 
@@ -232,7 +243,8 @@ signals:
 public slots:
     /*! \brief Update extrapolated data
      *
-     *  This method extrapolates the position of the aircraft and sets the property extrapolatedCoordinate appropriately.
+     *  This method extrapolates the position of the aircraft and sets the
+     *  property extrapolatedCoordinate appropriately.
      */
     void updateExtrapolatedData();
 

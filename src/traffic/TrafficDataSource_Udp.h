@@ -32,13 +32,9 @@ namespace Traffic {
 
 /*! \brief Traffic receiver: UDP connection to GDL90 source
  *
- *  This class connects to a traffic receiver via a GDL90 connection. It expects
+ *  This class connects to a traffic receiver via a UDP connection. It expects
  *  to find a receiver at the specifed IP-Address and port that emits GDL90
  *  messages.
- *
- *  In most use cases, the connection will be established via the device's WiFi
- *  interface.  The class will therefore try to lock the WiFi once a heartbeat
- *  has been detected, and release the WiFi at the appropriate time.
  */
 class TrafficDataSource_Udp : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
@@ -46,7 +42,7 @@ class TrafficDataSource_Udp : public TrafficDataSource_AbstractSocket {
 public:
     /*! \brief Default constructor
      *
-     * @param isCanonical Intializer for property canonical
+     * @param isCanonical Initializer for property canonical
      *
      *  @param port Port at the host where the traffic receiver is expected
      *
@@ -126,8 +122,9 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-    // Read messages from the socket datagrams and passes the messages on to
-    // processGDLMessage
+    // Read messages from the socket datagrams and passes them on for
+    // processing: XGPS/XTRA datagrams are routed to processXGPSString, all
+    // other messages are passed on to processGDLMessage.
     void onReadyRead();
 
 private:

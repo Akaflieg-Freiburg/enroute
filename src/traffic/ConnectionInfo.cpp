@@ -35,7 +35,6 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     : m_bluetoothDeviceInfo(info),
     m_canonical(canonical)
 {
-    qWarning() << m_bluetoothDeviceInfo.name();
     // Set Name
     {
         if (m_bluetoothDeviceInfo.isValid())

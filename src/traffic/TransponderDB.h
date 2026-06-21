@@ -25,7 +25,7 @@ class TransponderDB : public QObject {
 public:
     /*! \brief Default constructor
      *
-     *  This constructor initializes the database from a file or embedded data.
+     *  This constructor initializes the database from hard-coded embedded data.
      *
      *  @param parent The standard QObject parent pointer
      */
@@ -38,15 +38,6 @@ public:
      *  @returns The aircraft registration, or an empty string if not found.
      */
     [[nodiscard]] static Q_INVOKABLE QString getRegistration(const QString& address);
-
-private:
-    /*! \brief Decode fallback registration based on ICAO address ranges
-     *
-     *  @param address The ICAO 24-bit transponder address (hexadecimal string).
-     *
-     *  @returns The fallback registration, or an empty string if no match is found.
-     */
-    [[nodiscard]] QString registration_from_hexid(const QString& address) const;
 };
 
 } // namespace Traffic

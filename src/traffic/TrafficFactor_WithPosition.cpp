@@ -30,7 +30,8 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace {
 
-// To not store each traffic icon in multiple colors, use a lazy cache keyed by "<shape>-<color>"
+// To not store each traffic icon in multiple colors, use a lazy cache keyed by
+// "<shape>-<color>"
 using StringStringHash = QHash<QString, QString>;
 Q_GLOBAL_STATIC(StringStringHash, iconCache)
 
@@ -51,7 +52,8 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
     // Bindings for property icon
     m_icon.setBinding([this]() {
-        // Determine base icon shape from direction availability and aircraft type
+        // Determine base icon shape from direction availability and aircraft
+        // type
         auto baseType = QStringLiteral("noDirection");
         if (m_positionInfo.value().groundSpeed().isFinite() && m_positionInfo.value().trueTrack().isFinite())
         {
@@ -119,14 +121,8 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
     m_description.setBinding([this]() {
         QStringList results;
 
-/*
-        if (!callSign().isEmpty())
-        {
-            results << callSign();
-        }
-*/
-
-        // Show aircraft type only when no specific icon exists (generic triangle is used)
+        // Show aircraft type only when no specific icon exists (generic
+        // triangle is used)
         switch(type())
         {
         case Aircraft:
@@ -148,7 +144,8 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
             results << tr("Static Obstacle");
             break;
         default:
-            // Default: Show no type information, previously we showed "Traffic".
+            // Default: Show no type information, previously we showed
+            // "Traffic".
             break;
         }
 

@@ -378,7 +378,6 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
         return;
     }
 
-    // Relative vertical information is optional
     // Vertical distance is optional
     auto vDist = Units::Distance::fromM(arguments[3].toDouble(&ok));
     if (!ok)

@@ -51,7 +51,7 @@ public:
      *  provided by QSerialPortInfo. This class will then connect to the first
      *  serial port whose port name or description matches the given string.
      *
-     *  @param isCanonical Intializer for property canonical
+     *  @param isCanonical Initializer for property canonical
      *
      *  @param portNameOrDescription Name or description of the port, as
      *  provided by QSerialPortInfo.portName() or QSerialPortInfo.description()
@@ -81,19 +81,28 @@ public:
     Q_PROPERTY(QString portNameOrDescription READ portNameOrDescription CONSTANT)
     [[nodiscard]] QString portNameOrDescription() const {return m_portNameOrDescription;};
 
-    /*! \brief Baud Rate of the Serial Port Connection */
+    /*! \brief Baud Rate of the Serial Port Connection
+     *
+     *  Changing the value reconnects the serial port.
+     */
     Q_PROPERTY(ConnectionInfo::BaudRate baudRate READ baudRate BINDABLE bindableBaudRate WRITE setBaudRate)
     [[nodiscard]] ConnectionInfo::BaudRate baudRate() { return m_baudRate.value();};
     [[nodiscard]] QBindable<ConnectionInfo::BaudRate> bindableBaudRate() { return &m_baudRate;};
     void setBaudRate(ConnectionInfo::BaudRate rate);
 
-    /*! \brief Stop Bits of the Serial Port Connection */
+    /*! \brief Stop Bits of the Serial Port Connection
+     *
+     *  Changing the value reconnects the serial port.
+     */
     Q_PROPERTY(ConnectionInfo::StopBits stopBits READ stopBits BINDABLE bindableStopBits WRITE setStopBits)
     [[nodiscard]] ConnectionInfo::StopBits stopBits() { return m_stopBits.value();};
     [[nodiscard]] QBindable<ConnectionInfo::StopBits> bindableStopBits() { return &m_stopBits;};
     void setStopBits(ConnectionInfo::StopBits sb);
 
-    /*! \brief Flow Control */
+    /*! \brief Flow Control
+     *
+     *  Changing the value reconnects the serial port.
+     */
     Q_PROPERTY(ConnectionInfo::FlowControl flowControl READ flowControl BINDABLE bindableFlowControl WRITE setFlowControl)
     [[nodiscard]] ConnectionInfo::FlowControl flowControl() { return m_flowControl.value();};
     [[nodiscard]] QBindable<ConnectionInfo::FlowControl> bindableFlowControl() { return &m_flowControl;};

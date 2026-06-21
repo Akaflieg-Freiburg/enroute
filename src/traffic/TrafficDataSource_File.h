@@ -41,7 +41,7 @@ class TrafficDataSource_File : public TrafficDataSource_Abstract {
 public:
     /*! \brief Default constructor
      *
-     * @param isCanonical Intializer for property canonical
+     * @param isCanonical Initializer for property canonical
      *
      *  @param fileName Name of the simulator file
      *
@@ -104,7 +104,7 @@ public slots:
 
 private slots:
     // Read one line from the simulator file's text stream and passes the string
-    // on to processFLARMMessage.  Sets up a timer to read the next line in due
+    // on to processFLARMData.  Sets up a timer to read the next line in due
     // time.
     void readFromSimulatorStream();
 

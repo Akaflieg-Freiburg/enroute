@@ -33,7 +33,8 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
         // Lifetime expired. The "valid" binding reacts on its own (it reads
         // lifetimeCounter.isActive(), which QTimer notifies on expiry). But
         // "animate" is independent of the timer, so reset it here — otherwise a
-        // later reuse of this recycled object would animate from its stale data.
+        // later reuse of this recycled object would animate from its stale
+        // data.
         m_animate = false;
     });
 
@@ -225,8 +226,9 @@ void Traffic::TrafficFactor_Abstract::startLifetime()
 
 bool Traffic::hasHigherPriorityThan(const TrafficFactorData& lhs, const TrafficFactor_Abstract& rhs)
 {
-    // A freshly received data record always carries current data and is therefore
-    // treated as valid. This mirrors TrafficFactor_Abstract::hasHigherPriorityThan().
+    // A freshly received data record always carries current data and is
+    // therefore treated as valid. This mirrors
+    // TrafficFactor_Abstract::hasHigherPriorityThan().
 
     // Criterion: Valid instances have higher priority than invalid ones
     if (!rhs.valid())

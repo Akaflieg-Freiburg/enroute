@@ -101,4 +101,4 @@ private:
     QProperty<QList<Traffic::TrafficFactor_Abstract*>> m_traffic;
 };
 
-} // namespace Weather
+} // namespace Traffic

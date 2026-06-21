@@ -43,7 +43,7 @@ class TrafficDataSource_BluetoothClassic : public TrafficDataSource_AbstractSock
 public:
     /*! \brief Default constructor
      *
-     * @param isCanonical Intializer for property canonical
+     * @param isCanonical Initializer for property canonical
      *
      *  @param info Description of a Bluetooth Classic device offering
      *  serial port service.

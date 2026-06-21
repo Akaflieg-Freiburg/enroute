@@ -66,7 +66,7 @@ public:
 
     /*! \brief Empty
      *
-     *  This proerty contains true if the password database is empty.
+     *  This property contains true if the password database is empty.
      */
     Q_PROPERTY(bool empty READ empty NOTIFY emptyChanged)
 

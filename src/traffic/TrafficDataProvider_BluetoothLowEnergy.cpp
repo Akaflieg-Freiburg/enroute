@@ -34,10 +34,10 @@ QString Traffic::TrafficDataProvider::addDataSource_BluetoothLowEnergy(const Tra
     // Ignore new device if data source already exists.
     foreach(auto _dataSource, m_dataSources.value())
     {
-        auto* dataSourceBTClassic = qobject_cast<TrafficDataSource_BluetoothLowEnergy*>(_dataSource);
-        if (dataSourceBTClassic != nullptr)
+        auto* dataSourceBTLowEnergy = qobject_cast<TrafficDataSource_BluetoothLowEnergy*>(_dataSource);
+        if (dataSourceBTLowEnergy != nullptr)
         {
-            if (connectionInfo.bluetoothDeviceInfo().address() == dataSourceBTClassic->sourceInfo().address())
+            if (connectionInfo.bluetoothDeviceInfo().address() == dataSourceBTLowEnergy->sourceInfo().address())
             {
                 return tr("A connection to this device already exists.");
             }

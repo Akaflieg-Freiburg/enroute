@@ -29,9 +29,7 @@ namespace Traffic {
 
 /*! \brief Connection Scanner: SerialPort Devices
  *
- *  This class discovers all serial ports available. If a serial port has a
- *  description (such as "ublox 7 - GPS GNSS Receiver") then the port will be
- *  reported twice, once by port name and once by description.
+ *  This class discovers all serial ports available.
  */
 class ConnectionScanner_SerialPort : public ConnectionScanner_Abstract {
     Q_OBJECT
@@ -66,6 +64,7 @@ public slots:
     void start() override;
 
     // Re-implemented from ConnectionScanner_Abstract
+    // Stopping is a no-op for serial-port scanning.
     void stop() override {};
 };
 

@@ -48,8 +48,11 @@ namespace Traffic {
  * Details are described here:
  * https://docs.ruuvi.com/communication/bluetooth-connection/nordic-uart-service-nus
  *
- * At the time of writing (early Mar 25), the implementation is not well-tested.
- * The connection procedure is rather complicated.
+ * As a fallback, this class also supports the "Simple UART Service" (UUID
+ * starting 0000ffe0...) for devices that do not offer the Nordic UART Service.
+ *
+ * The implementation is not yet well-tested. The connection procedure is rather
+ * complicated.
  *
  * - Someone calls connectToTrafficReceiver(). The implementation calls
  *   m_control->connectToDevice().
@@ -57,7 +60,7 @@ namespace Traffic {
  * - Once a connection is established, signal/slots ensure that
  *   m_control->discoverServices() is called.
  *
- * - Once all services are found, the slot onDiscoveryFinished() is called. The
+ * - Once all services are found, the slot onServiceDiscoveryFinished() is called. The
  *   implementation checks if the device offers the "Nordic UART Service" (NUS).
  *   If so, we need to find the service details. To start the search, the
  *   implementation calls m_NUSService->discoverDetails().
@@ -76,7 +79,7 @@ class TrafficDataSource_BluetoothLowEnergy : public TrafficDataSource_AbstractSo
 public:
     /*! \brief Default constructor
      *
-     * @param isCanonical Intializer for property canonical
+     * @param isCanonical Initializer for property canonical
      *
      * @param info Description of a Bluetooth LE device
      *

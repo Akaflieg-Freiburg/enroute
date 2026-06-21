@@ -38,13 +38,14 @@ struct TrafficFactorData;
  *  This is an abstract base class for traffic factors, as reported by traffic
  *  data receivers (e.g. FLARM devices).
  *
- *  Since the real-world traffic situation changes continuously, instances of this class have a limited lifetime.
- *  The length of the lifetime is specified in the constant "lifetime". You can (re)start an object's lifetime
- *  startLifetime(). Once the lifetime of an object is expired, the property "valid" will alway contain
- *  the word "false", regardless of the object's other properties.
+ *  Since the real-world traffic situation changes continuously, instances of
+ *  this class have a limited lifetime. The length of the lifetime is specified
+ *  in the constant "lifetime". You can (re)start an object's lifetime
+ *  startLifetime(). Once the lifetime of an object is expired, the property
+ *  "valid" will always be false, regardless of the object's other properties.
  *
- *  Classes that inherit from TrafficFactor_Abstract need to provide a binding for the properties 'description'
- *  and 'valid'.
+ *  Classes that inherit from TrafficFactor_Abstract need to provide a binding
+ *  for the properties 'description' and 'valid'.
  */
 
 class TrafficFactor_Abstract : public QObject {
@@ -54,7 +55,8 @@ class TrafficFactor_Abstract : public QObject {
 public:
     /*! \brief Aircraft type
      *
-     *  This enum defines a few aircraft types. The list is modeled after the FLARM/NMEA specification.
+     *  This enum defines a few aircraft types. The list is modeled after the
+     *  FLARM/NMEA specification.
      */
     enum Type
     {
@@ -95,6 +97,7 @@ public:
      *
      * - Valid traffic objects have higher priority than invalid objects.
      * - Traffic objects with higher alarm level have higher priority.
+     * - Relevant traffic objects have higher priority than irrelevant ones.
      * - Traffic objects that are closer have higher priority.
      *
      * @param rhs Right hand side of the comparison
@@ -108,8 +111,8 @@ public:
      *  This helper holds the rule that decides whether traffic at the given
      *  distances is relevant, i.e. close enough to be worth showing. It is used
      *  both by the binding of the "relevant" property and by the free function
-     *  hasHigherPriorityThan(const TrafficFactorData&, const TrafficFactor_Abstract&),
-     *  so that both share a single definition.
+     *  hasHigherPriorityThan(const TrafficFactorData&, const
+     *  TrafficFactor_Abstract&), so that both share a single definition.
      *
      *  @param hDist Horizontal distance to the traffic
      *
@@ -121,9 +124,9 @@ public:
 
     /*! \brief Starts or extends the lifetime of this object
      *
-     *  Traffic information is valantile, and is considered valid only
-     *  for "lifetime" seconds.  This method starts or extends the
-     *  object's lifetime.
+     *  Traffic information is volatile, and is considered valid only for
+     *  "lifetime" seconds.  This method starts or extends the object's
+     *  lifetime.
      */
     void startLifetime();
 
@@ -134,10 +137,11 @@ public:
 
     /*! \brief Alarm Level
      *
-     *  This is the alarm level associated with the traffic object. The alarm level is an integer in the
-     *  range 0 (no alarm), …, 3 (maximal alarm). The values are not computed by this class, but reported
-     *  by the traffic receiver that reports the traffic. The precise meaning depends on the type of
-     *  traffic receiver used.
+     *  This is the alarm level associated with the traffic object. The alarm
+     *  level is an integer in the range 0 (no alarm), …, 3 (maximal alarm). The
+     *  values are not computed by this class, but reported by the traffic
+     *  receiver that reports the traffic. The precise meaning depends on the
+     *  type of traffic receiver used.
      *
      *  FLARM
      *
@@ -155,16 +159,17 @@ public:
 
     /*! \brief Indicates if changes in properties should be animated in the GUI
      *
-     *  This boolen properts is used to indicate if changes in properties should be animated in the
-     *  GUI.  This property is typically set to "true" before gradual changes are applied, such as
-     *  the position change of an aircraft.  It is typically set to "false" before data of a new
-     *  aircraft set.
+     *  This boolen properts is used to indicate if changes in properties should
+     *  be animated in the GUI.  This property is typically set to "true" before
+     *  gradual changes are applied, such as the position change of an aircraft.
+     *  It is typically set to "false" before data of a new aircraft set.
      */
     Q_PROPERTY(bool animate READ animate BINDABLE bindableAnimate)
 
     /*! \brief Call sign
      *
-     *  If known, this property holds the call sign of the traffic.  Otherwise, it contains an empty string
+     *  If known, this property holds the call sign of the traffic.  Otherwise,
+     *  it contains an empty string
      */
     Q_PROPERTY(QString callSign READ callSign WRITE setCallSign BINDABLE bindableCallSign)
 
@@ -204,14 +209,19 @@ public:
 
     /*! \brief Indicates relevant traffic
      *
-     *  This property holds 'true' if the traffic is valid, and closer than maxVerticalDistance and maxHorizontalDistance
-     *  specified below.
+     *  This property holds 'true' if the traffic is valid, and closer than
+     *  maxVerticalDistance and maxHorizontalDistance specified below.
+     *
+     *  @note For debugging, isRelevant() is currently overridden to return true
+     *  for any valid traffic, so the distance thresholds below are temporarily
+     *  ignored.
      */
     Q_PROPERTY(bool relevant READ relevant BINDABLE bindableRelevant)
 
     /*! \brief Translated string containing the 'relevant' property
      *
-     *  The content of the string is a translated version of "Relevant Traffic" or "Irrelevant Traffic".
+     *  The content of the string is a translated version of "Relevant Traffic"
+     *  or "Irrelevant Traffic".
      */
     Q_PROPERTY(QString relevantString READ relevantString BINDABLE bindableRelevantString)
 
@@ -226,8 +236,9 @@ public:
 
     /*! \brief Validity
      *
-     *  A traffic object is considered valid if the data is meaningful and if the
-     *  lifetime is not expired.  Only valid traffic objects should be shown in the GUI.
+     *  A traffic object is considered valid if the data is meaningful and if
+     *  the lifetime is not expired.  Only valid traffic objects should be shown
+     *  in the GUI.
      */
     Q_PROPERTY(bool valid READ valid BINDABLE bindableValid)
 
@@ -461,6 +472,9 @@ public:
      *
      *  Traffic whose vertical distance to the own aircraft is larger than this
      *  number will be considered irrelevant.
+     *
+     *  @note This threshold is currently not applied because isRelevant() is
+     *  overridden for debugging.
      */
     static constexpr Units::Distance maxVerticalDistance = Units::Distance::fromM(1500.0);
 
@@ -468,6 +482,9 @@ public:
      *
      *  Traffic whose horizontal distance to the own aircraft is larger than
      *  this number will be considered irrelevant.
+     *
+     *  @note This threshold is currently not applied because isRelevant() is
+     *  overridden for debugging.
      */
     static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
 
@@ -482,25 +499,26 @@ protected:
     /*! \brief Update this object with newer data for the same traffic factor
      *
      *  This method is for the case where \a data describes the *same* traffic
-     *  factor as *this, observed again with (typically newer) data. The caller is
-     *  responsible for establishing that the two refer to the same factor.
+     *  factor as *this, observed again with (typically newer) data. The caller
+     *  is responsible for establishing that the two refer to the same factor.
      *
      *  Identity data that is already established here is preserved, and the
      *  transition is animated:
      *
-     *  - the "animate" property of *this is set to true, so that the GUI animates
-     *    the transition from the old to the new data;
+     *  - the "animate" property of *this is set to true, so that the GUI
+     *    animates the transition from the old to the new data;
      *  - the callsign in \a data is taken over only if the callsign of *this is
      *    still empty (an established callsign is never overwritten);
      *  - the type in \a data is taken over only if the type of *this is still
      *    unknown (an established type is never overwritten).
      *
-     *  If there is nothing to continue from — *this is no longer valid, i.e. its
-     *  track had expired — there is no established identity to preserve and no
-     *  meaningful transition to animate. The call then degrades to replaceBy().
+     *  If there is nothing to continue from — *this is no longer valid, i.e.
+     *  its track had expired — there is no established identity to preserve and
+     *  no meaningful transition to animate. The call then degrades to
+     *  replaceBy().
      *
-     *  In all cases the lifetime of *this is (re)started, so the caller does not
-     *  need to call startLifetime() separately.
+     *  In all cases the lifetime of *this is (re)started, so the caller does
+     *  not need to call startLifetime() separately.
      *
      *  @param data Data record whose contents are used to update *this
      */
@@ -510,12 +528,12 @@ protected:
      *
      *  This method is for the case where *this is repurposed to represent a
      *  *different* traffic factor, namely the one described by \a data. All
-     *  properties are overwritten unconditionally and the "animate" property is set
-     *  to false, since animating a transition between two unrelated factors would
-     *  be meaningless.
+     *  properties are overwritten unconditionally and the "animate" property is
+     *  set to false, since animating a transition between two unrelated factors
+     *  would be meaningless.
      *
-     *  The lifetime of *this is (re)started, so the caller does not need to call
-     *  startLifetime() separately.
+     *  The lifetime of *this is (re)started, so the caller does not need to
+     *  call startLifetime() separately.
      *
      *  @param data Data record whose contents replace the data of *this
      */
@@ -539,10 +557,11 @@ private:
     QProperty<QString> m_typeString;
     QProperty<Units::Distance> m_vDist;
 
-    // Timer for timeout. Traffic objects become invalid if their data has not been
-    // refreshed for longer than "lifetime". The "valid" binding reads
-    // lifetimeCounter.isActive(); QTimer notifies that (bindable) property when the
-    // single-shot timer expires, so the binding reacts to expiry automatically.
+    // Timer for timeout. Traffic objects become invalid if their data has not
+    // been refreshed for longer than "lifetime". The "valid" binding reads
+    // lifetimeCounter.isActive(); QTimer notifies that (bindable) property when
+    // the single-shot timer expires, so the binding reacts to expiry
+    // automatically.
     QTimer lifetimeCounter;
 };
 

@@ -108,7 +108,7 @@ public:
     explicit ConnectionInfo(const QBluetoothDeviceInfo& info, bool canonical=false);
 
     /*!
-     * \brief Constructor for Bluetooth Device Connections
+     * \brief Constructor for Serial Port Connections
      *
      * This method constructs a ConnectionInfo for a connection to a serial port.
      *
@@ -241,7 +241,7 @@ public:
 
     /*! \brief Baud Rate
      *
-     *  \return In the connection is of type SerialPort, this method returns the
+     *  \return If the connection is of type Serial, this method returns the
      *  baud rate.
      */
     [[nodiscard]] BaudRate baudRate() const {return m_baudRate;}
@@ -258,7 +258,7 @@ public:
 
     /*! \brief Flow Control
      *
-     *  \return In the connection is of type SerialPort, this method returns the
+     *  \return If the connection is of type Serial, this method returns the
      *  flow control.
      */
     [[nodiscard]] FlowControl flowControl() const {return m_flowControl;}
@@ -266,8 +266,8 @@ public:
     /*!
      * \brief Port
      *
-     * \return If the connection is of type UDP, this method returns
-     * the port used in the UDP connection.
+     * \return If the connection is of type TCP or UDP, this method returns
+     * the port used in the TCP or UDP connection.
      */
     [[nodiscard]] quint16 port() const { return m_port; }
 
@@ -288,7 +288,7 @@ public:
 
     /*! \brief Stop Bits
      *
-     *  \return In the connection is of type SerialPort, this method returns the
+     *  \return If the connection is of type Serial, this method returns the
      *  stop bits.
      */
     [[nodiscard]] StopBits stopBits() const {return m_stopBits;}
@@ -296,9 +296,13 @@ public:
     /*!
      * \brief Equality of ConnectionInfos
      *
+     * This is a strict, member-wise comparison. Unlike sameConnectionAs(), it
+     * returns 'true' only if all members of the two ConnectionInfos are exactly
+     * equal, including aspects such as the connection name or description.
+     *
      * \param other Other ConnectionInfo to compare with.
      *
-     * \return True if the ConnectionInfo describe the same connection.
+     * \return True if the two ConnectionInfos are exactly equal in all members.
      */
     [[nodiscard]] bool operator== (const Traffic::ConnectionInfo& other) const = default;
 
@@ -310,7 +314,7 @@ public:
      *
      * \param other Other ConnectionInfo to compare with.
      *
-     * \return True if the ConnectionInfo describe the same connection.
+     * \return True if this ConnectionInfo sorts before other.
      */
     bool operator< (const Traffic::ConnectionInfo& other) const;
 

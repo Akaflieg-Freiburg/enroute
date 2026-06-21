@@ -47,7 +47,7 @@ class TrafficDataSource_Tcp : public TrafficDataSource_AbstractSocket {
 public:
     /*! \brief Default constructor
      *
-     * @param isCanonical Intializer for property canonical
+     * @param isCanonical Initializer for property canonical
      *
      *  @param hostName Name of the host where the traffic receiver is expected
      *
@@ -149,7 +149,7 @@ public slots:
 
 private slots:
     // Read lines from the socket's text stream and passes the string on to
-    // processFLARMMessage.
+    // processFLARMData.
     void onReadyRead();
 
     // This method does the actual job of sending the password to the traffic

@@ -28,7 +28,7 @@ Traffic::ConnectionScanner_Abstract::ConnectionScanner_Abstract(QObject* parent)
 
 
 //
-// Getter functions
+// Setter functions
 //
 
 void Traffic::ConnectionScanner_Abstract::setDevices(const QList<Traffic::ConnectionInfo>& newConnectionInfos)

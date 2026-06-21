@@ -388,7 +388,7 @@ void Traffic::TrafficDataProvider::onCurrentSourceChanged()
     }
     else
     {
-        // If there is no m_currentSource, then try in 1sek to (re)connect to any
+        // If there is no m_currentSource, then try in 1s to (re)connect to any
         // traffic receiver out there.
         QTimer::singleShot(1s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
     }

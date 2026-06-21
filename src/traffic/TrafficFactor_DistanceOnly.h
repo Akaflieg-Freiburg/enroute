@@ -30,20 +30,21 @@ namespace Traffic {
 
 /*! \brief Traffic factor whose distance is known, but not its bearing
  *
- *  Objects of this class represent traffic factors for which only the distance to
- *  the traffic is known, not its bearing. This is typically the case for aircraft
- *  seen through a Mode-S transponder, which reports altitude and range but no
- *  position.
+ *  Objects of this class represent traffic factors for which only the distance
+ *  to the traffic is known, not its bearing. This is typically the case for
+ *  aircraft seen through a Mode-S transponder, which reports altitude and range
+ *  but no position.
  *
- *  Geometrically, such a factor is described by a horizontal **range ring**: the
- *  traffic is somewhere on a circle of radius range(), centered at coordinate()
- *  — the ownship position at the time of report — and offset vertically by
- *  vDist(). Compared to TrafficFactor_Abstract, this class therefore adds the
- *  property coordinate (the center of the ring); the radius is exposed as range().
+ *  Geometrically, such a factor is described by a horizontal **range ring**:
+ *  the traffic is somewhere on a circle of radius range(), centered at
+ *  coordinate() — the ownship position at the time of report — and offset
+ *  vertically by vDist(). Compared to TrafficFactor_Abstract, this class
+ *  therefore adds the property coordinate (the center of the ring); the radius
+ *  is exposed as range().
  *
  *  Note that a finite range() is required for the factor to be valid (see the
- *  binding of the "valid" property), so a distance-only factor can only be shown
- *  when both the range and the ownship position are known.
+ *  binding of the "valid" property), so a distance-only factor can only be
+ *  shown when both the range and the ownship position are known.
  */
 
 class TrafficFactor_DistanceOnly : public Traffic::TrafficFactor_Abstract {
@@ -66,21 +67,23 @@ public:
 
     /*! \brief Offer a data record to this object, for the same traffic factor
      *
-     *  This method checks whether \a data describes the *same* traffic factor as
-     *  *this, by comparing identifiers. The intended use is that the caller offers
-     *  a freshly received record and falls back to replaceBy() if it is declined.
+     *  This method checks whether \a data describes the *same* traffic factor
+     *  as *this, by comparing identifiers. The intended use is that the caller
+     *  offers a freshly received record and falls back to replaceBy() if it is
+     *  declined.
      *
      *  - If \a data refers to a *different* factor, it is declined and *this is
      *    left unchanged.
-     *  - If \a data refers to the *same* factor, it is accepted: the coordinate is
-     *    taken over and the remaining properties are updated through
-     *    TrafficFactor_Abstract::updateFrom(), so that the transition is animated
-     *    (e.g. the range ring grows or shrinks smoothly as the target moves).
+     *  - If \a data refers to the *same* factor, it is accepted: the coordinate
+     *    is taken over and the remaining properties are updated through
+     *    TrafficFactor_Abstract::updateFrom(), so that the transition is
+     *    animated (e.g. the range ring grows or shrinks smoothly as the target
+     *    moves).
      *
      *  @param data Data record offered to *this
      *
-     *  @returns True if \a data refers to the same factor and was accepted here,
-     *  false if it refers to a different factor and was declined
+     *  @returns True if \a data refers to the same factor and was accepted
+     *  here, false if it refers to a different factor and was declined
      */
     [[nodiscard]] bool updateFrom(const TrafficFactorData_DistanceOnly& data)
     {
@@ -120,9 +123,9 @@ public:
 
     /*! \brief Center coordinate of the range ring
      *
-     *  This property contains the center of the range ring, that is, the ownship
-     *  position at the time of report. The traffic is located somewhere on the
-     *  circle of radius range() around this coordinate.
+     *  This property contains the center of the range ring, that is, the
+     *  ownship position at the time of report. The traffic is located somewhere
+     *  on the circle of radius range() around this coordinate.
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate BINDABLE bindableCoordinate)
 
@@ -150,14 +153,15 @@ public:
      *  traffic, i.e. the radius of the range ring described in the class
      *  documentation. It is the defining datum of a distance-only factor: it is
      *  reported by the traffic receiver and set, together with the other data,
-     *  through replaceBy() (which forwards to TrafficFactor_Abstract::replaceBy()
-     *  and thus to setHDist()). A finite range is required for the factor to be
-     *  valid.
+     *  through replaceBy() (which forwards to
+     *  TrafficFactor_Abstract::replaceBy() and thus to setHDist()). A finite
+     *  range is required for the factor to be valid.
      *
-     *  range() is the first-class, well-named view of the distance for this class.
-     *  It is backed by the inherited hDist property and always holds the same
-     *  value; hDist is retained because the base class TrafficFactor_Abstract uses
-     *  it for the "valid" property and for priority comparisons.
+     *  range() is the first-class, well-named view of the distance for this
+     *  class. It is backed by the inherited hDist property and always holds the
+     *  same value; hDist is retained because the base class
+     *  TrafficFactor_Abstract uses it for the "valid" property and for priority
+     *  comparisons.
      */
     Q_PROPERTY(Units::Distance range READ range BINDABLE bindableRange)
 

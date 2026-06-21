@@ -68,7 +68,7 @@ public:
 
 
     //
-    // Properties
+    // Getter Methods
     //
 
     /*! \brief Getter method for property with the same name
@@ -109,7 +109,7 @@ signals:
     /*! \brief Notifier signal */
     void connectionInfosChanged();
 
-    /*! \brief This signal to indicate whenever a device has been discovered
+    /*! \brief This signal is emitted whenever a device has been discovered
      *
      *  This signal is emitted during the scan process. Consumers should expect
      *  that identical connections are emitted multiple times. This signal is
@@ -125,7 +125,7 @@ signals:
     /*! \brief Scan finished
      *
      *  This signal is emitted once the scan is finished and the property
-     *  devices() holds the final list .
+     *  connectionInfos() holds the final list .
      */
     void scanFinished();
 
@@ -133,7 +133,7 @@ signals:
     void scanningChanged();
 
 protected:
-    // Setter method for property with same name
+    // Sets the connectionInfos property
     void setDevices(const QList<Traffic::ConnectionInfo>& newConnectionInfos);
 
     // Setter method for property with same name

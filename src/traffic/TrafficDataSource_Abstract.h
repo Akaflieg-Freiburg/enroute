@@ -36,9 +36,9 @@ namespace Traffic {
  *
  *  This is an abstract base class for all classes that connect to a traffic
  *  receiver.  In addition to the properties listed below, the class also emits
- *  imporant data via the signals barometricAltitudeUpdated,
- *  factorWithoutPosition, factorWithPosition and warning. It contains methods
- *  to interpret FLARM and GDL90 data streams.
+ *  important data via the signals factorWithoutPosition, factorWithPosition and
+ *  warning, and exposes the pressure altitude via the pressureAltitude property.
+ *  It contains methods to interpret FLARM and GDL90 data streams.
  */
 class TrafficDataSource_Abstract : public QObject {
     Q_OBJECT
@@ -117,9 +117,9 @@ public:
      *
      *  This property holds information about the pressure altitude, that is,
      *  the altitude that you would read off your altimeter if the altimeter is
-     *  set to 1013.2 hPa. To ensure that the data is up-to-date, the position
-     *  information will be set to "invalid" when no data has arrived for more
-     *  than the time specified in PositionInfo::lifetime.
+     *  set to 1013.2 hPa. To ensure that the data is up-to-date, the pressure
+     *  altitude will be reset to an invalid value when no data has arrived for
+     *  more than the time specified in PositionInfo::lifetime.
      */
     Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
 
@@ -295,7 +295,7 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property errorString
+     * @returns Property trafficReceiverSelfTestError
      */
     [[nodiscard]] QString trafficReceiverSelfTestError() const
     {
@@ -304,7 +304,7 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property errorString
+     * @returns Property trafficReceiverSelfTestError
      */
     [[nodiscard]] QBindable<QString> bindableTrafficReceiverSelfTestError()
     {
@@ -313,13 +313,22 @@ public:
 
 
 signals:
-    /*! \brief Notifier signal */
+    /*! \brief Notifier signal
+     *
+     *  @param newStatus New value of the connectivityStatus property
+     */
     void connectivityStatusChanged(QString newStatus);
 
-    /*! \brief Indicates new data has arrived, can be used in the GUI for monitoring purposes */
+    /*! \brief Indicates new data has arrived, can be used in the GUI for monitoring purposes
+     *
+     *  @param data The data that has arrived
+     */
     void dataReceived(QString data);
 
-    /*! \brief Notifier signal */
+    /*! \brief Notifier signal
+     *
+     *  @param newError New value of the errorString property
+     */
     void errorStringChanged(QString newError);
 
     /*! \brief Traffic factor without position
@@ -340,7 +349,7 @@ signals:
      */
     void factorWithPosition(const Traffic::TrafficFactorData_WithPosition& factor);
 
-    /* \brief Password request
+    /*! \brief Password request
      *
      *  This signal is emitted whenever the traffic receiver asks for a
      *  password. Note that this is not the WiFi-Password.
@@ -349,17 +358,22 @@ signals:
      */
     void passwordRequest(const QString& SSID);
 
-    /* \brief Password storage request
+    /*! \brief Password storage request
      *
      *  This signal is emitted whenever the traffic receiver has successfully
      *  connected using a password that was not yet in the database.
      *
-     *  @param SSID Name of the WiFi network that is was used in use.
+     *  @param SSID Name of the WiFi network that is in use.
+     *
+     *  @param password The password that was used to connect.
      */
     void passwordStorageRequest(const QString& SSID, const QString& password);
 
-    /*! \brief Notifier signal */
-    void receivingHeartbeatChanged(bool);
+    /*! \brief Notifier signal
+     *
+     *  @param newReceivingHeartbeat New value of the receivingHeartbeat property
+     */
+    void receivingHeartbeatChanged(bool newReceivingHeartbeat);
 
     /*! \brief Traffic receiver hardware version
      *
@@ -451,10 +465,10 @@ protected:
 
     /*! \brief Process one GDL90 message
      *
-     *  This method expects exactly one GDL90 message, including starting and
-     *  trailing 0x7e bytes.  The method interprets the string and updates the
-     *  properties and emits signals as appropriate. Invalid messages are
-     *  silently ignored.
+     *  This method expects exactly one GDL90 message, with the starting and
+     *  trailing 0x7e framing bytes already stripped.  The method interprets the
+     *  string and updates the properties and emits signals as appropriate.
+     *  Invalid messages are silently ignored.
      *
      *  @param message A QByteArray containing a GDL90 message.
      */
@@ -462,7 +476,8 @@ protected:
 
     /*! \brief Process one XGPS string
      *
-     *  This method expects exactly XGPS/XTRAFFIC string, as specified in
+     *  This method expects exactly one XGPS or XTRAFFIC (XTRA) string, as
+     *  specified in
      *
      *  https://www.foreflight.com/support/network-gps/
      *
@@ -504,8 +519,8 @@ protected:
     /*! \brief Setter function for the property with the same name
      *
      *  This method must be used by child classes to update the pressure altitude
-     *  The class uses a timer internally to reset the position info to "invalid"
-     *  after the time specified in PositionInfo::lifetime seconds.
+     *  The class uses a timer internally to reset the pressure altitude to
+     *  "invalid" after the time specified in PositionInfo::lifetime seconds.
      *
      *  @param newPressureAltitude Pressure Altitude
      */

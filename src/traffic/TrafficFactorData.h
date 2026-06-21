@@ -35,10 +35,10 @@ namespace Traffic {
  *  This is a lightweight, copyable value type that carries the data of a
  *  traffic factor as parsed by a traffic data source. Unlike
  *  TrafficFactor_Abstract, it is not a QObject: it has no bindings, no lifetime
- *  counter and no derived/animated properties. Data sources construct records of
- *  this type and ship them to the TrafficDataProvider through signals; the
- *  provider then feeds them into its long-lived TrafficFactor_Abstract models via
- *  updateFrom()/replaceBy().
+ *  counter and no derived/animated properties. Data sources construct records
+ *  of this type and ship them to the TrafficDataProvider through signals; the
+ *  provider then feeds them into its long-lived TrafficFactor_Abstract models
+ *  via updateFrom()/replaceBy().
  *
  *  This struct holds the position-independent data shared by all traffic
  *  factors. The variants below add position information.
@@ -83,7 +83,7 @@ struct TrafficFactorData_DistanceOnly {
     /*! \brief Position-independent data */
     TrafficFactorData data;
 
-    /*! \brief Center coordinate of the cylinder where the traffic is located */
+    /*! \brief Center coordinate of the range ring where the traffic is located */
     QGeoCoordinate coordinate;
 };
 
@@ -92,8 +92,8 @@ struct TrafficFactorData_DistanceOnly {
  *
  *  This free function answers the question "should the incoming traffic factor
  *  \a lhs displace the existing model object \a rhs?". It applies the same
- *  precedence as TrafficFactor_Abstract::hasHigherPriorityThan(), treating \a lhs
- *  as valid (a freshly parsed record always carries current data).
+ *  precedence as TrafficFactor_Abstract::hasHigherPriorityThan(), treating \a
+ *  lhs as valid (a freshly parsed record always carries current data).
  *
  *  @param lhs Freshly received data record
  *

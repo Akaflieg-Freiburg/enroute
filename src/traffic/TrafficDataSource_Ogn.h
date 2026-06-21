@@ -51,7 +51,7 @@ class TrafficDataSource_Ogn : public TrafficDataSource_AbstractSocket {
 public:
     /*! \brief Default constructor
      *
-     * @param isCanonical Intializer for property canonical
+     * @param isCanonical Initializer for property canonical
      *
      *  @param hostName Name of the host where the traffic receiver is expected
      *
@@ -68,11 +68,11 @@ public:
     // Properties
     //
 
-    /*! \brief Host
+    /*! \brief Hostname of the OGN/APRS-IS server (e.g. aprs.glidernet.org)
      */
     Q_PROPERTY(QString host READ host CONSTANT)
 
-    /*! \brief Port
+    /*! \brief TCP port of the OGN/APRS-IS server (e.g. 14580)
      */
     Q_PROPERTY(quint16 port READ port CONSTANT)
 

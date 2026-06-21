@@ -31,9 +31,10 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace Traffic {
 
-/*! \brief Traffic receiver: Simulator that provides constant data
+/*! \brief Traffic receiver: Simulator that provides configurable simulated data
  *
- *  For testing purposes, this class provides constant traffic data.
+ *  For testing purposes, this class provides configurable simulated traffic and
+ *  ownship data.
  */
 class TrafficDataSource_Simulate : public TrafficDataSource_Abstract {
     Q_OBJECT
@@ -41,7 +42,7 @@ class TrafficDataSource_Simulate : public TrafficDataSource_Abstract {
 public:
     /*! \brief Default constructor
      *
-     * @param isCanonical Intializer for property canonical
+     * @param isCanonical Initializer for property canonical
      *
      *  @param parent The standard QObject parent pointer
      */

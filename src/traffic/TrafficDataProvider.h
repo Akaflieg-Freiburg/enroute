@@ -38,8 +38,10 @@ namespace Traffic {
  *
  *  By default, it watches the following data channels:
  *
- *  - TCP connection to 192.168.1.1, port 2000
- *  - TCP connection to 192.168.10.1, port 2000
+ *  - TCP connections to several common traffic-receiver addresses
+ *    (10.10.10.10, 192.168.1.1, 192.168.4.1, 192.168.10.1, 192.168.42.1),
+ *    all on port 2000
+ *  - UDP ports 4000 and 49002
  *
  *  This class also acts as a PositionInfoSource, and passes position data (that
  *  some traffic receivers provide) on to the the consumers of this class.
@@ -187,7 +189,7 @@ public:
 
     /*! \brief Getter method for property with the same name
      *
-     *  @returns Property currentSourceIsInternetService
+     *  @returns Property connectionInfos
      */
     [[nodiscard]] QBindable<QList<Traffic::ConnectionInfo>> bindableConnectionInfos() {return &m_connectionInfos;}
 
@@ -238,7 +240,7 @@ public:
 
     /*! \brief Getter method for property with the same name
      *
-     *  @returns Property receiving
+     *  @returns Property receivingHeartbeat
      */
     [[nodiscard]] bool receivingHeartbeat() const
     {
@@ -247,7 +249,7 @@ public:
 
     /*! \brief Getter method for property with the same name
      *
-     *  @returns Property receiving
+     *  @returns Property receivingHeartbeat
      */
     [[nodiscard]] QBindable<bool> bindableReceivingHeartbeat() {return &m_receivingHeartbeat;}
 
@@ -304,7 +306,7 @@ public:
 
     /*! \brief Getter method for property with the same name
      *
-     *  @returns Property Warning
+     *  @returns Property warning
      */
     [[nodiscard]] Traffic::Warning warning() const
     {
@@ -418,7 +420,7 @@ signals:
 
     /*! \brief Password request
      *
-     *  This signal is emitted whenever one of the traffic data sources requires
+     *  This signal is emitted whenever one of the traffic data sources
      *  asks for a password. Note that this is not the WiFi-Password.
      *
      *  @param SSID Name of the WiFi network that is currently in use.
@@ -429,7 +431,11 @@ signals:
      *
      *  This signal is emitted whenever one of the traffic data sources has
      *  verified a password that was not yet in the database. The GUI should
-     *  connect to this signal and open a "Store Password …?" dialogn.
+     *  connect to this signal and open a "Store Password …?" dialog.
+     *
+     *  @param SSID Name of the WiFi network that is currently in use.
+     *
+     *  @param password Password that has been verified.
      */
     void passwordStorageRequest(const QString& SSID, const QString& password);
 

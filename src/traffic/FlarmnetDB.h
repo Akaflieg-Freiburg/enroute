@@ -52,7 +52,11 @@ public:
     // Methods
     //
 
-    /*! \brief Find password for a given key
+    /*! \brief Find registration for a given key
+     *
+     *  As a special case, if the key contains the character '!', this method
+     *  does not perform a database lookup but returns the substring after the
+     *  last '!'.
      *
      *  @param key FlarmID to look up
      *

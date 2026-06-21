@@ -62,6 +62,8 @@ const std::array<quint16, 256> Crc16Table =
 
 // Static Helper functions
 
+// Decodes the position block that is shared by Ownship Reports (messageID 10)
+// and Traffic Reports (messageID 20), which use the same layout.
 auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
 {
     // Check message size

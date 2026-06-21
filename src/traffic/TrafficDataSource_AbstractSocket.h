@@ -31,11 +31,11 @@ namespace Traffic {
  *
  *  This is an abstract base class for all classes that connect to a traffic
  *  receiver via network sockets.  In addition to TrafficDataSource_Abstract, it
- *  contains a few protected methods that will might be useful for Tcp and Udp
+ *  contains a few protected methods that might be useful for Tcp and Udp
  *  connections.
  *
- *  It is assume that most users will connect to their traffic receicers via the
- *  WiFi network.  On Android, this class will therefore acquire/relase a WiFi
+ *  It is assumed that most users will connect to their traffic receivers via the
+ *  WiFi network.  On Android, this class will therefore acquire/release a WiFi
  *  whenever traffic receiver heartbeat messages are detected or lost.
  */
 

@@ -190,7 +190,14 @@ void Traffic::ConnectionScanner_Bluetooth::updateConnectionInfos()
         {
             continue;
         }
-        result += ConnectionInfo(deviceInfo);
+        ConnectionInfo const connectionInfo(deviceInfo);
+        // Mirror the filter applied in onDeviceDiscovered(): do not publish
+        // devices we cannot connect to.
+        if (!connectionInfo.canConnect())
+        {
+            continue;
+        }
+        result += connectionInfo;
     }
 
     std::sort(result.begin(), result.end());

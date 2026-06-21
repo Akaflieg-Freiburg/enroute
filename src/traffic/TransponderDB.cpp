@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QStringList>
 #include <cmath>
+#include <mutex>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -173,17 +174,31 @@ QString lookupNumeric(uint32_t hexid)
     return {}; // No match found
 }
 
+// The stride/numeric mappings are file-static and their offset/end fields are
+// computed by initStrideMappings()/initNumericMappings(). Initialize them lazily
+// and exactly once, so that the static getRegistration() works correctly even if
+// no TransponderDB instance has ever been constructed.
+std::once_flag mappingsInitFlag;
+void ensureMappingsInitialized()
+{
+    std::call_once(mappingsInitFlag, []() {
+        initStrideMappings();
+        initNumericMappings();
+    });
+}
+
 // Constructor
 TransponderDB::TransponderDB(QObject* parent)
     : QObject(parent)
 {
-    initStrideMappings();
-    initNumericMappings();
+    ensureMappingsInitialized();
 }
 
 // Get registration
 QString TransponderDB::getRegistration(const QString& address)
 {
+    ensureMappingsInitialized();
+
     QString registration;
     
     bool ok = false;

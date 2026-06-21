@@ -350,16 +350,35 @@ bool Traffic::TrafficDataProvider::hasDataSource_SerialPort(const QString& portN
 
 void Traffic::TrafficDataProvider::loadConnectionInfos()
 {
-    QFile outFile(stdFileName);
-    if (!outFile.open(QIODeviceBase::ReadOnly))
+    QFile inFile(stdFileName);
+    if (!inFile.open(QIODeviceBase::ReadOnly))
     {
         return;
     }
-    QDataStream outStream(&outFile);
+
+    // The on-disk format carries no header or version tag, and it must stay
+    // backward compatible — otherwise users would have to re-enter all of their
+    // connections. We therefore deliberately keep the default stream version and
+    // guard against bad data by validating what was read instead.
+    QDataStream inStream(&inFile);
     QList<Traffic::ConnectionInfo> connectionInfos;
-    outStream >> connectionInfos;
+    inStream >> connectionInfos;
+
+    // A truncated or corrupt file leaves the stream in an error state and may have
+    // produced partially-decoded, garbage entries. Discard everything in that case
+    // rather than feeding garbage to addDataSource().
+    if (inStream.status() != QDataStream::Ok)
+    {
+        return;
+    }
+
     foreach (auto connectionInfo, connectionInfos)
     {
+        // Ignore anything that did not decode into a usable connection.
+        if (connectionInfo.type() == Traffic::ConnectionInfo::Invalid)
+        {
+            continue;
+        }
         addDataSource(connectionInfo);
     }
 }

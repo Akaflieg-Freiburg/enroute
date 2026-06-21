@@ -25,7 +25,6 @@
 Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEnergy(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent) :
     TrafficDataSource_AbstractSocket(isCanonical, parent),
     m_info(info),
-    m_control(QLowEnergyController::createCentral(info, this)),
     m_discoveryAgent(new QBluetoothDeviceDiscoveryAgent(this))
 {
     m_connectionInfo = Traffic::ConnectionInfo(m_info, canonical());
@@ -96,12 +95,17 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::connectToTrafficReceiver()
     m_discoveryAgent->start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
 }
 
-void Traffic::TrafficDataSource_BluetoothLowEnergy::disconnectFromTrafficReceiver()
+void Traffic::TrafficDataSource_BluetoothLowEnergy::cleanupServices()
 {
     delete m_nordicUARTService;
     m_nordicUARTService = nullptr;
     delete m_simpleUARTService;
     m_simpleUARTService = nullptr;
+}
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::disconnectFromTrafficReceiver()
+{
+    cleanupServices();
 
     m_control->disconnectFromDevice();
     setErrorString();
@@ -179,6 +183,11 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onDiscoveryError(QBluetoothD
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscoveryFinished()
 {
+    // Discard any service objects left over from a previous connection before
+    // creating new ones — they are parented to this (not the controller), so they
+    // would otherwise leak, and their stale signal connections could interfere.
+    cleanupServices();
+
     if (m_control->services().contains(nordicUARTServiceUuid))
     {
         m_nordicUARTService = m_control->createServiceObject(nordicUARTServiceUuid, this);

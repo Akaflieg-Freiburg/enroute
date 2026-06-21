@@ -189,6 +189,9 @@ private:
 
     // Helper to setup the controller since we'll recreate it often
     void setupController(const QBluetoothDeviceInfo &info);
+    // Deletes and nulls the UART service objects (they are parented to this, not
+    // to the controller, so they must be cleaned up explicitly).
+    void cleanupServices();
     QLowEnergyController* m_control {nullptr};
 
     QLowEnergyService* m_nordicUARTService {nullptr};

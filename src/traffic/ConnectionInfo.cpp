@@ -224,12 +224,27 @@ bool Traffic::ConnectionInfo::sameConnectionAs(const ConnectionInfo& other) cons
         return (m_port == other.m_port) && (m_host == other.m_host);
     }
 
-    return true;
+    if (m_type == Traffic::ConnectionInfo::Serial)
+    {
+        // Serial connections are identified by their port name/description.
+        return m_host == other.m_host;
+    }
+
+    if (m_type == Traffic::ConnectionInfo::OGN)
+    {
+        // At most one OGN connection ever exists.
+        return true;
+    }
+
+    // Invalid, FLARMFile or unhandled type: do not report as the same connection.
+    return false;
 }
 
 
 bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
 {
+    // Primary, user-visible ordering: connectable entries first, then by type,
+    // then by name.
     const bool canConnectFst = canConnect();
     const bool canConnectSnd = other.canConnect();
     if (canConnectFst != canConnectSnd)
@@ -242,7 +257,28 @@ bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
         return m_type < other.m_type;
     }
 
-    return name() < other.name();
+    if (name() != other.name())
+    {
+        return name() < other.name();
+    }
+
+    // Tie-breakers on the identifying fields, so that distinct connections are
+    // distinctly ordered. Without them, two different connections sharing the same
+    // name and type would be "equivalent" under operator< while being unequal under
+    // the (member-wise) operator==, which is an inconsistent ordering.
+    if (m_host != other.m_host)
+    {
+        return m_host < other.m_host;
+    }
+    if (m_port != other.m_port)
+    {
+        return m_port < other.m_port;
+    }
+    if (m_baudRate != other.m_baudRate)
+    {
+        return m_baudRate < other.m_baudRate;
+    }
+    return m_bluetoothDeviceInfo.address() < other.m_bluetoothDeviceInfo.address();
 }
 
 

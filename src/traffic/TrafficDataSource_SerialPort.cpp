@@ -258,6 +258,12 @@ void Traffic::TrafficDataSource_SerialPort::setParameters()
 
 void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate rate)
 {
+    // Reconnecting is disruptive, so do nothing if the value did not change (these
+    // setters are reachable from QML bindings that may re-assert the same value).
+    if (m_baudRate.value() == rate)
+    {
+        return;
+    }
     m_baudRate = rate;
     disconnectFromTrafficReceiver();
     connectToTrafficReceiver();
@@ -265,6 +271,10 @@ void Traffic::TrafficDataSource_SerialPort::setBaudRate(ConnectionInfo::BaudRate
 
 void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits sb)
 {
+    if (m_stopBits.value() == sb)
+    {
+        return;
+    }
     m_stopBits = sb;
     disconnectFromTrafficReceiver();
     connectToTrafficReceiver();
@@ -272,6 +282,10 @@ void Traffic::TrafficDataSource_SerialPort::setStopBits(ConnectionInfo::StopBits
 
 void Traffic::TrafficDataSource_SerialPort::setFlowControl(ConnectionInfo::FlowControl fc)
 {
+    if (m_flowControl.value() == fc)
+    {
+        return;
+    }
     m_flowControl = fc;
     disconnectFromTrafficReceiver();
     connectToTrafficReceiver();

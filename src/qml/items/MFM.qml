@@ -25,6 +25,7 @@ import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Shapes
 

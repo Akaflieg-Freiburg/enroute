@@ -28,9 +28,32 @@ MapQuickItem {
     property var trafficInfo: ({})
     property double bearing
 
-    property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 18
     property real t: trafficLabel.trafficInfo.positionInfo.trueTrack().isFinite() ?
                          2*Math.PI*(trafficLabel.trafficInfo.positionInfo.trueTrack().toDEG() - bearing)/360.0 : 0
+
+    // Distance the nearest edge of the label should keep from the traffic symbol
+    // (which sits at the label's coordinate). The traffic icon is 40px wide, so
+    // this clears it with a small margin.
+    readonly property real symbolGap: 26
+
+    // Distance from the symbol to the *center* of the label, along the offset
+    // direction (-sin t, cos t). It is derived from the label's actual extent in
+    // that direction so that the nearest edge of the label keeps a constant
+    // "symbolGap" from the symbol, independent of the label's size and of the
+    // direction t. (A fixed distance — e.g. half the label diagonal — made the
+    // apparent gap vary a lot with rotation and label dimensions.)
+    property real distFromCenter: {
+        // |components| of the unit offset direction.
+        var s = Math.abs(Math.sin(trafficLabel.t))
+        var c = Math.abs(Math.cos(trafficLabel.t))
+        var halfW = 0.5*lbl.width
+        var halfH = 0.5*lbl.height
+        // Distance from the label's center to its edge along the offset direction.
+        var edge = (s < 0.0001) ? halfH
+                 : (c < 0.0001) ? halfW
+                 : Math.min(halfW/s, halfH/c)
+        return edge + trafficLabel.symbolGap
+    }
 
     coordinate: trafficInfo.extrapolatedCoordinate
 

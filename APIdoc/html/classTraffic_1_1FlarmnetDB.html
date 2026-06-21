@@ -64,7 +64,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3d82a2ccdd25e281ff2518691b41f2d3" id="r_a3d82a2ccdd25e281ff2518691b41f2d3"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a3d82a2ccdd25e281ff2518691b41f2d3">FlarmnetDB</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a3d82a2ccdd25e281ff2518691b41f2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="memitem:a1b7e190d11eb57aeabaea14af819fc85" id="r_a1b7e190d11eb57aeabaea14af819fc85"><td class="memItemLeft">Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#a1b7e190d11eb57aeabaea14af819fc85">getRegistration</a> (const QString &amp;key)</td></tr>
-<tr class="memdesc:a1b7e190d11eb57aeabaea14af819fc85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find password for a given key.  <br /></td></tr>
+<tr class="memdesc:a1b7e190d11eb57aeabaea14af819fc85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find registration for a given key.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Flarmnet database. </p>
@@ -114,7 +114,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Find password for a given key. </p>
+<p>Find registration for a given key. </p>
+<p>As a special case, if the key contains the character '!', this method does not perform a database lookup but returns the substring after the last '!'.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>FlarmID to look up</td></tr>

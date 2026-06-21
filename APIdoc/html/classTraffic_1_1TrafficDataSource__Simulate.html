@@ -55,7 +55,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Traffic receiver: Simulator that provides constant data.  
+<p>Traffic receiver: Simulator that provides configurable simulated data.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>&gt;</code></p>
@@ -83,12 +83,15 @@ Public Slots</h2></td></tr>
 <tr class="memdesc:a3de49d50d5175bc17a86e890828ab383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set speed that is to be reported by this class as the ground speed of ownship.  <br /></td></tr>
 <tr class="memitem:a2d7c407ed69be70dc81464537137574b" id="r_a2d7c407ed69be70dc81464537137574b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a2d7c407ed69be70dc81464537137574b">setTT</a> (<a class="el" href="classUnits_1_1Angle.html">Units::Angle</a> TT)</td></tr>
 <tr class="memdesc:a2d7c407ed69be70dc81464537137574b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set angle that is to be reported by this class as the true track of ownship.  <br /></td></tr>
-<tr class="memitem:a21366bf564877241137209457587903d" id="r_a21366bf564877241137209457587903d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a21366bf564877241137209457587903d">setTrafficFactor_DistanceOnly</a> (<a class="el" href="classTraffic_1_1TrafficFactor__DistanceOnly.html">Traffic::TrafficFactor_DistanceOnly</a> *factor=nullptr)</td></tr>
-<tr class="memdesc:a21366bf564877241137209457587903d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set traffic factor (distance only) that is to be reported by this class.  <br /></td></tr>
+<tr class="memitem:ac3ee5233d0339c0fdcf816e3bf095bd7" id="r_ac3ee5233d0339c0fdcf816e3bf095bd7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ac3ee5233d0339c0fdcf816e3bf095bd7">setTrafficFactor_DistanceOnly</a> (const <a class="el" href="structTraffic_1_1TrafficFactorData__DistanceOnly.html">Traffic::TrafficFactorData_DistanceOnly</a> &amp;factor)</td></tr>
+<tr class="memdesc:ac3ee5233d0339c0fdcf816e3bf095bd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set traffic factor (distance only) that is to be reported by this class.  <br /></td></tr>
+<tr class="memitem:a2e84758b70492a98d093dd3c04aab29b" id="r_a2e84758b70492a98d093dd3c04aab29b"><td class="memItemLeft"><a id="a2e84758b70492a98d093dd3c04aab29b" name="a2e84758b70492a98d093dd3c04aab29b"></a>
+void&#160;</td><td class="memItemRight"><b>clearTrafficFactor_DistanceOnly</b> ()</td></tr>
+<tr class="memdesc:a2e84758b70492a98d093dd3c04aab29b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop reporting distance-only traffic. <br /></td></tr>
 <tr class="memitem:a31fe7162528b8c2c7ab39b9dec0656c2" id="r_a31fe7162528b8c2c7ab39b9dec0656c2"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a31fe7162528b8c2c7ab39b9dec0656c2">setVSpeed</a> (<a class="el" href="classUnits_1_1Speed.html">Units::Speed</a> vSpeed)</td></tr>
 <tr class="memdesc:a31fe7162528b8c2c7ab39b9dec0656c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set speed that is to be reported by this class as the vertical speed of ownship.  <br /></td></tr>
-<tr class="memitem:a3e5b30e5168e0033848df5faccfd6ec0" id="r_a3e5b30e5168e0033848df5faccfd6ec0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3e5b30e5168e0033848df5faccfd6ec0">addTraffic</a> (<a class="el" href="classTraffic_1_1TrafficFactor__WithPosition.html">Traffic::TrafficFactor_WithPosition</a> *factor)</td></tr>
-<tr class="memdesc:a3e5b30e5168e0033848df5faccfd6ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a traffic factor that is to be reported by this class.  <br /></td></tr>
+<tr class="memitem:afea4bce4fd2884b8a222dd3aaf965923" id="r_afea4bce4fd2884b8a222dd3aaf965923"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#afea4bce4fd2884b8a222dd3aaf965923">addTraffic</a> (const <a class="el" href="structTraffic_1_1TrafficFactorData__WithPosition.html">Traffic::TrafficFactorData_WithPosition</a> &amp;factor)</td></tr>
+<tr class="memdesc:afea4bce4fd2884b8a222dd3aaf965923"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a traffic factor that is to be reported by this class.  <br /></td></tr>
 <tr class="memitem:aa61f8021747179d5bab4d5e1780edae5" id="r_aa61f8021747179d5bab4d5e1780edae5"><td class="memItemLeft"><a id="aa61f8021747179d5bab4d5e1780edae5" name="aa61f8021747179d5bab4d5e1780edae5"></a>
 void&#160;</td><td class="memItemRight"><b>removeTraffic</b> ()</td></tr>
 <tr class="memdesc:aa61f8021747179d5bab4d5e1780edae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all traffic factors (with position). <br /></td></tr>
@@ -147,22 +150,22 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header signals_classTraffic_1_1TrafficDataSource__Abstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('signals_classTraffic_1_1TrafficDataSource__Abstract')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Signals inherited from <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a></td></tr>
-<tr class="memitem:a29175a0a6310a645e7ba34e26fcf42ca inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a29175a0a6310a645e7ba34e26fcf42ca"><td class="memItemLeft">
-void&#160;</td><td class="memItemRight"><b>connectivityStatusChanged</b> (QString newStatus)</td></tr>
-<tr class="memdesc:a29175a0a6310a645e7ba34e26fcf42ca inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="memitem:a9a721308ec0f0783c0191cb2d46ae1e4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a9a721308ec0f0783c0191cb2d46ae1e4"><td class="memItemLeft">
-void&#160;</td><td class="memItemRight"><b>dataReceived</b> (QString data)</td></tr>
-<tr class="memdesc:a9a721308ec0f0783c0191cb2d46ae1e4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates new data has arrived, can be used in the GUI for monitoring purposes. <br /></td></tr>
-<tr class="memitem:a287d4c6523682facee4e2ef8a3f703db inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a287d4c6523682facee4e2ef8a3f703db"><td class="memItemLeft">
-void&#160;</td><td class="memItemRight"><b>errorStringChanged</b> (QString newError)</td></tr>
-<tr class="memdesc:a287d4c6523682facee4e2ef8a3f703db inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="memitem:ae5543aa5fa931f0dda6f376492c10ff4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_ae5543aa5fa931f0dda6f376492c10ff4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae5543aa5fa931f0dda6f376492c10ff4">factorWithoutPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor__DistanceOnly.html">Traffic::TrafficFactor_DistanceOnly</a> &amp;factor)</td></tr>
-<tr class="memdesc:ae5543aa5fa931f0dda6f376492c10ff4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor without position.  <br /></td></tr>
-<tr class="memitem:a6e6718fc854bee5f87f7bc95825bc261 inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a6e6718fc854bee5f87f7bc95825bc261"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a6e6718fc854bee5f87f7bc95825bc261">factorWithPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor__WithPosition.html">Traffic::TrafficFactor_WithPosition</a> &amp;factor)</td></tr>
-<tr class="memdesc:a6e6718fc854bee5f87f7bc95825bc261 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor with position.  <br /></td></tr>
-<tr class="memitem:a91a00e00db640da40c1eb40887b7d82b inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a91a00e00db640da40c1eb40887b7d82b"><td class="memItemLeft">
-void&#160;</td><td class="memItemRight"><b>receivingHeartbeatChanged</b> (bool)</td></tr>
-<tr class="memdesc:a91a00e00db640da40c1eb40887b7d82b inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="memitem:a29175a0a6310a645e7ba34e26fcf42ca inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a29175a0a6310a645e7ba34e26fcf42ca"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a29175a0a6310a645e7ba34e26fcf42ca">connectivityStatusChanged</a> (QString newStatus)</td></tr>
+<tr class="memdesc:a29175a0a6310a645e7ba34e26fcf42ca inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal.  <br /></td></tr>
+<tr class="memitem:a9a721308ec0f0783c0191cb2d46ae1e4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a9a721308ec0f0783c0191cb2d46ae1e4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a9a721308ec0f0783c0191cb2d46ae1e4">dataReceived</a> (QString data)</td></tr>
+<tr class="memdesc:a9a721308ec0f0783c0191cb2d46ae1e4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates new data has arrived, can be used in the GUI for monitoring purposes.  <br /></td></tr>
+<tr class="memitem:a287d4c6523682facee4e2ef8a3f703db inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a287d4c6523682facee4e2ef8a3f703db"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a287d4c6523682facee4e2ef8a3f703db">errorStringChanged</a> (QString newError)</td></tr>
+<tr class="memdesc:a287d4c6523682facee4e2ef8a3f703db inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal.  <br /></td></tr>
+<tr class="memitem:aaa456a9323318ed8690468d457c058fd inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_aaa456a9323318ed8690468d457c058fd"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#aaa456a9323318ed8690468d457c058fd">factorWithoutPosition</a> (const <a class="el" href="structTraffic_1_1TrafficFactorData__DistanceOnly.html">Traffic::TrafficFactorData_DistanceOnly</a> &amp;factor)</td></tr>
+<tr class="memdesc:aaa456a9323318ed8690468d457c058fd inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor without position.  <br /></td></tr>
+<tr class="memitem:ad6ee5a656f771b61e025fa71d181a004 inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_ad6ee5a656f771b61e025fa71d181a004"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ad6ee5a656f771b61e025fa71d181a004">factorWithPosition</a> (const <a class="el" href="structTraffic_1_1TrafficFactorData__WithPosition.html">Traffic::TrafficFactorData_WithPosition</a> &amp;factor)</td></tr>
+<tr class="memdesc:ad6ee5a656f771b61e025fa71d181a004 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor with position.  <br /></td></tr>
+<tr class="memitem:aae66d7b5dd1f789a10928dd3aadb0b5f inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_aae66d7b5dd1f789a10928dd3aadb0b5f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#aae66d7b5dd1f789a10928dd3aadb0b5f">passwordRequest</a> (const QString &amp;SSID)</td></tr>
+<tr class="memdesc:aae66d7b5dd1f789a10928dd3aadb0b5f inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Password request.  <br /></td></tr>
+<tr class="memitem:a9fcbb9f7339d471db4ecbb721d04fc75 inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a9fcbb9f7339d471db4ecbb721d04fc75"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a9fcbb9f7339d471db4ecbb721d04fc75">passwordStorageRequest</a> (const QString &amp;SSID, const QString &amp;password)</td></tr>
+<tr class="memdesc:a9fcbb9f7339d471db4ecbb721d04fc75 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Password storage request.  <br /></td></tr>
+<tr class="memitem:af218e854c4acfad44ba20b3421105c83 inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_af218e854c4acfad44ba20b3421105c83"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#af218e854c4acfad44ba20b3421105c83">receivingHeartbeatChanged</a> (bool newReceivingHeartbeat)</td></tr>
+<tr class="memdesc:af218e854c4acfad44ba20b3421105c83 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal.  <br /></td></tr>
 <tr class="memitem:a6e08c56143cd22a1fe5f750ff43c0b0c inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_a6e08c56143cd22a1fe5f750ff43c0b0c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a6e08c56143cd22a1fe5f750ff43c0b0c">trafficReceiverHwVersion</a> (QString result)</td></tr>
 <tr class="memdesc:a6e08c56143cd22a1fe5f750ff43c0b0c inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic receiver hardware version.  <br /></td></tr>
 <tr class="memitem:af0e969dddeb1d98288428ccca235f663 inherit signals_classTraffic_1_1TrafficDataSource__Abstract" id="r_af0e969dddeb1d98288428ccca235f663"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#af0e969dddeb1d98288428ccca235f663">trafficReceiverObVersion</a> (QString result)</td></tr>
@@ -220,10 +223,10 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
 <tr class="memdesc:ae9e66e5600baf14b4ef7503a6f5e3191 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">String describing the last traffic data receiver self-test error.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Traffic receiver: Simulator that provides constant data. </p>
-<p>For testing purposes, this class provides constant traffic data. </p>
+<div class="textblock"><p>Traffic receiver: Simulator that provides configurable simulated data. </p>
+<p>For testing purposes, this class provides configurable simulated traffic and ownship data. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00037">37</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00039">39</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4811f10fe57bdedd3ee598fc44863e9e" name="a4811f10fe57bdedd3ee598fc44863e9e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4811f10fe57bdedd3ee598fc44863e9e">&#9670;&#160;</a></span>TrafficDataSource_Simulate()</h2>
@@ -247,7 +250,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">isCanonical</td><td>Intializer for property canonical</td></tr>
+    <tr><td class="paramname">isCanonical</td><td>Initializer for property canonical</td></tr>
     <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
   </table>
   </dd>
@@ -256,8 +259,8 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a3e5b30e5168e0033848df5faccfd6ec0" name="a3e5b30e5168e0033848df5faccfd6ec0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e5b30e5168e0033848df5faccfd6ec0">&#9670;&#160;</a></span>addTraffic</h2>
+<a id="afea4bce4fd2884b8a222dd3aaf965923" name="afea4bce4fd2884b8a222dd3aaf965923"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afea4bce4fd2884b8a222dd3aaf965923">&#9670;&#160;</a></span>addTraffic</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,7 +271,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
         <tr>
           <td class="memname">void Traffic::TrafficDataSource_Simulate::addTraffic </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classTraffic_1_1TrafficFactor__WithPosition.html">Traffic::TrafficFactor_WithPosition</a> *</td>          <td class="paramname"><span class="paramname"><em>factor</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structTraffic_1_1TrafficFactorData__WithPosition.html">Traffic::TrafficFactorData_WithPosition</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>factor</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -282,12 +285,12 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
 <p>Add a traffic factor that is to be reported by this class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">factor</td><td>Traffic factor to be added. The pointer must be valid. The traffic factor will be owned by this class. </td></tr>
+    <tr><td class="paramname">factor</td><td>Traffic factor data record to be added </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00159">159</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00161">161</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>
@@ -347,7 +350,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
 
 <p>Implements <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a064eeeaacd5886aa73678ddef8a00c7f">Traffic::TrafficDataSource_Abstract</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00056">56</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00058">58</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>
@@ -408,7 +411,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
 
 <p>Implements <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#aacc1922346405a538496b212b6d05a16">Traffic::TrafficDataSource_Abstract</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00065">65</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00067">67</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>
@@ -443,7 +446,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00098">98</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00100">100</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>
@@ -478,7 +481,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00107">107</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00109">109</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>
@@ -513,12 +516,12 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00117">117</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00119">119</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>
-<a id="a21366bf564877241137209457587903d" name="a21366bf564877241137209457587903d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21366bf564877241137209457587903d">&#9670;&#160;</a></span>setTrafficFactor_DistanceOnly</h2>
+<a id="ac3ee5233d0339c0fdcf816e3bf095bd7" name="ac3ee5233d0339c0fdcf816e3bf095bd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3ee5233d0339c0fdcf816e3bf095bd7">&#9670;&#160;</a></span>setTrafficFactor_DistanceOnly</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -529,7 +532,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
         <tr>
           <td class="memname">void Traffic::TrafficDataSource_Simulate::setTrafficFactor_DistanceOnly </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classTraffic_1_1TrafficFactor__DistanceOnly.html">Traffic::TrafficFactor_DistanceOnly</a> *</td>          <td class="paramname"><span class="paramname"><em>factor</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structTraffic_1_1TrafficFactorData__DistanceOnly.html">Traffic::TrafficFactorData_DistanceOnly</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>factor</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -543,12 +546,12 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
 <p>Set traffic factor (distance only) that is to be reported by this class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">factor</td><td>Traffic factor, or nullptr to remove all distance-only traffic. The traffic factor will be owned by this class. </td></tr>
+    <tr><td class="paramname">factor</td><td>Traffic factor data record to be reported </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00136">136</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00137">137</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>
@@ -583,7 +586,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00126">126</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00128">128</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>
@@ -618,7 +621,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00149">149</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00152">152</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>
@@ -651,7 +654,7 @@ QString&#160;</td><td class="memItemRight"><b>icon</b></td></tr>
 
 <p>Implements <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#af3a0ebcb9bf2719f8ade8d4ff6f8468d">Traffic::TrafficDataSource_Abstract</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00074">74</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Simulate_8h_source.html#l00076">76</a> of file <a class="el" href="TrafficDataSource__Simulate_8h_source.html">TrafficDataSource_Simulate.h</a>.</p>
 
 </div>
 </div>

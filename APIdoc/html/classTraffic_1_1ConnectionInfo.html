@@ -91,7 +91,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa1557f83840085cbcd44a579e602178e" id="r_aa1557f83840085cbcd44a579e602178e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aa1557f83840085cbcd44a579e602178e">ConnectionInfo</a> (const QBluetoothDeviceInfo &amp;info, bool <a class="el" href="#a4a95bbb6a01c4fffe9ed9d01044a5897">canonical</a>=false)</td></tr>
 <tr class="memdesc:aa1557f83840085cbcd44a579e602178e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for Bluetooth Device Connections.  <br /></td></tr>
 <tr class="memitem:a03a5e300ba3844c7315f85433095a62d" id="r_a03a5e300ba3844c7315f85433095a62d"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a03a5e300ba3844c7315f85433095a62d">ConnectionInfo</a> (const QString &amp;serialPortNameOrDescription, ConnectionInfo::BaudRate <a class="el" href="#ac3b4eb20e36da7cf327c41e5b219db49">baudRate</a>=ConnectionInfo::BaudRate::Baud9600, ConnectionInfo::StopBits <a class="el" href="#aa3885372eae6f56d029622ee092f2fc2">stopBits</a>=ConnectionInfo::StopBits::OneStop, ConnectionInfo::FlowControl <a class="el" href="#aa8df4dc5938e089f68b759ba68f0a12a">flowControl</a>=ConnectionInfo::FlowControl::NoFlowControl, bool <a class="el" href="#a4a95bbb6a01c4fffe9ed9d01044a5897">canonical</a>=false)</td></tr>
-<tr class="memdesc:a03a5e300ba3844c7315f85433095a62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for Bluetooth Device Connections.  <br /></td></tr>
+<tr class="memdesc:a03a5e300ba3844c7315f85433095a62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for Serial Port Connections.  <br /></td></tr>
 <tr class="memitem:ab93dfbe94e0044b667d1715c76773ee8" id="r_ab93dfbe94e0044b667d1715c76773ee8"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ab93dfbe94e0044b667d1715c76773ee8">ConnectionInfo</a> (quint16 <a class="el" href="#a26567c5149039c156cb0182ecea59b44">port</a>, bool <a class="el" href="#a4a95bbb6a01c4fffe9ed9d01044a5897">canonical</a>=false)</td></tr>
 <tr class="memdesc:ab93dfbe94e0044b667d1715c76773ee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for UDP Connections.  <br /></td></tr>
 <tr class="memitem:ae848e93ddf260e2397a2acbe25fdbd01" id="r_ae848e93ddf260e2397a2acbe25fdbd01"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ae848e93ddf260e2397a2acbe25fdbd01">ConnectionInfo</a> (const QString &amp;<a class="el" href="#a9aadb07dd66fea80ca0de4fb10c30dde">host</a>, quint16 <a class="el" href="#a26567c5149039c156cb0182ecea59b44">port</a>, bool <a class="el" href="#a4a95bbb6a01c4fffe9ed9d01044a5897">canonical</a>=false)</td></tr>
@@ -291,7 +291,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Constructor for Bluetooth Device Connections. </p>
+<p>Constructor for Serial Port Connections. </p>
 <p>This method constructs a <a class="el" href="classTraffic_1_1ConnectionInfo.html" title="Connection to a traffic data receiver.">ConnectionInfo</a> for a connection to a serial port.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -449,7 +449,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Baud Rate. </p>
-<dl class="section return"><dt>Returns</dt><dd>In the connection is of type SerialPort, this method returns the baud rate. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>If the connection is of type Serial, this method returns the baud rate. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00247">247</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
@@ -509,7 +509,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Flow Control. </p>
-<dl class="section return"><dt>Returns</dt><dd>In the connection is of type SerialPort, this method returns the flow control. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>If the connection is of type Serial, this method returns the flow control. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00264">264</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
@@ -538,7 +538,7 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the <a class="el" href="classTraffic_1_1ConnectionInfo.html" title="Connection to a traffic data receiver.">ConnectionInfo</a> describe the same connection. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if this <a class="el" href="classTraffic_1_1ConnectionInfo.html" title="Connection to a traffic data receiver.">ConnectionInfo</a> sorts before other. </dd></dl>
 
 </div>
 </div>
@@ -566,13 +566,14 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Equality of ConnectionInfos. </p>
+<p>This is a strict, member-wise comparison. Unlike <a class="el" href="#a64c12259db945beb9c1e4b0b5a95de74" title="Equality of connection.">sameConnectionAs()</a>, it returns 'true' only if all members of the two ConnectionInfos are exactly equal, including aspects such as the connection name or description.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">other</td><td>Other <a class="el" href="classTraffic_1_1ConnectionInfo.html" title="Connection to a traffic data receiver.">ConnectionInfo</a> to compare with.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the <a class="el" href="classTraffic_1_1ConnectionInfo.html" title="Connection to a traffic data receiver.">ConnectionInfo</a> describe the same connection. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the two ConnectionInfos are exactly equal in all members. </dd></dl>
 
 </div>
 </div>
@@ -600,7 +601,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Port. </p>
-<dl class="section return"><dt>Returns</dt><dd>If the connection is of type UDP, this method returns the port used in the UDP connection. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>If the connection is of type TCP or UDP, this method returns the port used in the TCP or UDP connection. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00272">272</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 
@@ -665,7 +666,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Stop Bits. </p>
-<dl class="section return"><dt>Returns</dt><dd>In the connection is of type SerialPort, this method returns the stop bits. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>If the connection is of type Serial, this method returns the stop bits. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="ConnectionInfo_8h_source.html#l00294">294</a> of file <a class="el" href="ConnectionInfo_8h_source.html">ConnectionInfo.h</a>.</p>
 

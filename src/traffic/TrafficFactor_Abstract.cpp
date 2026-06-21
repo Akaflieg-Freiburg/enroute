@@ -29,6 +29,13 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
 {  
     lifetimeCounter.setSingleShot(true);
     lifetimeCounter.setInterval(lifetime);
+    connect(&lifetimeCounter, &QTimer::timeout, this, [this]() {
+        // Lifetime expired. The "valid" binding reacts on its own (it reads
+        // lifetimeCounter.isActive(), which QTimer notifies on expiry). But
+        // "animate" is independent of the timer, so reset it here — otherwise a
+        // later reuse of this recycled object would animate from its stale data.
+        m_animate = false;
+    });
 
     // Binding for property color
     m_color.setBinding([this]() {

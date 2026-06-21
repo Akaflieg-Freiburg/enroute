@@ -35,22 +35,29 @@ MapQuickItem {
     visible: trafficInfo.relevant
 
     sourceItem: Item {
-        rotation: {
-            if (traffic1MapItem.trafficInfo.type === TrafficFactor_Abstract.Balloon)
-                return 0
-            if (traffic1MapItem.trafficInfo.type === TrafficFactor_Abstract.StaticObstacle)
-                return 0
-            if (!traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite())
-                return 0
-            return traffic1MapItem.trafficInfo.positionInfo.trueTrack().toDEG() - traffic1MapItem.bearing
-        }
-        Behavior on rotation {
+        // Does this traffic have a meaningful heading to point at?
+        readonly property bool hasHeading:
+               traffic1MapItem.trafficInfo.type !== TrafficFactor_Abstract.Balloon
+            && traffic1MapItem.trafficInfo.type !== TrafficFactor_Abstract.StaticObstacle
+            && traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite()
+
+        // The traffic's own heading, in degrees. ONLY this is animated, so that
+        // heading changes are smoothed but map rotation is not.
+        property double trueTrackDEG: hasHeading
+            ? traffic1MapItem.trafficInfo.positionInfo.trueTrack().toDEG()
+            : 0
+        Behavior on trueTrackDEG {
             RotationAnimation {
                 direction: RotationAnimation.Shortest
                 duration: 1000
             }
             enabled: traffic1MapItem.trafficInfo.animate
         }
+
+        // Screen rotation. The map bearing is applied here, live and un-animated,
+        // so that rotating the map tracks the traffic immediately; only the
+        // traffic's own heading (trueTrackDEG) is animated.
+        rotation: hasHeading ? trueTrackDEG - traffic1MapItem.bearing : 0
 
         Rectangle {
             opacity: 0.2

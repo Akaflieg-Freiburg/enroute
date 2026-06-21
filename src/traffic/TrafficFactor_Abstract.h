@@ -540,7 +540,9 @@ private:
     QProperty<Units::Distance> m_vDist;
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
-    // refreshed for longer than timeout.
+    // refreshed for longer than "lifetime". The "valid" binding reads
+    // lifetimeCounter.isActive(); QTimer notifies that (bindable) property when the
+    // single-shot timer expires, so the binding reacts to expiry automatically.
     QTimer lifetimeCounter;
 };
 

@@ -68,11 +68,10 @@ AppWindow {
         // showing when it opened — which, after navigating to a new page, steals
         // focus back from the freshly-pushed page. Once fully closed, hand focus
         // to the current page's preferred control instead (if it declares one).
-        onClosed: {
-            const item = stackView.currentItem
-            if (item && item.defaultFocusItem)
-                item.defaultFocusItem.forceActiveFocus()
-        }
+        // Closing the drawer restores active focus to the page that was showing
+        // when it opened, stealing it back from a freshly-pushed page. Re-assert
+        // the current page's preferred focus once the drawer has fully closed.
+        onClosed: stackView.focusCurrentPage()
 
         DecoratedScrollView {
             anchors.fill: parent
@@ -655,6 +654,16 @@ AppWindow {
         id: stackView
 
         initialItem: "pages/MapPage.qml"
+
+        // A Page is a Control, not a FocusScope, so giving it active focus stops
+        // at the page and never reaches the control inside it. Pages that want a
+        // specific control focused on appearance expose it as defaultFocusItem;
+        // focus it here whenever the current page changes (push/pop).
+        function focusCurrentPage() {
+            if (currentItem && currentItem.defaultFocusItem)
+                currentItem.defaultFocusItem.forceActiveFocus()
+        }
+        onCurrentItemChanged: focusCurrentPage()
 
         // Need to explain
         x: 0

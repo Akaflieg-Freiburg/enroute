@@ -32,14 +32,12 @@ Page {
     title: qsTr("Nearby Waypoints")
     focus: true
 
-    // Control that should receive active focus when this page becomes current.
-    // The navigation Drawer hands focus here once it finishes closing (see
-    // main.qml), and onActivated covers navigation paths that skip the drawer.
+    // Control that receives active focus when this page becomes current in the
+    // StackView. The navigation layer (main.qml) reads this and focuses it on
+    // push and after the drawer closes; pages that don't set it are unaffected.
     property Item defaultFocusItem: adList
 
     header: StandardHeader {}
-
-    StackView.onActivated: if (defaultFocusItem) defaultFocusItem.forceActiveFocus()
 
 
     TabBar {

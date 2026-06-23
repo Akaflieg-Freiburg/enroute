@@ -87,6 +87,19 @@ ListView {
 
     focus: true
 
+    // Return/Enter act like a click on the highlighted item. Delegates opt in by
+    // exposing a clicked() signal (e.g. WaypointDelegate); lists whose delegates
+    // do not have one are unaffected and let the key event propagate.
+    Keys.onReturnPressed: (event) => listView.activateCurrentItem(event)
+    Keys.onEnterPressed: (event) => listView.activateCurrentItem(event)
+
+    function activateCurrentItem(event) {
+        if (listView.currentItem && listView.currentItem.clicked) {
+            listView.currentItem.clicked()
+            event.accepted = true
+        }
+    }
+
     Shortcut {
         sequences: [StandardKey.MoveToEndOfDocument]
         onActivated: listView.currentIndex = listView.count-1

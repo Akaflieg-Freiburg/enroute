@@ -28,6 +28,17 @@ Item {
 
     required property waypoint waypoint
 
+    // Emitted on a mouse/touch click and when the enclosing DecoratedListView
+    // turns a Return/Enter key press into a click on the highlighted item.
+    signal clicked()
+
+    onClicked: {
+        PlatformAdaptor.vibrateBrief()
+        wpDescriptionLoader.active = false
+        wpDescriptionLoader.setSource("../dialogs/WaypointDescription.qml", { waypoint: waypointDelegate.waypoint })
+        wpDescriptionLoader.active = true
+    }
+
     Observer {
         id: weatherStation
         waypoint: waypointDelegate.waypoint
@@ -65,12 +76,7 @@ Item {
             return result
         }
 
-        onClicked: {
-            PlatformAdaptor.vibrateBrief()
-            wpDescriptionLoader.active = false
-            wpDescriptionLoader.setSource("../dialogs/WaypointDescription.qml", { waypoint: waypointDelegate.waypoint })
-            wpDescriptionLoader.active = true
-        }
+        onClicked: waypointDelegate.clicked()
     }
 
     Loader {

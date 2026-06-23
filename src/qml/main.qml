@@ -64,6 +64,16 @@ AppWindow {
         Material.roundedScale: Material.NotRounded
         topPadding: 0
 
+        // When the drawer closes it restores active focus to the page that was
+        // showing when it opened — which, after navigating to a new page, steals
+        // focus back from the freshly-pushed page. Once fully closed, hand focus
+        // to the current page's preferred control instead (if it declares one).
+        onClosed: {
+            const item = stackView.currentItem
+            if (item && item.defaultFocusItem)
+                item.defaultFocusItem.forceActiveFocus()
+        }
+
         DecoratedScrollView {
             anchors.fill: parent
 

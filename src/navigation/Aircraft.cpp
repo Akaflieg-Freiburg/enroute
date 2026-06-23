@@ -233,6 +233,7 @@ QString Navigation::Aircraft::loadFromJSON(const QByteArray &JSON)
     }
 
     setCabinPressureEqualsStaticPressure( content[QStringLiteral("cabinPressureEqualsStaticPressure")].toBool(false) );
+    setCruiseAltitude( Units::Distance::fromM( content[QStringLiteral("cruiseAltitude_m")].toDouble(NAN) ));
     setCruiseSpeed( Units::Speed::fromMPS( content[QStringLiteral("cruiseSpeed_mps")].toDouble(NAN) ));
     setDescentSpeed( Units::Speed::fromMPS( content[QStringLiteral("descentSpeed_mps")].toDouble(NAN) ));
     setFuelConsumption( Units::VolumeFlow::fromLPH( content[QStringLiteral("fuelConsumption_lph")].toDouble(NAN) ));
@@ -274,6 +275,7 @@ QByteArray Navigation::Aircraft::toJSON() const
     jsonObj.insert(QStringLiteral("content"), "aircraft");
 
     jsonObj.insert(QStringLiteral("cabinPressureEqualsStaticPressure"), m_cabinPressureEqualsStaticPressure);
+    jsonObj.insert(QStringLiteral("cruiseAltitude_m"), m_cruiseAltitude.toM());
     jsonObj.insert(QStringLiteral("cruiseSpeed_mps"), m_cruiseSpeed.toMPS());
     jsonObj.insert(QStringLiteral("descentSpeed_mps"), m_descentSpeed.toMPS());
     jsonObj.insert(QStringLiteral("fuelConsumption_lph"), m_fuelConsumption.toLPH());

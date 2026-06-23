@@ -39,6 +39,14 @@ Page {
     property angle staticAngle
     property speed staticSpeed
 
+    // Bumped whenever a planned altitude changes, so the per-row altitude
+    // labels (bound to the Q_INVOKABLE plannedAltitude) re-evaluate.
+    property int plannedAltRevision: 0
+    Connections {
+        target: Navigator.flightRoute
+        function onPlannedAltitudesChanged() { flightRoutePage.plannedAltRevision++ }
+    }
+
     Component {
         id: waypointComponent
 
@@ -53,6 +61,42 @@ Page {
             WaypointDelegate {
                 Layout.fillWidth: true
                 waypoint: waypointLayout.waypoint
+            }
+
+            ToolButton {
+                id: altButton
+
+                // Resolved planned altitude in meters: stored value, else the
+                // aircraft default. NaN if neither is set.
+                readonly property double resolvedM: {
+                    flightRoutePage.plannedAltRevision // dependency
+                    var m = Navigator.flightRoute.plannedAltitude(waypointLayout.index)
+                    if (!isNaN(m)) return m
+                    return Navigator.aircraft.cruiseAltitudeM
+                }
+                readonly property bool isDefault: {
+                    flightRoutePage.plannedAltRevision // dependency
+                    return isNaN(Navigator.flightRoute.plannedAltitude(waypointLayout.index))
+                }
+
+                contentItem: Label {
+                    text: {
+                        if (isNaN(altButton.resolvedM)) return "––"
+                        if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters)
+                            return Math.round(altButton.resolvedM) + " m"
+                        return Math.round(altButton.resolvedM * 3.281) + " ft"
+                    }
+                    color: altButton.isDefault ? "#808080" : Global.flightRouteColor
+                    font.pixelSize: flightRoutePage.font.pixelSize*0.9
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    altEditor.index = waypointLayout.index
+                    altEditor.open()
+                }
             }
 
             ToolButton {
@@ -152,6 +196,7 @@ Page {
             id: grid
 
             property leg leg: ({});
+            property int legIndex: -1
 
             Layout.fillWidth: true
 
@@ -163,10 +208,44 @@ Page {
                     // Mention units
                     Navigator.aircraft.horizontalDistanceUnit
                     Navigator.aircraft.fuelConsumptionUnit
+                    // Re-evaluate when the wind field, altitudes or departure change
+                    Navigator.windSource
+                    Navigator.departureTime
+                    flightRoutePage.plannedAltRevision
 
                     if (leg == null)
                         return ""
-                    return leg.description(Navigator.wind, Navigator.aircraft)
+
+                    // ETA-aware, wind-integrated nav for this leg (4-D field
+                    // sampling along the leg, altitude ramp between waypoints,
+                    // advancing clock; falls back to manual wind internally).
+                    var nav = Navigator.flightRoute.legNav(
+                        grid.legIndex, Navigator.windField(), Navigator.wind,
+                        Navigator.aircraft, Navigator.departureTime)
+                    var wind = nav.wind
+
+                    var txt = Navigator.aircraft.horizontalDistanceToString(leg.distance)
+
+                    if (nav.ete !== undefined && nav.ete.isFinite())
+                        txt += " • ETE " + nav.ete.toHoursAndMinutes() + " h"
+
+                    var tcDeg = leg.TC.toDEG()
+                    if (!isNaN(tcDeg))
+                        txt += " • TC " + Math.round(tcDeg) + "°"
+
+                    var thDeg = leg.TH(wind, Navigator.aircraft).toDEG()
+                    if (!isNaN(thDeg))
+                        txt += " • TH " + Math.round(thDeg) + "°"
+
+                    if (nav.gs !== undefined && nav.gs.isFinite())
+                        txt += " • GS " + Navigator.aircraft.horizontalSpeedToString(nav.gs)
+
+                    if (wind !== undefined && wind.speed.isFinite() && wind.directionFrom.isFinite() && wind.speed.toKN() > 0.5) {
+                        var dir = Math.round(wind.directionFrom.toDEG())
+                        txt += " • W/V " + dir + "°/" + Navigator.aircraft.horizontalSpeedToString(wind.speed)
+                    }
+
+                    return txt
                 }
             }
 
@@ -497,8 +576,38 @@ Page {
                 text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
 
+            // Wind-source banner: shows when a server wind field is loaded, and
+            // warns when it is stale (computation falls back to manual wind).
+            Rectangle {
+                id: windBanner
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+
+                visible: WindFieldProvider.hasData
+                height: visible ? windBannerLabel.implicitHeight + 12 : 0
+
+                color: WindFieldProvider.isStale ? "#fff3cd" : "#d1e7dd"
+
+                Label {
+                    id: windBannerLabel
+                    anchors.centerIn: parent
+                    width: parent.width - 24
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.Wrap
+                    color: "black"
+                    text: WindFieldProvider.isStale
+                        ? qsTr("Wind field stale — using manual wind")
+                        : qsTr("Using wind field, departure %1")
+                            .arg((function() { var d = new Date(Navigator.departureTime); return ("0"+d.getUTCDate()).slice(-2) + ("0"+d.getUTCHours()).slice(-2) + ("0"+d.getUTCMinutes()).slice(-2) + "Z" }()))
+                }
+            }
+
             DecoratedScrollView {
-                anchors.fill: parent
+                anchors.top: windBanner.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
 
                 contentWidth: availableWidth
 
@@ -537,7 +646,7 @@ Page {
                             var legs = Navigator.flightRoute.legs
                             var j
                             for (j=0; j<legs.length; j++) {
-                                legComponent.createObject(co, {leg: legs[j]});
+                                legComponent.createObject(co, {leg: legs[j], legIndex: j});
                                 waypointComponent.createObject(co, {waypoint: legs[j].endPoint, index: j+1});
                             }
                         }
@@ -957,6 +1066,44 @@ Page {
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             Navigator.flightRoute.replaceWaypoint(index, newWP)
             wpEditor.close()
+        }
+    }
+
+    CenteringDialog {
+        id: altEditor
+
+        property int index: -1 // Index of waypoint in flight route
+
+        title: qsTr("Planned Altitude")
+        modal: true
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        onAboutToShow: {
+            var m = Navigator.flightRoute.plannedAltitude(altEditor.index)
+            altField.valueMeter = isNaN(m) ? Navigator.aircraft.cruiseAltitudeM : m
+        }
+
+        ColumnLayout {
+            width: parent.width
+
+            Label {
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+                text: qsTr("Planned cruise altitude at this waypoint. Leave empty to use the aircraft's default cruise altitude.")
+            }
+
+            ElevationInput {
+                id: altField
+                Layout.fillWidth: true
+                currentIndex: Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? 1 : 0
+                onAccepted: altEditor.accept()
+            }
+        }
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            altField.commit()
+            Navigator.flightRoute.setPlannedAltitude(altEditor.index, altField.valueMeter)
         }
     }
 } // Page

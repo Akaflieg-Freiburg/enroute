@@ -40,6 +40,38 @@ Map {
     */
     property real pixelPer10km: 0.0
 
+    /*! \brief Show METAR weather layer (flight category dots + wind barbs) */
+    property bool showWeatherLayer: false
+
+    /*! \brief Show Météo-France rain forecast layer */
+    property bool showRainLayer: false
+
+    /*! \brief Show Météo-France cloud base forecast layer */
+    property bool showCloudbaseLayer: false
+
+    /*! \brief Show wind forecast layer (client-drawn vector barbs).
+        Bound to the global setting so the map and side view share one toggle. */
+    property bool showWindLayer: GlobalSettings.showWindLayer
+
+    /*! \brief Declutter toggles, persisted globally */
+    property bool showWaypointsLayer: GlobalSettings.showWaypointsLayer
+    property bool showWaypointLibrary: GlobalSettings.showWaypointLibrary
+    property bool showNotamLayer: GlobalSettings.showNotamLayer
+    property bool showUltralightFields: GlobalSettings.showUltralightFields
+    property bool showAirspacesLayer: GlobalSettings.showAirspacesLayer
+
+    /*! \brief Altitude (ft) at which the wind-barb layer samples the wind field */
+    property real windAltitudeFt: 3000
+
+    /*! \brief Forecast time driving the wind-barb layer (from the layer-menu time slider) */
+    property var windForecastTime: {
+        var ts = ForecastMapProvider.timestamps
+        var i = ForecastMapProvider.currentIndex
+        if (ts && ts.length > 0 && i >= 0 && i < ts.length)
+            return new Date(ts[i])
+        return new Date()
+    }
+
     /* Handle changes in zoom level */
     onZoomLevelChanged: {
         var vec1 = flightMap.fromCoordinate(flightMap.center, false)
@@ -70,6 +102,25 @@ Map {
 
     property real animatedTT: PositionProvider.lastValidTT.toDEG()
     Behavior on animatedTT { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
+
+    Connections {
+        target: GlobalSettings
+        function onShowWaypointsLayerChanged() {
+            flightMap.showWaypointsLayer = GlobalSettings.showWaypointsLayer
+        }
+        function onShowWaypointLibraryChanged() {
+            flightMap.showWaypointLibrary = GlobalSettings.showWaypointLibrary
+        }
+        function onShowNotamLayerChanged() {
+            flightMap.showNotamLayer = GlobalSettings.showNotamLayer
+        }
+        function onShowUltralightFieldsChanged() {
+            flightMap.showUltralightFields = GlobalSettings.showUltralightFields
+        }
+        function onShowAirspacesLayerChanged() {
+            flightMap.showAirspacesLayer = GlobalSettings.showAirspacesLayer
+        }
+    }
 
     MapLibre.style: Style {
         id: style
@@ -107,6 +158,31 @@ Map {
 
         }
 
+        // Météo-France forecast image sources (fixed bounding box: 10W–15E, 38N–55N)
+        SourceParameter {
+            id: forecastRainSource
+            styleId: "forecastRain"
+            type: "image"
+            property string url: ForecastMapProvider.currentRainMap !== "" ? "file://" + ForecastMapProvider.currentRainMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
+        }
+
+        SourceParameter {
+            id: forecastCloudbaseSource
+            styleId: "forecastCloudbase"
+            type: "image"
+            property string url: ForecastMapProvider.currentCloudbaseMap !== "" ? "file://" + ForecastMapProvider.currentCloudbaseMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
+        }
+
+        SourceParameter {
+            id: forecastWindSource
+            styleId: "forecastWind"
+            type: "image"
+            property string url: ForecastMapProvider.currentWindMap !== "" ? "file://" + ForecastMapProvider.currentWindMap : "qrc:/icons/appIcon.png"
+            property var coordinates: [[-10, 55], [15, 55], [15, 38], [-10, 38]]
+        }
+
         SourceParameter {
             id: waypointLib
 
@@ -135,6 +211,22 @@ Map {
 
         // Map layers, sorted according to importance, from low to high
 
+        // Raster base map (e.g. a contour-elevation chart). Kept at the bottom
+        // of the aviation stack so that airfields, waypoints and airspaces draw
+        // on top of it instead of being hidden underneath.
+        LayerParameter {
+            id: rasterTileLayer
+
+            styleId: "rasterTileLayer"
+            type: "raster"
+            property string source: "rasterTiles"
+
+            layout: {
+                "visibility": 'visible',
+                "raster-resampling": 'linear'
+            }
+        }
+
         LayerParameter {
             id:  airspaceLabels
 
@@ -146,6 +238,7 @@ Map {
             property string metadata: '{}'
 
             layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none',
                 "symbol-placement": "line",
                 "text-allow-overlap": false,
                 "text-anchor": "center",
@@ -221,6 +314,7 @@ Map {
             property var filter: ["==", ["get", "TYP"], "NAV"]
 
             layout: {
+                "visibility": flightMap.showWaypointsLayer ? 'visible' : 'none',
                 "text-field": ["get", "COD"],
                 "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
@@ -260,6 +354,13 @@ Map {
             }
         }
 
+        FilterParameter {
+            styleId: "WPs"
+            expression: flightMap.showUltralightFields
+                ? ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
+                : ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-WATER"]]
+        }
+
         LayerParameter {
             id: rps
 
@@ -270,6 +371,7 @@ Map {
             property var filter: ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]]
 
             layout: {
+                "visibility": flightMap.showWaypointsLayer ? 'visible' : 'none',
                 "icon-image": ["get", "CAT"],
                 "text-field": ["get", "SCO"],
                 "text-size": 0.85*GlobalSettings.fontSize,
@@ -322,6 +424,7 @@ Map {
             property var filter: ["==", ["get", "TYP"], "NAV"]
 
             layout: {
+                "visibility": flightMap.showWaypointsLayer ? 'visible' : 'none',
                 "icon-image": ["get", "CAT"],
                 "icon-ignore-placement": true,
                 "icon-allow-overlap": true
@@ -362,9 +465,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "FIR"], ["==", ["get", "CAT"], "FIS"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "green",
-                "line-width": 1.5
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.4, 9, 1.2, 12, 2.0]
             }
         }
 
@@ -375,9 +482,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "SUA"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "red",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0]
             }
         }
@@ -388,6 +499,10 @@ Map {
             type: "fill"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "GLD"]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "fill-color": "yellow",
@@ -402,9 +517,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "GLD"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "yellow",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-opacity": 0.8
             }
         }
@@ -415,6 +534,10 @@ Map {
             type: "fill"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "fill-color": "blue",
@@ -429,9 +552,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "blue",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [3.0, 3.0]
             }
         }
@@ -443,9 +570,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "TMZ"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "black",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0, 0.5, 3.0]
             }
         }
@@ -457,9 +588,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "PJE"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "red",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0]
             }
         }
@@ -471,9 +606,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "blue",
-                "line-width": 2
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5]
             }
         }
 
@@ -484,11 +623,15 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "blue",
                 "line-opacity": 0.2,
-                "line-width": 7,
-                "line-offset": 3.5
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1.5, 9, 4.0, 12, 8.0],
+                "line-offset": ["interpolate", ["linear"], ["zoom"], 6, 0.75, 9, 2.0, 12, 4.0]
             }
         }
 
@@ -499,9 +642,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "E"], ["==", ["get", "CAT"], "F"], ["==", ["get", "CAT"], "G"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "blue",
-                "line-width": 2
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5]
             }
         }
 
@@ -511,6 +658,10 @@ Map {
             type: "fill"
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "CTR"]]
+
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
 
             paint: {
                 "fill-color": "red",
@@ -525,9 +676,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "CTR"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "blue",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0]
             }
         }
@@ -539,9 +694,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "NRA"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "green",
-                "line-width": 2
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5]
             }
         }
 
@@ -552,11 +711,15 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "NRA"]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "green",
                 "line-opacity": 0.2,
-                "line-width": 7,
-                "line-offset": 3.5
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1.5, 9, 4.0, 12, 8.0],
+                "line-offset": ["interpolate", ["linear"], ["zoom"], 6, 0.75, 9, 2.0, 12, 4.0]
             }
         }
 
@@ -567,9 +730,13 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "red",
-                "line-width": 2,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 0.5, 9, 1.5, 12, 2.5],
                 "line-dasharray": [4.0, 3.0]
             }
         }
@@ -581,11 +748,15 @@ Map {
             property string source: "aviation-data"
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
 
+            layout: {
+                "visibility": flightMap.showAirspacesLayer ? 'visible' : 'none'
+            }
+
             paint: {
                 "line-color": "red",
                 "line-opacity": 0.2,
-                "line-width": 7,
-                "line-offset": 3.5
+                "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1.5, 9, 4.0, 12, 8.0],
+                "line-offset": ["interpolate", ["linear"], ["zoom"], 6, 0.75, 9, 2.0, 12, 4.0]
             }
         }
 
@@ -599,7 +770,7 @@ Map {
 
             paint: {
                 "line-color": ["get", "GAC"],
-                "line-width": 3.0,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 8, 0.8, 10, 2.0, 13, 3.5],
                 "line-dasharray": [3.0, 3.0]
             }
         }
@@ -614,7 +785,7 @@ Map {
 
             paint: {
                 "line-color": ["get", "GAC"],
-                "line-width": 3.0,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 8, 0.8, 10, 2.0, 13, 3.5],
                 "line-dasharray": [9.0, 3.0]
             }
         }
@@ -629,20 +800,7 @@ Map {
 
             paint: {
                 "line-color": ["get", "GAC"],
-                "line-width": 3.0
-            }
-        }
-
-        LayerParameter {
-            id: rasterTileLayer
-
-            styleId: "rasterTileLayer"
-            type: "raster"
-            property string source: "rasterTiles"
-
-            layout: {
-                "visibility": 'visible', // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
-                "raster-resampling": 'linear'
+                "line-width": ["interpolate", ["linear"], ["zoom"], 8, 0.8, 10, 2.0, 13, 3.5]
             }
         }
 
@@ -667,6 +825,7 @@ Map {
             property string source: "waypointlib"
 
             layout: {
+                "visibility": (flightMap.showWindLayer || !flightMap.showWaypointLibrary) ? 'none' : 'visible',
                 "icon-image": '["get", "CAT"]',
                 "text-field": '["get", "NAM"]',
                 "text-size": 0.85*GlobalSettings.fontSize,
@@ -691,6 +850,7 @@ Map {
             property string source: "notams"
 
             layout: {
+                "visibility": (flightMap.showWindLayer || !flightMap.showNotamLayer) ? 'none' : 'visible',
                 "icon-ignore-placement": true,
                 "icon-image": ["get", "CAT"],
                 "text-field": ["get", "NAM"],
@@ -706,6 +866,39 @@ Map {
                 "text-halo-color": "white"
             }
         }
+
+        // White veil between OFM tiles and forecast layers — dims the chart when wind is active
+        LayerParameter {
+            styleId: "ofmDimmer"
+            type: "background"
+            layout: { "visibility": flightMap.showWindLayer ? 'visible' : 'none' }
+            paint: { "background-color": "white", "background-opacity": 0.68 }
+        }
+
+        LayerParameter {
+            id: forecastCloudbaseLayer
+            styleId: "forecastCloudbaseLayer"
+            type: "raster"
+            property string source: "forecastCloudbase"
+            layout: { "visibility": flightMap.showCloudbaseLayer && ForecastMapProvider.currentCloudbaseMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastWindLayer
+            styleId: "forecastWindLayer"
+            type: "raster"
+            property string source: "forecastWind"
+            layout: { "visibility": flightMap.showWindLayer && ForecastMapProvider.currentWindMap !== "" ? 'visible' : 'none' }
+        }
+
+        LayerParameter {
+            id: forecastRainLayer
+            styleId: "forecastRainLayer"
+            type: "raster"
+            property string source: "forecastRain"
+            layout: { "visibility": flightMap.showRainLayer && ForecastMapProvider.currentRainMap !== "" ? 'visible' : 'none' }
+        }
+
     }
 
 
@@ -796,12 +989,69 @@ Map {
     MapPolyline {
         id: flightPath
         line.width: 4
-        line.color: "#ff00ff"
+        line.color: Global.flightRouteColor
         path: {
             var array = []
             //Looks weird, but is necessary. geoPath is an 'object' not an array
             Navigator.flightRoute.geoPath.forEach(element => array.push(element))
             return array
+        }
+    }
+
+    // Chevron arrows every ~50 km along the flight route.
+    MapItemView {
+        model: {
+            var pts = []
+            Navigator.flightRoute.geoPath.forEach(element => pts.push(element))
+            if (pts.length < 2) return []
+            var spacingM = 50000
+            var arrows = []
+            // distToNext: meters until the next chevron, measured from the start of the current segment
+            var distToNext = spacingM / 2
+            for (var i = 1; i < pts.length; i++) {
+                var segLen = pts[i-1].distanceTo(pts[i])
+                if (segLen < 1) continue
+                var bearing = pts[i-1].azimuthTo(pts[i])
+                // Mercator helpers — interpolate in projection space to match MapLibre rendering
+                var lat1 = pts[i-1].latitude,  lon1 = pts[i-1].longitude
+                var lat2 = pts[i].latitude,     lon2 = pts[i].longitude
+                var my1 = Math.log(Math.tan(Math.PI/4 + lat1 * Math.PI/360))
+                var my2 = Math.log(Math.tan(Math.PI/4 + lat2 * Math.PI/360))
+                var pos = distToNext
+                while (pos <= segLen) {
+                    var t = pos / segLen
+                    var lon = lon1 + t * (lon2 - lon1)
+                    var my  = my1  + t * (my2  - my1)
+                    var lat = (2 * Math.atan(Math.exp(my)) - Math.PI/2) * 180 / Math.PI
+                    arrows.push({coordinate: QtPositioning.coordinate(lat, lon), bearing: bearing})
+                    pos += spacingM
+                }
+                distToNext = pos - segLen  // always positive: remaining gap into next segment
+            }
+            return arrows
+        }
+
+        delegate: MapQuickItem {
+            required property var modelData
+            coordinate: modelData.coordinate
+            anchorPoint.x: 8
+            anchorPoint.y: 8
+            sourceItem: Canvas {
+                width: 16; height: 16
+                onPaint: {
+                    var ctx = getContext("2d")
+                    ctx.clearRect(0, 0, width, height)
+                    ctx.strokeStyle = Global.flightRouteColor
+                    ctx.lineWidth = 2
+                    ctx.translate(8, 8)
+                    // bearing: 0=north, clockwise. Canvas 0=east, clockwise. Offset -90°.
+                    ctx.rotate((modelData.bearing - 90) * Math.PI / 180)
+                    ctx.beginPath()
+                    ctx.moveTo(-6, -5); ctx.lineTo(6, 0); ctx.lineTo(-6, 5)
+                    ctx.stroke()
+                }
+                Component.onCompleted: requestPaint()
+            }
         }
     }
 
@@ -934,6 +1184,223 @@ Map {
         id: midFieldWaypoints
         model: Navigator.flightRoute.midFieldWaypoints
         delegate: waypointComponent
+    }
+
+    ObserverList {
+        id: weatherObservers
+    }
+
+    MapItemView { // METAR flight category dots and wind barbs
+        visible: flightMap.showWeatherLayer
+        model: weatherObservers.observers
+        delegate: Component {
+            MapQuickItem {
+                id: metarItem
+
+                property var obs: modelData
+                property var met: obs.metar
+                onMetChanged: metarCanvas.requestPaint()
+
+                anchorPoint.x: 40
+                anchorPoint.y: 40
+                coordinate: met.coordinate
+                visible: met.isValid
+
+                sourceItem: Canvas {
+                    id: metarCanvas
+                    width: 80
+                    height: 80
+
+                    onPaint: {
+                        var ctx = getContext("2d")
+                        ctx.clearRect(0, 0, width, height)
+
+                        // Flight category dot with transparency
+                        var dotColor = met.flightCategoryColor === "transparent" ? "gray" : met.flightCategoryColor
+                        ctx.beginPath()
+                        ctx.arc(40, 40, 12, 0, 2*Math.PI)
+                        ctx.globalAlpha = 0.55
+                        ctx.fillStyle = dotColor
+                        ctx.fill()
+                        ctx.globalAlpha = 1.0
+                        ctx.strokeStyle = "white"
+                        ctx.lineWidth = 2
+                        ctx.stroke()
+
+                        // Wind barb
+                        if (!met.windSpeed.isFinite() || !met.windDirection.isFinite()) return
+                        var spd = met.windSpeed.toKN()
+                        if (spd < 1) return
+
+                        var dirRad = met.windDirection.toRAD() // staff points toward wind source; barbs drawn at tip
+                        var cx = 40, cy = 40
+                        var len = 32
+                        var ex = cx + len * Math.sin(dirRad)
+                        var ey = cy - len * Math.cos(dirRad)
+
+                        // Staff
+                        ctx.beginPath()
+                        ctx.moveTo(cx, cy)
+                        ctx.lineTo(ex, ey)
+                        ctx.strokeStyle = "black"
+                        ctx.lineWidth = 2
+                        ctx.stroke()
+
+                        // Barbs: each full barb = 10 kt, half barb = 5 kt, pennant = 50 kt
+                        var remaining = Math.round(spd)
+                        var perpX = Math.cos(dirRad)
+                        var perpY = Math.sin(dirRad)
+                        var bx = ex, by = ey
+                        var stepX = -Math.sin(dirRad) * 6
+                        var stepY =  Math.cos(dirRad) * 6
+                        var barbLen = 13
+
+                        // Pennants (50 kt)
+                        while (remaining >= 50) {
+                            ctx.beginPath()
+                            ctx.moveTo(bx, by)
+                            ctx.lineTo(bx + stepX*2 + perpX*barbLen, by + stepY*2 + perpY*barbLen)
+                            ctx.lineTo(bx + stepX*2, by + stepY*2)
+                            ctx.closePath()
+                            ctx.fillStyle = "black"
+                            ctx.fill()
+                            bx += stepX*2; by += stepY*2
+                            remaining -= 50
+                        }
+                        // Full barbs (10 kt)
+                        while (remaining >= 10) {
+                            ctx.beginPath()
+                            ctx.moveTo(bx, by)
+                            ctx.lineTo(bx + perpX*barbLen, by + perpY*barbLen)
+                            ctx.strokeStyle = "black"
+                            ctx.lineWidth = 2
+                            ctx.stroke()
+                            bx += stepX; by += stepY
+                            remaining -= 10
+                        }
+                        // Half barb (5 kt)
+                        if (remaining >= 5) {
+                            ctx.beginPath()
+                            ctx.moveTo(bx, by)
+                            ctx.lineTo(bx + perpX*barbLen*0.5, by + perpY*barbLen*0.5)
+                            ctx.stroke()
+                        }
+                    }
+
+                    Component.onCompleted: requestPaint()
+                }
+            }
+        }
+    }
+
+    MapItemView { // Wind field barbs — disabled; wind is now a server-side PNG raster layer
+        id: windBarbLayer
+        visible: false
+        model: []
+        delegate: MapQuickItem {
+            id: windItem
+
+            required property var modelData
+
+            // Grid is ~0.5°; show a coarser subset as we zoom out to avoid clutter
+            readonly property real thinStep: flightMap.zoomLevel >= 8.5 ? 0.5
+                                           : flightMap.zoomLevel >= 6.5 ? 1.0 : 2.0
+            readonly property bool showHere: {
+                var rl = modelData.lat / thinStep
+                var ro = modelData.lon / thinStep
+                return Math.abs(rl - Math.round(rl)) < 0.05 && Math.abs(ro - Math.round(ro)) < 0.05
+            }
+
+            // Native grid value at the nearest forecast step (no interpolation);
+            // only computed for points actually shown at this zoom level.
+            property var wind: showHere
+                ? WindFieldProvider.windAtStep(modelData.lat, modelData.lon, flightMap.windAltitudeFt, flightMap.windForecastTime)
+                : null
+            onWindChanged: windCanvas.requestPaint()
+
+            coordinate: QtPositioning.coordinate(modelData.lat, modelData.lon)
+            anchorPoint.x: 40
+            anchorPoint.y: 40
+            visible: showHere && wind && wind.speed.isFinite() && wind.directionFrom.isFinite()
+
+            sourceItem: Canvas {
+                id: windCanvas
+                width: 80
+                height: 80
+
+                onPaint: {
+                    var ctx = getContext("2d")
+                    ctx.clearRect(0, 0, width, height)
+
+                    if (!windItem.wind || !windItem.wind.speed.isFinite() || !windItem.wind.directionFrom.isFinite())
+                        return
+                    var spd = windItem.wind.speed.toKN()
+
+                    var cx = 40, cy = 40
+                    // Calm: small circle
+                    if (spd < 2.5) {
+                        ctx.beginPath()
+                        ctx.arc(cx, cy, 4, 0, 2*Math.PI)
+                        ctx.strokeStyle = "#1a3a8a"
+                        ctx.lineWidth = 1.8
+                        ctx.stroke()
+                        return
+                    }
+
+                    var dirRad = windItem.wind.directionFrom.toRAD() // staff toward wind source
+                    var len = 30
+                    var ex = cx + len * Math.sin(dirRad)
+                    var ey = cy - len * Math.cos(dirRad)
+
+                    ctx.strokeStyle = "#1a3a8a"
+                    ctx.fillStyle = "#1a3a8a"
+                    ctx.lineWidth = 1.8
+
+                    // Staff
+                    ctx.beginPath()
+                    ctx.moveTo(cx, cy)
+                    ctx.lineTo(ex, ey)
+                    ctx.stroke()
+
+                    // Barbs from the tip, back toward the staff origin
+                    var remaining = Math.round(spd / 5) * 5
+                    var perpX = Math.cos(dirRad)
+                    var perpY = Math.sin(dirRad)
+                    var stepX = -Math.sin(dirRad) * 6.5
+                    var stepY =  Math.cos(dirRad) * 6.5
+                    var barbLen = 15
+                    var bx = ex, by = ey
+
+                    while (remaining >= 50) {
+                        ctx.beginPath()
+                        ctx.moveTo(bx, by)
+                        ctx.lineTo(bx + stepX*2 + perpX*barbLen, by + stepY*2 + perpY*barbLen)
+                        ctx.lineTo(bx + stepX*2, by + stepY*2)
+                        ctx.closePath()
+                        ctx.fill()
+                        bx += stepX*2; by += stepY*2
+                        remaining -= 50
+                    }
+                    while (remaining >= 10) {
+                        ctx.beginPath()
+                        ctx.moveTo(bx, by)
+                        ctx.lineTo(bx + perpX*barbLen, by + perpY*barbLen)
+                        ctx.stroke()
+                        bx += stepX; by += stepY
+                        remaining -= 10
+                    }
+                    if (remaining >= 5) {
+                        // Half barb sits one notch in from the tip if it's the only feather
+                        if (Math.round(spd) < 10) { bx += stepX; by += stepY }
+                        ctx.beginPath()
+                        ctx.moveTo(bx, by)
+                        ctx.lineTo(bx + perpX*barbLen*0.5, by + perpY*barbLen*0.5)
+                        ctx.stroke()
+                    }
+                }
+                Component.onCompleted: requestPaint()
+            }
+        }
     }
 
 } // End of FlightMap

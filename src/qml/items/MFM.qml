@@ -38,6 +38,20 @@ Item {
 
     enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
 
+    // The weather time slider doubles as the trip-start time: the selected
+    // forecast step drives Navigator.departureTime, which the route tab and the
+    // side view integrate forward from.
+    function syncDepartureTime() {
+        var ts = ForecastMapProvider.timestamps
+        var i = ForecastMapProvider.currentIndex
+        if (ts && ts.length > 0 && i >= 0 && i < ts.length)
+            Navigator.departureTime = new Date(ts[i])
+    }
+    Connections {
+        target: ForecastMapProvider
+        function onCurrentIndexChanged() { page.syncDepartureTime() }
+        function onTimestampsChanged() { page.syncDepartureTime() }
+    }
 
     Connections {
         target: DemoRunner
@@ -337,7 +351,7 @@ Item {
                     // PROPERTY "zoomLevel"
                     //
 
-                    function onZoomLevelChanged(zoomLevel) {
+                    onZoomLevelChanged: {
                         if (defaultValuesSet)
                             Global.mapZoomLevel = zoomLevel
                     }
@@ -362,7 +376,7 @@ Item {
                         zoomLevelBehavior.enabled = false
                         zoomLevel = Global.mapZoomLevelRect
                         zoomLevelBehavior.enabled = true
-                        defaultValuesSet = true;
+                        defaultValuesSet = true
                     }
                     Component.onCompleted: {                        
                         // Oddly, this is necessary, or else the system will try to reset
@@ -612,10 +626,193 @@ Item {
                         }
 
                         MapButton {
+                            id: weatherLayerButton
+
+                            checkable: true
+                            checked: flightMap.showWeatherLayer || flightMap.showRainLayer || flightMap.showCloudbaseLayer || flightMap.showWindLayer
+                            icon.source: "/icons/material/ic_cloud_queue.svg"
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                weatherMenu.popup()
+                            }
+
+                            // Cheated but pilot-friendly FL labels for the 4 AROME pressure levels
+                            function hpaToFL(hpa) {
+                                var lookup = { "1000": "FL000", "900": "FL033", "800": "FL065", "700": "FL100" }
+                                return lookup[String(Math.round(parseFloat(hpa)))] ?? ("FL" + Math.round(
+                                    (1 - Math.pow(parseFloat(hpa)/1013.25, 0.190284)) * 145366.45 / 100
+                                ).toString().padStart(3,"0"))
+                            }
+
+                            // Convert cloudbase metres to the aircraft's configured altitude unit
+                            function cbLabel(metres) {
+                                if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters)
+                                    return metres.toFixed(0) + " m"
+                                return Math.round(metres * 3.28084) + " ft"
+                            }
+
+                            AutoSizingMenu {
+                                id: weatherMenu
+
+                                CheckDelegate {
+                                    text: qsTr("METAR (flight category + wind)")
+                                    checked: flightMap.showWeatherLayer
+                                    onClicked: {
+                                        flightMap.showWeatherLayer = checked
+                                        if (checked) { WeatherDataProvider.requestUpdate() }
+                                    }
+                                }
+
+                                CheckDelegate {
+                                    text: qsTr("Rain forecast")
+                                    checked: flightMap.showRainLayer
+                                    onClicked: flightMap.showRainLayer = checked
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showRainLayer
+                                    implicitWidth: 280
+                                    topPadding: 0; bottomPadding: 6
+                                    contentItem: ColorScaleLegend {
+                                        width: parent.width
+                                        colors: ForecastMapProvider.rainColors
+                                        boundaries: ForecastMapProvider.rainBoundaries
+                                        ticks: [0.1, 1, 5, 10, 30, 100]
+                                        units: ForecastMapProvider.rainUnits
+                                    }
+                                }
+
+                                CheckDelegate {
+                                    text: qsTr("Cloud base forecast")
+                                    checked: flightMap.showCloudbaseLayer
+                                    onClicked: flightMap.showCloudbaseLayer = checked
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showCloudbaseLayer
+                                    implicitWidth: 280
+                                    topPadding: 0; bottomPadding: 6
+                                    contentItem: ColorScaleLegend {
+                                        width: parent.width
+                                        colors: ForecastMapProvider.cloudbaseColors
+                                        boundaries: ForecastMapProvider.cloudbaseBoundaries
+                                        ticks: [0, 1500, 3000, 6000]
+                                        units: ForecastMapProvider.cloudbaseUnits
+                                    }
+                                }
+
+                                CheckDelegate {
+                                    text: qsTr("Wind forecast") + (ForecastMapProvider.windPressureLevels.length > 0 ? "" : "")
+                                    checked: GlobalSettings.showWindLayer
+                                    onClicked: GlobalSettings.showWindLayer = checked
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showWindLayer && ForecastMapProvider.windPressureLevels.length > 1
+                                    implicitWidth: 280
+                                    topPadding: 0; bottomPadding: 6
+                                    contentItem: Column {
+                                        width: parent.width
+                                        spacing: 2
+                                        Label {
+                                            width: parent.width
+                                            text: weatherLayerButton.hpaToFL(ForecastMapProvider.currentWindPressureLevel)
+                                                  + "  (" + ForecastMapProvider.currentWindPressureLevel + " hPa)"
+                                            font.pixelSize: 9
+                                            horizontalAlignment: Text.AlignHCenter
+                                            opacity: 0.7
+                                        }
+                                        Slider {
+                                            width: parent.width
+                                            from: 0
+                                            to: Math.max(0, ForecastMapProvider.windPressureLevels.length - 1)
+                                            stepSize: 1
+                                            value: ForecastMapProvider.windPressureLevels.indexOf(ForecastMapProvider.currentWindPressureLevel)
+                                            onMoved: ForecastMapProvider.currentWindPressureLevel =
+                                                ForecastMapProvider.windPressureLevels[Math.round(value)]
+                                        }
+                                        Row {
+                                            width: parent.width
+                                            Repeater {
+                                                model: ForecastMapProvider.windPressureLevels
+                                                Label {
+                                                    width: parent.width / ForecastMapProvider.windPressureLevels.length
+                                                    text: weatherLayerButton.hpaToFL(modelData)
+                                                    font.pixelSize: 9
+                                                    horizontalAlignment: index === 0 ? Text.AlignLeft
+                                                        : index === ForecastMapProvider.windPressureLevels.length - 1 ? Text.AlignRight
+                                                        : Text.AlignHCenter
+                                                    opacity: ForecastMapProvider.currentWindPressureLevel === modelData ? 1.0 : 0.5
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                MenuSeparator {
+                                    visible: flightMap.showRainLayer || flightMap.showCloudbaseLayer || flightMap.showWindLayer
+                                }
+
+                                ItemDelegate {
+                                    visible: flightMap.showRainLayer || flightMap.showCloudbaseLayer || flightMap.showWindLayer
+                                    width: parent ? parent.width : 300
+                                    contentItem: Column {
+                                        spacing: 4
+                                        Label {
+                                            text: ForecastMapProvider.currentTimestampLabel
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            font.bold: true
+                                        }
+                                        Slider {
+                                            width: parent.width
+                                            from: 0
+                                            to: Math.max(0, ForecastMapProvider.timestamps.length - 1)
+                                            stepSize: 1
+                                            value: ForecastMapProvider.currentIndex
+                                            onMoved: ForecastMapProvider.currentIndex = Math.round(value)
+                                        }
+                                        Label {
+                                            visible: ForecastMapProvider.referenceTimeLabel !== ""
+                                            text: "AROME " + ForecastMapProvider.referenceTimeLabel
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            font.pixelSize: parent.font ? parent.font.pixelSize * 0.85 : 11
+                                            opacity: 0.7
+                                        }
+                                        Label {
+                                            text: "© Météo-France"
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            font.pixelSize: parent.font ? parent.font.pixelSize * 0.8 : 10
+                                            opacity: 0.5
+                                        }
+                                    }
+                                }
+
+                                MenuSeparator {}
+
+                                ItemDelegate {
+                                    width: parent ? parent.width : 300
+                                    contentItem: Row {
+                                        spacing: 8
+                                        ToolButton {
+                                            icon.source: "/icons/material/ic_refresh.svg"
+                                            enabled: ForecastMapProvider.status !== 1  // not Refreshing
+                                            onClicked: { ForecastMapProvider.refresh(); WindFieldProvider.refresh() }
+                                        }
+                                        Label {
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            text: ForecastMapProvider.lastRefreshLabel
+                                            color: ForecastMapProvider.status === 2 ? "red" : palette.text  // Error
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        MapButton {
                             id: rasterMapButton
 
                             icon.source: "/icons/material/ic_layers.svg"
-                            visible: GeoMapProvider.availableRasterMaps.length !== 0
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
@@ -626,6 +823,51 @@ Item {
                             AutoSizingMenu {
                                 id: rasterMenu
                                 cascade: true
+
+                                CheckDelegate {
+                                    text: qsTr("Waypoints & navaids")
+                                    checked: GlobalSettings.showWaypointsLayer
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showWaypointsLayer = checked
+                                    }
+                                }
+                                CheckDelegate {
+                                    text: qsTr("User waypoints")
+                                    checked: GlobalSettings.showWaypointLibrary
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showWaypointLibrary = checked
+                                    }
+                                }
+                                CheckDelegate {
+                                    text: qsTr("NOTAMs")
+                                    checked: GlobalSettings.showNotamLayer
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showNotamLayer = checked
+                                    }
+                                }
+                                CheckDelegate {
+                                    text: qsTr("Ultralight airfields")
+                                    checked: GlobalSettings.showUltralightFields
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showUltralightFields = checked
+                                    }
+                                }
+                                CheckDelegate {
+                                    text: qsTr("Airspaces")
+                                    checked: GlobalSettings.showAirspacesLayer
+                                    onClicked: {
+                                        PlatformAdaptor.vibrateBrief()
+                                        GlobalSettings.showAirspacesLayer = checked
+                                    }
+                                }
+
+                                MenuSeparator {
+                                    visible: GeoMapProvider.availableRasterMaps.length !== 0
+                                }
 
                                 Instantiator {
                                     id: recentFilesInstantiator
@@ -638,12 +880,11 @@ Item {
                                             PlatformAdaptor.vibrateBrief()
                                             rasterMenu.close()
                                             GeoMapProvider.currentRasterMap = checked ? modelData : ""
-                                            flightMap.clearData()
                                         }
 
                                     }
 
-                                    onObjectAdded: (index, object) => rasterMenu.insertItem(index, object)
+                                    onObjectAdded: (index, object) => rasterMenu.insertItem(index + 6, object)
                                     onObjectRemoved: (index, object) => rasterMenu.removeItem(object)
                                 }
 

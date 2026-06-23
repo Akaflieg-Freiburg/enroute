@@ -1,6 +1,7 @@
 name: Compile on Android
 
 on:
+  workflow_dispatch:
   push:
     branches: [ develop ]
     paths-ignore: &paths-ignore
@@ -14,6 +15,9 @@ on:
   pull_request:
     branches: [ main, develop ]
     paths-ignore: *paths-ignore
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -107,7 +111,7 @@ jobs:
           -DCMAKE_BUILD_TYPE:STRING=Debug
         cmake --build build-enroute
     - name: Upload to developerBuilds
-      if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/develop' || github.event_name == 'workflow_dispatch'
       run: |
         gh release upload --clobber developerBuilds ../build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk
       env:

@@ -42,6 +42,14 @@ class SideviewQuickItem : public QQuickItem
     QML_NAMED_ELEMENT(SideviewQuickItem)
 
 public:
+
+    /*! \brief Display mode for the side view */
+    enum class Mode {
+        Track, /*!< Show terrain/airspaces along current position and track (default) */
+        Route  /*!< Show terrain/airspaces along the planned flight route */
+    };
+    Q_ENUM(Mode)
+
     explicit SideviewQuickItem(QQuickItem *parent = nullptr);
 
     ~SideviewQuickItem() override = default;
@@ -83,6 +91,16 @@ public:
      */
     Q_PROPERTY(QPointF fiveMinuteBar READ fiveMinuteBar BINDABLE bindableFiveMinuteBar)
 
+    /*! \brief Display mode
+     *
+     * Controls whether the side view is computed along the current track
+     * (Mode::Track, default) or along the planned flight route (Mode::Route).
+     * In Route mode the ownship marker is placed at the aircraft's projected
+     * position along the route; the horizontal extent of the view covers the
+     * full route from first to last waypoint.
+     */
+    Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
+
     /*! \brief Position of the own aircraft
      *
      * This property holds the position of the own aircraft, in pixel
@@ -97,12 +115,58 @@ public:
      */
     Q_PROPERTY(double pixelPer10km READ pixelPer10km WRITE setPixelPer10km BINDABLE bindablePixelPer10km REQUIRED)
 
+    /*! \brief Width (in pixels) used for horizontal coordinate computation.
+     *
+     * Set this to the Flickable contentWidth to enable horizontal scrolling.
+     * When ≤ 0 the item's own width() is used instead.
+     */
+    Q_PROPERTY(double renderWidth READ renderWidth WRITE setRenderWidth NOTIFY renderWidthChanged)
+
+    /*! \brief Maximum altitude shown on the Y axis, in feet */
+    Q_PROPERTY(double scaleMaxAltFt READ scaleMaxAltFt NOTIFY scaleRangeChanged)
+
+    /*! \brief Minimum altitude shown on the Y axis, in feet */
+    Q_PROPERTY(double scaleMinAltFt READ scaleMinAltFt NOTIFY scaleRangeChanged)
+
+    /*! \brief Total route length shown on the X axis, in kilometres (0 in Track mode) */
+    Q_PROPERTY(double scaleTotalDistKm READ scaleTotalDistKm NOTIFY scaleRangeChanged)
+
     /*! \brief Terrain polygons
      *
      * This property holds polygons that can be used with the QML class "Shape"
      * in order to draw a the terrain in the lateral view of the airspace situation.
      */
     Q_PROPERTY(QPolygonF terrain READ terrain BINDABLE bindableTerrain)
+
+    /*! \brief Planned altitude profile (route mode only)
+     *
+     * A polyline of (x, y) points in content-pixel coordinates, one point per
+     * route waypoint, representing the planned cruise altitude. Used to draw the
+     * profile line. Empty in Track mode.
+     */
+    Q_PROPERTY(QPolygonF plannedProfile READ plannedProfile BINDABLE bindablePlannedProfile)
+
+    /*! \brief Planned altitude profile points, as a list (route mode only)
+     *
+     * The same points as plannedProfile, but as a QVariantList of QPointF so
+     * that a QML Repeater can iterate them to place the clickable altitude
+     * markers. Empty in Track mode.
+     */
+    Q_PROPERTY(QVariantList plannedProfilePoints READ plannedProfilePoints BINDABLE bindablePlannedProfilePoints)
+
+    /*! \brief Wind barbs projected onto the route profile (route mode only)
+     *
+     * A QVariantList of maps, sampled along the route at the planned altitude:
+     *   "x", "y"          pixel position on the profile
+     *   "speedKn"         total wind speed (kt)
+     *   "dirFromDeg"      wind direction (° from)
+     *   "alongKn"         along-track component (kt, + = headwind, − = tailwind)
+     * Empty in Track mode or when no wind data is available.
+     */
+    Q_PROPERTY(QVariantList windProfile READ windProfile BINDABLE bindableWindProfile)
+
+    /*! \brief Whether to compute and show the projected wind barbs (route mode) */
+    Q_PROPERTY(bool showWind READ showWind WRITE setShowWind NOTIFY showWindChanged)
 
     /*! \brief Track string
      *
@@ -153,6 +217,9 @@ public:
      */
     QBindable<QPointF> bindableFiveMinuteBar() const {return &m_fiveMinuteBar;}
 
+    Mode mode() const { return m_mode; }
+    void setMode(Mode newMode);
+
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property ownshipPosition
@@ -183,6 +250,13 @@ public:
      */
     void setPixelPer10km(double newVal) {m_pixelPer10km = newVal;}
 
+    double renderWidth() const { auto v = m_renderWidth.value(); return v > 0 ? v : width(); }
+    void setRenderWidth(double v) { m_renderWidth = v; }
+
+    double scaleMaxAltFt() const { return m_scaleMaxAltFt.value(); }
+    double scaleMinAltFt() const { return m_scaleMinAltFt.value(); }
+    double scaleTotalDistKm() const { return m_scaleTotalDistKm.value(); }
+
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property track
@@ -207,6 +281,53 @@ public:
      */
     QBindable<QPolygonF> bindableTerrain() const {return &m_terrain;}
 
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property plannedProfile
+     */
+    QPolygonF plannedProfile() const {return m_plannedProfile.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property plannedProfile
+     */
+    QBindable<QPolygonF> bindablePlannedProfile() const {return &m_plannedProfile;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property plannedProfilePoints
+     */
+    QVariantList plannedProfilePoints() const {return m_plannedProfilePoints.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property plannedProfilePoints
+     */
+    QBindable<QVariantList> bindablePlannedProfilePoints() const {return &m_plannedProfilePoints;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property windProfile
+     */
+    QVariantList windProfile() const {return m_windProfile.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property windProfile
+     */
+    QBindable<QVariantList> bindableWindProfile() const {return &m_windProfile;}
+
+    /*! \brief Getter for property showWind */
+    bool showWind() const {return m_showWind;}
+
+    /*! \brief Setter for property showWind */
+    void setShowWind(bool newShowWind);
+
+signals:
+    void modeChanged();
+    void renderWidthChanged();
+    void scaleRangeChanged();
+    void showWindChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(SideviewQuickItem)
@@ -219,7 +340,25 @@ private:
 
     // Compute
     void updateProperties();
+    void updatePropertiesTrack();
+    void updatePropertiesRoute();
 
+    // Returns renderWidth if set, else actual item width.
+    double rw() const { auto v = m_renderWidth.value(); return v > 0 ? v : width(); }
+
+    // Shared helper: build airspace polygons along a sampled geo-path.
+    // xCoordinates and geoCoordinates must be the same length.
+    // elevations must be the same length.
+    // Returns a QVariantMap with the same keys as m_airspaces.
+    QVariantMap buildAirspacePolygons(
+        const QList<int>& xCoordinates,
+        const QList<QGeoCoordinate>& geoCoordinates,
+        const QList<Units::Distance>& elevations,
+        Units::Distance ownshipGeometricAltitude,
+        Units::Distance ownshipPressureAltitude,
+        std::function<double(Units::Distance)> altToY);
+
+    Mode m_mode {Mode::Track};
 
     QProperty<QString> m_error;
 
@@ -233,12 +372,23 @@ private:
 
     QProperty<QPolygonF> m_terrain;
 
+    QProperty<QPolygonF> m_plannedProfile;
+
+    QProperty<QVariantList> m_plannedProfilePoints;
+    QProperty<QVariantList> m_windProfile;
+    bool m_showWind {false};
+
     QProperty<QVariantMap> m_airspaces;
+
+    QProperty<double> m_renderWidth   {0.0};
+    QProperty<double> m_scaleMaxAltFt {0.0};
+    QProperty<double> m_scaleMinAltFt {0.0};
+    QProperty<double> m_scaleTotalDistKm {0.0};
 
     Navigation::BaroCache* m_baroCache;
 
     std::vector<QPropertyNotifier> notifiers;
-
+    
 };
 
 } // namespace Ui

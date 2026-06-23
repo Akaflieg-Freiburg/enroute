@@ -29,8 +29,109 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/GPX.h"
 #include "navigation/Navigator.h"
+#include "weather/WindFieldProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
+
+
+//
+// ETA-aware, wind-integrated leg nav
+//
+
+QVariantMap Navigation::FlightRoute::legNav(int index,
+                                            const Weather::WindFieldProvider* wfp,
+                                            Weather::Wind manualWind,
+                                            const Navigation::Aircraft& aircraft,
+                                            const QDateTime& departure) const
+{
+    const auto theLegs = m_legs.value();
+    if (index < 0 || index >= theLegs.size())
+    {
+        return {};
+    }
+
+    // Planned altitude (ft) at waypoint wpIdx: stored value, else aircraft
+    // default cruise, else a sane fallback so the field can still be sampled.
+    auto altFtAt = [&](int wpIdx) -> double {
+        double m = plannedAltitude(wpIdx);
+        if (!qIsFinite(m))
+        {
+            m = aircraft.cruiseAltitudeM();
+        }
+        if (!qIsFinite(m))
+        {
+            return 3000.0;
+        }
+        return Units::Distance::fromM(m).toFeet();
+    };
+
+    QDateTime t = departure.isValid() ? departure : QDateTime::currentDateTimeUtc();
+
+    // Walk preceding legs to accumulate the start time of the requested leg
+    Navigation::LegIntegration res;
+    for (int k = 0; k <= index; ++k)
+    {
+        res = theLegs[k].integrate(wfp, manualWind, aircraft, t, altFtAt(k), altFtAt(k + 1));
+        if (k == index)
+        {
+            break;
+        }
+        if (res.isValid && res.ete.isFinite())
+        {
+            t = t.addSecs(qRound64(res.ete.toS()));
+        }
+    }
+
+    QVariantMap out;
+    out[u"ete"_s]  = QVariant::fromValue(res.ete);
+    out[u"gs"_s]   = QVariant::fromValue(res.gs);
+    out[u"wind"_s] = QVariant::fromValue(res.wind);
+    Units::Volume fuel;
+    if (aircraft.fuelConsumption().isFinite() && res.ete.isFinite())
+    {
+        fuel = aircraft.fuelConsumption() * res.ete;
+    }
+    out[u"fuel"_s] = QVariant::fromValue(fuel);
+    return out;
+}
+
+
+QList<QDateTime> Navigation::FlightRoute::waypointETAs(const Weather::WindFieldProvider* wfp,
+                                                       Weather::Wind manualWind,
+                                                       const Navigation::Aircraft& aircraft,
+                                                       const QDateTime& departure) const
+{
+    const auto theLegs = m_legs.value();
+
+    auto altFtAt = [&](int wpIdx) -> double {
+        double m = plannedAltitude(wpIdx);
+        if (!qIsFinite(m))
+        {
+            m = aircraft.cruiseAltitudeM();
+        }
+        if (!qIsFinite(m))
+        {
+            return 3000.0;
+        }
+        return Units::Distance::fromM(m).toFeet();
+    };
+
+    QDateTime t = departure.isValid() ? departure : QDateTime::currentDateTimeUtc();
+
+    QList<QDateTime> etas;
+    etas.reserve(theLegs.size() + 1);
+    etas << t; // arrival at first waypoint = departure
+    for (int k = 0; k < theLegs.size(); ++k)
+    {
+        const auto res = theLegs[k].integrate(wfp, manualWind, aircraft, t, altFtAt(k), altFtAt(k + 1));
+        if (res.isValid && res.ete.isFinite())
+        {
+            t = t.addSecs(qRound64(res.ete.toS()));
+        }
+        etas << t;
+    }
+    return etas;
+}
 
 
 //
@@ -43,6 +144,7 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
     connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Navigation::FlightRoute::summaryChanged);
     connect(GlobalObject::navigator(), &Navigation::Navigator::windChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(Weather::WindFieldProvider::instance(), &Weather::WindFieldProvider::dataChanged, this, &Navigation::FlightRoute::summaryChanged);
 
     // Setup Bindings
     m_geoPath.setBinding([this]() {return this->computeGeoPath();});
@@ -107,18 +209,33 @@ auto Navigation::FlightRoute::summary() const -> QString
 
     const auto aircraft = GlobalObject::navigator()->aircraft();
     const auto wind = GlobalObject::navigator()->wind();
+    const auto* wfp = Weather::WindFieldProvider::instance();
     auto dist = Units::Distance::fromM(0.0);
     auto time = Units::Timespan::fromS(0.0);
     auto fuel = Units::Volume::fromL(0.0);
 
-    for(const auto& _leg : m_legs.value())
+    auto altFtAt = [&](int wpIdx) -> double {
+        double m = plannedAltitude(wpIdx);
+        if (!qIsFinite(m)) m = aircraft.cruiseAltitudeM();
+        if (!qIsFinite(m)) return 3000.0;
+        return Units::Distance::fromM(m).toFeet();
+    };
+
+    QDateTime t = GlobalObject::navigator()->departureTime();
+    if (!t.isValid()) t = QDateTime::currentDateTimeUtc();
+
+    const auto& legs = m_legs.value();
+    for (int k = 0; k < legs.size(); ++k)
     {
-        dist += _leg.distance();
-        if (dist.toM() > 100)
+        dist += legs[k].distance();
+        auto res = legs[k].integrate(wfp, wind, aircraft, t, altFtAt(k), altFtAt(k + 1));
+        if (res.isValid && res.ete.isFinite())
         {
-            time += _leg.ETE(wind, aircraft);
-            fuel += _leg.Fuel(wind, aircraft);
+            time += res.ete;
+            t = t.addSecs(qRound64(res.ete.toS()));
         }
+        if (aircraft.fuelConsumption().isFinite() && res.ete.isFinite())
+            fuel += aircraft.fuelConsumption() * res.ete;
     }
     if (!dist.isFinite()) {
         return {};
@@ -145,13 +262,12 @@ auto Navigation::FlightRoute::summary() const -> QString
     {
         complaints += tr("Fuel consumption not specified.");
     }
-    if (!wind.speed().isFinite())
+    if (!Weather::WindFieldProvider::instance()->isUsable())
     {
-        complaints += tr("Wind speed not specified.");
-    }
-    if (!wind.directionFrom().isFinite())
-    {
-        complaints += tr("Wind direction not specified.");
+        if (!wind.speed().isFinite())
+            complaints += tr("Wind speed not specified.");
+        if (!wind.directionFrom().isFinite())
+            complaints += tr("Wind direction not specified.");
     }
 
     if (!complaints.isEmpty())
@@ -409,6 +525,7 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
     }
 
     QVector<GeoMaps::Waypoint> newWaypoints;
+    QVector<double> importedAltitudes; // metres, NaN if not set
     foreach(auto waypoint, result)
     {
         if (!waypoint.isValid())
@@ -417,6 +534,8 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
         }
 
         auto pos = waypoint.coordinate();
+        importedAltitudes << (pos.type() == QGeoCoordinate::Coordinate3D ? pos.altitude() : qQNaN());
+
         auto distPos = pos.atDistanceAndAzimuth(1000.0, 0.0, 0.0);
         auto nearest = GlobalObject::geoMapProvider()->closestWaypoint(pos, distPos);
         if (nearest.type() == u"WP")
@@ -429,6 +548,38 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
         }
     }
     m_waypoints = newWaypoints;
+
+    // Planned altitudes are stored as a top-level object in our own GeoJSON
+    // files. Read them back if present (other formats simply have none).
+    m_plannedAltitudes.clear();
+    {
+        QFile jsonFile(myFileName);
+        if (jsonFile.open(QIODevice::ReadOnly))
+        {
+            auto doc = QJsonDocument::fromJson(jsonFile.readAll());
+            if (doc.isObject())
+            {
+                auto altObj = doc.object().value(QStringLiteral("plannedAltitudes")).toObject();
+                for (auto it = altObj.constBegin(); it != altObj.constEnd(); ++it)
+                {
+                    m_plannedAltitudes.insert(it.key(), it.value().toDouble());
+                }
+            }
+        }
+    }
+
+    // If no planned altitudes were loaded (e.g. GPX import), restore from
+    // the <ele> values captured before waypoint snapping.
+    if (m_plannedAltitudes.isEmpty())
+    {
+        for (int i = 0; i < m_waypoints.value().size() && i < importedAltitudes.size(); i++)
+        {
+            if (!qIsNaN(importedAltitudes.at(i)))
+                setPlannedAltitude(i, importedAltitudes.at(i));
+        }
+    }
+
+    emit plannedAltitudesChanged();
     return {};
 }
 
@@ -499,6 +650,46 @@ void Navigation::FlightRoute::reverse()
     auto newWaypoints = m_waypoints.value();
     std::reverse(newWaypoints.begin(), newWaypoints.end());
     m_waypoints = newWaypoints;
+}
+
+QString Navigation::FlightRoute::waypointKey(const GeoMaps::Waypoint& waypoint)
+{
+    auto icao = waypoint.ICAOCode();
+    if (!icao.isEmpty())
+    {
+        return icao;
+    }
+    auto coord = waypoint.coordinate();
+    return u"%1,%2"_s.arg(coord.latitude(), 0, 'f', 6).arg(coord.longitude(), 0, 'f', 6);
+}
+
+double Navigation::FlightRoute::plannedAltitude(int idx) const
+{
+    const auto wps = m_waypoints.value();
+    if ((idx < 0) || (idx >= wps.size()))
+    {
+        return qQNaN();
+    }
+    return m_plannedAltitudes.value(waypointKey(wps.at(idx)), qQNaN());
+}
+
+void Navigation::FlightRoute::setPlannedAltitude(int idx, double altitudeM)
+{
+    const auto wps = m_waypoints.value();
+    if ((idx < 0) || (idx >= wps.size()))
+    {
+        return;
+    }
+    auto key = waypointKey(wps.at(idx));
+    if (qIsNaN(altitudeM))
+    {
+        m_plannedAltitudes.remove(key);
+    }
+    else
+    {
+        m_plannedAltitudes.insert(key, altitudeM);
+    }
+    emit plannedAltitudesChanged();
 }
 
 auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
@@ -609,10 +800,30 @@ auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
         }
     }
 
+    // Planned altitudes, owned by the route. Pruned to the keys of the current
+    // valid waypoints.
+    QJsonObject plannedAltitudes;
+    foreach(const auto& waypoint, m_waypoints.value())
+    {
+        if (!waypoint.isValid())
+        {
+            continue;
+        }
+        auto key = waypointKey(waypoint);
+        if (m_plannedAltitudes.contains(key))
+        {
+            plannedAltitudes.insert(key, m_plannedAltitudes.value(key));
+        }
+    }
+
     QJsonObject jsonObj;
     jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
     jsonObj.insert(QStringLiteral("enroute"), GeoMaps::GeoJSON::indicatorFlightRoute());
     jsonObj.insert(QStringLiteral("features"), waypointArray);
+    if (!plannedAltitudes.isEmpty())
+    {
+        jsonObj.insert(QStringLiteral("plannedAltitudes"), plannedAltitudes);
+    }
 
     QJsonDocument doc;
     doc.setObject(jsonObj);

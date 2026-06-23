@@ -1,0 +1,194 @@
+/***************************************************************************
+ *   Copyright (C) 2026 by Quentin Bossard                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#pragma once
+
+#include <QDateTime>
+#include <QJsonObject>
+#include <QList>
+#include <QMap>
+#include <QNetworkAccessManager>
+#include <QObject>
+#include <QQmlEngine>
+#include <QStringList>
+
+namespace Weather {
+
+/*! \brief Downloads and exposes Météo-France forecast PNG maps from a local HTTP server.
+ *
+ * On refresh(), fetches index.json from the configured server, downloads any
+ * new PNGs into the app cache, then scans the cache so QML can display them.
+ * Falls back to whatever is already in cache on connection failure.
+ */
+class ForecastMapProvider : public QObject {
+    Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
+public:
+    enum class Status {
+        Idle,        ///< Ready, showing cached data
+        Refreshing,  ///< Fetching index or downloading files
+        Error        ///< Last refresh failed; showing stale cache
+    };
+    Q_ENUM(Status)
+
+    explicit ForecastMapProvider(QObject* parent = nullptr);
+    static Weather::ForecastMapProvider* create(QQmlEngine*, QJSEngine*);
+
+    /*! \brief Application-wide singleton instance, for C++ callers */
+    static Weather::ForecastMapProvider* instance() { return create(nullptr, nullptr); }
+
+    //
+    // Map data properties
+    //
+
+    Q_PROPERTY(QStringList timestamps READ timestamps NOTIFY timestampsChanged)
+    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
+    Q_PROPERTY(QString currentTimestampLabel READ currentTimestampLabel NOTIFY currentIndexChanged)
+    Q_PROPERTY(QString currentRainMap READ currentRainMap NOTIFY currentIndexChanged)
+    Q_PROPERTY(QString currentCloudbaseMap READ currentCloudbaseMap NOTIFY currentIndexChanged)
+    Q_PROPERTY(QString currentWindMap READ currentWindMap NOTIFY currentWindMapChanged)
+    Q_PROPERTY(QStringList windPressureLevels READ windPressureLevels NOTIFY timestampsChanged)
+    Q_PROPERTY(QString currentWindPressureLevel READ currentWindPressureLevel WRITE setCurrentWindPressureLevel NOTIFY currentWindMapChanged)
+
+    //
+    // Layer metadata (from index.json)
+    //
+
+    /*! \brief Model run time that produced the current maps, e.g. "Thu 11 Jun 12:00 UTC" */
+    Q_PROPERTY(QString referenceTimeLabel READ referenceTimeLabel NOTIFY metadataChanged)
+
+    /*! \brief Units string for the rain layer, e.g. "mm/h" */
+    Q_PROPERTY(QString rainUnits READ rainUnits NOTIFY metadataChanged)
+    /*! \brief Color bins for the rain legend, one per boundary interval, low→high */
+    Q_PROPERTY(QStringList rainColors READ rainColors NOTIFY metadataChanged)
+    /*! \brief Bin boundary values for rain (N+1 edges for N color bins), in rainUnits */
+    Q_PROPERTY(QList<double> rainBoundaries READ rainBoundaries NOTIFY metadataChanged)
+
+    /*! \brief Units string for the cloudbase layer, e.g. "ft" */
+    Q_PROPERTY(QString cloudbaseUnits READ cloudbaseUnits NOTIFY metadataChanged)
+    /*! \brief Color bins for the cloudbase legend, one per boundary interval */
+    Q_PROPERTY(QStringList cloudbaseColors READ cloudbaseColors NOTIFY metadataChanged)
+    /*! \brief Bin boundary values for cloudbase (N+1 edges for N color bins), in cloudbaseUnits */
+    Q_PROPERTY(QList<double> cloudbaseBoundaries READ cloudbaseBoundaries NOTIFY metadataChanged)
+
+    //
+    // Sync / connectivity properties
+    //
+
+    /*! \brief Base URL of the forecast server, e.g. "http://192.168.1.10:8765/meteo" */
+    Q_PROPERTY(QString serverUrl READ serverUrl WRITE setServerUrl NOTIFY serverUrlChanged)
+
+    /*! \brief Current sync state */
+    Q_PROPERTY(Status status READ status NOTIFY statusChanged)
+
+    /*! \brief Human-readable time since last successful refresh, e.g. "42 min ago" */
+    Q_PROPERTY(QString lastRefreshLabel READ lastRefreshLabel NOTIFY lastRefreshLabelChanged)
+
+
+    //
+    // Getters
+    //
+
+    [[nodiscard]] QStringList timestamps() const { return m_timestamps; }
+    [[nodiscard]] int currentIndex() const { return m_currentIndex; }
+    [[nodiscard]] QString currentTimestampLabel() const;
+    [[nodiscard]] QString currentRainMap() const;
+    [[nodiscard]] QString currentCloudbaseMap() const;
+    [[nodiscard]] QString currentWindMap() const;
+    [[nodiscard]] QStringList windPressureLevels() const { return m_windPressureLevels; }
+    [[nodiscard]] QString currentWindPressureLevel() const { return m_currentWindPressureLevel; }
+    [[nodiscard]] QString serverUrl() const { return m_serverUrl; }
+    [[nodiscard]] Status status() const { return m_status; }
+    [[nodiscard]] QString lastRefreshLabel() const;
+
+    [[nodiscard]] QString referenceTimeLabel() const;
+    [[nodiscard]] QString rainUnits() const            { return m_rainUnits; }
+    [[nodiscard]] QStringList rainColors() const       { return m_rainColors; }
+    [[nodiscard]] QList<double> rainBoundaries() const { return m_rainBoundaries; }
+    [[nodiscard]] QString cloudbaseUnits() const            { return m_cloudbaseUnits; }
+    [[nodiscard]] QStringList cloudbaseColors() const       { return m_cloudbaseColors; }
+    [[nodiscard]] QList<double> cloudbaseBoundaries() const { return m_cloudbaseBoundaries; }
+
+
+    //
+    // Setters
+    //
+
+    void setCurrentIndex(int idx);
+    void setCurrentWindPressureLevel(const QString& level);
+    void setServerUrl(const QString& url);
+
+    /*! \brief Fetch index.json from the server and download new maps. No-op if already refreshing. */
+    Q_INVOKABLE void refresh();
+
+
+signals:
+    void timestampsChanged();
+    void currentIndexChanged();
+    void currentWindMapChanged();
+    void serverUrlChanged();
+    void statusChanged();
+    void lastRefreshLabelChanged();
+    void metadataChanged();
+
+
+private:
+    void scan();
+    void fetchIndex();
+    void startDownloads(const QStringList& filenames, const QStringList& serverFiles);
+    void finalizeRefresh(const QStringList& serverFiles);
+    void abortRefresh();
+    void parseMetadata(const QJsonObject& root);
+
+    void setStatus(Status s);
+    [[nodiscard]] QString cacheDir() const;
+
+    QNetworkAccessManager m_nam;
+
+    QString m_serverUrl;
+    QString m_localScanDir;   ///< non-empty when serverUrl is a file:// URL
+    Status  m_status          {Status::Idle};
+    QDateTime m_lastRefreshTime;
+
+    // Tracks in-flight downloads during a refresh cycle
+    int         m_pendingDownloads {0};
+    QStringList m_serverFileList;
+
+    // Map data
+    QStringList m_timestamps;
+    int         m_currentIndex {0};
+    QMap<QString, QString>                  m_rainMaps;
+    QMap<QString, QString>                  m_cloudbaseMaps;
+    QMap<QString, QMap<QString, QString>>   m_windMaps;   // level → timestamp → path
+    QStringList                             m_windPressureLevels;
+    QString                                 m_currentWindPressureLevel;
+
+    // Layer metadata from index.json
+    QString     m_referenceTime;
+    QString     m_rainUnits        {QStringLiteral("mm/h")};
+    QStringList m_rainColors;
+    QList<double> m_rainBoundaries {0, 0.1, 0.2, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 40, 50, 60, 70, 100, 200};
+    QString     m_cloudbaseUnits   {QStringLiteral("ft")};
+    QStringList m_cloudbaseColors;
+    QList<double> m_cloudbaseBoundaries {0, 1500, 3000, 6000, 20000};
+};
+
+} // namespace Weather

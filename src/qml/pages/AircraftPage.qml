@@ -413,6 +413,20 @@ Page {
             Item { }
 
             Label {
+                text: qsTr("Cruise altitude")
+                Layout.alignment: Qt.AlignBaseline
+            }
+            ElevationInput {
+                id: cruiseAltField
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                currentIndex: Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? 1 : 0
+                valueMeter: Navigator.aircraft.cruiseAltitudeM
+                onValueMeterChanged: Navigator.aircraft.cruiseAltitudeM = valueMeter
+            }
+            Item { }
+
+            Label {
                 text: qsTr("Descent")
                 Layout.alignment: Qt.AlignBaseline
             }

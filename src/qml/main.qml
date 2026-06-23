@@ -664,6 +664,10 @@ AppWindow {
                 currentItem.defaultFocusItem.forceActiveFocus()
         }
         onCurrentItemChanged: focusCurrentPage()
+        Connections {
+            target: view
+            function onActiveFocusItemChanged() { console.log("DBG afi ->", view.activeFocusItem) }
+        }
 
         // Need to explain
         x: 0

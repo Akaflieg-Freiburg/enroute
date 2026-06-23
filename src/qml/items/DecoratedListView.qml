@@ -100,21 +100,30 @@ ListView {
         }
     }
 
-    Shortcut {
-        sequences: [StandardKey.MoveToEndOfDocument]
-        onActivated: listView.currentIndex = listView.count-1
-    }
-    Shortcut {
-        sequences: [StandardKey.MoveToStartOfDocument]
-        onActivated: listView.currentIndex = 0
-    }
-    Shortcut {
-        sequences: [StandardKey.MoveToNextPage]
-        onActivated: listView.currentIndex = Math.min(listView.count-1, listView.currentIndex + 5)
-    }
-    Shortcut {
-        sequences: [StandardKey.MoveToPreviousPage]
-        onActivated: listView.currentIndex = Math.max(0, listView.currentIndex - 5)
+    // Home/End/PageUp/PageDown navigation. Implemented as focus-scoped Keys
+    // handlers rather than Shortcuts: several DecoratedListViews can be alive at
+    // once (e.g. the tabs on the Nearby page), and identical window-context
+    // Shortcuts collide as "ambiguous" and stop firing. Keys reach only the
+    // focused list, so there is no collision.
+    Keys.onPressed: (event) => {
+        switch (event.key) {
+        case Qt.Key_Home:
+            listView.currentIndex = 0
+            event.accepted = true
+            break
+        case Qt.Key_End:
+            listView.currentIndex = listView.count-1
+            event.accepted = true
+            break
+        case Qt.Key_PageUp:
+            listView.currentIndex = Math.max(0, listView.currentIndex - 5)
+            event.accepted = true
+            break
+        case Qt.Key_PageDown:
+            listView.currentIndex = Math.min(listView.count-1, listView.currentIndex + 5)
+            event.accepted = true
+            break
+        }
     }
 
     ScrollIndicator.vertical: ScrollIndicator {}

@@ -82,6 +82,12 @@ ListView {
     }
 
     highlight: Rectangle {
+        // A ListView draws its highlight behind the delegates. Some delegates
+        // (e.g. SwipeToDeleteDelegate, a SwipeDelegate) have an opaque background
+        // that would hide the frame, so lift it above the delegates. The fill is
+        // nearly transparent and the rectangle has no pointer handler, so it does
+        // not tint content noticeably nor intercept clicks/swipes.
+        z: 2
         visible: listView.activeFocus && listView.isDesktop
         border.color: "black"
         color: "#10000000"

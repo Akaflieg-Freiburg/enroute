@@ -11,5 +11,8 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "qt-development-skills@claude-plugins-official": true
   }
 }

@@ -387,12 +387,11 @@ if (TARGET Qt6::WebView)
     )
 endif()
 target_precompile_headers(${PROJECT_NAME}
-    PUBLIC
+    PRIVATE
     <QQmlEngine>
 )
 
-# Install
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+# Install (the executable itself is installed by the shared rule near the end of this file)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
@@ -518,7 +517,7 @@ if (IOS)
         PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     qmaplibre_location_setup_plugins(${PROJECT_NAME})
     target_include_directories(${PROJECT_NAME}
-        PUBLIC
+        PRIVATE
         ios/mapLibreDependencies
         ios/mapLibreDependencies/optional
         ios/mapLibreDependencies/csscolorparser
@@ -553,7 +552,7 @@ if (IOS)
 endif()
 
 target_include_directories(${PROJECT_NAME}
-    PUBLIC
+    PRIVATE
     ${CMAKE_SOURCE_DIR}/3rdParty/KDSingleApplication/src
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
@@ -722,7 +721,7 @@ qt_add_resources(${PROJECT_NAME} translations_qt
 # Install
 #
 
-if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR ((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME STREQUAL "Windows")))
+if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR (CMAKE_SYSTEM_NAME STREQUAL "Linux"))
     # Install the executable into "${CMAKE_INSTALL_PREFIX}/bin".
     install(TARGETS ${PROJECT_NAME}
         BUNDLE  DESTINATION .

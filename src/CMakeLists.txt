@@ -254,6 +254,29 @@ else()
 endif()
 
 #
+# Libraries linked into the executable on every platform. Platform-specific
+# additions (Widgets, Sensors, SerialPort, WebView, frameworks, …) are appended
+# in the per-platform blocks below.
+#
+
+set(ENROUTE_COMMON_LIBRARIES
+    Qt6::Bluetooth
+    Qt6::Concurrent
+    Qt6::Core
+    Qt6::Core5Compat
+    Qt6::HttpServer
+    Qt6::Positioning
+    Qt6::Quick
+    Qt6::QuickControls2
+    Qt6::Sql
+    Qt6::Svg
+    Qt6::TextToSpeech
+    QMapLibre::Location
+    enrouteOGN
+    libzip::zip
+)
+
+#
 # Generate Android executable
 #
 
@@ -311,23 +334,10 @@ if(ANDROID)
     )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
+        ${ENROUTE_COMMON_LIBRARIES}
         Qt6::Sensors
         Qt6::SerialPort
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
         Qt6::WebView
-        QMapLibre::Location
-        enrouteOGN
-        libzip::zip
     )
     add_android_openssl_libraries(${PROJECT_NAME})
     qmaplibre_location_setup_plugins(${PROJECT_NAME})
@@ -360,23 +370,10 @@ add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteMan
 qt_add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-    Qt6::Bluetooth
-    Qt6::Concurrent
-    Qt6::Core
-    Qt6::Core5Compat
+    ${ENROUTE_COMMON_LIBRARIES}
     Qt6::DBus
-    Qt6::HttpServer
-    Qt6::Positioning
-    Qt6::Quick
-    Qt6::QuickControls2
     Qt6::SerialPort
-    Qt6::Sql
-    Qt6::Svg
-    Qt6::TextToSpeech
     Qt6::Widgets
-    QMapLibre::Location
-    enrouteOGN
-    libzip::zip
     ${LIBUDEV_LIBRARIES}
 )
 if (TARGET Qt6::WebView)
@@ -438,23 +435,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         PRIVATE
         "-framework IOKit"
         "-framework CoreFoundation"
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
+        ${ENROUTE_COMMON_LIBRARIES}
         Qt6::SerialPort
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
         Qt6::WebView
         Qt6::Widgets
-        QMapLibre::Location
-        enrouteOGN
-        libzip::zip
     )
 endif()
 
@@ -488,23 +472,10 @@ if (IOS)
     qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
+        ${ENROUTE_COMMON_LIBRARIES}
         Qt6::Location
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
         Qt6::Sensors
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
         Qt6::WebView
-        QMapLibre::Location
-        enrouteOGN
-        libzip::zip
     )
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true

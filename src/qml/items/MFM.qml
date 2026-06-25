@@ -131,7 +131,7 @@ Item {
                         // remaining finger; re-anchoring to that jumped position would lurch the map
                         // center by ~half the finger distance, so skip such large single-step jumps.
                         function anchorToCentroid() {
-                            var c = pinch.centroid.position
+                            const c = pinch.centroid.position
                             if (Math.hypot(c.x - pinch.lastCentroidPos.x, c.y - pinch.lastCentroidPos.y) < 50) {
                                 flightMap.alignCoordinateToPoint(pinch.startCentroid, c)
                             }

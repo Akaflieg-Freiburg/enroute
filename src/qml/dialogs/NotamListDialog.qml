@@ -191,7 +191,6 @@ CenteringDialog {
 
             delegate: notamDelegate
 
-            ScrollIndicator.vertical: ScrollIndicator {}
         }
 
         CheckDelegate {

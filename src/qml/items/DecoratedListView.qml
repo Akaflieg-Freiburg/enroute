@@ -31,6 +31,10 @@ pragma ComponentBehavior: Bound
 ListView {
     id: listView
 
+    // Desktop platforms get a mouse-interactive scroll bar and a focus highlight;
+    // touch platforms get a thin, non-interactive scroll indicator.
+    readonly property bool isDesktop: (Qt.platform.os !== "android") && (Qt.platform.os !== "ios")
+
     Control { id: fontGlean }
 
     Label {
@@ -78,7 +82,7 @@ ListView {
     }
 
     highlight: Rectangle {
-        visible: listView.activeFocus && (Qt.platform.os !== "ios") && (Qt.platform.os !== "android")
+        visible: listView.activeFocus && listView.isDesktop
         border.color: "black"
         color: "#10000000"
         radius: 5
@@ -126,5 +130,14 @@ ListView {
         }
     }
 
-    ScrollIndicator.vertical: ScrollIndicator {}
+    // Single source of truth for the vertical scroll affordance — lists using
+    // DecoratedListView should NOT set their own. A mouse-interactive ScrollBar
+    // on desktop (drag/click to scroll), the thin ScrollIndicator on touch.
+    ScrollBar.vertical: ScrollBar {
+        policy: ScrollBar.AsNeeded
+        visible: listView.isDesktop
+    }
+    ScrollIndicator.vertical: ScrollIndicator {
+        visible: !listView.isDesktop
+    }
 }

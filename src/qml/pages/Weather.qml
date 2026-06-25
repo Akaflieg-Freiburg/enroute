@@ -144,7 +144,6 @@ Page {
 
             model: obsList.observers
             delegate: stationDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             Rectangle {  // No data label
                 anchors.fill: parent

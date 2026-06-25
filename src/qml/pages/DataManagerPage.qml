@@ -343,7 +343,6 @@ Page {
             focus: SwipeView.isCurrentItem
             model: DataManager.mapSets.downloadables
             delegate: MapSet {}
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             section.property: "section"
             section.delegate: sectionHeading
@@ -375,7 +374,6 @@ Page {
             }
 
             delegate: vacDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             section.property: "section"
             section.delegate: sectionHeading
@@ -420,7 +418,6 @@ Page {
             focus: SwipeView.isCurrentItem
             model: DataManager.databases.downloadables
             delegate: MapSet {}
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             section.property: "section"
             section.delegate: sectionHeading

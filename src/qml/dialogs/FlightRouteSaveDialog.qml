@@ -89,7 +89,6 @@ CenteringDialog {
 
             clip: true
             model: Librarian.entries(Librarian.Routes)
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
         }

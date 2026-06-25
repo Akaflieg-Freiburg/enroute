@@ -384,7 +384,6 @@ Page {
 
             model: Librarian.entries(Librarian.Routes, textInput.displayText)
             delegate: flightRouteDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
         }
 
         Label {

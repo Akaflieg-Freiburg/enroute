@@ -92,7 +92,6 @@ CenteringDialog {
 
             clip: true
             model: Librarian.entries(Librarian.Aircraft)
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
         }

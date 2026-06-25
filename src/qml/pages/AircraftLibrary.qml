@@ -161,7 +161,6 @@ Page {
 
             model: Librarian.entries(Librarian.Aircraft, textInput.displayText)
             delegate: entryDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
         }
 
         Label {

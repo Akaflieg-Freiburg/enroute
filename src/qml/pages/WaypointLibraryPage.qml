@@ -368,7 +368,6 @@ Page {
             }
 
             delegate: waypointDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
         }
 
         Label {

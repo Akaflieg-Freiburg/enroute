@@ -140,7 +140,6 @@ Page {
                 return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate, textInput.displayText)
             }
             delegate: approachChartItem
-            ScrollIndicator.vertical: ScrollIndicator {}
         }
 
     }

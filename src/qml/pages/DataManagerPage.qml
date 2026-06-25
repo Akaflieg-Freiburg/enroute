@@ -36,6 +36,12 @@ Page {
 
     title: qsTr("Map and Data Library")
 
+    // Focus the SwipeView when the page becomes current (see main.qml). Its rows
+    // have no single primary action, so this enables keyboard navigation (arrows/
+    // Home/End/PageUp/PageDown) of the visible tab's list only — Return does
+    // nothing here. Focus follows the tab via the per-list bindings below.
+    property Item defaultFocusItem: sv
+
     Component {
         id: sectionHeading
 
@@ -314,6 +320,10 @@ Page {
     SwipeView{
         id: sv
 
+        // SwipeView is a focus scope; it must hold focus for keys to reach the
+        // current tab's list (see the per-list focus bindings).
+        focus: true
+
         currentIndex: bar.currentIndex
         anchors.top: bar.bottom
         anchors.left: parent.left
@@ -330,6 +340,7 @@ Page {
             Layout.fillHeight: true
             Layout.fillWidth: true
             clip: true
+            focus: SwipeView.isCurrentItem
             model: DataManager.mapSets.downloadables
             delegate: MapSet {}
             ScrollIndicator.vertical: ScrollIndicator {}
@@ -354,6 +365,7 @@ Page {
             Layout.fillHeight: true
             Layout.fillWidth: true
             clip: true
+            focus: SwipeView.isCurrentItem
             // This delayed binding is necessary, or else there will be terrible delays
             // when the user deletes all VACs -- the GUI is re-rendered after
             // every delete, which takes very long time.
@@ -405,6 +417,7 @@ Page {
             Layout.fillHeight: true
             Layout.fillWidth: true
             clip: true
+            focus: SwipeView.isCurrentItem
             model: DataManager.databases.downloadables
             delegate: MapSet {}
             ScrollIndicator.vertical: ScrollIndicator {}

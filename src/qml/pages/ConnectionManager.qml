@@ -489,6 +489,9 @@ Page {
         title: qsTr("Add Serial Port Connection")
         standardButtons: Dialog.Cancel
 
+        // Focus the port list on open, so Return/Enter and Home/End work.
+        defaultFocusItem: serialPortList
+
         Component.onCompleted: ConnectionScanner_SerialPort.start()
 
         ColumnLayout {
@@ -503,6 +506,8 @@ Page {
             }
 
             DecoratedListView {
+                id: serialPortList
+
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.preferredHeight: contentHeight

@@ -33,6 +33,9 @@ CenteringDialog {
 
     standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Save
 
+    // Focus the name field on open so the user can type immediately.
+    defaultFocusItem: fileName
+
     Component {
         id: fileDelegate
 

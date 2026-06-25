@@ -39,6 +39,10 @@ Page {
     title: qsTr("Waypoint Library")
     focus: true
 
+    // Receives active focus when the page becomes current (see main.qml), so the
+    // list responds to Return/Enter and Home/End navigation.
+    property Item defaultFocusItem: wpList
+
     header: PageHeader {
 
         height: 60 + SafeInsets.top
@@ -253,8 +257,14 @@ Page {
         id: waypointDelegate
 
         RowLayout {
+            id: entryRow
             width: wpList.width
             height: iDel.height
+
+            // Return/Enter on the highlighted row triggers its primary action
+            // (the trailing edit/menu buttons stay mouse-only).
+            signal clicked()
+            onClicked: iDel.clicked()
 
             SwipeToDeleteDelegate {
                 id: iDel

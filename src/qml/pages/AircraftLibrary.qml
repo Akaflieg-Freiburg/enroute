@@ -32,6 +32,9 @@ Page {
     title: qsTr("Aircraft Library")
     focus: true
 
+    // Receives active focus when the page becomes current (see main.qml), so the
+    // list responds to Return/Enter and Home/End navigation.
+    property Item defaultFocusItem: wpList
 
     header: StandardHeader {}
 
@@ -75,10 +78,16 @@ Page {
             id: entryDelegate
 
             RowLayout {
+                id: entryRow
                 anchors.left: parent.left
                 anchors.right: parent.right
                 Layout.fillWidth: true
                 height: iDel.height
+
+                // Return/Enter on the highlighted row triggers its primary action
+                // (the trailing menu button stays mouse-only).
+                signal clicked()
+                onClicked: iDel.clicked()
 
                 SwipeToDeleteDelegate {
                     id: iDel

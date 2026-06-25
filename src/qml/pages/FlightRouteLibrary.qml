@@ -36,6 +36,10 @@ Page {
     property bool isAndroid: Qt.platform.os === "android"
     property bool isAndroidOrIos: isAndroid || isIos
 
+    // Receives active focus when the page becomes current (see main.qml), so the
+    // list responds to Return/Enter and Home/End navigation.
+    property Item defaultFocusItem: wpList
+
     header: PageHeader {
 
         height: 60 + SafeInsets.top
@@ -198,10 +202,16 @@ Page {
             id: flightRouteDelegate
 
             RowLayout {
+                id: entryRow
                 anchors.left: parent.left
                 anchors.right: parent.right
                 Layout.fillWidth: true
                 height: iDel.heigt
+
+                // Return/Enter on the highlighted row triggers its primary action
+                // (the trailing menu button stays mouse-only).
+                signal clicked()
+                onClicked: iDel.clicked()
 
                 SwipeToDeleteDelegate {
                     id: iDel

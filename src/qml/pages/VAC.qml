@@ -34,6 +34,10 @@ Page {
 
     title: qsTr("Visual Approach Charts")
 
+    // Focus the filter field when the page becomes current (see main.qml), so the
+    // user can type to filter immediately.
+    property Item defaultFocusItem: textInput
+
     Component {
         id: approachChartItem
 
@@ -136,7 +140,6 @@ Page {
                 return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate, textInput.displayText)
             }
             delegate: approachChartItem
-            ScrollIndicator.vertical: ScrollIndicator {}
         }
 
     }

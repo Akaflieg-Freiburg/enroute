@@ -32,6 +32,9 @@ CenteringDialog {
     title: qsTr("Add Bluetooth Connection")
     standardButtons: Dialog.Cancel
 
+    // Focus the device list on open, so Return/Enter and Home/End work.
+    defaultFocusItem: deviceList
+
     Component.onCompleted: ConnectionScanner_Bluetooth.start()
 
     ColumnLayout {
@@ -56,6 +59,8 @@ CenteringDialog {
         }
 
         DecoratedListView {
+            id: deviceList
+
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.preferredHeight: contentHeight

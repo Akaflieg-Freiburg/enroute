@@ -31,6 +31,10 @@ pragma ComponentBehavior: Bound
 ListView {
     id: listView
 
+    // Desktop platforms get a mouse-interactive scroll bar and a focus highlight;
+    // touch platforms get a thin, non-interactive scroll indicator.
+    readonly property bool isDesktop: (Qt.platform.os !== "android") && (Qt.platform.os !== "ios")
+
     Control { id: fontGlean }
 
     Label {
@@ -78,7 +82,7 @@ ListView {
     }
 
     highlight: Rectangle {
-        visible: listView.activeFocus && (Qt.platform.os !== "ios") && (Qt.platform.os !== "android")
+        visible: listView.activeFocus && listView.isDesktop
         border.color: "black"
         color: "#10000000"
         radius: 5
@@ -87,22 +91,53 @@ ListView {
 
     focus: true
 
-    Shortcut {
-        sequences: [StandardKey.MoveToEndOfDocument]
-        onActivated: listView.currentIndex = listView.count-1
-    }
-    Shortcut {
-        sequences: [StandardKey.MoveToStartOfDocument]
-        onActivated: listView.currentIndex = 0
-    }
-    Shortcut {
-        sequences: [StandardKey.MoveToNextPage]
-        onActivated: listView.currentIndex = Math.min(listView.count-1, listView.currentIndex + 5)
-    }
-    Shortcut {
-        sequences: [StandardKey.MoveToPreviousPage]
-        onActivated: listView.currentIndex = Math.max(0, listView.currentIndex - 5)
+    // Return/Enter act like a click on the highlighted item. Delegates opt in by
+    // exposing a clicked() signal (e.g. WaypointDelegate); lists whose delegates
+    // do not have one are unaffected and let the key event propagate.
+    Keys.onReturnPressed: (event) => listView.activateCurrentItem(event)
+    Keys.onEnterPressed: (event) => listView.activateCurrentItem(event)
+
+    function activateCurrentItem(event) {
+        if (listView.currentItem && listView.currentItem.clicked) {
+            listView.currentItem.clicked()
+            event.accepted = true
+        }
     }
 
-    ScrollIndicator.vertical: ScrollIndicator {}
+    // Home/End/PageUp/PageDown navigation. Implemented as focus-scoped Keys
+    // handlers rather than Shortcuts: several DecoratedListViews can be alive at
+    // once (e.g. the tabs on the Nearby page), and identical window-context
+    // Shortcuts collide as "ambiguous" and stop firing. Keys reach only the
+    // focused list, so there is no collision.
+    Keys.onPressed: (event) => {
+        switch (event.key) {
+        case Qt.Key_Home:
+            listView.currentIndex = 0
+            event.accepted = true
+            break
+        case Qt.Key_End:
+            listView.currentIndex = listView.count-1
+            event.accepted = true
+            break
+        case Qt.Key_PageUp:
+            listView.currentIndex = Math.max(0, listView.currentIndex - 5)
+            event.accepted = true
+            break
+        case Qt.Key_PageDown:
+            listView.currentIndex = Math.min(listView.count-1, listView.currentIndex + 5)
+            event.accepted = true
+            break
+        }
+    }
+
+    // Single source of truth for the vertical scroll affordance — lists using
+    // DecoratedListView should NOT set their own. A mouse-interactive ScrollBar
+    // on desktop (drag/click to scroll), the thin ScrollIndicator on touch.
+    ScrollBar.vertical: ScrollBar {
+        policy: ScrollBar.AsNeeded
+        visible: listView.isDesktop
+    }
+    ScrollIndicator.vertical: ScrollIndicator {
+        visible: !listView.isDesktop
+    }
 }

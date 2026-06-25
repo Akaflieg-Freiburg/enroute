@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,6 +31,14 @@ Page {
     id: page
     title: qsTr("Nearby Waypoints")
     focus: true
+
+    // Control that receives active focus when this page becomes current in the
+    // StackView. The navigation layer (main.qml) reads this and focuses it on
+    // push and after the drawer closes; pages that don't set it are unaffected.
+    // SwipeView is a FocusScope, so focusing it delegates active focus to
+    // whichever child currently has focus:true — and that is bound to the
+    // visible tab, so focus automatically follows the tab (see bindings below).
+    property Item defaultFocusItem: sv
 
     header: StandardHeader {}
 
@@ -78,6 +86,9 @@ Page {
 
             clip: true
 
+            // Only the visible tab's control claims focus within contentScope.
+            focus: SwipeView.isCurrentItem
+
             delegate: waypointDelegate
 
             Component.onCompleted: adList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "AD")
@@ -99,6 +110,8 @@ Page {
             id: wpList
 
             clip: true
+
+            focus: SwipeView.isCurrentItem
 
             delegate: waypointDelegate
 
@@ -122,6 +135,8 @@ Page {
 
             clip: true
 
+            focus: SwipeView.isCurrentItem
+
             delegate: waypointDelegate
 
             Component.onCompleted: naList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "NAV")
@@ -140,6 +155,7 @@ Page {
         }
 
         ColumnLayout {
+            id: searchTab
 
             Item {
                 Layout.preferredHeight: textInput.font.pixelSize/4.0
@@ -152,7 +168,8 @@ Page {
                 Layout.leftMargin: font.pixelSize/2.0
                 Layout.rightMargin: font.pixelSize/2.0
 
-                focus: true
+                // Search tab focuses the filter field, not its result list.
+                focus: searchTab.SwipeView.isCurrentItem
 
                 placeholderText: qsTr("Filter by Name")
             }
@@ -164,6 +181,10 @@ Page {
                 Layout.fillWidth: true
 
                 clip: true
+
+                // The filter field owns focus on this tab, so the list opts out
+                // (overrides DecoratedListView's default focus:true).
+                focus: false
 
                 delegate: waypointDelegate
 
@@ -185,7 +206,7 @@ Page {
                 }
             }
         }
-    }
+    } // SwipeView
 
 
 } // Page

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -63,6 +63,15 @@ AppWindow {
         width: col.implicitWidth
         Material.roundedScale: Material.NotRounded
         topPadding: 0
+
+        // When the drawer closes it restores active focus to the page that was
+        // showing when it opened — which, after navigating to a new page, steals
+        // focus back from the freshly-pushed page. Once fully closed, hand focus
+        // to the current page's preferred control instead (if it declares one).
+        // Closing the drawer restores active focus to the page that was showing
+        // when it opened, stealing it back from a freshly-pushed page. Re-assert
+        // the current page's preferred focus once the drawer has fully closed.
+        onClosed: stackView.focusCurrentPage()
 
         DecoratedScrollView {
             anchors.fill: parent
@@ -645,6 +654,17 @@ AppWindow {
         id: stackView
 
         initialItem: "pages/MapPage.qml"
+
+        // A Page is a Control, not a FocusScope, so giving it active focus stops
+        // at the page and never reaches the control inside it. Pages that want a
+        // specific control focused on appearance expose it as defaultFocusItem;
+        // focus it here whenever the current page changes (push/pop).
+        function focusCurrentPage() {
+            if (currentItem && currentItem.defaultFocusItem &&
+                (Qt.platform.os !== "android") && (Qt.platform.os !== "ios"))
+                currentItem.defaultFocusItem.forceActiveFocus()
+        }
+        onCurrentItemChanged: focusCurrentPage()
 
         // Need to explain
         x: 0

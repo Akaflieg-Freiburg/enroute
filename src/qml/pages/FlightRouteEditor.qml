@@ -748,6 +748,9 @@ Page {
 
         standardButtons: DialogButtonBox.Cancel
 
+        // Focus the filter field on open so the user can type immediately.
+        defaultFocusItem: textInput
+
         Component {
             id: waypointDelegate
 
@@ -839,7 +842,6 @@ Page {
 
                 model: GeoMapProvider.filteredWaypoints(textInput.displayText)
                 delegate: waypointDelegate
-                ScrollIndicator.vertical: ScrollIndicator {}
 
                 Label {
                     anchors.fill: wpList

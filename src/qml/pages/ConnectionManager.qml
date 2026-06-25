@@ -35,6 +35,10 @@ Page {
 
     required property var appWindow
 
+    // Receives active focus when the page becomes current (see main.qml), so the
+    // list responds to Return/Enter and Home/End navigation.
+    property Item defaultFocusItem: connectionList
+
     header: PageHeader {
 
         height: 60 + SafeInsets.top
@@ -86,6 +90,8 @@ Page {
     }
 
     DecoratedListView {
+        id: connectionList
+
         anchors.fill: parent
         contentWidth: availableWidth // Disable horizontal scrolling
 
@@ -107,8 +113,14 @@ Page {
         }
 
         delegate: Item {
+            id: connectionItem
             width: parent ? parent.width : 0
             height: idel.implicitHeight
+
+            // Return/Enter on the highlighted row triggers its primary action
+            // (the trailing menu button stays mouse-only).
+            signal clicked()
+            onClicked: idel.clicked()
 
             Rectangle {
                 anchors.fill: parent
@@ -477,6 +489,9 @@ Page {
         title: qsTr("Add Serial Port Connection")
         standardButtons: Dialog.Cancel
 
+        // Focus the port list on open, so Return/Enter and Home/End work.
+        defaultFocusItem: serialPortList
+
         Component.onCompleted: ConnectionScanner_SerialPort.start()
 
         ColumnLayout {
@@ -491,6 +506,8 @@ Page {
             }
 
             DecoratedListView {
+                id: serialPortList
+
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.preferredHeight: contentHeight

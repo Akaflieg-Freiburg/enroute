@@ -27,6 +27,14 @@ import akaflieg_freiburg.enroute
 Dialog {
     parent: Overlay.overlay
 
+    // Control that receives active focus when the dialog opens — e.g. a list, so
+    // that DecoratedListView's Return/Enter and Home/End navigation work, or a
+    // text field. Mirrors the page-level convention read by main.qml. Dialogs
+    // that leave it null are unaffected.
+    property Item defaultFocusItem: null
+    focus: defaultFocusItem !== null
+    onOpened: if (defaultFocusItem) defaultFocusItem.forceActiveFocus()
+
     property real avHeight: ((Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height)-2*font.pixelSize-SafeInsets.top-SafeInsets.bottom
     property real avWidth: ((Qt.platform.os === "android") ? SafeInsets.wWidth : parent.width)-2*font.pixelSize-SafeInsets.left-SafeInsets.right
 

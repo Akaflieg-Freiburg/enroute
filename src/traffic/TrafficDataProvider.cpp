@@ -49,9 +49,12 @@ Traffic::TrafficDataProvider::~TrafficDataProvider()
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     : QObject(parent), m_receivingHeartbeat(false)
 {
-#warning Need to throttle the time interval somehow, depending on OS and whether the app is in the background of foreground
+    // Publish extrapolated positions once per second. The GUI (Traffic.qml)
+    // interpolates between these updates with a CoordinateAnimation, so motion
+    // stays smooth at the display's frame rate while C++ only wakes up at 1 Hz.
+    // TODO: throttle further (or pause) when the app is in the background.
     auto* l_timer = new QTimer(this);
-    l_timer->setInterval(100);
+    l_timer->setInterval(1000);
     l_timer->start();
 
     // Create traffic objects

@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 import QtLocation
+import QtPositioning
 import QtQuick
 
 import akaflieg_freiburg.enroute
@@ -33,6 +34,18 @@ MapQuickItem {
 
     coordinate: trafficInfo.extrapolatedCoordinate
     visible: trafficInfo.relevant
+
+    // Smoothly glide between the extrapolated positions that
+    // TrafficFactor_WithPosition publishes once per second, so that motion looks
+    // continuous even though the C++ side only updates at 1 Hz. Gated by
+    // "animate" so that newly-appearing or teleporting traffic snaps into place
+    // instead of sliding across the map.
+    Behavior on coordinate {
+        CoordinateAnimation {
+            duration: 1000
+        }
+        enabled: traffic1MapItem.trafficInfo.animate
+    }
 
     sourceItem: Item {
         // Does this traffic have a meaningful heading to point at?

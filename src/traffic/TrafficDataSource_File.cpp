@@ -117,7 +117,7 @@ void Traffic::TrafficDataSource_File::readFromSimulatorStream()
         // interpreter directly, we split the string up and send only one part
         // of it, and the next part together with the next message
         buffer += lastPayload;
-        int const i = buffer.length() / 2.0;
+        int const i = buffer.size() / 2.0;
         emit dataReceived(buffer.left(i));
         processFLARMData(buffer.left(i));
         buffer = buffer.mid(i);
@@ -133,7 +133,7 @@ void Traffic::TrafficDataSource_File::readFromSimulatorStream()
 
     // Set lastPayload, set timer
     auto tuple = line.split(QStringLiteral(" "));
-    if (tuple.length() < 2)
+    if (tuple.size() < 2)
     {
         return;
     }

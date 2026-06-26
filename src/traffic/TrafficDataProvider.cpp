@@ -107,7 +107,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
 
     // Clean up before the app goes down
     connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, [this]() {
-        foreach(auto dataSource, m_dataSources.value())
+        for (auto dataSource : m_dataSources.value())
         {
             if (dataSource.isNull())
             {
@@ -182,7 +182,7 @@ QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInf
 QString Traffic::TrafficDataProvider::addDataSource_UDP(quint16 port)
 {
     // Ignore new device if data source already exists.
-    foreach(auto _dataSource, m_dataSources.value())
+    for (auto _dataSource : m_dataSources.value())
     {
         auto* dataSourceUDP = qobject_cast<TrafficDataSource_Udp*>(_dataSource);
         if (dataSourceUDP != nullptr)
@@ -224,7 +224,7 @@ QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& po
 QString Traffic::TrafficDataProvider::addDataSource_TCP(const QString& host, quint16 port)
 {
     // Ignore new device if data source already exists.
-    foreach(auto _dataSource, m_dataSources.value())
+    for (auto _dataSource : m_dataSources.value())
     {
         auto* dataSourceTCP = qobject_cast<TrafficDataSource_Tcp*>(_dataSource);
         if (dataSourceTCP != nullptr)
@@ -245,7 +245,7 @@ QString Traffic::TrafficDataProvider::addDataSource_TCP(const QString& host, qui
 QString Traffic::TrafficDataProvider::addDataSource_OGN()
 {
     // Ignore new device if data source already exists.
-    foreach(auto _dataSource, m_dataSources.value())
+    for (auto _dataSource : m_dataSources.value())
     {
         auto* dataSource = qobject_cast<TrafficDataSource_Ogn*>(_dataSource);
         if (dataSource != nullptr)
@@ -262,7 +262,7 @@ QString Traffic::TrafficDataProvider::addDataSource_OGN()
 
 void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 {
-    foreach(auto dataSource, m_dataSources.value())
+    for (auto dataSource : m_dataSources.value())
     {
         if (dataSource.isNull())
         {
@@ -280,7 +280,7 @@ QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSo
 QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::computeDataSources()
 {
     QList<Traffic::TrafficDataSource_Abstract*> result;
-    foreach(auto dataSource, m_dataSources.value())
+    for (auto dataSource : m_dataSources.value())
     {
         if (dataSource == nullptr)
         {
@@ -317,7 +317,7 @@ void Traffic::TrafficDataProvider::deferredInitialization()
 
 void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
 {
-    foreach(auto dataSource, m_dataSources.value())
+    for (auto dataSource : m_dataSources.value())
     {
         if (dataSource.isNull())
         {
@@ -334,7 +334,7 @@ void Traffic::TrafficDataProvider::foreFlightBroadcast()
 
 bool Traffic::TrafficDataProvider::hasDataSource_SerialPort(const QString& portNameOrDescription)
 {
-    foreach(auto _dataSource, m_dataSources.value())
+    for (auto _dataSource : m_dataSources.value())
     {
         auto* dataSourceSerialPort = qobject_cast<TrafficDataSource_SerialPort*>(_dataSource);
         if (dataSourceSerialPort != nullptr)
@@ -372,7 +372,7 @@ void Traffic::TrafficDataProvider::loadConnectionInfos()
         return;
     }
 
-    foreach (auto connectionInfo, connectionInfos)
+    for (auto connectionInfo : connectionInfos)
     {
         // Ignore anything that did not decode into a usable connection.
         if (connectionInfo.type() == Traffic::ConnectionInfo::Invalid)
@@ -389,7 +389,7 @@ void Traffic::TrafficDataProvider::onCurrentSourceChanged()
     // current source feeds this class. The passwordRequest/passwordStorageRequest
     // forwarding connections set up in addDataSource() must stay intact, so we
     // disconnect the three specific signals rather than everything.
-    foreach(auto source, m_dataSources.value())
+    for (auto source : m_dataSources.value())
     {
         if (source.isNull())
         {
@@ -457,7 +457,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
 QList<Traffic::ConnectionInfo> Traffic::TrafficDataProvider::computeConnectionInfos()
 {
     QList<Traffic::ConnectionInfo> connectionInfos;
-    foreach (auto dataSource, m_dataSources.value())
+    for (auto dataSource : m_dataSources.value())
     {
         if (dataSource == nullptr)
         {
@@ -480,7 +480,7 @@ QList<Traffic::ConnectionInfo> Traffic::TrafficDataProvider::computeConnectionIn
 QString Traffic::TrafficDataProvider::computeTrafficReceiverRuntimeError()
 {
     QString result;
-    foreach(auto dataSource, m_dataSources.value())
+    for (auto dataSource : m_dataSources.value())
     {
         if (dataSource.isNull())
         {
@@ -498,7 +498,7 @@ QString Traffic::TrafficDataProvider::computeTrafficReceiverRuntimeError()
 QString Traffic::TrafficDataProvider::computeTrafficReceiverSelfTestError()
 {
     QString result;
-    foreach(auto dataSource, m_dataSources.value())
+    for (auto dataSource : m_dataSources.value())
     {
         if (dataSource.isNull())
         {
@@ -534,7 +534,7 @@ void Traffic::TrafficDataProvider::removeDataSource(Traffic::TrafficDataSource_A
 void Traffic::TrafficDataProvider::removeDataSources()
 {
     QList<QPointer<Traffic::TrafficDataSource_Abstract>> sourcesToDelete;
-    foreach(auto dataSource, m_dataSources.value())
+    for (auto dataSource : m_dataSources.value())
     {
         if (dataSource.isNull())
         {
@@ -547,7 +547,7 @@ void Traffic::TrafficDataProvider::removeDataSources()
         sourcesToDelete << dataSource;
     }
     auto tmp = m_dataSources.value();
-    foreach(auto dataSource, sourcesToDelete)
+    for (auto dataSource : sourcesToDelete)
     {
         tmp.removeAll(dataSource);
         dataSource->deleteLater();
@@ -574,7 +574,7 @@ void Traffic::TrafficDataProvider::saveConnectionInfos()
 
 void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QString &password)
 {
-    foreach(auto dataSource, m_dataSources.value())
+    for (auto dataSource : m_dataSources.value())
     {
         if (dataSource.isNull())
         {
@@ -607,7 +607,7 @@ void Traffic::TrafficDataProvider::setWarning(const Traffic::Warning& warning)
 
 QPointer<Traffic::TrafficDataSource_Abstract> Traffic::TrafficDataProvider::computeCurrentSource()
 {
-    foreach(auto source, m_dataSources.value())
+    for (auto source : m_dataSources.value())
     {
         if (source.isNull())
         {
@@ -624,7 +624,7 @@ QPointer<Traffic::TrafficDataSource_Abstract> Traffic::TrafficDataProvider::comp
 
 Positioning::PositionInfo Traffic::TrafficDataProvider::computePositionInfo()
 {
-    foreach(auto source, m_dataSources.value())
+    for (auto source : m_dataSources.value())
     {
         if (source.isNull())
         {

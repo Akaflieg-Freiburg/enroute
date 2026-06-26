@@ -61,7 +61,7 @@ public:
     Q_ENUM(Type)
 
     // Duplicated from QSerialPort, in order to make it available to QML
-    enum BaudRate {
+    enum BaudRate : int {
         Baud1200 = 1200,
         Baud2400 = 2400,
         Baud4800 = 4800,
@@ -74,14 +74,14 @@ public:
     Q_ENUM(BaudRate)
 
     // Duplicated from QSerialPort, in order to make it available to QML
-    enum StopBits {
+    enum StopBits : int {
         OneStop = 1,
         TwoStop = 2
     };
     Q_ENUM(StopBits)
 
     // Duplicated from QSerialPort, in order to make it available to QML
-    enum FlowControl {
+    enum FlowControl : int {
         NoFlowControl = 0,
         HardwareControl = 1,
         SoftwareControl = 2

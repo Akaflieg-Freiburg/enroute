@@ -55,7 +55,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     if (QCoreApplication::instance() != nullptr)
     {
         auto downloadables = GlobalObject::dataManager()->databases()->downloadables();
-        foreach(auto downloadableX, downloadables)
+        for (auto downloadableX : downloadables)
         {
             auto *downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
             if (downloadable == nullptr)

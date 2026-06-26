@@ -121,7 +121,7 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
         else
         {
             // Split data into raw messages
-            foreach(auto rawMessage, data.split(0x7e))
+            for (auto rawMessage : data.split(0x7e))
             {                
                 if (!rawMessage.isEmpty())
                 {

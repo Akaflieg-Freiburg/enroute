@@ -67,7 +67,7 @@ const std::array<quint16, 256> Crc16Table =
 auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
 {
     // Check message size
-    if (decodedData.length() != 27) {
+    if (decodedData.size() != 27) {
         return {};
     }
 
@@ -194,7 +194,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     {
         message.reserve(rawMessage.size());
         bool isEscaped = false;
-        foreach(auto byte, rawMessage)
+        for (auto byte : rawMessage)
         {
             if (byte == 0x7d)
             {
@@ -220,7 +220,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     //
     {
         quint16 crc = 0;
-        foreach(auto byte, message.chopped(2))
+        for (auto byte : message.chopped(2))
         {
             crc = Crc16Table.at(crc >> 8U) ^ (crc << 8U) ^ static_cast<quint8>(byte);
         }
@@ -249,7 +249,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     // Heartbeat message
     if (messageID == 0)
     {
-        if (message.length() < 3)
+        if (message.size() < 3)
         {
             return;
         }
@@ -320,7 +320,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
     // Ownship geometric altitude
     if (messageID == 11)
     {
-        if (message.length() < 4)
+        if (message.size() < 4)
         {
             return;
         }

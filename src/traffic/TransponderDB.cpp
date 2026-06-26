@@ -95,9 +95,9 @@ void initStrideMappings()
         else
         {
             mapping.end = mapping.start - mapping.offset +
-                          (mapping.alphabet.length() - 1) * mapping.s1 +
-                          (mapping.alphabet.length() - 1) * mapping.s2 +
-                          (mapping.alphabet.length() - 1);
+                          (mapping.alphabet.size() - 1) * mapping.s1 +
+                          (mapping.alphabet.size() - 1) * mapping.s2 +
+                          (mapping.alphabet.size() - 1);
         }
     }
 }
@@ -120,9 +120,9 @@ QString lookupStride(uint32_t hexid)
         offset %= mapping.s2;
         auto i3 = offset;
 
-        if (i1 < 0 || i1 >= mapping.alphabet.length() ||
-            i2 < 0 || i2 >= mapping.alphabet.length() ||
-            i3 < 0 || i3 >= mapping.alphabet.length())
+        if (i1 < 0 || i1 >= mapping.alphabet.size() ||
+            i2 < 0 || i2 >= mapping.alphabet.size() ||
+            i3 < 0 || i3 >= mapping.alphabet.size())
         {
             continue;
         }
@@ -168,7 +168,7 @@ QString lookupNumeric(uint32_t hexid)
 
         auto regNumber = hexid - mapping.start + mapping.first;
         auto reg = QString::number(regNumber);
-        return mapping.templateString.left(mapping.templateString.length() - reg.length()) + reg;
+        return mapping.templateString.left(mapping.templateString.size() - reg.size()) + reg;
     }
 
     return {}; // No match found

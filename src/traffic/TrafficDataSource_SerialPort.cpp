@@ -140,7 +140,7 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 #if __has_include(<QSerialPortInfo>)
     // Create and connect QSerialPort and QTextStream
     auto deviceInfos = QSerialPortInfo::availablePorts();
-    foreach (auto deviceInfo, deviceInfos)
+    for (auto deviceInfo : deviceInfos)
     {
         if ((deviceInfo.portName() == m_portNameOrDescription) || (deviceInfo.description() == m_portNameOrDescription))
         {

@@ -184,7 +184,7 @@ void Traffic::ConnectionScanner_Bluetooth::updateConnectionInfos()
 {
     QVector<Traffic::ConnectionInfo> result;
     auto deviceInfos = m_discoveryAgent.discoveredDevices();
-    for (auto deviceInfo : deviceInfos)
+    for (const auto &deviceInfo : std::as_const(deviceInfos))
     {
         if (deviceInfo.name().isEmpty())
         {

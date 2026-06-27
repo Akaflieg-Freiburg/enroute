@@ -58,7 +58,7 @@ public:
      *  This enum defines a few aircraft types. The list is modeled after the
      *  FLARM/NMEA specification.
      */
-    enum Type
+    enum Type : quint8
     {
         unknown, /*!< Unknown aircraft type */
         Aircraft, /*!< Fixed wing aircraft */
@@ -538,6 +538,23 @@ protected:
      *  @param data Data record whose contents replace the data of *this
      */
     void replaceBy(const TrafficFactorData& data);
+
+    // Number of trailing ID characters compared to decide whether two records
+    // describe the same factor: the last six hex digits are the ICAO/FLARM
+    // device-address suffix.
+    static constexpr qsizetype idMatchLength = 6;
+
+    /*! \brief Check whether a data record refers to the same factor as *this
+     *
+     *  Two records describe the same factor exactly if the last \ref
+     *  idMatchLength characters of their IDs agree. This is the single identity
+     *  rule shared by the updateFrom() overloads of all subclasses.
+     *
+     *  @param data Data record to compare against
+     *
+     *  @returns True if \a data refers to the same factor as *this
+     */
+    [[nodiscard]] bool isSameFactorAs(const TrafficFactorData& data) const;
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_Abstract)

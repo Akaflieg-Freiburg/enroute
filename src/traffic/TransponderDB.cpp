@@ -7,11 +7,11 @@
 
 #include "TransponderDB.h"
 #include <QFile>
+#include <QGlobalStatic>
 #include <QTextStream>
 #include <QDebug>
 #include <QStringList>
 #include <cmath>
-#include <mutex>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -34,41 +34,43 @@ struct StrideMapping {
     size_t end = 0;
 };
 
-static QList<StrideMapping> strideMappings = {
-    {0x008011, 26 * 26, 26, "ZS-"},
-    {0x390000, 1024, 32, "F-G"},
-    {0x398000, 1024, 32, "F-H"},
-    {0x3C4421, 1024, 32, "D-A", FULL_ALPHABET, "AAA", "OZZ"},
-    {0x3C0001, 26 * 26, 26, "D-A", FULL_ALPHABET, "PAA", "ZZZ"},
-    {0x3C8421, 1024, 32, "D-B", FULL_ALPHABET, "AAA", "OZZ"},
-    {0x3C2001, 26 * 26, 26, "D-B", FULL_ALPHABET, "PAA", "ZZZ"},
-    {0x3CC000, 26 * 26, 26, "D-C"},
-    {0x3D04A8, 26 * 26, 26, "D-E"},
-    {0x3D4950, 26 * 26, 26, "D-F"},
-    {0x3D8DF8, 26 * 26, 26, "D-G"},
-    {0x3DD2A0, 26 * 26, 26, "D-H"},
-    {0x3E1748, 26 * 26, 26, "D-I"},
-    {0x448421, 1024, 32, "OO-"},
-    {0x458421, 1024, 32, "OY-"},
-    {0x460000, 26 * 26, 26, "OH-"},
-    {0x468421, 1024, 32, "SX-"},
-    {0x490421, 1024, 32, "CS-"},
-    {0x4A0421, 1024, 32, "YR-"},
-    {0x4B8421, 1024, 32, "TC-"},
-    {0x740421, 1024, 32, "JY-"},
-    {0x760421, 1024, 32, "AP-"},
-    {0x768421, 1024, 32, "9V-"},
-    {0x778421, 1024, 32, "YK-"},
-    {0x7C0000, 1296, 36, "VH-"},
-    {0xC00001, 26 * 26, 26, "C-F"},
-    {0xC044A9, 26 * 26, 26, "C-G"},
-    {0xE01041, 4096, 64, "LV-"}
-};
+// Necessary because Q_GLOBAL_STATIC does not like templates
+using StrideMappingList = QList<StrideMapping>;
 
-// Initialize stride mappings
-void initStrideMappings()
+// Builds the stride table and pre-computes the offset/end field of each entry.
+StrideMappingList computeStrideMappings()
 {
-    for (auto& mapping : strideMappings)
+    StrideMappingList mappings = {
+        {0x008011, 26 * 26, 26, "ZS-"},
+        {0x390000, 1024, 32, "F-G"},
+        {0x398000, 1024, 32, "F-H"},
+        {0x3C4421, 1024, 32, "D-A", FULL_ALPHABET, "AAA", "OZZ"},
+        {0x3C0001, 26 * 26, 26, "D-A", FULL_ALPHABET, "PAA", "ZZZ"},
+        {0x3C8421, 1024, 32, "D-B", FULL_ALPHABET, "AAA", "OZZ"},
+        {0x3C2001, 26 * 26, 26, "D-B", FULL_ALPHABET, "PAA", "ZZZ"},
+        {0x3CC000, 26 * 26, 26, "D-C"},
+        {0x3D04A8, 26 * 26, 26, "D-E"},
+        {0x3D4950, 26 * 26, 26, "D-F"},
+        {0x3D8DF8, 26 * 26, 26, "D-G"},
+        {0x3DD2A0, 26 * 26, 26, "D-H"},
+        {0x3E1748, 26 * 26, 26, "D-I"},
+        {0x448421, 1024, 32, "OO-"},
+        {0x458421, 1024, 32, "OY-"},
+        {0x460000, 26 * 26, 26, "OH-"},
+        {0x468421, 1024, 32, "SX-"},
+        {0x490421, 1024, 32, "CS-"},
+        {0x4A0421, 1024, 32, "YR-"},
+        {0x4B8421, 1024, 32, "TC-"},
+        {0x740421, 1024, 32, "JY-"},
+        {0x760421, 1024, 32, "AP-"},
+        {0x768421, 1024, 32, "9V-"},
+        {0x778421, 1024, 32, "YK-"},
+        {0x7C0000, 1296, 36, "VH-"},
+        {0xC00001, 26 * 26, 26, "C-F"},
+        {0xC044A9, 26 * 26, 26, "C-G"},
+        {0xE01041, 4096, 64, "LV-"}
+    };
+    for (auto& mapping : mappings)
     {
         if (!mapping.first.isEmpty())
         {
@@ -100,12 +102,14 @@ void initStrideMappings()
                           (mapping.alphabet.size() - 1);
         }
     }
+    return mappings;
 }
+Q_GLOBAL_STATIC_WITH_ARGS(StrideMappingList, strideMappings, (computeStrideMappings()))
 
 // Lookup function for stride mappings
 QString lookupStride(uint32_t hexid)
 {
-    for (const auto& mapping : std::as_const(strideMappings))
+    for (const auto& mapping : std::as_const(*strideMappings))
     {
         if (hexid < mapping.start || hexid > mapping.end)
         {
@@ -142,24 +146,28 @@ struct NumericMapping {
     uint32_t end = 0;
 };
 
-static QList<NumericMapping> numericMappings = {
-    {0x140000, 0, 100000, "RA-00000"},
-    {0x0B03E8, 1000, 1000, "CU-T0000"}
-};
+// Necessary because Q_GLOBAL_STATIC does not like templates
+using NumericMappingList = QList<NumericMapping>;
 
-// Initialize numeric mappings
-void initNumericMappings()
+// Builds the numeric table and pre-computes the end field of each entry.
+NumericMappingList computeNumericMappings()
 {
-    for (auto& mapping : numericMappings)
+    NumericMappingList mappings = {
+        {0x140000, 0, 100000, "RA-00000"},
+        {0x0B03E8, 1000, 1000, "CU-T0000"}
+    };
+    for (auto& mapping : mappings)
     {
         mapping.end = mapping.start + mapping.count - 1;
     }
+    return mappings;
 }
+Q_GLOBAL_STATIC_WITH_ARGS(NumericMappingList, numericMappings, (computeNumericMappings()))
 
 // Lookup function for numeric mappings
 QString lookupNumeric(uint32_t hexid)
 {
-    for (const auto& mapping : std::as_const(numericMappings))
+    for (const auto& mapping : std::as_const(*numericMappings))
     {
         if (hexid < mapping.start || hexid > mapping.end)
         {
@@ -174,31 +182,15 @@ QString lookupNumeric(uint32_t hexid)
     return {}; // No match found
 }
 
-// The stride/numeric mappings are file-static and their offset/end fields are
-// computed by initStrideMappings()/initNumericMappings(). Initialize them lazily
-// and exactly once, so that the static getRegistration() works correctly even if
-// no TransponderDB instance has ever been constructed.
-std::once_flag mappingsInitFlag;
-void ensureMappingsInitialized()
-{
-    std::call_once(mappingsInitFlag, []() {
-        initStrideMappings();
-        initNumericMappings();
-    });
-}
-
 // Constructor
 TransponderDB::TransponderDB(QObject* parent)
     : QObject(parent)
 {
-    ensureMappingsInitialized();
 }
 
 // Get registration
-QString TransponderDB::getRegistration(const QString& address)
+QString TransponderDB::registration(const QString& address)
 {
-    ensureMappingsInitialized();
-
     QString registration;
     
     bool ok = false;

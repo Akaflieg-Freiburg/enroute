@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,7 +19,9 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QDebug>
 #include <QFile>
+#include <QSaveFile>
 
 #include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
@@ -129,6 +131,13 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
 void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abstract* source)
 {
     Q_ASSERT( source != nullptr );
+    if (source == nullptr)
+    {
+        // Passing null is a programming error (flagged by the assert in debug
+        // builds), but guard against it in release builds, where Q_ASSERT is a
+        // no-op, rather than dereferencing a null pointer below.
+        return;
+    }
 
     source->setParent(this);
     QQmlEngine::setObjectOwnership(source, QQmlEngine::CppOwnership);
@@ -562,14 +571,26 @@ void Traffic::TrafficDataProvider::resetWarning()
 
 void Traffic::TrafficDataProvider::saveConnectionInfos()
 {
-    QFile outFile(stdFileName);
+    // Use QSaveFile so a failed or partial write cannot corrupt the existing
+    // file: it writes to a temporary file and commit() atomically renames.
+    QSaveFile outFile(stdFileName);
     if (!outFile.open(QIODeviceBase::WriteOnly))
     {
+        qWarning() << "TrafficDataProvider::saveConnectionInfos: cannot open" << stdFileName << "for writing:" << outFile.errorString();
         return;
     }
     QDataStream outStream(&outFile);
     outStream << m_connectionInfos.value();
-    outFile.close();
+    if (outStream.status() != QDataStream::Ok)
+    {
+        qWarning() << "TrafficDataProvider::saveConnectionInfos: serialization failed for" << stdFileName;
+        outFile.cancelWriting();
+        return;
+    }
+    if (!outFile.commit())
+    {
+        qWarning() << "TrafficDataProvider::saveConnectionInfos: commit failed for" << stdFileName << ":" << outFile.errorString();
+    }
 }
 
 void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QString &password)

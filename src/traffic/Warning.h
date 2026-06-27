@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -114,7 +114,7 @@ public:
      *
      *  @returns True if equal
      */
-    Q_INVOKABLE bool operator==(const Traffic::Warning &rhs);
+    [[nodiscard]] Q_INVOKABLE bool operator==(const Traffic::Warning &rhs) const;
 
     /*! \brief Direction to obstacle or aircraft
      *
@@ -143,8 +143,8 @@ private:
                      const QString& RelativeDistance);
 
     // Property values
-    int m_alarmLevel {-1};
-    int m_alarmType {-1};
+    int m_alarmLevel = -1;
+    int m_alarmType = -1;
     Units::Distance m_hDist;
     Units::Angle m_relativeBearing;
     Units::Distance m_vDist;

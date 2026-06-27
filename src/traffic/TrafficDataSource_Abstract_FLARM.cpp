@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -76,7 +76,7 @@ QDateTime interpretNMEATime(const QString& timeString)
 // substring message is returned. If the input string is not a valid NMEA
 // sentence, an empty string is returned.
 
-QString getNMEAMessage(const QString& input)
+QString extractNMEAMessage(const QString& input)
 {
     // Paranoid safety checks
     if (input.size() < 5)
@@ -141,7 +141,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMData(const QString& data)
 
     // m_FLARMDataBuffer is a string that might be a full or incomplete NMEA sentence.
     // If it is a full sentence, then consume it. Otherwise, ignore it.
-    if (!getNMEAMessage(m_FLARMDataBuffer).isEmpty())
+    if (!extractNMEAMessage(m_FLARMDataBuffer).isEmpty())
     {
         processFLARMSentence(m_FLARMDataBuffer);
         m_FLARMDataBuffer.clear();
@@ -151,7 +151,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMData(const QString& data)
 
 void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& sentence)
 {
-    auto message = getNMEAMessage(sentence);
+    auto message = extractNMEAMessage(sentence);
     if (message.isEmpty())
     {
         return;
@@ -481,7 +481,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
         emit factorWithoutPosition(TrafficFactorData_DistanceOnly{
             .data = {
                 .alarmLevel = alarmLevel,
-                .callSign = GlobalObject::flarmnetDB()->getRegistration(targetID),
+                .callSign = GlobalObject::flarmnetDB()->registration(targetID),
                 .hDist = hDist,
                 .ID = targetID,
                 .type = type,
@@ -542,7 +542,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
     emit factorWithPosition(TrafficFactorData_WithPosition{
         .data = {
             .alarmLevel = alarmLevel,
-            .callSign = GlobalObject::flarmnetDB()->getRegistration(targetID),
+            .callSign = GlobalObject::flarmnetDB()->registration(targetID),
             .hDist = hDist,
             .ID = targetID,
             .type = type,

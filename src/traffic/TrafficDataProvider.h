@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -516,6 +516,8 @@ private slots:
     void setWarning(const Traffic::Warning& warning);
 
 private:
+    Q_DISABLE_COPY_MOVE(TrafficDataProvider)
+
     //
     // Compute Methods
     //
@@ -526,7 +528,7 @@ private:
 
     // UDP Socket for ForeFlight Broadcast messages.
     // See https://www.foreflight.com/connect/spec/
-    QNetworkDatagram foreFlightBroadcastDatagram {R"({"App":"Enroute Flight Navigation","GDL90":{"port":4000}})", QHostAddress::Broadcast, 63093};
+    QNetworkDatagram foreFlightBroadcastDatagram = {R"({"App":"Enroute Flight Navigation","GDL90":{"port":4000}})", QHostAddress::Broadcast, 63093};
     QUdpSocket foreFlightBroadcastSocket;
     QTimer foreFlightBroadcastTimer;
 
@@ -575,7 +577,7 @@ private:
     bool computeReceivingHeartbeat();
 
     // Standard file name for saveConnectionInfos()
-    QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/connectionInfos.data"_s};
+    QString stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/connectionInfos.data"_s;
 };
 
 } // namespace Traffic

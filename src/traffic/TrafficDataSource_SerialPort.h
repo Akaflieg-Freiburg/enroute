@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2025 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -175,8 +175,8 @@ private:
     void setParameters();
 #endif
 #if __has_include(<QSerialPortInfo>)
-    QSerialPort* m_port {nullptr};
-    QTextStream* m_textStream {nullptr};
+    QSerialPort* m_port = nullptr;
+    QTextStream* m_textStream = nullptr;
 #endif
     QString m_portNameOrDescription;
     QProperty<ConnectionInfo::BaudRate> m_baudRate {ConnectionInfo::BaudRate::Baud9600};

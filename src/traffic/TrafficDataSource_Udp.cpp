@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,10 +29,6 @@ Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(bool isCanonical, quint16 
 {
     // ConnectionInfo
     m_connectionInfo = Traffic::ConnectionInfo(m_port, canonical());
-
-    // Initialize timers
-    m_trueAltitudeTimer.setInterval(5s);
-    m_trueAltitudeTimer.setSingleShot(true);
 
     //
     // Initialize properties

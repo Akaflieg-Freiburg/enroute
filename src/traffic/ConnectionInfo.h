@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2024-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2024-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -322,23 +322,23 @@ private:
     //
     // Properties
     //
-    bool                          m_canConnect { false };
-    bool                          m_canonical { false };
+    bool                          m_canConnect = false;
+    bool                          m_canonical = false;
     QString m_description;
-    QString m_icon{u"/icons/material/ic_delete.svg"_s};
-    QString                       m_name { QObject::tr("Invalid Device", "Traffic::ConnectionInfo") };
-    Traffic::ConnectionInfo::Type m_type { Traffic::ConnectionInfo::Invalid };
+    QString m_icon = u"/icons/material/ic_delete.svg"_s;
+    QString                       m_name = QObject::tr("Invalid Device", "Traffic::ConnectionInfo");
+    Traffic::ConnectionInfo::Type m_type = Traffic::ConnectionInfo::Invalid;
 
     //
     // Private members, depending on m_type
     //
     QBluetoothDeviceInfo m_bluetoothDeviceInfo;
-    quint16 m_port{0};
+    quint16 m_port = 0;
     QString                       m_host;
 
-    BaudRate m_baudRate {BaudRate::Baud9600};
-    StopBits m_stopBits {StopBits::OneStop};
-    FlowControl m_flowControl {FlowControl::NoFlowControl};
+    BaudRate m_baudRate = BaudRate::Baud9600;
+    StopBits m_stopBits = StopBits::OneStop;
+    FlowControl m_flowControl = FlowControl::NoFlowControl;
 
 };
 

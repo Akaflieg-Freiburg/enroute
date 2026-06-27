@@ -83,10 +83,12 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
             return tr("Static Obstacle");
         case TowPlane:
             return tr("Tow Plane");
-        default:
+        case unknown:
             return tr("Traffic");
         }
-        return QString();
+        // No default: above, so -Wswitch flags this switch if a Type is added.
+        // This return covers only out-of-range values.
+        return tr("Traffic");
     });
 
     // Binding for property relevant
@@ -153,6 +155,12 @@ void Traffic::TrafficFactor_Abstract::replaceBy(const TrafficFactorData& data)
     setVDist(data.vDist);
     m_animate = false;
     startLifetime();
+}
+
+
+bool Traffic::TrafficFactor_Abstract::isSameFactorAs(const TrafficFactorData& data) const
+{
+    return ID().right(idMatchLength) == data.ID.right(idMatchLength);
 }
 
 

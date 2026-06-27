@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -169,7 +169,7 @@ private:
     // triggers an automatic reconnect while this is true, so that
     // disconnectFromTrafficReceiver() can actually stop the connection — abort()
     // emits "disconnected", which would otherwise reconnect immediately.
-    bool m_connectionDesired {false};
+    bool m_connectionDesired = false;
 
     QString m_lineBuffer;         // Reusable buffer for reading lines
     Ogn::OgnMessage m_ognMessage; // Reusable message structure

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,8 +30,6 @@
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "traffic/TransponderDB.h"
 
-#include <chrono>
-#include <utility>
 #include <QAbstractSocket>
 #include <QCoreApplication>
 #include <QDateTime>
@@ -43,7 +41,6 @@
 #include <QObject>
 #include <QProcessEnvironment>
 #include <QRandomGenerator>
-#include <QRegularExpression>
 #include <QString>
 #include <QStringConverter>
 #include <QTcpSocket>
@@ -53,9 +50,17 @@
 #include <QtGlobal>
 #include <QtMath>
 
+#include <chrono>
+#include <utility>
+
 #define OGN_DEBUG 0
 
 using namespace Qt::Literals::StringLiterals;
+
+// Maximum length of a single line read from the network stream. A longer line is
+// split across reads rather than buffered whole, which bounds memory use should a
+// peer stream data without a newline. Legitimate APRS/OGN lines are far shorter.
+constexpr qint64 maxLineLength = 1024;
 
 namespace {
 
@@ -77,8 +82,10 @@ Traffic::TrafficFactor_Abstract::Type convertOgnAircraftType(Ogn::OgnAircraftTyp
         case OgnAircraftType::Skydiver:        return Traffic::TrafficFactor_Abstract::Skydiver;
         case OgnAircraftType::StaticObstacle:  return Traffic::TrafficFactor_Abstract::StaticObstacle;
         case OgnAircraftType::TowPlane:        return Traffic::TrafficFactor_Abstract::TowPlane;
-        default:                               return Traffic::TrafficFactor_Abstract::unknown;
     }
+    // No default: above, so -Wswitch flags this switch if an OgnAircraftType is
+    // added. This return covers only out-of-range values.
+    return Traffic::TrafficFactor_Abstract::unknown;
 }
 
 // Helper function to convert Traffic::AircraftType to OgnAircraftType
@@ -99,8 +106,10 @@ Ogn::OgnAircraftType convertToOgnAircraftType(Traffic::TrafficFactor_Abstract::T
         case Traffic::TrafficFactor_Abstract::Skydiver:       return OgnAircraftType::Skydiver;
         case Traffic::TrafficFactor_Abstract::StaticObstacle: return OgnAircraftType::StaticObstacle;
         case Traffic::TrafficFactor_Abstract::TowPlane:       return OgnAircraftType::TowPlane;
-        default:                                              return OgnAircraftType::unknown;
     }
+    // No default: above, so -Wswitch flags this switch if a Type is added.
+    // This return covers only out-of-range values.
+    return OgnAircraftType::unknown;
 }
 
 // Helper function to convert OgnAddressType to string
@@ -277,7 +286,7 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
 {
     // In this function 
     // avoid heap allocations for performance reasons.
-    while (m_textStream.readLineInto(&m_lineBuffer))
+    while (m_textStream.readLineInto(&m_lineBuffer, maxLineLength))
     {
         emit dataReceived(m_lineBuffer);
         processOgnMessage(m_lineBuffer);
@@ -295,7 +304,7 @@ void Traffic::TrafficDataSource_Ogn::updateOwnshipFilterData()
     m_ownTransponderCodes.clear();
     if (!transponderCode.isEmpty())
     {
-        QStringList const codes = transponderCode.toUpper().split(QRegularExpression(u"\\s+"_s), Qt::SkipEmptyParts);
+        QStringList const codes = transponderCode.simplified().split(u' ', Qt::SkipEmptyParts);
         m_ownTransponderCodes.reserve(codes.size());
         for (const QString& code : codes)
         {
@@ -380,7 +389,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     QString callsign;
     if (m_ognMessage.addressType == Ogn::OgnAddressType::FLARM)
     {
-        callsign = GlobalObject::flarmnetDB()->getRegistration(QString::fromUtf8(m_ognMessage.address.data(), static_cast<qsizetype>(m_ognMessage.address.size())));
+        callsign = GlobalObject::flarmnetDB()->registration(QString::fromUtf8(m_ognMessage.address.data(), static_cast<qsizetype>(m_ognMessage.address.size())));
     }
     else if (static_cast<int>(!m_ognMessage.flightnumber.empty()) != 0)
     {
@@ -388,7 +397,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     }
     else if (m_ognMessage.addressType == Ogn::OgnAddressType::ICAO)
     {
-        callsign = transponderDB.getRegistration(QString::fromUtf8(m_ognMessage.address.data(), static_cast<qsizetype>(m_ognMessage.address.size())));
+        callsign = transponderDB.registration(QString::fromUtf8(m_ognMessage.address.data(), static_cast<qsizetype>(m_ognMessage.address.size())));
     }
     #if OGN_SHOW_ADDRESSTYPE
         callsign += QString(" (%1)").arg(addressTypeToString(m_ognMessage.addressType));
@@ -461,7 +470,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     }
 
     // Prepare the factor object
-    Traffic::TrafficFactorData_WithPosition factor{
+    Traffic::TrafficFactorData_WithPosition factor = {
         .data = {
             .alarmLevel = alarmLevel,
             .callSign = callsign,

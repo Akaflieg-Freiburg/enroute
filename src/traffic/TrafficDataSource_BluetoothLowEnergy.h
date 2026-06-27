@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2025 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -185,20 +185,20 @@ private:
     QBluetoothDeviceInfo m_info;
 
     // Device discovery
-    QBluetoothDeviceDiscoveryAgent* m_discoveryAgent {nullptr};
+    QBluetoothDeviceDiscoveryAgent* m_discoveryAgent = nullptr;
 
     // Helper to setup the controller since we'll recreate it often
     void setupController(const QBluetoothDeviceInfo &info);
     // Deletes and nulls the UART service objects (they are parented to this, not
     // to the controller, so they must be cleaned up explicitly).
     void cleanupServices();
-    QLowEnergyController* m_control {nullptr};
+    QLowEnergyController* m_control = nullptr;
 
-    QLowEnergyService* m_nordicUARTService {nullptr};
+    QLowEnergyService* m_nordicUARTService = nullptr;
     QBluetoothUuid const nordicUARTServiceUuid {"6e400001-b5a3-f393-e0a9-e50e24dcca9e"};
     QBluetoothUuid const nordicUARTTxCharacteristicID {"6e400003-b5a3-f393-e0a9-e50e24dcca9e"};
 
-    QLowEnergyService* m_simpleUARTService {nullptr};
+    QLowEnergyService* m_simpleUARTService = nullptr;
     QBluetoothUuid const simpleUARTServiceUuid {"0000ffe0-0000-1000-8000-00805f9b34fb"};
     QBluetoothUuid const simpleUARTCharacteristicID {"0000ffe1-0000-1000-8000-00805f9b34fb"};
 };

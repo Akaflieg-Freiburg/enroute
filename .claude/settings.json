@@ -13,6 +13,7 @@
     ]
   },
   "enabledPlugins": {
-    "qt-development-skills@claude-plugins-official": true
+    "qt-development-skills@claude-plugins-official": true,
+    "github@claude-plugins-official": true
   }
 }

@@ -32,7 +32,7 @@ QString Traffic::TrafficDataProvider::addDataSource_BluetoothLowEnergy(const Tra
     }
 
     // Ignore new device if data source already exists.
-    foreach(auto _dataSource, m_dataSources.value())
+    for (auto _dataSource : m_dataSources.value())
     {
         auto* dataSourceBTLowEnergy = qobject_cast<TrafficDataSource_BluetoothLowEnergy*>(_dataSource);
         if (dataSourceBTLowEnergy != nullptr)

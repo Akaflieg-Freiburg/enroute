@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2024-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2024-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -177,7 +177,7 @@ bool Traffic::ConnectionInfo::sameConnectionAs(const ConnectionInfo& other) cons
         return false;
     }
 
-    if (m_type == Traffic::ConnectionInfo::BluetoothClassic)
+    if (m_type == Traffic::ConnectionInfo::BluetoothClassic || m_type == Traffic::ConnectionInfo::BluetoothLowEnergy)
     {
         if (m_bluetoothDeviceInfo.isValid() != other.m_bluetoothDeviceInfo.isValid())
         {
@@ -188,24 +188,6 @@ bool Traffic::ConnectionInfo::sameConnectionAs(const ConnectionInfo& other) cons
             return true;
         }
 
-#if defined(Q_OS_IOS)
-        // iOS hides the device address and works with anonymized device UUIDs
-        return m_bluetoothDeviceInfo.deviceUuid() == other.m_bluetoothDeviceInfo.deviceUuid();
-#else
-        return m_bluetoothDeviceInfo.address() == other.m_bluetoothDeviceInfo.address();
-#endif
-    }
-
-    if (m_type == Traffic::ConnectionInfo::BluetoothLowEnergy)
-    {
-        if (m_bluetoothDeviceInfo.isValid() != other.m_bluetoothDeviceInfo.isValid())
-        {
-            return false;
-        }
-        if (!m_bluetoothDeviceInfo.isValid() && !other.m_bluetoothDeviceInfo.isValid())
-        {
-            return true;
-        }
 #if defined(Q_OS_IOS)
         // iOS hides the device address and works with anonymized device UUIDs
         return m_bluetoothDeviceInfo.deviceUuid() == other.m_bluetoothDeviceInfo.deviceUuid();
@@ -257,9 +239,13 @@ bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
         return m_type < other.m_type;
     }
 
-    if (name() != other.name())
+    // Order by the user-visible name using locale-aware collation (human-friendly,
+    // not raw code-point order, so e.g. "air" and "Zulu" sort as a user expects).
+    // Names the locale treats as equivalent fall through to the tie-breakers below.
+    const int nameComparison = name().localeAwareCompare(other.name());
+    if (nameComparison != 0)
     {
-        return name() < other.name();
+        return nameComparison < 0;
     }
 
     // Tie-breakers on the identifying fields, so that distinct connections are

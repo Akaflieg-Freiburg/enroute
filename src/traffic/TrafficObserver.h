@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2025 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -74,7 +74,7 @@ public:
      *
      * @returns Property hasTraffic
      */
-    [[nodiscard]] bool hasTraffic() {return m_hasTraffic.value();}
+    [[nodiscard]] bool hasTraffic() const {return m_hasTraffic.value();}
 
     /*! \brief Getter method for property of the same name
      *
@@ -86,7 +86,7 @@ public:
      *
      * @returns Property traffic
      */
-    [[nodiscard]] QList<Traffic::TrafficFactor_Abstract*> traffic() {return m_traffic.value();}
+    [[nodiscard]] QList<Traffic::TrafficFactor_Abstract*> traffic() const {return m_traffic.value();}
 
     /*! \brief Getter method for property of the same name
      *

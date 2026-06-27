@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,8 @@
 #include <QUdpSocket>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
+
+#include <optional>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -135,16 +137,13 @@ private:
 
     // We use this vector to store the last 512 datagram hashes in a circular
     // array. This is used to sort out doubly sent datagrams. The nextHashIndex
-    // points to the next vector entry that will be re-written. Note: use
-    // parenthesis-initialization here — brace-init would select the
-    // std::initializer_list constructor and create a two-element {512, 0} vector.
-    QVector<size_t> receivedDatagramHashes = QVector<size_t>(512, 0);
-    qsizetype nextHashIndex {0};
-
-    // GPS altitude of owncraft
-    Units::Distance m_trueAltitude;
-    Units::Distance m_trueAltitude_FOM;
-    QTimer m_trueAltitudeTimer;
+    // points to the next vector entry that will be re-written. Empty slots hold
+    // std::nullopt, which can never equal a real hash — so a datagram that
+    // legitimately hashes to 0 is not mistaken for an as-yet-unwritten slot.
+    // Note: use parenthesis-initialization here — brace-init would select the
+    // std::initializer_list constructor and create a two-element vector.
+    QVector<std::optional<size_t>> receivedDatagramHashes = QVector<std::optional<size_t>>(512, std::nullopt);
+    qsizetype nextHashIndex = 0;
 
 };
 

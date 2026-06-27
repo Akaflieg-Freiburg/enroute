@@ -45,7 +45,7 @@ namespace Traffic {
  */
 struct TrafficFactorData {
     /*! \brief Alarm level, in the range 0…3 */
-    int alarmLevel {0};
+    int alarmLevel = 0;
 
     /*! \brief Call sign, or an empty string if unknown */
     QString callSign;
@@ -57,7 +57,7 @@ struct TrafficFactorData {
     QString ID;
 
     /*! \brief Aircraft type */
-    TrafficFactor_Abstract::Type type {TrafficFactor_Abstract::unknown};
+    TrafficFactor_Abstract::Type type = TrafficFactor_Abstract::unknown;
 
     /*! \brief Vertical distance to traffic, or an invalid distance if unknown */
     Units::Distance vDist;

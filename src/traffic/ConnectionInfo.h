@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2024-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2024-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -61,7 +61,7 @@ public:
     Q_ENUM(Type)
 
     // Duplicated from QSerialPort, in order to make it available to QML
-    enum BaudRate {
+    enum BaudRate : int {
         Baud1200 = 1200,
         Baud2400 = 2400,
         Baud4800 = 4800,
@@ -74,14 +74,14 @@ public:
     Q_ENUM(BaudRate)
 
     // Duplicated from QSerialPort, in order to make it available to QML
-    enum StopBits {
+    enum StopBits : int {
         OneStop = 1,
         TwoStop = 2
     };
     Q_ENUM(StopBits)
 
     // Duplicated from QSerialPort, in order to make it available to QML
-    enum FlowControl {
+    enum FlowControl : int {
         NoFlowControl = 0,
         HardwareControl = 1,
         SoftwareControl = 2
@@ -322,23 +322,23 @@ private:
     //
     // Properties
     //
-    bool                          m_canConnect { false };
-    bool                          m_canonical { false };
+    bool                          m_canConnect = false;
+    bool                          m_canonical = false;
     QString m_description;
-    QString m_icon{u"/icons/material/ic_delete.svg"_s};
-    QString                       m_name { QObject::tr("Invalid Device", "Traffic::ConnectionInfo") };
-    Traffic::ConnectionInfo::Type m_type { Traffic::ConnectionInfo::Invalid };
+    QString m_icon = u"/icons/material/ic_delete.svg"_s;
+    QString                       m_name = QObject::tr("Invalid Device", "Traffic::ConnectionInfo");
+    Traffic::ConnectionInfo::Type m_type = Traffic::ConnectionInfo::Invalid;
 
     //
     // Private members, depending on m_type
     //
     QBluetoothDeviceInfo m_bluetoothDeviceInfo;
-    quint16 m_port{0};
+    quint16 m_port = 0;
     QString                       m_host;
 
-    BaudRate m_baudRate {BaudRate::Baud9600};
-    StopBits m_stopBits {StopBits::OneStop};
-    FlowControl m_flowControl {FlowControl::NoFlowControl};
+    BaudRate m_baudRate = BaudRate::Baud9600;
+    StopBits m_stopBits = StopBits::OneStop;
+    FlowControl m_flowControl = FlowControl::NoFlowControl;
 
 };
 

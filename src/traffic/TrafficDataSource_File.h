@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -120,7 +120,7 @@ private:
     QFile simulatorFile;
     QTextStream simulatorTextStream;
     QTimer simulatorTimer;
-    int lastTime {0};
+    int lastTime = 0;
     QString lastPayload;
     QString buffer;
 };

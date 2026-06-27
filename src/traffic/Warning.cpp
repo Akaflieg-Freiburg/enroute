@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -178,7 +178,7 @@ QString Traffic::Warning::description() const
 }
 
 
-auto Traffic::Warning::operator==(const Traffic::Warning &rhs) -> bool
+auto Traffic::Warning::operator==(const Traffic::Warning &rhs) const -> bool
 {
     if (m_alarmLevel != rhs.m_alarmLevel) {
         return false;

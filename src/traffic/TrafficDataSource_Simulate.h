@@ -182,7 +182,7 @@ private:
     QGeoPositionInfo geoInfo;
     Units::Distance barometricHeight;
     QVector<TrafficFactorData_WithPosition> trafficFactors;
-    std::optional<TrafficFactorData_DistanceOnly> trafficFactor_DistanceOnly;
+    std::optional<TrafficFactorData_DistanceOnly> trafficFactor_DistanceOnly = std::nullopt;
 };
 
 } // namespace Traffic

@@ -88,7 +88,7 @@ public:
     [[nodiscard]] bool updateFrom(const TrafficFactorData_DistanceOnly& data)
     {
         // Decline records that belong to a different factor.
-        if (ID().right(6) != data.data.ID.right(6))
+        if (!isSameFactorAs(data.data))
         {
             return false;
         }

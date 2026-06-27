@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -55,7 +55,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     if (QCoreApplication::instance() != nullptr)
     {
         auto downloadables = GlobalObject::dataManager()->databases()->downloadables();
-        foreach(auto downloadableX, downloadables)
+        for (auto downloadableX : downloadables)
         {
             auto *downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
             if (downloadable == nullptr)
@@ -106,7 +106,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
 }
 
 
-auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
+auto Traffic::FlarmnetDB::registration(const QString& key) -> QString
 {
     if (key.contains(u"!"_s)) {
         auto result = key.section('!', -1, -1);
@@ -119,13 +119,13 @@ auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
         return *cachedValue;
     }
 
-    auto result = getRegistrationFromFile(key);
+    auto result = registrationFromFile(key);
     m_cache.insert(key, new QString(result));
     return result;
 }
 
 
-auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
+auto Traffic::FlarmnetDB::registrationFromFile(const QString& key) -> QString
 {
 
     // If not in the cache, try to find the values in the file.
@@ -151,6 +151,14 @@ auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
     qint64 const lineSize = 24;
     qint64 const firstEntry = dataFile.pos();
     qint64 const numEntries = (dataFile.size() - firstEntry) / lineSize;
+
+    // An empty, header-only, truncated, or placeholder file yields numEntries == 0,
+    // which would make endIndex == -1 below and seek to a negative offset. Bail out
+    // before the search instead.
+    if (numEntries < 1)
+    {
+        return {};
+    }
 
     auto getKey = [firstEntry, lineSize](QFile& dataFile, qint64 entry)
     {

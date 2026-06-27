@@ -58,39 +58,36 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
         if (m_positionInfo.value().groundSpeed().isFinite() && m_positionInfo.value().trueTrack().isFinite())
         {
             auto GS = m_positionInfo.value().groundSpeed();
-            if (GS.toKN() > 4)
+            switch(type())
             {
-                switch(type())
-                {
-                case Aircraft:
-                case TowPlane:
-                    baseType = QStringLiteral("aircraft");
-                    break;
-                case Glider:
-                    baseType = QStringLiteral("glider");
-                    break;
-                case Paraglider:
-                    baseType = QStringLiteral("paraglider");
-                    break;
-                case HangGlider:
-                    baseType = QStringLiteral("hangGlider");
-                    break;
-                case Jet:
-                    baseType = QStringLiteral("jet");
-                    break;
-                case Copter:
-                    baseType = QStringLiteral("copter");
-                    break;
-                case Drone:
-                    baseType = QStringLiteral("drone");
-                    break;
-                case Balloon:
-                    baseType = QStringLiteral("balloon");
-                    break;
-                default:
-                    baseType = QStringLiteral("withDirection");
-                    break;
-                }
+            case Aircraft:
+            case TowPlane:
+                baseType = QStringLiteral("aircraft");
+                break;
+            case Glider:
+                baseType = QStringLiteral("glider");
+                break;
+            case Paraglider:
+                baseType = QStringLiteral("paraglider");
+                break;
+            case HangGlider:
+                baseType = QStringLiteral("hangGlider");
+                break;
+            case Jet:
+                baseType = QStringLiteral("jet");
+                break;
+            case Copter:
+                baseType = QStringLiteral("copter");
+                break;
+            case Drone:
+                baseType = QStringLiteral("drone");
+                break;
+            case Balloon:
+                baseType = QStringLiteral("balloon");
+                break;
+            default:
+                baseType = QStringLiteral("withDirection");
+                break;
             }
         }
 

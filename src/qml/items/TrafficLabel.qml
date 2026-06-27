@@ -28,8 +28,23 @@ MapQuickItem {
     property var trafficInfo: ({})
     property double bearing
 
+    // The traffic's own heading in degrees, animated exactly like the icon in
+    // Traffic.qml (same RotationAnimation, duration and "animate" gate). Deriving
+    // the label's offset angle "t" from this — instead of from the raw trueTrack —
+    // makes the label orbit the symbol in lockstep with the icon's rotation,
+    // rather than jumping each time a new heading arrives.
+    property double trueTrackDEG: trafficLabel.trafficInfo.positionInfo.trueTrack().isFinite() ?
+                                      trafficLabel.trafficInfo.positionInfo.trueTrack().toDEG() : 0
+    Behavior on trueTrackDEG {
+        RotationAnimation {
+            direction: RotationAnimation.Shortest
+            duration: 1000
+        }
+        enabled: trafficLabel.trafficInfo.animate
+    }
+
     property real t: trafficLabel.trafficInfo.positionInfo.trueTrack().isFinite() ?
-                         2*Math.PI*(trafficLabel.trafficInfo.positionInfo.trueTrack().toDEG() - bearing)/360.0 : 0
+                         2*Math.PI*(trafficLabel.trueTrackDEG - bearing)/360.0 : 0
 
     // Distance the nearest edge of the label should keep from the traffic symbol
     // (which sits at the label's coordinate). The traffic icon is 40px wide, so

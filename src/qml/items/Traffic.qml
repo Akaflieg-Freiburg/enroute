@@ -85,6 +85,7 @@ MapQuickItem {
         FlightVector {
             width: 3
             opacity: traffic1MapItem.trafficInfo.uncertaintyRadius.toM() > 0 ? 0.7 : 0.8
+            animate: traffic1MapItem.trafficInfo.animate
             pixelPerTenKM: traffic1MapItem.pixelPer10km
             groundSpeedInMetersPerSecond: traffic1MapItem.trafficInfo.positionInfo.groundSpeed().toMPS()
             visible: (groundSpeedInMetersPerSecond > 5) && (traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite())

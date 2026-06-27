@@ -87,4 +87,16 @@ android {
         targetSdkVersion qtTargetSdkVersion
         ndk.abiFilters = qtTargetAbiList.split(",")
     }
+
+    // Native libraries are stripped by AGP during release packaging. Extract their
+    // debug symbols into the AAB metadata (native-debug-symbols.zip) so the Play
+    // Console can symbolicate native crashes. This metadata is not delivered to
+    // devices, so it does not affect download or install size.
+    buildTypes {
+        release {
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
+        }
+    }
 }

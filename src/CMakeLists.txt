@@ -346,6 +346,21 @@ if(ANDROID)
         QT_ANDROID_TARGET_SDK_VERSION 35
         QT_ANDROID_MIN_SDK_VERSION 28
     )
+
+    # Release-only size optimization for our own object code (the Qt libraries are
+    # prebuilt and unaffected). ThinLTO + -Oz + dead-code stripping shrink the app's
+    # native code and the qmlcachegen-generated C++ without hurting startup.
+    #
+    # -gline-tables-only emits just function+file+line debug info so AGP's
+    # debugSymbolLevel 'FULL' (see android/build.gradle) can symbolicate native crashes
+    # in the Play Console, without the variable/type DWARF that would bloat the AAB
+    # metadata. The debug info never ships: the on-device .so is stripped by AGP; the
+    # symbols stay server-side.
+    if(CMAKE_BUILD_TYPE STREQUAL "Release")
+        set_target_properties(${PROJECT_NAME} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ON)
+        target_compile_options(${PROJECT_NAME} PRIVATE -Oz -gline-tables-only -ffunction-sections -fdata-sections)
+        target_link_options(${PROJECT_NAME} PRIVATE -Wl,--gc-sections)
+    endif()
 endif()
 
 

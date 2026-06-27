@@ -85,15 +85,6 @@ Item {
         return mapBearingRevertPolicy
     }
     property bool followGPS: true
-    onFollowGPSChanged: {
-        if (toast) {
-            if (followGPS) {
-                toast.doToast(qsTr("Map Mode: Autopan"))
-            } else {
-                toast.doToast(qsTr("Map Mode: No Autopan"))
-            }
-        }
-    }
     property real mapZoomLevelMax: 17
     property real mapZoomLevelMin: 7.0001 // When setting 7 precisely, MapBox is looking for tiles of zoom 6, which we do not have…
     property real mapZoomLevel: 12

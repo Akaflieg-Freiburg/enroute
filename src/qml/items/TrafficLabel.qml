@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 import QtLocation
+import QtPositioning
 import QtQuick
 import QtQuick.Controls
 
@@ -71,6 +72,17 @@ MapQuickItem {
     }
 
     coordinate: trafficInfo.extrapolatedCoordinate
+    // Smoothly glide between the extrapolated positions that
+    // TrafficFactor_WithPosition publishes once per second, so that motion looks
+    // continuous even though the C++ side only updates at 1 Hz. Gated by
+    // "animate" so that newly-appearing or teleporting traffic snaps into place
+    // instead of sliding across the map.
+    Behavior on coordinate {
+        CoordinateAnimation {
+            duration: 1000
+        }
+        enabled: trafficLabel.trafficInfo.animate
+    }
 
     visible: trafficInfo.valid && trafficInfo.relevant && lbl.text !== ""
 

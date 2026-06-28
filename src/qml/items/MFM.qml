@@ -44,6 +44,9 @@ Item {
         target: DemoRunner
 
         function onRequestMapBearing(bearing) {
+            // Switch to a user-defined bearing first, so the `Binding on bearing` (active in
+            // N-up/track-up) deactivates and the imperative write below actually sticks.
+            Global.mapBearingPolicy = MFM.UserDefinedBearingUp
             flightMap.bearing = bearing
         }
 
@@ -583,6 +586,7 @@ Item {
 
                             visible: text !== ""
                             wrapMode: Text.WordWrap
+                            textFormat: Text.PlainText // content is always plain text; skip rich-text auto-detection
 
                             text: {
                                 const resultList = []
@@ -618,6 +622,7 @@ Item {
 
                             visible: (!Global.currentVAC.isValid)
                             text: "<font size='2'><a href='xx'>&nbsp;"+qsTr("ⓒ Map Data")+"&nbsp;</a></font>"
+                            textFormat: Text.StyledText // uses <font>/<a>; StyledText is enough and cheaper than RichText
                             opacity: 0.8
 
                             //style: Text.Outline

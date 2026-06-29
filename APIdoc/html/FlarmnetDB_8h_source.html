@@ -51,7 +51,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/***************************************************************************</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> *   Copyright (C) 2021-2024 by Stefan Kebekus                             *</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> *   Copyright (C) 2021-2026 by Stefan Kebekus                             *</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> *                                                                         *</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -93,7 +93,7 @@ $(function() {
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// Methods</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="comment">//</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classTraffic_1_1FlarmnetDB.html#a1b7e190d11eb57aeabaea14af819fc85">   66</a></span>    Q_INVOKABLE QString <a class="code hl_function" href="classTraffic_1_1FlarmnetDB.html#a1b7e190d11eb57aeabaea14af819fc85">getRegistration</a>(<span class="keyword">const</span> QString&amp; key);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classTraffic_1_1FlarmnetDB.html#a8faead540297a01096e3af8efc671201">   66</a></span>    Q_INVOKABLE QString <a class="code hl_function" href="classTraffic_1_1FlarmnetDB.html#a8faead540297a01096e3af8efc671201">registration</a>(<span class="keyword">const</span> QString&amp; key);</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">private</span> slots:</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="comment">// The title says everything</span></div>
@@ -108,7 +108,7 @@ $(function() {
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_function" href="classTraffic_1_1FlarmnetDB.html#a3d82a2ccdd25e281ff2518691b41f2d3">FlarmnetDB</a>)</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">auto</span> getRegistrationFromFile(<span class="keyword">const</span> QString&amp; key) -&gt; QString;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">auto</span> registrationFromFile(<span class="keyword">const</span> QString&amp; key) -&gt; QString;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    QPointer&lt;DataManagement::Downloadable_SingleFile&gt; flarmnetDBDownloadable;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
@@ -117,8 +117,8 @@ $(function() {
 </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>} <span class="comment">// namespace Traffic</span></div>
-<div class="ttc" id="aclassTraffic_1_1FlarmnetDB_html_a1b7e190d11eb57aeabaea14af819fc85"><div class="ttname"><a href="classTraffic_1_1FlarmnetDB.html#a1b7e190d11eb57aeabaea14af819fc85">Traffic::FlarmnetDB::getRegistration</a></div><div class="ttdeci">Q_INVOKABLE QString getRegistration(const QString &amp;key)</div><div class="ttdoc">Find registration for a given key.</div></div>
 <div class="ttc" id="aclassTraffic_1_1FlarmnetDB_html_a3d82a2ccdd25e281ff2518691b41f2d3"><div class="ttname"><a href="classTraffic_1_1FlarmnetDB.html#a3d82a2ccdd25e281ff2518691b41f2d3">Traffic::FlarmnetDB::FlarmnetDB</a></div><div class="ttdeci">FlarmnetDB(QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
+<div class="ttc" id="aclassTraffic_1_1FlarmnetDB_html_a8faead540297a01096e3af8efc671201"><div class="ttname"><a href="classTraffic_1_1FlarmnetDB.html#a8faead540297a01096e3af8efc671201">Traffic::FlarmnetDB::registration</a></div><div class="ttdeci">Q_INVOKABLE QString registration(const QString &amp;key)</div><div class="ttdoc">Find registration for a given key.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

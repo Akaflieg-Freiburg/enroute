@@ -51,7 +51,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/***************************************************************************</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> *   Copyright (C) 2025 by Stefan Kebekus                                  *</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> *   Copyright (C) 2025-2026 by Stefan Kebekus                             *</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> *                                                                         *</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -160,20 +160,20 @@ $(function() {
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    QBluetoothDeviceInfo m_info;</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="comment">// Device discovery</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    QBluetoothDeviceDiscoveryAgent* m_discoveryAgent {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    QBluetoothDeviceDiscoveryAgent* m_discoveryAgent = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="comment">// Helper to setup the controller since we&#39;ll recreate it often</span></div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordtype">void</span> setupController(<span class="keyword">const</span> QBluetoothDeviceInfo &amp;info);</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="comment">// Deletes and nulls the UART service objects (they are parented to this, not</span></div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="comment">// to the controller, so they must be cleaned up explicitly).</span></div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordtype">void</span> cleanupServices();</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    QLowEnergyController* m_control {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    QLowEnergyController* m_control = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    QLowEnergyService* m_nordicUARTService {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    QLowEnergyService* m_nordicUARTService = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    QBluetoothUuid <span class="keyword">const</span> nordicUARTServiceUuid {<span class="stringliteral">&quot;6e400001-b5a3-f393-e0a9-e50e24dcca9e&quot;</span>};</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    QBluetoothUuid <span class="keyword">const</span> nordicUARTTxCharacteristicID {<span class="stringliteral">&quot;6e400003-b5a3-f393-e0a9-e50e24dcca9e&quot;</span>};</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    QLowEnergyService* m_simpleUARTService {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    QLowEnergyService* m_simpleUARTService = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    QBluetoothUuid <span class="keyword">const</span> simpleUARTServiceUuid {<span class="stringliteral">&quot;0000ffe0-0000-1000-8000-00805f9b34fb&quot;</span>};</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    QBluetoothUuid <span class="keyword">const</span> simpleUARTCharacteristicID {<span class="stringliteral">&quot;0000ffe1-0000-1000-8000-00805f9b34fb&quot;</span>};</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>};</div>

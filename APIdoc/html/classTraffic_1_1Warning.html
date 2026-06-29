@@ -72,8 +72,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a361b0d42ecb83b002bd5091198ac219d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translated, human-readable alarm message.  <br /></td></tr>
 <tr class="memitem:ad2313d44690a3db5ac1a11cbbe50e920" id="r_ad2313d44690a3db5ac1a11cbbe50e920"><td class="memItemLeft">Q_INVOKABLE <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight"><a class="el" href="#ad2313d44690a3db5ac1a11cbbe50e920">hDist</a> () const</td></tr>
 <tr class="memdesc:ad2313d44690a3db5ac1a11cbbe50e920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal distance to obstacle or aircraft.  <br /></td></tr>
-<tr class="memitem:a9f9e189b9e67c43390f9c9d9414159c8" id="r_a9f9e189b9e67c43390f9c9d9414159c8"><td class="memItemLeft">Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#a9f9e189b9e67c43390f9c9d9414159c8">operator==</a> (const <a class="el" href="classTraffic_1_1Warning.html">Traffic::Warning</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a9f9e189b9e67c43390f9c9d9414159c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison.  <br /></td></tr>
+<tr class="memitem:ac19b812ed635f30b53384ebf466a7b0f" id="r_ac19b812ed635f30b53384ebf466a7b0f"><td class="memItemLeft">Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#ac19b812ed635f30b53384ebf466a7b0f">operator==</a> (const <a class="el" href="classTraffic_1_1Warning.html">Traffic::Warning</a> &amp;rhs) const</td></tr>
+<tr class="memdesc:ac19b812ed635f30b53384ebf466a7b0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison.  <br /></td></tr>
 <tr class="memitem:ad77c3dd7a86a8ee026a29eeb4fb99c64" id="r_ad77c3dd7a86a8ee026a29eeb4fb99c64"><td class="memItemLeft">Q_INVOKABLE <a class="el" href="classUnits_1_1Angle.html">Units::Angle</a>&#160;</td><td class="memItemRight"><a class="el" href="#ad77c3dd7a86a8ee026a29eeb4fb99c64">relativeBearing</a> () const</td></tr>
 <tr class="memdesc:ad77c3dd7a86a8ee026a29eeb4fb99c64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direction to obstacle or aircraft.  <br /></td></tr>
 <tr class="memitem:accf176a279b8e47f6d125d5071fe531c" id="r_accf176a279b8e47f6d125d5071fe531c"><td class="memItemLeft">Q_INVOKABLE <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight"><a class="el" href="#accf176a279b8e47f6d125d5071fe531c">vDist</a> () const</td></tr>
@@ -222,19 +222,27 @@ Distance 0.4 nm • 700 ft below." </dd></dl>
 
 </div>
 </div>
-<a id="a9f9e189b9e67c43390f9c9d9414159c8" name="a9f9e189b9e67c43390f9c9d9414159c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f9e189b9e67c43390f9c9d9414159c8">&#9670;&#160;</a></span>operator==()</h2>
+<a id="ac19b812ed635f30b53384ebf466a7b0f" name="ac19b812ed635f30b53384ebf466a7b0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac19b812ed635f30b53384ebf466a7b0f">&#9670;&#160;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Q_INVOKABLE bool Traffic::Warning::operator== </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classTraffic_1_1Warning.html">Traffic::Warning</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Comparison. </p>

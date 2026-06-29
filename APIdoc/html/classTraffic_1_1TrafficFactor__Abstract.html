@@ -53,6 +53,7 @@ $(function() {
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classTraffic_1_1TrafficFactor__Abstract-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Traffic::TrafficFactor_Abstract Class Reference</div></div>
@@ -76,26 +77,26 @@ Inheritance diagram for Traffic::TrafficFactor_Abstract:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ac7d32d8bdead7e632e67fc50e80e568d" id="r_ac7d32d8bdead7e632e67fc50e80e568d"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d">Type</a> { <br />
-&#160;&#160;<a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568da6faacace95eb7c4eef83f2ec9be668c0">unknown</a>
-, <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568da3d6ebada72a0acc15153c4e015e09370">Aircraft</a>
-, <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568daa1939763806dc624d0f9095bfd0a2ed8">Airship</a>
-, <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568da946ed31bb8039ccc6c28c36ae194e920">Balloon</a>
+<tr class="memitem:a7c9f5a69f8a2dd18bb335085b15f3482" id="r_a7c9f5a69f8a2dd18bb335085b15f3482"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482">Type</a> : quint8 { <br />
+&#160;&#160;<a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482a6faacace95eb7c4eef83f2ec9be668c0">unknown</a>
+, <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482a3d6ebada72a0acc15153c4e015e09370">Aircraft</a>
+, <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482aa1939763806dc624d0f9095bfd0a2ed8">Airship</a>
+, <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482a946ed31bb8039ccc6c28c36ae194e920">Balloon</a>
 , <br />
-&#160;&#160;<a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568da797a355997f3cbcce7722a4e55889161">Copter</a>
-, <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568da3a64600552969625e2157cc5e51e9bb0">Drone</a>
-, <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568daafbfc4101b3a024a4a1bed6ffedcc343">Glider</a>
-, <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568dac49ecd2db0f9a864a9f33911b1bad6f6">HangGlider</a>
+&#160;&#160;<a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482a797a355997f3cbcce7722a4e55889161">Copter</a>
+, <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482a3a64600552969625e2157cc5e51e9bb0">Drone</a>
+, <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482aafbfc4101b3a024a4a1bed6ffedcc343">Glider</a>
+, <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482ac49ecd2db0f9a864a9f33911b1bad6f6">HangGlider</a>
 , <br />
-&#160;&#160;<a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568da7a71844cf88d4c76c3c12f175066f9fe">Jet</a>
-, <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568da4b28a0ced6a8eb9ec885af2660a4996f">Paraglider</a>
-, <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568dadf30eb648ed462e0dde5fbaf38f287b2">Skydiver</a>
-, <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568da0e3a2546f2947b26272cb7342325e86e">StaticObstacle</a>
+&#160;&#160;<a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482a7a71844cf88d4c76c3c12f175066f9fe">Jet</a>
+, <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482a4b28a0ced6a8eb9ec885af2660a4996f">Paraglider</a>
+, <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482adf30eb648ed462e0dde5fbaf38f287b2">Skydiver</a>
+, <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482a0e3a2546f2947b26272cb7342325e86e">StaticObstacle</a>
 , <br />
-&#160;&#160;<a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568dab248c778c8a6cc87f99f378199dcfe16">TowPlane</a>
+&#160;&#160;<a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482ab248c778c8a6cc87f99f378199dcfe16">TowPlane</a>
 <br />
  }</td></tr>
-<tr class="memdesc:ac7d32d8bdead7e632e67fc50e80e568d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Aircraft type.  <a href="#ac7d32d8bdead7e632e67fc50e80e568d">More...</a><br /></td></tr>
+<tr class="memdesc:a7c9f5a69f8a2dd18bb335085b15f3482"><td class="mdescLeft">&#160;</td><td class="mdescRight">Aircraft type.  <a href="#a7c9f5a69f8a2dd18bb335085b15f3482">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -141,9 +142,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a58370b5d6cc2822aa6f3eeeee12d1501"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:a0c0a7e09a8d1f54b25bf55db0927121e" id="r_a0c0a7e09a8d1f54b25bf55db0927121e"><td class="memItemLeft">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a0c0a7e09a8d1f54b25bf55db0927121e">bindableRelevantString</a> ()</td></tr>
 <tr class="memdesc:a0c0a7e09a8d1f54b25bf55db0927121e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="memitem:a5d11670c00d91133d28c3aed3636c510" id="r_a5d11670c00d91133d28c3aed3636c510"><td class="memItemLeft"><a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d">TrafficFactor_Abstract::Type</a>&#160;</td><td class="memItemRight"><a class="el" href="#a5d11670c00d91133d28c3aed3636c510">type</a> () const</td></tr>
+<tr class="memitem:a5d11670c00d91133d28c3aed3636c510" id="r_a5d11670c00d91133d28c3aed3636c510"><td class="memItemLeft"><a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482">TrafficFactor_Abstract::Type</a>&#160;</td><td class="memItemRight"><a class="el" href="#a5d11670c00d91133d28c3aed3636c510">type</a> () const</td></tr>
 <tr class="memdesc:a5d11670c00d91133d28c3aed3636c510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="memitem:a036b0f3b64cbe93da8a816530fb95994" id="r_a036b0f3b64cbe93da8a816530fb95994"><td class="memItemLeft">QBindable&lt; <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d">TrafficFactor_Abstract::Type</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a036b0f3b64cbe93da8a816530fb95994">bindableType</a> ()</td></tr>
+<tr class="memitem:a036b0f3b64cbe93da8a816530fb95994" id="r_a036b0f3b64cbe93da8a816530fb95994"><td class="memItemLeft">QBindable&lt; <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482">TrafficFactor_Abstract::Type</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a036b0f3b64cbe93da8a816530fb95994">bindableType</a> ()</td></tr>
 <tr class="memdesc:a036b0f3b64cbe93da8a816530fb95994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="memitem:a0b4fb3478479e97b40b5217bd55bf324" id="r_a0b4fb3478479e97b40b5217bd55bf324"><td class="memItemLeft">QString&#160;</td><td class="memItemRight"><a class="el" href="#a0b4fb3478479e97b40b5217bd55bf324">typeString</a> () const</td></tr>
 <tr class="memdesc:a0b4fb3478479e97b40b5217bd55bf324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
@@ -165,7 +166,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a702277c846cde90cc241bcb475da56d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property with the same name.  <br /></td></tr>
 <tr class="memitem:af84919314330123936dd247761868369" id="r_af84919314330123936dd247761868369"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af84919314330123936dd247761868369">setID</a> (const QString &amp;newID)</td></tr>
 <tr class="memdesc:af84919314330123936dd247761868369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property with the same name.  <br /></td></tr>
-<tr class="memitem:a92480a90f675ff822a401e71fbd5a476" id="r_a92480a90f675ff822a401e71fbd5a476"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a92480a90f675ff822a401e71fbd5a476">setType</a> (<a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d">TrafficFactor_Abstract::Type</a> newType)</td></tr>
+<tr class="memitem:a92480a90f675ff822a401e71fbd5a476" id="r_a92480a90f675ff822a401e71fbd5a476"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a92480a90f675ff822a401e71fbd5a476">setType</a> (<a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482">TrafficFactor_Abstract::Type</a> newType)</td></tr>
 <tr class="memdesc:a92480a90f675ff822a401e71fbd5a476"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property with the same name.  <br /></td></tr>
 <tr class="memitem:a453bf488468e851f296fc9941034f85a" id="r_a453bf488468e851f296fc9941034f85a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a453bf488468e851f296fc9941034f85a">setVDist</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> newVDist)</td></tr>
 <tr class="memdesc:a453bf488468e851f296fc9941034f85a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property with the same name.  <br /></td></tr>
@@ -191,6 +192,13 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:ac947854b22d672cde0ec3cabfe00bcbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update this object with newer data for the same traffic factor.  <br /></td></tr>
 <tr class="memitem:aa0afbfb8f3e9b936b803d9c68a4f69c4" id="r_aa0afbfb8f3e9b936b803d9c68a4f69c4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa0afbfb8f3e9b936b803d9c68a4f69c4">replaceBy</a> (const <a class="el" href="structTraffic_1_1TrafficFactorData.html">TrafficFactorData</a> &amp;data)</td></tr>
 <tr class="memdesc:aa0afbfb8f3e9b936b803d9c68a4f69c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace this object by a different traffic factor.  <br /></td></tr>
+<tr class="memitem:a97c75a78c033f40b5a4b859b30a7f807" id="r_a97c75a78c033f40b5a4b859b30a7f807"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a97c75a78c033f40b5a4b859b30a7f807">isSameFactorAs</a> (const <a class="el" href="structTraffic_1_1TrafficFactorData.html">TrafficFactorData</a> &amp;data) const</td></tr>
+<tr class="memdesc:a97c75a78c033f40b5a4b859b30a7f807"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a data record refers to the same factor as *this.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-static-attribs" class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a061c5e0ffb5650e388d3f74468a86594" id="r_a061c5e0ffb5650e388d3f74468a86594"><td class="memItemLeft">static constexpr qsizetype&#160;</td><td class="memItemRight"><a class="el" href="#a061c5e0ffb5650e388d3f74468a86594">idMatchLength</a> = 6</td></tr>
+<tr class="memdesc:a061c5e0ffb5650e388d3f74468a86594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of characters in ICAO HEX IDs.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -213,10 +221,10 @@ Properties</h2></td></tr>
 <tr class="memitem:a655c999d8c83797f922a8113fdcbfa33" id="r_a655c999d8c83797f922a8113fdcbfa33"><td class="memItemLeft">QString&#160;</td><td class="memItemRight"><a class="el" href="#a655c999d8c83797f922a8113fdcbfa33">relevantString</a></td></tr>
 <tr class="memdesc:a655c999d8c83797f922a8113fdcbfa33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translated string containing the 'relevant' property.  <br /></td></tr>
 <tr class="memitem:a3029385327d12b38141e74170fa9fd16" id="r_a3029385327d12b38141e74170fa9fd16"><td class="memItemLeft"><a id="a3029385327d12b38141e74170fa9fd16" name="a3029385327d12b38141e74170fa9fd16"></a>
-<a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d">Type</a>&#160;</td><td class="memItemRight"><b>type</b></td></tr>
-<tr class="memdesc:a3029385327d12b38141e74170fa9fd16"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d" title="Aircraft type.">Type</a> of aircraft, as reported by the traffic receiver. <br /></td></tr>
+<a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482">Type</a>&#160;</td><td class="memItemRight"><b>type</b></td></tr>
+<tr class="memdesc:a3029385327d12b38141e74170fa9fd16"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482" title="Aircraft type.">Type</a> of aircraft, as reported by the traffic receiver. <br /></td></tr>
 <tr class="memitem:ab8ab0ed6c06cfb55f2600156f0122142" id="r_ab8ab0ed6c06cfb55f2600156f0122142"><td class="memItemLeft">QString&#160;</td><td class="memItemRight"><a class="el" href="#ab8ab0ed6c06cfb55f2600156f0122142">typeString</a></td></tr>
-<tr class="memdesc:ab8ab0ed6c06cfb55f2600156f0122142"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d" title="Aircraft type.">Type</a> of aircraft, as reported by the traffic receiver.  <br /></td></tr>
+<tr class="memdesc:ab8ab0ed6c06cfb55f2600156f0122142"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482" title="Aircraft type.">Type</a> of aircraft, as reported by the traffic receiver.  <br /></td></tr>
 <tr class="memitem:ad4e345e36e36b34efc7495aebecb5087" id="r_ad4e345e36e36b34efc7495aebecb5087"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ad4e345e36e36b34efc7495aebecb5087">valid</a></td></tr>
 <tr class="memdesc:ad4e345e36e36b34efc7495aebecb5087"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validity.  <br /></td></tr>
 <tr class="memitem:a1c451240e942286e27e5bad91639cfc2" id="r_a1c451240e942286e27e5bad91639cfc2"><td class="memItemLeft"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight"><a class="el" href="#a1c451240e942286e27e5bad91639cfc2">vDist</a></td></tr>
@@ -230,14 +238,14 @@ Properties</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="TrafficFactor__Abstract_8h_source.html#l00051">51</a> of file <a class="el" href="TrafficFactor__Abstract_8h_source.html">TrafficFactor_Abstract.h</a>.</p>
 </div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Member Enumeration Documentation</h2>
-<a id="ac7d32d8bdead7e632e67fc50e80e568d" name="ac7d32d8bdead7e632e67fc50e80e568d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7d32d8bdead7e632e67fc50e80e568d">&#9670;&#160;</a></span>Type</h2>
+<a id="a7c9f5a69f8a2dd18bb335085b15f3482" name="a7c9f5a69f8a2dd18bb335085b15f3482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c9f5a69f8a2dd18bb335085b15f3482">&#9670;&#160;</a></span>Type</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d">Traffic::TrafficFactor_Abstract::Type</a></td>
+          <td class="memname">enum <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482">Traffic::TrafficFactor_Abstract::Type</a> : quint8</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -245,31 +253,31 @@ Properties</h2></td></tr>
 <p>Aircraft type. </p>
 <p>This enum defines a few aircraft types. The list is modeled after the FLARM/NMEA specification. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568da6faacace95eb7c4eef83f2ec9be668c0" name="ac7d32d8bdead7e632e67fc50e80e568da6faacace95eb7c4eef83f2ec9be668c0"></a>unknown&#160;</td><td class="fielddoc"><p>Unknown aircraft type </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482a6faacace95eb7c4eef83f2ec9be668c0" name="a7c9f5a69f8a2dd18bb335085b15f3482a6faacace95eb7c4eef83f2ec9be668c0"></a>unknown&#160;</td><td class="fielddoc"><p>Unknown aircraft type </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568da3d6ebada72a0acc15153c4e015e09370" name="ac7d32d8bdead7e632e67fc50e80e568da3d6ebada72a0acc15153c4e015e09370"></a>Aircraft&#160;</td><td class="fielddoc"><p>Fixed wing aircraft </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482a3d6ebada72a0acc15153c4e015e09370" name="a7c9f5a69f8a2dd18bb335085b15f3482a3d6ebada72a0acc15153c4e015e09370"></a>Aircraft&#160;</td><td class="fielddoc"><p>Fixed wing aircraft </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568daa1939763806dc624d0f9095bfd0a2ed8" name="ac7d32d8bdead7e632e67fc50e80e568daa1939763806dc624d0f9095bfd0a2ed8"></a>Airship&#160;</td><td class="fielddoc"><p>Airship, such as a zeppelin or a blimp </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482aa1939763806dc624d0f9095bfd0a2ed8" name="a7c9f5a69f8a2dd18bb335085b15f3482aa1939763806dc624d0f9095bfd0a2ed8"></a>Airship&#160;</td><td class="fielddoc"><p>Airship, such as a zeppelin or a blimp </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568da946ed31bb8039ccc6c28c36ae194e920" name="ac7d32d8bdead7e632e67fc50e80e568da946ed31bb8039ccc6c28c36ae194e920"></a>Balloon&#160;</td><td class="fielddoc"><p>Balloon </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482a946ed31bb8039ccc6c28c36ae194e920" name="a7c9f5a69f8a2dd18bb335085b15f3482a946ed31bb8039ccc6c28c36ae194e920"></a>Balloon&#160;</td><td class="fielddoc"><p>Balloon </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568da797a355997f3cbcce7722a4e55889161" name="ac7d32d8bdead7e632e67fc50e80e568da797a355997f3cbcce7722a4e55889161"></a>Copter&#160;</td><td class="fielddoc"><p>Helicopter, gyrocopter or rotorcraft </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482a797a355997f3cbcce7722a4e55889161" name="a7c9f5a69f8a2dd18bb335085b15f3482a797a355997f3cbcce7722a4e55889161"></a>Copter&#160;</td><td class="fielddoc"><p>Helicopter, gyrocopter or rotorcraft </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568da3a64600552969625e2157cc5e51e9bb0" name="ac7d32d8bdead7e632e67fc50e80e568da3a64600552969625e2157cc5e51e9bb0"></a>Drone&#160;</td><td class="fielddoc"><p>Drone </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482a3a64600552969625e2157cc5e51e9bb0" name="a7c9f5a69f8a2dd18bb335085b15f3482a3a64600552969625e2157cc5e51e9bb0"></a>Drone&#160;</td><td class="fielddoc"><p>Drone </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568daafbfc4101b3a024a4a1bed6ffedcc343" name="ac7d32d8bdead7e632e67fc50e80e568daafbfc4101b3a024a4a1bed6ffedcc343"></a>Glider&#160;</td><td class="fielddoc"><p>Glider, including powered gliders and touring motor gliders </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482aafbfc4101b3a024a4a1bed6ffedcc343" name="a7c9f5a69f8a2dd18bb335085b15f3482aafbfc4101b3a024a4a1bed6ffedcc343"></a>Glider&#160;</td><td class="fielddoc"><p>Glider, including powered gliders and touring motor gliders </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568dac49ecd2db0f9a864a9f33911b1bad6f6" name="ac7d32d8bdead7e632e67fc50e80e568dac49ecd2db0f9a864a9f33911b1bad6f6"></a>HangGlider&#160;</td><td class="fielddoc"><p>Hang glider </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482ac49ecd2db0f9a864a9f33911b1bad6f6" name="a7c9f5a69f8a2dd18bb335085b15f3482ac49ecd2db0f9a864a9f33911b1bad6f6"></a>HangGlider&#160;</td><td class="fielddoc"><p>Hang glider </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568da7a71844cf88d4c76c3c12f175066f9fe" name="ac7d32d8bdead7e632e67fc50e80e568da7a71844cf88d4c76c3c12f175066f9fe"></a>Jet&#160;</td><td class="fielddoc"><p>Jet aircraft </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482a7a71844cf88d4c76c3c12f175066f9fe" name="a7c9f5a69f8a2dd18bb335085b15f3482a7a71844cf88d4c76c3c12f175066f9fe"></a>Jet&#160;</td><td class="fielddoc"><p>Jet aircraft </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568da4b28a0ced6a8eb9ec885af2660a4996f" name="ac7d32d8bdead7e632e67fc50e80e568da4b28a0ced6a8eb9ec885af2660a4996f"></a>Paraglider&#160;</td><td class="fielddoc"><p>Paraglider </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482a4b28a0ced6a8eb9ec885af2660a4996f" name="a7c9f5a69f8a2dd18bb335085b15f3482a4b28a0ced6a8eb9ec885af2660a4996f"></a>Paraglider&#160;</td><td class="fielddoc"><p>Paraglider </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568dadf30eb648ed462e0dde5fbaf38f287b2" name="ac7d32d8bdead7e632e67fc50e80e568dadf30eb648ed462e0dde5fbaf38f287b2"></a>Skydiver&#160;</td><td class="fielddoc"><p>Skydiver </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482adf30eb648ed462e0dde5fbaf38f287b2" name="a7c9f5a69f8a2dd18bb335085b15f3482adf30eb648ed462e0dde5fbaf38f287b2"></a>Skydiver&#160;</td><td class="fielddoc"><p>Skydiver </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568da0e3a2546f2947b26272cb7342325e86e" name="ac7d32d8bdead7e632e67fc50e80e568da0e3a2546f2947b26272cb7342325e86e"></a>StaticObstacle&#160;</td><td class="fielddoc"><p>Static obstacle </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482a0e3a2546f2947b26272cb7342325e86e" name="a7c9f5a69f8a2dd18bb335085b15f3482a0e3a2546f2947b26272cb7342325e86e"></a>StaticObstacle&#160;</td><td class="fielddoc"><p>Static obstacle </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac7d32d8bdead7e632e67fc50e80e568dab248c778c8a6cc87f99f378199dcfe16" name="ac7d32d8bdead7e632e67fc50e80e568dab248c778c8a6cc87f99f378199dcfe16"></a>TowPlane&#160;</td><td class="fielddoc"><p>Tow plane </p>
+<tr><td class="fieldname"><a id="a7c9f5a69f8a2dd18bb335085b15f3482ab248c778c8a6cc87f99f378199dcfe16" name="a7c9f5a69f8a2dd18bb335085b15f3482ab248c778c8a6cc87f99f378199dcfe16"></a>TowPlane&#160;</td><td class="fielddoc"><p>Tow plane </p>
 </td></tr>
 </table>
 
@@ -652,7 +660,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QBindable&lt; <a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d">TrafficFactor_Abstract::Type</a> &gt; Traffic::TrafficFactor_Abstract::bindableType </td>
+          <td class="memname">QBindable&lt; <a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482">TrafficFactor_Abstract::Type</a> &gt; Traffic::TrafficFactor_Abstract::bindableType </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -994,6 +1002,41 @@ TrafficFactor_Abstract&amp;), so that both share a single definition.</p>
 
 </div>
 </div>
+<a id="a97c75a78c033f40b5a4b859b30a7f807" name="a97c75a78c033f40b5a4b859b30a7f807"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97c75a78c033f40b5a4b859b30a7f807">&#9670;&#160;</a></span>isSameFactorAs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Traffic::TrafficFactor_Abstract::isSameFactorAs </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structTraffic_1_1TrafficFactorData.html">TrafficFactorData</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether a data record refers to the same factor as *this. </p>
+<p>Two records describe the same factor exactly if the last <a class="el" href="#a061c5e0ffb5650e388d3f74468a86594" title="idMatchLength">idMatchLength</a> characters of their IDs agree. This is the single identity rule shared by the <a class="el" href="#ac947854b22d672cde0ec3cabfe00bcbd" title="Update this object with newer data for the same traffic factor.">updateFrom()</a> overloads of all subclasses.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Data record to compare against</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if <em class="arg">data</em> refers to the same factor as *this </dd></dl>
+
+</div>
+</div>
 <a id="a7928ef0ef040d0327aa69561281f022e" name="a7928ef0ef040d0327aa69561281f022e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7928ef0ef040d0327aa69561281f022e">&#9670;&#160;</a></span>relevant()</h2>
 
@@ -1241,7 +1284,7 @@ TrafficFactor_Abstract&amp;), so that both share a single definition.</p>
         <tr>
           <td class="memname">void Traffic::TrafficFactor_Abstract::setType </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d">TrafficFactor_Abstract::Type</a></td>          <td class="paramname"><span class="paramname"><em>newType</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482">TrafficFactor_Abstract::Type</a></td>          <td class="paramname"><span class="paramname"><em>newType</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1329,7 +1372,7 @@ TrafficFactor_Abstract&amp;), so that both share a single definition.</p>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d">TrafficFactor_Abstract::Type</a> Traffic::TrafficFactor_Abstract::type </td>
+          <td class="memname"><a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482">TrafficFactor_Abstract::Type</a> Traffic::TrafficFactor_Abstract::type </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1482,6 +1525,33 @@ TrafficFactor_Abstract&amp;), so that both share a single definition.</p>
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a061c5e0ffb5650e388d3f74468a86594" name="a061c5e0ffb5650e388d3f74468a86594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a061c5e0ffb5650e388d3f74468a86594">&#9670;&#160;</a></span>idMatchLength</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">qsizetype Traffic::TrafficFactor_Abstract::idMatchLength = 6</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of characters in ICAO HEX IDs. </p>
+<p>Number of trailing ID characters compared to decide whether two records describe the same factor: the last six hex digits are the ICAO/FLARM device-address suffix. </p>
+
+<p class="definition">Definition at line <a class="el" href="TrafficFactor__Abstract_8h_source.html#l00548">548</a> of file <a class="el" href="TrafficFactor__Abstract_8h_source.html">TrafficFactor_Abstract.h</a>.</p>
+
+</div>
+</div>
 <a id="ad1574ae24f2a80582e7de3b218312abd" name="ad1574ae24f2a80582e7de3b218312abd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad1574ae24f2a80582e7de3b218312abd">&#9670;&#160;</a></span>maxHorizontalDistance</h2>
 
@@ -1820,7 +1890,7 @@ TrafficFactor_Abstract&amp;), so that both share a single definition.</p>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="#ac7d32d8bdead7e632e67fc50e80e568d" title="Aircraft type.">Type</a> of aircraft, as reported by the traffic receiver. </p>
+<p><a class="el" href="#a7c9f5a69f8a2dd18bb335085b15f3482" title="Aircraft type.">Type</a> of aircraft, as reported by the traffic receiver. </p>
 <p>This property holds a translated, human-readable string. </p>
 
 <p class="definition">Definition at line <a class="el" href="TrafficFactor__Abstract_8h_source.html#l00235">235</a> of file <a class="el" href="TrafficFactor__Abstract_8h_source.html">TrafficFactor_Abstract.h</a>.</p>

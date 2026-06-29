@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021--2024 by Stefan Kebekus                            *
+ *   Copyright (C) 2021--2026 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -108,7 +108,7 @@ public:
      *  @returns Password, or an empty string if the database does not contain
      *  the key
      */
-    [[nodiscard]] Q_INVOKABLE QString getPassword(const QString& key) const
+    [[nodiscard]] Q_INVOKABLE QString password(const QString& key) const
     {
         return m_passwordDB.value(key);
     }
@@ -144,11 +144,12 @@ private:
     // Update the property 'empty' and emit the notifier signal, if appropriate
     void updateEmpty();
 
-    // Save database to disk
-    void save();
+    // Save database to disk. Returns true on success; on failure logs a warning
+    // and returns false (the existing on-disk file is left untouched).
+    bool save();
 
     // Property empty
-    bool m_empty {true};
+    bool m_empty = true;
 
     // Password database
     QString passwordDBFileName;

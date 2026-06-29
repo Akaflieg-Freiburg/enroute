@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,11 @@
 #include "traffic/TrafficDataSource_Tcp.h"
 
 using namespace Qt::Literals::StringLiterals;
+
+// Maximum length of a single line read from the network stream. A longer line is
+// split across reads rather than buffered whole, which bounds memory use should a
+// peer stream data without a newline. Legitimate FLARM/NMEA lines are far shorter.
+constexpr qint64 maxLineLength = 1024;
 
 
 Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(bool isCanonical, QString hostName, quint16 port, QObject *parent) :
@@ -95,7 +100,7 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
 {
 
     QString sentence;
-    while( m_textStream.readLineInto(&sentence) ) {
+    while( m_textStream.readLineInto(&sentence, maxLineLength) ) {
         emit dataReceived(sentence);
 
         // Check if the TCP connection asks for a password
@@ -104,7 +109,7 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
             passwordRequest_SSID = GlobalObject::platformAdaptor()->currentSSID();
             auto* passwordDB = GlobalObject::passwordDB();
             if (passwordDB->contains(passwordRequest_SSID)) {
-                setPassword(passwordRequest_SSID, passwordDB->getPassword(passwordRequest_SSID));
+                setPassword(passwordRequest_SSID, passwordDB->password(passwordRequest_SSID));
             } else {
                 emit passwordRequest(passwordRequest_SSID);
             }
@@ -145,7 +150,7 @@ void Traffic::TrafficDataSource_Tcp::setPassword(const QString& SSID, const QStr
         // emit a password storage request if appropriate
         auto* passwordDB = GlobalObject::passwordDB();
         if (!passwordDB->contains(passwordRequest_SSID) ||
-            (passwordDB->getPassword(passwordRequest_SSID) != passwordRequest_password)) {
+            (passwordDB->password(passwordRequest_SSID) != passwordRequest_password)) {
             emit passwordStorageRequest(passwordRequest_SSID, passwordRequest_password);
         }
         return;
@@ -209,7 +214,7 @@ void Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnHeartbeatChange(bool 
     // emit a password storage request if appropriate
     auto* passwordDB = GlobalObject::passwordDB();
     if (!passwordDB->contains(passwordRequest_SSID) ||
-        (passwordDB->getPassword(passwordRequest_SSID) != passwordRequest_password)) {
+        (passwordDB->password(passwordRequest_SSID) != passwordRequest_password)) {
         emit passwordStorageRequest(passwordRequest_SSID, passwordRequest_password);
     }
 

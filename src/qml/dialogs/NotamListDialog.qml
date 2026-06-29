@@ -39,6 +39,10 @@ CenteringDialog {
         return waypoint.ICAOCode + " • " + waypoint.extendedName
     }
 
+    // Focus the NOTAM list on open, so Return/Enter (toggle read) and Home/End
+    // navigation work.
+    defaultFocusItem: notamlistview
+
     Component {
         id: notamDelegate
 
@@ -187,7 +191,6 @@ CenteringDialog {
 
             delegate: notamDelegate
 
-            ScrollIndicator.vertical: ScrollIndicator {}
         }
 
         CheckDelegate {

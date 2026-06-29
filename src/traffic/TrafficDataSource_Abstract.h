@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -563,7 +563,7 @@ private:
     QString m_FLARMDataBuffer;
 
     // Property caches
-    bool m_canonical {false};
+    bool m_canonical = false;
     QString m_connectivityStatus;
     QString m_errorString;
 

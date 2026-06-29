@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -76,10 +76,10 @@ QDateTime interpretNMEATime(const QString& timeString)
 // substring message is returned. If the input string is not a valid NMEA
 // sentence, an empty string is returned.
 
-QString getNMEAMessage(const QString& input)
+QString extractNMEAMessage(const QString& input)
 {
     // Paranoid safety checks
-    if (input.length() < 5)
+    if (input.size() < 5)
     {
         return {};
     }
@@ -90,7 +90,7 @@ QString getNMEAMessage(const QString& input)
 
     // Split input into Message and CheckSum
     auto pieces = input.split(QStringLiteral("*"));
-    if (pieces.length() != 2)
+    if (pieces.size() != 2)
     {
         return {};
     }
@@ -123,7 +123,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMData(const QString& data)
     m_FLARMDataBuffer += data;
 
     // Abort if the buffer is small that it cannot possibly contain a single valid NMEA sentence.
-    if (m_FLARMDataBuffer.length() < 5)
+    if (m_FLARMDataBuffer.size() < 5)
     {
         return;
     }
@@ -141,7 +141,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMData(const QString& data)
 
     // m_FLARMDataBuffer is a string that might be a full or incomplete NMEA sentence.
     // If it is a full sentence, then consume it. Otherwise, ignore it.
-    if (!getNMEAMessage(m_FLARMDataBuffer).isEmpty())
+    if (!extractNMEAMessage(m_FLARMDataBuffer).isEmpty())
     {
         processFLARMSentence(m_FLARMDataBuffer);
         m_FLARMDataBuffer.clear();
@@ -151,7 +151,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMData(const QString& data)
 
 void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& sentence)
 {
-    auto message = getNMEAMessage(sentence);
+    auto message = extractNMEAMessage(sentence);
     if (message.isEmpty())
     {
         return;
@@ -240,7 +240,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& se
 // NMEA GPS 3D-fix data
 void Traffic::TrafficDataSource_Abstract::processFLARMMessageGxGGA(const QStringList& arguments)
 {
-    if (arguments.length() < 9)
+    if (arguments.size() < 9)
     {
         return;
     }
@@ -278,7 +278,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGxGGA(const QString
 // Recommended minimum specific GPS/Transit data
 void Traffic::TrafficDataSource_Abstract::processFLARMMessageGxRMC(const QStringList& arguments)
 {
-    if (arguments.length() < 8)
+    if (arguments.size() < 8)
     {
         return;
     }
@@ -362,7 +362,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
 {
     // PFLAA carries 11 mandatory fields (indices 0…10). Reject truncated sentences
     // before indexing into the list.
-    if (arguments.length() < 11)
+    if (arguments.size() < 11)
     {
         return;
     }
@@ -481,7 +481,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
         emit factorWithoutPosition(TrafficFactorData_DistanceOnly{
             .data = {
                 .alarmLevel = alarmLevel,
-                .callSign = GlobalObject::flarmnetDB()->getRegistration(targetID),
+                .callSign = GlobalObject::flarmnetDB()->registration(targetID),
                 .hDist = hDist,
                 .ID = targetID,
                 .type = type,
@@ -542,7 +542,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
     emit factorWithPosition(TrafficFactorData_WithPosition{
         .data = {
             .alarmLevel = alarmLevel,
-            .callSign = GlobalObject::flarmnetDB()->getRegistration(targetID),
+            .callSign = GlobalObject::flarmnetDB()->registration(targetID),
             .hDist = hDist,
             .ID = targetID,
             .type = type,
@@ -556,7 +556,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
 // Self-test result and errors codes
 void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAE(const QStringList& arguments)
 {
-    if (arguments.length() < 3)
+    if (arguments.size() < 3)
     {
         return;
     }
@@ -766,7 +766,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAS(const QString
 // FLARM Heartbeat
 void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAU(const QStringList& arguments)
 {
-    if (arguments.length() < 9)
+    if (arguments.size() < 9)
     {
         return;
     }
@@ -809,7 +809,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAU(const QString
 // Version information
 void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAV(const QStringList& arguments)
 {
-    if (arguments.length() < 4)
+    if (arguments.size() < 4)
     {
         return;
     }
@@ -823,7 +823,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAV(const QString
 // Garmin's barometric altitude
 void Traffic::TrafficDataSource_Abstract::processFLARMMessagePGRMZ(const QStringList& arguments)
 {
-    if (arguments.length() < 2)
+    if (arguments.size() < 2)
     {
         return;
     }
@@ -866,7 +866,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePXCV(const QStringL
     // 12. Y.YY -- Acceleration in Y-Axis
     // 13. Z.ZZ -- Acceleration in Z-Axis
 
-    if (arguments.length() < 14)
+    if (arguments.size() < 14)
     {
         return;
     }

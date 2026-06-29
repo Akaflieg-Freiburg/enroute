@@ -27,7 +27,16 @@ Rectangle {
     property real pixelPerTenKM
     required property real groundSpeedInMetersPerSecond
 
-    Behavior on groundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
+    // Gate for the length animation. Callers that represent a single, continuously
+    // moving object (e.g. ownship) leave this at "true". Callers that recycle this
+    // item for different objects (traffic slots) bind it to the factor's "animate"
+    // flag, so the bar snaps instead of tweening when the slot is repurposed.
+    property bool animate: true
+
+    Behavior on groundSpeedInMetersPerSecond {
+        NumberAnimation {duration: 400}
+        enabled: flightVector.animate
+    }
 
     x: -width/2.0
     y: -height

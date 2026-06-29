@@ -18,8 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import Qt5Compat.GraphicalEffects
-import QtCore
 import QtLocation
 import QtPositioning
 import QtQml
@@ -27,7 +28,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
-import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
 
@@ -35,7 +35,7 @@ import "."
 import "../dialogs"
 
 Item {
-    id: page
+    id: root
 
     enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
 
@@ -44,12 +44,15 @@ Item {
         target: DemoRunner
 
         function onRequestMapBearing(bearing) {
+            // Switch to a user-defined bearing first, so the `Binding on bearing` (active in
+            // N-up/track-up) deactivates and the imperative write below actually sticks.
+            Global.mapBearingPolicy = MFM.UserDefinedBearingUp
             flightMap.bearing = bearing
         }
 
         function onRequestShowSideView(show) {
             if (show)
-                cl.SplitView.preferredHeight = page.height/3
+                cl.SplitView.preferredHeight = root.height/3
             else
                 cl.SplitView.preferredHeight = 0
         }
@@ -70,16 +73,12 @@ Item {
         spacing: 0
 
         RemainingRouteBar {
-            id: remainingRoute
-
             Layout.fillWidth: true
 
             visible: !Global.currentVAC.isValid
         }
 
         SplitView {
-            id: splitView
-
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -131,7 +130,7 @@ Item {
                         // remaining finger; re-anchoring to that jumped position would lurch the map
                         // center by ~half the finger distance, so skip such large single-step jumps.
                         function anchorToCentroid() {
-                            var c = pinch.centroid.position
+                            const c = pinch.centroid.position
                             if (Math.hypot(c.x - pinch.lastCentroidPos.x, c.y - pinch.lastCentroidPos.y) < 50) {
                                 flightMap.alignCoordinateToPoint(pinch.startCentroid, c)
                             }
@@ -158,7 +157,7 @@ Item {
                         }
 
                         onScaleChanged: function(delta) {
-                            var newZoom = startZoomLevel+Math.log2(activeScale)
+                            let newZoom = startZoomLevel+Math.log2(activeScale)
                             if (newZoom < flightMap.minimumZoomLevel) {
                                 newZoom = flightMap.minimumZoomLevel
                             }
@@ -166,14 +165,17 @@ Item {
                                 newZoom = flightMap.maximumZoomLevel
                             }
                             zoomLevelBehavior.enabled = false
-                            flightMap.zoomLevel = newZoom
-                            // Anchor the zoom to the finger only when the user has manual control. While
-                            // following the aircraft, leave the centering to the Follow-GPS binding, so
-                            // the zoom happens around the aircraft and following is preserved.
-                            if (!Global.followGPS) {
-                                pinch.anchorToCentroid()
+                            try {
+                                flightMap.zoomLevel = newZoom
+                                // Anchor the zoom to the finger only when the user has manual control. While
+                                // following the aircraft, leave the centering to the Follow-GPS binding, so
+                                // the zoom happens around the aircraft and following is preserved.
+                                if (!Global.followGPS) {
+                                    pinch.anchorToCentroid()
+                                }
+                            } finally {
+                                zoomLevelBehavior.enabled = true
                             }
-                            zoomLevelBehavior.enabled = true
                         }
 
                         onRotationChanged: function(delta) {
@@ -207,15 +209,18 @@ Item {
                             if (event.modifiers === Qt.NoModifier)
                             {
                                 zoomLevelBehavior.enabled = false
-                                var newZoom = flightMap.zoomLevel + event.angleDelta.y / 240
-                                if (newZoom < flightMap.minimumZoomLevel) {
-                                    newZoom = flightMap.minimumZoomLevel
+                                try {
+                                    let newZoom = flightMap.zoomLevel + event.angleDelta.y / 240
+                                    if (newZoom < flightMap.minimumZoomLevel) {
+                                        newZoom = flightMap.minimumZoomLevel
+                                    }
+                                    if (newZoom > flightMap.maximumZoomLevel) {
+                                        newZoom = flightMap.maximumZoomLevel
+                                    }
+                                    flightMap.zoomLevel = newZoom
+                                } finally {
+                                    zoomLevelBehavior.enabled = true
                                 }
-                                if (newZoom > flightMap.maximumZoomLevel) {
-                                    newZoom = flightMap.maximumZoomLevel
-                                }
-                                flightMap.zoomLevel = newZoom
-                                zoomLevelBehavior.enabled = true
                             }
                             else
                             {
@@ -296,10 +301,10 @@ Item {
                                 return
 
                             PlatformAdaptor.vibrateBrief()
-                            var pos = point.position
-                            var posTr = Qt.point(pos.x+25,pos.y)
+                            const pos = point.position
+                            const posTr = Qt.point(pos.x+25,pos.y)
 
-                            var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
+                            const wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
                                                                     flightMap.toCoordinate(posTr))
                             if (!wp.isValid)
                                 return
@@ -312,10 +317,10 @@ Item {
                                 return
 
                             PlatformAdaptor.vibrateBrief()
-                            var pos = point.position
-                            var posTr = Qt.point(pos.x+25,pos.y)
+                            const pos = point.position
+                            const posTr = Qt.point(pos.x+25,pos.y)
 
-                            var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
+                            const wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
                                                                     flightMap.toCoordinate(posTr))
                             if (!wp.isValid)
                                 return
@@ -373,7 +378,7 @@ Item {
                         restoreMode: Binding.RestoreNone
                         when: Global.followGPS
                         value: {
-                            var coordinate = flightMap.animatedCoordinate
+                            let coordinate = flightMap.animatedCoordinate
 
                             // In in flight, we position the aircraft someplace on a circle around the
                             // center, so that the map shows a larger portion of the airspace ahead
@@ -382,7 +387,7 @@ Item {
                             // GUI elements.
                             if (Navigator.flightStatus === Navigator.Flight)
                             {
-                                const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0 - 2*font.pixelSize)
+                                const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0 - 2*GlobalSettings.fontSize)
                                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
                                 if (isFinite(radiusInM))
                                     coordinate = coordinate.atDistanceAndAzimuth(radiusInM, flightMap.animatedTT)
@@ -426,8 +431,11 @@ Item {
                         if (!centerBinding.when)
                             center = Global.mapCenterRect
                         zoomLevelBehavior.enabled = false
-                        zoomLevel = Global.mapZoomLevelRect
-                        zoomLevelBehavior.enabled = true
+                        try {
+                            zoomLevel = Global.mapZoomLevelRect
+                        } finally {
+                            zoomLevelBehavior.enabled = true
+                        }
                         defaultValuesSet = true;
                     }
                     Component.onCompleted: {                        
@@ -455,8 +463,6 @@ Item {
                 }
 
                 Pane {
-                    id: noMapWarningRect
-
                     Material.elevation: 1
                     anchors.centerIn: parent
                     width: parent.width*0.6
@@ -469,7 +475,7 @@ Item {
                         wrapMode: Text.WordWrap
 
                         text: {
-                            var t = "<p><strong>" + qsTr("No aviation map installed for your present location.") + "</strong></p>"
+                            const t = "<p><strong>" + qsTr("No aviation map installed for your present location.") + "</strong></p>"
                             if (DataManager.aviationMaps.downloading)
                                 return t + "<p>" + qsTr("Please wait for the download to complete.") + "</p>"
                             return t + "<p>" + qsTr("In order to install a map, please open the menu using the menu button in the upper left corner of this screen.") + " " +
@@ -511,9 +517,11 @@ Item {
 
                             Pane {
                                 Material.elevation: 1
-                                anchors.fill: parent
-                                anchors.bottomMargin: menuButton.bottomInset
-                                anchors.topMargin: menuButton.topInset
+                                anchors {
+                                    fill: parent
+                                    bottomMargin: menuButton.bottomInset
+                                    topMargin: menuButton.topInset
+                                }
 
                                 opacity: GlobalSettings.nightMode ? 0.3 : 1.0
                                 visible: (!Global.currentVAC.isValid) && !scale.visible
@@ -557,7 +565,6 @@ Item {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
                             }
@@ -573,21 +580,20 @@ Item {
                         Layout.minimumWidth: 0
 
                         Label {
-                            id: airspaceAltLabel
-
                             Layout.alignment: Qt.AlignHCenter
                             Layout.maximumWidth: col2.width
                             Layout.topMargin: 14
 
                             visible: text !== ""
                             wrapMode: Text.WordWrap
+                            textFormat: Text.PlainText // content is always plain text; skip rich-text auto-detection
 
                             text: {
-                                var resultList = []
+                                const resultList = []
 
                                 if ((!Global.currentVAC.isValid) && (GeoMapProvider.currentRasterMap === "") && (GlobalSettings.airspaceAltitudeLimit.isFinite())) {
-                                    var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
-                                    var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                                    const airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
+                                    const airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                                     resultList.push(qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString))
                                 }
                                 if (DataManager.items.downloading)
@@ -612,12 +618,11 @@ Item {
                         }
 
                         Label {
-                            id: noCopyrightInfo
-
                             Layout.alignment: Qt.AlignRight
 
                             visible: (!Global.currentVAC.isValid)
                             text: "<font size='2'><a href='xx'>&nbsp;"+qsTr("ⓒ Map Data")+"&nbsp;</a></font>"
+                            textFormat: Text.StyledText // uses <font>/<a>; StyledText is enough and cheaper than RichText
                             opacity: 0.8
 
                             //style: Text.Outline
@@ -694,9 +699,10 @@ Item {
                                 cascade: true
 
                                 Instantiator {
-                                    id: recentFilesInstantiator
                                     model: GeoMapProvider.availableRasterMaps
                                     delegate: CheckDelegate {
+                                        required property string modelData
+
                                         checked: modelData === GeoMapProvider.currentRasterMap
                                         text: modelData
 
@@ -742,7 +748,7 @@ Item {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
+                                const newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
                                 flightMap.zoomLevel = newZoomLevel
                             }
                         }
@@ -789,7 +795,6 @@ Item {
                 spacing: 0  // Set the spacing between children to 0
 
                 Sideview {
-                    id: rawSideView
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 

@@ -254,6 +254,29 @@ else()
 endif()
 
 #
+# Libraries linked into the executable on every platform. Platform-specific
+# additions (Widgets, Sensors, SerialPort, WebView, frameworks, …) are appended
+# in the per-platform blocks below.
+#
+
+set(ENROUTE_COMMON_LIBRARIES
+    Qt6::Bluetooth
+    Qt6::Concurrent
+    Qt6::Core
+    Qt6::Core5Compat
+    Qt6::HttpServer
+    Qt6::Positioning
+    Qt6::Quick
+    Qt6::QuickControls2
+    Qt6::Sql
+    Qt6::Svg
+    Qt6::TextToSpeech
+    QMapLibre::Location
+    enrouteOGN
+    libzip::zip
+)
+
+#
 # Generate Android executable
 #
 
@@ -311,23 +334,10 @@ if(ANDROID)
     )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
+        ${ENROUTE_COMMON_LIBRARIES}
         Qt6::Sensors
         Qt6::SerialPort
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
         Qt6::WebView
-        QMapLibre::Location
-        enrouteOGN
-        libzip::zip
     )
     add_android_openssl_libraries(${PROJECT_NAME})
     qmaplibre_location_setup_plugins(${PROJECT_NAME})
@@ -336,6 +346,21 @@ if(ANDROID)
         QT_ANDROID_TARGET_SDK_VERSION 35
         QT_ANDROID_MIN_SDK_VERSION 28
     )
+
+    # Release-only size optimization for our own object code (the Qt libraries are
+    # prebuilt and unaffected). ThinLTO + -Oz + dead-code stripping shrink the app's
+    # native code and the qmlcachegen-generated C++ without hurting startup.
+    #
+    # -gline-tables-only emits just function+file+line debug info so AGP's
+    # debugSymbolLevel 'FULL' (see android/build.gradle) can symbolicate native crashes
+    # in the Play Console, without the variable/type DWARF that would bloat the AAB
+    # metadata. The debug info never ships: the on-device .so is stripped by AGP; the
+    # symbols stay server-side.
+    if(CMAKE_BUILD_TYPE STREQUAL "Release")
+        set_target_properties(${PROJECT_NAME} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ON)
+        target_compile_options(${PROJECT_NAME} PRIVATE -Oz -gline-tables-only -ffunction-sections -fdata-sections)
+        target_link_options(${PROJECT_NAME} PRIVATE -Wl,--gc-sections)
+    endif()
 endif()
 
 
@@ -360,23 +385,10 @@ add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteMan
 qt_add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-    Qt6::Bluetooth
-    Qt6::Concurrent
-    Qt6::Core
-    Qt6::Core5Compat
+    ${ENROUTE_COMMON_LIBRARIES}
     Qt6::DBus
-    Qt6::HttpServer
-    Qt6::Positioning
-    Qt6::Quick
-    Qt6::QuickControls2
     Qt6::SerialPort
-    Qt6::Sql
-    Qt6::Svg
-    Qt6::TextToSpeech
     Qt6::Widgets
-    QMapLibre::Location
-    enrouteOGN
-    libzip::zip
     ${LIBUDEV_LIBRARIES}
 )
 if (TARGET Qt6::WebView)
@@ -387,12 +399,11 @@ if (TARGET Qt6::WebView)
     )
 endif()
 target_precompile_headers(${PROJECT_NAME}
-    PUBLIC
+    PRIVATE
     <QQmlEngine>
 )
 
-# Install
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+# Install (the executable itself is installed by the shared rule near the end of this file)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
@@ -439,23 +450,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         PRIVATE
         "-framework IOKit"
         "-framework CoreFoundation"
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
+        ${ENROUTE_COMMON_LIBRARIES}
         Qt6::SerialPort
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
         Qt6::WebView
         Qt6::Widgets
-        QMapLibre::Location
-        enrouteOGN
-        libzip::zip
     )
 endif()
 
@@ -489,23 +487,10 @@ if (IOS)
     qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
+        ${ENROUTE_COMMON_LIBRARIES}
         Qt6::Location
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
         Qt6::Sensors
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
         Qt6::WebView
-        QMapLibre::Location
-        enrouteOGN
-        libzip::zip
     )
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true
@@ -518,7 +503,7 @@ if (IOS)
         PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     qmaplibre_location_setup_plugins(${PROJECT_NAME})
     target_include_directories(${PROJECT_NAME}
-        PUBLIC
+        PRIVATE
         ios/mapLibreDependencies
         ios/mapLibreDependencies/optional
         ios/mapLibreDependencies/csscolorparser
@@ -553,7 +538,7 @@ if (IOS)
 endif()
 
 target_include_directories(${PROJECT_NAME}
-    PUBLIC
+    PRIVATE
     ${CMAKE_SOURCE_DIR}/3rdParty/KDSingleApplication/src
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
@@ -722,7 +707,7 @@ qt_add_resources(${PROJECT_NAME} translations_qt
 # Install
 #
 
-if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR ((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME STREQUAL "Windows")))
+if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR (CMAKE_SYSTEM_NAME STREQUAL "Linux"))
     # Install the executable into "${CMAKE_INSTALL_PREFIX}/bin".
     install(TARGETS ${PROJECT_NAME}
         BUNDLE  DESTINATION .

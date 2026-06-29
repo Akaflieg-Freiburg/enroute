@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,9 @@
 #include "traffic/PasswordDB.h"
 
 #include <QDataStream>
+#include <QDebug>
 #include <QFile>
+#include <QSaveFile>
 #include <QStandardPaths>
 
 
@@ -69,20 +71,29 @@ void Traffic::PasswordDB::removePassword(const QString& key)
 }
 
 
-void Traffic::PasswordDB::save()
+bool Traffic::PasswordDB::save()
 {
-    auto passwordDBFile = QFile(passwordDBFileName);
+    // Use QSaveFile so a failed or partial write cannot corrupt the existing
+    // database: it writes to a temporary file and commit() atomically renames.
+    QSaveFile passwordDBFile(passwordDBFileName);
     if (!passwordDBFile.open(QIODevice::WriteOnly)) {
-        return;
-    }
-    if (passwordDBFile.error() != QFileDevice::NoError) {
-        return;
+        qWarning() << "PasswordDB::save: cannot open" << passwordDBFileName << "for writing:" << passwordDBFile.errorString();
+        return false;
     }
 
-    auto outputStream = QDataStream(&passwordDBFile);
+    QDataStream outputStream(&passwordDBFile);
     outputStream << m_passwordDB;
-    passwordDBFile.close();
+    if (outputStream.status() != QDataStream::Ok) {
+        qWarning() << "PasswordDB::save: serialization failed for" << passwordDBFileName;
+        passwordDBFile.cancelWriting();
+        return false;
+    }
 
+    if (!passwordDBFile.commit()) {
+        qWarning() << "PasswordDB::save: commit failed for" << passwordDBFileName << ":" << passwordDBFile.errorString();
+        return false;
+    }
+    return true;
 }
 
 

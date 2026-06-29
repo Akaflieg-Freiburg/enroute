@@ -85,7 +85,7 @@ public:
     [[nodiscard]] bool updateFrom(const TrafficFactorData_WithPosition& data)
     {
         // Decline records that belong to a different factor.
-        if (ID().right(6) != data.data.ID.right(6))
+        if (!isSameFactorAs(data.data))
         {
             return false;
         }
@@ -113,8 +113,16 @@ public:
     void replaceBy(const TrafficFactorData_WithPosition& data)
     {
         const QScopedPropertyUpdateGroup updateGroup;
-        setPositionInfo(data.positionInfo);
+        // Order matters here. The deferred change notifications fire in the order
+        // the properties are written, and the GUI gates its position/heading
+        // animations on "animate". Update the scalar fields first, because
+        // TrafficFactor_Abstract::replaceBy() sets animate=false: that disables
+        // the animation gate before the positionInfo change (which alone drives
+        // the extrapolated coordinate) is processed. Writing positionInfo first
+        // would let QML animate the coordinate jump while "animate" is still
+        // stale (true), gliding the icon across the map instead of snapping.
         TrafficFactor_Abstract::replaceBy(data.data);
+        setPositionInfo(data.positionInfo);
     }
 
 

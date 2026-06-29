@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 import QtLocation
+import QtPositioning
 import QtQuick
 import QtQuick.Controls
 
@@ -28,8 +29,23 @@ MapQuickItem {
     property var trafficInfo: ({})
     property double bearing
 
+    // The traffic's own heading in degrees, animated exactly like the icon in
+    // Traffic.qml (same RotationAnimation, duration and "animate" gate). Deriving
+    // the label's offset angle "t" from this — instead of from the raw trueTrack —
+    // makes the label orbit the symbol in lockstep with the icon's rotation,
+    // rather than jumping each time a new heading arrives.
+    property double trueTrackDEG: trafficLabel.trafficInfo.positionInfo.trueTrack().isFinite() ?
+                                      trafficLabel.trafficInfo.positionInfo.trueTrack().toDEG() : 0
+    Behavior on trueTrackDEG {
+        RotationAnimation {
+            direction: RotationAnimation.Shortest
+            duration: 1000
+        }
+        enabled: trafficLabel.trafficInfo.animate
+    }
+
     property real t: trafficLabel.trafficInfo.positionInfo.trueTrack().isFinite() ?
-                         2*Math.PI*(trafficLabel.trafficInfo.positionInfo.trueTrack().toDEG() - bearing)/360.0 : 0
+                         2*Math.PI*(trafficLabel.trueTrackDEG - bearing)/360.0 : 0
 
     // Distance the nearest edge of the label should keep from the traffic symbol
     // (which sits at the label's coordinate). The traffic icon is 40px wide, so
@@ -56,6 +72,17 @@ MapQuickItem {
     }
 
     coordinate: trafficInfo.extrapolatedCoordinate
+    // Smoothly glide between the extrapolated positions that
+    // TrafficFactor_WithPosition publishes once per second, so that motion looks
+    // continuous even though the C++ side only updates at 1 Hz. Gated by
+    // "animate" so that newly-appearing or teleporting traffic snaps into place
+    // instead of sliding across the map.
+    Behavior on coordinate {
+        CoordinateAnimation {
+            duration: 1000
+        }
+        enabled: trafficLabel.trafficInfo.animate
+    }
 
     visible: trafficInfo.valid && trafficInfo.relevant && lbl.text !== ""
 

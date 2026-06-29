@@ -37,7 +37,10 @@ public:
      *
      *  @returns The aircraft registration, or an empty string if not found.
      */
-    [[nodiscard]] static Q_INVOKABLE QString getRegistration(const QString& address);
+    [[nodiscard]] static Q_INVOKABLE QString registration(const QString& address);
+
+private:
+    Q_DISABLE_COPY_MOVE(TransponderDB)
 };
 
 } // namespace Traffic

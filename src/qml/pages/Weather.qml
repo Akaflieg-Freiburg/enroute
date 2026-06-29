@@ -32,6 +32,10 @@ Page {
     title: qsTr("Weather")
     focus: true
 
+    // Receives active focus when the page becomes current (see main.qml), so the
+    // station list responds to Return/Enter and Home/End navigation.
+    property Item defaultFocusItem: stationList
+
     Component.onCompleted: WeatherDataProvider.requestUpdate()
 
 
@@ -76,8 +80,20 @@ Page {
             id: stationDelegate
 
             Item {
+                id: stationItem
                 width: stationList.width
                 height: idel.height
+
+                // Emitted on click and when DecoratedListView turns a Return/Enter
+                // key press into a click on the highlighted station.
+                signal clicked()
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    dlgLoader.setSource("../dialogs/MetarTafDialog.qml",
+                                        {"weatherStation": model.modelData})
+                    dlgLoader.item.open()
+                }
 
                 // Color according to METAR/FAA flight category
                 Rectangle {
@@ -108,14 +124,7 @@ Page {
 
                     width: parent.width
 
-                    onClicked: {
-                        // WARNING!
-                        PlatformAdaptor.vibrateBrief()
-
-                        dlgLoader.setSource("../dialogs/MetarTafDialog.qml",
-                                            {"weatherStation": model.modelData})
-                        dlgLoader.item.open()
-                    }
+                    onClicked: stationItem.clicked()
                 }
             }
         }
@@ -135,7 +144,6 @@ Page {
 
             model: obsList.observers
             delegate: stationDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             Rectangle {  // No data label
                 anchors.fill: parent

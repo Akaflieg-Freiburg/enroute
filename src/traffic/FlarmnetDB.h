@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -63,7 +63,7 @@ public:
      *  @returns Aircraft registration, or an empty string if the database does
      *  not contain the key
      */
-    Q_INVOKABLE QString getRegistration(const QString& key);
+    Q_INVOKABLE QString registration(const QString& key);
 
 private slots:
     // The title says everything
@@ -78,7 +78,7 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(FlarmnetDB)
 
-    auto getRegistrationFromFile(const QString& key) -> QString;
+    auto registrationFromFile(const QString& key) -> QString;
 
     QPointer<DataManagement::Downloadable_SingleFile> flarmnetDBDownloadable;
 

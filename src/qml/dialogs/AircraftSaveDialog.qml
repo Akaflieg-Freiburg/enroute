@@ -33,6 +33,9 @@ CenteringDialog {
 
     standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Save
 
+    // Focus the name field on open so the user can type immediately.
+    defaultFocusItem: fileName
+
     Component {
         id: fileDelegate
 
@@ -89,7 +92,6 @@ CenteringDialog {
 
             clip: true
             model: Librarian.entries(Librarian.Aircraft)
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
         }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2025 by Stefan Kebekus                                  *
+ *   Copyright (C) 2025-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -140,7 +140,7 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 #if __has_include(<QSerialPortInfo>)
     // Create and connect QSerialPort and QTextStream
     auto deviceInfos = QSerialPortInfo::availablePorts();
-    foreach (auto deviceInfo, deviceInfos)
+    for (const auto &deviceInfo : std::as_const(deviceInfos))
     {
         if ((deviceInfo.portName() == m_portNameOrDescription) || (deviceInfo.description() == m_portNameOrDescription))
         {
@@ -319,12 +319,12 @@ void Traffic::TrafficDataSource_SerialPort::read()
         result.resize(length);
         env->GetByteArrayRegion(jArray, 0, length, reinterpret_cast<jbyte*>(result.data()));
         const QString sentence = QString::fromLatin1(result);
-        for(auto& st : sentence.split('\n'))
+        for(const auto& st : sentence.split('\n'))
         {
-            st = st.trimmed();
-            if (!st.isEmpty())
+            const QString trimmed = st.trimmed();
+            if (!trimmed.isEmpty())
             {
-                emit dataReceived(st.trimmed());
+                emit dataReceived(trimmed);
             }
         }
         processFLARMData(sentence);

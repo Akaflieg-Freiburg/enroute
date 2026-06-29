@@ -539,9 +539,12 @@ protected:
      */
     void replaceBy(const TrafficFactorData& data);
 
-    // Number of trailing ID characters compared to decide whether two records
-    // describe the same factor: the last six hex digits are the ICAO/FLARM
-    // device-address suffix.
+    /*! \brief Number of characters in ICAO HEX IDs
+     *
+     *  Number of trailing ID characters compared to decide whether two records
+     *  describe the same factor: the last six hex digits are the ICAO/FLARM
+     *  device-address suffix.
+     */
     static constexpr qsizetype idMatchLength = 6;
 
     /*! \brief Check whether a data record refers to the same factor as *this

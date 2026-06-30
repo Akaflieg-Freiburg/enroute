@@ -37,6 +37,10 @@ import "../dialogs"
 Item {
     id: root
 
+    // Height below which the sideview is considered too small to be usable.
+    // Dragging below this collapses it, and the open/close buttons toggle here.
+    readonly property int sideViewMinUsableHeight: 100
+
     enum MapBearingPolicies { NUp=0, TTUp=1, UserDefinedBearingUp=2 }
 
 
@@ -757,7 +761,7 @@ Item {
                             id: showSideView
 
                             icon.source: "/icons/material/ic_keyboard_arrow_up.svg"
-                            visible: cl.SplitView.preferredHeight < 100
+                            visible: cl.SplitView.preferredHeight < root.sideViewMinUsableHeight
                             autoRepeat: true
 
                             onClicked: {
@@ -790,6 +794,15 @@ Item {
                     enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
 
                     onActiveTranslationChanged: (delta) => cl.SplitView.preferredHeight -= delta.y
+
+                    // Auto-close the sideview when the user drags it below the
+                    // usable threshold and releases, so it cannot be left in a
+                    // tiny, unusable state that still consumes CPU cycles.
+                    onActiveChanged: {
+                        if (!active && cl.SplitView.preferredHeight < root.sideViewMinUsableHeight) {
+                            closeSideViewAnimation.running = true
+                        }
+                    }
                 }
 
                 spacing: 0  // Set the spacing between children to 0
@@ -799,6 +812,36 @@ Item {
                     Layout.fillHeight: true
 
                     pixelPer10km: flightMap.pixelPer10km
+
+                    MapButton {
+                        id: closeSideView
+
+                        anchors.top: parent.top
+                        anchors.right: parent.right
+                        anchors.topMargin: 4
+                        anchors.rightMargin: SafeInsets.right
+
+                        height: northButton.height
+                        width: northButton.width
+                        icon.height: northButton.icon.height
+                        icon.width: northButton.icon.width
+
+                        icon.source: "/icons/material/ic_keyboard_arrow_down.svg"
+                        visible: cl.SplitView.preferredHeight >= root.sideViewMinUsableHeight
+
+                        onClicked: {
+                            PlatformAdaptor.vibrateBrief()
+                            closeSideViewAnimation.running = true
+                        }
+
+                        NumberAnimation {
+                            id: closeSideViewAnimation
+                            target: cl
+                            property: "SplitView.preferredHeight"
+                            to: cl.SplitView.minimumHeight
+                            duration: 200
+                        }
+                    }
                 }
 
                 NavBar {

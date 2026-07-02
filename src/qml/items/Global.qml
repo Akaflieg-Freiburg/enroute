@@ -122,6 +122,23 @@ Item {
     }
 
     //
+    // Aviation map color palette
+    //
+    // Shared by the moving map (FlightMap) and by dialogs that render airspace
+    // color legends (e.g. WaypointDescription). The saturated day colors glare on
+    // the dark night base map and on dark-themed dialogs, so night mode uses
+    // muted, desaturated hues. "airspaceNeutral" is the near-black/near-white
+    // color used for TMZ outlines and thin separators that must read on either
+    // background.
+    //
+    readonly property string airspaceBlue:    GlobalSettings.nightMode ? "#4f7bad" : "blue"
+    readonly property string airspaceRed:     GlobalSettings.nightMode ? "#c05a52" : "red"
+    readonly property string airspaceGreen:   GlobalSettings.nightMode ? "#579f66" : "green"
+    readonly property string airspaceYellow:  GlobalSettings.nightMode ? "#b8a63c" : "yellow"
+    readonly property string airspaceNeutral: GlobalSettings.nightMode ? "#e0e0e0" : "black"
+
+
+    //
     // Permissions
     //
 

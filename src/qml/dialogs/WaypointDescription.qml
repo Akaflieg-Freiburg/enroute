@@ -123,7 +123,7 @@ CenteringDialog {
 
             // Background color according to METAR/FAA flight category
             background: Rectangle {
-                border.color: "black"
+                border.color: Global.airspaceNeutral
                 color: obs.metar.flightCategoryColor
                 opacity: 0.2
             }
@@ -170,7 +170,7 @@ CenteringDialog {
 
             // Background color according to METAR/FAA flight category
             background: Rectangle {
-                border.color: "black"
+                border.color: Global.airspaceNeutral
                 color: "yellow"
                 opacity: 0.2
             }
@@ -218,6 +218,13 @@ CenteringDialog {
 
             property var airspace: ({});
 
+            // Airspace legend colors, kept in sync with the moving map through the
+            // Global singleton so day/night styling matches the map exactly.
+            readonly property color asBlue:   Global.airspaceBlue
+            readonly property color asRed:    Global.airspaceRed
+            readonly property color asGreen:  Global.airspaceGreen
+            readonly property color asYellow: Global.airspaceYellow
+
 
             Item {
                 id: box
@@ -242,29 +249,29 @@ CenteringDialog {
                             case "E":
                             case "F":
                             case "G":
-                                return "blue";
+                                return Global.airspaceBlue;
                             case "CTR":
-                                return "blue";
+                                return Global.airspaceBlue;
                             case "GLD":
-                                return "yellow";
+                                return Global.airspaceYellow;
                             case "DNG":
                             case "P":
                             case "PJE":
                             case "R":
-                                return "red";
+                                return Global.airspaceRed;
                             case "ATZ":
                             case "RMZ":
                             case "TIZ":
                             case "TIA":
-                                return "blue";
+                                return Global.airspaceBlue;
                             case "TMZ":
-                                return "black";
+                                return Global.airspaceNeutral;
                             case "FIR":
                             case "FIS":
                             case "NRA":
-                                return "green";
+                                return Global.airspaceGreen;
                             case "SUA":
-                                return "red";
+                                return Global.airspaceRed;
                             }
                             return "transparent"
                         }
@@ -312,18 +319,18 @@ CenteringDialog {
                         case "B":
                         case "C":
                         case "D":
-                            return "#400000ff";
+                            return Qt.rgba(gridLYO.asBlue.r, gridLYO.asBlue.g, gridLYO.asBlue.b, 0.25);
                         case "DNG":
                         case "P":
                         case "R":
-                            return "#40ff0000";
+                            return Qt.rgba(gridLYO.asRed.r, gridLYO.asRed.g, gridLYO.asRed.b, 0.25);
                         case "ATZ":
                         case "RMZ":
                         case "TIZ":
                         case "TIA":
-                            return "#400000ff";
+                            return Qt.rgba(gridLYO.asBlue.r, gridLYO.asBlue.g, gridLYO.asBlue.b, 0.25);
                         case "NRA":
-                            return "#4000ff00";
+                            return Qt.rgba(gridLYO.asGreen.r, gridLYO.asGreen.g, gridLYO.asGreen.b, 0.25);
                         }
                         return "transparent"
                     }
@@ -332,14 +339,14 @@ CenteringDialog {
                     color: {
                         switch(gridLYO.airspace.CAT) {
                         case "CTR":
-                            return "#40ff0000";
+                            return Qt.rgba(gridLYO.asRed.r, gridLYO.asRed.g, gridLYO.asRed.b, 0.25);
                         case "GLD":
-                            return "#40ffff00";
+                            return Qt.rgba(gridLYO.asYellow.r, gridLYO.asYellow.g, gridLYO.asYellow.b, 0.25);
                         case "ATZ":
                         case "RMZ":
                         case "TIZ":
                         case "TIA":
-                            return "#400000ff";
+                            return Qt.rgba(gridLYO.asBlue.r, gridLYO.asBlue.g, gridLYO.asBlue.b, 0.25);
                         }
                         return "transparent"
                     }
@@ -532,7 +539,7 @@ CenteringDialog {
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true
-                    color: "black"
+                    color: Global.airspaceNeutral
                 }
 
                 Action {
@@ -636,7 +643,7 @@ CenteringDialog {
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true
-                    color: "black"
+                    color: Global.airspaceNeutral
                 }
 
                 Action {

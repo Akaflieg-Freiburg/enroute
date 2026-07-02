@@ -65,6 +65,22 @@ Map {
         return 10e6
     }
 
+    // Night-mode-aware colors for the aviation overlays. The saturated airspace
+    // colors (red/blue/green/yellow) are legible on both the light and the dark
+    // base map and are left unchanged; only near-black text/lines and near-white
+    // halos need to flip so labels stay readable and halos do not glare at night.
+    readonly property string overlayLabelColor: GlobalSettings.nightMode ? "#e0e0e0" : "black"
+    readonly property string overlayHaloColor: GlobalSettings.nightMode ? "black" : "white"
+
+    // The airspace hues themselves live in the Global singleton (Global.airspaceBlue
+    // etc.) so that dialogs showing airspace color legends stay in sync. The
+    // opacities below are map-only: the semi-transparent "bands" and fills wash out
+    // to near-invisible over the dark base (a 20% color over black contributes
+    // almost no luminance), so their opacity is raised at night.
+    readonly property real   airspaceBandOpacity: GlobalSettings.nightMode ? 0.35 : 0.2
+    readonly property real   airspaceFillOpacity: GlobalSettings.nightMode ? 0.30 : 0.2
+    readonly property real   glidingFillOpacity:  GlobalSettings.nightMode ? 0.18 : 0.1
+
     property geoCoordinate animatedCoordinate: PositionProvider.lastValidCoordinate
     Behavior on animatedCoordinate { CoordinateAnimation { duration: 1000 } }
 
@@ -158,8 +174,9 @@ Map {
             }
 
             paint: {
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 2,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 
@@ -181,9 +198,9 @@ Map {
             }
 
             paint: {
-                "text-color": "black",
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 10,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 
@@ -205,9 +222,9 @@ Map {
             }
 
             paint: {
-                "text-color": "black",
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 10,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 
@@ -229,9 +246,9 @@ Map {
             }
 
             paint: {
-                "text-color": "black",
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 2,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 
@@ -254,9 +271,9 @@ Map {
             }
 
             paint: {
-                "text-color": "black",
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 2,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 
@@ -279,9 +296,9 @@ Map {
             }
 
             paint: {
-                "text-color": "black",
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 2,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 
@@ -306,9 +323,9 @@ Map {
             }
 
             paint: {
-                "text-color": "black",
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 2,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 
@@ -349,9 +366,9 @@ Map {
             }
 
             paint: {
-                "text-color": "black",
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 2,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 
@@ -363,7 +380,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "FIR"], ["==", ["get", "CAT"], "FIS"]]]
 
             paint: {
-                "line-color": "green",
+                "line-color": Global.airspaceGreen,
                 "line-width": 1.5
             }
         }
@@ -376,7 +393,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "SUA"]]
 
             paint: {
-                "line-color": "red",
+                "line-color": Global.airspaceRed,
                 "line-width": 2,
                 "line-dasharray": [4.0, 3.0]
             }
@@ -390,8 +407,8 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "GLD"]]
 
             paint: {
-                "fill-color": "yellow",
-                "fill-opacity": 0.1
+                "fill-color": Global.airspaceYellow,
+                "fill-opacity": flightMap.glidingFillOpacity
             }
         }
 
@@ -403,7 +420,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "GLD"]]
 
             paint: {
-                "line-color": "yellow",
+                "line-color": Global.airspaceYellow,
                 "line-width": 2,
                 "line-opacity": 0.8
             }
@@ -417,8 +434,8 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
 
             paint: {
-                "fill-color": "blue",
-                "fill-opacity": 0.2
+                "fill-color": Global.airspaceBlue,
+                "fill-opacity": flightMap.airspaceFillOpacity
             }
         }
 
@@ -430,7 +447,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]]
 
             paint: {
-                "line-color": "blue",
+                "line-color": Global.airspaceBlue,
                 "line-width": 2,
                 "line-dasharray": [3.0, 3.0]
             }
@@ -444,7 +461,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "TMZ"]]
 
             paint: {
-                "line-color": "black",
+                "line-color": Global.airspaceNeutral,
                 "line-width": 2,
                 "line-dasharray": [4.0, 3.0, 0.5, 3.0]
             }
@@ -458,7 +475,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "PJE"]]
 
             paint: {
-                "line-color": "red",
+                "line-color": Global.airspaceRed,
                 "line-width": 2,
                 "line-dasharray": [4.0, 3.0]
             }
@@ -472,7 +489,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
 
             paint: {
-                "line-color": "blue",
+                "line-color": Global.airspaceBlue,
                 "line-width": 2
             }
         }
@@ -485,8 +502,8 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]]
 
             paint: {
-                "line-color": "blue",
-                "line-opacity": 0.2,
+                "line-color": Global.airspaceBlue,
+                "line-opacity": flightMap.airspaceBandOpacity,
                 "line-width": 7,
                 "line-offset": 3.5
             }
@@ -500,7 +517,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "E"], ["==", ["get", "CAT"], "F"], ["==", ["get", "CAT"], "G"]]]
 
             paint: {
-                "line-color": "blue",
+                "line-color": Global.airspaceBlue,
                 "line-width": 2
             }
         }
@@ -513,8 +530,8 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "CTR"]]
 
             paint: {
-                "fill-color": "red",
-                "fill-opacity": 0.2
+                "fill-color": Global.airspaceRed,
+                "fill-opacity": flightMap.airspaceFillOpacity
             }
         }
 
@@ -526,7 +543,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "CTR"]]
 
             paint: {
-                "line-color": "blue",
+                "line-color": Global.airspaceBlue,
                 "line-width": 2,
                 "line-dasharray": [4.0, 3.0]
             }
@@ -540,7 +557,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "NRA"]]
 
             paint: {
-                "line-color": "green",
+                "line-color": Global.airspaceGreen,
                 "line-width": 2
             }
         }
@@ -553,8 +570,8 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["==", ["get", "CAT"], "NRA"]]
 
             paint: {
-                "line-color": "green",
-                "line-opacity": 0.2,
+                "line-color": Global.airspaceGreen,
+                "line-opacity": flightMap.airspaceBandOpacity,
                 "line-width": 7,
                 "line-offset": 3.5
             }
@@ -568,7 +585,7 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
 
             paint: {
-                "line-color": "red",
+                "line-color": Global.airspaceRed,
                 "line-width": 2,
                 "line-dasharray": [4.0, 3.0]
             }
@@ -582,8 +599,8 @@ Map {
             property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet], ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]]
 
             paint: {
-                "line-color": "red",
-                "line-opacity": 0.2,
+                "line-color": Global.airspaceRed,
+                "line-opacity": flightMap.airspaceBandOpacity,
                 "line-width": 7,
                 "line-offset": 3.5
             }
@@ -598,7 +615,7 @@ Map {
             property real minzoom: 10.0
 
             paint: {
-                "line-color": ["get", "GAC"],
+                "line-color": ["match", ["get", "GAC"], "blue", Global.airspaceBlue, "red", Global.airspaceRed, Global.airspaceBlue],
                 "line-width": 3.0,
                 "line-dasharray": [3.0, 3.0]
             }
@@ -613,7 +630,7 @@ Map {
             property real minzoom: 10.0
 
             paint: {
-                "line-color": ["get", "GAC"],
+                "line-color": ["match", ["get", "GAC"], "blue", Global.airspaceBlue, "red", Global.airspaceRed, Global.airspaceBlue],
                 "line-width": 3.0,
                 "line-dasharray": [9.0, 3.0]
             }
@@ -628,7 +645,7 @@ Map {
             property real minzoom: 10.0
 
             paint: {
-                "line-color": ["get", "GAC"],
+                "line-color": ["match", ["get", "GAC"], "blue", Global.airspaceBlue, "red", Global.airspaceRed, Global.airspaceBlue],
                 "line-width": 3.0
             }
         }
@@ -676,9 +693,9 @@ Map {
             }
 
             paint: {
-                "text-color": "black",
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 2,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 
@@ -701,9 +718,9 @@ Map {
             }
 
             paint: {
-                "text-color": "black",
+                "text-color": flightMap.overlayLabelColor,
                 "text-halo-width": 2,
-                "text-halo-color": "white"
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
     }

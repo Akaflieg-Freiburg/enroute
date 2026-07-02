@@ -20,7 +20,6 @@
 
 pragma ComponentBehavior: Bound
 
-import Qt5Compat.GraphicalEffects
 import QtLocation
 import QtPositioning
 import QtQml
@@ -456,14 +455,6 @@ Item {
                             flightMap.center = waypoint.coordinate
                         }
                     }
-                }
-
-                BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
-                    anchors.fill: flightMap
-                    source: flightMap
-                    brightness: GlobalSettings.nightMode ? -0.9 : -0.2
-                    contrast: GlobalSettings.nightMode ? 0.6 : 0.2
-                    visible: !DataManager.baseMapsRaster.hasFile
                 }
 
                 Pane {

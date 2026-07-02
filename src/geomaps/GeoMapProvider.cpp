@@ -68,6 +68,7 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::filesChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::globalSettings(), &GlobalSettings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+    connect(GlobalObject::globalSettings(), &GlobalSettings::nightModeChanged, this, [this]() {delete m_styleFile; emit styleFileURLChanged();});
 
     connect(&m_tileServer, &GeoMaps::TileServer::serverUrlChanged, this, &GeoMaps::GeoMapProvider::serverUrlChanged);
 
@@ -149,7 +150,14 @@ QString GeoMaps::GeoMapProvider::styleFileURL()
         QFile file;
         if (GlobalObject::dataManager()->baseMaps()->hasFile())
         {
-            file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
+            if (GlobalObject::globalSettings()->nightMode())
+            {
+                file.setFileName(QStringLiteral(":/flightMap/osm-liberty-dark.json"));
+            }
+            else
+            {
+                file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
+            }
         }
         else
         {

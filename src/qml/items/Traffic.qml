@@ -30,7 +30,15 @@ MapQuickItem {
 
     property double bearing
     property double pixelPer10km
-    property var trafficInfo
+    property TrafficFactor_WithPosition trafficInfo
+
+    // Cache the per-update C++ values so the many bindings below don't re-cross the
+    // QML/C++ boundary on every map-rotation frame: positionInfo/trueTrack()/toM() are
+    // Q_INVOKABLE metacalls, and a single snapshot also keeps the derived values consistent.
+    readonly property var trafficPositionInfo: trafficInfo.positionInfo
+    readonly property var trafficTrueTrack: trafficPositionInfo.trueTrack()
+    readonly property bool trafficTrueTrackValid: trafficTrueTrack.isFinite()
+    readonly property double trafficUncertaintyM: trafficInfo.uncertaintyRadius.toM()
 
     coordinate: trafficInfo.extrapolatedCoordinate
     visible: trafficInfo.relevant
@@ -52,12 +60,12 @@ MapQuickItem {
         readonly property bool hasHeading:
                traffic1MapItem.trafficInfo.type !== TrafficFactor_Abstract.Balloon
             && traffic1MapItem.trafficInfo.type !== TrafficFactor_Abstract.StaticObstacle
-            && traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite()
+            && traffic1MapItem.trafficTrueTrackValid
 
         // The traffic's own heading, in degrees. ONLY this is animated, so that
         // heading changes are smoothed but map rotation is not.
         property double trueTrackDEG: hasHeading
-            ? traffic1MapItem.trafficInfo.positionInfo.trueTrack().toDEG()
+            ? traffic1MapItem.trafficTrueTrack.toDEG()
             : 0
         Behavior on trueTrackDEG {
             RotationAnimation {
@@ -74,7 +82,7 @@ MapQuickItem {
 
         Rectangle {
             opacity: 0.2
-            width: traffic1MapItem.trafficInfo.uncertaintyRadius.toM() * traffic1MapItem.pixelPer10km / 5000
+            width: traffic1MapItem.trafficUncertaintyM * traffic1MapItem.pixelPer10km / 5000
             height: width
             x: -width/2
             y: -height/2
@@ -84,11 +92,11 @@ MapQuickItem {
 
         FlightVector {
             width: 3
-            opacity: traffic1MapItem.trafficInfo.uncertaintyRadius.toM() > 0 ? 0.7 : 0.8
+            opacity: traffic1MapItem.trafficUncertaintyM > 0 ? 0.7 : 0.8
             animate: traffic1MapItem.trafficInfo.animate
             pixelPerTenKM: traffic1MapItem.pixelPer10km
-            groundSpeedInMetersPerSecond: traffic1MapItem.trafficInfo.positionInfo.groundSpeed().toMPS()
-            visible: (groundSpeedInMetersPerSecond > 5) && (traffic1MapItem.trafficInfo.positionInfo.trueTrack().isFinite())
+            groundSpeedInMetersPerSecond: traffic1MapItem.trafficPositionInfo.groundSpeed().toMPS()
+            visible: (groundSpeedInMetersPerSecond > 5) && traffic1MapItem.trafficTrueTrackValid
         }
 
         Image {
@@ -96,11 +104,16 @@ MapQuickItem {
 
             width: 40
             height: width
+            // Rasterize the SVG at display size instead of its ~135px native size. Qt
+            // multiplies sourceSize by the screen's devicePixelRatio, so this stays crisp
+            // on HiDPI displays (same convention as the icons in FlightMap.qml).
+            sourceSize.width: 40
+            sourceSize.height: 40
             fillMode: Image.PreserveAspectFit
             x: -width/2.0
             y: -height/2.0
 
-            opacity: traffic1MapItem.trafficInfo.uncertaintyRadius.toM() > 0 ? 0.7 : 1.0
+            opacity: traffic1MapItem.trafficUncertaintyM > 0 ? 0.7 : 1.0
             source: traffic1MapItem.trafficInfo.icon
         }
     }

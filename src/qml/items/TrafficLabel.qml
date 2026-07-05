@@ -28,16 +28,22 @@ import akaflieg_freiburg.enroute
 MapQuickItem {
     id: trafficLabel
 
-    property var trafficInfo: ({})
+    property TrafficFactor_WithPosition trafficInfo
     property double bearing
+
+    // Cache the per-update C++ values so the heading bindings below don't re-cross the
+    // QML/C++ boundary repeatedly (positionInfo/trueTrack() are Q_INVOKABLE metacalls).
+    readonly property var trafficPositionInfo: trafficInfo.positionInfo
+    readonly property var trafficTrueTrack: trafficPositionInfo.trueTrack()
+    readonly property bool trafficTrueTrackValid: trafficTrueTrack.isFinite()
 
     // The traffic's own heading in degrees, animated exactly like the icon in
     // Traffic.qml (same RotationAnimation, duration and "animate" gate). Deriving
     // the label's offset angle "t" from this — instead of from the raw trueTrack —
     // makes the label orbit the symbol in lockstep with the icon's rotation,
     // rather than jumping each time a new heading arrives.
-    property double trueTrackDEG: trafficLabel.trafficInfo.positionInfo.trueTrack().isFinite() ?
-                                      trafficLabel.trafficInfo.positionInfo.trueTrack().toDEG() : 0
+    property double trueTrackDEG: trafficLabel.trafficTrueTrackValid ?
+                                      trafficLabel.trafficTrueTrack.toDEG() : 0
     Behavior on trueTrackDEG {
         RotationAnimation {
             direction: RotationAnimation.Shortest
@@ -46,7 +52,7 @@ MapQuickItem {
         enabled: trafficLabel.trafficInfo.animate
     }
 
-    property real t: trafficLabel.trafficInfo.positionInfo.trueTrack().isFinite() ?
+    property real t: trafficLabel.trafficTrueTrackValid ?
                          2*Math.PI*(trafficLabel.trueTrackDEG - bearing)/360.0 : 0
 
     // Distance the nearest edge of the label should keep from the traffic symbol
@@ -62,15 +68,17 @@ MapQuickItem {
     // apparent gap vary a lot with rotation and label dimensions.)
     property real distFromCenter: {
         // |components| of the unit offset direction.
-        var s = Math.abs(Math.sin(trafficLabel.t))
-        var c = Math.abs(Math.cos(trafficLabel.t))
-        var halfW = 0.5*lbl.width
-        var halfH = 0.5*lbl.height
-        // Distance from the label's center to its edge along the offset direction.
-        var edge = (s < 0.0001) ? halfH
-                 : (c < 0.0001) ? halfW
-                 : Math.min(halfW/s, halfH/c)
-        return edge + trafficLabel.symbolGap
+        const s = Math.abs(Math.sin(trafficLabel.t))
+        const c = Math.abs(Math.cos(trafficLabel.t))
+        // Half-extents of the label, each expanded by symbolGap. Intersecting the offset
+        // ray with this enlarged box keeps the nearest *edge* of the label at least
+        // symbolGap from the symbol at every angle. (Measuring to the ray-exit point of the
+        // un-expanded box and then adding symbolGap undershot the gap on diagonals.)
+        const halfW = 0.5*lbl.width + trafficLabel.symbolGap
+        const halfH = 0.5*lbl.height + trafficLabel.symbolGap
+        return (s < 0.0001) ? halfH
+             : (c < 0.0001) ? halfW
+             : Math.min(halfW/s, halfH/c)
     }
 
     coordinate: trafficInfo.extrapolatedCoordinate
@@ -88,8 +96,6 @@ MapQuickItem {
 
     visible: trafficInfo.valid && trafficInfo.relevant && lbl.text !== ""
 
-    Control { id: fontGlean }
-
     sourceItem: Label {
         id: lbl
 
@@ -97,10 +103,10 @@ MapQuickItem {
         y: -contentHeight/2.0 + trafficLabel.distFromCenter*Math.cos(trafficLabel.t)
 
         text: trafficLabel.trafficInfo.description
-        textFormat: Text.RichText
+        textFormat: Text.StyledText
         color: Global.trafficLabelTextColor
 
-        font.pixelSize: 0.8*fontGlean.font.pixelSize
+        font.pixelSize: 0.8*GlobalSettings.fontSize
 
         leftInset: -4
         rightInset: -4

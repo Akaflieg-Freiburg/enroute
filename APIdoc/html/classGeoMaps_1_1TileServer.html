@@ -94,13 +94,14 @@ Properties</h2></td></tr>
 <p>This class features a simple HTTP server that serve the following files to <a href="http://127.0.0.1:xxxx/path">http://127.0.0.1:xxxx/path</a>.</p>
 <ul>
 <li>If path is a file name, the server checks if the file is available in the resource system of the app and serves that file.</li>
+<li>If path is of the form "flightMap/sprites-night/xyz", the server serves a night-mode version of the flight map sprite sheet found in the resource system under "flightMap/sprites/xyz". The JSON files are served unchanged, the PNG files are recolored for use over the dark map style.</li>
 <li>If path equals "aviationData.geojson", the server returns a <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> document that contains the full aviation data, as provided by <a class="el" href="classGlobalObject.html#a241d8d74ad20f5b5fdfa3eff30a20077" title="Pointer to appplication-wide static GeoMaps::GeoMapProvider instance.">GlobalObject::geoMapProvider()</a>-&gt;geoJSON().</li>
 <li>If path equals the base name of an MBTilesFileSet, then the server returns a JSON document describing the MBTiles.</li>
 <li>If path equals "baseName/z/x/y.XXX", then the server returns an individual tile from the tile set.</li>
 </ul>
 <p>This server is able to handle several sets of MBTiles files. Each set is available under a single URL, and the MBTile files in each set are expected to contain identical metadata. To serve a tile request, the server goes through the MBTiles files in random order and serves the first tile it can find. Tiles contained in more than one file need thus to be identical. A typical use case would be a server that contains to sets of files, one set with vector tiles containing openstreetmap data and one set with raster data used for hillshading. Each set contains two MBTiles files, one for Africa and one for Europe. </p>
 
-<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00058">58</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00062">62</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3d555e9c8b5dae1bdbd66be76e4c8942" name="a3d555e9c8b5dae1bdbd66be76e4c8942"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3d555e9c8b5dae1bdbd66be76e4c8942">&#9670;&#160;</a></span>TileServer()</h2>
@@ -207,7 +208,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00129">129</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00133">133</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
 
 </div>
 </div>
@@ -242,7 +243,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00135">135</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00139">139</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
 
 </div>
 </div>
@@ -298,7 +299,7 @@ Properties</h2></td></tr>
 <p>URL under which this server is presently reachable. </p>
 <p>The property holds returns the Url where the server is listening to incoming connections. This is typically string of the form "http://127.0.0.1:3470". If the server is not listening to incoming connections, the string is empty. </p>
 
-<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00088">88</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00092">92</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
 
 </div>
 </div>

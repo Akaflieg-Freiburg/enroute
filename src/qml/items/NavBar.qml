@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,6 +19,10 @@
  ***************************************************************************/
 
 import QtQuick
+// Qualified import: the unqualified name "Scale" is taken by the map scale
+// indicator from akaflieg_freiburg.enroute, but the transform below needs
+// QtQuick's Scale.
+import QtQuick as Quick
 import QtQuick.Controls
 import QtQuick.Layouts
 
@@ -38,22 +42,63 @@ Rectangle {
         visible: false
     }
 
-    function numVisibleItems() {
-        var w = trueAltitude.m_implicitWidth + groundSpeed.m_implicitWidth + trueTrack.m_implicitWidth + utc.m_implicitWidth + 4*dummy.font.pixelSize
-        if (w > grid.width)
-            return 3
-        w = w + flightLevel.m_implicitWidth + dummy.font.pixelSize
-        if (w > grid.width)
-            return 4
-        return 5
+    // Fixed worst-case width for the UTC readout ("H:mm"). Using the live
+    // clock string here would let the ticking time participate in the layout
+    // decision and make items flicker in and out.
+    TextMetrics {
+        id: utcMetrics
+        font: utc_1.font
+        text: "88:88"
+    }
+
+    // When the pressure altitude readout has data to show, it is more
+    // important in flight than the UTC clock; when it would only show "-",
+    // it is the least important item. The drop priority switches accordingly.
+    readonly property bool pAltHasData: PositionProvider.pressureAltitude.isFinite() && !PositionProvider.pressureAltitude.isNegative()
+
+    readonly property real gapWidth: dummy.font.pixelSize
+    readonly property real availableWidth: width - SafeInsets.left - SafeInsets.right
+
+    // Layout decision: the number of items to show, and a scale factor that
+    // is applied to the row. Before an item is dropped, the row is allowed to
+    // shrink to 90%; only if that is not sufficient, the least important item
+    // (see pAltHasData) disappears and the cascade restarts at full size.
+    readonly property var barLayout: {
+        var n3 = trueAltitude.m_implicitWidth + groundSpeed.m_implicitWidth + trueTrack.m_implicitWidth + 3*gapWidth
+        var w4 = pAltHasData ? flightLevel.m_implicitWidth : utc.m_implicitWidth
+        var w5 = pAltHasData ? utc.m_implicitWidth : flightLevel.m_implicitWidth
+        var n4 = n3 + w4 + gapWidth
+        var n5 = n4 + w5 + gapWidth
+        if (n5 <= availableWidth)
+            return {items: 5, scale: 1}
+        if (0.9*n5 <= availableWidth)
+            return {items: 5, scale: availableWidth/n5}
+        if (n4 <= availableWidth)
+            return {items: 4, scale: 1}
+        if (0.9*n4 <= availableWidth)
+            return {items: 4, scale: availableWidth/n4}
+        return {items: 3, scale: Math.max(0.9, Math.min(1, availableWidth/n3))}
     }
 
 
     RowLayout {
-        anchors.fill: parent
-        anchors.bottomMargin: SafeInsets.bottom
-        anchors.leftMargin: SafeInsets.left
-        anchors.rightMargin: SafeInsets.right
+        id: row
+
+        // The row is laid out at full size in a correspondingly wider
+        // coordinate system and then scaled down visually. Scaling the
+        // transform instead of the font keeps the text measurements
+        // (contentWidth) independent of the layout decision, which would
+        // otherwise be circular.
+        x: SafeInsets.left
+        y: 0
+        width: grid.availableWidth / grid.barLayout.scale
+        height: parent.height - SafeInsets.bottom
+        transform: Quick.Scale {
+            origin.x: 0
+            origin.y: row.height/2
+            xScale: grid.barLayout.scale
+            yScale: grid.barLayout.scale
+        }
 
         Item { Layout.fillWidth: true }
 
@@ -111,7 +156,7 @@ Rectangle {
         ColumnLayout {
             id: flightLevel
 
-            visible: grid.numVisibleItems() >= 5
+            visible: (grid.barLayout.items >= 5) || ((grid.barLayout.items === 4) && grid.pAltHasData)
             Layout.preferredWidth: visible ? m_implicitWidth : 0
             property real m_implicitWidth: Math.max(flightLevel_1.contentWidth, flightLevel_2.contentWidth)
 
@@ -209,9 +254,9 @@ Rectangle {
         ColumnLayout {
             id: utc
 
-            visible: grid.numVisibleItems() >= 4
-            Layout.preferredWidth: m_implicitWidth
-            property real m_implicitWidth: Math.max(utc_1.contentWidth, utc_2.contentWidth)
+            visible: (grid.barLayout.items >= 5) || ((grid.barLayout.items === 4) && !grid.pAltHasData)
+            Layout.preferredWidth: visible ? m_implicitWidth : 0
+            property real m_implicitWidth: Math.max(utcMetrics.width, utc_2.contentWidth)
 
             Label {
                 id: utc_1

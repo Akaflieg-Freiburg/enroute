@@ -139,6 +139,23 @@ Item {
 
 
     //
+    // Traffic label colors
+    //
+    // Shared by the traffic labels on the moving map (TrafficLabel, and the
+    // label for nondirectional traffic in FlightMap). By day, the labels are
+    // bright chips tinted in the alarm color, with black text; at night, dark
+    // chips that keep the alarm tint, with light text. Text and frame colors
+    // are set explicitly because the Material theme text color (white in
+    // night mode) is unreadable on the tinted backgrounds.
+    //
+    readonly property color trafficLabelTextColor:  GlobalSettings.nightMode ? "#e0e0e0" : "black"
+    readonly property color trafficLabelFrameColor: GlobalSettings.nightMode ? "#e0e0e0" : "black"
+    function trafficLabelBackgroundColor(alarmColor) {
+        return GlobalSettings.nightMode ? Qt.darker(alarmColor, 2.5) : Qt.lighter(alarmColor, 1.9)
+    }
+
+
+    //
     // Permissions
     //
 

@@ -783,6 +783,7 @@ Map {
 
             text: TrafficDataProvider.trafficObjectWithoutPosition.description
             textFormat: Text.RichText
+            color: Global.trafficLabelTextColor
 
             font.pixelSize: 0.8*fontGlean.font.pixelSize
 
@@ -792,9 +793,9 @@ Map {
             topInset: -2
 
             background: Rectangle {
-                border.color: "black"
+                border.color: Global.trafficLabelFrameColor
                 border.width: 1
-                color: Qt.lighter(TrafficDataProvider.trafficObjectWithoutPosition.color, 1.9)
+                color: Global.trafficLabelBackgroundColor(TrafficDataProvider.trafficObjectWithoutPosition.color)
 
                 Behavior on color {
                     ColorAnimation { duration: 400 }
@@ -874,18 +875,7 @@ Map {
                 x: -width/2.0
                 y: -height/2.0
 
-                source: {
-                    var pInfo = PositionProvider.positionInfo
-
-                    if (!pInfo.isValid()) {
-                        return "/icons/self-noPosition.svg"
-                    }
-                    if (!pInfo.trueTrack().isFinite()) {
-                        return "/icons/self-noDirection.svg"
-                    }
-
-                    return "/icons/self-withDirection.svg"
-                }
+                source: PositionProvider.icon
 
                 sourceSize.width: 50
                 sourceSize.height: 50

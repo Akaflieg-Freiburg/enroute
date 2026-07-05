@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "GlobalObject.h"
+#include "GlobalSettings.h"
 #include "traffic/TrafficFactor_Abstract.h"
 #include "traffic/TrafficFactorData.h"
 
@@ -38,17 +40,40 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
         m_animate = false;
     });
 
-    // Binding for property color
-    m_color.setBinding([this]() {
-        if (m_alarmLevel == 0)
-        {
-            return u"green"_s;
-        }
-        if (m_alarmLevel == 1)
-        {
-            return u"yellow"_s;
-        }
-        return u"red"_s;
+    // Binding for property color. At night, the saturated day colors glare on
+    // the dark map, so muted hues are used, aligned with the night-mode
+    // palette in Global.qml. All QML items that visualize traffic derive their
+    // colors from this property, so they follow automatically.
+    //
+    // The binding reads GlobalSettings. Bindings are evaluated immediately
+    // when they are installed, but TrafficFactor instances are constructed
+    // while the global object TrafficDataProvider is itself under
+    // construction — a phase during which GlobalObject accessors must not be
+    // called. Defer the installation until the event loop runs.
+    QTimer::singleShot(0, this, [this]() {
+        m_color.setBinding([this]() {
+            if (GlobalObject::globalSettings()->nightMode())
+            {
+                if (m_alarmLevel == 0)
+                {
+                    return u"#579f66"_s;
+                }
+                if (m_alarmLevel == 1)
+                {
+                    return u"#b8a63c"_s;
+                }
+                return u"#c05a52"_s;
+            }
+            if (m_alarmLevel == 0)
+            {
+                return u"green"_s;
+            }
+            if (m_alarmLevel == 1)
+            {
+                return u"yellow"_s;
+            }
+            return u"red"_s;
+        });
     });
 
     // Binding for property validAbstractTrafficFactor

@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QFile>
+#include <QHash>
 #include <QSettings>
 
 #include "GlobalObject.h"
@@ -32,10 +34,21 @@
 
 using namespace Qt::Literals::StringLiterals;
 
+namespace {
+
+// Night-mode ownship icons are recolored versions of the day icons. To run
+// the SVG transformation only once per icon, use a lazy cache keyed by the
+// icon base name.
+using StringStringHash = QHash<QString, QString>;
+Q_GLOBAL_STATIC(StringStringHash, nightIconCache)
+
+} // namespace
+
 
 Positioning::PositionProvider::~PositionProvider()
 {
     // Break all bindings before destruction proceeds
+    m_icon.takeBinding();
     m_pressureAltitude.takeBinding();
     m_statusString.takeBinding();
     m_incomingPositionInfo.takeBinding();
@@ -73,6 +86,45 @@ Positioning::PositionProvider::PositionProvider(QObject* parent)
 void Positioning::PositionProvider::deferredInitialization()
 {
     // Setup bindings that refer to other global objects
+    m_icon.setBinding([this]() {
+        // Icon shape, depending on the quality of the position info
+        auto info = m_positionInfo.value();
+        auto base = u"withDirection"_s;
+        if (!info.isValid())
+        {
+            base = u"noPosition"_s;
+        }
+        else if (!info.trueTrack().isFinite())
+        {
+            base = u"noDirection"_s;
+        }
+
+        if (!GlobalObject::globalSettings()->nightMode())
+        {
+            return u"/icons/self-"_s + base + u".svg"_s;
+        }
+
+        const auto cachedIcon = nightIconCache->constFind(base);
+        if (cachedIcon != nightIconCache->constEnd())
+        {
+            return *cachedIcon;
+        }
+
+        QFile svgFile(u":/icons/self-"_s + base + u".svg"_s);
+        if (!svgFile.open(QIODevice::ReadOnly))
+        {
+            return QString();
+        }
+        QString svgContent = QString::fromUtf8(svgFile.readAll());
+        // Mute the saturated blue (same night hue as in the map sprite
+        // sheet), flip the white halo to dark, dim the gray.
+        svgContent.replace(u"#1000b0"_s, u"#5d53b9"_s);
+        svgContent.replace(u"#ffffff"_s, u"#303030"_s);
+        svgContent.replace(u"#b0b0b0"_s, u"#909090"_s);
+        auto newIcon = u"data:image/svg+xml;base64,"_s + QString::fromLatin1(svgContent.toUtf8().toBase64());
+        nightIconCache->insert(base, newIcon);
+        return newIcon;
+    });
     m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
     m_statusString.setBinding([this]() {return computeStatusString();});
     m_incomingPositionInfo.setBinding([this]() {return computeIncomingPositionInfo();});

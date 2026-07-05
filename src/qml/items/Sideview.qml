@@ -231,16 +231,7 @@ SideviewQuickItem {
             return 90
         }
 
-        source: {
-            var pInfo = PositionProvider.positionInfo
-            if (!pInfo.isValid()) {
-                return "/icons/self-noPosition.svg"
-            }
-            if (!pInfo.trueTrack().isFinite()) {
-                return "/icons/self-noDirection.svg"
-            }
-            return "/icons/self-withDirection.svg"
-        }
+        source: PositionProvider.icon
 
         sourceSize.width: 25
         sourceSize.height: 25

@@ -21,6 +21,8 @@
 import QtQml
 import QtQuick
 
+import akaflieg_freiburg.enroute
+
 Rectangle {
     id: flightVector
 
@@ -43,7 +45,9 @@ Rectangle {
     width: 5
     height: pixelPerTenKM*(5*60*groundSpeedInMetersPerSecond)/10000.0
 
-    color: "black"
+    // Like the five-minute bar in the side view, the black bar and its white
+    // stripes flip at night so the vector does not glare over the dark map.
+    color: GlobalSettings.nightMode ? "#e0e0e0" : "black"
 
     Rectangle {
         id: whiteStripe3to4min
@@ -53,7 +57,7 @@ Rectangle {
 
         width: parent.width > 2 ? parent.width-2 : parent.width
         height: parent.height/5
-        color: "white"
+        color: GlobalSettings.nightMode ? "black" : "white"
     }
 
     Rectangle {
@@ -64,6 +68,6 @@ Rectangle {
 
         width: parent.width > 2 ? parent.width-2 : parent.width
         height: parent.height/5
-        color: "white"
+        color: GlobalSettings.nightMode ? "black" : "white"
     }
 }

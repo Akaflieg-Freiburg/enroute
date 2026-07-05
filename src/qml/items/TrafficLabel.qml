@@ -23,6 +23,8 @@ import QtPositioning
 import QtQuick
 import QtQuick.Controls
 
+import akaflieg_freiburg.enroute
+
 MapQuickItem {
     id: trafficLabel
 
@@ -96,6 +98,7 @@ MapQuickItem {
 
         text: trafficLabel.trafficInfo.description
         textFormat: Text.RichText
+        color: Global.trafficLabelTextColor
 
         font.pixelSize: 0.8*fontGlean.font.pixelSize
 
@@ -105,9 +108,9 @@ MapQuickItem {
         topInset: -2
 
         background: Rectangle {
-            border.color: "black"
+            border.color: Global.trafficLabelFrameColor
             border.width: 1
-            color: Qt.lighter(trafficLabel.trafficInfo.color, 1.9)
+            color: Global.trafficLabelBackgroundColor(trafficLabel.trafficInfo.color)
 
             Behavior on color {
                 ColorAnimation { duration: 400 }

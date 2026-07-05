@@ -218,6 +218,7 @@ void GlobalSettings::setNightMode(bool newNightMode)
     }
 
     m_settings.setValue(QStringLiteral("Map/nightMode"), newNightMode);
+    m_nightMode = newNightMode;
     emit nightModeChanged();
 }
 

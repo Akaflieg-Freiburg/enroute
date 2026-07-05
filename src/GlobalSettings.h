@@ -141,7 +141,7 @@ public:
     Q_PROPERTY(Units::ByteSize lastWhatsNewInMapsHash READ lastWhatsNewInMapsHash WRITE setLastWhatsNewInMapsHash NOTIFY lastWhatsNewInMapsHashChanged)
 
     /*! \brief Night mode */
-    Q_PROPERTY(bool nightMode READ nightMode WRITE setNightMode NOTIFY nightModeChanged)
+    Q_PROPERTY(bool nightMode READ nightMode WRITE setNightMode BINDABLE bindableNightMode NOTIFY nightModeChanged)
 
     /*! \brief Use traffic data receiver for positioning */
     Q_PROPERTY(bool positioningByTrafficDataReceiver READ positioningByTrafficDataReceiver WRITE setPositioningByTrafficDataReceiver BINDABLE bindablePositioningByTrafficDataReceiver)
@@ -238,7 +238,13 @@ public:
      *
      * @returns Property night mode
      */
-    [[nodiscard]] auto nightMode() const -> bool { return m_settings.value(QStringLiteral("Map/nightMode"), false).toBool(); }
+    [[nodiscard]] auto nightMode() const -> bool { return m_nightMode.value(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property night mode
+     */
+    [[nodiscard]] QBindable<bool> bindableNightMode() { return &m_nightMode; }
 
     /*! \brief Getter function for property of the same name
      *
@@ -431,6 +437,10 @@ private:
     Q_DISABLE_COPY_MOVE(GlobalSettings)
 
     QSettings m_settings;
+
+    // Property-backed night mode setting, so that C++ bindings can depend on
+    // it. Initialized from m_settings, which is declared above on purpose.
+    QProperty<bool> m_nightMode {m_settings.value(QStringLiteral("Map/nightMode"), false).toBool()};
 
     QProperty<bool> m_positioningByTrafficDataReceiver;
 };

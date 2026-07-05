@@ -84,6 +84,15 @@ public:
      */
     Q_PROPERTY(QGeoCoordinate approximateLastValidCoordinate READ approximateLastValidCoordinate BINDABLE bindableApproximateLastValidCoordinate)
 
+    /*! \brief Ownship icon
+     *
+     *  This property holds the URL of the icon that depicts the own position
+     *  on the moving map and in the lateral view. The icon shape depends on
+     *  the quality of the current position info (position and true track
+     *  available or not), and its colors are adapted to night mode.
+     */
+    Q_PROPERTY(QString icon READ icon BINDABLE bindableIcon)
+
     /*! \brief Last valid coordinate reading
      *
      *  This property holds the last valid coordinate known.  At the first
@@ -161,6 +170,18 @@ public:
      *  @returns Property approximateLastValidCoordinate
      */
     [[nodiscard]] QBindable<QGeoCoordinate> bindableApproximateLastValidCoordinate() const {return &m_approximateLastValidCoordinate;}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property icon
+     */
+    [[nodiscard]] QString icon() const {return m_icon.value();}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property icon
+     */
+    [[nodiscard]] QBindable<QString> bindableIcon() const {return &m_icon;}
 
     /*! \brief Getter function for the property with the same name
      *
@@ -321,6 +342,7 @@ private:
     Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, QGeoCoordinate, m_mapCenter, &Positioning::PositionProvider::mapCenterChanged);
 
     Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, bool, m_receivingPositionInfo, &Positioning::PositionProvider::receivingPositionInfoChanged);
+    QProperty<QString> m_icon;
     QProperty<QString> m_statusString;
 
     QProperty<Units::Distance> m_pressureAltitude;

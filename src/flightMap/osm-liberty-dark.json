@@ -15,7 +15,7 @@
         "url": "%URLT%"
       }
     },
-    "sprite": "%URL2%/flightMap/sprites/sprite",
+    "sprite": "%URL2%/flightMap/sprites-night/sprite",
     "glyphs": "%URL2%/flightMap/fonts/{fontstack}/{range}.pbf",
     "layers": [
       {
@@ -1052,7 +1052,9 @@
           "text-size": 10,
           "icon-size": 0.8
         },
-        "paint": {}
+        "paint": {
+          "text-color": "#e0e0e0"
+        }
       },
       {
         "id": "place_village",

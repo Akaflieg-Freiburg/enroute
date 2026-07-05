@@ -18,15 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QBuffer>
 #include <QGuiApplication>
 #include <QHttpServerRequest>
 #include <QHttpServerResponder>
+#include <QImage>
 #include <QTcpServer>
 
 #include "TileServer.h"
 #include "geomaps/GeoMapProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
+
+
+// Night-mode version of a sprite sheet PNG from the resource system. Two-part
+// transform, following the night-mode conventions established in FlightMap.qml
+// and Global.qml: colors with little saturation (the white icon halos, dark
+// glyphs) have their brightness flipped, like the label and halo colors on the
+// moving map; saturated colors are muted, calibrated so that the icon hues
+// #1000b0 and #ff0000 land near the night-mode airspace hues of Global.qml.
+// The two regimes are blended by saturation, so that anti-aliasing pixels do
+// not produce seams.
+static QByteArray nightVersionOf(const QString& fileName)
+{
+    QImage image(fileName);
+    image.convertTo(QImage::Format_ARGB32);
+
+    for (int y = 0; y < image.height(); ++y)
+    {
+        auto* line = reinterpret_cast<QRgb*>(image.scanLine(y));
+        for (int x = 0; x < image.width(); ++x)
+        {
+            const QColor color = QColor::fromRgb(line[x] | 0xFF000000U);
+
+            const qreal vFlipped = 0.88 * (1.0 - color.valueF());
+            const qreal vMuted = 0.45 + 0.4 * color.valueF();
+            const qreal saturation = color.saturationF();
+            const qreal value = (1.0 - saturation) * vFlipped + saturation * vMuted;
+
+            const auto newColor = QColor::fromHsvF(qMax(color.hsvHueF(), 0.0), 0.55 * saturation, value);
+            line[x] = (line[x] & 0xFF000000U) | (newColor.rgb() & 0x00FFFFFFU);
+        }
+    }
+
+    QByteArray result;
+    QBuffer buffer(&result);
+    buffer.open(QIODevice::WriteOnly);
+    image.save(&buffer, "PNG");
+    return result;
+}
 
 
 GeoMaps::TileServer::TileServer(QObject* parent)
@@ -99,6 +139,37 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QHttp
     {
         responder.write(GlobalObject::geoMapProvider()->geoJSON(), "application/json");
         return true;
+    }
+
+    //
+    // Night-mode sprite sheet, recolored on the fly from the day-mode sprite
+    // sheet in the resource system
+    //
+    if (path.startsWith(u"/flightMap/sprites-night/"_s))
+    {
+        QString dayPath = ":"+path;
+        dayPath.replace(u"/sprites-night/"_s, u"/sprites/"_s);
+        if (!QFile::exists(dayPath))
+        {
+            return false;
+        }
+        if (path.endsWith(u".json"_s))
+        {
+            // The sprite geometry does not change, only the PNGs do
+            responder.write(new QFile(dayPath), "application/json");
+            return true;
+        }
+        if (path.endsWith(u".png"_s))
+        {
+            auto& nightSprite = m_nightSprites[dayPath];
+            if (nightSprite.isEmpty())
+            {
+                nightSprite = nightVersionOf(dayPath);
+            }
+            responder.write(nightSprite, "image/png");
+            return true;
+        }
+        return false;
     }
 
     //

@@ -36,6 +36,10 @@ namespace GeoMaps {
  *
  *  - If path is a file name, the server checks if the file is available in the
  *    resource system of the app and serves that file.
+ *  - If path is of the form "flightMap/sprites-night/xyz", the server serves a
+ *    night-mode version of the flight map sprite sheet found in the resource
+ *    system under "flightMap/sprites/xyz". The JSON files are served
+ *    unchanged, the PNG files are recolored for use over the dark map style.
  *  - If path equals "aviationData.geojson", the server returns a GeoJSON
  *    document that contains the full aviation data, as provided by
  *    GlobalObject::geoMapProvider()->geoJSON().
@@ -162,6 +166,12 @@ private:
 
     // List of tile handlers
     QMap<QString, QSharedPointer<GeoMaps::TileHandler>> m_tileHandlers;
+
+    // Night-mode sprite sheets, keyed by resource file name of the day-mode
+    // original. Computing the recolored PNGs is not free, so they are cached
+    // here after the first request. The transform is deterministic, so entries
+    // never need to be invalidated.
+    QMap<QString, QByteArray> m_nightSprites;
 
     // Internal variable. Indicates if the app has been suspended.
     // This is used on changes of QGuiApplication::applicationState,

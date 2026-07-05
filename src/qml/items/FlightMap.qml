@@ -81,6 +81,33 @@ Map {
     readonly property real   airspaceFillOpacity: GlobalSettings.nightMode ? 0.30 : 0.2
     readonly property real   glidingFillOpacity:  GlobalSettings.nightMode ? 0.18 : 0.1
 
+    // The waypoint library layer exists twice in the style, with identical
+    // content: once below the airfield layers, so that airfields win the
+    // competition for symbol space in normal use, and once above the raster
+    // and approach chart layers, so that user waypoints remain visible when a
+    // raster chart covers the aviation symbols. Only one copy is visible at
+    // any time; a hidden layer does not take part in symbol placement. Layout
+    // and paint are shared here so that the two copies cannot drift apart.
+    readonly property bool rasterActive: Global.currentVAC.isValid || (GeoMapProvider.currentRasterMap !== "")
+
+    function waypointLibLayout(shown) {
+        return {
+            "visibility": shown ? "visible" : "none",
+            "icon-image": '["get", "CAT"]',
+            "text-field": '["get", "NAM"]',
+            "text-size": 0.85*GlobalSettings.fontSize,
+            "text-anchor": "top",
+            "text-offset": [0, 1],
+            "text-optional": true,
+        }
+    }
+
+    readonly property var waypointLibPaint: ({
+        "text-color": flightMap.overlayLabelColor,
+        "text-halo-width": 2,
+        "text-halo-color": flightMap.overlayHaloColor
+    })
+
     property geoCoordinate animatedCoordinate: PositionProvider.lastValidCoordinate
     Behavior on animatedCoordinate { CoordinateAnimation { duration: 1000 } }
 
@@ -250,6 +277,22 @@ Map {
                 "text-halo-width": 2,
                 "text-halo-color": flightMap.overlayHaloColor
             }
+        }
+
+        LayerParameter {
+            // Copy of the waypoint library layer that is active when no
+            // raster chart is shown. It sits below the airfield, nav aid and
+            // reporting point layers, so those win the competition for symbol
+            // space against user waypoints.
+            id: waypointLibParam
+
+            styleId: "waypoint-layer"
+
+            type: "symbol"
+            property string source: "waypointlib"
+
+            layout: flightMap.waypointLibLayout(!flightMap.rasterActive)
+            paint: flightMap.waypointLibPaint
         }
 
         LayerParameter {
@@ -676,27 +719,18 @@ Map {
         }
 
         LayerParameter {
-            id: waypointLibParam
+            // Copy of the waypoint library layer that is active when a
+            // raster chart or approach chart is shown. It sits above the
+            // raster layers, so user waypoints remain visible on the chart.
+            id: waypointLibParamRaster
 
-            styleId: "waypoint-layer"
+            styleId: "waypoint-layer-raster"
 
             type: "symbol"
             property string source: "waypointlib"
 
-            layout: {
-                "icon-image": '["get", "CAT"]',
-                "text-field": '["get", "NAM"]',
-                "text-size": 0.85*GlobalSettings.fontSize,
-                "text-anchor": "top",
-                "text-offset": [0, 1],
-                "text-optional": true,
-            }
-
-            paint: {
-                "text-color": flightMap.overlayLabelColor,
-                "text-halo-width": 2,
-                "text-halo-color": flightMap.overlayHaloColor
-            }
+            layout: flightMap.waypointLibLayout(flightMap.rasterActive)
+            paint: flightMap.waypointLibPaint
         }
 
         LayerParameter {

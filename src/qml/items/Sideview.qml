@@ -30,10 +30,24 @@ SideviewQuickItem {
     clip: true
     pixelPer10km: flightMap.pixelPer10km
 
+    // Night-mode-aware colors. Sky and terrain have no equivalent on the moving
+    // map; the night hues are picked to blend with the dark base map. The
+    // airspace hues themselves live in the Global singleton (Global.airspaceBlue
+    // etc.), see FlightMap.
+    readonly property color skyColor:           GlobalSettings.nightMode ? "#101820" : "lightblue"
+    readonly property color terrainFillColor:   GlobalSettings.nightMode ? "#33251a" : "brown"
+    readonly property color terrainStrokeColor: GlobalSettings.nightMode ? "#54402c" : "saddlebrown"
+
+    // Same role as the properties of the same name in FlightMap: the
+    // semi-transparent airspace bands and fills wash out to near-invisible over
+    // a dark base, so their opacity is raised at night.
+    readonly property real airspaceBandOpacity: GlobalSettings.nightMode ? 0.35 : 0.2
+    readonly property real airspaceFillOpacity: GlobalSettings.nightMode ? 0.30 : 0.2
+
     Rectangle {
         id: sky
         anchors.fill: parent
-        color: "lightblue"
+        color: rawSideView.skyColor
     }
 
     Shape {
@@ -45,8 +59,8 @@ SideviewQuickItem {
         ShapePath {
             id: terrain
             strokeWidth: -1
-            strokeColor: "saddlebrown"
-            fillColor: "brown"
+            strokeColor: rawSideView.terrainStrokeColor
+            fillColor: rawSideView.terrainFillColor
 
             PathPolyline { path: rawSideView.terrain }
         }
@@ -54,7 +68,7 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesABorder
             strokeWidth: 10
-            strokeColor: "#330000FF"
+            strokeColor: Qt.alpha(Global.airspaceBlue, rawSideView.airspaceBandOpacity)
             fillColor: "transparent"
 
             PathMultiline { paths: rawSideView.airspaces["A"] }
@@ -63,7 +77,7 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesA
             strokeWidth: 2
-            strokeColor: "blue"
+            strokeColor: Global.airspaceBlue
             fillColor: "transparent"
 
             PathMultiline { paths: rawSideView.airspaces["A"] }
@@ -72,7 +86,7 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesRBorder
             strokeWidth: 10
-            strokeColor: "#33FF0000"
+            strokeColor: Qt.alpha(Global.airspaceRed, rawSideView.airspaceBandOpacity)
             fillColor: "transparent"
             fillRule: ShapePath.WindingFill
 
@@ -82,7 +96,7 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesR
             strokeWidth: 2
-            strokeColor: "red"
+            strokeColor: Global.airspaceRed
             fillColor: "transparent"
 
             PathMultiline { paths: rawSideView.airspaces["R"] }
@@ -91,7 +105,7 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesPJE
             strokeWidth: 2
-            strokeColor: "red"
+            strokeColor: Global.airspaceRed
             fillColor: "transparent"
             dashPattern: [4,3]
             strokeStyle: ShapePath.DashLine
@@ -102,7 +116,7 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesTMZ
             strokeWidth: 2
-            strokeColor: "black"
+            strokeColor: Global.airspaceNeutral
             fillColor: "transparent"
             dashPattern: [4.0, 3.0, 0.5, 3.0]
             strokeStyle: ShapePath.DashLine
@@ -113,7 +127,7 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesNRABorder
             strokeWidth: 10
-            strokeColor: "#3300FF00"
+            strokeColor: Qt.alpha(Global.airspaceGreen, rawSideView.airspaceBandOpacity)
             fillColor: "transparent"
             fillRule: ShapePath.WindingFill
 
@@ -123,7 +137,7 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesNRA
             strokeWidth: 2
-            strokeColor: "green"
+            strokeColor: Global.airspaceGreen
             fillColor: "transparent"
 
             PathMultiline { paths: rawSideView.airspaces["NRA"] }
@@ -132,8 +146,8 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesRMZ
             strokeWidth: 2
-            strokeColor: "blue"
-            fillColor: "#330000FF"
+            strokeColor: Global.airspaceBlue
+            fillColor: Qt.alpha(Global.airspaceBlue, rawSideView.airspaceFillOpacity)
             dashPattern: [4,3]
             strokeStyle: ShapePath.DashLine
             fillRule: ShapePath.WindingFill
@@ -144,8 +158,8 @@ SideviewQuickItem {
         ShapePath {
             id: airspacesCTR
             strokeWidth: 2
-            strokeColor: "blue"
-            fillColor: "#33FF0000"
+            strokeColor: Global.airspaceBlue
+            fillColor: Qt.alpha(Global.airspaceRed, rawSideView.airspaceFillOpacity)
             dashPattern: [4,3]
             strokeStyle: ShapePath.DashLine
             fillRule: ShapePath.WindingFill
@@ -158,10 +172,16 @@ SideviewQuickItem {
         property double animatedFiveMinuteBarY: rawSideView.fiveMinuteBar.y
         Behavior on animatedFiveMinuteBarY { NumberAnimation {duration: 1000} }
 
+        // Like the label/halo colors on the moving map, the black bar and its
+        // white tick segments flip at night so the bar does not glare over the
+        // dark sky.
+        property color fiveMinuteBarColor: GlobalSettings.nightMode ? "#e0e0e0" : "black"
+        property color fiveMinuteBarTickColor: GlobalSettings.nightMode ? "black" : "white"
+
         ShapePath {
             id: fiveMinuteBar
             strokeWidth: 3
-            strokeColor: "black"
+            strokeColor: shp.fiveMinuteBarColor
 
             startX: rawSideView.ownshipPosition.x
             startY: rawSideView.ownshipPosition.y
@@ -174,7 +194,7 @@ SideviewQuickItem {
         ShapePath {
             id: fiveMinuteBar_1_2
             strokeWidth: 2
-            strokeColor: "white"
+            strokeColor: shp.fiveMinuteBarTickColor
 
             startX: rawSideView.ownshipPosition.x + 0.2*shp.animatedFiveMinuteBarX
             startY: rawSideView.ownshipPosition.y + 0.2*shp.animatedFiveMinuteBarY
@@ -187,7 +207,7 @@ SideviewQuickItem {
         ShapePath {
             id: fiveMinuteBar_3_4
             strokeWidth: 2
-            strokeColor: "white"
+            strokeColor: shp.fiveMinuteBarTickColor
 
             startX: rawSideView.ownshipPosition.x + 0.6*shp.animatedFiveMinuteBarX
             startY: rawSideView.ownshipPosition.y + 0.6*shp.animatedFiveMinuteBarY

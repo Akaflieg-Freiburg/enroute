@@ -179,243 +179,6 @@ Map {
         // Map layers, sorted according to importance, from low to high
 
         LayerParameter {
-            id:  airspaceLabels
-
-            styleId: "AirspaceLabels"
-
-            type: "symbol"
-            property string source: "aviation-data"
-            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet]]
-            property string metadata: '{}'
-
-            layout: {
-                "symbol-placement": "line",
-                "text-allow-overlap": false,
-                "text-anchor": "center",
-                "text-field": Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? '["get", "MLM"]' : '["get", "MLI"]',
-                "text-ignore-placement": false,
-                "text-justify": "center",
-                "text-offset": '[0,1]',
-                "text-optional": true,
-                "text-size": 0.85*GlobalSettings.fontSize
-            }
-
-            paint: {
-                "text-color": flightMap.overlayLabelColor,
-                "text-halo-width": 2,
-                "text-halo-color": flightMap.overlayHaloColor
-            }
-        }
-
-        LayerParameter {
-            id: prcLabels
-
-            styleId: "PRCLabels"
-
-            type: "symbol"
-            property string source: "aviation-data"
-            property var filter: [ "all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "TFC"] ]
-            property real minzoom: 10
-
-            layout: {
-                "symbol-placement": "line",
-                "text-field": ["get", "NAM"],
-                "text-size": 1.14*GlobalSettings.fontSize,
-                "symbol-spacing": 140
-            }
-
-            paint: {
-                "text-color": flightMap.overlayLabelColor,
-                "text-halo-width": 10,
-                "text-halo-color": flightMap.overlayHaloColor
-            }
-        }
-
-        LayerParameter {
-            id: tfcLabels
-
-            styleId: "TFCLabels"
-
-            type: "symbol"
-            property string source: "aviation-data"
-            property var filter: [ "all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "TFC"] ]
-            property real minzoom: 10
-
-            layout: {
-                "symbol-placement": "line",
-                "text-field": ["get", "NAM"],
-                "text-size": 1.14*GlobalSettings.fontSize,
-                "symbol-spacing": 140
-            }
-
-            paint: {
-                "text-color": flightMap.overlayLabelColor,
-                "text-halo-width": 10,
-                "text-halo-color": flightMap.overlayHaloColor
-            }
-        }
-
-        LayerParameter {
-            id: optionalText
-
-            styleId: "optionalText"
-
-            type: "symbol"
-            property string source: "aviation-data"
-            property var filter: ["==", ["get", "TYP"], "NAV"]
-
-            layout: {
-                "text-field": ["get", "COD"],
-                "text-size": 0.85*GlobalSettings.fontSize,
-                "text-anchor": "top",
-                "text-offset": [0, 1],
-                "text-optional": true
-            }
-
-            paint: {
-                "text-color": flightMap.overlayLabelColor,
-                "text-halo-width": 2,
-                "text-halo-color": flightMap.overlayHaloColor
-            }
-        }
-
-        LayerParameter {
-            // Copy of the waypoint library layer that is active when no
-            // raster chart is shown. It sits below the airfield, nav aid and
-            // reporting point layers, so those win the competition for symbol
-            // space against user waypoints.
-            id: waypointLibParam
-
-            styleId: "waypoint-layer"
-
-            type: "symbol"
-            property string source: "waypointlib"
-
-            layout: flightMap.waypointLibLayout(!flightMap.rasterActive)
-            paint: flightMap.waypointLibPaint
-        }
-
-        LayerParameter {
-            id: wps
-
-            styleId: "WPs"
-
-            type: "symbol"
-            property string source: "aviation-data"
-            property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
-
-            layout: {
-                "icon-image": ["get", "CAT"],
-                "text-field": ["get", "NAM"],
-                "text-size": 0.85*GlobalSettings.fontSize,
-                "text-anchor": "top",
-                "text-offset": [0, 1],
-                "text-optional": true
-            }
-
-            paint: {
-                "text-color": flightMap.overlayLabelColor,
-                "text-halo-width": 2,
-                "text-halo-color": flightMap.overlayHaloColor
-            }
-        }
-
-        LayerParameter {
-            id: rps
-
-            styleId: "RPs"
-
-            type: "symbol"
-            property string source: "aviation-data"
-            property var filter: ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]]
-
-            layout: {
-                "icon-image": ["get", "CAT"],
-                "text-field": ["get", "SCO"],
-                "text-size": 0.85*GlobalSettings.fontSize,
-                "text-anchor": "top",
-                "text-offset": [0, 1],
-                "text-optional": true
-            }
-
-            paint: {
-                "text-color": flightMap.overlayLabelColor,
-                "text-halo-width": 2,
-                "text-halo-color": flightMap.overlayHaloColor
-            }
-        }
-
-        LayerParameter {
-            id: adGrass
-
-            styleId: "AD-GRASS"
-
-            type: "symbol"
-            property string source: "aviation-data"
-            property var filter: ["any", ["==", ["get", "CAT"], "AD-GRASS"], ["==", ["get", "CAT"], "AD-MIL-GRASS"]]
-
-            layout: {
-                "icon-image": ["get", "CAT"],
-                "icon-rotate": ["get", "ORI"],
-                "icon-rotation-alignment": "map",
-                "text-field": ["get", "NAM"],
-                "text-size": 0.85*GlobalSettings.fontSize,
-                "text-anchor": "top",
-                "text-offset": [0, 1],
-                "text-optional": true
-            }
-
-            paint: {
-                "text-color": flightMap.overlayLabelColor,
-                "text-halo-width": 2,
-                "text-halo-color": flightMap.overlayHaloColor
-            }
-        }
-
-        LayerParameter {
-            id: navAidIcons
-
-            styleId: "NavAidIcons"
-
-            type: "symbol"
-            property string source: "aviation-data"
-            property var filter: ["==", ["get", "TYP"], "NAV"]
-
-            layout: {
-                "icon-image": ["get", "CAT"],
-                "icon-ignore-placement": true,
-                "icon-allow-overlap": true
-            }
-        }
-
-        LayerParameter {
-            id: adPaved
-
-            styleId: "AD-PAVED"
-
-            type: "symbol"
-            property string source: "aviation-data"
-            property var filter: ["any", ["==", ["get", "CAT"], "AD"], ["==", ["get", "CAT"], "AD-PAVED"], ["==", ["get", "CAT"], "AD-MIL"], ["==", ["get", "CAT"], "AD-MIL-PAVED"]]
-
-            layout: {
-                "icon-image": ["get", "CAT"],
-                "icon-rotate": ["get", "ORI"],
-                "icon-rotation-alignment": "map",
-                "text-field": ["get", "NAM"],
-                "text-size": 0.85*GlobalSettings.fontSize,
-                "text-anchor": "top",
-                "text-offset": [0, 1],
-                "text-optional": true
-            }
-
-            paint: {
-                "text-color": flightMap.overlayLabelColor,
-                "text-halo-width": 2,
-                "text-halo-color": flightMap.overlayHaloColor
-            }
-        }
-
-        LayerParameter {
             id: fis
             styleId: "FIS"
             type: "line"
@@ -690,6 +453,243 @@ Map {
             paint: {
                 "line-color": ["match", ["get", "GAC"], "blue", Global.airspaceBlue, "red", Global.airspaceRed, Global.airspaceBlue],
                 "line-width": 3.0
+            }
+        }
+
+        LayerParameter {
+            id:  airspaceLabels
+
+            styleId: "AirspaceLabels"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["all", ["==", ["get", "TYP"], "AS"], ["<=", ["coalesce", ["get", "SBO"], 0], flightMap.airspaceAltitudeLimitInFeet]]
+            property string metadata: '{}'
+
+            layout: {
+                "symbol-placement": "line",
+                "text-allow-overlap": false,
+                "text-anchor": "center",
+                "text-field": Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? '["get", "MLM"]' : '["get", "MLI"]',
+                "text-ignore-placement": false,
+                "text-justify": "center",
+                "text-offset": '[0,1]',
+                "text-optional": true,
+                "text-size": 0.85*GlobalSettings.fontSize
+            }
+
+            paint: {
+                "text-color": flightMap.overlayLabelColor,
+                "text-halo-width": 2,
+                "text-halo-color": flightMap.overlayHaloColor
+            }
+        }
+
+        LayerParameter {
+            id: prcLabels
+
+            styleId: "PRCLabels"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: [ "all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "TFC"] ]
+            property real minzoom: 10
+
+            layout: {
+                "symbol-placement": "line",
+                "text-field": ["get", "NAM"],
+                "text-size": 1.14*GlobalSettings.fontSize,
+                "symbol-spacing": 140
+            }
+
+            paint: {
+                "text-color": flightMap.overlayLabelColor,
+                "text-halo-width": 10,
+                "text-halo-color": flightMap.overlayHaloColor
+            }
+        }
+
+        LayerParameter {
+            id: tfcLabels
+
+            styleId: "TFCLabels"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: [ "all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "TFC"] ]
+            property real minzoom: 10
+
+            layout: {
+                "symbol-placement": "line",
+                "text-field": ["get", "NAM"],
+                "text-size": 1.14*GlobalSettings.fontSize,
+                "symbol-spacing": 140
+            }
+
+            paint: {
+                "text-color": flightMap.overlayLabelColor,
+                "text-halo-width": 10,
+                "text-halo-color": flightMap.overlayHaloColor
+            }
+        }
+
+        LayerParameter {
+            id: optionalText
+
+            styleId: "optionalText"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["==", ["get", "TYP"], "NAV"]
+
+            layout: {
+                "text-field": ["get", "COD"],
+                "text-size": 0.85*GlobalSettings.fontSize,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": flightMap.overlayLabelColor,
+                "text-halo-width": 2,
+                "text-halo-color": flightMap.overlayHaloColor
+            }
+        }
+
+        LayerParameter {
+            // Copy of the waypoint library layer that is active when no
+            // raster chart is shown. It sits below the airfield, nav aid and
+            // reporting point layers, so those win the competition for symbol
+            // space against user waypoints.
+            id: waypointLibParam
+
+            styleId: "waypoint-layer"
+
+            type: "symbol"
+            property string source: "waypointlib"
+
+            layout: flightMap.waypointLibLayout(!flightMap.rasterActive)
+            paint: flightMap.waypointLibPaint
+        }
+
+        LayerParameter {
+            id: wps
+
+            styleId: "WPs"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "text-field": ["get", "NAM"],
+                "text-size": 0.85*GlobalSettings.fontSize,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": flightMap.overlayLabelColor,
+                "text-halo-width": 2,
+                "text-halo-color": flightMap.overlayHaloColor
+            }
+        }
+
+        LayerParameter {
+            id: rps
+
+            styleId: "RPs"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "text-field": ["get", "SCO"],
+                "text-size": 0.85*GlobalSettings.fontSize,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": flightMap.overlayLabelColor,
+                "text-halo-width": 2,
+                "text-halo-color": flightMap.overlayHaloColor
+            }
+        }
+
+        LayerParameter {
+            id: adGrass
+
+            styleId: "AD-GRASS"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "AD-GRASS"], ["==", ["get", "CAT"], "AD-MIL-GRASS"]]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "icon-rotate": ["get", "ORI"],
+                "icon-rotation-alignment": "map",
+                "text-field": ["get", "NAM"],
+                "text-size": 0.85*GlobalSettings.fontSize,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": flightMap.overlayLabelColor,
+                "text-halo-width": 2,
+                "text-halo-color": flightMap.overlayHaloColor
+            }
+        }
+
+        LayerParameter {
+            id: navAidIcons
+
+            styleId: "NavAidIcons"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["==", ["get", "TYP"], "NAV"]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "icon-ignore-placement": true,
+                "icon-allow-overlap": true
+            }
+        }
+
+        LayerParameter {
+            id: adPaved
+
+            styleId: "AD-PAVED"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "AD"], ["==", ["get", "CAT"], "AD-PAVED"], ["==", ["get", "CAT"], "AD-MIL"], ["==", ["get", "CAT"], "AD-MIL-PAVED"]]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "icon-rotate": ["get", "ORI"],
+                "icon-rotation-alignment": "map",
+                "text-field": ["get", "NAM"],
+                "text-size": 0.85*GlobalSettings.fontSize,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": flightMap.overlayLabelColor,
+                "text-halo-width": 2,
+                "text-halo-color": flightMap.overlayHaloColor
             }
         }
 

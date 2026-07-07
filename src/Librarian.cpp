@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -314,9 +314,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += u"<p>"_s
-                  + tr("This is a beta-only release for testing improvements in the traffic display and gesture control of the moving map. Please try it out and tell us know how you feel about the changes.")
-                  + u"</p>"_s;
         result += u"<p>"_s
                   + tr("There are now specialized icons for obstacle NOTAMs and NOTAMs about drone flights. We thank Christian Engelhardt for the implementation!")
                   + u"</p>"_s;

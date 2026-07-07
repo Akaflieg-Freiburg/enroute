@@ -1,9 +1,23 @@
 # Changelog
 
+## [3.3.5] - 2026-07-07
+
+### Fixed
+- User-defined waypoints no longer obscure airfields (#667)
+
+- Fix night mode that was broken on some Android devices (#665)
+
+### Changed
+- Add close button to the side view.
+
+- Improved pinch-to-zoom behavior on the moving map.
+
+
 ## [3.3.3] - 2026-06-08
 
 ### Fixed
 - Fixes sign error that makes OGN traffic always appear above the ownship position.
+
 
 ## [3.3.2] - 2026-05-28
 

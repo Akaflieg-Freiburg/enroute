@@ -46,12 +46,12 @@ Page {
 
             required property var model
 
-            text: model.modelData.name
+            text: model.modelData.name + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
             icon.source: "/icons/material/ic_map.svg"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                Global.currentVAC = model.modelData
+                Global.currentVAC = VACLibrary.materialize(model.modelData)
                 stackView.pop()
             }
         }

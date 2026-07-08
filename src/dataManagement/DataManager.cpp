@@ -94,7 +94,8 @@ void DataManagement::DataManager::cleanDataDirectory()
                 !fileIterator.filePath().endsWith(u".geojson"_s) &&
                 !fileIterator.filePath().endsWith(u".mbtiles"_s) &&
                 !fileIterator.filePath().endsWith(u".raster"_s) &&
-                !fileIterator.filePath().endsWith(u".txt"_s))
+                !fileIterator.filePath().endsWith(u".txt"_s) &&
+                !fileIterator.filePath().endsWith(u".vac"_s))
         {
             unexpectedFiles += fileIterator.filePath();
         }
@@ -286,7 +287,8 @@ DataManagement::Downloadable_SingleFile* DataManagement::DataManager::createOrRe
     if (localFileName.endsWith(u"geojson"_s) ||
             localFileName.endsWith(u"mbtiles"_s) ||
             localFileName.endsWith(u"raster"_s) ||
-            localFileName.endsWith(u"terrain"_s))
+            localFileName.endsWith(u"terrain"_s) ||
+            localFileName.endsWith(u".vac"_s))
     {
         if (url.isValid())
         {
@@ -343,6 +345,10 @@ DataManagement::Downloadable_SingleFile* DataManagement::DataManager::createOrRe
     if (localFileName.endsWith(u"txt"_s))
     {
         m_databases.add(downloadable);
+    }
+    if (localFileName.endsWith(u".vac"_s))
+    {
+        m_vacCollections.add(downloadable);
     }
     return downloadable;
 }

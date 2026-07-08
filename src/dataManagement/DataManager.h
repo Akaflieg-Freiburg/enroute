@@ -42,6 +42,7 @@ namespace DataManagement {
  *  - Base maps/vector (in MBTILES format, file name ends in "raster")
  *  - Terrain maps (in MBTILES format, file name ends in "terrain")
  *  - FLARM Databases (as a text file, file name ends in "data")
+ *  - VAC collections (SQLite databases, file name ends in "vac")
  *
  *  In addition, it allows access to the following data.
  *
@@ -179,6 +180,14 @@ public:
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* terrainMaps READ terrainMaps CONSTANT)
     [[nodiscard]] DataManagement::Downloadable_MultiFile* terrainMaps() { return &m_terrainMaps; }
 
+    /*! \brief Downloadable_MultiFile that holds all VAC collections
+     *
+     *  Pointer to a Downloadable_MultiFile that holds all collections of
+     *  visual approach charts.
+     */
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* vacCollections READ vacCollections CONSTANT)
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* vacCollections() { return &m_vacCollections; }
+
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
     [[nodiscard]] QString whatsNew() const { return m_whatsNew; }
@@ -303,6 +312,7 @@ private:
     DataManagement::Downloadable_MultiFile m_items {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_mapsAndData {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_terrainMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
+    DataManagement::Downloadable_MultiFile m_vacCollections {DataManagement::Downloadable_MultiFile::SingleUpdate};
 
     // List of geographic map sets
     DataManagement::Downloadable_MultiFile m_mapSets  {DataManagement::Downloadable_MultiFile::SingleUpdate};

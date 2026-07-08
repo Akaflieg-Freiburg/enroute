@@ -96,6 +96,10 @@ QString GeoMaps::VAC::description() const
 
 QString GeoMaps::VAC::infoText() const
 {
+    if (!collection.isEmpty())
+    {
+        return QObject::tr("%1 chart collection", "VAC").arg(collection);
+    }
     auto result = QObject::tr("manually imported", "VAC");
     QFileInfo const info(fileName);
     if (info.exists())
@@ -110,6 +114,15 @@ bool GeoMaps::VAC::isValid() const
     return hasValidCoordinates()
            && QFile::exists(fileName)
            && !name.isEmpty();
+}
+
+QString GeoMaps::VAC::section() const
+{
+    if (!collection.isEmpty())
+    {
+        return collection;
+    }
+    return QObject::tr("Manually Imported", "VAC");
 }
 
 

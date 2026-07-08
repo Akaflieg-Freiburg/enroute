@@ -82,6 +82,9 @@ auto DataManagement::Downloadable_MultiFile::description() -> QString
         case Downloadable_Abstract::MapSet:
             result += "<h3>"+tr("Map Set")+"</h3>";
             break;
+        case Downloadable_Abstract::VACCollection:
+            result += "<h3>"+tr("Approach Charts")+"</h3>";
+            break;
         }
         result += map->description();
     }
@@ -124,7 +127,10 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
             result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), map->infoText());
             break;
         case Downloadable_Abstract::VAC:
-            result += QStringLiteral("%1: %2").arg(tr("Visual Approach ChartTerrain Map"), map->infoText());
+            result += QStringLiteral("%1: %2").arg(tr("Visual Approach Chart"), map->infoText());
+            break;
+        case Downloadable_Abstract::VACCollection:
+            result += QStringLiteral("%1: %2").arg(tr("Approach Charts"), map->infoText());
             break;
         }
     }

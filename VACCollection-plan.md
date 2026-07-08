@@ -1,5 +1,10 @@
 # Server-Distributed VAC Collections
 
+> **Status (2026-07-08):** Implemented on this branch — all C++ and QML changes below are in place;
+> build and qmllint pass. Remaining: manual end-to-end test in the running app (see Verification;
+> a test container can be generated with the Python snippet there), and the server-side work in
+> the enrouteServer repo (TripKit→SQLite conversion script + maps.json entries).
+
 ## Context
 
 Enroute distributes per-country aviation/base/terrain maps via a JSON catalog (`maps.json` on enroute-data.akaflieg-freiburg.de); VAC charts are currently only user-imported (single images or TripKit zips). Goal: distribute per-country VAC collections (e.g. France) from the data server so users receive and update them together with their country maps — with zero behavior change for old app versions and no new download mechanism.
@@ -92,7 +97,23 @@ cmake --build build/claude && cmake --build build/claude --target all_qmllint
 
 Manual end-to-end test — no server needed: `updateDataItemListAndWhatsNew()` creates items for any file found in the data directory ([DataManager.cpp:469-474](src/dataManagement/DataManager.cpp#L469-L474)), so a hand-placed `.vac` flows through the whole pipeline:
 
-1. Build a test container in the scratchpad with the sqlite3 CLI (`readfile()` is built in), using any small webp and plausible Colmar-area corners (schema above).
+1. Build a test container (note: this machine has no `sqlite3` CLI — use Python), using any small webp and plausible Colmar-area corners:
+   ```bash
+   magick -size 512x512 gradient:red-yellow -pointsize 48 -gravity center -annotate 0 "LFGA TEST" test.webp
+   python3 - <<'EOF'
+   import sqlite3
+   con = sqlite3.connect("France.vac")
+   con.execute("CREATE TABLE metadata (key TEXT UNIQUE NOT NULL, value TEXT)")
+   con.executemany("INSERT INTO metadata VALUES (?,?)", [("schemaVersion","1"),("name","France")])
+   con.execute("""CREATE TABLE charts (name TEXT PRIMARY KEY,
+     topLeftLat REAL NOT NULL, topLeftLon REAL NOT NULL, topRightLat REAL NOT NULL, topRightLon REAL NOT NULL,
+     bottomLeftLat REAL NOT NULL, bottomLeftLon REAL NOT NULL, bottomRightLat REAL NOT NULL, bottomRightLon REAL NOT NULL,
+     image BLOB NOT NULL)""")
+   con.execute("INSERT INTO charts VALUES (?,?,?,?,?,?,?,?,?,?)",
+               ("LFGA TEST", 48.13,7.32, 48.13,7.42, 48.05,7.32, 48.05,7.42, open("test.webp","rb").read()))
+   con.commit(); con.execute("VACUUM"); con.close()
+   EOF
+   ```
 2. Copy to `~/.local/share/Akaflieg Freiburg/enroute flight navigation/aviation_maps/Europe/France.vac`.
 3. Launch the app (**ask the user first** — per CLAUDE.md it opens a real window on their desktop). Check: main menu shows Approach Charts; DataManager VAC tab lists the chart with "France chart collection" info text and disabled Rename/Uninstall; selecting it displays the image on the moving map; extracted file appears under `~/.cache/Akaflieg Freiburg/enroute flight navigation/VAC/France/`; deleting `France.vac` makes the chart disappear and resets the map view.
 4. Restart once: `cleanDataDirectory()` must not delete the file; `VAC.data` must contain no collection charts.

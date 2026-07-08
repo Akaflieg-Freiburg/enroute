@@ -119,6 +119,7 @@ Page {
                             id: renameAction
 
                             text: qsTr("Rename")
+                            enabled: element.model.modelData.collection === ""
 
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
@@ -131,6 +132,7 @@ Page {
                             id: removeAction
 
                             text: qsTr("Uninstall")
+                            enabled: element.model.modelData.collection === ""
 
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
@@ -279,7 +281,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Clear VAC library…")
-                    enabled: !VACLibrary.isEmpty
+                    enabled: VACLibrary.hasManuallyImported
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -594,7 +596,8 @@ Page {
         title: qsTr("Clear approach chart Library?")
         standardButtons: Dialog.No | Dialog.Yes
 
-        text: qsTr("Once cleared, the approach charts cannot be restored.")
+        text: qsTr("Once cleared, the approach charts cannot be restored.") + " "
+              + qsTr("Charts from downloaded collections are not affected; remove them by deleting the corresponding maps.")
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

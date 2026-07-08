@@ -47,6 +47,7 @@ set(SOURCES
     fileFormats/PLN.h
     fileFormats/TIFF.h
     fileFormats/TripKit.h
+    fileFormats/VACCollection.h
     fileFormats/ZipFile.h
     DemoRunner.h
     geomaps/Airspace.h
@@ -150,6 +151,7 @@ set(SOURCES
     fileFormats/PLN.cpp
     fileFormats/TIFF.cpp
     fileFormats/TripKit.cpp
+    fileFormats/VACCollection.cpp
     fileFormats/ZipFile.cpp
     geomaps/Airspace.cpp
     geomaps/GeoJSON.cpp

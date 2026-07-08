@@ -104,6 +104,16 @@ public:
      */
     Q_PROPERTY(QGeoCoordinate center READ center)
 
+    /*! \brief Name of the collection containing this VAC
+     *
+     * This property holds the name of the VAC collection that contains this
+     * chart (e.g. "France"), or an empty string for charts that the user
+     * imported manually. For charts from a collection, the member 'fileName'
+     * points to the collection file; use GeoMaps::VACLibrary::materialize()
+     * to obtain a VAC whose 'fileName' points to a raster image file.
+     */
+    Q_PROPERTY(QString collection MEMBER collection)
+
     /*! \brief Describe installed file(s)
      *
      * This property contains a description of the locally installed file(s),
@@ -128,6 +138,13 @@ public:
 
     /*! \brief Name of the VAC. */
     Q_PROPERTY(QString name MEMBER name)
+
+    /*! \brief Section name, for grouping in GUI lists
+     *
+     * This property holds the name of the collection for charts from a VAC
+     * collection, or a localized version of "Manually Imported" otherwise.
+     */
+    Q_PROPERTY(QString section READ section)
 
     /*! \brief Geographic coordinate of raster image corner
      *
@@ -179,6 +196,12 @@ public:
      */
     [[nodiscard]] bool isValid() const;
 
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property section
+     */
+    [[nodiscard]] QString section() const;
+
 
 
     //
@@ -218,6 +241,9 @@ public:
 
     /*! \brief Member variable for property of the same name */
     QGeoCoordinate bottomRight;
+
+    /*! \brief Member variable for property of the same name */
+    QString collection;
 
     /*! \brief Member variable for property of the same name */
     QString fileName;

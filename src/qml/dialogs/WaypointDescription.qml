@@ -427,7 +427,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignVCenter
                 onPressed:  {
                     PlatformAdaptor.vibrateBrief()
-                    Global.currentVAC = vb.vac
+                    Global.currentVAC = VACLibrary.materialize(vb.vac)
                     waypointDescriptionDialog.close()
                 }
             }

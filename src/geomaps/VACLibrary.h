@@ -22,6 +22,7 @@
 
 #include <QFile>
 #include <QStandardPaths>
+#include <QTimer>
 
 #include "geomaps/VAC.h"
 
@@ -34,6 +35,12 @@ namespace GeoMaps
  * This class collects visual approach charts that the user has installed. The
  * list is automatically loaded on startup, and saved every time that a change
  * is made.
+ *
+ * In addition to manually imported charts, this class presents the charts
+ * contained in the VAC collections managed by DataManagement::DataManager.
+ * These charts are not stored in the library data file, cannot be renamed or
+ * removed individually, and their raster data is extracted on demand; see
+ * materialize().
  */
 
 class VACLibrary : public QObject
@@ -56,6 +63,9 @@ public:
     // Properties
     //
 
+    /*! \brief True if the library contains manually imported charts. */
+    Q_PROPERTY(bool hasManuallyImported READ hasManuallyImported NOTIFY dataChanged)
+
     /*! \brief True if library is empty. */
     Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY dataChanged)
 
@@ -73,9 +83,15 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @returns Property hasManuallyImported
+     */
+    [[nodiscard]] bool hasManuallyImported() const { return !m_vacs.isEmpty(); }
+
+    /*! \brief Getter function for property of the same name
+     *
      * @returns Property isEmpty
      */
-    [[nodiscard]] bool isEmpty() const { return m_vacs.isEmpty(); }
+    [[nodiscard]] bool isEmpty() const { return m_vacs.isEmpty() && m_collectionVacs.isEmpty(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -110,6 +126,21 @@ public:
      *  @returns A localized error message, or an empty string on success
      */
     [[nodiscard]] Q_INVOKABLE QString importTripKit(const QString& fileName);
+
+    /*! \brief Obtain a VAC whose fileName points to a raster image file
+     *
+     *  Charts from VAC collections have their member 'fileName' set to the
+     *  name of the collection file. This method extracts the raster image of
+     *  such a chart to a cache directory and returns a copy of the VAC whose
+     *  'fileName' points to the extracted image, ready for display in the
+     *  moving map. Manually imported charts are returned unchanged.
+     *
+     *  @param vac VAC to materialize
+     *
+     *  @returns A VAC whose fileName points to a raster image file, or the
+     *  unchanged input on error.
+     */
+    [[nodiscard]] Q_INVOKABLE GeoMaps::VAC materialize(const GeoMaps::VAC& vac);
 
     /*! \brief Import VAC
      *
@@ -185,6 +216,11 @@ private:
     // either imports them or deletes them.
     void janitor();
 
+    // This method re-reads the chart index from all VAC collection files
+    // managed by DataManagement::DataManager, rebuilds m_collectionVacs and
+    // deletes stale entries from the extraction cache.
+    void updateCollections();
+
     // This method saves m_vacs to m_dataFile.
     void save();
 
@@ -194,8 +230,14 @@ private:
     QString absolutePathForVac(const QString& name);
 
     QVector<GeoMaps::VAC> m_vacs;
+    QVector<GeoMaps::VAC> m_collectionVacs;
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC"_s};
+    QString m_cacheDirectory {QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + u"/VAC"_s};
     QFile m_dataFile {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC.data"_s};
+
+    // Compresses multiple change notifications from DataManager into a single
+    // call to updateCollections()
+    QTimer m_updateCollectionsTimer;
 
 };
 

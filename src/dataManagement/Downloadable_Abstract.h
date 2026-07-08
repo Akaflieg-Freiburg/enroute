@@ -54,7 +54,8 @@ public:
         BaseMapRaster,  /*!< \brief Base Map, in raster format */
         Data,           /*!< \brief Data */
         MapSet,         /*!< \brief Set of maps */
-        TerrainMap      /*!< \brief Terrain Map */
+        TerrainMap,     /*!< \brief Terrain Map */
+        VACCollection   /*!< \brief Collection of Visual Approach Charts */
     };
     Q_ENUM(ContentType)
 

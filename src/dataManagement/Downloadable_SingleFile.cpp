@@ -80,6 +80,10 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
         {
             setContentType(BaseMapRaster);
         }
+        else if (tmpName.endsWith(u".vac"_s))
+        {
+            setContentType(VACCollection);
+        }
         else if (tmpName.endsWith(u"terrain"_s))
         {
             setContentType(TerrainMap);

@@ -19,15 +19,20 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QDebug>
 #include <QDirIterator>
 #include <QGeoRectangle>
 #include <QImage>
+#include <QRegularExpression>
+#include <QSaveFile>
 #include <QTemporaryDir>
 #include <QTimer>
 
 #include "Librarian.h"
 #include "VACLibrary.h"
+#include "dataManagement/DataManager.h"
 #include "fileFormats/TripKit.h"
+#include "fileFormats/VACCollection.h"
 
 
 
@@ -51,6 +56,20 @@ GeoMaps::VACLibrary::VACLibrary(QObject *parent)
 
     // Call the janitor as soon as we have some time
     QTimer::singleShot(0, this, &GeoMaps::VACLibrary::janitor);
+
+    // Wire up: watch the VAC collections managed by the DataManager. The timer
+    // compresses multiple change notifications into a single update.
+    m_updateCollectionsTimer.setSingleShot(true);
+    m_updateCollectionsTimer.setInterval(0);
+    connect(&m_updateCollectionsTimer, &QTimer::timeout, this, &GeoMaps::VACLibrary::updateCollections);
+    QTimer::singleShot(0, this, [this]() {
+        auto* vacCollections = GlobalObject::dataManager()->vacCollections();
+        connect(vacCollections, &DataManagement::Downloadable_Abstract::filesChanged,
+                &m_updateCollectionsTimer, qOverload<>(&QTimer::start));
+        connect(vacCollections, &DataManagement::Downloadable_Abstract::fileContentChanged_delayed,
+                &m_updateCollectionsTimer, qOverload<>(&QTimer::start));
+        updateCollections();
+    });
 }
 
 GeoMaps::VACLibrary::~VACLibrary()
@@ -66,8 +85,9 @@ GeoMaps::VACLibrary::~VACLibrary()
 
 QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacs()
 {
-    std::sort(m_vacs.begin(), m_vacs.end(), [](const GeoMaps::VAC& first, const GeoMaps::VAC& second) { return first.name < second.name; });
-    return m_vacs;
+    auto result = m_vacs + m_collectionVacs;
+    std::sort(result.begin(), result.end(), [](const GeoMaps::VAC& first, const GeoMaps::VAC& second) { return first.name < second.name; });
+    return result;
 }
 
 
@@ -97,6 +117,13 @@ GeoMaps::VAC GeoMaps::VACLibrary::get(const QString& name)
         if (vac.name == name)
         {
             return vac;
+        }
+    }
+    foreach(auto vac, m_collectionVacs)
+    {
+        if (vac.name == name)
+        {
+            return materialize(vac);
         }
     }
     return {};
@@ -205,6 +232,63 @@ QString GeoMaps::VACLibrary::importVAC(GeoMaps::VAC vac)
     return {};
 }
 
+GeoMaps::VAC GeoMaps::VACLibrary::materialize(const GeoMaps::VAC& vac)
+{
+    if (vac.collection.isEmpty())
+    {
+        return vac;
+    }
+
+    QFileInfo const containerInfo(vac.fileName);
+    if (!containerInfo.exists())
+    {
+        return vac;
+    }
+
+    // Compute the name of the cache file. The modification date of the
+    // collection file is encoded in the file name, so the cache entry (and the
+    // file URL used by the moving map) changes whenever the collection is
+    // updated.
+    static const QRegularExpression forbiddenCharacters(uR"([/\\:*?"<>|])"_s);
+    auto safeName = vac.name;
+    safeName.replace(forbiddenCharacters, u"_"_s);
+    auto cacheDirName = m_cacheDirectory + u"/"_s + containerInfo.completeBaseName();
+    auto cacheFileName = cacheDirName + u"/"_s + safeName + u"-"_s
+            + QString::number(containerInfo.lastModified().toSecsSinceEpoch()) + u".webp"_s;
+
+    auto result = vac;
+    result.fileName = cacheFileName;
+    if (QFile::exists(cacheFileName))
+    {
+        return result;
+    }
+
+    // Extract the raster image from the collection file
+    FileFormats::VACCollection collection(vac.fileName);
+    if (!collection.isValid())
+    {
+        return vac;
+    }
+    auto imageData = collection.imageData(vac.name);
+    if (imageData.isEmpty())
+    {
+        return vac;
+    }
+    QDir const dir;
+    dir.mkpath(cacheDirName);
+    QSaveFile cacheFile(cacheFileName);
+    if (!cacheFile.open(QIODeviceBase::WriteOnly))
+    {
+        return vac;
+    }
+    cacheFile.write(imageData);
+    if (!cacheFile.commit())
+    {
+        return vac;
+    }
+    return result;
+}
+
 void GeoMaps::VACLibrary::remove(const QString& baseName)
 {
     QVector<GeoMaps::VAC> vacsToDelete;
@@ -237,6 +321,10 @@ QString GeoMaps::VACLibrary::rename(const QString& oldName, const QString& newNa
     {
         return tr("VAC <strong>%1</strong> does not exist.").arg(oldName);
     }
+    if (!vac.collection.isEmpty())
+    {
+        return tr("VAC <strong>%1</strong> is part of a chart collection and cannot be renamed.").arg(oldName);
+    }
 
     // Rename raster image file
     auto newFileName = absolutePathForVac(newName);
@@ -267,7 +355,7 @@ QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& 
     }
 
     QVector<GeoMaps::VAC> result;
-    const auto constvacs = m_vacs;
+    const auto constvacs = m_vacs + m_collectionVacs;
     for(const auto& vac : constvacs) {
         if (!vac.isValid())
         {
@@ -296,7 +384,7 @@ QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& 
 QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacs4Point(const QGeoCoordinate& position)
 {
     QVector<GeoMaps::VAC> result;
-    const auto constvacs = m_vacs;
+    const auto constvacs = m_vacs + m_collectionVacs;
     for(const auto& vac : constvacs) {
         if (!vac.isValid())
         {
@@ -373,20 +461,68 @@ void GeoMaps::VACLibrary::janitor()
 
     // Go through the list of image files without VAC. Try to import them.
     // Failing that, delete those files.
-    foreach(auto fInfo, imageFilesWithVAC)
+    foreach(auto fInfo, imageFilesWithoutVAC)
     {
-        GeoMaps::VAC vac(fInfo.fileName(), {});
+        GeoMaps::VAC const vac(fInfo.filePath(), {});
         if (importVAC(vac).isEmpty())
         {
             hasChange = true;
         }
-        QFile::remove(fInfo.fileName());
+        QFile::remove(fInfo.filePath());
     }
 
     if (hasChange)
     {
         emit dataChanged();
     }
+}
+
+void GeoMaps::VACLibrary::updateCollections()
+{
+    // Rebuild m_collectionVacs from the collection files that are currently
+    // installed
+    m_collectionVacs.clear();
+    QMap<QString, QDateTime> collectionModificationDates;
+    const auto files = GlobalObject::dataManager()->vacCollections()->files();
+    for (const auto& file : files)
+    {
+        FileFormats::VACCollection const collection(file);
+        if (!collection.isValid())
+        {
+            qWarning() << "VACLibrary: Ignoring invalid VAC collection file" << file << collection.error();
+            continue;
+        }
+        collectionModificationDates.insert(QFileInfo(file).completeBaseName(), QFileInfo(file).lastModified());
+        m_collectionVacs.append(collection.charts());
+    }
+
+    // Clean the extraction cache: remove cache directories for collections
+    // that are no longer installed, and cache files whose names do not match
+    // the modification date of the current collection file.
+    QDirIterator cacheDirIterator(m_cacheDirectory, QDir::Dirs|QDir::NoDotAndDotDot);
+    while (cacheDirIterator.hasNext())
+    {
+        cacheDirIterator.next();
+        if (!collectionModificationDates.contains(cacheDirIterator.fileName()))
+        {
+            QDir(cacheDirIterator.filePath()).removeRecursively();
+            continue;
+        }
+        auto currentSuffix = u"-"_s
+                + QString::number(collectionModificationDates.value(cacheDirIterator.fileName()).toSecsSinceEpoch())
+                + u".webp"_s;
+        QDirIterator cacheFileIterator(cacheDirIterator.filePath(), QDir::Files);
+        while (cacheFileIterator.hasNext())
+        {
+            cacheFileIterator.next();
+            if (!cacheFileIterator.fileName().endsWith(currentSuffix))
+            {
+                QFile::remove(cacheFileIterator.filePath());
+            }
+        }
+    }
+
+    emit dataChanged();
 }
 
 void GeoMaps::VACLibrary::save()

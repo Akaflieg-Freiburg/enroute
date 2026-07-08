@@ -1,0 +1,11 @@
+### Fixed
+- User-defined waypoints no longer obscure airfields (#667)
+
+- Fix night mode that was broken on some Android devices (#665)
+
+### Changed
+- Add close button to the side view.
+
+- Improved pinch-to-zoom behavior on the moving map.
+
+- Improved readability of NavBar on small displays.

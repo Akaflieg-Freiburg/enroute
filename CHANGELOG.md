@@ -12,6 +12,8 @@
 
 - Improved pinch-to-zoom behavior on the moving map.
 
+- Improved readability of NavBar on small displays.
+
 
 ## [3.3.3] - 2026-06-08
 

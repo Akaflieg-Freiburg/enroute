@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -45,7 +45,7 @@ ScrollView {
 
 
             background: Rectangle {
-                color: GlobalSettings.nightMode ? "black" : "white"
+                color: Global.pageBackgroundColor
                 opacity: 0.8
             }
 
@@ -71,7 +71,7 @@ ScrollView {
             anchors.rightMargin: 4*font.pixelSize
 
             background: Rectangle {
-                color: GlobalSettings.nightMode ? "black" : "white"
+                color: Global.pageBackgroundColor
                 opacity: 0.8
             }
 

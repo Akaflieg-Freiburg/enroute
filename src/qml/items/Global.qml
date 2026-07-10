@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2023-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -153,6 +153,27 @@ Item {
     function trafficLabelBackgroundColor(alarmColor) {
         return GlobalSettings.nightMode ? Qt.darker(alarmColor, 2.5) : Qt.lighter(alarmColor, 1.9)
     }
+
+
+    //
+    // UI chrome colors
+    //
+    // Semantic colors for the application shell (pages, dialogs, the navigation
+    // drawer) as opposed to the aviation-map palette above. Both track the
+    // night-mode setting, which also drives Material.theme (see
+    // +Material/AppWindow.qml), so hardcoding "white"/"black" at call sites is
+    // avoided in favor of these roles.
+    //
+    // "pageBackgroundColor" is the opaque surface painted behind full-page
+    // overlay messages (e.g. the "no charts installed" notice) and the
+    // "▲ more ▲" fade labels. It is deliberately left to pair with the Material
+    // theme's default text color (light in night mode), which is why the two
+    // must be flipped together. "dividerColor" is the near-black/near-white hue
+    // for thin separators, menu dividers, focus frames and outline borders that
+    // must read on either background (cf. airspaceNeutral).
+    //
+    readonly property color pageBackgroundColor: GlobalSettings.nightMode ? "black" : "white"
+    readonly property color dividerColor:        GlobalSettings.nightMode ? "#e0e0e0" : "black"
 
 
     //

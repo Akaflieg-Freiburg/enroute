@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -168,7 +168,7 @@ CenteringDialog {
             rightPadding: 0.2*font.pixelSize
 
             background: Rectangle {
-                border.color: "black"
+                border.color: Global.dividerColor
                 color: "yellow"
                 opacity: 0.2
             }

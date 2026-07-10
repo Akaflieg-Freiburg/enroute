@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -151,7 +151,7 @@ Page {
         anchors.rightMargin: font.pixelSize
         anchors.topMargin: font.pixelSize
 
-        background: Rectangle {color: "white"}
+        background: Rectangle {color: Global.pageBackgroundColor}
         visible: VACLibrary.isEmpty
 
         horizontalAlignment: Text.AlignHCenter

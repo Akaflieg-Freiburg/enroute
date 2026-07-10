@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -173,7 +173,7 @@ CenteringDialog {
                 Rectangle {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
-                    color: "black"
+                    color: Global.dividerColor
                     visible: PositionProvider.receivingPositionInfo
                 }
 
@@ -195,7 +195,7 @@ CenteringDialog {
                 Rectangle {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
-                    color: "black"
+                    color: Global.dividerColor
                     visible: PositionProvider.receivingPositionInfo
                 }
 

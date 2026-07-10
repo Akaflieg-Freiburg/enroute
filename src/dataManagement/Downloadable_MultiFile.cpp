@@ -124,7 +124,7 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
             result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), map->infoText());
             break;
         case Downloadable_Abstract::VAC:
-            result += QStringLiteral("%1: %2").arg(tr("Visual Approach ChartTerrain Map"), map->infoText());
+            result += QStringLiteral("%1: %2").arg(tr("Visual Approach Chart"), map->infoText());
             break;
         }
     }

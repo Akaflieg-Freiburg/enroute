@@ -137,13 +137,13 @@ CenteringDialog {
                                     if (lv.model.length === 0)
                                         result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
                                     if (lv.model.length === 1)
-                                        result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Done' to close this dialog.")
+                                        result += qsTr("Based on your location, we reckon that the following map might be relevant for you. Click on the map to start the download, then click on 'Done' to close this dialog.")
                                     if (lv.model.length > 1)
-                                        result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Done' to close this dialog.")
+                                        result += qsTr("Based on your location, we reckon that the following maps might be relevant for you. Click on any map to start the download, then click on 'Done' to close this dialog.")
                                 }
                                 else
                                 {
-                                    result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                                    result += qsTr("We're waiting for SatNav position information to suggest maps that might be relevant for you. Please stand by.")
                                 }
                             }
                             else

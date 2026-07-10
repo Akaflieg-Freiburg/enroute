@@ -60,7 +60,7 @@ QString Traffic::ConnectionScanner_Bluetooth::bluetoothStatus()
     QBluetoothLocalDevice const localBTDevice;
     if (!localBTDevice.isValid())
     {
-        return tr("No Bluetooth adaptor has been found.");
+        return tr("No Bluetooth adapter has been found.");
     }
     if (localBTDevice.hostMode() == QBluetoothLocalDevice::HostPoweredOff)
     {
@@ -110,13 +110,13 @@ void Traffic::ConnectionScanner_Bluetooth::onErrorOccurred(QBluetoothDeviceDisco
         setError({});
         break;
     case QBluetoothDeviceDiscoveryAgent::PoweredOffError:
-        setError( tr("The Bluetooth adaptor is powered off. Power it on before doing discovery.") );
+        setError( tr("The Bluetooth adapter is powered off. Power it on before doing discovery.") );
         break;
     case QBluetoothDeviceDiscoveryAgent::InputOutputError:
         setError( tr("Read/Write error.") );
         break;
     case QBluetoothDeviceDiscoveryAgent::InvalidBluetoothAdapterError:
-        setError( tr("Invalid Bluetooth adaptor.") );
+        setError( tr("Invalid Bluetooth adapter.") );
         break;
     case QBluetoothDeviceDiscoveryAgent::UnsupportedPlatformError:
         setError( tr("Device discovery is not possible or implemented on the current platform.") );
@@ -159,7 +159,7 @@ void Traffic::ConnectionScanner_Bluetooth::start()
         qApp->requestPermission(m_bluetoothPermission, this, [this]() { start(); });
         return;
     case Qt::PermissionStatus::Denied:
-        setError( tr("Necessary permission have been denied.") );
+        setError( tr("Necessary permissions have been denied.") );
         return;
     case Qt::PermissionStatus::Granted:
         break;

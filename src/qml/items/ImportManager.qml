@@ -96,7 +96,7 @@ Item {
                 return
             }
             if (fileFunction === FileExchange.ZipFile) {
-                errLbl.text = qsTr("The file <strong>%1</strong> seems to contain an zip file without the data required in a tripkit.").arg(fileName)
+                errLbl.text = qsTr("The file <strong>%1</strong> seems to contain a zip file without the data required in a tripkit.").arg(fileName)
                 errorDialog.open()
                 return
             }

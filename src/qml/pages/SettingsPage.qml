@@ -144,7 +144,7 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Airspace Altitude Limit")
-                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5,000 ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
                             +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
                     helpDialog.open()
                 }
@@ -551,7 +551,7 @@ Page {
 
             Label {
                 visible: slider.from >= slider.to
-                text: qsTr("Cannot set reasonable airspaces altitude limit because the present own altitude is too high.")
+                text: qsTr("Cannot set reasonable airspace altitude limit because the present own altitude is too high.")
                 color: "red"
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap

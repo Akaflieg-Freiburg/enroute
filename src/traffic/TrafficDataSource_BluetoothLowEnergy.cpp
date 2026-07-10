@@ -80,7 +80,7 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::connectToTrafficReceiver()
         qApp->requestPermission(m_bluetoothPermission, this, [this]() { connectToTrafficReceiver(); });
         return;
     case Qt::PermissionStatus::Denied:
-        setErrorString( tr("Necessary permission have been denied.") );
+        setErrorString( tr("Necessary permissions have been denied.") );
         return;
     case Qt::PermissionStatus::Granted:
         break;

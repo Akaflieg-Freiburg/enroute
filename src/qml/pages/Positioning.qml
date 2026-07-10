@@ -165,7 +165,7 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Altitudes")
-                    helpDialog.text = "<p>"+qsTr("True altitude AGL or AMSL is the vertical distance from the aircraft to the terrain or to the main sea level, respectively.")+"</p>"
+                    helpDialog.text = "<p>"+qsTr("True altitude AGL or AMSL is the vertical distance from the aircraft to the terrain or to the mean sea level, respectively.")+"</p>"
                             +"<p>"+qsTr("<strong>Warning:</strong> Vertical airspace limits are defined in terms of barometric altitude. Depending on weather, true altitude and barometric altitude may differ substantially. <strong>Never use true altitude to judge the vertical distance from your aircraft to an airspace boundary.</strong>")+"</p>"
                     helpDialog.open()
                 }

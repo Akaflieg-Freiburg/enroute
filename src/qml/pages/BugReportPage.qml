@@ -215,7 +215,7 @@ spare time. He speaks English and German.</p>
 Navigation</strong> is written by a very small group of
 flight enthusiasts in their spare time, as a service to
 the community. Development of quality software takes time,
-and we ask for your understanding that that we are not
+and we ask for your understanding that we are not
 able to implement all feature requests. Bugfixing always
 comes first!</p>
 
@@ -273,7 +273,7 @@ comes first!</p>
                           + "</p>"
                           + "<p>"
                           + qsTr("Please contact <a href='mailto:peter.kemme@openflightmaps.org?subject=Enroute Flight Navigation, Issue Report'>Peter Kemme</a>.") + " "
-                          + qsTr("Peter is active in both projects and  has kindly volunteered to help our users in his spare time.") + " "
+                          + qsTr("Peter is active in both projects and has kindly volunteered to help our users in his spare time.") + " "
                           + qsTr("Peter speaks English and German.")
                           + "</p>"
                     textFormat: Text.RichText

@@ -221,7 +221,7 @@ AppWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: "teal"
+                    color: Global.dividerColor
                 }
 
                 ItemDelegate {
@@ -319,7 +319,7 @@ AppWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: "black"
+                    color: Global.dividerColor
                 }
 
                 ItemDelegate {
@@ -403,7 +403,7 @@ AppWindow {
                         Rectangle {
                             height: 1
                             Layout.fillWidth: true
-                            color: "black"
+                            color: Global.dividerColor
                         }
 
                         ItemDelegate { // About
@@ -506,7 +506,7 @@ AppWindow {
                             visible: (Qt.platform.os === "ios")
                             height: visible ? 1 : 0
                             Layout.fillWidth: true
-                            color: "black"
+                            color: Global.dividerColor
                         }
 
                         ItemDelegate {
@@ -613,7 +613,7 @@ AppWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: "black"
+                    color: Global.dividerColor
                     visible: Qt.platform.os !== "ios" && Navigator.flightStatus !== Navigator.Flight
                 }
 

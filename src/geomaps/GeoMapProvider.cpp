@@ -115,7 +115,7 @@ QString GeoMaps::GeoMapProvider::copyrightNotice()
     {
         result += u"<h4>"_s + tr("Base Maps") + u"</h4>\n"_s;
         result += u"<p>"_s + tr("The base maps are generated from "
-                                "<a href='https://www.openstreetmap.org'>Open Streetmap</a> data.") + u"</p>\n"_s;
+                                "<a href='https://www.openstreetmap.org'>OpenStreetMap</a> data.") + u"</p>\n"_s;
         result += QStringLiteral("<a href='https://www.openstreetmap.org/about'>© OpenStreetMap contributors</a>");
     }
 

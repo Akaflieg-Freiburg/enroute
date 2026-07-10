@@ -57,7 +57,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u"appUpdateRequired"_s)
     {
         return tr("<p>This version of <strong>Enroute Flight Navigation</strong> is outdated and will no longer receive map updates. "
-                  "<strong>Please update this app at your earliest convencience.</strong></p>");
+                  "<strong>Please update this app at your earliest convenience.</strong></p>");
     }
 
     if (name == u":text/authors.html"_s)
@@ -73,7 +73,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                + u"<strong>"_s + tr("Programming") + u":</strong> "_s + tr("Heinz Blöchinger has helped us with file import functionality. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.")
                + u"</li>"_s
                + u"<li>"_s
-               + u"<strong>"_s + tr("Programming") + u":</strong> "_s + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and working as an embedded software Engineer.")
+               + u"<strong>"_s + tr("Programming") + u":</strong> "_s + tr("Christian Engelhardt implemented the OGN network connection, flight plan export and started the implementation of height density calculation. Christian is a PPL pilot in southern Germany, studied electrical engineering and works as an embedded software engineer.")
                + u"</li>"_s
                + u"<li>"_s
                + u"<strong>"_s + tr("Programming") + u":</strong> "_s + tr("Tom Linz completed height density calculation. He received his PPL license in late 2024. Tom works as a development engineer for safety systems.")
@@ -90,9 +90,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html") + u"<ul style='margin-left:-25px;'>"_s + tr(R"html(
 <li><strong>French:</strong> Adrien Crovato and Luca Riva. Both are private pilots and aerospace engineers. Luca is also doing aerobatics.</li>
 )html") + tr(R"html(
-<li><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</li>
+<li><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everything else that flies.</li>
 )html") + tr(R"html(
-<li><strong>Italian:</strong> Ivan Battistella and Antonio Fardella.  Antonio is an ultralight pilot with a passion for everything challenging.</li>
+<li><strong>Italian:</strong> Ivan Battistella and Antonio Fardella. Antonio is an ultralight pilot with a passion for everything challenging.</li>
 )html") + tr(R"html(
 <li><strong>Polish:</strong> Sławek Mikuła.</li>
 )html") + tr(R"html(
@@ -117,7 +117,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/aviationMapMissing.html"_s)
     {
         return tr(R"html(
-<p>We receive our aviation data from <a href="http://openaip.net">openAIP</a>. This is a not-for-profit organisation where volunteers compile aviation data for many countries. If openAIP covers your country, we might be able to generate maps for it. First, however, we need to be reasonably sure that the openAIP data is accurate and complete. Please have a look at the <a href="http://maps.openaip.net">openAIP maps</a> and compare the display with an official aviation map of your country. Are the airfields there? Are runway lengths/orientations and frequencies correct? Are NavAids correctly displayed, with correct codes and frequencies? And what about airspaces?</p>
+<p>We receive our aviation data from <a href="http://openaip.net">openAIP</a>. This is a not-for-profit organization where volunteers compile aviation data for many countries. If openAIP covers your country, we might be able to generate maps for it. First, however, we need to be reasonably sure that the openAIP data is accurate and complete. Please have a look at the <a href="http://maps.openaip.net">openAIP maps</a> and compare the display with an official aviation map of your country. Are the airfields there? Are runway lengths/orientations and frequencies correct? Are NavAids correctly displayed, with correct codes and frequencies? And what about airspaces?</p>
 
 <p>If you are convinced that the data is good enough to be added, you can request to add the country. Please go to <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/issues">this web site</a> and open an 'issue' with your request. Please tell us who you are, where you fly and how you convinced yourself that the data is good. If you find that the data is not good enough, you are welcome to join the openAIP project and help to improve the data.</p>
 
@@ -135,7 +135,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
 <p>Version %1</p>
 
-<p><strong>Enroute Flight Navigation</strong> is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg.</p>
+<p><strong>Enroute Flight Navigation</strong> is a free navigation app for VFR pilots, developed as a project of Akaflieg Freiburg.</p>
 
 <ul style="margin-left:-25px;">
   <li>Simple, elegant and functional</li>
@@ -151,9 +151,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
       
 <p>The author gratefully acknowledges support by our academic sponsor, the <a href="https://www.uni-freiburg.de">University of Freiburg</a>.  The university kindly provides the infrastructure used to generate our maps, and the bandwidth required to serve them.</p>
 
-<h3>Acknowledgements</h3>
+<h3>Acknowledgments</h3>
 
-<p>This program builds on a number of open source libraries, including <a href="https://https://github.com/nnaumenko/metaf">Metaf</a>, <a href="https://www.openssl.org">OpenSSL</a>, <a href="https://www.qt.io">Qt</a> and <a href="https://github.com/buelowp/sunset">sunset</a>.</p>
+<p>This program builds on a number of open source libraries, including <a href="https://github.com/nnaumenko/metaf">Metaf</a>, <a href="https://www.openssl.org">OpenSSL</a>, <a href="https://www.qt.io">Qt</a> and <a href="https://github.com/buelowp/sunset">sunset</a>.</p>
 
 <p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(version);
     }

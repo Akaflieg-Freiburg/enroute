@@ -541,7 +541,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileErrorReceiver(QNetwork
 
     case QNetworkReply::InsecureRedirectError:
         message += tr("while following redirects, the network access API detected a redirect from "
-                      "a encrypted protocol (https) to an unencrypted one (http)");
+                      "an encrypted protocol (https) to an unencrypted one (http)");
         break;
 
     case QNetworkReply::ProxyConnectionRefusedError:
@@ -564,7 +564,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileErrorReceiver(QNetwork
         break;
 
     case QNetworkReply::ProxyAuthenticationRequiredError:
-        message += tr("the proxy requires authentication in order to honour the request but did "
+        message += tr("the proxy requires authentication in order to honor the request but did "
                       "not accept any credentials offered (if any)");
         break;
 

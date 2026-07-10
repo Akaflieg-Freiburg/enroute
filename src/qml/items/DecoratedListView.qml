@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -45,7 +45,7 @@ ListView {
         anchors.top: listView.top
 
         background: Rectangle {
-            color: GlobalSettings.nightMode ? "black" : "white"
+            color: Global.pageBackgroundColor
             opacity: 0.8
         }
 
@@ -67,7 +67,7 @@ ListView {
         anchors.rightMargin: 4*font.pixelSize
 
         background: Rectangle {
-            color: GlobalSettings.nightMode ? "black" : "white"
+            color: Global.pageBackgroundColor
             opacity: 0.8
         }
 
@@ -89,7 +89,7 @@ ListView {
         // not tint content noticeably nor intercept clicks/swipes.
         z: 2
         visible: listView.activeFocus && listView.isDesktop
-        border.color: "black"
+        border.color: Global.dividerColor
         color: "#10000000"
         radius: 5
     }

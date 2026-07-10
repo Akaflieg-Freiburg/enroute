@@ -677,14 +677,14 @@ Page {
               + "<p><ul style='margin-left:-25px;'>"
               + "<li>" + qsTr("The pressure sensor of your device is probably not certified for use in aviation.") + "</li>"
               + "<li>" + qsTr("In typical GA aircraft, cabin pressure is not equal to static pressure.") + " "
-              + qsTr("The precise difference depend on factors such as airspeed and configuration of ventilation and heating.") + "</li>"
+              + qsTr("The precise difference depends on factors such as airspeed and configuration of ventilation and heating.") + "</li>"
               + "</ul></p><p>"
               + qsTr("Do not enable this option unless you convinced yourself that the data provided by your sensor is good enough for the intended use.") + " "
               + qsTr("Do not rely on data shown in this app.") + " "
               + qsTr("Always use an approved altimeter to judge vertical distance to airspaces.") + " "
               + "</p>"
               + "<p>"
-              + qsTr("We strongly recommend to connect Enroute Flight Navigation to a proper traffic data receiver, such as a FLARM or ADS-B device, that provides static pressure data.")
+              + qsTr("We strongly recommend connecting Enroute Flight Navigation to a proper traffic data receiver, such as a FLARM or ADS-B device, that provides static pressure data.")
               + "</p>"
         standardButtons: Dialog.Ok | Dialog.Cancel
 

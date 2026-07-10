@@ -145,7 +145,7 @@ QString Traffic::Warning::description() const
             result << QCoreApplication::translate("Traffic::Warning", "Distance %1 nm").arg(qRound(m_hDist.toNM()*10.0)/10.0);
             break;
         case Navigation::Aircraft::StatuteMile:
-            result << QCoreApplication::translate("Traffic::Warning", "Distance %1 mil").arg(qRound(m_hDist.toMIL()*10.0)/10.0);
+            result << QCoreApplication::translate("Traffic::Warning", "Distance %1 sm").arg(qRound(m_hDist.toMIL()*10.0)/10.0);
             break;
         }
 

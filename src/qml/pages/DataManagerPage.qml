@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -399,7 +399,7 @@ Page {
                 anchors.rightMargin: font.pixelSize
                 anchors.topMargin: font.pixelSize
 
-                background: Rectangle {color: "white"}
+                background: Rectangle {color: Global.pageBackgroundColor}
                 visible: VACLibrary.isEmpty
 
                 horizontalAlignment: Text.AlignHCenter
@@ -447,7 +447,7 @@ Page {
         leftPadding: font.pixelSize*2
         rightPadding: font.pixelSize*2
 
-        background: Rectangle {color: "white"}
+        background: Rectangle {color: Global.pageBackgroundColor}
         visible: DataManager.appUpdateRequired
 
         horizontalAlignment: Text.AlignHCenter
@@ -468,7 +468,7 @@ Page {
         anchors.rightMargin: font.pixelSize
         anchors.topMargin: font.pixelSize
 
-        background: Rectangle {color: "white"}
+        background: Rectangle {color: Global.pageBackgroundColor}
         visible: !DataManager.mapList.downloading && !DataManager.mapList.hasFile
 
         horizontalAlignment: Text.AlignHCenter
@@ -484,7 +484,7 @@ Page {
 
         anchors.fill: parent
 
-        color: "white"
+        color: Global.pageBackgroundColor
         visible: DataManager.mapList.downloading
 
         ColumnLayout {

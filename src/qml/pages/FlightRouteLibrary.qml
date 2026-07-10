@@ -399,7 +399,7 @@ Page {
             textFormat: Text.StyledText
             wrapMode: Text.Wrap
             text: (textInput.text === "")
-                  ? qsTr("<h3>Sorry!</h3><p>No flight routes available. To add a route here, chose 'Flight Route' from the main menu, edit a route and save it to the library.</p>")
+                  ? qsTr("<h3>Sorry!</h3><p>No flight routes available. To add a route here, choose 'Flight Route' from the main menu, edit a route and save it to the library.</p>")
                   : qsTr("<h3>Sorry!</h3><p>No flight routes match your filter criteria.</p>")
         }
     }

@@ -169,7 +169,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
             results << tr("19 to 55 km");
             break;
         case Navigation::Aircraft::StatuteMile:
-            results << tr("12 to 35 mil");
+            results << tr("12 to 35 sm");
             break;
         case Navigation::Aircraft::NauticalMile:
             results << tr("10 to 30 nm");
@@ -184,7 +184,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
             results << tr("9 to 19 km");
             break;
         case Navigation::Aircraft::StatuteMile:
-            results << tr("6 to 12 mil");
+            results << tr("6 to 12 sm");
             break;
         case Navigation::Aircraft::NauticalMile:
             results << tr("5 to 10 nm");
@@ -2201,7 +2201,7 @@ QString Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /
                  explainDistance_FT(group.maxHeight()));
 
     case metaf::CloudGroup::Type::CHINO:
-        return tr("Ceiling data not awailable");
+        return tr("Ceiling data not available");
 
     case metaf::CloudGroup::Type::CLD_MISG:
         return tr("Sky condition data (cloud data) is missing");
@@ -2274,7 +2274,7 @@ QString Weather::Decoder::visitKeywordGroup(const KeywordGroup & group, ReportPa
         return tr("Missing report");
 
     case metaf::KeywordGroup::Type::CNL:
-        return tr("Cancelled report");
+        return tr("Canceled report");
 
     case metaf::KeywordGroup::Type::COR:
         return tr("Correctional report");
@@ -2386,7 +2386,7 @@ QString Weather::Decoder::visitLightningGroup(const LightningGroup & group, Repo
 
     if (group.isUnknownType())
     {
-        result << tr("Lightning strike types not recognised by parser.");
+        result << tr("Lightning strike types not recognized by parser.");
     }
 
     QStringList directionList;
@@ -2469,7 +2469,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         return tr("Invalid data");
     }
 
-    static const QString colourCodeBlack = tr("Colour code BLACK: aerodrome closed due to snow accumulation or non-weather reasons");
+    static const QString colourCodeBlack = tr("Color code BLACK: aerodrome closed due to snow accumulation or non-weather reasons");
     QString result;
     auto data = group.data();
 
@@ -2513,7 +2513,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code BLUE: visibility >8000 m and lowest cloud base height >2500 ft");
+        result += tr("Color code BLUE: visibility >8000 m and lowest cloud base height >2500 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKBLUE_PLUS:
@@ -2523,7 +2523,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code BLUE+: visibility >8000 m or lowest cloud base height >2000 ft");
+        result += tr("Color code BLUE+: visibility >8000 m or lowest cloud base height >2000 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKYELLOW:
@@ -2533,7 +2533,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code YELLOW: visibility 1600-3700 m or lowest cloud base height 300-700 ft");
+        result += tr("Color code YELLOW: visibility 1600-3700 m or lowest cloud base height 300-700 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKWHITE:
@@ -2543,7 +2543,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code WHITE: visibility >5000 m and lowest cloud base height >1500 ft");
+        result += tr("Color code WHITE: visibility >5000 m and lowest cloud base height >1500 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKGREEN:
@@ -2553,7 +2553,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code GREEN: visibility >3700 m and lowest cloud base height >700 ft");
+        result += tr("Color code GREEN: visibility >3700 m and lowest cloud base height >700 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKYELLOW1:
@@ -2563,7 +2563,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code YELLOW 1: visibility >2500 m and lowest cloud base height >500 ft");
+        result += tr("Color code YELLOW 1: visibility >2500 m and lowest cloud base height >500 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKYELLOW2:
@@ -2573,7 +2573,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code YELLOW 2: visibility >1600 m and lowest cloud base height >300 ft");
+        result += tr("Color code YELLOW 2: visibility >1600 m and lowest cloud base height >300 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKAMBER:
@@ -2583,7 +2583,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code AMBER: visibility >800 m and lowest cloud base height >200 ft");
+        result += tr("Color code AMBER: visibility >800 m and lowest cloud base height >200 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKRED:
@@ -2593,7 +2593,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code RED: visibility <800 m or lowest cloud base height <200 ft");
+        result += tr("Color code RED: visibility <800 m or lowest cloud base height <200 ft");
         return result;
 
     case metaf::MiscGroup::Type::FROIN:
@@ -2960,7 +2960,7 @@ QString Weather::Decoder::visitUnknownGroup(const UnknownGroup & group, ReportPa
         return tr("Invalid data");
     }
 
-    return tr("Not recognised by parser: %1").arg(QString::fromStdString(rawString));
+    return tr("Not recognized by parser: %1").arg(QString::fromStdString(rawString));
 }
 
 QString Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
@@ -3213,7 +3213,7 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
             return tr("Visibility data not available in the direction of %1")
             .arg(explainDirection(*d));
         }
-        return tr("Visibility data not awailable");
+        return tr("Visibility data not available");
     }
     return {};
 }
@@ -3342,7 +3342,7 @@ QString Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*r
         {
             return tr("Wind direction changed at %1 because of weather front passage").arg(explainMetafTime(*eventTime));
         }
-        return tr("Wind directed changed recently because of weather front passage");
+        return tr("Wind direction changed recently because of weather front passage");
 
     case metaf::WindGroup::Type::PEAK_WIND:
         if (!eventTime.has_value())
@@ -3357,9 +3357,9 @@ QString Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*r
     case metaf::WindGroup::Type::WIND_SHEAR_IN_LOWER_LAYERS:
         if (const auto rw = group.runway(); rw.has_value())
         {
-            return  tr("Wind shear between runway level and 1.600 ft at runway %1").arg(explainRunway(*rw));
+            return  tr("Wind shear between runway level and 1,600 ft at runway %1").arg(explainRunway(*rw));
         }
-        return tr("Wind shear between runway level and 1.600 ft");
+        return tr("Wind shear between runway level and 1,600 ft");
 
     case metaf::WindGroup::Type::WSCONDS:
         return tr("Potential wind shear");

@@ -103,7 +103,7 @@ void Traffic::TrafficDataSource_AbstractSocket::onErrorOccurred(QAbstractSocket:
         setErrorString( tr("The SSL library being used reported an internal error. This is probably the result of a bad installation or misconfiguration of the library.") );
         break;
     case QAbstractSocket::SslInvalidUserDataError:
-        setErrorString( tr("Invalid data (certificate, key, cypher, etc.) was provided and its use resulted in an error in the SSL library.") );
+        setErrorString( tr("Invalid data (certificate, key, cipher, etc.) was provided and its use resulted in an error in the SSL library.") );
         break;
     case QAbstractSocket::TemporaryError:
         setErrorString( tr("A temporary error occurred (e.g., operation would block and socket is non-blocking).") );

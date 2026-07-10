@@ -136,17 +136,17 @@ auto main(int argc, char *argv[]) -> int
 
     // Command line parsing
     QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free nagivation app for VFR pilots,\ndeveloped as a project of Akaflieg Freiburg."));
+    parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free navigation app for VFR pilots,\ndeveloped as a project of Akaflieg Freiburg."));
     parser.addHelpOption();
     parser.addVersionOption();
     QCommandLineOption const googlePlayScreenshotOption(
         QStringLiteral("sg"),
         QCoreApplication::translate("main",
-                                    "Run simulator and generate screenshots for GooglePlay"));
+                                    "Run simulator and generate screenshots for Google Play"));
     parser.addOption(googlePlayScreenshotOption);
     QCommandLineOption const macosScreenshotOption(
         QStringLiteral("smac"),
-        QCoreApplication::translate("main", "Run simulator and generate screenshots for MacOS")
+        QCoreApplication::translate("main", "Run simulator and generate screenshots for macOS")
     );
     parser.addOption(macosScreenshotOption);
     QCommandLineOption const iosScreenshotOption(

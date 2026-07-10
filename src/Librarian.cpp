@@ -315,6 +315,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += u"<p>"_s
+                  + tr("The maps for France now come with Visual approach charts for the maps; the charts charts will be available for free once you install or update the maps for France. "
+                       "We thank the <a href='https://www.sia.aviation-civile.gouv.fr/'>SIA</a> for publishing the data under a free license, and Quentin Bossard and Michael Paus for the georeferencing work and long-term maintenance!")
+                  + u"</p>"_s;
+        result += u"<p>"_s
                   + tr("There are now specialized icons for obstacle NOTAMs and NOTAMs about drone flights. We thank Christian Engelhardt for the implementation!")
                   + u"</p>"_s;
 #if !defined(Q_OS_IOS)

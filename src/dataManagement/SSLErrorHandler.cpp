@@ -71,7 +71,7 @@ void DataManagement::SSLErrorHandler::onSSLError(QNetworkReply *reply, const QLi
                  "can only be installed by the hardware manufacturer via system updates. "
                  "If your device has not received any system security updates in a while, then secure "
                  "internet connections are no longer possible. "
-                 "<a href='https://akaflieg-freiburg.github.io/enrouteManual/06-referenceTechnology/02-platformNotes.html#network-security-problems-on-outdated-devices'>See "
+                 "<a href='https://akaflieg-freiburg.github.io/enrouteManual/forward.html#networksecurity'>See "
                  "the platform notes in the manual</a> for more details.") +
               "</p>";
     result += "<p>" +

@@ -66,6 +66,7 @@ FileFormats::VACCollection::VACCollection(const QString& fileName)
     {
         m_name = QFileInfo(m_fileName).baseName();
     }
+    m_attribution = metadata.value(u"attribution"_s);
 
     // Read the chart index. The column 'image' is deliberately not selected
     // here, so the database never touches the raster data and this constructor

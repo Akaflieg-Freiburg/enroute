@@ -37,7 +37,8 @@ namespace FileFormats
  *  with the following schema.
  *
  *  - Table 'metadata', with columns 'key' and 'value'. The required entries
- *    are ('schemaVersion', '1') and ('name', <collection name>).
+ *    are ('schemaVersion', '1') and ('name', <collection name>). The optional
+ *    entry ('attribution', <html>) names the source of the charts.
  *
  *  - Table 'charts', with columns 'name', 'topLeftLat', 'topLeftLon',
  *    'topRightLat', 'topRightLon', 'bottomLeftLat', 'bottomLeftLon',
@@ -75,6 +76,18 @@ public:
      */
     [[nodiscard]] QList<GeoMaps::VAC> charts() const { return m_charts; }
 
+    /*! \brief Attribution for the charts of this collection
+     *
+     *  Collections distributed by the enroute data server name the agency that
+     *  publishes the charts, along with the license under which the charts are
+     *  distributed. The attribution is set by the data server and is therefore
+     *  not translated.
+     *
+     *  @returns A human-readable HTML string with attribution, or an empty
+     *  string if the collection file does not specify one.
+     */
+    [[nodiscard]] QString attribution() const { return m_attribution; }
+
     /*! \brief Name of the collection
      *
      *  @returns Human-readable name (e.g. "France"), or an empty string on
@@ -103,6 +116,7 @@ private:
     QString m_databaseConnectionName;
 
     QString m_name;
+    QString m_attribution;
     QList<GeoMaps::VAC> m_charts;
 };
 

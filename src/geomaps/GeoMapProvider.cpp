@@ -31,6 +31,7 @@
 #include "Librarian.h"
 #include "dataManagement/DataManager.h"
 #include "fileFormats/MBTILES.h"
+#include "fileFormats/VACCollection.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
@@ -138,6 +139,40 @@ QString GeoMaps::GeoMapProvider::copyrightNotice()
                                 "<li><p>United Kingdom terrain data © Environment Agency copyright and/or database right 2015. All rights reserved</p>"
                                 "<li><p>United States 3DEP (formerly NED) and global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological Survey.</p>"
                                 "</ul>"_s;
+    }
+
+    if (GlobalObject::dataManager()->vacCollections()->hasFile())
+    {
+        // The attributions are set by the data server and are therefore not
+        // translated here. Collections without attribution are silently
+        // ignored.
+        QStringList attributions;
+        const auto files = GlobalObject::dataManager()->vacCollections()->files();
+        for (const auto& file : files)
+        {
+            FileFormats::VACCollection const collection(file);
+            if (!collection.isValid())
+            {
+                continue;
+            }
+            auto const attribution = collection.attribution();
+            if (!attribution.isEmpty() && !attributions.contains(attribution))
+            {
+                attributions.append(attribution);
+            }
+        }
+        if (!attributions.isEmpty())
+        {
+            attributions.sort();
+            result += u"<h4>"_s + tr("Approach Charts") + u"</h4>\n"_s;
+            result += u"<p>"_s + tr("The approach charts are provided by the following agencies.") + u"</p>"_s;
+            result += u"<ul style='margin-left:-25px;'>"_s;
+            for (const auto& attribution : std::as_const(attributions))
+            {
+                result += u"<li><p>"_s + attribution + u"</p>"_s;
+            }
+            result += u"</ul>"_s;
+        }
     }
 
     return result;

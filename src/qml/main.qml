@@ -451,7 +451,7 @@ AppWindow {
 
                             onClicked: {
                                 if (Qt.platform.os === "ios") {
-                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/02-tutorialBasic/09-donate.html")
+                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/forward.html#donate")
                                 } else {
                                     PlatformAdaptor.vibrateBrief()
                                     stackView.pop()

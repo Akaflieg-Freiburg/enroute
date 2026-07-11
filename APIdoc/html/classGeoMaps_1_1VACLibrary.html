@@ -76,6 +76,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5118c847bc89fbaa37a65cef20143f42" id="r_a5118c847bc89fbaa37a65cef20143f42"><td class="memItemLeft"><a id="a5118c847bc89fbaa37a65cef20143f42" name="a5118c847bc89fbaa37a65cef20143f42"></a>
 &#160;</td><td class="memItemRight"><b>~VACLibrary</b> () override</td></tr>
 <tr class="memdesc:a5118c847bc89fbaa37a65cef20143f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="memitem:afb57e92c97ca1bc83df807fb0da2f6bf" id="r_afb57e92c97ca1bc83df807fb0da2f6bf"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#afb57e92c97ca1bc83df807fb0da2f6bf">hasManuallyImported</a> () const</td></tr>
+<tr class="memdesc:afb57e92c97ca1bc83df807fb0da2f6bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
 <tr class="memitem:a1c8b903f36dd68e083a6ceb971ea0dfe" id="r_a1c8b903f36dd68e083a6ceb971ea0dfe"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a1c8b903f36dd68e083a6ceb971ea0dfe">isEmpty</a> () const</td></tr>
 <tr class="memdesc:a1c8b903f36dd68e083a6ceb971ea0dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
 <tr class="memitem:acec1a8c8d54a0ca608332523a05f32c9" id="r_acec1a8c8d54a0ca608332523a05f32c9"><td class="memItemLeft">QList&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#acec1a8c8d54a0ca608332523a05f32c9">vacs</a> ()</td></tr>
@@ -86,6 +88,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1aff765f4f51f2e4e4f60b6c2acac204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain VACs from the library.  <br /></td></tr>
 <tr class="memitem:ae96ea1ac6e89c09a7f9ebdf39ff1ecb2" id="r_ae96ea1ac6e89c09a7f9ebdf39ff1ecb2"><td class="memItemLeft">Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#ae96ea1ac6e89c09a7f9ebdf39ff1ecb2">importTripKit</a> (const QString &amp;fileName)</td></tr>
 <tr class="memdesc:ae96ea1ac6e89c09a7f9ebdf39ff1ecb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import trip kit.  <br /></td></tr>
+<tr class="memitem:ad9cfbe7fe1a15657b30b8596531661e0" id="r_ad9cfbe7fe1a15657b30b8596531661e0"><td class="memItemLeft">Q_INVOKABLE <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a>&#160;</td><td class="memItemRight"><a class="el" href="#ad9cfbe7fe1a15657b30b8596531661e0">materialize</a> (const <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &amp;vac)</td></tr>
+<tr class="memdesc:ad9cfbe7fe1a15657b30b8596531661e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain a <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> whose fileName points to a raster image file.  <br /></td></tr>
 <tr class="memitem:a2cfd6abe1b3ba1a3e89a9ac52a1f1075" id="r_a2cfd6abe1b3ba1a3e89a9ac52a1f1075"><td class="memItemLeft">Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#a2cfd6abe1b3ba1a3e89a9ac52a1f1075">importVAC</a> (<a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> vac)</td></tr>
 <tr class="memdesc:a2cfd6abe1b3ba1a3e89a9ac52a1f1075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a>.  <br /></td></tr>
 <tr class="memitem:a1c85f944148edc2fd500121be5b6c302" id="r_a1c85f944148edc2fd500121be5b6c302"><td class="memItemLeft">Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#a1c85f944148edc2fd500121be5b6c302">remove</a> (const QString &amp;name)</td></tr>
@@ -99,6 +103,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:af2f7678bb1c5fa74dffb2b796b84494a" id="r_af2f7678bb1c5fa74dffb2b796b84494a"><td class="memItemLeft"><a id="af2f7678bb1c5fa74dffb2b796b84494a" name="af2f7678bb1c5fa74dffb2b796b84494a"></a>
+bool&#160;</td><td class="memItemRight"><b>hasManuallyImported</b></td></tr>
+<tr class="memdesc:af2f7678bb1c5fa74dffb2b796b84494a"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the library contains manually imported charts. <br /></td></tr>
 <tr class="memitem:aad0d39a75c3a219ccc60f9e77a9c76fd" id="r_aad0d39a75c3a219ccc60f9e77a9c76fd"><td class="memItemLeft"><a id="aad0d39a75c3a219ccc60f9e77a9c76fd" name="aad0d39a75c3a219ccc60f9e77a9c76fd"></a>
 bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 <tr class="memdesc:aad0d39a75c3a219ccc60f9e77a9c76fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if library is empty. <br /></td></tr>
@@ -107,9 +114,10 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Library of visual approach charts. </p>
-<p>This class collects visual approach charts that the user has installed. The list is automatically loaded on startup, and saved every time that a change is made. </p>
+<p>This class collects visual approach charts that the user has installed. The list is automatically loaded on startup, and saved every time that a change is made.</p>
+<p>In addition to manually imported charts, this class presents the charts contained in the <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> collections managed by <a class="el" href="classDataManagement_1_1DataManager.html" title="Manages the list of geographic maps.">DataManagement::DataManager</a>. These charts are not stored in the library data file, cannot be renamed or removed individually, and their raster data is extracted on demand; see <a class="el" href="#ad9cfbe7fe1a15657b30b8596531661e0" title="Obtain a VAC whose fileName points to a raster image file.">materialize()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00039">39</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00046">46</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a60293890ca87e0d4b56d321b8c4a6e9c" name="a60293890ca87e0d4b56d321b8c4a6e9c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60293890ca87e0d4b56d321b8c4a6e9c">&#9670;&#160;</a></span>VACLibrary()</h2>
@@ -188,6 +196,36 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns an invalid, default-constructed <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> if the name does not exist in the library. </dd></dl>
+
+</div>
+</div>
+<a id="afb57e92c97ca1bc83df807fb0da2f6bf" name="afb57e92c97ca1bc83df807fb0da2f6bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb57e92c97ca1bc83df807fb0da2f6bf">&#9670;&#160;</a></span>hasManuallyImported()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GeoMaps::VACLibrary::hasManuallyImported </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property hasManuallyImported </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00088">88</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
 
 </div>
 </div>
@@ -320,7 +358,42 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property isEmpty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00078">78</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00094">94</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+
+</div>
+</div>
+<a id="ad9cfbe7fe1a15657b30b8596531661e0" name="ad9cfbe7fe1a15657b30b8596531661e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9cfbe7fe1a15657b30b8596531661e0">&#9670;&#160;</a></span>materialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> GeoMaps::VACLibrary::materialize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>vac</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain a <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> whose fileName points to a raster image file. </p>
+<p>Charts from <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> collections have their member 'fileName' set to the name of the collection file. This method extracts the raster image of such a chart to a cache directory and returns a copy of the <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> whose 'fileName' points to the extracted image, ready for display in the moving map. Manually imported charts are returned unchanged.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vac</td><td><a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> to materialize</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> whose fileName points to a raster image file, or the unchanged input on error. </dd></dl>
 
 </div>
 </div>
@@ -516,7 +589,7 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 <p>List of all VACs installed. </p>
 <p>This property holds the list of all installed VACs, sorted alphabetically by name. </p>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00067">67</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00077">77</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
 
 </div>
 </div>

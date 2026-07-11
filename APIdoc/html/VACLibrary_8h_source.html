@@ -74,110 +74,131 @@ $(function() {
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;QFile&gt;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;QStandardPaths&gt;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;geomaps/VAC.h&quot;</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;QTimer&gt;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;geomaps/VAC.h&quot;</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>GeoMaps</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="};">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html">   39</a></span><span class="keyword">class </span><a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a60293890ca87e0d4b56d321b8c4a6e9c">VACLibrary</a> : <span class="keyword">public</span> QObject</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    Q_OBJECT</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    QML_ELEMENT</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    QML_SINGLETON</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a60293890ca87e0d4b56d321b8c4a6e9c">   50</a></span>    <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a60293890ca87e0d4b56d321b8c4a6e9c">VACLibrary</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a5118c847bc89fbaa37a65cef20143f42">   53</a></span>    <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a5118c847bc89fbaa37a65cef20143f42">~VACLibrary</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">// Properties</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span>GeoMaps</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="};">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html">   46</a></span><span class="keyword">class </span><a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a60293890ca87e0d4b56d321b8c4a6e9c">VACLibrary</a> : <span class="keyword">public</span> QObject</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    Q_OBJECT</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    QML_ELEMENT</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    QML_SINGLETON</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a60293890ca87e0d4b56d321b8c4a6e9c">   57</a></span>    <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a60293890ca87e0d4b56d321b8c4a6e9c">VACLibrary</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#aad0d39a75c3a219ccc60f9e77a9c76fd">   60</a></span>    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#aad0d39a75c3a219ccc60f9e77a9c76fd">isEmpty</a> READ <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#aad0d39a75c3a219ccc60f9e77a9c76fd">isEmpty</a> NOTIFY <a class="code hl_signal" href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">dataChanged</a>)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a5118c847bc89fbaa37a65cef20143f42">   60</a></span>    <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a5118c847bc89fbaa37a65cef20143f42">~VACLibrary</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a61db59a9c57cc96d01d5e7250031754f">   67</a></span>    Q_PROPERTY(QList&lt;GeoMaps::<a class="code hl_class" href="classGeoMaps_1_1VAC.html">VAC</a>&gt; <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#a61db59a9c57cc96d01d5e7250031754f">vacs</a> READ <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#a61db59a9c57cc96d01d5e7250031754f">vacs</a> NOTIFY <a class="code hl_signal" href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">dataChanged</a>)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// Properties</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#af2f7678bb1c5fa74dffb2b796b84494a">   67</a></span>    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#af2f7678bb1c5fa74dffb2b796b84494a">hasManuallyImported</a> READ <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#af2f7678bb1c5fa74dffb2b796b84494a">hasManuallyImported</a> NOTIFY <a class="code hl_signal" href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">dataChanged</a>)</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="comment">// Getter Methods</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a1c8b903f36dd68e083a6ceb971ea0dfe">   78</a></span>    [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#aad0d39a75c3a219ccc60f9e77a9c76fd">isEmpty</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_vacs.isEmpty(); }</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#acec1a8c8d54a0ca608332523a05f32c9">   84</a></span>    [[nodiscard]] QList&lt;GeoMaps::VAC&gt; <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#acec1a8c8d54a0ca608332523a05f32c9">vacs</a>();</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="comment">// Methods</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a0b828737405263d36cfa544488c076a6">   95</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a0b828737405263d36cfa544488c076a6">clear</a>();</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a1aff765f4f51f2e4e4f60b6c2acac204">  104</a></span>    [[nodiscard]] Q_INVOKABLE <a class="code hl_class" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a1aff765f4f51f2e4e4f60b6c2acac204">get</a>(<span class="keyword">const</span> QString&amp; name);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#ae96ea1ac6e89c09a7f9ebdf39ff1ecb2">  112</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#ae96ea1ac6e89c09a7f9ebdf39ff1ecb2">importTripKit</a>(<span class="keyword">const</span> QString&amp; fileName);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a2cfd6abe1b3ba1a3e89a9ac52a1f1075">  123</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a2cfd6abe1b3ba1a3e89a9ac52a1f1075">importVAC</a>(<a class="code hl_class" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> vac);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a1c85f944148edc2fd500121be5b6c302">  131</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a1c85f944148edc2fd500121be5b6c302">remove</a>(<span class="keyword">const</span> QString&amp; name);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#ae228d118883c75c7af215060d784b709">  141</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#ae228d118883c75c7af215060d784b709">rename</a>(<span class="keyword">const</span> QString&amp; oldName, <span class="keyword">const</span> QString&amp; newName);</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a0393e90282b284d398fd13fef0009885">  154</a></span>    [[nodiscard]] Q_INVOKABLE QVector&lt;GeoMaps::VAC&gt; <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a0393e90282b284d398fd13fef0009885">vacsByDistance</a>(<span class="keyword">const</span> QGeoCoordinate&amp; position, <span class="keyword">const</span> QString&amp; filter);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#aad0d39a75c3a219ccc60f9e77a9c76fd">   70</a></span>    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#aad0d39a75c3a219ccc60f9e77a9c76fd">isEmpty</a> READ <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#aad0d39a75c3a219ccc60f9e77a9c76fd">isEmpty</a> NOTIFY <a class="code hl_signal" href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">dataChanged</a>)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a61db59a9c57cc96d01d5e7250031754f">   77</a></span>    Q_PROPERTY(QList&lt;GeoMaps::<a class="code hl_class" href="classGeoMaps_1_1VAC.html">VAC</a>&gt; <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#a61db59a9c57cc96d01d5e7250031754f">vacs</a> READ <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#a61db59a9c57cc96d01d5e7250031754f">vacs</a> NOTIFY <a class="code hl_signal" href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">dataChanged</a>)</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="comment">// Getter Methods</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#afb57e92c97ca1bc83df807fb0da2f6bf">   88</a></span>    [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_property" href="classGeoMaps_1_1VACLibrary.html#af2f7678bb1c5fa74dffb2b796b84494a">hasManuallyImported</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> !m_vacs.isEmpty(); }</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a1c8b903f36dd68e083a6ceb971ea0dfe">   94</a></span>    [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a1c8b903f36dd68e083a6ceb971ea0dfe">isEmpty</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_vacs.isEmpty() &amp;&amp; m_collectionVacs.isEmpty(); }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#acec1a8c8d54a0ca608332523a05f32c9">  100</a></span>    [[nodiscard]] QList&lt;GeoMaps::VAC&gt; <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#acec1a8c8d54a0ca608332523a05f32c9">vacs</a>();</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="comment">// Methods</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a0b828737405263d36cfa544488c076a6">  111</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a0b828737405263d36cfa544488c076a6">clear</a>();</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a1aff765f4f51f2e4e4f60b6c2acac204">  120</a></span>    [[nodiscard]] Q_INVOKABLE <a class="code hl_class" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a1aff765f4f51f2e4e4f60b6c2acac204">get</a>(<span class="keyword">const</span> QString&amp; name);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#ae96ea1ac6e89c09a7f9ebdf39ff1ecb2">  128</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#ae96ea1ac6e89c09a7f9ebdf39ff1ecb2">importTripKit</a>(<span class="keyword">const</span> QString&amp; fileName);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#ad9cfbe7fe1a15657b30b8596531661e0">  143</a></span>    [[nodiscard]] Q_INVOKABLE <a class="code hl_class" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#ad9cfbe7fe1a15657b30b8596531661e0">materialize</a>(<span class="keyword">const</span> <a class="code hl_class" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a>&amp; vac);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a2cfd6abe1b3ba1a3e89a9ac52a1f1075">  154</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a2cfd6abe1b3ba1a3e89a9ac52a1f1075">importVAC</a>(<a class="code hl_class" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> vac);</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#aceb02f2d34da71b0a54ed4cf01432ce5">  165</a></span>    [[nodiscard]] Q_INVOKABLE QVector&lt;GeoMaps::VAC&gt; <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#aceb02f2d34da71b0a54ed4cf01432ce5">vacs4Point</a>(<span class="keyword">const</span> QGeoCoordinate&amp; position);</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>signals:</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">  169</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">dataChanged</a>();</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#af026c7a5fdd5cb3c0cdc157530ba69f6">  178</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classGeoMaps_1_1VACLibrary.html#af026c7a5fdd5cb3c0cdc157530ba69f6">importTripKitStatus</a>(<span class="keywordtype">double</span> percent);</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a60293890ca87e0d4b56d321b8c4a6e9c">VACLibrary</a>)</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="comment">// This method cleans the VAC directory. It deletes all VAC from m_vacs that</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="comment">// have no raster image files. It looks for unmanaged raster image files and</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">// either imports them or deletes them.</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keywordtype">void</span> janitor();</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="comment">// This method saves m_vacs to m_dataFile.</span></div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordtype">void</span> save();</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="comment">// This method returns the absolute path of a given VAC. Needed for iOS</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="comment">// after App Update. See GeoMaps::VACLibrary::janitor</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    QString absolutePathForVac(<span class="keyword">const</span> <a class="code hl_class" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a>&amp;);</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    QString absolutePathForVac(<span class="keyword">const</span> QString&amp; name);</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    QVector&lt;GeoMaps::VAC&gt; m_vacs;</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u<span class="stringliteral">&quot;/VAC&quot;</span>_s};</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    QFile m_dataFile {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u<span class="stringliteral">&quot;/VAC.data&quot;</span>_s};</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>};</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a1c85f944148edc2fd500121be5b6c302">  162</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a1c85f944148edc2fd500121be5b6c302">remove</a>(<span class="keyword">const</span> QString&amp; name);</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#ae228d118883c75c7af215060d784b709">  172</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#ae228d118883c75c7af215060d784b709">rename</a>(<span class="keyword">const</span> QString&amp; oldName, <span class="keyword">const</span> QString&amp; newName);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a0393e90282b284d398fd13fef0009885">  185</a></span>    [[nodiscard]] Q_INVOKABLE QVector&lt;GeoMaps::VAC&gt; <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a0393e90282b284d398fd13fef0009885">vacsByDistance</a>(<span class="keyword">const</span> QGeoCoordinate&amp; position, <span class="keyword">const</span> QString&amp; filter);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#aceb02f2d34da71b0a54ed4cf01432ce5">  196</a></span>    [[nodiscard]] Q_INVOKABLE QVector&lt;GeoMaps::VAC&gt; <a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#aceb02f2d34da71b0a54ed4cf01432ce5">vacs4Point</a>(<span class="keyword">const</span> QGeoCoordinate&amp; position);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>signals:</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">  200</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">dataChanged</a>();</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1VACLibrary.html#af026c7a5fdd5cb3c0cdc157530ba69f6">  209</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classGeoMaps_1_1VACLibrary.html#af026c7a5fdd5cb3c0cdc157530ba69f6">importTripKitStatus</a>(<span class="keywordtype">double</span> percent);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_function" href="classGeoMaps_1_1VACLibrary.html#a60293890ca87e0d4b56d321b8c4a6e9c">VACLibrary</a>)</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <span class="comment">// This method cleans the VAC directory. It deletes all VAC from m_vacs that</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <span class="comment">// have no raster image files. It looks for unmanaged raster image files and</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="comment">// either imports them or deletes them.</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keywordtype">void</span> janitor();</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="comment">// This method re-reads the chart index from all VAC collection files</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="comment">// managed by DataManagement::DataManager, rebuilds m_collectionVacs and</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="comment">// deletes stale entries from the extraction cache.</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keywordtype">void</span> updateCollections();</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="comment">// This method saves m_vacs to m_dataFile.</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keywordtype">void</span> save();</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="comment">// This method returns the absolute path of a given VAC. Needed for iOS</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="comment">// after App Update. See GeoMaps::VACLibrary::janitor</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    QString absolutePathForVac(<span class="keyword">const</span> <a class="code hl_class" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a>&amp;);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    QString absolutePathForVac(<span class="keyword">const</span> QString&amp; name);</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    QVector&lt;GeoMaps::VAC&gt; m_vacs;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    QVector&lt;GeoMaps::VAC&gt; m_collectionVacs;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u<span class="stringliteral">&quot;/VAC&quot;</span>_s};</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    QString m_cacheDirectory {QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + u<span class="stringliteral">&quot;/VAC&quot;</span>_s};</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    QFile m_dataFile {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u<span class="stringliteral">&quot;/VAC.data&quot;</span>_s};</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="comment">// Compresses multiple change notifications from DataManager into a single</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="comment">// call to updateCollections()</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    QTimer m_updateCollectionsTimer;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>};</div>
 </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>} <span class="comment">// namespace GeoMaps</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>} <span class="comment">// namespace GeoMaps</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a0393e90282b284d398fd13fef0009885"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a0393e90282b284d398fd13fef0009885">GeoMaps::VACLibrary::vacsByDistance</a></div><div class="ttdeci">Q_INVOKABLE QVector&lt; GeoMaps::VAC &gt; vacsByDistance(const QGeoCoordinate &amp;position, const QString &amp;filter)</div><div class="ttdoc">List of all VACs installed.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a0b828737405263d36cfa544488c076a6"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a0b828737405263d36cfa544488c076a6">GeoMaps::VACLibrary::clear</a></div><div class="ttdeci">Q_INVOKABLE void clear()</div><div class="ttdoc">Removes all VACs.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a1aff765f4f51f2e4e4f60b6c2acac204"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a1aff765f4f51f2e4e4f60b6c2acac204">GeoMaps::VACLibrary::get</a></div><div class="ttdeci">Q_INVOKABLE GeoMaps::VAC get(const QString &amp;name)</div><div class="ttdoc">Obtain VACs from the library.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a1c85f944148edc2fd500121be5b6c302"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a1c85f944148edc2fd500121be5b6c302">GeoMaps::VACLibrary::remove</a></div><div class="ttdeci">Q_INVOKABLE void remove(const QString &amp;name)</div><div class="ttdoc">Remove one VACs.</div></div>
+<div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a1c8b903f36dd68e083a6ceb971ea0dfe"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a1c8b903f36dd68e083a6ceb971ea0dfe">GeoMaps::VACLibrary::isEmpty</a></div><div class="ttdeci">bool isEmpty() const</div><div class="ttdoc">Getter function for property of the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00094">VACLibrary.h:94</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a29cc30cb0494222a624a1ef0d7d9b588"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a29cc30cb0494222a624a1ef0d7d9b588">GeoMaps::VACLibrary::dataChanged</a></div><div class="ttdeci">void dataChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a2cfd6abe1b3ba1a3e89a9ac52a1f1075"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a2cfd6abe1b3ba1a3e89a9ac52a1f1075">GeoMaps::VACLibrary::importVAC</a></div><div class="ttdeci">Q_INVOKABLE QString importVAC(GeoMaps::VAC vac)</div><div class="ttdoc">Import VAC.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a5118c847bc89fbaa37a65cef20143f42"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a5118c847bc89fbaa37a65cef20143f42">GeoMaps::VACLibrary::~VACLibrary</a></div><div class="ttdeci">~VACLibrary() override</div><div class="ttdoc">Destructor.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a60293890ca87e0d4b56d321b8c4a6e9c"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a60293890ca87e0d4b56d321b8c4a6e9c">GeoMaps::VACLibrary::VACLibrary</a></div><div class="ttdeci">VACLibrary(QObject *parent=nullptr)</div><div class="ttdoc">Constructor.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a61db59a9c57cc96d01d5e7250031754f"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a61db59a9c57cc96d01d5e7250031754f">GeoMaps::VACLibrary::vacs</a></div><div class="ttdeci">QList&lt; GeoMaps::VAC &gt; vacs</div><div class="ttdoc">List of all VACs installed.</div><div class="ttdef"><b>Definition</b> <a href="#l00067">VACLibrary.h:67</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_aad0d39a75c3a219ccc60f9e77a9c76fd"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#aad0d39a75c3a219ccc60f9e77a9c76fd">GeoMaps::VACLibrary::isEmpty</a></div><div class="ttdeci">bool isEmpty</div><div class="ttdoc">True if library is empty.</div><div class="ttdef"><b>Definition</b> <a href="#l00060">VACLibrary.h:60</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_a61db59a9c57cc96d01d5e7250031754f"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#a61db59a9c57cc96d01d5e7250031754f">GeoMaps::VACLibrary::vacs</a></div><div class="ttdeci">QList&lt; GeoMaps::VAC &gt; vacs</div><div class="ttdoc">List of all VACs installed.</div><div class="ttdef"><b>Definition</b> <a href="#l00077">VACLibrary.h:77</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_aad0d39a75c3a219ccc60f9e77a9c76fd"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#aad0d39a75c3a219ccc60f9e77a9c76fd">GeoMaps::VACLibrary::isEmpty</a></div><div class="ttdeci">bool isEmpty</div><div class="ttdoc">True if library is empty.</div><div class="ttdef"><b>Definition</b> <a href="#l00070">VACLibrary.h:70</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_aceb02f2d34da71b0a54ed4cf01432ce5"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#aceb02f2d34da71b0a54ed4cf01432ce5">GeoMaps::VACLibrary::vacs4Point</a></div><div class="ttdeci">Q_INVOKABLE QVector&lt; GeoMaps::VAC &gt; vacs4Point(const QGeoCoordinate &amp;position)</div><div class="ttdoc">List of all VACs that contain a given point.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_acec1a8c8d54a0ca608332523a05f32c9"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#acec1a8c8d54a0ca608332523a05f32c9">GeoMaps::VACLibrary::vacs</a></div><div class="ttdeci">QList&lt; GeoMaps::VAC &gt; vacs()</div><div class="ttdoc">Getter function for property of the same name.</div></div>
+<div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_ad9cfbe7fe1a15657b30b8596531661e0"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#ad9cfbe7fe1a15657b30b8596531661e0">GeoMaps::VACLibrary::materialize</a></div><div class="ttdeci">Q_INVOKABLE GeoMaps::VAC materialize(const GeoMaps::VAC &amp;vac)</div><div class="ttdoc">Obtain a VAC whose fileName points to a raster image file.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_ae228d118883c75c7af215060d784b709"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#ae228d118883c75c7af215060d784b709">GeoMaps::VACLibrary::rename</a></div><div class="ttdeci">Q_INVOKABLE QString rename(const QString &amp;oldName, const QString &amp;newName)</div><div class="ttdoc">Rename a VACs.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_ae96ea1ac6e89c09a7f9ebdf39ff1ecb2"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#ae96ea1ac6e89c09a7f9ebdf39ff1ecb2">GeoMaps::VACLibrary::importTripKit</a></div><div class="ttdeci">Q_INVOKABLE QString importTripKit(const QString &amp;fileName)</div><div class="ttdoc">Import trip kit.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_af026c7a5fdd5cb3c0cdc157530ba69f6"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#af026c7a5fdd5cb3c0cdc157530ba69f6">GeoMaps::VACLibrary::importTripKitStatus</a></div><div class="ttdeci">void importTripKitStatus(double percent)</div><div class="ttdoc">Progress report when importing a trip kit.</div></div>
+<div class="ttc" id="aclassGeoMaps_1_1VACLibrary_html_af2f7678bb1c5fa74dffb2b796b84494a"><div class="ttname"><a href="classGeoMaps_1_1VACLibrary.html#af2f7678bb1c5fa74dffb2b796b84494a">GeoMaps::VACLibrary::hasManuallyImported</a></div><div class="ttdeci">bool hasManuallyImported</div><div class="ttdoc">True if the library contains manually imported charts.</div><div class="ttdef"><b>Definition</b> <a href="#l00067">VACLibrary.h:67</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1VAC_html"><div class="ttname"><a href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a></div><div class="ttdoc">Visual approach chart.</div><div class="ttdef"><b>Definition</b> <a href="VAC_8h_source.html#l00044">VAC.h:45</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

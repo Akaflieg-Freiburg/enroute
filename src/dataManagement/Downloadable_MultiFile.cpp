@@ -553,7 +553,7 @@ bool DataManagement::Downloadable_MultiFile::rawAdd(DataManagement::Downloadable
 
     // Copy downloadable metadata into this
     setObjectName(map->objectName());
-    setSection(map->section());
+    setSection(map->sectionUnmasked());
     setBoundingBox(map->boundingBox());
 
     // Add downloadable

@@ -209,6 +209,17 @@ public:
      */
     [[nodiscard]] QBindable<QString> bindableSection() const { return &m_section; }
 
+    /*! \brief Section, without masking for installed items
+     *
+     * The property section returns a translated version of 'Installed' when
+     * hasFile is true. This method returns the string set with setSection(),
+     * regardless of the installation status. Use this when matching items
+     * that belong together, where the masking would get in the way.
+     *
+     * @returns String set with setSection()
+     */
+    [[nodiscard]] QString sectionUnmasked() const { return m_sectionBuffer.value(); }
+
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property updateSize

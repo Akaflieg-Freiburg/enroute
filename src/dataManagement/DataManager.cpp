@@ -308,7 +308,7 @@ DataManagement::Downloadable_SingleFile* DataManagement::DataManager::createOrRe
             {
                 continue;
             }
-            if ((mapSet->objectName() == downloadable->objectName()) && (mapSet->section() == downloadable->section()))
+            if ((mapSet->objectName() == downloadable->objectName()) && (mapSet->sectionUnmasked() == downloadable->sectionUnmasked()))
             {
                 mapSet->add(downloadable);
                 hasMapSet = true;

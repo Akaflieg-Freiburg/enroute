@@ -76,6 +76,8 @@ AppWindow {
         DecoratedScrollView {
             anchors.fill: parent
 
+            contentWidth: availableWidth // Disable horizontal scrolling
+
             ColumnLayout {
                 id: col
 

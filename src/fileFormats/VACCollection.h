@@ -37,8 +37,8 @@ namespace FileFormats
  *  with the following schema.
  *
  *  - Table 'metadata', with columns 'key' and 'value'. The required entries
- *    are ('schemaVersion', '1') and ('name', <collection name>). The optional
- *    entry ('attribution', <html>) names the source of the charts.
+ *    are ('schemaVersion', '1') and ('name', `<collection name>`). The optional
+ *    entry ('attribution', `<html>`) names the source of the charts.
  *
  *  - Table 'charts', with columns 'name', 'topLeftLat', 'topLeftLon',
  *    'topRightLat', 'topRightLon', 'bottomLeftLat', 'bottomLeftLon',

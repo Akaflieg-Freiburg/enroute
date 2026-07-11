@@ -32,12 +32,6 @@ import org.qtproject.qt.android.QtNative;
 import org.qtproject.qt.android.bindings.QtActivity;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.String;
 
 /**
@@ -133,39 +127,6 @@ public class ShareActivity extends QtActivity
     }
 
     /**
-     * Called when an activity _we_ launched ourselves from IntentLauncher
-     * exits, giving us the requestCode we started it with, a resultCode and any
-     * additional data from it.
-     *
-     * The resultCode will be RESULT_CANCELED if the activity explicitly
-     * returned that, didn't return any result, or crashed during its operation.
-     *
-     * In our case onActivityResult() will be called to handle the
-     * ACTION_OPEN_DOCUMENT or ACTION_CREATE_DOCUMENT intents which we launched
-     * from IntentLauncher to open or to save to a file URL. We extract the file
-     * URL from the intent and process it with setUriReceived().
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) 
-    {
-        Log.d(TAG, "onActivityResult");
-
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        if (resultCode == RESULT_OK)
-        {
-            if (requestCode == ShareUtils.getOpenRequestCode())
-            {
-                setFileReceived(intent.getData().toString(), "");
-            }
-            else if (requestCode == ShareUtils.getSaveRequestCode())
-            {
-                copyContent(ShareUtils.getShareUri(), intent.getData());
-            }
-        }
-    }
-
-    /**
      * Called from c++ to process pending intents.
      *
      * Calling this method from c++ indicates that QML/Qt is initialized and
@@ -209,6 +170,11 @@ public class ShareActivity extends QtActivity
         if (intent.getAction().equals("android.intent.action.VIEW"))
         {
             intentUri = intent.getData();
+            if (intentUri == null)
+            {
+                Log.d(TAG, "processIntent VIEW: intent.getData() == null");
+                return;
+            }
 
             // Handle geo: URIs (e.g. from Organic Maps) — these are not files
             if ("geo".equals(intentUri.getScheme())) 
@@ -226,9 +192,14 @@ public class ShareActivity extends QtActivity
 
         if (intent.getAction().equals("android.intent.action.SEND"))
         {
-            if (intent.getStringExtra(Intent.EXTRA_STREAM) != null)
+            // EXTRA_STREAM holds a Uri, not a String; getStringExtra() would return null
+            Uri streamUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            if (streamUri != null)
             {
-                setFileReceived(intent.getStringExtra(Intent.EXTRA_STREAM), "");
+                DocumentFile docFile = DocumentFile.fromSingleUri(this, streamUri);
+                // getName() can return null if the URI has no backing content provider
+                String name = (docFile != null && docFile.getName() != null) ? docFile.getName() : "";
+                setFileReceived(streamUri.toString(), name);
                 return;
             }
 
@@ -261,38 +232,6 @@ public class ShareActivity extends QtActivity
                 onOpenUSBRequestReceived(deviceName);
                 return;
             }
-        }
-    }
-
-    /**
-     * copy src URI to dst URI.
-     */
-    private void copyContent(Uri src, Uri dst) 
-    {
-        Log.d(TAG, "copyContent");
-
-        try 
-        {
-            InputStream istream = getContentResolver().openInputStream(src);
-            OutputStream ostream = getContentResolver().openOutputStream(dst);
-
-            int nRead;
-            byte[] data = new byte[0x10000];
-            while ((nRead = istream.read(data, 0, data.length)) != -1) 
-            {
-                ostream.write(data, 0, nRead);
-            }
-
-            ostream.close();
-            istream.close();
-        } 
-        catch (FileNotFoundException exception) 
-        {
-            Log.d(TAG, exception.getMessage());
-        }
-        catch (IOException exception) 
-        {
-            Log.d(TAG, exception.getMessage());
         }
     }
 }

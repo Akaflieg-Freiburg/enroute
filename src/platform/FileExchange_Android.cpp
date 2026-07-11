@@ -47,12 +47,6 @@ Platform::FileExchange::FileExchange(QObject *parent)
 }
 
 
-void Platform::FileExchange::deferredInitialization()
-{
-    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
-}
-
-
 //
 // Methods
 //
@@ -64,7 +58,7 @@ void Platform::FileExchange::importContent()
 
 void Platform::FileExchange::onGUISetupCompleted()
 {
-    // Start receiving file requests. This needs to be in deferredInitialization because
+    // Start receiving file requests. This must not run in the constructor because
     // it has side effects and calls constructors of other GlobalObjects.
     receiveOpenFileRequestsStarted = true;
     QJniObject const activity = QNativeInterface::QAndroidApplication::context();
@@ -180,50 +174,59 @@ bool Platform::FileExchange::outgoingIntent(const QString& methodName, const QSt
 // C Methods
 //
 
+namespace {
+
+// Calling GetStringUTFChars on a null jstring is undefined behavior and
+// crashes the app, so null must be checked before conversion.
+QString toQString(JNIEnv* env, jstring jString)
+{
+    if (jString == nullptr)
+    {
+        return {};
+    }
+    const char* chars = env->GetStringUTFChars(jString, nullptr);
+    if (chars == nullptr)
+    {
+        return {};
+    }
+    QString result = QString::fromUtf8(chars);
+    env->ReleaseStringUTFChars(jString, chars);
+    return result;
+}
+
+} // namespace
+
 extern "C" {
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname, jstring junmingled)
 {
-    const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    const char* unmingled = env->GetStringUTFChars(junmingled, nullptr);
-
     // A little complicated because GlobalObject::fileExchange() lives in a different thread
     QMetaObject::invokeMethod(GlobalObject::fileExchange(),
                               "processFileOpenRequest",
                               Qt::QueuedConnection,
-                              Q_ARG( QString, QString::fromUtf8(fname)),
-                              Q_ARG( QString, QString::fromUtf8(unmingled))
+                              Q_ARG( QString, toQString(env, jfname)),
+                              Q_ARG( QString, toQString(env, junmingled))
                               );
-    env->ReleaseStringUTFChars(jfname, fname);
-    env->ReleaseStringUTFChars(junmingled, unmingled);
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname, jstring junmingled)
 {
-    const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    const char* unmingled = env->GetStringUTFChars(junmingled, nullptr);
-
     // A little complicated because GlobalObject::fileExchange() lives in a different thread
     QMetaObject::invokeMethod(GlobalObject::fileExchange(),
                               "processFileOpenRequest",
                               Qt::QueuedConnection,
-                              Q_ARG( QString, QString::fromUtf8(fname)),
-                              Q_ARG( QString, QString::fromUtf8(unmingled))
+                              Q_ARG( QString, toQString(env, jfname)),
+                              Q_ARG( QString, toQString(env, junmingled))
                               );
-    env->ReleaseStringUTFChars(jfname, fname);
-    env->ReleaseStringUTFChars(junmingled, unmingled);
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setTextReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
-    const char* fname = env->GetStringUTFChars(jfname, nullptr);
-
     // A little complicated because GlobalObject::fileExchange() lives in a different thread
     QMetaObject::invokeMethod(GlobalObject::fileExchange(),
                               "processText",
                               Qt::QueuedConnection,
-                              Q_ARG( QString, QString::fromUtf8(fname)) );
-    env->ReleaseStringUTFChars(jfname, fname);
+                              Q_ARG( QString, toQString(env, jfname)) );
 }
 
 

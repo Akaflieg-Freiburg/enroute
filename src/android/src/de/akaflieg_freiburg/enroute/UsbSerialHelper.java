@@ -221,7 +221,8 @@ public class UsbSerialHelper
             for (UsbSerialDriver d : availableDrivers) 
             {
                 UsbDevice dev = d.getDevice();
-                if (dev != null && (dev.getDeviceName().equals(devicePath) || dev.getProductName().equals(devicePath))) 
+                // getProductName() can return null; compare with devicePath (known non-null) on the left
+                if (dev != null && (devicePath.equals(dev.getDeviceName()) || devicePath.equals(dev.getProductName())))
                 {
                     driver = d;
                     device = dev;
@@ -293,10 +294,11 @@ public class UsbSerialHelper
                 Log.i(TAG, "Successfully opened device: " + devicePath);
                 return ""; // Success: return empty string
             } 
-            catch (IOException e) 
+            catch (IOException e)
             {
                 if (connection != null) connection.close();
-                String err = e.getMessage();
+                // getMessage() can be null; an empty return value would read as success in C++
+                String err = (e.getMessage() != null) ? e.getMessage() : e.toString();
                 Log.e(TAG, err, e);
                 return err;
             }

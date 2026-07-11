@@ -108,11 +108,6 @@ public slots:
     void processFileOpenRequest(const QString& path, const QString& unmingledFilename) override;
 
 
-protected:
-    /*! \brief Implements virtual method from FileExchange_Abstract */
-    void deferredInitialization() override;
-
-
 private:
     Q_DISABLE_COPY_MOVE(FileExchange)
 

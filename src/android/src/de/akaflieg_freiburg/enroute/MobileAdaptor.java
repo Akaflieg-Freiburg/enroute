@@ -53,7 +53,6 @@ import java.util.List;
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
   public static native void onLanguageChanged();
-  public static native void onNotificationClicked(int notifyID, int actionID);
   public static native void onWifiConnected();
   public static native void onWindowSizeChanged();
 
@@ -64,7 +63,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   private static WifiManager m_wifiManager;
   private static MulticastLock m_multicastLock;
   private static BroadcastReceiver m_wifiStateChangeReceiver;
-  private static BroadcastReceiver m_notifyClickReceiver;
 
   // reference Authority as defined in AndroidManifest.xml
   private static String AUTHORITY = "de.akaflieg_freiburg.enroute";
@@ -90,12 +88,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
     m_multicastLock = m_wifiManager.createMulticastLock("multicastLock");
     m_multicastLock.setReferenceCounted(true);
     m_multicastLock.acquire();
-
-    // Be informed when notifications are clicked
-    m_notifyClickReceiver = new NotifyClickReceiver();
-    IntentFilter intentFilter = new IntentFilter();
-    intentFilter.addAction("de.akaflieg_freiburg.enroute.onNotificationClick");
-    m_instance.registerReceiver(m_notifyClickReceiver, intentFilter, RECEIVER_EXPORTED);
 
     // Be informed when locale changes
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) 
@@ -437,11 +429,13 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK) {
+    if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK && data != null) {
       Uri uri = data.getData();
       if (uri != null) {
         DocumentFile docFile = DocumentFile.fromSingleUri(this, uri);
-        setFileReceived(uri.toString(), docFile.getName());
+        // getName() can return null if the URI has no backing content provider
+        String name = (docFile != null && docFile.getName() != null) ? docFile.getName() : "";
+        setFileReceived(uri.toString(), name);
       }
     }
     super.onActivityResult(requestCode, resultCode, data);
@@ -568,21 +562,10 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
     @Override
     public void onReceive(Context context, Intent intent) {
       NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-      if (info.getState() == State.CONNECTED) {
+      // The extra is documented as nullable; an NPE here would crash the app
+      if (info != null && info.getState() == State.CONNECTED) {
         onWifiConnected();
       }
-    }
-  }
-
-  private class NotifyClickReceiver extends BroadcastReceiver {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-      Intent i = new Intent(context, MobileAdaptor.class);
-      i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-      context.startActivity(i);
-
-      onNotificationClicked(intent.getIntExtra("NotificationID", -1),
-          intent.getIntExtra("ActionID", 0));
     }
   }
 

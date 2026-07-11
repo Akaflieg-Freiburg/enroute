@@ -108,7 +108,7 @@ CenteringDialog {
                 Label { // Derived Data
                     Layout.fillWidth: true
                     visible: metarTitleLine.visible && text !== ""
-                    text: weatherReportDialog.weatherStation.metar.derivedData(Navigator.aircraft, Global.warnMETARPerformance, Global.showMETARPerformanceExplanation)
+                    text: Global.withLinkColor(weatherReportDialog.weatherStation.metar.derivedData(Navigator.aircraft, Global.warnMETARPerformance, Global.showMETARPerformanceExplanation))
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText
                     bottomPadding: 0.2*font.pixelSize

@@ -261,7 +261,7 @@ comes first!</p>
                 Label {
                     Layout.fillWidth: true
 
-                    text: "<h3>"
+                    text: Global.withLinkColor("<h3>"
                           + qsTr("Report a bug or make a suggestion for improvement")
                           + "</h3>"
                           + "<h4>"
@@ -275,7 +275,7 @@ comes first!</p>
                           + qsTr("Please contact <a href='mailto:peter.kemme@openflightmaps.org?subject=Enroute Flight Navigation, Issue Report'>Peter Kemme</a>.") + " "
                           + qsTr("Peter is active in both projects and has kindly volunteered to help our users in his spare time.") + " "
                           + qsTr("Peter speaks English and German.")
-                          + "</p>"
+                          + "</p>")
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)

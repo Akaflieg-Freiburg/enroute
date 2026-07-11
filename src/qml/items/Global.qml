@@ -177,6 +177,25 @@ Item {
 
 
     //
+    // Hyperlink color
+    //
+    // Labels with textFormat Text.RichText ignore the linkColor property; Qt
+    // renders anchors in the hardcoded default blue, which is unreadable on the
+    // night-mode background. Per Qt documentation, the only way to color
+    // RichText links is markup inside the text itself. withLinkColor() wraps
+    // the content of every anchor in a ready-made HTML string accordingly; use
+    // it in the text binding of any RichText label that contains links. The
+    // colors below equal the Material accent shades that StyledText labels get
+    // via the Material style, so links look the same in both text formats.
+    //
+    readonly property color linkColor: GlobalSettings.nightMode ? "#f48fb1" : "#e91e63"
+    function withLinkColor(html) {
+        return html.replace(/<a\s([^>]*)>/g, "<a $1><font color='" + linkColor + "'>")
+                   .replace(/<\/a>/g, "</font></a>")
+    }
+
+
+    //
     // Permissions
     //
 

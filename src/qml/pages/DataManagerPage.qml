@@ -407,7 +407,7 @@ Page {
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
 
-                text: "<p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.") + "</p>"
+                text: Global.withLinkColor("<p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.") + "</p>")
                 onLinkActivated: openManual("forward.html#vac-tutorial")
 
             }

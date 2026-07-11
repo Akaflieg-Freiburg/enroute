@@ -121,7 +121,7 @@ Page {
 
             Label {
                 id: lbl1
-                text: Librarian.getStringFromRessource(":text/info_enroute.html")
+                text: Global.withLinkColor(Librarian.getStringFromRessource(":text/info_enroute.html"))
                 textFormat: Text.RichText
                 width: sv.availableWidth
 
@@ -139,8 +139,8 @@ Page {
 
             Label {
                 id: lbl2
-                text: Librarian.getStringFromRessource(":text/authors.html")
-                textFormat: Text.RichText // Link OK
+                text: Global.withLinkColor(Librarian.getStringFromRessource(":text/authors.html"))
+                textFormat: Text.RichText
                 width: sv.availableWidth
                 wrapMode: Text.Wrap
                 topPadding: font.pixelSize*1
@@ -156,7 +156,7 @@ Page {
 
             Label {
                 id: lbl3
-                text: Librarian.getStringFromRessource(":text/info_license.html")
+                text: Global.withLinkColor(Librarian.getStringFromRessource(":text/info_license.html"))
                 textFormat: Text.RichText
                 width: sv.availableWidth
                 wrapMode: Text.Wrap

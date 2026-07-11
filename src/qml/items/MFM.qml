@@ -473,8 +473,8 @@ Item {
                             const t = "<p><strong>" + qsTr("No aviation map installed for your present location.") + "</strong></p>"
                             if (DataManager.aviationMaps.downloading)
                                 return t + "<p>" + qsTr("Please wait for the download to complete.") + "</p>"
-                            return t + "<p>" + qsTr("In order to install a map, please open the menu using the menu button in the upper left corner of this screen.") + " " +
-                                    qsTr("Choose <a href='xx'>Library/Maps and Data</a> to open the map management page.") + "</p>"
+                            return Global.withLinkColor(t + "<p>" + qsTr("In order to install a map, please open the menu using the menu button in the upper left corner of this screen.") + " " +
+                                    qsTr("Choose <a href='xx'>Library/Maps and Data</a> to open the map management page.") + "</p>")
                         }
                         textFormat: Text.RichText
                         onLinkActivated: stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})

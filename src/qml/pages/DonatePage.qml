@@ -110,7 +110,7 @@ Message: Enroute Flight Navigation
                 Layout.fillWidth: true
 
                 textFormat: Text.RichText
-                text: "<p>" + qsTr("Donations to Akaflieg Freiburg are tax-deductible in Germany. Contact <a href='mailto:info@akaflieg-freiburg.de'>info@akaflieg-freiburg.de</a> for a tax statement.") + "</p>";
+                text: Global.withLinkColor("<p>" + qsTr("Donations to Akaflieg Freiburg are tax-deductible in Germany. Contact <a href='mailto:info@akaflieg-freiburg.de'>info@akaflieg-freiburg.de</a> for a tax statement.") + "</p>");
                 Layout.preferredWidth: sv.width
                 wrapMode: Text.Wrap
                 topPadding: font.pixelSize*1

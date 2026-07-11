@@ -40,7 +40,7 @@ CenteringDialog {
 
         Label {
             id: lbl
-            text: dialogMain.text
+            text: Global.withLinkColor(dialogMain.text)
             width: dialogMain.availableWidth
             textFormat: Text.RichText
             wrapMode: Text.Wrap

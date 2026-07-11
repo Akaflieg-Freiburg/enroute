@@ -21,6 +21,7 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Shapes
 
@@ -422,8 +423,9 @@ CenteringDialog {
 
             Button {
                 id: button
-                text: "<a href='xx'>" + vb.vac.name + "</a>"
+                text: vb.vac.name
                 flat: true
+                Material.foreground: Global.linkColor
                 Layout.alignment: Qt.AlignVCenter
                 onPressed:  {
                     PlatformAdaptor.vibrateBrief()
@@ -452,8 +454,9 @@ CenteringDialog {
 
             Button {
                 id: button
-                text: "<a href='xx'>" + qsTr("Satellite View") + "</a>"
+                text: qsTr("Satellite View")
                 flat: true
+                Material.foreground: Global.linkColor
                 Layout.alignment: Qt.AlignVCenter
                 onPressed:  {
                     PlatformAdaptor.vibrateBrief()

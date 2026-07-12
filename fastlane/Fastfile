@@ -158,7 +158,7 @@ platform :mac do
   end
 
   desc "Upload to TestFlight"
-  lane :TestFlight do
+  lane :deployTestFlight do
     # Fetch the latest build number from TestFlight
     latest_build = latest_testflight_build_number(
       username: "stefan.kebekus@gmail.com",

@@ -103,10 +103,10 @@ Build MacOS Bundle (unsigned, unnotarized, and without provisioning profile)
 
 
 
-### mac TestFlight
+### mac deployTestFlight
 
 ```sh
-[bundle exec] fastlane mac TestFlight
+[bundle exec] fastlane mac deployTestFlight
 ```
 
 Upload to TestFlight

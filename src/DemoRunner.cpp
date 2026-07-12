@@ -34,6 +34,7 @@
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
+#include "geomaps/VACLibrary.h"
 #include "ios/ObjCAdapter.h"
 #include "navigation/Navigator.h"
 #include "platform/PlatformAdaptor.h"
@@ -79,6 +80,45 @@ static QObject* findQQuickItem(const QString &objectName, QQmlApplicationEngine*
     return nullptr;
 }
 
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MACOS) || defined(Q_OS_IOS)
+// Check that all data required for the screenshots is available. Aviation data is
+// loaded asynchronously at startup, so allow some time before giving up. Returns
+// an empty string on success and a description of the missing items otherwise.
+static QString missingScreenshotRequirements(QQmlApplicationEngine* engine, const QStringList& requiredWaypointIDs, const QString& requiredVAC)
+{
+    QStringList missingItems;
+    for (int attempt = 0; attempt < 30; ++attempt)
+    {
+        missingItems.clear();
+        for (const auto& waypointID : requiredWaypointIDs)
+        {
+            if (!GlobalObject::geoMapProvider()->findByID(waypointID).isValid())
+            {
+                missingItems << u"waypoint %1"_s.arg(waypointID);
+            }
+        }
+        if (!requiredVAC.isEmpty())
+        {
+            auto* vacLibrary = engine->singletonInstance<GeoMaps::VACLibrary*>(u"akaflieg_freiburg.enroute"_s, u"VACLibrary"_s);
+            Q_ASSERT(vacLibrary != nullptr);
+            const auto vacs = vacLibrary->vacs();
+            if (std::none_of(vacs.begin(), vacs.end(), [&requiredVAC](const GeoMaps::VAC& vac) { return vac.name == requiredVAC; }))
+            {
+                missingItems << u"visual approach chart %1"_s.arg(requiredVAC);
+            }
+        }
+        if (missingItems.isEmpty())
+        {
+            return {};
+        }
+        qWarning() << "Waiting for aviation data to become available…";
+        delay(1s);
+    }
+    return u"The following required items are not available: %1."_s.arg(missingItems.join(u", "_s));
+}
+#endif
+
 void DemoRunner::generateIosScreenshots()
 {
     generateScreenshotsForDevices({"ios_Device"}, true);
@@ -104,6 +144,19 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
     // Obtain pointers to QML items
     auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem(QStringLiteral("applicationWindow"), m_engine));
     Q_ASSERT(applicationWindow != nullptr);
+
+    // For consistency, remove all non-canonical data sources
+    GlobalObject::trafficDataProvider()->removeDataSources();
+
+    // Check that all data required for the screenshots is available
+    const QStringList requiredWaypointIDs = {u"EDDE"_s, u"EDTL"_s, u"EDTY"_s, u"KRH"_s, u"LFSB"_s};
+    const QString missingItems = missingScreenshotRequirements(m_engine, requiredWaypointIDs, {});
+    if (!missingItems.isEmpty())
+    {
+        qCritical().noquote() << u"Cannot generate screenshots. %1 Please make sure that up-to-date aviation maps for Germany and France are installed."_s.arg(missingItems);
+        QGuiApplication::exit(-1);
+        return;
+    }
 
     // Set up traffic simulator
     GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
@@ -320,8 +373,22 @@ void DemoRunner::generateManualScreenshots()
     auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem(QStringLiteral("applicationWindow"), m_engine));
     Q_ASSERT(applicationWindow != nullptr);
 
-    // Set up traffic simulator
+    // For consistency, remove all non-canonical data sources
     GlobalObject::trafficDataProvider()->removeDataSources();
+
+    // Check that all data required for the screenshots is available
+    const QStringList requiredWaypointIDs = {u"EDFE"_s, u"EDFW"_s, u"EDQD"_s, u"EDSB"_s,
+                                             u"EDTF"_s, u"EDTL"_s, u"EDTY"_s, u"KRH"_s};
+    const QString requiredVAC = u"LFGA-OPER"_s;
+    const QString missingItems = missingScreenshotRequirements(m_engine, requiredWaypointIDs, requiredVAC);
+    if (!missingItems.isEmpty())
+    {
+        qCritical().noquote() << u"Cannot generate manual screenshots. %1 Please make sure that up-to-date aviation maps for Germany and the VAC collection for France are installed."_s.arg(missingItems);
+        QGuiApplication::exit(-1);
+        return;
+    }
+
+    // Set up traffic simulator
     GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate(false, GlobalObject::trafficDataProvider());
     GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
@@ -562,13 +629,7 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setTT( Units::Angle::fromDEG(270) );
         trafficSimulator->setGS( Units::Speed::fromKN(89) );
 
-        auto VACFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC/LFGA COLMAR HOUSSEN 2.webp"_s;
-        if (!QFile::exists(VACFileName))
-        {
-            qCritical() << "VAC does not exist" << VACFileName;
-        }
-        Q_ASSERT(QFile::exists(VACFileName));
-        emit requestVAC(u"LFGA COLMAR HOUSSEN 2"_s);
+        emit requestVAC(requiredVAC);
         delay(2s);
         emit requestMapBearingPolicy(0); // NUp
         delay(2s);

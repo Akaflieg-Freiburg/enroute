@@ -1,9 +1,17 @@
 # Changelog
 
-## [Unreleased]
+## [3.3.6] - 2026-07-12
 
 ### Added
 - Support for VAC collections distributed together with map sets.
+
+- Add close button to the side view.
+
+### Changed
+- Improved pinch-to-zoom behavior on the moving map.
+
+- Improved readability of NavBar on small displays.
+
 
 ### Fixed
 - Fixes potential crashes on Android when picking files, on WiFi network
@@ -13,20 +21,9 @@
 
 - Fixes connection to USB serial devices that do not report a product name.
 
-
-## [3.3.5] - 2026-07-07
-
-### Fixed
 - User-defined waypoints no longer obscure airfields (#667)
 
 - Fix night mode that was broken on some Android devices (#665)
-
-### Changed
-- Add close button to the side view.
-
-- Improved pinch-to-zoom behavior on the moving map.
-
-- Improved readability of NavBar on small displays.
 
 
 ## [3.3.3] - 2026-06-08

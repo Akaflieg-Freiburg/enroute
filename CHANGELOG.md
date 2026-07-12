@@ -2,12 +2,16 @@
 
 ## [Unreleased]
 
+### Added
+- Support for VAC collections distributed together with map sets.
+
 ### Fixed
-- Fixes potential crashes on Android when picking files, on WiFi network changes, and when opening files without a name
+- Fixes potential crashes on Android when picking files, on WiFi network
+  changes, and when opening files without a name-
 
-- Fixes receiving files shared by other Android apps ("Share with enroute")
+- Fixes receiving files shared by other Android apps ("Share with enroute").
 
-- Fixes connection to USB serial devices that do not report a product name
+- Fixes connection to USB serial devices that do not report a product name.
 
 
 ## [3.3.5] - 2026-07-07

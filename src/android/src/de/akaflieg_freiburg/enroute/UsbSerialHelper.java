@@ -243,18 +243,8 @@ public class UsbSerialHelper
             
                 android.content.Intent intent = new android.content.Intent(ACTION_USB_PERMISSION);
                 intent.setPackage(appContext.getPackageName());
-                android.app.PendingIntent permissionIntent;
-            
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) 
-                {
-                    permissionIntent = android.app.PendingIntent.getBroadcast(
-                        appContext, 0, intent, android.app.PendingIntent.FLAG_IMMUTABLE);
-                }
-                else
-                {
-                    permissionIntent = android.app.PendingIntent.getBroadcast(
-                        appContext, 0, intent, 0);
-                }
+                android.app.PendingIntent permissionIntent = android.app.PendingIntent.getBroadcast(
+                    appContext, 0, intent, android.app.PendingIntent.FLAG_IMMUTABLE);
             
                 usbManager.requestPermission(device, permissionIntent);
             

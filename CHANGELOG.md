@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.3.6] - 2026-07-12
+## [3.4.0] - 2026-07-14
 
 ### Added
 - Support for VAC collections distributed together with map sets.

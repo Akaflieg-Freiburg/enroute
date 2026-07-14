@@ -19,11 +19,14 @@
   <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
   <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+  <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
 
   <supports-screens
     android:anyDensity="true"
@@ -198,12 +201,15 @@
       <!-- Splash screen -->
 	
       <!-- Background running -->
-      <!-- 
-      Warning: changing this value to true may cause unexpected crashes if the
-      application still try to draw after
-      "applicationStateChanged(Qt::ApplicationSuspended)" signal is sent! 
+      <!--
+      background_running is required for flight log and IGC file recording to
+      work when the app is in the background. It keeps the Qt event loop running
+      after the app is suspended, so C++ objects can continue to record GPS data.
+      The associated crash risk (rendering after the Android Surface is destroyed)
+      is mitigated in main.cpp by hiding the QQuickWindow on
+      Qt::ApplicationSuspended.
       -->
-      <meta-data android:name="android.app.background_running" android:value="false"/>
+      <meta-data android:name="android.app.background_running" android:value="true"/>
       <!-- Background running -->
       
       <!-- auto screen scale factor -->
@@ -228,6 +234,11 @@
     </activity>
 
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
+
+    <service
+      android:name="de.akaflieg_freiburg.enroute.FlightLogService"
+      android:foregroundServiceType="location"
+      android:exported="false"/>
     
     <!-- NOTE: android:authorities must match AUTHORITY in de/akaflieg_freiburg/enroute/IntentLauncher.java -->
     <provider

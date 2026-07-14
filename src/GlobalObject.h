@@ -40,6 +40,11 @@ class GeoMapProvider;
 class WaypointLibrary;
 } // namespace GeoMaps
 
+namespace Flightlog
+{
+class FlightLog;
+} // namespace Flightlog
+
 namespace Navigation
 {
 class Clock;
@@ -166,6 +171,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Platform::FileExchange* fileExchange();
+
+    /*! \brief Pointer to appplication-wide static FlightLog instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Flightlog::FlightLog* flightLog();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::GeoMapProvider
      * instance

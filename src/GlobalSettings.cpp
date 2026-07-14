@@ -223,6 +223,18 @@ void GlobalSettings::setNightMode(bool newNightMode)
 }
 
 
+void GlobalSettings::setAutoFlightDetection(bool newAutoFlightDetection)
+{
+    if (newAutoFlightDetection == autoFlightDetection())
+    {
+        return;
+    }
+
+    m_settings.setValue(QStringLiteral("FlightLog/autoFlightDetection"), newAutoFlightDetection);
+    emit autoFlightDetectionChanged();
+}
+
+
 void GlobalSettings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver)
 {
     m_settings.setValue(QStringLiteral("positioningByTrafficDataReceiver"), newPositioningByTrafficDataReceiver);
@@ -238,6 +250,28 @@ void GlobalSettings::setShowAltitudeAGL(bool newShowAltitudeAGL)
     }
     m_settings.setValue(QStringLiteral("showAltitudeAGL"), newShowAltitudeAGL);
     emit showAltitudeAGLChanged();
+}
+
+
+void GlobalSettings::setShowCurrentFlightTrace(bool newShowCurrentFlightTrace)
+{
+    if (newShowCurrentFlightTrace == showCurrentFlightTrace())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("FlightLog/showCurrentFlightTrace"), newShowCurrentFlightTrace);
+    emit showCurrentFlightTraceChanged();
+}
+
+
+void GlobalSettings::setTrackRecording(bool newTrackRecording)
+{
+    if (newTrackRecording == trackRecording())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("FlightLog/trackRecording"), newTrackRecording);
+    emit trackRecordingChanged();
 }
 
 

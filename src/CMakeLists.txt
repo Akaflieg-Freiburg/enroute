@@ -70,6 +70,12 @@ set(SOURCES
     navigation/BaroCache.h
     navigation/Clock.h
     navigation/FlightRoute.h
+    flightlog/Flight.h
+    flightlog/FlightDetector.h
+    flightlog/AirplaneFlightDetector.h
+    flightlog/FlightLog.h
+    flightlog/FlightRecorder.h
+    flightlog/TrackPoint.h
     navigation/Leg.h
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
@@ -173,6 +179,10 @@ set(SOURCES
     navigation/Atmosphere.cpp
     navigation/BaroCache.cpp
     navigation/Clock.cpp
+    flightlog/Flight.cpp
+    flightlog/AirplaneFlightDetector.cpp
+    flightlog/FlightLog.cpp
+    flightlog/FlightRecorder.cpp
     navigation/FlightRoute.cpp
     navigation/FlightRoute_GPX.cpp
     navigation/Leg.cpp
@@ -488,6 +498,7 @@ if (IOS)
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ${ENROUTE_COMMON_LIBRARIES}
+        "-framework UserNotifications"
         Qt6::Location
         Qt6::Sensors
         Qt6::WebView
@@ -545,6 +556,7 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteOGN/lib
     dataManagement
     fileFormats
+    flightlog
     geomaps
     navigation
     notam
@@ -573,6 +585,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/ConnectionInfoDialog.qml
     qml/dialogs/LongTextDialog.qml
     qml/dialogs/AircraftSaveDialog.qml
+    qml/dialogs/FlightLogEntryEditor.qml
     qml/dialogs/ErrorDialog.qml
     qml/dialogs/FirstRunDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml
@@ -627,6 +640,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/BugReportPage.qml
     qml/pages/ConnectionManager.qml
     qml/pages/DonatePage.qml
+    qml/pages/FlightLogPage.qml
     qml/pages/FlightRouteEditor.qml
     qml/pages/FlightRouteLibrary.qml
     qml/pages/InfoPage.qml

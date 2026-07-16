@@ -468,7 +468,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     }
 
     // Prepare the factor object
-    Traffic::TrafficFactorData_WithPosition factor = {
+    const Traffic::TrafficFactorData_WithPosition factor = {
         .data = {
             .alarmLevel = alarmLevel,
             .callSign = callsign,

@@ -43,7 +43,7 @@ class Timespan {
          *
          * @returns time
          */
-        static auto fromH(double timeInH) -> Timespan {
+        static constexpr auto fromH(double timeInH) -> Timespan {
             Timespan result;
             result.m_timeInS = timeInH*Seconds_per_Hour;
             return result;
@@ -55,7 +55,7 @@ class Timespan {
          *
          * @returns time
          */
-        static Timespan fromMS(double timeInMS)
+        static constexpr Timespan fromMS(double timeInMS)
         {
             Timespan result;
             result.m_timeInS = timeInMS/1000.0;
@@ -68,7 +68,8 @@ class Timespan {
          *
          * @returns time
          */
-        static auto fromS(double timeInS) -> Timespan {
+        static constexpr auto fromS(double timeInS)
+        {
             Timespan result;
             result.m_timeInS = timeInS;
             return result;
@@ -150,7 +151,7 @@ class Timespan {
         static constexpr double Seconds_per_Hour = 60.0 * 60.0;
 
         // Speed in meters per second
-        double m_timeInS{qQNaN()};
+        double m_timeInS {NAN};
     };
 } // namespace Units
 

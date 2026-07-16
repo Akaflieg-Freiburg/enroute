@@ -185,8 +185,8 @@ private:
     QList<TrackPoint> m_track;
 
     // Recording thresholds
-    static constexpr double minDistanceM = 300.0;
-    static constexpr int minIntervalSecs = 10;
+    static constexpr auto minDistance = Units::Distance::fromM(300.0);
+    static constexpr auto minTimeInterval = Units::Timespan::fromS(10);
 
     // Tracks directory
     const QString m_trackDir {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/tracks"_s};

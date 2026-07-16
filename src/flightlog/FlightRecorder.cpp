@@ -57,13 +57,15 @@ auto Flightlog::FlightRecorder::shouldRecord(const Positioning::PositionInfo& in
 
     // Record if enough time has passed
     if (!m_lastTimestamp.isValid()
-        || m_lastTimestamp.secsTo(info.timestamp()) >= minIntervalSecs) {
+        || m_lastTimestamp.secsTo(info.timestamp()) >= minTimeInterval.toS())
+    {
         return true;
     }
 
     // Record if we've moved far enough
     if (m_lastCoordinate.isValid()
-        && m_lastCoordinate.distanceTo(info.coordinate()) >= minDistanceM) {
+        && m_lastCoordinate.distanceTo(info.coordinate()) >= minDistance.toM())
+    {
         return true;
     }
 
@@ -179,7 +181,7 @@ auto Flightlog::FlightRecorder::loadTrackPath(const Flight& flight) const -> QLi
 
     QList<QGeoCoordinate> path;
     path.reserve(trackPoints.size());
-    for (const auto& pt : trackPoints) {
+    for (const auto& pt : std::as_const(trackPoints)) {
         path.append(pt.coordinate);
     }
     return path;

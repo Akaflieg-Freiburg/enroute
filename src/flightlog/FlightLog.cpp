@@ -409,12 +409,16 @@ auto Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices) -> QB
     csv += u"Text,Text,Text,YYYY,Text,Text,Text,Text,Text,Boolean,Boolean,Boolean,Boolean\r\n"_s;
     csv += u"AircraftID,EquipmentType,TypeCode,Year,Make,Model,GearType,EngineType,Category/Class,Complex,High Performance,Pressurized,TAA\r\n"_s;
 
-    QList<QString> seenAircraft;
-    for (const auto& f : std::as_const(toExport)) {
-        const QString id = f.aircraftCallsign();
-        if (!id.isEmpty() && !seenAircraft.contains(id)) {
-            seenAircraft.append(id);
-            csv += csvField(id) + u",aircraft,,,,,,,,,,,\r\n"_s;
+    {
+        QStringList seenAircraft;
+        for (const auto& f : std::as_const(toExport))
+        {
+            const QString id = f.aircraftCallsign();
+            if (!id.isEmpty() && !seenAircraft.contains(id))
+            {
+                seenAircraft.append(id);
+                csv += csvField(id) + u",aircraft,,,,,,,,,,,\r\n"_s;
+            }
         }
     }
 

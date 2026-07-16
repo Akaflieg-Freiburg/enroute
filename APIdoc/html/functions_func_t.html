@@ -50,6 +50,7 @@ $(function() {
 <li>TAF()&#160;:&#160;<a class="el" href="classWeather_1_1TAF.html#a7b702bb529d1819ffde55cc845b8ad83">Weather::TAF</a></li>
 <li>taf()&#160;:&#160;<a class="el" href="classWeather_1_1Observer.html#aa6de31c7d3220d790328520fb54de5e3">Weather::Observer</a></li>
 <li>TAFs()&#160;:&#160;<a class="el" href="classWeather_1_1WeatherDataProvider.html#a332e4f194f2de852d0539e662f1f6238">Weather::WeatherDataProvider</a></li>
+<li>takeoffDetected()&#160;:&#160;<a class="el" href="classFlightlog_1_1FlightDetector.html#ac6b77b69f5d941e98c97c33c4d6abb2b">Flightlog::FlightDetector</a>, <a class="el" href="classFlightlog_1_1FlightLog.html#a62783f3d2180a64d4fa48536e47c4573">Flightlog::FlightLog</a></li>
 <li>TC()&#160;:&#160;<a class="el" href="classNavigation_1_1Leg.html#ac12aef3953b1a615030c9fd866a4cf7f">Navigation::Leg</a></li>
 <li>terrain()&#160;:&#160;<a class="el" href="classUi_1_1SideviewQuickItem.html#ae08c62633e95c736f648fc08d35333c1">Ui::SideviewQuickItem</a></li>
 <li>terrainElevationAMSL()&#160;:&#160;<a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a7401e0e4196a332bc49aeaba8790083b">GeoMaps::GeoMapProvider</a>, <a class="el" href="classPositioning_1_1PositionInfo.html#ad92faf16dd43094d012fcf3fbf86c384">Positioning::PositionInfo</a></li>
@@ -87,8 +88,9 @@ $(function() {
 <li>toH()&#160;:&#160;<a class="el" href="classUnits_1_1Timespan.html#af3615fcbd2220b0388cfd19a0413696d">Units::Timespan</a></li>
 <li>toHoursAndMinutes()&#160;:&#160;<a class="el" href="classUnits_1_1Timespan.html#a362a7ffa482a99457e74bfcd13039640">Units::Timespan</a></li>
 <li>toHPa()&#160;:&#160;<a class="el" href="classUnits_1_1Pressure.html#ad34afd98c186ed38918798db666289b9">Units::Pressure</a></li>
+<li>toIGC()&#160;:&#160;<a class="el" href="classFlightlog_1_1FlightRecorder.html#a755b8cfb353f120395d7003cf9e85b77">Flightlog::FlightRecorder</a></li>
 <li>toInHg()&#160;:&#160;<a class="el" href="classUnits_1_1Pressure.html#a3cb6046ad080c5c732be7460cb29cc70">Units::Pressure</a></li>
-<li>toJSON()&#160;:&#160;<a class="el" href="classGeoMaps_1_1Waypoint.html#a56fa902c7e9434028e675b2e4a3208cd">GeoMaps::Waypoint</a>, <a class="el" href="classNavigation_1_1Aircraft.html#a18d85e89bd3ab9d526f908b78614e44e">Navigation::Aircraft</a></li>
+<li>toJSON()&#160;:&#160;<a class="el" href="classFlightlog_1_1Flight.html#a27d99accf37385401a9083534a81ba86">Flightlog::Flight</a>, <a class="el" href="classGeoMaps_1_1Waypoint.html#a56fa902c7e9434028e675b2e4a3208cd">GeoMaps::Waypoint</a>, <a class="el" href="classNavigation_1_1Aircraft.html#a18d85e89bd3ab9d526f908b78614e44e">Navigation::Aircraft</a></li>
 <li>toKgPerCubeMeter()&#160;:&#160;<a class="el" href="classUnits_1_1Density.html#ab95b8439ce7dece761aab70aa95d3f71">Units::Density</a></li>
 <li>toKM()&#160;:&#160;<a class="el" href="classUnits_1_1Distance.html#ad04cf6783a7a0ca36ff5ed80cf37a8bf">Units::Distance</a></li>
 <li>toKMH()&#160;:&#160;<a class="el" href="classUnits_1_1Speed.html#ad2490866a74c976ba68705a57bd9627e">Units::Speed</a></li>
@@ -110,6 +112,12 @@ $(function() {
 <li>toString()&#160;:&#160;<a class="el" href="classUnits_1_1Distance.html#ab095aabf5e58e3f9534f73c7bd06f164">Units::Distance</a></li>
 <li>toVfrFlightPlan()&#160;:&#160;<a class="el" href="classNavigation_1_1FlightRoute.html#a9d47d3bae6d9795c95581925e79968b9">Navigation::FlightRoute</a></li>
 <li>track()&#160;:&#160;<a class="el" href="classUi_1_1SideviewQuickItem.html#a636576fc17d13b7a0b6c1c322deb883e">Ui::SideviewQuickItem</a></li>
+<li>trackFile()&#160;:&#160;<a class="el" href="classFlightlog_1_1Flight.html#a4f56b27773f508f577c1bfe186b2338b">Flightlog::Flight</a></li>
+<li>trackFromIGC()&#160;:&#160;<a class="el" href="classFlightlog_1_1FlightRecorder.html#a5b9d832ba0aebc00111504cca62246af">Flightlog::FlightRecorder</a></li>
+<li>trackGeoPath()&#160;:&#160;<a class="el" href="classFlightlog_1_1FlightRecorder.html#a7d424e7c19647de9af1b79bf6b4f3f87">Flightlog::FlightRecorder</a></li>
+<li>trackGeoPathChanged()&#160;:&#160;<a class="el" href="classFlightlog_1_1FlightRecorder.html#ae226f8e321d402180517c9847d7afe3e">Flightlog::FlightRecorder</a></li>
+<li>trackRecording()&#160;:&#160;<a class="el" href="classGlobalSettings.html#a078f29cbb92179b8a8157d9a6e7b16dc">GlobalSettings</a></li>
+<li>trackRecordingChanged()&#160;:&#160;<a class="el" href="classFlightlog_1_1FlightLog.html#a8c2775fdadbe7b03b41ff9c84b2dfab1">Flightlog::FlightLog</a>, <a class="el" href="classGlobalSettings.html#a1de962c5f1480d00217166442f9a12ad">GlobalSettings</a></li>
 <li>traffic()&#160;:&#160;<a class="el" href="classNOTAM_1_1NOTAM.html#a20f0cc1d9ab4d3169c9f39a6fe9b7fb4">NOTAM::NOTAM</a>, <a class="el" href="classTraffic_1_1TrafficObserver.html#acaf4dc1873714a0b37cd5e1f4398f8b5">Traffic::TrafficObserver</a></li>
 <li>TrafficDataProvider()&#160;:&#160;<a class="el" href="classTraffic_1_1TrafficDataProvider.html#ad08bfbab038fcc25fbe45af20b8e1e99">Traffic::TrafficDataProvider</a></li>
 <li>trafficDataProvider()&#160;:&#160;<a class="el" href="classGlobalObject.html#acc3b67374f1eac467da729151c31aff6">GlobalObject</a></li>

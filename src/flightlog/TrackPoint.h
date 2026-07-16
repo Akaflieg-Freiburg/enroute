@@ -42,7 +42,10 @@ struct TrackPoint
     /*! \brief UTC timestamp of this fix */
     QDateTime timestamp;
 
-    /*! \brief Check if this track point has valid data */
+    /*! \brief Check if this track point has valid data
+     *
+     *  @returns True if both coordinate and timestamp are valid
+     */
     [[nodiscard]] auto isValid() const -> bool
     {
         return coordinate.isValid() && timestamp.isValid();

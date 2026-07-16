@@ -71,7 +71,10 @@ public:
     /*! \brief Standard destructor */
     ~FlightDetector() override = default;
 
-    /*! \brief Current detection state */
+    /*! \brief Current detection state
+     *
+     *  @returns The current detection state
+     */
     [[nodiscard]] virtual auto detectionState() const -> DetectionState = 0;
 
     /*! \brief Process a position update

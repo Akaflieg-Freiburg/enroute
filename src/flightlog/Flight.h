@@ -297,7 +297,11 @@ public:
      */
     static auto fromJSON(const QJsonObject& json) -> Flight;
 
-    /*! \brief Comparison operator */
+    /*! \brief Comparison operator
+     *
+     *  @param other Flight to compare with
+     *  @returns True if both flights are equal
+     */
     Q_INVOKABLE bool operator==(const Flightlog::Flight& other) const;
 
 private:

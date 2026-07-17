@@ -106,6 +106,8 @@ auto Flightlog::Flight::toJSON() const -> QJsonObject
         json[u"trackFile"_s] = m_trackFile;
     }
 
+    json[u"uuid"_s] = m_id.toString(QUuid::WithoutBraces);
+
     return json;
 }
 
@@ -143,6 +145,13 @@ auto Flightlog::Flight::fromJSON(const QJsonObject& json) -> Flight
     auto trackFile = json.value(u"trackFile"_s).toString();
     if (!trackFile.isEmpty() && !trackFile.contains(u'/') && !trackFile.contains(u'\\')) {
         f.m_trackFile = trackFile;
+    }
+
+    // Restore UUID; generate a fresh one for entries created before this field was added
+    auto uuidStr = json.value(u"uuid"_s).toString();
+    f.m_id = uuidStr.isEmpty() ? QUuid::createUuid() : QUuid::fromString(uuidStr);
+    if (f.m_id.isNull()) {
+        f.m_id = QUuid::createUuid();
     }
 
     return f;

@@ -24,6 +24,7 @@
 #include <QGeoCoordinate>
 #include <QJsonObject>
 #include <QQmlEngine>
+#include <QUuid>
 
 #include "units/Distance.h"
 
@@ -40,6 +41,9 @@ class Flight
 {
     Q_GADGET
     QML_VALUE_TYPE(flight)
+
+    /*! \brief Unique identity of this flight entry (stable across sorting and edits) */
+    Q_PROPERTY(QUuid uuid READ uuid)
 
     /*! \brief ICAO code of the departure airport */
     Q_PROPERTY(QString departureICAO READ departureICAO WRITE setDepartureICAO)
@@ -78,12 +82,14 @@ class Flight
     Q_PROPERTY(QString trackFile READ trackFile)
 
 public:
-    /*! \brief Default constructor */
-    Flight() = default;
+    /*! \brief Default constructor — generates a unique identity */
+    Flight() : m_id(QUuid::createUuid()) {}
 
     //
     // Getters
     //
+
+    [[nodiscard]] auto uuid() const -> QUuid { return m_id; }
 
     /*! \brief Getter function for property of the same name
      *
@@ -318,6 +324,7 @@ private:
     QGeoCoordinate m_departureCoordinate;
     QGeoCoordinate m_arrivalCoordinate;
     QString m_trackFile;
+    QUuid m_id;
 };
 
 } // namespace Flightlog

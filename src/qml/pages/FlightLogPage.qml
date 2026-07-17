@@ -35,22 +35,22 @@ Page {
 
     // Selection state
     property bool selectionMode: false
-    property var selectedIndices: []
+    property var selectedUuids: []
 
-    function toggleSelection(idx) {
-        var arr = page.selectedIndices.slice()
-        var pos = arr.indexOf(idx)
+    function toggleSelection(uuid) {
+        var arr = page.selectedUuids.slice()
+        var pos = arr.indexOf(uuid)
         if (pos >= 0) {
             arr.splice(pos, 1)
         } else {
-            arr.push(idx)
+            arr.push(uuid)
         }
-        page.selectedIndices = arr
+        page.selectedUuids = arr
     }
 
     function exitSelectionMode() {
         page.selectionMode = false
-        page.selectedIndices = []
+        page.selectedUuids = []
     }
 
     header: PageHeader {
@@ -88,9 +88,9 @@ Page {
             anchors.right: headerMenuToolButton.left
 
             text: page.selectionMode
-                  ? (page.selectedIndices.length === 0
+                  ? (page.selectedUuids.length === 0
                      ? qsTr("Select flights")
-                     : qsTr("%1 selected").arg(page.selectedIndices.length))
+                     : qsTr("%1 selected").arg(page.selectedUuids.length))
                   : stackView.currentItem.title
             elide: Label.ElideRight
             font.pixelSize: 20
@@ -154,7 +154,7 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        var errorString = FileExchange.shareContent(FlightLog.exportToForeFlight(page.selectedIndices), "text/*", "csv", qsTr("FlightLog"))
+                        var errorString = FileExchange.shareContent(FlightLog.exportToForeFlight(page.selectedUuids), "text/*", "csv", qsTr("FlightLog"))
                         if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                         if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                         toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
@@ -169,7 +169,7 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        var errorString = FileExchange.shareContent(FlightLog.exportToJSON(page.selectedIndices), "text/*", "json", qsTr("FlightLog"))
+                        var errorString = FileExchange.shareContent(FlightLog.exportToJSON(page.selectedUuids), "text/*", "json", qsTr("FlightLog"))
                         if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                         if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                         toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
@@ -179,7 +179,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Hide Track from Map")
-                    enabled: FlightLog.displayedTrackIndex >= 0
+                    enabled: FlightLog.displayedTrackUuid !== ""
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -190,7 +190,7 @@ Page {
 
                 MenuItem {
                     text: page.selectionMode ? qsTr("Remove Selected Flights…") : qsTr("Clear Flight Log")
-                    enabled: page.selectionMode ? page.selectedIndices.length > 0 : FlightLog.count > 0
+                    enabled: page.selectionMode ? page.selectedUuids.length > 0 : FlightLog.count > 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -308,10 +308,10 @@ Page {
             // Checkbox visible in selection mode
             CheckBox {
                 visible: page.selectionMode
-                checked: page.selectedIndices.indexOf(index) >= 0
+                checked: page.selectedUuids.indexOf(modelData.uuid.toString()) >= 0
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    page.toggleSelection(index)
+                    page.toggleSelection(modelData.uuid.toString())
                 }
             }
 
@@ -410,7 +410,7 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     if (page.selectionMode) {
-                        page.toggleSelection(index)
+                        page.toggleSelection(modelData.uuid.toString())
                     }
                 }
 
@@ -421,13 +421,13 @@ Page {
                         if (!page.selectionMode) {
                             page.selectionMode = true
                         }
-                        page.toggleSelection(index)
+                        page.toggleSelection(modelData.uuid.toString())
                     }
                 }
 
                 swipe.onCompleted: {
                     PlatformAdaptor.vibrateBrief()
-                    removeDialog.flightIndex = index
+                    removeDialog.flightUuid = modelData.uuid.toString()
                     removeDialog.open()
                 }
             }
@@ -439,7 +439,7 @@ Page {
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    flightEditor.flightIndex = index
+                    flightEditor.flightUuid = modelData.uuid.toString()
                     flightEditor.editFlight = modelData
                     flightEditor.open()
                 }
@@ -459,15 +459,15 @@ Page {
                     id: cptMenu
 
                     Action {
-                        text: FlightLog.displayedTrackIndex === index ? qsTr("Hide from Map") : qsTr("Show on Map")
+                        text: FlightLog.displayedTrackUuid === modelData.uuid.toString() ? qsTr("Hide from Map") : qsTr("Show on Map")
                         enabled: modelData.hasTrack
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            if (FlightLog.displayedTrackIndex === index) {
+                            if (FlightLog.displayedTrackUuid === modelData.uuid.toString()) {
                                 FlightLog.hideTrack()
                             } else {
-                                FlightLog.showTrack(index)
+                                FlightLog.showTrack(modelData.uuid.toString())
                             }
                         }
                     }
@@ -477,7 +477,7 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var errorString = FileExchange.shareContent(FlightLog.exportToForeFlight([index]), "text/*", "csv", qsTr("FlightLog"))
+                            var errorString = FileExchange.shareContent(FlightLog.exportToForeFlight([modelData.uuid.toString()]), "text/*", "csv", qsTr("FlightLog"))
                             if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                             toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
@@ -489,7 +489,7 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var errorString = FileExchange.shareContent(FlightLog.exportToJSON([index]), "text/*", "json", qsTr("FlightLog"))
+                            var errorString = FileExchange.shareContent(FlightLog.exportToJSON([modelData.uuid.toString()]), "text/*", "json", qsTr("FlightLog"))
                             if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                             toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
@@ -502,7 +502,7 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var errorString = FileExchange.shareContent(FlightLog.exportToIGC(index), "text/*", "igc", qsTr("FlightLog"))
+                            var errorString = FileExchange.shareContent(FlightLog.exportToIGC(modelData.uuid.toString()), "text/*", "igc", qsTr("FlightLog"))
                             if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                             toast.doToast(page.isAndroidOrIos ? qsTr("Track shared") : qsTr("Track exported"))
@@ -515,7 +515,7 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            removeTrackDialog.flightIndex = index
+                            removeTrackDialog.flightUuid = modelData.uuid.toString()
                             removeTrackDialog.open()
                         }
                     }
@@ -525,7 +525,7 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            removeDialog.flightIndex = index
+                            removeDialog.flightUuid = modelData.uuid.toString()
                             removeDialog.open()
                         }
                     }
@@ -546,7 +546,6 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    addFlightEditor.flightIndex = -1
 
                     // Prefill aircraft callsign from current aircraft
                     var acName = Navigator.aircraft.name
@@ -584,7 +583,7 @@ Page {
     LongTextDialog {
         id: removeTrackDialog
 
-        property int flightIndex: -1
+        property string flightUuid: ""
 
         title: qsTr("Delete Track?")
         text: qsTr("Once deleted, the recorded track data cannot be restored.")
@@ -592,7 +591,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            FlightLog.removeTrack(removeTrackDialog.flightIndex)
+            FlightLog.removeTrack(removeTrackDialog.flightUuid)
             toast.doToast(qsTr("Track deleted"))
         }
         onRejected: {
@@ -603,7 +602,7 @@ Page {
     LongTextDialog {
         id: removeDialog
 
-        property int flightIndex: -1
+        property string flightUuid: ""
 
         title: qsTr("Remove Flight?")
         text: qsTr("Once removed, this flight record cannot be restored.")
@@ -611,7 +610,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            FlightLog.removeFlight(removeDialog.flightIndex)
+            FlightLog.removeFlight(removeDialog.flightUuid)
             toast.doToast(qsTr("Flight removed"))
         }
         onRejected: {
@@ -628,8 +627,9 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            while (FlightLog.count > 0) {
-                FlightLog.removeFlight(0)
+            var uuids = FlightLog.flights.map(function(f) { return f.uuid.toString() })
+            for (var i = 0; i < uuids.length; i++) {
+                FlightLog.removeFlight(uuids[i])
             }
             toast.doToast(qsTr("Flight log cleared"))
         }
@@ -644,10 +644,8 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            // Remove in descending order so indices stay valid
-            var sorted = page.selectedIndices.slice().sort(function(a, b) { return b - a })
-            for (var i = 0; i < sorted.length; i++) {
-                FlightLog.removeFlight(sorted[i])
+            for (var i = 0; i < page.selectedUuids.length; i++) {
+                FlightLog.removeFlight(page.selectedUuids[i])
             }
             toast.doToast(qsTr("Flights removed"))
             page.exitSelectionMode()
@@ -680,7 +678,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            FlightLog.updateFlight(flightEditor.flightIndex, flightEditor.resultFlight())
+            FlightLog.updateFlight(flightEditor.flightUuid, flightEditor.resultFlight())
             toast.doToast(qsTr("Flight updated"))
         }
     }

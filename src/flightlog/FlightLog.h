@@ -23,6 +23,7 @@
 #include <QQmlEngine>
 #include <QStandardPaths>
 #include <QTimer>
+#include <QUuid>
 #include <QVariant>
 
 #include "GlobalObject.h"
@@ -105,13 +106,13 @@ public:
     Q_PROPERTY(QList<QGeoCoordinate> displayedTrackPath READ displayedTrackPath NOTIFY displayedTrackPathChanged)
     [[nodiscard]] auto displayedTrackPath() const -> QList<QGeoCoordinate>;
 
-    /*! \brief Index of the flight whose track is displayed, or -1 if none
+    /*! \brief UUID of the flight whose track is displayed, or empty string if none
      *
-     *  Computed from the displayed track file. Returns -1 when showing the
-     *  live track or no track.
+     *  Computed from the displayed track file. Returns an empty string when showing
+     *  the live track or no track.
      */
-    Q_PROPERTY(int displayedTrackIndex READ displayedTrackIndex NOTIFY displayedTrackPathChanged)
-    [[nodiscard]] auto displayedTrackIndex() const -> int;
+    Q_PROPERTY(QString displayedTrackUuid READ displayedTrackUuid NOTIFY displayedTrackPathChanged)
+    [[nodiscard]] auto displayedTrackUuid() const -> QString;
 
     /*! \brief Whether GPS track recording is enabled
      *
@@ -145,21 +146,23 @@ public:
      */
     Q_INVOKABLE void addFlight(const Flightlog::Flight& flight);
 
-    /*! \brief Remove a flight from the log
+    /*! \brief Remove a flight from the log by UUID
      *
-     *  @param index The index of the flight to remove
+     *  Does nothing if no flight with the given UUID exists.
+     *
+     *  @param uuid The UUID of the flight to remove (with or without braces)
      */
-    Q_INVOKABLE void removeFlight(int index);
+    Q_INVOKABLE void removeFlight(const QString& uuid);
 
     /*! \brief Update an existing flight in the log
      *
      *  Coordinates are re-resolved from the ICAO codes. If resolution
      *  fails, old coordinates are preserved.
      *
-     *  @param index The index of the flight to update
+     *  @param uuid UUID of the flight to update (with or without braces)
      *  @param flight The updated flight data
      */
-    Q_INVOKABLE void updateFlight(int index, const Flightlog::Flight& flight);
+    Q_INVOKABLE void updateFlight(const QString& uuid, const Flightlog::Flight& flight);
 
     /*! \brief Create a Flight value from individual field strings
      *
@@ -226,49 +229,49 @@ public:
      *  Returns the raw IGC file bytes ready for sharing.
      *  Returns an empty array if the flight has no track or the file cannot be read.
      *
-     *  @param index The index of the flight to export
+     *  @param uuid UUID of the flight to export (with or without braces)
      *  @returns IGC file content, or empty
      */
-    Q_INVOKABLE QByteArray exportToIGC(int index);
+    Q_INVOKABLE QByteArray exportToIGC(const QString& uuid);
 
     /*! \brief Generate ForeFlight CSV content for selected flights
      *
-     *  Returns the CSV bytes ready for sharing. If @p indices is empty,
+     *  Returns the CSV bytes ready for sharing. If @p uuids is empty,
      *  all flights are included.
      *
-     *  @param indices Indices of the flights to include; empty means all
+     *  @param uuids UUIDs of the flights to include; empty means all
      *  @returns CSV content as UTF-8, or empty if no matching flights
      */
-    Q_INVOKABLE QByteArray exportToForeFlight(const QVariantList& indices);
+    Q_INVOKABLE QByteArray exportToForeFlight(const QStringList& uuids);
 
     /*! \brief Generate JSON content for selected flights
      *
      *  Returns the JSON bytes ready for sharing. Uses the same internal
-     *  format as the persisted flight log file. If @p indices is empty,
+     *  format as the persisted flight log file. If @p uuids is empty,
      *  all flights are included.
      *
-     *  @param indices Indices of the flights to include; empty means all
+     *  @param uuids UUIDs of the flights to include; empty means all
      *  @returns JSON content, or empty if no matching flights
      */
-    Q_INVOKABLE QByteArray exportToJSON(const QVariantList& indices);
+    Q_INVOKABLE QByteArray exportToJSON(const QStringList& uuids);
 
     /*! \brief Delete the recorded track for a flight
      *
      *  Removes the IGC file from disk and clears the trackFile
      *  property on the flight entry.
      *
-     *  @param index The index of the flight whose track to delete
+     *  @param uuid UUID of the flight whose track to delete (with or without braces)
      */
-    Q_INVOKABLE void removeTrack(int index);
+    Q_INVOKABLE void removeTrack(const QString& uuid);
 
     /*! \brief Show a flight's track on the map
      *
      *  Loads the track if needed and sets it as the displayed track.
      *  Only one track can be displayed at a time.
      *
-     *  @param index The index of the flight whose track to show
+     *  @param uuid UUID of the flight whose track to show (with or without braces)
      */
-    Q_INVOKABLE void showTrack(int index);
+    Q_INVOKABLE void showTrack(const QString& uuid);
 
     /*! \brief Hide the currently displayed track from the map */
     Q_INVOKABLE void hideTrack();
@@ -367,8 +370,8 @@ private:
 #warning Should become a QProperty!
     QList<Flight> m_flights;
 
-    // Index of the flight currently being recorded, or -1 if none
-    int m_currentFlightIndex {-1};
+    // UUID of the flight currently being recorded, or null if none
+    QUuid m_currentFlightUuid;
 
     // Filename of the flight whose saved track is displayed, or empty
     QString m_displayedTrackFile;

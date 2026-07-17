@@ -974,13 +974,17 @@ void Flightlog::FlightLog::onPositionUpdated()
     }
 
     auto info = GlobalObject::positionProvider()->positionInfo();
-    m_detector->processPositionUpdate(info);
 
-    // Forward to recorder — it manages preflight/inflight/postlanding internally
+    // Update the recorder first so the current position is committed to the
+    // open leg before the detector can emit landingDetected and clear it.
+    // This ordering is correct regardless of whether the landingDetected
+    // connection is direct or queued.
     if (trackRecording()) {
         auto pressAlt = GlobalObject::positionProvider()->pressureAltitude();
         m_recorder.processPositionUpdate(m_detector->detectionState(), info, pressAlt);
     }
+
+    m_detector->processPositionUpdate(info);
 }
 
 

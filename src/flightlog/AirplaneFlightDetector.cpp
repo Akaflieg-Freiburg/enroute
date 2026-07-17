@@ -182,9 +182,10 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
                 auto elev = Units::Distance::fromM(closestAD2.coordinate().altitude());
                 if (elev.isFinite()
                     && (altitudeAMSL - elev) > Units::Distance::fromFT(altitudeGainFT)) {
-                    // Close the current leg by going through Idle first.
-                    // This ensures onLandingDetected saves the track while
-                    // m_flights[0] is still the current leg.
+                    // Close the current leg. The Idle detour was originally
+                    // needed to protect a list-index invariant (D-006), which
+                    // has since been replaced by UUID tracking. It is harmless
+                    // but no longer necessary for correctness.
                     auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
                     auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
                     auto landingCount = m_landingCount;

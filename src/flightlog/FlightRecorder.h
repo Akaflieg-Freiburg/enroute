@@ -46,8 +46,10 @@ namespace Flightlog {
  *  - **TakeoffPhase → abort (Idle)**: Track is discarded on next cycle.
  *  - **LandingPhase → Idle**: Recording ends. Track saving is handled
  *    externally by FlightLog::onLandingDetected.
- *  - **LandingPhase → InFlight**: Touch-and-go — same as above, the
- *    detector transitions through Idle first.
+ *  - **LandingPhase → InFlight**: Touch-and-go. FlightLog must call
+ *    processPositionUpdate() on the recorder *before* the detector so
+ *    each position is committed to the correct leg regardless of whether
+ *    the landingDetected connection is direct or queued.
  */
 class FlightRecorder : public QObject
 {

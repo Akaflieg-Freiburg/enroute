@@ -108,6 +108,12 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
             return;
         }
 
+        // Skip the expensive airfield lookup while well above ground
+        auto altAGL = info.trueAltitudeAGL();
+        if (altAGL.isFinite() && altAGL > Units::Distance::fromFT(landingAltitudeAGLFT * 3.0)) {
+            return;
+        }
+
         // Check if near an airport
         auto closestAD = FlightLog::nearestAirfield(info.coordinate());
         if (!closestAD.isValid()) {

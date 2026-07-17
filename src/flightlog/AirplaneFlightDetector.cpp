@@ -177,7 +177,11 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning:
                 auto elev = Units::Distance::fromM(closestAD2.coordinate().altitude());
                 if (elev.isFinite()
                     && (altitudeAMSL - elev) > Units::Distance::fromFT(landingAltitudeAGLFT)) {
-                    m_landingCount++;   // touch-and-go: count the low pass as a landing
+                    // Count the low pass as a landing. GPS data cannot reliably
+                    // distinguish a touch-and-go from a balked landing / go-around,
+                    // so any approach that descended below the landing threshold near
+                    // an airfield is counted — intentional conservative design.
+                    m_landingCount++;
                     m_landingPhaseEntryTime = {};
                     m_detectionState = InFlight;
                     emit detectionStateChanged();

@@ -114,7 +114,7 @@ public:
      *  @param flight The flight whose track to export
      *  @returns IGC file content, or empty if no track file or file not readable
      */
-    QByteArray exportToIGC(const Flight& flight);
+    [[nodiscard]] QByteArray exportToIGC(const Flight& flight) const;
 
     /*! \brief Delete the track file from disk
      *

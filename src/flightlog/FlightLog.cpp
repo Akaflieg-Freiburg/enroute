@@ -440,7 +440,7 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position, doubl
 }
 
 
-auto Flightlog::FlightLog::exportToIGC(const QString& uuid) -> QByteArray
+auto Flightlog::FlightLog::exportToIGC(const QString& uuid) const -> QByteArray
 {
     auto targetUuid = QUuid::fromString(uuid);
     auto it = std::ranges::find_if(m_flights, [&](const Flight& f) {
@@ -470,7 +470,7 @@ auto Flightlog::FlightLog::flightsForUuids(const QStringList& uuids) const -> QL
 }
 
 
-auto Flightlog::FlightLog::exportToForeFlight(const QStringList& uuids) -> QByteArray
+auto Flightlog::FlightLog::exportToForeFlight(const QStringList& uuids) const -> QByteArray
 {
     const auto toExport = flightsForUuids(uuids);
     if (toExport.isEmpty()) {
@@ -631,7 +631,7 @@ auto Flightlog::FlightLog::exportToForeFlight(const QStringList& uuids) -> QByte
 }
 
 
-auto Flightlog::FlightLog::exportToJSON(const QStringList& uuids) -> QByteArray
+auto Flightlog::FlightLog::exportToJSON(const QStringList& uuids) const -> QByteArray
 {
     const auto toExport = flightsForUuids(uuids);
     if (toExport.isEmpty()) {

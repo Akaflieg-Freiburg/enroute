@@ -251,7 +251,7 @@ public:
      *  @param uuid UUID of the flight to export (with or without braces)
      *  @returns IGC file content, or empty
      */
-    Q_INVOKABLE QByteArray exportToIGC(const QString& uuid);
+    [[nodiscard]] Q_INVOKABLE QByteArray exportToIGC(const QString& uuid) const;
 
     /*! \brief Generate ForeFlight CSV content for selected flights
      *
@@ -261,7 +261,7 @@ public:
      *  @param uuids UUIDs of the flights to include; empty means all
      *  @returns CSV content as UTF-8, or empty if no matching flights
      */
-    Q_INVOKABLE QByteArray exportToForeFlight(const QStringList& uuids);
+    [[nodiscard]] Q_INVOKABLE QByteArray exportToForeFlight(const QStringList& uuids) const;
 
     /*! \brief Generate JSON content for selected flights
      *
@@ -272,7 +272,7 @@ public:
      *  @param uuids UUIDs of the flights to include; empty means all
      *  @returns JSON content, or empty if no matching flights
      */
-    Q_INVOKABLE QByteArray exportToJSON(const QStringList& uuids);
+    [[nodiscard]] Q_INVOKABLE QByteArray exportToJSON(const QStringList& uuids) const;
 
     /*! \brief Delete the recorded track for a flight
      *

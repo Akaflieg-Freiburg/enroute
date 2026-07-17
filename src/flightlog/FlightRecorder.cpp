@@ -196,7 +196,7 @@ auto Flightlog::FlightRecorder::loadTrackPath(const Flight& flight) const -> QLi
 }
 
 
-auto Flightlog::FlightRecorder::exportToIGC(const Flight& flight) -> QByteArray
+auto Flightlog::FlightRecorder::exportToIGC(const Flight& flight) const -> QByteArray
 {
     if (flight.trackFile().isEmpty()) {
         return {};

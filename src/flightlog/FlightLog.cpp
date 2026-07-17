@@ -892,6 +892,9 @@ void Flightlog::FlightLog::connectDetector(FlightDetector* detector)
 
 void Flightlog::FlightLog::onDetectionStateChanged()
 {
+    if (m_detector == nullptr) {
+        return;
+    }
     if (m_detector->detectionState() == FlightDetector::InFlight) {
         m_displayedTrackFile.clear();
         m_displayedTrackPath = {};

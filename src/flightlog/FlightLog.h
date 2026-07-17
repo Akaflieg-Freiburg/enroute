@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoPath>
 #include <QQmlEngine>
 #include <QStandardPaths>
 #include <QTimer>
@@ -103,8 +104,8 @@ public:
      *  recording track if in flight and no saved track is selected.
      *  Empty when no track is displayed.
      */
-    Q_PROPERTY(QList<QGeoCoordinate> displayedTrackPath READ displayedTrackPath NOTIFY displayedTrackPathChanged)
-    [[nodiscard]] auto displayedTrackPath() const -> QList<QGeoCoordinate>;
+    Q_PROPERTY(QGeoPath displayedTrackPath READ displayedTrackPath NOTIFY displayedTrackPathChanged)
+    [[nodiscard]] auto displayedTrackPath() const -> QGeoPath;
 
     /*! \brief UUID of the flight whose track is displayed, or empty string if none
      *
@@ -402,7 +403,7 @@ private:
     QString m_displayedTrackFile;
 
     // Cached geo path for the displayed saved track
-    QList<QGeoCoordinate> m_displayedTrackPath;
+    QGeoPath m_displayedTrackPath;
 
     // Whether track recording is enabled
 

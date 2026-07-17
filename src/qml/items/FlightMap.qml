@@ -864,13 +864,17 @@ Map {
 
     MapPolyline {
         id: recordedTrack
-        visible: FlightLog.displayedTrackPath.length > 0
+        visible: false
         line.width: 3
         line.color: "#2196F3"
-        path: {
-            var array = []
-            FlightLog.displayedTrackPath.forEach(element => array.push(element))
-            return array
+
+        Connections {
+            target: FlightLog
+            function onDisplayedTrackPathChanged() {
+                var gp = FlightLog.displayedTrackPath
+                recordedTrack.setPath(gp)
+                recordedTrack.visible = gp.path.length > 0
+            }
         }
     }
 

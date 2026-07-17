@@ -21,6 +21,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QFile>
+#include <QGeoPath>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -669,7 +670,7 @@ void Flightlog::FlightLog::removeTrack(const QString& uuid)
 }
 
 
-auto Flightlog::FlightLog::displayedTrackPath() const -> QList<QGeoCoordinate>
+auto Flightlog::FlightLog::displayedTrackPath() const -> QGeoPath
 {
     // If a saved track is selected, return its cached path
     if (!m_displayedTrackFile.isEmpty()) {
@@ -704,7 +705,7 @@ void Flightlog::FlightLog::showTrack(const QString& uuid)
     if (path.isEmpty()) {
         return;
     }
-    m_displayedTrackPath = std::move(path);
+    m_displayedTrackPath = QGeoPath(path);
     m_displayedTrackFile = it->trackFile();
     emit displayedTrackPathChanged();
 }
@@ -713,7 +714,7 @@ void Flightlog::FlightLog::showTrack(const QString& uuid)
 void Flightlog::FlightLog::hideTrack()
 {
     m_displayedTrackFile.clear();
-    m_displayedTrackPath.clear();
+    m_displayedTrackPath = {};
     emit displayedTrackPathChanged();
 }
 
@@ -893,7 +894,7 @@ void Flightlog::FlightLog::onDetectionStateChanged()
 {
     if (m_detector->detectionState() == FlightDetector::InFlight) {
         m_displayedTrackFile.clear();
-        m_displayedTrackPath.clear();
+        m_displayedTrackPath = {};
         emit displayedTrackPathChanged();
     }
     emit detectionStateChanged();
@@ -968,7 +969,7 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
             if (m_recorder.saveTrack(flight)) {
                 // Cache the geo path for map display, then free recorder RAM
                 m_displayedTrackPath = m_recorder.trackGeoPath();
-                m_displayedTrackFile = m_displayedTrackPath.isEmpty() ? QString{} : flight.trackFile();
+                m_displayedTrackFile = m_displayedTrackPath.path().isEmpty() ? QString{} : flight.trackFile();
             } else {
                 emit saveError(tr("Failed to save GPS track for flight from %1.").arg(flight.departureICAO()));
             }

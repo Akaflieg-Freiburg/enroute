@@ -20,6 +20,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QGeoPath>
 
 #include "flightlog/FlightRecorder.h"
 
@@ -83,6 +84,7 @@ void Flightlog::FlightRecorder::recordFiltered(const Positioning::PositionInfo& 
     }
 
     m_track.append(makeTrackPoint(info, pressureAltitude));
+    m_geoPath.addCoordinate(info.coordinate());
     m_lastCoordinate = info.coordinate();
     m_lastTimestamp = info.timestamp();
     emit trackGeoPathChanged();
@@ -100,6 +102,7 @@ void Flightlog::FlightRecorder::processPositionUpdate(FlightDetector::DetectionS
             m_lastCoordinate = {};
             m_lastTimestamp = {};
             m_track.clear();
+            m_geoPath = {};
         } else if (m_previousState == FlightDetector::LandingPhase) {
             // Landing or touch-and-go — reset for next recording.
             // Track saving is handled by FlightLog::onLandingDetected.
@@ -122,20 +125,16 @@ void Flightlog::FlightRecorder::clearTrack()
 {
     m_track.clear();
     m_track.squeeze();
+    m_geoPath = {};
     m_previousState = FlightDetector::Idle;
     m_lastCoordinate = {};
     m_lastTimestamp = {};
 }
 
 
-auto Flightlog::FlightRecorder::trackGeoPath() const -> QList<QGeoCoordinate>
+auto Flightlog::FlightRecorder::trackGeoPath() const -> QGeoPath
 {
-    QList<QGeoCoordinate> path;
-    path.reserve(m_track.size());
-    for (const auto& pt : m_track) {
-        path.append(pt.coordinate);
-    }
-    return path;
+    return m_geoPath;
 }
 
 

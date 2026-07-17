@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoPath>
 #include <QStandardPaths>
 
 #include "flightlog/Flight.h"
@@ -132,7 +133,7 @@ public:
      *
      *  @returns List of coordinates from the current track
      */
-    [[nodiscard]] auto trackGeoPath() const -> QList<QGeoCoordinate>;
+    [[nodiscard]] auto trackGeoPath() const -> QGeoPath;
 
     /*! \brief Generate IGC file content from flight metadata and track points
      *
@@ -185,6 +186,9 @@ private:
 
     // Accumulated track points
     QList<TrackPoint> m_track;
+
+    // Cached geo path kept in sync with m_track for O(1) reads
+    QGeoPath m_geoPath;
 
     // Recording thresholds
     static constexpr auto minDistance = Units::Distance::fromM(300.0);

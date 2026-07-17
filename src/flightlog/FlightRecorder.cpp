@@ -353,13 +353,14 @@ auto Flightlog::FlightRecorder::trackFromIGC(const QByteArray& igcData, const QD
             lon = -lon;
         }
 
-        // Validity flag at position 24
+        // Validity flag at position 24: 'A' = 3D fix (GPS altitude valid), 'V' = 2D fix
         // Pressure altitude at 25-29, GPS altitude at 30-34
+        const char validity = line[24];
         const int pressAlt = line.mid(25, 5).toInt();
         const int gpsAlt = line.mid(30, 5).toInt();
 
         TrackPoint pt;
-        if (gpsAlt != 0) {
+        if (validity == 'A') {
             pt.coordinate = QGeoCoordinate(lat, lon, gpsAlt);
         } else {
             pt.coordinate = QGeoCoordinate(lat, lon);

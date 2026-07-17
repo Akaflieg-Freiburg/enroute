@@ -880,12 +880,14 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
 
         // Save the track from the recorder to an IGC file
         if (trackRecording()) {
-            m_recorder.saveTrack(flight);
-
-            // Cache the geo path for map display, then free recorder RAM
-            m_displayedTrackPath = m_recorder.trackGeoPath();
-            m_displayedTrackFile = m_displayedTrackPath.isEmpty() ? QString{} : flight.trackFile();
-            m_recorder.clearTrack();
+            if (m_recorder.saveTrack(flight)) {
+                // Cache the geo path for map display, then free recorder RAM
+                m_displayedTrackPath = m_recorder.trackGeoPath();
+                m_displayedTrackFile = m_displayedTrackPath.isEmpty() ? QString{} : flight.trackFile();
+                m_recorder.clearTrack();
+            } else {
+                emit saveError(tr("Failed to save GPS track for flight from %1.").arg(flight.departureICAO()));
+            }
         }
 
         save();

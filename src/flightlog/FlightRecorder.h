@@ -85,7 +85,7 @@ public:
      *
      *  @param flight The flight whose metadata to use for the IGC headers
      */
-    void saveTrack(Flight& flight);
+    bool saveTrack(Flight& flight);
 
     /*! \brief Clear the in-memory track data
      *

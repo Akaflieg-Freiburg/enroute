@@ -136,15 +136,17 @@ auto Flightlog::FlightRecorder::trackGeoPath() const -> QList<QGeoCoordinate>
 }
 
 
-void Flightlog::FlightRecorder::saveTrack(Flight& flight)
+bool Flightlog::FlightRecorder::saveTrack(Flight& flight)
 {
     if (m_track.isEmpty()) {
-        return;
+        return true;
     }
 
     // Ensure tracks directory exists
     const QDir dir;
-    dir.mkpath(m_trackDir);
+    if (!dir.mkpath(m_trackDir)) {
+        return false;
+    }
 
     // Generate filename from start time
     auto dateTimeStr = flight.startTime().isValid()
@@ -154,11 +156,15 @@ void Flightlog::FlightRecorder::saveTrack(Flight& flight)
 
     auto igcData = toIGC(flight, m_track);
     QFile file(m_trackDir + u"/"_s + trackFileName);
-    if (file.open(QIODevice::WriteOnly)) {
-        file.write(igcData);
-        file.close();
-        flight.setTrackFile(trackFileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        return false;
     }
+    if (file.write(igcData) != igcData.size()) {
+        file.remove();
+        return false;
+    }
+    flight.setTrackFile(trackFileName);
+    return true;
 }
 
 

@@ -405,8 +405,6 @@ private:
     // Cached geo path for the displayed saved track
     QGeoPath m_displayedTrackPath;
 
-    // Whether track recording is enabled
-
     // The active flight detector (owned by this object)
     FlightDetector* m_detector {nullptr};
 

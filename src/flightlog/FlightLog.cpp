@@ -399,7 +399,7 @@ void Flightlog::FlightLog::endFlight()
 auto Flightlog::FlightLog::lastArrivalICAO(const QString& aircraftCallsign) const -> QString
 {
     for (const auto& flight : m_flights) {
-        if (flight.aircraftCallsign() == aircraftCallsign && !flight.arrivalICAO().isEmpty()) {
+        if (flight.aircraftCallsign().compare(aircraftCallsign, Qt::CaseInsensitive) == 0 && !flight.arrivalICAO().isEmpty()) {
             return flight.arrivalICAO();
         }
     }
@@ -508,7 +508,10 @@ auto Flightlog::FlightLog::exportToForeFlight(const QStringList& uuids) const ->
         for (const auto& f : std::as_const(toExport))
         {
             const QString id = f.aircraftCallsign();
-            if (!id.isEmpty() && !seenAircraft.contains(id))
+            const bool alreadySeen = std::ranges::any_of(seenAircraft, [&](const QString& s) {
+                return s.compare(id, Qt::CaseInsensitive) == 0;
+            });
+            if (!id.isEmpty() && !alreadySeen)
             {
                 seenAircraft.append(id);
                 csv += csvField(id) + u",aircraft,,,,,,,,,,,\r\n"_s;

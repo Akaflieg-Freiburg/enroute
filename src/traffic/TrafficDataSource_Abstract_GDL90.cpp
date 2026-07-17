@@ -21,6 +21,7 @@
 #include <array>
 
 #include "GlobalObject.h"
+#include "GlobalSettings.h"
 #include "positioning/Geoid.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Abstract.h"
@@ -257,9 +258,16 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         // Handle runtime errors
         QStringList results;
         auto status = static_cast<quint8>(message.at(0));
+        // Only report missing GPS when the traffic receiver is the primary position
+        // source. If the phone's built-in GNSS is used instead, a traffic-only
+        // receiver (without built-in GPS) legitimately sends this bit as 0.
         if ((status & 1<<7) == 0)
         {
-            results += tr("No GPS reception");
+            auto* gs = GlobalObject::globalSettings();
+            if (gs == nullptr || gs->positioningByTrafficDataReceiver())
+            {
+                results += tr("No GPS reception");
+            }
         }
         if ((status & 1<<6) != 0)
         {

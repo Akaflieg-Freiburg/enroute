@@ -640,11 +640,12 @@ void Flightlog::FlightLog::showTrack(const QString& uuid)
         return;
     }
 
-    // Load track coordinates directly from IGC file
-    m_displayedTrackPath = m_recorder.loadTrackPath(*it);
-    if (m_displayedTrackPath.isEmpty()) {
+    // Load into a local first — only commit state if successful
+    auto path = m_recorder.loadTrackPath(*it);
+    if (path.isEmpty()) {
         return;
     }
+    m_displayedTrackPath = std::move(path);
     m_displayedTrackFile = it->trackFile();
     emit displayedTrackPathChanged();
 }

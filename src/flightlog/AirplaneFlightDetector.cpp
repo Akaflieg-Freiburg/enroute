@@ -103,6 +103,17 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
     }
 
     case InFlight: {
+        // Safety valve: if we have been InFlight for more than maxFlightDurationH
+        // with no GPS speed (e.g. landed at an unmapped field), auto-end the flight
+        // so the recorder doesn't grow unbounded.  A real flight in progress will
+        // have a valid ground speed above the minimum, so it won't be affected.
+        if (m_pendingStartTime.isValid()
+            && m_pendingStartTime.secsTo(info.timestamp()) > static_cast<qint64>(maxFlightDurationH * 3600)
+            && (!groundSpeed.isFinite() || groundSpeed < aircraftMinimumSpeed())) {
+            endFlight();
+            return;
+        }
+
         // Need valid AMSL altitude to detect landing
         if (!altitudeAMSL.isFinite()) {
             return;

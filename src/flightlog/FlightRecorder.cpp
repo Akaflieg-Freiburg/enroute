@@ -78,6 +78,9 @@ void Flightlog::FlightRecorder::recordFiltered(const Positioning::PositionInfo& 
     if (!shouldRecord(info)) {
         return;
     }
+    if (m_track.size() >= maxTrackPoints) {
+        return;
+    }
 
     m_track.append(makeTrackPoint(info, pressureAltitude));
     m_lastCoordinate = info.coordinate();

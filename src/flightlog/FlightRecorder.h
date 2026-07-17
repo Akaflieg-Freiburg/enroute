@@ -187,6 +187,7 @@ private:
     // Recording thresholds
     static constexpr auto minDistance = Units::Distance::fromM(300.0);
     static constexpr auto minTimeInterval = Units::Timespan::fromS(10);
+    static constexpr int maxTrackPoints = 100'000; ///< Hard cap on in-memory track length
 
     // Tracks directory
     const QString m_trackDir {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/tracks"_s};

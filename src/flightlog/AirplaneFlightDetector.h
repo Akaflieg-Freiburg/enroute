@@ -89,6 +89,7 @@ private:
     static constexpr double airfieldProximityM = 5000.0;     ///< Maximum distance to an airfield for detection
     static constexpr double maxTakeoffAltitudeAGLFT = 500.0; ///< Maximum altitude above airfield to consider a takeoff
     static constexpr double takeoffAbortSpeedFactor = 0.5;   ///< Speed drop factor to abort takeoff detection
+    static constexpr double maxFlightDurationH = 18.0;       ///< Auto-end flight after this many hours InFlight (off-field/unmapped landing safety valve)
 
     // Helpers
     [[nodiscard]] auto aircraftMinimumSpeed() const -> Units::Speed;

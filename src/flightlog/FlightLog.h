@@ -196,8 +196,8 @@ public:
     /*! \brief Manually end the current in-flight recording
      *
      *  Delegates to the active FlightDetector. If the detector is in
-     *  InFlight state, it completes the flight entry with the current
-     *  UTC time. Does nothing if not in InFlight state.
+     *  InFlight or LandingPhase state, it completes the flight entry with
+     *  the current UTC time. Does nothing if not in InFlight or LandingPhase.
      */
     Q_INVOKABLE void endFlight();
 

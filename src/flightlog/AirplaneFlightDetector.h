@@ -95,6 +95,7 @@ private:
 
     // Helpers
     [[nodiscard]] auto aircraftMinimumSpeed() const -> Units::Speed;
+    void clearPendingState();   ///< Reset all pending members to defaults; does not change state or emit signals
 };
 
 } // namespace Flightlog

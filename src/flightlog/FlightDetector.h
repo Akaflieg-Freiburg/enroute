@@ -88,11 +88,13 @@ public:
 
     /*! \brief Manually end the current in-flight recording
      *
-     *  If the detector is in the InFlight state, this creates a completed
-     *  flight with the current UTC time as landing time and resolves the
-     *  nearest airport if available. Resets the detection state to Idle.
+     *  If the detector is in the InFlight or LandingPhase state, this creates
+     *  a completed flight with the current UTC time as landing time and
+     *  resolves the nearest airport if available. The accumulated landing
+     *  count from LandingPhase is preserved. Resets the detection state
+     *  to Idle.
      *
-     *  Does nothing if the detection state is not InFlight.
+     *  Does nothing if the detection state is Idle or TakeoffPhase.
      */
     virtual void endFlight() = 0;
 

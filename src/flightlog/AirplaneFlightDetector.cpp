@@ -164,12 +164,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
 
             // Reset state before emitting signal
             m_detectionState = Idle;
-            m_pendingDepartureICAO.clear();
-            m_pendingDepartureCoordinate = {};
-            m_pendingDepartureElevation = {};
-            m_pendingStartTime = {};
-            m_landingPhaseEntryTime = {};
-            m_landingCount = 0;
+            clearPendingState();
             emit detectionStateChanged();
             emit landingDetected(arrivalICAO, arrivalCoordinate, landingTime, landingCount, timeStr);
             break;
@@ -225,12 +220,7 @@ void Flightlog::AirplaneFlightDetector::endFlight()
 
     // Reset state before emitting signal
     m_detectionState = Idle;
-    m_pendingDepartureICAO.clear();
-    m_pendingDepartureCoordinate = {};
-    m_pendingDepartureElevation = {};
-    m_pendingStartTime = {};
-    m_landingPhaseEntryTime = {};
-    m_landingCount = 0;
+    clearPendingState();
     emit detectionStateChanged();
     emit landingDetected(arrivalICAO, arrivalCoordinate, now, landingCount, timeStr);
 }
@@ -243,13 +233,19 @@ void Flightlog::AirplaneFlightDetector::resetDetection()
     }
 
     m_detectionState = Idle;
+    clearPendingState();
+    emit detectionStateChanged();
+}
+
+
+void Flightlog::AirplaneFlightDetector::clearPendingState()
+{
     m_pendingDepartureICAO.clear();
     m_pendingDepartureCoordinate = {};
     m_pendingDepartureElevation = {};
     m_pendingStartTime = {};
     m_landingPhaseEntryTime = {};
     m_landingCount = 0;
-    emit detectionStateChanged();
 }
 
 

@@ -902,17 +902,19 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
         flight.setLandingTime(landingTime);
         flight.setLandingCount(landingCount);
 
-        // Save the track from the recorder to an IGC file
+        // Save the track from the recorder to an IGC file, then always
+        // clear it — even when recording was off — so no stale points
+        // linger in RAM or remain visible on the map.
         if (trackRecording()) {
             if (m_recorder.saveTrack(flight)) {
                 // Cache the geo path for map display, then free recorder RAM
                 m_displayedTrackPath = m_recorder.trackGeoPath();
                 m_displayedTrackFile = m_displayedTrackPath.isEmpty() ? QString{} : flight.trackFile();
-                m_recorder.clearTrack();
             } else {
                 emit saveError(tr("Failed to save GPS track for flight from %1.").arg(flight.departureICAO()));
             }
         }
+        m_recorder.clearTrack();
 
         save();
         emit flightsChanged();
@@ -992,6 +994,19 @@ void Flightlog::FlightLog::onAutoFlightDetectionChanged()
     // regardless of whether the UI is visible.
     if (GlobalObject::globalSettings()->autoFlightDetection()) {
         GlobalObject::positionProvider()->startUpdates();
+    } else {
+        // Detection was just disabled. If a flight was being recorded, discard
+        // the in-memory GPS track so it doesn't appear frozen on the map or
+        // bleed into the next flight. The flight entry itself (with its start
+        // time) is kept in the log — the pilot can edit it manually.
+        if (!m_currentFlightUuid.isNull()) {
+            m_recorder.clearTrack();
+            m_currentFlightUuid = {};
+            if (m_displayedTrackFile.isEmpty()) {
+                // Was showing the live trace — tell the map it's gone
+                emit displayedTrackPathChanged();
+            }
+        }
     }
 
 #ifdef Q_OS_ANDROID

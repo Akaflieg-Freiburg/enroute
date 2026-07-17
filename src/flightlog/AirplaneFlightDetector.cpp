@@ -183,6 +183,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
                 auto elev = Units::Distance::fromM(closestAD2.coordinate().altitude());
                 if (elev.isFinite()
                     && (altitudeAMSL - elev) > Units::Distance::fromFT(landingAltitudeAGLFT)) {
+                    m_landingCount++;   // touch-and-go: count the low pass as a landing
                     m_landingPhaseEntryTime = {};
                     m_detectionState = InFlight;
                     emit detectionStateChanged();

@@ -254,11 +254,23 @@ void Flightlog::FlightLog::updateFlight(int index, const Flightlog::Flight& flig
         return;
     }
 
-    auto f = flight;
-    resolveCoordinates(f);
+    // Start from the existing entry so that read-only fields (trackFile,
+    // landingCount, coordinates) are preserved by default.
+    auto f = m_flights[index];
+    f.setDepartureICAO(flight.departureICAO());
+    f.setArrivalICAO(flight.arrivalICAO());
+    f.setOffBlockTime(flight.offBlockTime());
+    f.setStartTime(flight.startTime());
+    f.setLandingTime(flight.landingTime());
+    f.setOnBlockTime(flight.onBlockTime());
+    f.setPilotName(flight.pilotName());
+    f.setAircraftCallsign(flight.aircraftCallsign());
+    f.setComments(flight.comments());
 
-    // Preserve old coordinates if new resolution failed but ICAO codes match
+    // Re-resolve coordinates; fall back to existing ones if resolution fails
+    // but the ICAO code is unchanged.
     const auto& old = m_flights[index];
+    resolveCoordinates(f);
     if (!f.departureCoordinate().isValid() && old.departureCoordinate().isValid()
         && f.departureICAO() == old.departureICAO()) {
         f.setDepartureCoordinate(old.departureCoordinate());

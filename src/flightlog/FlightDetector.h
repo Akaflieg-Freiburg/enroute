@@ -84,7 +84,7 @@ public:
      *
      *  @param info The current position information
      */
-    virtual void processPositionUpdate(Positioning::PositionInfo info) = 0;
+    virtual void processPositionUpdate(const Positioning::PositionInfo& info) = 0;
 
     /*! \brief Manually end the current in-flight recording
      *

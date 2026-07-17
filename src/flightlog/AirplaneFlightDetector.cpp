@@ -34,7 +34,7 @@ Flightlog::AirplaneFlightDetector::AirplaneFlightDetector(QObject* parent)
 }
 
 
-void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::PositionInfo info)
+void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning::PositionInfo& info)
 {
     if (!info.isValid()) {
         return;

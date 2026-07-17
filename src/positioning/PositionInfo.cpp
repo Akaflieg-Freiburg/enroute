@@ -75,7 +75,7 @@ auto Positioning::PositionInfo::positionErrorEstimate() const -> Units::Distance
     return Units::Distance::fromM(m_positionInfo.attribute(QGeoPositionInfo::HorizontalAccuracy));
 }
 
-auto Positioning::PositionInfo::terrainElevationAMSL() -> Units::Distance
+auto Positioning::PositionInfo::terrainElevationAMSL() const -> Units::Distance
 {
     if (m_terrainAMSL.isFinite())
     {
@@ -99,7 +99,7 @@ auto Positioning::PositionInfo::trueAltitudeAMSL() const -> Units::Distance
 
 }
 
-auto Positioning::PositionInfo::trueAltitudeAGL() -> Units::Distance
+auto Positioning::PositionInfo::trueAltitudeAGL() const -> Units::Distance
 {
     if (m_trueAltitudeAGL.isFinite())
     {

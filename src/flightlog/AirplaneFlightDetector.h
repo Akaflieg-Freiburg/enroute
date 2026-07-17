@@ -61,7 +61,7 @@ public:
 
     [[nodiscard]] auto detectionState() const -> DetectionState override { return m_detectionState; }
 
-    void processPositionUpdate(Positioning::PositionInfo info) override;
+    void processPositionUpdate(const Positioning::PositionInfo& info) override;
 
     void endFlight() override;
 

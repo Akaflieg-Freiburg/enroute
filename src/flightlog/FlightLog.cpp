@@ -109,6 +109,16 @@ void Flightlog::FlightLog::deferredInitialization()
     connect(GlobalObject::globalSettings(), &GlobalSettings::autoFlightDetectionChanged,
             this, &Flightlog::FlightLog::onAutoFlightDetectionChanged);
 
+    // Forward GlobalSettings NOTIFY signals so FlightLog property bindings
+    // stay consistent regardless of who writes the underlying setting.
+    connect(GlobalObject::globalSettings(), &GlobalSettings::trackRecordingChanged,
+            this, &Flightlog::FlightLog::trackRecordingChanged);
+    connect(GlobalObject::globalSettings(), &GlobalSettings::showCurrentFlightTraceChanged,
+            this, [this]() {
+                emit showCurrentFlightTraceChanged();
+                emit displayedTrackPathChanged();
+            });
+
 #ifdef Q_OS_ANDROID
     // After a 30-second grace period, post a notification if auto-detection is
     // on but still no position data (e.g. GPS disabled, no traffic receiver).
@@ -185,7 +195,7 @@ void Flightlog::FlightLog::setTrackRecording(bool enabled)
     if (settings != nullptr) {
         settings->setTrackRecording(enabled);
     }
-    emit trackRecordingChanged();
+    // Signal forwarded via GlobalSettings::trackRecordingChanged connection
 }
 
 bool Flightlog::FlightLog::trackRecording() const
@@ -203,8 +213,7 @@ void Flightlog::FlightLog::setShowCurrentFlightTrace(bool enabled)
     if (settings != nullptr) {
         settings->setShowCurrentFlightTrace(enabled);
     }
-    emit showCurrentFlightTraceChanged();
-    emit displayedTrackPathChanged();
+    // Signal forwarded via GlobalSettings::showCurrentFlightTraceChanged connection
 }
 
 bool Flightlog::FlightLog::showCurrentFlightTrace() const

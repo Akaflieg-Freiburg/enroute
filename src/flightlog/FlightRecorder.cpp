@@ -103,6 +103,7 @@ void Flightlog::FlightRecorder::processPositionUpdate(FlightDetector::DetectionS
             m_lastTimestamp = {};
             m_track.clear();
             m_geoPath = {};
+            emit trackGeoPathChanged();
         } else if (m_previousState == FlightDetector::LandingPhase) {
             // Landing or touch-and-go — reset for next recording.
             // Track saving is handled by FlightLog::onLandingDetected.
@@ -129,6 +130,7 @@ void Flightlog::FlightRecorder::clearTrack()
     m_previousState = FlightDetector::Idle;
     m_lastCoordinate = {};
     m_lastTimestamp = {};
+    emit trackGeoPathChanged();
 }
 
 

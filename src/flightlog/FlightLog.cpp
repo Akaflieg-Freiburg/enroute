@@ -157,10 +157,11 @@ auto Flightlog::FlightLog::displayedTrackUuid() const -> QString
     if (m_displayedTrackFile.isEmpty()) {
         return {};
     }
-    auto it = std::ranges::find_if(m_flights, [&](const Flight& f) {
+    const auto& flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
         return f.trackFile() == m_displayedTrackFile;
     });
-    if (it == m_flights.end()) {
+    if (it == flights.end()) {
         return {};
     }
     return it->uuid().toString(QUuid::WithoutBraces);
@@ -184,10 +185,11 @@ void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
 {
     auto f = flight;
     resolveCoordinates(f);
-    m_flights.prepend(f);
-    sortFlights();
+    auto flights = m_flights.value();
+    flights.prepend(f);
+    sortFlights(flights);
+    m_flights.setValue(std::move(flights));
     save();
-    emit flightsChanged();
 }
 
 void Flightlog::FlightLog::setTrackRecording(bool enabled)
@@ -233,10 +235,11 @@ void Flightlog::FlightLog::removeFlight(const QString& uuid)
     if (id.isNull()) {
         return;
     }
-    const auto it = std::ranges::find_if(m_flights, [&](const Flight& f) {
+    auto flights = m_flights.value();
+    const auto it = std::ranges::find_if(flights, [&](const Flight& f) {
         return f.uuid() == id;
     });
-    if (it == m_flights.end()) {
+    if (it == flights.end()) {
         return;
     }
 
@@ -257,24 +260,25 @@ void Flightlog::FlightLog::removeFlight(const QString& uuid)
     }
 
     m_recorder.removeTrack(flight);
-    m_flights.erase(it);
+    flights.erase(it);
+    m_flights.setValue(std::move(flights));
     save();
-    emit flightsChanged();
 }
 
 
 void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
 {
+    auto flights = m_flights.value();
     bool changed = false;
     for (const QString& uuid : uuids) {
         const auto id = QUuid::fromString(uuid);
         if (id.isNull()) {
             continue;
         }
-        const auto it = std::ranges::find_if(m_flights, [&](const Flight& f) {
+        auto it = std::ranges::find_if(flights, [&](const Flight& f) {
             return f.uuid() == id;
         });
-        if (it == m_flights.end()) {
+        if (it == flights.end()) {
             continue;
         }
         if (!m_displayedTrackFile.isEmpty() && it->trackFile() == m_displayedTrackFile) {
@@ -287,19 +291,20 @@ void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
             }
         }
         m_recorder.removeTrack(*it);
-        m_flights.erase(it);
+        flights.erase(it);
         changed = true;
     }
     if (changed) {
+        m_flights.setValue(std::move(flights));
         save();
-        emit flightsChanged();
     }
 }
 
 
 void Flightlog::FlightLog::clearFlights()
 {
-    if (m_flights.isEmpty()) {
+    auto flights = m_flights.value();
+    if (flights.isEmpty()) {
         return;
     }
     hideTrack();
@@ -307,12 +312,11 @@ void Flightlog::FlightLog::clearFlights()
         m_detector->resetDetection();
     }
     m_currentFlightUuid = {};
-    for (auto& flight : m_flights) {
+    for (auto& flight : flights) {
         m_recorder.removeTrack(flight);
     }
-    m_flights.clear();
+    m_flights.setValue({});
     save();
-    emit flightsChanged();
 }
 
 
@@ -320,13 +324,13 @@ void Flightlog::FlightLog::clearFlights()
 void Flightlog::FlightLog::updateFlight(const QString& uuid, const Flightlog::Flight& flight)
 {
     auto targetUuid = QUuid::fromString(uuid);
-    auto it = std::ranges::find_if(m_flights, [&](const Flight& f) {
+    auto flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
         return f.uuid() == targetUuid;
     });
-    if (it == m_flights.end()) {
+    if (it == flights.end()) {
         return;
     }
-    auto index = static_cast<int>(std::ranges::distance(m_flights.begin(), it));
 
     // Start from the existing entry so that read-only fields (trackFile,
     // landingCount, coordinates) are preserved by default.
@@ -354,10 +358,10 @@ void Flightlog::FlightLog::updateFlight(const QString& uuid, const Flightlog::Fl
         f.setArrivalCoordinate(old.arrivalCoordinate());
     }
 
-    m_flights[index] = f;
-    sortFlights();
+    *it = f;
+    sortFlights(flights);
+    m_flights.setValue(std::move(flights));
     save();
-    emit flightsChanged();
 }
 
 
@@ -398,7 +402,7 @@ void Flightlog::FlightLog::endFlight()
 
 auto Flightlog::FlightLog::lastArrivalICAO(const QString& aircraftCallsign) const -> QString
 {
-    for (const auto& flight : m_flights) {
+    for (const auto& flight : m_flights.value()) {
         if (flight.aircraftCallsign().compare(aircraftCallsign, Qt::CaseInsensitive) == 0 && !flight.arrivalICAO().isEmpty()) {
             return flight.arrivalICAO();
         }
@@ -443,10 +447,11 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position, doubl
 auto Flightlog::FlightLog::exportToIGC(const QString& uuid) const -> QByteArray
 {
     auto targetUuid = QUuid::fromString(uuid);
-    auto it = std::ranges::find_if(m_flights, [&](const Flight& f) {
+    const auto& flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
         return f.uuid() == targetUuid;
     });
-    if (it == m_flights.end()) {
+    if (it == flights.end()) {
         return {};
     }
     return m_recorder.exportToIGC(*it);
@@ -456,13 +461,14 @@ auto Flightlog::FlightLog::exportToIGC(const QString& uuid) const -> QByteArray
 auto Flightlog::FlightLog::flightsForUuids(const QStringList& uuids) const -> QList<Flight>
 {
     if (uuids.isEmpty()) {
-        return m_flights;
+        return m_flights.value();
     }
+    const auto& allFlights = m_flights.value();
     QList<Flight> result;
     for (const QString& uuid : uuids) {
         const auto id = QUuid::fromString(uuid);
-        const auto it = std::ranges::find_if(m_flights, [&](const Flight& f) { return f.uuid() == id; });
-        if (it != m_flights.end()) {
+        const auto it = std::ranges::find_if(allFlights, [&](const Flight& f) { return f.uuid() == id; });
+        if (it != allFlights.end()) {
             result.append(*it);
         }
     }
@@ -649,10 +655,11 @@ auto Flightlog::FlightLog::exportToJSON(const QStringList& uuids) const -> QByte
 void Flightlog::FlightLog::removeTrack(const QString& uuid)
 {
     auto targetUuid = QUuid::fromString(uuid);
-    auto it = std::ranges::find_if(m_flights, [&](const Flight& f) {
+    auto flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
         return f.uuid() == targetUuid;
     });
-    if (it == m_flights.end()) {
+    if (it == flights.end()) {
         return;
     }
 
@@ -667,9 +674,8 @@ void Flightlog::FlightLog::removeTrack(const QString& uuid)
     }
 
     m_recorder.removeTrack(*it);
-
+    m_flights.setValue(std::move(flights));
     save();
-    emit flightsChanged();
 }
 
 
@@ -693,10 +699,11 @@ auto Flightlog::FlightLog::displayedTrackPath() const -> QGeoPath
 void Flightlog::FlightLog::showTrack(const QString& uuid)
 {
     auto targetUuid = QUuid::fromString(uuid);
-    auto it = std::ranges::find_if(m_flights, [&](const Flight& f) {
+    const auto& flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
         return f.uuid() == targetUuid;
     });
-    if (it == m_flights.end()) {
+    if (it == flights.end()) {
         return;
     }
     if (!it->hasTrack()) {
@@ -749,10 +756,9 @@ void Flightlog::FlightLog::resolveCoordinates(Flight& flight)
 }
 
 
-void Flightlog::FlightLog::sortFlights()
+void Flightlog::FlightLog::sortFlights(QList<Flight>& flights)
 {
-    // UUID-based tracking makes re-finding unnecessary — sort freely.
-    std::sort(m_flights.begin(), m_flights.end(),
+    std::sort(flights.begin(), flights.end(),
               [](const Flight& a, const Flight& b) {
                   return a.startTime() > b.startTime();
               });
@@ -820,14 +826,15 @@ void Flightlog::FlightLog::load()
     // version field is available for future migration logic
     // const auto version = root.value(u"version"_s).toInt();
 
-    m_flights.clear();
+    QList<Flight> newFlights;
     const auto array = root.value(u"flights"_s).toArray();
     for (const auto& val : array) {
         if (val.isObject()) {
-            m_flights.append(Flight::fromJSON(val.toObject()));
+            newFlights.append(Flight::fromJSON(val.toObject()));
         }
     }
-    sortFlights();
+    sortFlights(newFlights);
+    m_flights.setValue(std::move(newFlights));
 }
 
 
@@ -954,10 +961,11 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
 {
     auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
     // Complete the in-progress flight by UUID lookup
-    auto it = std::ranges::find_if(m_flights, [this](const Flight& f) {
+    auto flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [this](const Flight& f) {
         return f.uuid() == m_currentFlightUuid;
     });
-    if (it != m_flights.end()) {
+    if (it != flights.end()) {
         auto& flight = *it;
         if (!arrivalICAO.isEmpty()) {
             flight.setArrivalICAO(arrivalICAO);
@@ -981,9 +989,8 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
             }
         }
         m_recorder.clearTrack();
-
+        m_flights.setValue(std::move(flights));
         save();
-        emit flightsChanged();
         emit displayedTrackPathChanged();
     }
 

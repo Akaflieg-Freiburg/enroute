@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QGeoPath>
+#include <QObjectBindableProperty>
 #include <QQmlEngine>
 #include <QStandardPaths>
 #include <QTimer>
@@ -96,7 +97,7 @@ public:
 
     /*! \brief Number of recorded flights */
     Q_PROPERTY(int count READ count NOTIFY flightsChanged)
-    [[nodiscard]] auto count() const -> int { return static_cast<int>(m_flights.size()); }
+    [[nodiscard]] auto count() const -> int { return static_cast<int>(m_flights.value().size()); }
 
     /*! \brief Coordinates of the track currently displayed on the map
      *
@@ -379,8 +380,8 @@ private:
     // Resolve ICAO codes to coordinates using the GeoMapProvider
     void resolveCoordinates(Flight& flight);
 
-    // Sort m_flights by startTime, most recent first
-    void sortFlights();
+    // Sort flights by startTime descending
+    void sortFlights(QList<Flight>& flights);
 
     // Build a QJsonDocument from a list of flights (shared by save() and exportToJSON())
     static auto flightsToJsonDocument(const QList<Flight>& flights) -> QJsonDocument;
@@ -391,8 +392,7 @@ private:
     // Helper to parse a date+time string to QDateTime
     static auto parseDateTime(const QString& date, const QString& timeStr) -> QDateTime;
 
-#warning Should become a QProperty!
-    QList<Flight> m_flights;
+    Q_OBJECT_BINDABLE_PROPERTY(FlightLog, QList<Flightlog::Flight>, m_flights, &FlightLog::flightsChanged)
 
     // UUID of the flight currently being recorded, or null if none
     QUuid m_currentFlightUuid;

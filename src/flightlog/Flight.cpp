@@ -160,6 +160,12 @@ auto Flightlog::Flight::fromJSON(const QJsonObject& json) -> Flight
 
 auto Flightlog::Flight::operator==(const Flightlog::Flight& other) const -> bool
 {
+    // Intentional metadata-only equality: departure/arrival coordinates and
+    // trackFile are deliberately excluded. Two flights are considered equal
+    // if their logbook metadata matches, regardless of the attached GPS track
+    // or the exact airport coordinates. This is the right contract for
+    // QML_VALUE_TYPE change-detection (NOTIFY suppression) and for any
+    // future contains()/indexOf() calls on the flight list.
     return m_departureICAO == other.m_departureICAO
         && m_arrivalICAO == other.m_arrivalICAO
         && m_offBlockTime == other.m_offBlockTime

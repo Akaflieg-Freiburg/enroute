@@ -355,6 +355,10 @@ private:
     // Load flights from JSON file
     void load();
 
+    // Rename a corrupt flight log file aside and notify the user via saveError.
+    // Uses a timestamp suffix so multiple bad files don't overwrite each other.
+    void quarantineFlightLogFile(const QString& reason);
+
     // Resolve ICAO codes to coordinates using the GeoMapProvider
     void resolveCoordinates(Flight& flight);
 

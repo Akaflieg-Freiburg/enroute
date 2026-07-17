@@ -738,13 +738,19 @@ void Flightlog::FlightLog::load()
         return;
     }
 
-    const auto doc = QJsonDocument::fromJson(file.readAll());
+    const QByteArray raw = file.readAll();
+    file.close();
+
+    QJsonParseError parseError;
+    const auto doc = QJsonDocument::fromJson(raw, &parseError);
     if (!doc.isObject()) {
+        quarantineFlightLogFile(parseError.errorString());
         return;
     }
 
     const auto root = doc.object();
     if (root.value(u"content"_s).toString() != u"flightLog"_s) {
+        quarantineFlightLogFile(u"unexpected content tag"_s);
         return;
     }
 
@@ -759,6 +765,23 @@ void Flightlog::FlightLog::load()
         }
     }
     sortFlights();
+}
+
+
+void Flightlog::FlightLog::quarantineFlightLogFile(const QString& reason)
+{
+    const QString ts = QDateTime::currentDateTimeUtc().toString(u"yyyyMMddTHHmmssZ"_s);
+    const QString backup = m_fileName + u"."_s + ts + u".corrupt"_s;
+    QFile::rename(m_fileName, backup);
+    qWarning() << "FlightLog::load:" << reason
+               << "- damaged file renamed to" << backup;
+    // Emit via a queued connection: load() is called from the constructor,
+    // before QML signal connections are established.
+    QMetaObject::invokeMethod(this, [this, reason]() {
+        emit saveError(tr("The flight log file could not be read and has been reset (%1). "
+                          "Your previous flight log data is no longer available.")
+                       .arg(reason));
+    }, Qt::QueuedConnection);
 }
 
 

@@ -92,6 +92,8 @@ void&#160;</td><td class="memItemRight"><b>showCurrentFlightTraceChanged</b> ()<
 <tr class="memdesc:a62783f3d2180a64d4fa48536e47c4573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a takeoff is detected.  <br /></td></tr>
 <tr class="memitem:ad7a71a52cb6e2e25cd6487c137eb87a2" id="r_ad7a71a52cb6e2e25cd6487c137eb87a2"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad7a71a52cb6e2e25cd6487c137eb87a2">landingDetected</a> (const QString &amp;time)</td></tr>
 <tr class="memdesc:ad7a71a52cb6e2e25cd6487c137eb87a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a landing is detected.  <br /></td></tr>
+<tr class="memitem:a5f3ec3368d657de60412daa08866c697" id="r_a5f3ec3368d657de60412daa08866c697"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a5f3ec3368d657de60412daa08866c697">saveError</a> (const QString &amp;message)</td></tr>
+<tr class="memdesc:a5f3ec3368d657de60412daa08866c697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when saving the flight log file fails.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -631,6 +633,40 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>The index of the flight whose track to delete </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5f3ec3368d657de60412daa08866c697" name="a5f3ec3368d657de60412daa08866c697"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f3ec3368d657de60412daa08866c697">&#9670;&#160;</a></span>saveError</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Flightlog::FlightLog::saveError </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted when saving the flight log file fails. </p>
+<p>The previously saved flight log on disk remains intact, but the latest change could not be persisted.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>Human-readable error description </td></tr>
   </table>
   </dd>
 </dl>

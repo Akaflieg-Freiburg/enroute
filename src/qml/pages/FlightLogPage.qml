@@ -154,7 +154,9 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        var errorString = FileExchange.shareContent(FlightLog.exportToForeFlight(page.selectedUuids), "text/*", "csv", qsTr("FlightLog"))
+                        var data = FlightLog.exportToForeFlight(page.selectedUuids)
+                        if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        var errorString = FileExchange.shareContent(data, "text/*", "csv", qsTr("FlightLog"))
                         if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                         if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                         toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
@@ -169,7 +171,9 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        var errorString = FileExchange.shareContent(FlightLog.exportToJSON(page.selectedUuids), "text/*", "json", qsTr("FlightLog"))
+                        var data = FlightLog.exportToJSON(page.selectedUuids)
+                        if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        var errorString = FileExchange.shareContent(data, "text/*", "json", qsTr("FlightLog"))
                         if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                         if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                         toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
@@ -477,7 +481,9 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var errorString = FileExchange.shareContent(FlightLog.exportToForeFlight([modelData.uuid.toString()]), "text/*", "csv", qsTr("FlightLog"))
+                            var data = FlightLog.exportToForeFlight([modelData.uuid.toString()])
+                            if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                            var errorString = FileExchange.shareContent(data, "text/*", "csv", qsTr("FlightLog"))
                             if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                             toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
@@ -489,7 +495,9 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var errorString = FileExchange.shareContent(FlightLog.exportToJSON([modelData.uuid.toString()]), "text/*", "json", qsTr("FlightLog"))
+                            var data = FlightLog.exportToJSON([modelData.uuid.toString()])
+                            if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                            var errorString = FileExchange.shareContent(data, "text/*", "json", qsTr("FlightLog"))
                             if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                             toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
@@ -502,7 +510,9 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var errorString = FileExchange.shareContent(FlightLog.exportToIGC(modelData.uuid.toString()), "text/*", "igc", qsTr("FlightLog"))
+                            var data = FlightLog.exportToIGC(modelData.uuid.toString())
+                            if (data.length === 0) { shareErrorDialog.text = qsTr("Track data could not be read."); shareErrorDialog.open(); return }
+                            var errorString = FileExchange.shareContent(data, "text/*", "igc", qsTr("FlightLog"))
                             if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                             toast.doToast(page.isAndroidOrIos ? qsTr("Track shared") : qsTr("Track exported"))

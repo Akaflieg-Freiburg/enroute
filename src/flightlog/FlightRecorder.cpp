@@ -58,7 +58,7 @@ auto Flightlog::FlightRecorder::shouldRecord(const Positioning::PositionInfo& in
 
     // Record if enough time has passed
     if (!m_lastTimestamp.isValid()
-        || m_lastTimestamp.secsTo(info.timestamp()) >= minTimeInterval.toS())
+        || static_cast<double>(m_lastTimestamp.secsTo(info.timestamp())) >= minTimeInterval.toS())
     {
         return true;
     }

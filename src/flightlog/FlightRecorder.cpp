@@ -150,10 +150,11 @@ bool Flightlog::FlightRecorder::saveTrack(Flight& flight)
         return false;
     }
 
-    // Generate filename from start time
+    // Generate filename from start time (seconds precision avoids collisions for
+    // back-to-back legs whose start times fall within the same minute)
     auto dateTimeStr = flight.startTime().isValid()
-        ? flight.startTime().toUTC().toString(u"yyyyMMdd_HHmm"_s)
-        : QDateTime::currentDateTimeUtc().toString(u"yyyyMMdd_HHmm"_s);
+        ? flight.startTime().toUTC().toString(u"yyyyMMdd_HHmmss"_s)
+        : QDateTime::currentDateTimeUtc().toString(u"yyyyMMdd_HHmmss"_s);
     auto trackFileName = u"track_%1.igc"_s.arg(dateTimeStr);
 
     auto igcData = toIGC(flight, m_track);

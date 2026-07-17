@@ -57,9 +57,8 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         }
 
         // Check if near an airfield
-        auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+        auto closestAD = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
         if (!closestAD.isValid()) {
-            return;
         }
 
         // If already well above the airfield, this is not a takeoff
@@ -126,7 +125,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         }
 
         // Check if near an airport
-        auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+        auto closestAD = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
         if (!closestAD.isValid()) {
             return;
         }
@@ -154,7 +153,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
             auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
             QString arrivalICAO;
             QGeoCoordinate arrivalCoordinate;
-            auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+            auto closestAD = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
             if (closestAD.isValid()) {
                 arrivalICAO = closestAD.shortName();
                 arrivalCoordinate = closestAD.coordinate();
@@ -173,7 +172,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         // Aborted approach: climbed back above the landing threshold without
         // touching down — revert to InFlight, no landing recorded.
         if (altitudeAMSL.isFinite()) {
-            auto closestAD2 = FlightLog::nearestAirfield(info.coordinate());
+            auto closestAD2 = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
             if (closestAD2.isValid()) {
                 auto elev = Units::Distance::fromM(closestAD2.coordinate().altitude());
                 if (elev.isFinite()
@@ -207,7 +206,7 @@ void Flightlog::AirplaneFlightDetector::endFlight()
     if (positionProvider != nullptr) {
         auto info = positionProvider->positionInfo();
         if (info.isValid()) {
-            auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+            auto closestAD = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
             if (closestAD.isValid()) {
                 arrivalICAO = closestAD.shortName();
                 arrivalCoordinate = closestAD.coordinate();

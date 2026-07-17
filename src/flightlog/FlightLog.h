@@ -232,14 +232,15 @@ public:
     /*! \brief Find the nearest airfield within 5 km
      *
      *  Returns the closest airfield (type "AD") to the given position,
-     *  provided it is within 5 km. Returns an invalid Waypoint if none found.
+     *  provided it is within @p proximityM metres. Returns an invalid Waypoint if none found.
      *  If no position is given (or an invalid one), the last valid coordinate
      *  from PositionProvider is used.
      *
      *  @param position The geographic position to search near (default: current GPS position)
+     *  @param proximityM Maximum search radius in metres (default: 5000)
      *  @returns The nearest airfield, or an invalid Waypoint
      */
-    Q_INVOKABLE static GeoMaps::Waypoint nearestAirfield(const QGeoCoordinate& position = {});
+    Q_INVOKABLE static GeoMaps::Waypoint nearestAirfield(const QGeoCoordinate& position = {}, double proximityM = 5000.0);
 
     /*! \brief Get IGC track content for a flight
      *

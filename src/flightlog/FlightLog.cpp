@@ -406,7 +406,7 @@ auto Flightlog::FlightLog::lastArrivalICAO(const QString& aircraftCallsign) cons
 }
 
 
-auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position) -> GeoMaps::Waypoint
+auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position, double proximityM) -> GeoMaps::Waypoint
 {
     auto coord = position;
     if (!coord.isValid()) {
@@ -431,7 +431,7 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position) -> Ge
     }
 
     auto closest = nearby.first();
-    if (coord.distanceTo(closest.coordinate()) > AirplaneFlightDetector::airfieldProximityM) {
+    if (coord.distanceTo(closest.coordinate()) > proximityM) {
         return {};
     }
 

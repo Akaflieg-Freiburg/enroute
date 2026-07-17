@@ -95,8 +95,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning:
             emit takeoffDetected(m_pendingDepartureICAO,
                                  m_pendingDepartureCoordinate,
                                  m_pendingStartTime,
-                                 GlobalObject::navigator()->aircraft().name(),
-                                 m_pendingStartTime.toUTC().time().toString(u"HH:mm"_s));
+                                 GlobalObject::navigator()->aircraft().name());
         }
         break;
     }
@@ -150,7 +149,6 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning:
             || (m_landingPhaseEntryTime.isValid() && m_landingPhaseEntryTime.secsTo(info.timestamp()) > landingConfirmTimeoutS)) {
             // Use the time we first went low as the landing time
             auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
-            auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
             QString arrivalICAO;
             QGeoCoordinate arrivalCoordinate;
             auto closestAD = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
@@ -165,7 +163,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning:
             m_detectionState = Idle;
             clearPendingState();
             emit detectionStateChanged();
-            emit landingDetected(arrivalICAO, arrivalCoordinate, landingTime, landingCount, timeStr);
+            emit landingDetected(arrivalICAO, arrivalCoordinate, landingTime, landingCount);
             break;
         }
 
@@ -219,13 +217,11 @@ void Flightlog::AirplaneFlightDetector::endFlight()
     }
     auto landingCount = (m_detectionState == LandingPhase) ? m_landingCount : 1;
 
-    auto timeStr = now.time().toString(u"HH:mm"_s);
-
     // Reset state before emitting signal
     m_detectionState = Idle;
     clearPendingState();
     emit detectionStateChanged();
-    emit landingDetected(arrivalICAO, arrivalCoordinate, now, landingCount, timeStr);
+    emit landingDetected(arrivalICAO, arrivalCoordinate, now, landingCount);
 }
 
 

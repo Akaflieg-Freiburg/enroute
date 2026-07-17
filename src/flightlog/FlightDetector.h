@@ -115,13 +115,11 @@ signals:
      *  @param departureCoordinate Coordinate of the departure airport
      *  @param startTime The takeoff time
      *  @param aircraftCallsign Callsign of the aircraft
-     *  @param timeStr The takeoff time as a human-readable UTC string (HH:mm)
      */
     void takeoffDetected(const QString& departureICAO,
                          const QGeoCoordinate& departureCoordinate,
                          const QDateTime& startTime,
-                         const QString& aircraftCallsign,
-                         const QString& timeStr);
+                         const QString& aircraftCallsign);
 
     /*! \brief Emitted when a landing is confirmed
      *
@@ -132,13 +130,11 @@ signals:
      *  @param arrivalCoordinate Coordinate of the arrival airport
      *  @param landingTime The landing time
      *  @param landingCount Number of landings (1 for normal, >1 for touch-and-go)
-     *  @param timeStr The landing time as a human-readable UTC string (HH:mm)
      */
     void landingDetected(const QString& arrivalICAO,
                          const QGeoCoordinate& arrivalCoordinate,
                          const QDateTime& landingTime,
-                         int landingCount,
-                         const QString& timeStr);
+                         int landingCount);
 
 private:
     Q_DISABLE_COPY_MOVE(FlightDetector)

@@ -907,9 +907,9 @@ void Flightlog::FlightLog::onDetectionStateChanged()
 void Flightlog::FlightLog::onTakeoffDetected(const QString& departureICAO,
                                               const QGeoCoordinate& departureCoordinate,
                                               const QDateTime& startTime,
-                                              const QString& aircraftCallsign,
-                                              const QString& timeStr)
+                                              const QString& aircraftCallsign)
 {
+    auto timeStr = startTime.toUTC().time().toString(u"HH:mm"_s);
     Flight flight;
     flight.setDepartureICAO(departureICAO);
     flight.setDepartureCoordinate(departureCoordinate);
@@ -947,9 +947,9 @@ void Flightlog::FlightLog::onTakeoffDetected(const QString& departureICAO,
 void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
                                                 const QGeoCoordinate& arrivalCoordinate,
                                                 const QDateTime& landingTime,
-                                                int landingCount,
-                                                const QString& timeStr)
+                                                int landingCount)
 {
+    auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
     // Complete the in-progress flight by UUID lookup
     auto it = std::ranges::find_if(m_flights, [this](const Flight& f) {
         return f.uuid() == m_currentFlightUuid;

@@ -352,15 +352,13 @@ private slots:
     void onTakeoffDetected(const QString& departureICAO,
                            const QGeoCoordinate& departureCoordinate,
                            const QDateTime& startTime,
-                           const QString& aircraftCallsign,
-                           const QString& timeStr);
+                           const QString& aircraftCallsign);
 
     // Handle landing detected by the FlightDetector
     void onLandingDetected(const QString& arrivalICAO,
                            const QGeoCoordinate& arrivalCoordinate,
                            const QDateTime& landingTime,
-                           int landingCount,
-                           const QString& timeStr);
+                           int landingCount);
 
 private:
     Q_DISABLE_COPY_MOVE(FlightLog)

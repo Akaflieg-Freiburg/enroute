@@ -364,6 +364,7 @@ private:
     // Helper to parse a date+time string to QDateTime
     static auto parseDateTime(const QString& date, const QString& timeStr) -> QDateTime;
 
+#warning Should become a QProperty!
     QList<Flight> m_flights;
 
     // Index of the flight currently being recorded, or -1 if none

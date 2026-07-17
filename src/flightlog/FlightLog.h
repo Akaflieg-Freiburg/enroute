@@ -154,6 +154,23 @@ public:
      */
     Q_INVOKABLE void removeFlight(const QString& uuid);
 
+    /*! \brief Remove multiple flights from the log by UUID
+     *
+     *  Removes all flights whose UUIDs appear in @p uuids. Saves and
+     *  emits flightsChanged() exactly once regardless of how many are removed.
+     *  Does nothing if none of the UUIDs match.
+     *
+     *  @param uuids UUIDs of the flights to remove (with or without braces)
+     */
+    Q_INVOKABLE void removeFlights(const QStringList& uuids);
+
+    /*! \brief Remove all flights from the log
+     *
+     *  Deletes every flight entry and its associated track file, then
+     *  saves and emits flightsChanged() once.
+     */
+    Q_INVOKABLE void clearFlights();
+
     /*! \brief Update an existing flight in the log
      *
      *  Coordinates are re-resolved from the ICAO codes. If resolution

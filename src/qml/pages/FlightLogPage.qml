@@ -637,10 +637,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            var uuids = FlightLog.flights.map(function(f) { return f.uuid.toString() })
-            for (var i = 0; i < uuids.length; i++) {
-                FlightLog.removeFlight(uuids[i])
-            }
+            FlightLog.clearFlights()
             toast.doToast(qsTr("Flight log cleared"))
         }
     }
@@ -654,9 +651,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            for (var i = 0; i < page.selectedUuids.length; i++) {
-                FlightLog.removeFlight(page.selectedUuids[i])
-            }
+            FlightLog.removeFlights(page.selectedUuids)
             toast.doToast(qsTr("Flights removed"))
             page.exitSelectionMode()
         }

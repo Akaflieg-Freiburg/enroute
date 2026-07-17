@@ -262,6 +262,59 @@ void Flightlog::FlightLog::removeFlight(const QString& uuid)
 }
 
 
+void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
+{
+    bool changed = false;
+    for (const QString& uuid : uuids) {
+        const auto id = QUuid::fromString(uuid);
+        if (id.isNull()) {
+            continue;
+        }
+        const auto it = std::ranges::find_if(m_flights, [&](const Flight& f) {
+            return f.uuid() == id;
+        });
+        if (it == m_flights.end()) {
+            continue;
+        }
+        if (!m_displayedTrackFile.isEmpty() && it->trackFile() == m_displayedTrackFile) {
+            hideTrack();
+        }
+        if (it->uuid() == m_currentFlightUuid) {
+            m_currentFlightUuid = {};
+            if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
+                m_detector->resetDetection();
+            }
+        }
+        m_recorder.removeTrack(*it);
+        m_flights.erase(it);
+        changed = true;
+    }
+    if (changed) {
+        save();
+        emit flightsChanged();
+    }
+}
+
+
+void Flightlog::FlightLog::clearFlights()
+{
+    if (m_flights.isEmpty()) {
+        return;
+    }
+    hideTrack();
+    if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
+        m_detector->resetDetection();
+    }
+    m_currentFlightUuid = {};
+    for (auto& flight : m_flights) {
+        m_recorder.removeTrack(flight);
+    }
+    m_flights.clear();
+    save();
+    emit flightsChanged();
+}
+
+
 
 void Flightlog::FlightLog::updateFlight(const QString& uuid, const Flightlog::Flight& flight)
 {
@@ -596,6 +649,10 @@ void Flightlog::FlightLog::removeTrack(const QString& uuid)
         return f.uuid() == targetUuid;
     });
     if (it == m_flights.end()) {
+        return;
+    }
+
+    if (it->trackFile().isEmpty()) {
         return;
     }
 

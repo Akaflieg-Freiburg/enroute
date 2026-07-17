@@ -23,6 +23,18 @@
 using namespace Qt::Literals::StringLiterals;
 
 
+// Format a duration in seconds as "H:MM"; returns {} for negative values
+static auto secsToHHMM(qint64 secs) -> QString
+{
+    if (secs < 0) {
+        return {};
+    }
+    auto hours = secs / 3600;
+    auto minutes = (secs % 3600) / 60;
+    return u"%1:%2"_s.arg(hours).arg(minutes, 2, 10, QChar(u'0'));
+}
+
+
 auto Flightlog::Flight::distance() const -> Units::Distance
 {
     if (!m_departureCoordinate.isValid() || !m_arrivalCoordinate.isValid()) {
@@ -46,25 +58,13 @@ auto Flightlog::Flight::blockTime() const -> QString
     if (!m_offBlockTime.isValid() || !m_onBlockTime.isValid()) {
         return {};
     }
-    auto secs = m_offBlockTime.secsTo(m_onBlockTime);
-    if (secs < 0) {
-        return {};
-    }
-    auto hours = secs / 3600;
-    auto minutes = (secs % 3600) / 60;
-    return u"%1:%2"_s.arg(hours).arg(minutes, 2, 10, QChar(u'0'));
+    return secsToHHMM(m_offBlockTime.secsTo(m_onBlockTime));
 }
 
 
 auto Flightlog::Flight::flightTime() const -> QString
 {
-    auto secs = flightTimeSeconds();
-    if (secs < 0) {
-        return {};
-    }
-    auto hours = secs / 3600;
-    auto minutes = (secs % 3600) / 60;
-    return u"%1:%2"_s.arg(hours).arg(minutes, 2, 10, QChar(u'0'));
+    return secsToHHMM(flightTimeSeconds());
 }
 
 

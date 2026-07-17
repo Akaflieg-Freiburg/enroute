@@ -399,21 +399,26 @@ auto Flightlog::FlightLog::exportToIGC(const QString& uuid) -> QByteArray
 }
 
 
-auto Flightlog::FlightLog::exportToForeFlight(const QStringList& uuids) -> QByteArray
+auto Flightlog::FlightLog::flightsForUuids(const QStringList& uuids) const -> QList<Flight>
 {
-    // Collect flights to export (empty list = export all)
-    QList<Flight> toExport;
     if (uuids.isEmpty()) {
-        toExport = m_flights;
-    } else {
-        for (const QString& uuid : uuids) {
-            const auto id = QUuid::fromString(uuid);
-            const auto it = std::ranges::find_if(m_flights, [&](const Flight& f) { return f.uuid() == id; });
-            if (it != m_flights.end()) {
-                toExport.append(*it);
-            }
+        return m_flights;
+    }
+    QList<Flight> result;
+    for (const QString& uuid : uuids) {
+        const auto id = QUuid::fromString(uuid);
+        const auto it = std::ranges::find_if(m_flights, [&](const Flight& f) { return f.uuid() == id; });
+        if (it != m_flights.end()) {
+            result.append(*it);
         }
     }
+    return result;
+}
+
+
+auto Flightlog::FlightLog::exportToForeFlight(const QStringList& uuids) -> QByteArray
+{
+    const auto toExport = flightsForUuids(uuids);
     if (toExport.isEmpty()) {
         return {};
     }
@@ -574,19 +579,7 @@ auto Flightlog::FlightLog::exportToForeFlight(const QStringList& uuids) -> QByte
 
 auto Flightlog::FlightLog::exportToJSON(const QStringList& uuids) -> QByteArray
 {
-    // Collect flights to export (empty list = export all)
-    QList<Flight> toExport;
-    if (uuids.isEmpty()) {
-        toExport = m_flights;
-    } else {
-        for (const QString& uuid : uuids) {
-            const auto id = QUuid::fromString(uuid);
-            const auto it = std::ranges::find_if(m_flights, [&](const Flight& f) { return f.uuid() == id; });
-            if (it != m_flights.end()) {
-                toExport.append(*it);
-            }
-        }
-    }
+    const auto toExport = flightsForUuids(uuids);
     if (toExport.isEmpty()) {
         return {};
     }

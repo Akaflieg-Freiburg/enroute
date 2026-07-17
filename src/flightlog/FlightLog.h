@@ -368,6 +368,9 @@ private:
     // Build a QJsonDocument from a list of flights (shared by save() and exportToJSON())
     static auto flightsToJsonDocument(const QList<Flight>& flights) -> QJsonDocument;
 
+    // Collect the flights matching the given UUID strings; returns all flights if the list is empty
+    [[nodiscard]] auto flightsForUuids(const QStringList& uuids) const -> QList<Flight>;
+
     // Helper to parse a date+time string to QDateTime
     static auto parseDateTime(const QString& date, const QString& timeStr) -> QDateTime;
 

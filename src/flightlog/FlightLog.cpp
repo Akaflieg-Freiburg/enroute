@@ -222,9 +222,11 @@ void Flightlog::FlightLog::removeFlight(int index)
         return;
     }
 
+    auto& flight = m_flights[index];
+
     // If this flight's track is currently displayed, hide it first
     if (!m_displayedTrackFile.isEmpty()
-        && m_flights[index].trackFile() == m_displayedTrackFile) {
+        && flight.trackFile() == m_displayedTrackFile) {
         hideTrack();
     }
 
@@ -242,6 +244,7 @@ void Flightlog::FlightLog::removeFlight(int index)
         m_currentFlightIndex = -1;
     }
 
+    m_recorder.removeTrack(flight);
     m_flights.removeAt(index);
     save();
     emit flightsChanged();

@@ -378,7 +378,7 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position) -> Ge
     }
 
     auto closest = nearby.first();
-    if (coord.distanceTo(closest.coordinate()) > 5000.0) {
+    if (coord.distanceTo(closest.coordinate()) > AirplaneFlightDetector::airfieldProximityM) {
         return {};
     }
 

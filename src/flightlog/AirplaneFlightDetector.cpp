@@ -83,7 +83,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         // Abort takeoff detection if speed drops significantly
         // or if more than 1 minute has elapsed without altitude confirmation
         if ((groundSpeed.isFinite() && groundSpeed < takeoffAbortSpeedFactor * aircraftMinimumSpeed())
-            || (m_pendingStartTime.isValid() && m_pendingStartTime.secsTo(info.timestamp()) > 60)) {
+            || (m_pendingStartTime.isValid() && m_pendingStartTime.secsTo(info.timestamp()) > takeoffConfirmTimeoutS)) {
             resetDetection();
             return;
         }
@@ -148,7 +148,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
     case LandingPhase: {
         // Confirmed landing: speed drops below threshold or timeout
         if ((groundSpeed.isFinite() && groundSpeed < aircraftMinimumSpeed())
-            || (m_landingPhaseEntryTime.isValid() && m_landingPhaseEntryTime.secsTo(info.timestamp()) > 60)) {
+            || (m_landingPhaseEntryTime.isValid() && m_landingPhaseEntryTime.secsTo(info.timestamp()) > landingConfirmTimeoutS)) {
             // Use the time we first went low as the landing time
             auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
             auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);

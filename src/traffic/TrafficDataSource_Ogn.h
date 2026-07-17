@@ -26,6 +26,7 @@
 #include <vector>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
+#include "OgnFilter.h"  // From enrouteOGN library
 #include "OgnParser.h"  // From enrouteOGN library
 
 using namespace Qt::Literals::StringLiterals;
@@ -173,6 +174,7 @@ private:
 
     QString m_lineBuffer;         // Reusable buffer for reading lines
     Ogn::OgnMessage m_ognMessage; // Reusable message structure
+    Ogn::OgnFilter m_ognFilter;   // Deduplication and out-of-order packet filter
 
     // our own OGN APRS CallSign, like "ENR12345"
     QString m_callSign;

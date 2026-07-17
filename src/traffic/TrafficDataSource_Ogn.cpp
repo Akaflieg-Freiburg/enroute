@@ -24,6 +24,7 @@
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "OgnParser.h"
+#include "OgnFilter.h"
 #include "traffic/ConnectionInfo.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_AbstractSocket.h"
@@ -360,6 +361,13 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
         }
     #endif
 
+    // Discard out-of-order and duplicate packets (multiple ground stations may forward
+    // the same beacon; packets do not necessarily arrive in chronological order).
+    if (!m_ognFilter.filter(m_ognMessage))
+    {
+        return;
+    }
+
     // Filter out ownship by ICAO 24-bit address (supports multiple codes separated by spaces).
     // Cached codes are uppercase, case-sensitive comparison.
     for (const std::string& code : m_ownTransponderCodes)
@@ -446,21 +454,11 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
         }
     }
 
-    // PositionInfo
-    auto timestampString = QString::fromUtf8(m_ognMessage.timestamp);
-    auto hour   = timestampString.mid(0, 2).toInt();
-    auto minute = timestampString.mid(2, 2).toInt();
-    auto second = timestampString.mid(4, 2).toInt();
-    auto today = QDateTime::currentDateTimeUtc().date();
-    QDateTime timestamp(today, QTime(hour, minute, second), QTimeZone::UTC);
-    // If the time appears more than 12 hours in the future, it likely belongs to the previous day
-    if (timestamp > QDateTime::currentDateTimeUtc().addSecs(12LL * 3600))
-    {
-        timestamp = timestamp.addDays(-1);
-    }
+    // PositionInfo - use the OGN beacon timestamp (time of transmission by the aircraft)
+    QDateTime const timestamp = QDateTime::fromStdTimePoint(
+        std::chrono::time_point_cast<std::chrono::milliseconds>(m_ognMessage.timestamp));
 
-    QGeoPositionInfo pInfo(QGeoCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude),
-                           timestamp.isValid() ? timestamp : QDateTime::currentDateTimeUtc());
+    QGeoPositionInfo pInfo(QGeoCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude), timestamp);
     pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course);  // Already in degrees
     pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, m_ognMessage.speed * 0.514444);  // Convert knots to m/s
     pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, m_ognMessage.verticalSpeed);
@@ -470,7 +468,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     }
 
     // Prepare the factor object
-    Traffic::TrafficFactorData_WithPosition factor = {
+    const Traffic::TrafficFactorData_WithPosition factor = {
         .data = {
             .alarmLevel = alarmLevel,
             .callSign = callsign,
@@ -526,6 +524,7 @@ void Traffic::TrafficDataSource_Ogn::sendPosition(const QGeoCoordinate& coordina
 void Traffic::TrafficDataSource_Ogn::periodicUpdate()
 {
     sendKeepAlive();
+    m_ognFilter.clean(); // Purge stale per-aircraft deduplication state (>1 hour old)
     //verifyConnection();
 
 // update position report

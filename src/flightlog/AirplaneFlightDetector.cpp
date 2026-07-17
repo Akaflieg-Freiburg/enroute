@@ -140,7 +140,6 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
 
         // Near airport and low altitude → enter landing phase
         m_landingPhaseEntryTime = info.timestamp();
-        m_landingCount++;
         m_detectionState = LandingPhase;
         emit detectionStateChanged();
         break;
@@ -160,6 +159,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
                 arrivalICAO = closestAD.shortName();
                 arrivalCoordinate = closestAD.coordinate();
             }
+            m_landingCount++;
             auto landingCount = m_landingCount;
 
             // Reset state before emitting signal
@@ -175,39 +175,17 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
             break;
         }
 
-        // Go-around / touch-and-go: altitude gain above airfield → end current leg, start new one
+        // Aborted approach: climbed back above the landing threshold without
+        // touching down — revert to InFlight, no landing recorded.
         if (altitudeAMSL.isFinite()) {
             auto closestAD2 = FlightLog::nearestAirfield(info.coordinate());
             if (closestAD2.isValid()) {
                 auto elev = Units::Distance::fromM(closestAD2.coordinate().altitude());
                 if (elev.isFinite()
-                    && (altitudeAMSL - elev) > Units::Distance::fromFT(altitudeGainFT)) {
-                    // Close the current leg. The Idle detour was originally
-                    // needed to protect a list-index invariant (D-006), which
-                    // has since been replaced by UUID tracking. It is harmless
-                    // but no longer necessary for correctness.
-                    auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
-                    auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
-                    auto landingCount = m_landingCount;
-
-                    m_detectionState = Idle;
+                    && (altitudeAMSL - elev) > Units::Distance::fromFT(landingAltitudeAGLFT)) {
                     m_landingPhaseEntryTime = {};
-                    m_landingCount = 0;
-                    emit detectionStateChanged();
-                    emit landingDetected(closestAD2.shortName(), closestAD2.coordinate(), landingTime, landingCount, timeStr);
-
-                    // Start a new leg from the touch-and-go airport
-                    m_pendingDepartureICAO = closestAD2.shortName();
-                    m_pendingDepartureCoordinate = closestAD2.coordinate();
-                    m_pendingDepartureElevation = elev;
-                    m_pendingStartTime = landingTime;
                     m_detectionState = InFlight;
                     emit detectionStateChanged();
-                    emit takeoffDetected(closestAD2.shortName(),
-                                         closestAD2.coordinate(),
-                                         landingTime,
-                                         GlobalObject::navigator()->aircraft().name(),
-                                         timeStr);
                 }
             }
         }

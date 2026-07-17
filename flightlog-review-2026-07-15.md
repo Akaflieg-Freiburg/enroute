@@ -32,7 +32,7 @@ Fix status: [ ] = open. Mark items as you resolve them.
 
 ## Deep analysis findings
 
-### [ ] [D-001] save() truncate-writes with unchecked QFile — whole-log data loss
+### [x] [D-001] save() truncate-writes with unchecked QFile — whole-log data loss
 - **File**: `src/flightlog/FlightLog.cpp:684-691`
 - **Category**: Error Handling — **Confidence**: 92/100
 - **Finding**: `save()` opens `flightlog.json` with `WriteOnly` (truncates immediately) and ignores both the `open()` failure and the `write()` return. On disk-full or permission errors, the previously saved log is truncated or half-written and no error is surfaced anywhere. It is the sole persistence path, called from every CRUD operation.

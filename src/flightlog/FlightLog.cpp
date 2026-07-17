@@ -19,10 +19,12 @@
  ***************************************************************************/
 
 #include <QDateTime>
+#include <QDebug>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSaveFile>
 
 #ifdef Q_OS_ANDROID
 #include <QJniObject>
@@ -688,9 +690,30 @@ void Flightlog::FlightLog::sortFlights()
 void Flightlog::FlightLog::save()
 {
     const QJsonDocument doc = flightsToJsonDocument(m_flights);
-    QFile file(m_fileName);
-    if (file.open(QIODevice::WriteOnly)) {
-        file.write(doc.toJson());
+
+    // Use QSaveFile so a failed or partial write cannot corrupt the existing
+    // file: it writes to a temporary file and commit() atomically renames.
+    QSaveFile file(m_fileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "FlightLog::save: cannot open" << m_fileName
+                   << "for writing:" << file.errorString();
+        emit saveError(file.errorString());
+        return;
+    }
+
+    const QByteArray json = doc.toJson();
+    if (file.write(json) != json.size()) {
+        qWarning() << "FlightLog::save: write failed for" << m_fileName
+                   << ":" << file.errorString();
+        file.cancelWriting();
+        emit saveError(file.errorString());
+        return;
+    }
+
+    if (!file.commit()) {
+        qWarning() << "FlightLog::save: commit failed for" << m_fileName
+                   << ":" << file.errorString();
+        emit saveError(file.errorString());
     }
 }
 

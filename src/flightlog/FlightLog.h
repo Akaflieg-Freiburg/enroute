@@ -301,6 +301,15 @@ signals:
      */
     void landingDetected(const QString& time);
 
+    /*! \brief Emitted when saving the flight log file fails
+     *
+     *  The previously saved flight log on disk remains intact, but the
+     *  latest change could not be persisted.
+     *
+     *  @param message Human-readable error description
+     */
+    void saveError(const QString& message);
+
 private slots:
     // Process position updates — delegates to the active FlightDetector
     void onPositionUpdated();

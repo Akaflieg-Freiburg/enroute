@@ -24,6 +24,7 @@ import QtQml.Models
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
+import QtQuick.Effects
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -424,6 +425,20 @@ Page {
 
                             onYChanged: dragItem.updateDrag()
 
+                            // While dragging, lift the row above the others with a drop
+                            // shadow and a slight shrink, so the sliding rows stay visible
+                            // at the left and right edges. Both are only active mid-drag.
+                            Behavior on scale { NumberAnimation { duration: 100 } }
+                            layer.enabled: dragHandler.active
+                            layer.effect: MultiEffect {
+                                shadowEnabled: true
+                                shadowColor: "#000000"
+                                shadowOpacity: 0.35
+                                shadowBlur: 0.7
+                                shadowVerticalOffset: 4
+                                blurMax: 24
+                            }
+
                             // While dragging, detach the row from its slot and lift it
                             // above the other delegates so it can float under the finger.
                             states: State {
@@ -434,6 +449,7 @@ Page {
                                     anchors.horizontalCenter: undefined
                                     anchors.verticalCenter: undefined
                                 }
+                                PropertyChanges { content.scale: 0.95 }
                             }
 
                             Column {

@@ -293,6 +293,18 @@ namespace Navigation
          */
         Q_INVOKABLE QString load(const QString& fileName);
 
+        /*! \brief Move a waypoint from one position to another
+         *
+         * Moves the waypoint at index 'from' to index 'to', shifting the
+         * intervening waypoints. If either index is out of range or if the two
+         * indices are equal, this method does nothing.
+         *
+         * @param from Index of the waypoint to move
+         *
+         * @param to Index the waypoint should have after the move
+         */
+        Q_INVOKABLE void move(int from, int to);
+
         /*! \brief Move waypoint one position down in the list of waypoints
          *
          * @param idx Index of the waypoint

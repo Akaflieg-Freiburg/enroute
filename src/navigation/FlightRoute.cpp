@@ -440,6 +440,21 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
     return {};
 }
 
+void Navigation::FlightRoute::move(int from, int to)
+{
+    QVector<GeoMaps::Waypoint> newWaypoints = m_waypoints.value();
+
+    // Paranoid safety checks
+    if ((from < 0) || (from >= newWaypoints.size()) ||
+        (to < 0) || (to >= newWaypoints.size()) || (from == to))
+    {
+        return;
+    }
+
+    newWaypoints.move(from, to);
+    m_waypoints = newWaypoints;
+}
+
 void Navigation::FlightRoute::moveDown(int idx)
 {
     QVector<GeoMaps::Waypoint> newWaypoints = m_waypoints.value();

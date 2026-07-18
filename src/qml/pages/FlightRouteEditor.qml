@@ -20,6 +20,7 @@
 
 import QtPositioning
 import QtQml
+import QtQml.Models
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
@@ -38,141 +39,6 @@ Page {
     property bool isAndroidOrIos: isAndroid || isIos
     property angle staticAngle
     property speed staticSpeed
-
-    Component {
-        id: waypointComponent
-
-        RowLayout {
-            id: waypointLayout
-
-            property var waypoint: ({})
-            property int index: -1
-
-            width: co.width
-
-            WaypointDelegate {
-                Layout.fillWidth: true
-                waypoint: waypointLayout.waypoint
-            }
-
-            ToolButton {
-                id: editButton
-
-                visible: waypoint.icon.indexOf("WP") !== -1
-                icon.source: "/icons/material/ic_mode_edit.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    wpEditor.waypoint = waypoint
-                    wpEditor.index = waypointLayout.index
-                    wpEditor.open()
-                }
-            }
-
-            ToolButton {
-                id: wpMenuTB
-
-                icon.source: "/icons/material/ic_more_horiz.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    wpMenu.open()
-                }
-
-                AutoSizingMenu {
-                    id: wpMenu
-
-                    Action {
-                        text: qsTr("Move Up")
-
-                        enabled: index > 0
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            wpMenu.close() // Necessary on some devices, or else menu will stay open
-
-                            Navigator.flightRoute.moveUp(index)
-                        }
-                    }
-
-                    Action {
-                        text: qsTr("Move Down")
-
-                        enabled: index < Navigator.flightRoute.size-1
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            wpMenu.close() // Necessary on some devices, or else menu will stay open
-
-                            Navigator.flightRoute.moveDown(index)
-                        }
-                    }
-
-                    Action {
-                        text: qsTr("Remove")
-
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            wpMenu.close() // Necessary on some devices, or else menu will stay open
-
-                            Navigator.flightRoute.removeWaypoint(index)
-                        }
-                    }
-
-                    Rectangle {
-                        height: 1
-                        Layout.fillWidth: true
-                        color: Global.dividerColor
-                    }
-
-                    Action {
-                        text: qsTr("Add to waypoint library")
-                        enabled: {
-                            // Mention waypoints, in order to update
-                            WaypointLibrary.waypoints
-
-                            return (waypoint.category === "WP") && !WaypointLibrary.hasNearbyEntry(waypoint)
-                        }
-
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            wpMenu.close() // Necessary on some devices, or else menu will stay open
-
-                            WaypointLibrary.add(waypoint)
-                            toast.doToast(qsTr("Added %1 to waypoint library.").arg(waypoint.extendedName))
-                        }
-                    }
-
-                }
-            }
-
-        }
-    }
-
-    Component {
-        id: legComponent
-
-        ColumnLayout {
-            id: grid
-
-            property leg leg: ({});
-
-            Layout.fillWidth: true
-
-            ItemDelegate {
-                icon.source: "/icons/vertLine.svg"
-                Layout.fillWidth: true
-                enabled: false
-                text: {
-                    // Mention units
-                    Navigator.aircraft.horizontalDistanceUnit
-                    Navigator.aircraft.fuelConsumptionUnit
-
-                    if (leg == null)
-                        return ""
-                    return leg.description(Navigator.wind, Navigator.aircraft)
-                }
-            }
-
-        }
-    }
-
 
     header: PageHeader {
 
@@ -497,53 +363,247 @@ Page {
                 text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
 
-            DecoratedScrollView {
-                anchors.fill: parent
+            DecoratedListView {
+                id: routeView
 
-                contentWidth: availableWidth
+                anchors.fill: parent
 
                 clip: true
 
-                ColumnLayout {
-                    id: co
-                    width: parent.width
+                // Index of the waypoint currently picked up for dragging, or -1
+                // while idle. Doubles as a guard that stops the list from flicking
+                // while a drag is in progress.
+                property int draggedIndex: -1
+                interactive: draggedIndex === -1
 
-                    Connections {
-                        target: Navigator.flightRoute
-                        function onWaypointsChanged() {
-                            co.createItems()
+                displaced: Transition {
+                    NumberAnimation { properties: "y"; duration: 150; easing.type: Easing.OutQuad }
+                }
+
+                model: DelegateModel {
+                    id: routeDelegateModel
+
+                    model: Navigator.flightRoute.waypoints
+
+                    delegate: Item {
+                        id: dragItem
+
+                        required property int index
+                        required property waypoint modelData
+
+                        width: routeView.width
+                        height: content.height
+
+                        // While a row is being dragged, slide it into whatever slot its
+                        // centre currently overlaps, so the other rows open a gap. Driven
+                        // by geometry (indexAt) rather than a DropArea: in this delegate the
+                        // DropArea does not reliably receive the drag-move events.
+                        function updateDrag() {
+                            if (!dragHandler.active) {
+                                return
+                            }
+                            let c = content.mapToItem(routeView.contentItem, content.width/2, content.height/2)
+                            let idx = routeView.indexAt(c.x, c.y)
+                            if (idx < 0) {
+                                idx = (c.y <= 0) ? 0 : routeView.count-1
+                            }
+                            let cur = dragItem.DelegateModel.itemsIndex
+                            if (idx !== cur) {
+                                routeDelegateModel.items.move(cur, idx)
+                            }
                         }
-                    }
 
-                    Component.onCompleted: co.createItems()
+                        Rectangle {
+                            id: content
 
-                    function createItems() {
-                        // Delete old text items
-                        let childCount = co.children.length;
-                        // Iterate through the children in reverse order
-                        for (let i = childCount - 1; i >= 0; i--) {
-                            // Check if the child is a valid QML item
-                            if (co.children[i] instanceof QtObject) {
-                                    // Destroy the child item
-                                    co.children[i].destroy();
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: dragItem.width
+                            height: itemColumn.implicitHeight
+                            color: Global.pageBackgroundColor
+
+                            onYChanged: dragItem.updateDrag()
+
+                            // While dragging, detach the row from its slot and lift it
+                            // above the other delegates so it can float under the finger.
+                            states: State {
+                                when: dragHandler.active
+                                ParentChange { target: content; parent: routeView }
+                                AnchorChanges {
+                                    target: content
+                                    anchors.horizontalCenter: undefined
+                                    anchors.verticalCenter: undefined
                                 }
                             }
 
-                        if (Navigator.flightRoute.size > 0) {
-                            // Create first waypointComponent
-                            waypointComponent.createObject(co, {waypoint: Navigator.flightRoute.waypoints[0], index: 0});
+                            Column {
+                                id: itemColumn
 
-                            // Create leg description items
-                            var legs = Navigator.flightRoute.legs
-                            var j
-                            for (j=0; j<legs.length; j++) {
-                                legComponent.createObject(co, {leg: legs[j]});
-                                waypointComponent.createObject(co, {waypoint: legs[j].endPoint, index: j+1});
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+                                spacing: 0
+
+                                RowLayout {
+                                    width: itemColumn.width
+
+                                    WaypointDelegate {
+                                        Layout.fillWidth: true
+                                        waypoint: dragItem.modelData
+                                    }
+
+                                    ToolButton {
+                                        id: editButton
+
+                                        visible: dragItem.modelData.icon.indexOf("WP") !== -1
+                                        icon.source: "/icons/material/ic_mode_edit.svg"
+                                        onClicked: {
+                                            PlatformAdaptor.vibrateBrief()
+                                            wpEditor.waypoint = dragItem.modelData
+                                            wpEditor.index = dragItem.index
+                                            wpEditor.open()
+                                        }
+                                    }
+
+                                    // A drag handle. This must NOT be a Button: an
+                                    // AbstractButton grabs the pointer and the DragHandler
+                                    // inside it would never activate. A plain Item works.
+                                    Item {
+                                        id: dragHandle
+
+                                        implicitWidth: editButton.implicitWidth
+                                        implicitHeight: editButton.implicitHeight
+                                        Layout.alignment: Qt.AlignVCenter
+
+                                        Icon {
+                                            anchors.centerIn: parent
+                                            width: 24
+                                            height: 24
+                                            source: "/icons/material/ic_drag_handle.svg"
+                                        }
+
+                                        DragHandler {
+                                            id: dragHandler
+
+                                            target: content
+                                            xAxis.enabled: false
+                                            yAxis.enabled: true
+
+                                            onActiveChanged: {
+                                                if (active) {
+                                                    routeView.draggedIndex = dragItem.DelegateModel.itemsIndex
+                                                } else {
+                                                    let from = routeView.draggedIndex
+                                                    let to = dragItem.DelegateModel.itemsIndex
+                                                    routeView.draggedIndex = -1
+                                                    if ((from >= 0) && (from !== to)) {
+                                                        PlatformAdaptor.vibrateBrief()
+                                                        Navigator.flightRoute.move(from, to)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    ToolButton {
+                                        id: wpMenuTB
+
+                                        icon.source: "/icons/material/ic_more_horiz.svg"
+                                        onClicked: {
+                                            PlatformAdaptor.vibrateBrief()
+                                            wpMenu.open()
+                                        }
+
+                                        AutoSizingMenu {
+                                            id: wpMenu
+
+                                            Action {
+                                                text: qsTr("Move Up")
+
+                                                enabled: dragItem.index > 0
+                                                onTriggered: {
+                                                    PlatformAdaptor.vibrateBrief()
+                                                    wpMenu.close() // Necessary on some devices, or else menu will stay open
+
+                                                    Navigator.flightRoute.moveUp(dragItem.index)
+                                                }
+                                            }
+
+                                            Action {
+                                                text: qsTr("Move Down")
+
+                                                enabled: dragItem.index < Navigator.flightRoute.size-1
+                                                onTriggered: {
+                                                    PlatformAdaptor.vibrateBrief()
+                                                    wpMenu.close() // Necessary on some devices, or else menu will stay open
+
+                                                    Navigator.flightRoute.moveDown(dragItem.index)
+                                                }
+                                            }
+
+                                            Action {
+                                                text: qsTr("Remove")
+
+                                                onTriggered: {
+                                                    PlatformAdaptor.vibrateBrief()
+                                                    wpMenu.close() // Necessary on some devices, or else menu will stay open
+
+                                                    Navigator.flightRoute.removeWaypoint(dragItem.index)
+                                                }
+                                            }
+
+                                            Rectangle {
+                                                height: 1
+                                                Layout.fillWidth: true
+                                                color: Global.dividerColor
+                                            }
+
+                                            Action {
+                                                text: qsTr("Add to waypoint library")
+                                                enabled: {
+                                                    // Mention waypoints, in order to update
+                                                    WaypointLibrary.waypoints
+
+                                                    return (dragItem.modelData.category === "WP") && !WaypointLibrary.hasNearbyEntry(dragItem.modelData)
+                                                }
+
+                                                onTriggered: {
+                                                    PlatformAdaptor.vibrateBrief()
+                                                    wpMenu.close() // Necessary on some devices, or else menu will stay open
+
+                                                    WaypointLibrary.add(dragItem.modelData)
+                                                    toast.doToast(qsTr("Added %1 to waypoint library.").arg(dragItem.modelData.extendedName))
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                                ItemDelegate {
+                                    width: itemColumn.width
+
+                                    visible: dragItem.index < Navigator.flightRoute.size-1
+                                    icon.source: "/icons/vertLine.svg"
+                                    enabled: false
+                                    text: {
+                                        // Mention units
+                                        Navigator.aircraft.horizontalDistanceUnit
+                                        Navigator.aircraft.fuelConsumptionUnit
+
+                                        // dragItem.index is transiently -1 while a delegate is
+                                        // being torn down, so guard against a missing leg.
+                                        let leg = Navigator.flightRoute.legs[dragItem.index]
+                                        if (leg === undefined)
+                                            return ""
+                                        return leg.description(Navigator.wind, Navigator.aircraft)
+                                    }
+                                }
                             }
                         }
-                    }
-                } // ColumnLayout
 
+                    }
+                }
             }
 
         }

@@ -131,6 +131,10 @@ signals:
      */
     void requestShowSideView(bool show);
 
+    /*! \brief Emitted to indicate that the GUI should show the "Wind" tab of the
+     *  "Route & Wind" page */
+    void requestShowWindTab();
+
     /*! \brief Emitted to indicate that the GUI should set a VAC
      *
      *  @param vacName Name of the VAC

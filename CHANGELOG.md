@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- Waypoints in the flight route can now be reordered by drag-and-drop. (#52)
+
+
 ## [3.4.0] - 2026-07-14
 
 ### Added

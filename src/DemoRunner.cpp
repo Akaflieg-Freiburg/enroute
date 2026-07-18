@@ -476,6 +476,26 @@ void DemoRunner::generateManualScreenshots()
         GlobalObject::navigator()->flightRoute()->clear();
     }
 
+    // Route and Wind page, reference chapter
+    {
+        qWarning() << "… Route and Wind Page (reference)";
+        GlobalObject::navigator()->flightRoute()->clear();
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTF")) );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("KRH")) );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDFW")) );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDQD")) );
+        emit requestOpenRoutePage();
+        delay(2s);
+        applicationWindow->grabWindow().save(QStringLiteral("05-09-01-Route.png"));
+
+        emit requestShowWindTab();
+        delay(2s);
+        applicationWindow->grabWindow().save(QStringLiteral("05-09-02-Wind.png"));
+
+        emit requestClosePages();
+        GlobalObject::navigator()->flightRoute()->clear();
+    }
+
     // Enroute near EDSB
     {
         qWarning() << "… En route near EDSB";

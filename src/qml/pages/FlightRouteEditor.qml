@@ -806,6 +806,15 @@ Page {
 
     }
 
+    // Lets the DemoRunner switch to the "Wind" tab when generating screenshots.
+    Connections {
+        target: DemoRunner
+
+        function onRequestShowWindTab() {
+            sv.currentIndex = 1
+        }
+    }
+
 
     footer: Footer {
         ColumnLayout {

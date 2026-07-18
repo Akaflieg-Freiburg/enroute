@@ -321,6 +321,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
         result += u"<p>"_s
                   + tr("There are now specialized icons for obstacle NOTAMs and NOTAMs about drone flights. We thank Christian Engelhardt for the implementation!")
                   + u"</p>"_s;
+        result += u"<p>"_s
+                  + tr("Waypoints in your flight route can now be rearranged by drag-and-drop: press the drag handle next to a waypoint and move it to its new position in the list.")
+                  + u"</p>"_s;
 #if !defined(Q_OS_IOS)
         result += u"<p>"_s
                   + tr("Support for Bluetooth Classic and Bluetooth Low Energy is now a regular feature and no longer in tech preview. Please report any issues that you may find!")

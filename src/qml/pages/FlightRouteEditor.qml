@@ -414,6 +414,33 @@ Page {
                             }
                         }
 
+                        // While dragging near the top or bottom edge of the viewport,
+                        // scroll the list so a waypoint can be moved across a route that is
+                        // longer than the screen. Speed ramps up towards the very edge.
+                        function autoScrollStep() {
+                            if (!dragHandler.active) {
+                                return
+                            }
+                            let margin = routeView.height*0.15
+                            let center = content.y + content.height/2
+                            let maxContentY = Math.max(0, routeView.contentHeight - routeView.height)
+                            if (maxContentY <= 0) {
+                                return
+                            }
+                            let step = 0
+                            if ((center < margin) && (routeView.contentY > 0)) {
+                                let pUp = Math.max(0, Math.min(1, (margin-center)/margin))
+                                step = -(3 + 12*pUp)
+                            } else if ((center > routeView.height-margin) && (routeView.contentY < maxContentY)) {
+                                let pDown = Math.max(0, Math.min(1, (center-(routeView.height-margin))/margin))
+                                step = 3 + 12*pDown
+                            }
+                            if (step !== 0) {
+                                routeView.contentY = Math.max(0, Math.min(maxContentY, routeView.contentY + step))
+                                dragItem.updateDrag()
+                            }
+                        }
+
                         Rectangle {
                             id: content
 
@@ -424,6 +451,14 @@ Page {
                             color: Global.pageBackgroundColor
 
                             onYChanged: dragItem.updateDrag()
+
+                            // Drives edge auto-scrolling for the whole duration of a drag.
+                            Timer {
+                                running: dragHandler.active
+                                repeat: true
+                                interval: 16
+                                onTriggered: dragItem.autoScrollStep()
+                            }
 
                             // While dragging, lift the row above the others with a drop
                             // shadow and a slight shrink, so the sliding rows stay visible

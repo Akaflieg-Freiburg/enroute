@@ -106,6 +106,27 @@ public:
      */
     Q_INVOKABLE virtual QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate) = 0;
 
+    /*! \brief Save content to a file chosen by the user
+     *
+     * On Android, this method opens the system file dialog
+     * (ACTION_CREATE_DOCUMENT), where the user chooses a location and file
+     * name. The operation is asynchronous; this method returns immediately and
+     * the result is reported through the signal saveContentResult(). On all
+     * other platforms, this method does nothing; use shareContent(), which
+     * saves via a file dialog on desktop systems.
+     *
+     * @param content File content
+     *
+     * @param mimeType the mimeType of the content
+     *
+     * @param fileNameSuffix File name suffix (e.g. "geojson"), used when saving
+     * the file.
+     *
+     * @param fileNameTemplate A string of the form "EDTF - EDTG", without
+     * suffix or path, used to suggest a file name in the file dialog.
+     */
+    Q_INVOKABLE virtual void saveContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate);
+
     /*! \brief View content
      *
      * This method is supposed open the content in an appropriate app.
@@ -222,6 +243,13 @@ signals:
 
     /*! \brief Emitted when a general file import error occurs */
     void importError(QString text);
+
+    /*! \brief Result of a saveContent() operation
+     *
+     *  @param result Empty string on success, the string "abort" if the user
+     *  cancelled the file dialog, and a translated error message otherwise.
+     */
+    void saveContentResult(QString result);
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange_Abstract)

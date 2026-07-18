@@ -53,6 +53,15 @@ Platform::FileExchange_Abstract::FileExchange_Abstract(QObject *parent)
 // Methods
 //
 
+void Platform::FileExchange_Abstract::saveContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate)
+{
+    Q_UNUSED(content)
+    Q_UNUSED(mimeType)
+    Q_UNUSED(fileNameSuffix)
+    Q_UNUSED(fileNameTemplate)
+}
+
+
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& path)
 {
     if (path.isEmpty())

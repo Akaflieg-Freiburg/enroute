@@ -217,6 +217,16 @@ Page {
                 }
             }
 
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+                visible: Qt.platform.os === "android"
+                text: qsTr("Save Info")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    FileExchange.saveContent(sysInfoLabel.text, "text/plain;charset=UTF-8", "txt", "EnrouteSystemInformation")
+                }
+            }
+
             Rectangle { Layout.preferredHeight: sv.font.pixelSize/2 }
         }
 

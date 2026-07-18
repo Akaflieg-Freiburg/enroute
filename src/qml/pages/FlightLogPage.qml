@@ -31,7 +31,8 @@ Page {
     id: page
     title: qsTr("Flight Log")
 
-    property bool isAndroidOrIos: Qt.platform.os === "android" || Qt.platform.os === "ios"
+    property bool isAndroid: Qt.platform.os === "android"
+    property bool isAndroidOrIos: isAndroid || Qt.platform.os === "ios"
 
     // Selection state
     property bool selectionMode: false
@@ -177,6 +178,38 @@ Page {
                         if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                         if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                         toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
+                        page.exitSelectionMode()
+                    }
+                }
+
+                MenuItem {
+                    text: qsTr("Save as ForeFlight CSV…")
+                    visible: page.isAndroid
+                    height: visible ? implicitHeight : 0
+                    enabled: FlightLog.count > 0
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        var data = FlightLog.exportToForeFlight(page.selectedUuids)
+                        if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        FileExchange.saveContent(data, "text/*", "csv", qsTr("FlightLog"))
+                        page.exitSelectionMode()
+                    }
+                }
+
+                MenuItem {
+                    text: qsTr("Save as Flightlog JSON…")
+                    visible: page.isAndroid
+                    height: visible ? implicitHeight : 0
+                    enabled: FlightLog.count > 0
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        var data = FlightLog.exportToJSON(page.selectedUuids)
+                        if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        FileExchange.saveContent(data, "text/*", "json", qsTr("FlightLog"))
                         page.exitSelectionMode()
                     }
                 }
@@ -516,6 +549,46 @@ Page {
                             if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
                             toast.doToast(page.isAndroidOrIos ? qsTr("Track shared") : qsTr("Track exported"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("Save as ForeFlight CSV…")
+                        visible: page.isAndroid
+                        height: visible ? implicitHeight : 0
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            var data = FlightLog.exportToForeFlight([modelData.uuid.toString()])
+                            if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                            FileExchange.saveContent(data, "text/*", "csv", qsTr("FlightLog"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("Save as Flightlog JSON…")
+                        visible: page.isAndroid
+                        height: visible ? implicitHeight : 0
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            var data = FlightLog.exportToJSON([modelData.uuid.toString()])
+                            if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                            FileExchange.saveContent(data, "text/*", "json", qsTr("FlightLog"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("Save to IGC…")
+                        visible: page.isAndroid
+                        height: visible ? implicitHeight : 0
+                        enabled: modelData.hasTrack
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            var data = FlightLog.exportToIGC(modelData.uuid.toString())
+                            if (data.length === 0) { shareErrorDialog.text = qsTr("Track data could not be read."); shareErrorDialog.open(); return }
+                            FileExchange.saveContent(data, "text/*", "igc", qsTr("FlightLog"))
                         }
                     }
 

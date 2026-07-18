@@ -69,6 +69,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   private static String TAG = "IntentLauncher";
 
   private static final int PICK_FILE_REQUEST = 1;
+  private static final int CREATE_FILE_REQUEST = 2;
 
   /**
    * Request POST_NOTIFICATIONS permission on Android 13+.
@@ -437,9 +438,37 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   }
 
   /**
+   * Open the system 'create document' dialog (Storage Access Framework).
+   *
+   * This method lets the user choose a location and name for a new file. The result is reported
+   * asynchronously through the native method onCreateFileResult().
+   *
+   * @param mimeType the mime type of the file to create.
+   *
+   * @param suggestedName suggested display name for the new file, including suffix.
+   *
+   */
+  public void createFile(String mimeType, String suggestedName) {
+    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+    intent.addCategory(Intent.CATEGORY_OPENABLE);
+    if (!mimeType.isEmpty()) {
+      intent.setType(mimeType);
+    } else {
+      intent.setType("application/octet-stream");
+    }
+    intent.putExtra(Intent.EXTRA_TITLE, suggestedName);
+    startActivityForResult(intent, CREATE_FILE_REQUEST);
+  }
+
+  /**
    * Result of file picking
    */
   public static native void setFileReceived(String fileName, String unmingled);
+
+  /**
+   * Result of the 'create document' dialog. An empty string means the user aborted.
+   */
+  public static native void onCreateFileResult(String uri);
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -451,6 +480,12 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         String name = (docFile != null && docFile.getName() != null) ? docFile.getName() : "";
         setFileReceived(uri.toString(), name);
       }
+    }
+    if (requestCode == CREATE_FILE_REQUEST) {
+      // Cancellation must be reported, so that the C++ side can clear its
+      // pending save buffer.
+      Uri uri = (resultCode == RESULT_OK && data != null) ? data.getData() : null;
+      onCreateFileResult(uri != null ? uri.toString() : "");
     }
     super.onActivityResult(requestCode, resultCode, data);
   }

@@ -87,6 +87,22 @@ public:
      */
     QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate) override;
 
+    /*! \brief Implements virtual method from FileExchange_Abstract
+     *
+     *  Opens the native Android 'create document' dialog. This method returns
+     *  immediately; the result of the operation is reported through the signal
+     *  saveContentResult().
+     *
+     *  @param content see documentation for FileExchange_Abstract
+     *
+     *  @param mimeType see documentation for FileExchange_Abstract
+     *
+     *  @param fileNameSuffix see documentation for FileExchange_Abstract
+     *
+     *  @param fileNameTemplate see documentation for FileExchange_Abstract
+     */
+    void saveContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate) override;
+
     /*! \brief Opens the native Android file picker
      *
      *  This method facilitates a workaround against
@@ -107,6 +123,17 @@ public slots:
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
     void processFileOpenRequest(const QString& path, const QString& unmingledFilename) override;
 
+    /*! \brief Called with the result of the Android 'create document' dialog
+     *
+     *  Invoked (via QMetaObject::invokeMethod from JNI code) once the system
+     *  file dialog opened by saveContent() closes. Writes the pending content
+     *  and emits saveContentResult().
+     *
+     *  @param uriString content:// URI of the created document, or an empty
+     *  string if the user cancelled the dialog.
+     */
+    void onCreateFileResult(const QString& uriString);
+
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange)
@@ -125,6 +152,11 @@ private:
     bool receiveOpenFileRequestsStarted {false};
     QString pendingReceiveOpenFileRequest;
     QString pendingReceiveOpenFileRequestUnmingledName;
+
+    // Content waiting to be written once the 'create document' dialog opened
+    // by saveContent() reports its result.
+    QByteArray pendingSaveContent;
+    bool savePending {false};
 };
 
 } // namespace Platform

@@ -250,6 +250,10 @@ Page {
                     AutoSizingMenu {
                         id: cptMenu
 
+                        // The 'Save…' submenu applies to Android only. Submenu entries
+                        // cannot be hidden declaratively, so remove it on other platforms.
+                        Component.onCompleted: if (!isAndroid) cptMenu.removeMenu(saveMenu)
+
                         AutoSizingMenu {
                             title: isAndroidOrIos ? qsTr("Share…") : qsTr("Export…")
 
@@ -300,6 +304,35 @@ Page {
                                         toast.doToast(qsTr("Flight route shared"))
                                     else if (!isIos)
                                         toast.doToast(qsTr("Flight route exported"))
+                                }
+                            }
+                        }
+
+                        AutoSizingMenu {
+                            id: saveMenu
+                            title: qsTr("Save…")
+
+                            MenuItem {
+                                text: qsTr("… to GeoJSON file")
+                                onTriggered: {
+                                    cptMenu.close()
+                                    PlatformAdaptor.vibrateBrief()
+                                    highlighted = false
+                                    parent.highlighted = false
+
+                                    FileExchange.saveContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "geojson", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
+                                }
+                            }
+
+                            MenuItem {
+                                text: qsTr("… to GPX file")
+                                onTriggered: {
+                                    cptMenu.close()
+                                    PlatformAdaptor.vibrateBrief()
+                                    highlighted = false
+                                    parent.highlighted = false
+
+                                    FileExchange.saveContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "gpx", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
                                 }
                             }
                         }

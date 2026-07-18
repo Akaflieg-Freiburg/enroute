@@ -49,6 +49,23 @@ Item {
             errorDialog.open()
         }
 
+        function onSaveContentResult(result) {
+            if (result === "") {
+                importManager.toast.doToast(qsTr("File saved"))
+                return
+            }
+            if (result === "abort") {
+                importManager.toast.doToast(qsTr("Aborted"))
+                return
+            }
+            Global.dialogLoader.active = false
+            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                              title: qsTr("Error Saving Data…"),
+                                              text: result,
+                                              standardButtons: Dialog.Ok})
+            Global.dialogLoader.active = true
+        }
+
         function onOpenFileRequest(fileName, info, fileFunction) {
             importManager.view.raise()
             importManager.view.requestActivate()

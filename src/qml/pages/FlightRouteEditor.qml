@@ -98,6 +98,10 @@ Page {
 
                 topMargin: SafeInsets.top
 
+                // The 'Save…' submenu applies to Android only. Submenu entries
+                // cannot be hidden declaratively, so remove it on other platforms.
+                Component.onCompleted: if (!flightRoutePage.isAndroid) headerMenuX.removeMenu(saveMenu)
+
                 MenuItem {
                     text: qsTr("View Library…")
                     onTriggered: {
@@ -219,6 +223,34 @@ Page {
                                 toast.doToast(qsTr("Flight route shared"))
                             else
                                 toast.doToast(qsTr("Flight route exported"))
+                        }
+                    }
+                }
+
+                AutoSizingMenu {
+                    id: saveMenu
+                    title: qsTr("Save…")
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
+
+                    MenuItem {
+                        text: qsTr("… to GeoJSON file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "geojson", Navigator.flightRoute.suggestedFilename())
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to GPX file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", Navigator.flightRoute.suggestedFilename())
                         }
                     }
                 }

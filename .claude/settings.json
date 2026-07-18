@@ -4,7 +4,12 @@
       "Bash(convert try1/05-09-01-Route.png -resize 800x1200 __TRACKED_VAR__/05-09-01-Route.png)",
       "Bash(convert try1/05-09-02-Wind.png -resize 800x1200 __TRACKED_VAR__/05-09-02-Wind.png)",
       "Bash(identify -format '%wx%h  %f\\\\n' __TRACKED_VAR__/05-09-01-Route.png __TRACKED_VAR__/05-09-02-Wind.png)",
-      "Bash(grep -o 'routeAndWindPage[^\"]*\\\\|09-routeAndWind.html' __TRACKED_VAR__/03-tutorialBasic/03-plan.html)"
+      "Bash(grep -o 'routeAndWindPage[^\"]*\\\\|09-routeAndWind.html' __TRACKED_VAR__/03-tutorialBasic/03-plan.html)",
+      "Bash(/home/kebekus/Software/buildsystems/Qt/6.11.1/gcc_64/bin/qmllint @/home/kebekus/Software/projects/enroute/build/claude/src/.rcc/qmllint/enroute.rsp)",
+      "Bash(cmake --build build/Qt_6_11_1_f_r_Android_x86_64-Debug)",
+      "Bash(cmake --build build/Qt_6_11_1_f_r_Android_x86_64-Debug --target help)",
+      "Bash(cmake --build build/Qt_6_11_1_f_r_Android_x86_64-Debug --target enroute_make_apk)",
+      "Bash(nm -D build/Qt_6_11_1_f_r_Android_x86_64-Debug/src/libenroute_x86_64.so)"
     ]
   },
   "hooks": {

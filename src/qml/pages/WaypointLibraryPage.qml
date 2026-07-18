@@ -95,6 +95,10 @@ Page {
                 id: headerMenuX
                 cascade: true
 
+                // The 'Save…' submenu applies to Android only. Submenu entries
+                // cannot be hidden declaratively, so remove it on other platforms.
+                Component.onCompleted: if (!page.isAndroid) headerMenuX.removeMenu(saveMenu)
+
                 MenuItem {
                     id: menuImport
 
@@ -192,6 +196,34 @@ Page {
                                 toast.doToast(qsTr("Waypoint library shared"))
                             else
                                 toast.doToast(qsTr("Waypoint library exported"))
+                        }
+                    }
+                }
+
+                AutoSizingMenu {
+                    id: saveMenu
+                    title: qsTr("Save…")
+                    enabled: WaypointLibrary.waypoints.length > 0
+
+                    MenuItem {
+                        text: qsTr("… to GeoJSON file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(WaypointLibrary.GeoJSON, "application/geo+json", "geojson", qsTr("Waypoint Library"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to GPX file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(WaypointLibrary.toGpx(), "application/gpx+xml", "gpx", qsTr("Waypoint Library"))
                         }
                     }
                 }

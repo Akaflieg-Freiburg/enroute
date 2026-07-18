@@ -119,6 +119,79 @@ QString Platform::FileExchange::viewContent(const QByteArray& content, const QSt
 }
 
 
+void Platform::FileExchange::saveContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate)
+{
+    if (savePending)
+    {
+        emit saveContentResult(tr("Another file save operation is already in progress."));
+        return;
+    }
+
+    const QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    if (!activity.isValid())
+    {
+        emit saveContentResult(tr("Unable to open the system file dialog."));
+        return;
+    }
+
+    QString baseName = fileNameTemplate;
+    if (baseName.contains(u"%1"_s))
+    {
+        QDateTime const now = QDateTime::currentDateTimeUtc();
+        baseName = baseName.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
+    }
+
+    pendingSaveContent = content;
+    savePending = true;
+
+    const QJniObject jMimeType = QJniObject::fromString(mimeType);
+    const QJniObject jSuggestedName = QJniObject::fromString(baseName + u"."_s + fileNameSuffix);
+    activity.callMethod<void>("createFile", "(Ljava/lang/String;Ljava/lang/String;)V",
+                              jMimeType.object<jstring>(), jSuggestedName.object<jstring>());
+}
+
+
+void Platform::FileExchange::onCreateFileResult(const QString& uriString)
+{
+    if (!savePending)
+    {
+        // Stale result, e.g. delivered after the app was restarted while the
+        // file dialog was open. The content to be saved is gone; ignore.
+        return;
+    }
+    QByteArray const content = pendingSaveContent;
+    pendingSaveContent.clear();
+    savePending = false;
+
+    if (uriString.isEmpty())
+    {
+        emit saveContentResult(u"abort"_s);
+        return;
+    }
+
+    QFile file(uriString);
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        emit saveContentResult(tr("Unable to open file <strong>%1</strong>.").arg(uriString));
+        return;
+    }
+    bool ok = file.write(content) == content.size();
+    ok = file.flush() && ok;
+    // The user may have chosen to overwrite an existing document. Qt opens
+    // content URIs in "w" mode, whose truncation behavior depends on the
+    // document provider, so cut off leftover bytes explicitly.
+    file.resize(content.size());
+    file.close();
+    if (!ok)
+    {
+        file.remove(); // Do not leave a corrupt document behind
+        emit saveContentResult(tr("Unable to write to file <strong>%1</strong>.").arg(uriString));
+        return;
+    }
+    emit saveContentResult({});
+}
+
+
 void Platform::FileExchange::openFilePicker(const QString& mime)
 {
     const QJniObject activity = QNativeInterface::QAndroidApplication::context();
@@ -207,6 +280,15 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_setFileR
                               Q_ARG( QString, toQString(env, jfname)),
                               Q_ARG( QString, toQString(env, junmingled))
                               );
+}
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onCreateFileResult(JNIEnv* env, jobject /*unused*/, jstring juri)
+{
+    // A little complicated because GlobalObject::fileExchange() lives in a different thread
+    QMetaObject::invokeMethod(GlobalObject::fileExchange(),
+                              "onCreateFileResult",
+                              Qt::QueuedConnection,
+                              Q_ARG( QString, toQString(env, juri)) );
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname, jstring junmingled)

@@ -20,6 +20,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QGeoPath>
 
 #include "flightlog/FlightRecorder.h"
 
@@ -57,7 +58,7 @@ auto Flightlog::FlightRecorder::shouldRecord(const Positioning::PositionInfo& in
 
     // Record if enough time has passed
     if (!m_lastTimestamp.isValid()
-        || m_lastTimestamp.secsTo(info.timestamp()) >= minTimeInterval.toS())
+        || static_cast<double>(m_lastTimestamp.secsTo(info.timestamp())) >= minTimeInterval.toS())
     {
         return true;
     }
@@ -78,8 +79,12 @@ void Flightlog::FlightRecorder::recordFiltered(const Positioning::PositionInfo& 
     if (!shouldRecord(info)) {
         return;
     }
+    if (m_track.size() >= maxTrackPoints) {
+        return;
+    }
 
     m_track.append(makeTrackPoint(info, pressureAltitude));
+    m_geoPath.addCoordinate(info.coordinate());
     m_lastCoordinate = info.coordinate();
     m_lastTimestamp = info.timestamp();
     emit trackGeoPathChanged();
@@ -97,6 +102,8 @@ void Flightlog::FlightRecorder::processPositionUpdate(FlightDetector::DetectionS
             m_lastCoordinate = {};
             m_lastTimestamp = {};
             m_track.clear();
+            m_geoPath = {};
+            emit trackGeoPathChanged();
         } else if (m_previousState == FlightDetector::LandingPhase) {
             // Landing or touch-and-go — reset for next recording.
             // Track saving is handled by FlightLog::onLandingDetected.
@@ -119,46 +126,50 @@ void Flightlog::FlightRecorder::clearTrack()
 {
     m_track.clear();
     m_track.squeeze();
+    m_geoPath = {};
     m_previousState = FlightDetector::Idle;
     m_lastCoordinate = {};
     m_lastTimestamp = {};
+    emit trackGeoPathChanged();
 }
 
 
-auto Flightlog::FlightRecorder::trackGeoPath() const -> QList<QGeoCoordinate>
+auto Flightlog::FlightRecorder::trackGeoPath() const -> QGeoPath
 {
-    QList<QGeoCoordinate> path;
-    path.reserve(m_track.size());
-    for (const auto& pt : m_track) {
-        path.append(pt.coordinate);
-    }
-    return path;
+    return m_geoPath;
 }
 
 
-void Flightlog::FlightRecorder::saveTrack(Flight& flight)
+bool Flightlog::FlightRecorder::saveTrack(Flight& flight)
 {
     if (m_track.isEmpty()) {
-        return;
+        return true;
     }
 
     // Ensure tracks directory exists
     const QDir dir;
-    dir.mkpath(m_trackDir);
+    if (!dir.mkpath(m_trackDir)) {
+        return false;
+    }
 
-    // Generate filename from start time
+    // Generate filename from start time (seconds precision avoids collisions for
+    // back-to-back legs whose start times fall within the same minute)
     auto dateTimeStr = flight.startTime().isValid()
-        ? flight.startTime().toUTC().toString(u"yyyyMMdd_HHmm"_s)
-        : QDateTime::currentDateTimeUtc().toString(u"yyyyMMdd_HHmm"_s);
+        ? flight.startTime().toUTC().toString(u"yyyyMMdd_HHmmss"_s)
+        : QDateTime::currentDateTimeUtc().toString(u"yyyyMMdd_HHmmss"_s);
     auto trackFileName = u"track_%1.igc"_s.arg(dateTimeStr);
 
     auto igcData = toIGC(flight, m_track);
     QFile file(m_trackDir + u"/"_s + trackFileName);
-    if (file.open(QIODevice::WriteOnly)) {
-        file.write(igcData);
-        file.close();
-        flight.setTrackFile(trackFileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        return false;
     }
+    if (file.write(igcData) != igcData.size()) {
+        file.remove();
+        return false;
+    }
+    flight.setTrackFile(trackFileName);
+    return true;
 }
 
 
@@ -188,7 +199,7 @@ auto Flightlog::FlightRecorder::loadTrackPath(const Flight& flight) const -> QLi
 }
 
 
-auto Flightlog::FlightRecorder::exportToIGC(const Flight& flight) -> QByteArray
+auto Flightlog::FlightRecorder::exportToIGC(const Flight& flight) const -> QByteArray
 {
     if (flight.trackFile().isEmpty()) {
         return {};
@@ -342,13 +353,14 @@ auto Flightlog::FlightRecorder::trackFromIGC(const QByteArray& igcData, const QD
             lon = -lon;
         }
 
-        // Validity flag at position 24
+        // Validity flag at position 24: 'A' = 3D fix (GPS altitude valid), 'V' = 2D fix
         // Pressure altitude at 25-29, GPS altitude at 30-34
+        const char validity = line[24];
         const int pressAlt = line.mid(25, 5).toInt();
         const int gpsAlt = line.mid(30, 5).toInt();
 
         TrackPoint pt;
-        if (gpsAlt != 0) {
+        if (validity == 'A') {
             pt.coordinate = QGeoCoordinate(lat, lon, gpsAlt);
         } else {
             pt.coordinate = QGeoCoordinate(lat, lon);

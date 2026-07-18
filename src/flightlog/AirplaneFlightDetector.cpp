@@ -34,7 +34,7 @@ Flightlog::AirplaneFlightDetector::AirplaneFlightDetector(QObject* parent)
 }
 
 
-void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::PositionInfo info)
+void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning::PositionInfo& info)
 {
     if (!info.isValid()) {
         return;
@@ -57,9 +57,8 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         }
 
         // Check if near an airfield
-        auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+        auto closestAD = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
         if (!closestAD.isValid()) {
-            return;
         }
 
         // If already well above the airfield, this is not a takeoff
@@ -83,7 +82,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
         // Abort takeoff detection if speed drops significantly
         // or if more than 1 minute has elapsed without altitude confirmation
         if ((groundSpeed.isFinite() && groundSpeed < takeoffAbortSpeedFactor * aircraftMinimumSpeed())
-            || (m_pendingStartTime.isValid() && m_pendingStartTime.secsTo(info.timestamp()) > 60)) {
+            || (m_pendingStartTime.isValid() && m_pendingStartTime.secsTo(info.timestamp()) > takeoffConfirmTimeoutS)) {
             resetDetection();
             return;
         }
@@ -96,20 +95,36 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
             emit takeoffDetected(m_pendingDepartureICAO,
                                  m_pendingDepartureCoordinate,
                                  m_pendingStartTime,
-                                 GlobalObject::navigator()->aircraft().name(),
-                                 m_pendingStartTime.toUTC().time().toString(u"HH:mm"_s));
+                                 GlobalObject::navigator()->aircraft().name());
         }
         break;
     }
 
     case InFlight: {
+        // Safety valve: if we have been InFlight for more than maxFlightDurationH
+        // with no GPS speed (e.g. landed at an unmapped field), auto-end the flight
+        // so the recorder doesn't grow unbounded.  A real flight in progress will
+        // have a valid ground speed above the minimum, so it won't be affected.
+        if (m_pendingStartTime.isValid()
+            && m_pendingStartTime.secsTo(info.timestamp()) > static_cast<qint64>(maxFlightDurationH * 3600)
+            && (!groundSpeed.isFinite() || groundSpeed < aircraftMinimumSpeed())) {
+            endFlight();
+            return;
+        }
+
         // Need valid AMSL altitude to detect landing
         if (!altitudeAMSL.isFinite()) {
             return;
         }
 
+        // Skip the expensive airfield lookup while well above ground
+        auto altAGL = info.trueAltitudeAGL();
+        if (altAGL.isFinite() && altAGL > Units::Distance::fromFT(landingAltitudeAGLFT * 3.0)) {
+            return;
+        }
+
         // Check if near an airport
-        auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+        auto closestAD = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
         if (!closestAD.isValid()) {
             return;
         }
@@ -123,7 +138,6 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
 
         // Near airport and low altitude → enter landing phase
         m_landingPhaseEntryTime = info.timestamp();
-        m_landingCount++;
         m_detectionState = LandingPhase;
         emit detectionStateChanged();
         break;
@@ -132,64 +146,43 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(Positioning::Posit
     case LandingPhase: {
         // Confirmed landing: speed drops below threshold or timeout
         if ((groundSpeed.isFinite() && groundSpeed < aircraftMinimumSpeed())
-            || (m_landingPhaseEntryTime.isValid() && m_landingPhaseEntryTime.secsTo(info.timestamp()) > 60)) {
+            || (m_landingPhaseEntryTime.isValid() && m_landingPhaseEntryTime.secsTo(info.timestamp()) > landingConfirmTimeoutS)) {
             // Use the time we first went low as the landing time
             auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
-            auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
             QString arrivalICAO;
             QGeoCoordinate arrivalCoordinate;
-            auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+            auto closestAD = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
             if (closestAD.isValid()) {
                 arrivalICAO = closestAD.shortName();
                 arrivalCoordinate = closestAD.coordinate();
             }
+            m_landingCount++;
             auto landingCount = m_landingCount;
 
             // Reset state before emitting signal
             m_detectionState = Idle;
-            m_pendingDepartureICAO.clear();
-            m_pendingDepartureCoordinate = {};
-            m_pendingDepartureElevation = {};
-            m_pendingStartTime = {};
-            m_landingPhaseEntryTime = {};
-            m_landingCount = 0;
+            clearPendingState();
             emit detectionStateChanged();
-            emit landingDetected(arrivalICAO, arrivalCoordinate, landingTime, landingCount, timeStr);
+            emit landingDetected(arrivalICAO, arrivalCoordinate, landingTime, landingCount);
             break;
         }
 
-        // Go-around / touch-and-go: altitude gain above airfield → end current leg, start new one
+        // Aborted approach: climbed back above the landing threshold without
+        // touching down — revert to InFlight, no landing recorded.
         if (altitudeAMSL.isFinite()) {
-            auto closestAD2 = FlightLog::nearestAirfield(info.coordinate());
+            auto closestAD2 = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
             if (closestAD2.isValid()) {
                 auto elev = Units::Distance::fromM(closestAD2.coordinate().altitude());
                 if (elev.isFinite()
-                    && (altitudeAMSL - elev) > Units::Distance::fromFT(altitudeGainFT)) {
-                    // Close the current leg by going through Idle first.
-                    // This ensures onLandingDetected saves the track while
-                    // m_flights[0] is still the current leg.
-                    auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
-                    auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
-                    auto landingCount = m_landingCount;
-
-                    m_detectionState = Idle;
+                    && (altitudeAMSL - elev) > Units::Distance::fromFT(landingAltitudeAGLFT)) {
+                    // Count the low pass as a landing. GPS data cannot reliably
+                    // distinguish a touch-and-go from a balked landing / go-around,
+                    // so any approach that descended below the landing threshold near
+                    // an airfield is counted — intentional conservative design.
+                    m_landingCount++;
                     m_landingPhaseEntryTime = {};
-                    m_landingCount = 0;
-                    emit detectionStateChanged();
-                    emit landingDetected(closestAD2.shortName(), closestAD2.coordinate(), landingTime, landingCount, timeStr);
-
-                    // Start a new leg from the touch-and-go airport
-                    m_pendingDepartureICAO = closestAD2.shortName();
-                    m_pendingDepartureCoordinate = closestAD2.coordinate();
-                    m_pendingDepartureElevation = elev;
-                    m_pendingStartTime = landingTime;
                     m_detectionState = InFlight;
                     emit detectionStateChanged();
-                    emit takeoffDetected(closestAD2.shortName(),
-                                         closestAD2.coordinate(),
-                                         landingTime,
-                                         GlobalObject::navigator()->aircraft().name(),
-                                         timeStr);
                 }
             }
         }
@@ -215,7 +208,7 @@ void Flightlog::AirplaneFlightDetector::endFlight()
     if (positionProvider != nullptr) {
         auto info = positionProvider->positionInfo();
         if (info.isValid()) {
-            auto closestAD = FlightLog::nearestAirfield(info.coordinate());
+            auto closestAD = FlightLog::nearestAirfield(info.coordinate(), airfieldProximityM);
             if (closestAD.isValid()) {
                 arrivalICAO = closestAD.shortName();
                 arrivalCoordinate = closestAD.coordinate();
@@ -224,18 +217,11 @@ void Flightlog::AirplaneFlightDetector::endFlight()
     }
     auto landingCount = (m_detectionState == LandingPhase) ? m_landingCount : 1;
 
-    auto timeStr = now.time().toString(u"HH:mm"_s);
-
     // Reset state before emitting signal
     m_detectionState = Idle;
-    m_pendingDepartureICAO.clear();
-    m_pendingDepartureCoordinate = {};
-    m_pendingDepartureElevation = {};
-    m_pendingStartTime = {};
-    m_landingPhaseEntryTime = {};
-    m_landingCount = 0;
+    clearPendingState();
     emit detectionStateChanged();
-    emit landingDetected(arrivalICAO, arrivalCoordinate, now, landingCount, timeStr);
+    emit landingDetected(arrivalICAO, arrivalCoordinate, now, landingCount);
 }
 
 
@@ -246,13 +232,19 @@ void Flightlog::AirplaneFlightDetector::resetDetection()
     }
 
     m_detectionState = Idle;
+    clearPendingState();
+    emit detectionStateChanged();
+}
+
+
+void Flightlog::AirplaneFlightDetector::clearPendingState()
+{
     m_pendingDepartureICAO.clear();
     m_pendingDepartureCoordinate = {};
     m_pendingDepartureElevation = {};
     m_pendingStartTime = {};
     m_landingPhaseEntryTime = {};
     m_landingCount = 0;
-    emit detectionStateChanged();
 }
 
 

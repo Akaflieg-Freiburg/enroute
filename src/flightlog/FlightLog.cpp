@@ -21,6 +21,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QFile>
+#include <QGeoPath>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -109,6 +110,16 @@ void Flightlog::FlightLog::deferredInitialization()
     connect(GlobalObject::globalSettings(), &GlobalSettings::autoFlightDetectionChanged,
             this, &Flightlog::FlightLog::onAutoFlightDetectionChanged);
 
+    // Forward GlobalSettings NOTIFY signals so FlightLog property bindings
+    // stay consistent regardless of who writes the underlying setting.
+    connect(GlobalObject::globalSettings(), &GlobalSettings::trackRecordingChanged,
+            this, &Flightlog::FlightLog::trackRecordingChanged);
+    connect(GlobalObject::globalSettings(), &GlobalSettings::showCurrentFlightTraceChanged,
+            this, [this]() {
+                emit showCurrentFlightTraceChanged();
+                emit displayedTrackPathChanged();
+            });
+
 #ifdef Q_OS_ANDROID
     // After a 30-second grace period, post a notification if auto-detection is
     // on but still no position data (e.g. GPS disabled, no traffic receiver).
@@ -141,17 +152,19 @@ void Flightlog::FlightLog::deferredInitialization()
 // Properties
 //
 
-auto Flightlog::FlightLog::displayedTrackIndex() const -> int
+auto Flightlog::FlightLog::displayedTrackUuid() const -> QString
 {
     if (m_displayedTrackFile.isEmpty()) {
-        return -1;
+        return {};
     }
-    for (int i = 0; i < m_flights.size(); ++i) {
-        if (m_flights[i].trackFile() == m_displayedTrackFile) {
-            return i;
-        }
+    const auto& flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
+        return f.trackFile() == m_displayedTrackFile;
+    });
+    if (it == flights.end()) {
+        return {};
     }
-    return -1;
+    return it->uuid().toString(QUuid::WithoutBraces);
 }
 
 
@@ -172,10 +185,11 @@ void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
 {
     auto f = flight;
     resolveCoordinates(f);
-    m_flights.prepend(f);
-    sortFlights();
+    auto flights = m_flights.value();
+    flights.prepend(f);
+    sortFlights(flights);
+    m_flights.setValue(std::move(flights));
     save();
-    emit flightsChanged();
 }
 
 void Flightlog::FlightLog::setTrackRecording(bool enabled)
@@ -184,7 +198,7 @@ void Flightlog::FlightLog::setTrackRecording(bool enabled)
     if (settings != nullptr) {
         settings->setTrackRecording(enabled);
     }
-    emit trackRecordingChanged();
+    // Signal forwarded via GlobalSettings::trackRecordingChanged connection
 }
 
 bool Flightlog::FlightLog::trackRecording() const
@@ -202,8 +216,7 @@ void Flightlog::FlightLog::setShowCurrentFlightTrace(bool enabled)
     if (settings != nullptr) {
         settings->setShowCurrentFlightTrace(enabled);
     }
-    emit showCurrentFlightTraceChanged();
-    emit displayedTrackPathChanged();
+    // Signal forwarded via GlobalSettings::showCurrentFlightTraceChanged connection
 }
 
 bool Flightlog::FlightLog::showCurrentFlightTrace() const
@@ -216,49 +229,126 @@ bool Flightlog::FlightLog::showCurrentFlightTrace() const
 }
 
 
-void Flightlog::FlightLog::removeFlight(int index)
+void Flightlog::FlightLog::removeFlight(const QString& uuid)
 {
-    if (index < 0 || index >= m_flights.size()) {
+    const auto id = QUuid::fromString(uuid);
+    if (id.isNull()) {
         return;
     }
+    auto flights = m_flights.value();
+    const auto it = std::ranges::find_if(flights, [&](const Flight& f) {
+        return f.uuid() == id;
+    });
+    if (it == flights.end()) {
+        return;
+    }
+
+    auto& flight = *it;
 
     // If this flight's track is currently displayed, hide it first
     if (!m_displayedTrackFile.isEmpty()
-        && m_flights[index].trackFile() == m_displayedTrackFile) {
+        && flight.trackFile() == m_displayedTrackFile) {
         hideTrack();
     }
 
-    // If the in-progress flight is being removed while detection is active,
-    // reset the detector so it doesn't later complete a landing onto wrong flight
-    if (index == m_currentFlightIndex && m_detector != nullptr
-        && m_detector->detectionState() != FlightDetector::Idle) {
-        m_currentFlightIndex = -1;
-        m_detector->resetDetection();
-    } else if (index < m_currentFlightIndex) {
-        // If removing a flight before the current one, adjust the index
-        --m_currentFlightIndex;
-    } else if (index == m_currentFlightIndex) {
-        // Removing the current flight, reset tracking
-        m_currentFlightIndex = -1;
+    // If the in-progress flight is being removed, reset tracking
+    if (flight.uuid() == m_currentFlightUuid) {
+        m_currentFlightUuid = {};
+        if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
+            m_detector->resetDetection();
+        }
     }
 
-    m_flights.removeAt(index);
+    m_recorder.removeTrack(flight);
+    flights.erase(it);
+    m_flights.setValue(std::move(flights));
     save();
-    emit flightsChanged();
 }
 
 
-void Flightlog::FlightLog::updateFlight(int index, const Flightlog::Flight& flight)
+void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
 {
-    if (index < 0 || index >= m_flights.size()) {
+    auto flights = m_flights.value();
+    bool changed = false;
+    for (const QString& uuid : uuids) {
+        const auto id = QUuid::fromString(uuid);
+        if (id.isNull()) {
+            continue;
+        }
+        auto it = std::ranges::find_if(flights, [&](const Flight& f) {
+            return f.uuid() == id;
+        });
+        if (it == flights.end()) {
+            continue;
+        }
+        if (!m_displayedTrackFile.isEmpty() && it->trackFile() == m_displayedTrackFile) {
+            hideTrack();
+        }
+        if (it->uuid() == m_currentFlightUuid) {
+            m_currentFlightUuid = {};
+            if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
+                m_detector->resetDetection();
+            }
+        }
+        m_recorder.removeTrack(*it);
+        flights.erase(it);
+        changed = true;
+    }
+    if (changed) {
+        m_flights.setValue(std::move(flights));
+        save();
+    }
+}
+
+
+void Flightlog::FlightLog::clearFlights()
+{
+    auto flights = m_flights.value();
+    if (flights.isEmpty()) {
+        return;
+    }
+    hideTrack();
+    if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
+        m_detector->resetDetection();
+    }
+    m_currentFlightUuid = {};
+    for (auto& flight : flights) {
+        m_recorder.removeTrack(flight);
+    }
+    m_flights.setValue({});
+    save();
+}
+
+
+
+void Flightlog::FlightLog::updateFlight(const QString& uuid, const Flightlog::Flight& flight)
+{
+    auto targetUuid = QUuid::fromString(uuid);
+    auto flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
+        return f.uuid() == targetUuid;
+    });
+    if (it == flights.end()) {
         return;
     }
 
-    auto f = flight;
-    resolveCoordinates(f);
+    // Start from the existing entry so that read-only fields (trackFile,
+    // landingCount, coordinates) are preserved by default.
+    auto f = *it;
+    f.setDepartureICAO(flight.departureICAO());
+    f.setArrivalICAO(flight.arrivalICAO());
+    f.setOffBlockTime(flight.offBlockTime());
+    f.setStartTime(flight.startTime());
+    f.setLandingTime(flight.landingTime());
+    f.setOnBlockTime(flight.onBlockTime());
+    f.setPilotName(flight.pilotName());
+    f.setAircraftCallsign(flight.aircraftCallsign());
+    f.setComments(flight.comments());
 
-    // Preserve old coordinates if new resolution failed but ICAO codes match
-    const auto& old = m_flights[index];
+    // Re-resolve coordinates; fall back to existing ones if resolution fails
+    // but the ICAO code is unchanged.
+    const auto& old = *it;
+    resolveCoordinates(f);
     if (!f.departureCoordinate().isValid() && old.departureCoordinate().isValid()
         && f.departureICAO() == old.departureICAO()) {
         f.setDepartureCoordinate(old.departureCoordinate());
@@ -268,10 +358,10 @@ void Flightlog::FlightLog::updateFlight(int index, const Flightlog::Flight& flig
         f.setArrivalCoordinate(old.arrivalCoordinate());
     }
 
-    m_flights[index] = f;
-    sortFlights();
+    *it = f;
+    sortFlights(flights);
+    m_flights.setValue(std::move(flights));
     save();
-    emit flightsChanged();
 }
 
 
@@ -312,8 +402,8 @@ void Flightlog::FlightLog::endFlight()
 
 auto Flightlog::FlightLog::lastArrivalICAO(const QString& aircraftCallsign) const -> QString
 {
-    for (const auto& flight : m_flights) {
-        if (flight.aircraftCallsign() == aircraftCallsign && !flight.arrivalICAO().isEmpty()) {
+    for (const auto& flight : m_flights.value()) {
+        if (flight.aircraftCallsign().compare(aircraftCallsign, Qt::CaseInsensitive) == 0 && !flight.arrivalICAO().isEmpty()) {
             return flight.arrivalICAO();
         }
     }
@@ -321,7 +411,7 @@ auto Flightlog::FlightLog::lastArrivalICAO(const QString& aircraftCallsign) cons
 }
 
 
-auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position) -> GeoMaps::Waypoint
+auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position, double proximityM) -> GeoMaps::Waypoint
 {
     auto coord = position;
     if (!coord.isValid()) {
@@ -346,7 +436,7 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position) -> Ge
     }
 
     auto closest = nearby.first();
-    if (coord.distanceTo(closest.coordinate()) > 5000.0) {
+    if (coord.distanceTo(closest.coordinate()) > proximityM) {
         return {};
     }
 
@@ -354,33 +444,41 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position) -> Ge
 }
 
 
-auto Flightlog::FlightLog::exportToIGC(int index) -> QByteArray
+auto Flightlog::FlightLog::exportToIGC(const QString& uuid) const -> QByteArray
 {
-    if (index < 0 || index >= m_flights.size()) {
+    auto targetUuid = QUuid::fromString(uuid);
+    const auto& flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
+        return f.uuid() == targetUuid;
+    });
+    if (it == flights.end()) {
         return {};
     }
-    return m_recorder.exportToIGC(m_flights.at(index));
+    return m_recorder.exportToIGC(*it);
 }
 
 
-auto Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices) -> QByteArray
+auto Flightlog::FlightLog::flightsForUuids(const QStringList& uuids) const -> QList<Flight>
 {
-    // See Foreflight Docu: 
-    // https://support.foreflight.com/hc/en-us/articles/215998368-Is-there-a-properly-formatted-sample-logbook-available-for-viewing
-    // https://support.foreflight.com/hc/en-us/article_attachments/35060835400727
-
-    // Collect flights to export (empty indices = export all)
-    QList<Flight> toExport;
-    if (indices.isEmpty()) {
-        toExport = m_flights;
-    } else {
-        for (const QVariant& v : indices) {
-            const int idx = v.toInt();
-            if (idx >= 0 && idx < m_flights.size()) {
-                toExport.append(m_flights.at(idx));
-            }
+    if (uuids.isEmpty()) {
+        return m_flights.value();
+    }
+    const auto& allFlights = m_flights.value();
+    QList<Flight> result;
+    for (const QString& uuid : uuids) {
+        const auto id = QUuid::fromString(uuid);
+        const auto it = std::ranges::find_if(allFlights, [&](const Flight& f) { return f.uuid() == id; });
+        if (it != allFlights.end()) {
+            result.append(*it);
         }
     }
+    return result;
+}
+
+
+auto Flightlog::FlightLog::exportToForeFlight(const QStringList& uuids) const -> QByteArray
+{
+    const auto toExport = flightsForUuids(uuids);
     if (toExport.isEmpty()) {
         return {};
     }
@@ -416,7 +514,10 @@ auto Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices) -> QB
         for (const auto& f : std::as_const(toExport))
         {
             const QString id = f.aircraftCallsign();
-            if (!id.isEmpty() && !seenAircraft.contains(id))
+            const bool alreadySeen = std::ranges::any_of(seenAircraft, [&](const QString& s) {
+                return s.compare(id, Qt::CaseInsensitive) == 0;
+            });
+            if (!id.isEmpty() && !alreadySeen)
             {
                 seenAircraft.append(id);
                 csv += csvField(id) + u",aircraft,,,,,,,,,,,\r\n"_s;
@@ -539,20 +640,9 @@ auto Flightlog::FlightLog::exportToForeFlight(const QVariantList& indices) -> QB
 }
 
 
-auto Flightlog::FlightLog::exportToJSON(const QVariantList& indices) -> QByteArray
+auto Flightlog::FlightLog::exportToJSON(const QStringList& uuids) const -> QByteArray
 {
-    // Collect flights to export (empty indices = export all)
-    QList<Flight> toExport;
-    if (indices.isEmpty()) {
-        toExport = m_flights;
-    } else {
-        for (const QVariant& v : indices) {
-            const int idx = v.toInt();
-            if (idx >= 0 && idx < m_flights.size()) {
-                toExport.append(m_flights.at(idx));
-            }
-        }
-    }
+    const auto toExport = flightsForUuids(uuids);
     if (toExport.isEmpty()) {
         return {};
     }
@@ -562,26 +652,34 @@ auto Flightlog::FlightLog::exportToJSON(const QVariantList& indices) -> QByteArr
 }
 
 
-void Flightlog::FlightLog::removeTrack(int index)
+void Flightlog::FlightLog::removeTrack(const QString& uuid)
 {
-    if (index < 0 || index >= m_flights.size()) {
+    auto targetUuid = QUuid::fromString(uuid);
+    auto flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
+        return f.uuid() == targetUuid;
+    });
+    if (it == flights.end()) {
+        return;
+    }
+
+    if (it->trackFile().isEmpty()) {
         return;
     }
 
     // If this track is currently displayed, hide it first
     if (!m_displayedTrackFile.isEmpty()
-        && m_flights[index].trackFile() == m_displayedTrackFile) {
+        && it->trackFile() == m_displayedTrackFile) {
         hideTrack();
     }
 
-    m_recorder.removeTrack(m_flights[index]);
-
+    m_recorder.removeTrack(*it);
+    m_flights.setValue(std::move(flights));
     save();
-    emit flightsChanged();
 }
 
 
-auto Flightlog::FlightLog::displayedTrackPath() const -> QList<QGeoCoordinate>
+auto Flightlog::FlightLog::displayedTrackPath() const -> QGeoPath
 {
     // If a saved track is selected, return its cached path
     if (!m_displayedTrackFile.isEmpty()) {
@@ -598,21 +696,27 @@ auto Flightlog::FlightLog::displayedTrackPath() const -> QList<QGeoCoordinate>
 }
 
 
-void Flightlog::FlightLog::showTrack(int index)
+void Flightlog::FlightLog::showTrack(const QString& uuid)
 {
-    if (index < 0 || index >= m_flights.size()) {
+    auto targetUuid = QUuid::fromString(uuid);
+    const auto& flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
+        return f.uuid() == targetUuid;
+    });
+    if (it == flights.end()) {
         return;
     }
-    if (!m_flights.at(index).hasTrack()) {
+    if (!it->hasTrack()) {
         return;
     }
 
-    // Load track coordinates directly from IGC file
-    m_displayedTrackPath = m_recorder.loadTrackPath(m_flights[index]);
-    if (m_displayedTrackPath.isEmpty()) {
+    // Load into a local first — only commit state if successful
+    auto path = m_recorder.loadTrackPath(*it);
+    if (path.isEmpty()) {
         return;
     }
-    m_displayedTrackFile = m_flights[index].trackFile();
+    m_displayedTrackPath = QGeoPath(path);
+    m_displayedTrackFile = it->trackFile();
     emit displayedTrackPathChanged();
 }
 
@@ -620,7 +724,7 @@ void Flightlog::FlightLog::showTrack(int index)
 void Flightlog::FlightLog::hideTrack()
 {
     m_displayedTrackFile.clear();
-    m_displayedTrackPath.clear();
+    m_displayedTrackPath = {};
     emit displayedTrackPathChanged();
 }
 
@@ -652,34 +756,12 @@ void Flightlog::FlightLog::resolveCoordinates(Flight& flight)
 }
 
 
-void Flightlog::FlightLog::sortFlights()
+void Flightlog::FlightLog::sortFlights(QList<Flight>& flights)
 {
-    // Remember the current flight before sorting (if any)
-    Flight currentFlight;
-    const bool hasCurrentFlight = (m_currentFlightIndex >= 0 && m_currentFlightIndex < m_flights.size());
-    if (hasCurrentFlight) {
-        currentFlight = m_flights[m_currentFlightIndex];
-    }
-
-    // Sort by start time, most recent first
-    std::sort(m_flights.begin(), m_flights.end(),
+    std::sort(flights.begin(), flights.end(),
               [](const Flight& a, const Flight& b) {
                   return a.startTime() > b.startTime();
               });
-
-    // Find the current flight's new position after sorting
-    if (hasCurrentFlight) {
-        for (int i = 0; i < m_flights.size(); ++i) {
-            // Match by both startTime and trackFile to uniquely identify the flight
-            if (m_flights[i].startTime() == currentFlight.startTime() &&
-                m_flights[i].trackFile() == currentFlight.trackFile()) {
-                m_currentFlightIndex = i;
-                return;
-            }
-        }
-        // If we couldn't find it (shouldn't happen), reset the index
-        m_currentFlightIndex = -1;
-    }
 }
 
 
@@ -725,27 +807,51 @@ void Flightlog::FlightLog::load()
         return;
     }
 
-    const auto doc = QJsonDocument::fromJson(file.readAll());
+    const QByteArray raw = file.readAll();
+    file.close();
+
+    QJsonParseError parseError;
+    const auto doc = QJsonDocument::fromJson(raw, &parseError);
     if (!doc.isObject()) {
+        quarantineFlightLogFile(parseError.errorString());
         return;
     }
 
     const auto root = doc.object();
     if (root.value(u"content"_s).toString() != u"flightLog"_s) {
+        quarantineFlightLogFile(u"unexpected content tag"_s);
         return;
     }
 
     // version field is available for future migration logic
     // const auto version = root.value(u"version"_s).toInt();
 
-    m_flights.clear();
+    QList<Flight> newFlights;
     const auto array = root.value(u"flights"_s).toArray();
     for (const auto& val : array) {
         if (val.isObject()) {
-            m_flights.append(Flight::fromJSON(val.toObject()));
+            newFlights.append(Flight::fromJSON(val.toObject()));
         }
     }
-    sortFlights();
+    sortFlights(newFlights);
+    m_flights.setValue(std::move(newFlights));
+}
+
+
+void Flightlog::FlightLog::quarantineFlightLogFile(const QString& reason)
+{
+    const QString ts = QDateTime::currentDateTimeUtc().toString(u"yyyyMMddTHHmmssZ"_s);
+    const QString backup = m_fileName + u"."_s + ts + u".corrupt"_s;
+    QFile::rename(m_fileName, backup);
+    qWarning() << "FlightLog::load:" << reason
+               << "- damaged file renamed to" << backup;
+    // Emit via a queued connection: load() is called from the constructor,
+    // before QML signal connections are established.
+    QMetaObject::invokeMethod(this, [this, reason]() {
+        emit saveError(tr("The flight log file could not be read and has been reset (%1). "
+                          "Your previous flight log data is no longer available.")
+                       .arg(reason));
+    }, Qt::QueuedConnection);
 }
 
 
@@ -796,9 +902,12 @@ void Flightlog::FlightLog::connectDetector(FlightDetector* detector)
 
 void Flightlog::FlightLog::onDetectionStateChanged()
 {
+    if (m_detector == nullptr) {
+        return;
+    }
     if (m_detector->detectionState() == FlightDetector::InFlight) {
         m_displayedTrackFile.clear();
-        m_displayedTrackPath.clear();
+        m_displayedTrackPath = {};
         emit displayedTrackPathChanged();
     }
     emit detectionStateChanged();
@@ -808,9 +917,9 @@ void Flightlog::FlightLog::onDetectionStateChanged()
 void Flightlog::FlightLog::onTakeoffDetected(const QString& departureICAO,
                                               const QGeoCoordinate& departureCoordinate,
                                               const QDateTime& startTime,
-                                              const QString& aircraftCallsign,
-                                              const QString& timeStr)
+                                              const QString& aircraftCallsign)
 {
+    auto timeStr = startTime.toUTC().time().toString(u"HH:mm"_s);
     Flight flight;
     flight.setDepartureICAO(departureICAO);
     flight.setDepartureCoordinate(departureCoordinate);
@@ -820,8 +929,8 @@ void Flightlog::FlightLog::onTakeoffDetected(const QString& departureICAO,
     // Add the preliminary flight entry so it appears in the list immediately
     addFlight(flight);
 
-    // Track that a flight is now in progress (always at index 0 due to prepending in addFlight)
-    m_currentFlightIndex = 0;
+    // Track which flight is in progress by its stable UUID
+    m_currentFlightUuid = flight.uuid();
 
 #ifdef Q_OS_ANDROID
     // Post a notification with sound so the pilot knows takeoff was detected,
@@ -848,12 +957,16 @@ void Flightlog::FlightLog::onTakeoffDetected(const QString& departureICAO,
 void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
                                                 const QGeoCoordinate& arrivalCoordinate,
                                                 const QDateTime& landingTime,
-                                                int landingCount,
-                                                const QString& timeStr)
+                                                int landingCount)
 {
-    // Complete the in-progress flight using m_currentFlightIndex
-    if (m_currentFlightIndex >= 0 && m_currentFlightIndex < m_flights.size()) {
-        auto& flight = m_flights[m_currentFlightIndex];
+    auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
+    // Complete the in-progress flight by UUID lookup
+    auto flights = m_flights.value();
+    auto it = std::ranges::find_if(flights, [this](const Flight& f) {
+        return f.uuid() == m_currentFlightUuid;
+    });
+    if (it != flights.end()) {
+        auto& flight = *it;
         if (!arrivalICAO.isEmpty()) {
             flight.setArrivalICAO(arrivalICAO);
         }
@@ -863,23 +976,26 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
         flight.setLandingTime(landingTime);
         flight.setLandingCount(landingCount);
 
-        // Save the track from the recorder to an IGC file
+        // Save the track from the recorder to an IGC file, then always
+        // clear it — even when recording was off — so no stale points
+        // linger in RAM or remain visible on the map.
         if (trackRecording()) {
-            m_recorder.saveTrack(flight);
-
-            // Cache the geo path for map display, then free recorder RAM
-            m_displayedTrackPath = m_recorder.trackGeoPath();
-            m_displayedTrackFile = m_displayedTrackPath.isEmpty() ? QString{} : flight.trackFile();
-            m_recorder.clearTrack();
+            if (m_recorder.saveTrack(flight)) {
+                // Cache the geo path for map display, then free recorder RAM
+                m_displayedTrackPath = m_recorder.trackGeoPath();
+                m_displayedTrackFile = m_displayedTrackPath.path().isEmpty() ? QString{} : flight.trackFile();
+            } else {
+                emit saveError(tr("Failed to save GPS track for flight from %1.").arg(flight.departureICAO()));
+            }
         }
-
+        m_recorder.clearTrack();
+        m_flights.setValue(std::move(flights));
         save();
-        emit flightsChanged();
         emit displayedTrackPathChanged();
     }
 
     // Flight recording is complete
-    m_currentFlightIndex = -1;
+    m_currentFlightUuid = {};
 
     emit landingDetected(timeStr);
 
@@ -922,13 +1038,17 @@ void Flightlog::FlightLog::onPositionUpdated()
     }
 
     auto info = GlobalObject::positionProvider()->positionInfo();
-    m_detector->processPositionUpdate(info);
 
-    // Forward to recorder — it manages preflight/inflight/postlanding internally
+    // Update the recorder first so the current position is committed to the
+    // open leg before the detector can emit landingDetected and clear it.
+    // This ordering is correct regardless of whether the landingDetected
+    // connection is direct or queued.
     if (trackRecording()) {
         auto pressAlt = GlobalObject::positionProvider()->pressureAltitude();
         m_recorder.processPositionUpdate(m_detector->detectionState(), info, pressAlt);
     }
+
+    m_detector->processPositionUpdate(info);
 }
 
 
@@ -951,6 +1071,19 @@ void Flightlog::FlightLog::onAutoFlightDetectionChanged()
     // regardless of whether the UI is visible.
     if (GlobalObject::globalSettings()->autoFlightDetection()) {
         GlobalObject::positionProvider()->startUpdates();
+    } else {
+        // Detection was just disabled. If a flight was being recorded, discard
+        // the in-memory GPS track so it doesn't appear frozen on the map or
+        // bleed into the next flight. The flight entry itself (with its start
+        // time) is kept in the log — the pilot can edit it manually.
+        if (!m_currentFlightUuid.isNull()) {
+            m_recorder.clearTrack();
+            m_currentFlightUuid = {};
+            if (m_displayedTrackFile.isEmpty()) {
+                // Was showing the live trace — tell the map it's gone
+                emit displayedTrackPathChanged();
+            }
+        }
     }
 
 #ifdef Q_OS_ANDROID

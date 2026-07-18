@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoPath>
 #include <QStandardPaths>
 
 #include "flightlog/Flight.h"
@@ -46,8 +47,10 @@ namespace Flightlog {
  *  - **TakeoffPhase → abort (Idle)**: Track is discarded on next cycle.
  *  - **LandingPhase → Idle**: Recording ends. Track saving is handled
  *    externally by FlightLog::onLandingDetected.
- *  - **LandingPhase → InFlight**: Touch-and-go — same as above, the
- *    detector transitions through Idle first.
+ *  - **LandingPhase → InFlight**: Touch-and-go. FlightLog must call
+ *    processPositionUpdate() on the recorder *before* the detector so
+ *    each position is committed to the correct leg regardless of whether
+ *    the landingDetected connection is direct or queued.
  */
 class FlightRecorder : public QObject
 {
@@ -85,7 +88,7 @@ public:
      *
      *  @param flight The flight whose metadata to use for the IGC headers
      */
-    void saveTrack(Flight& flight);
+    bool saveTrack(Flight& flight);
 
     /*! \brief Clear the in-memory track data
      *
@@ -111,7 +114,7 @@ public:
      *  @param flight The flight whose track to export
      *  @returns IGC file content, or empty if no track file or file not readable
      */
-    QByteArray exportToIGC(const Flight& flight);
+    [[nodiscard]] QByteArray exportToIGC(const Flight& flight) const;
 
     /*! \brief Delete the track file from disk
      *
@@ -130,7 +133,7 @@ public:
      *
      *  @returns List of coordinates from the current track
      */
-    [[nodiscard]] auto trackGeoPath() const -> QList<QGeoCoordinate>;
+    [[nodiscard]] auto trackGeoPath() const -> QGeoPath;
 
     /*! \brief Generate IGC file content from flight metadata and track points
      *
@@ -184,9 +187,13 @@ private:
     // Accumulated track points
     QList<TrackPoint> m_track;
 
+    // Cached geo path kept in sync with m_track for O(1) reads
+    QGeoPath m_geoPath;
+
     // Recording thresholds
     static constexpr auto minDistance = Units::Distance::fromM(300.0);
     static constexpr auto minTimeInterval = Units::Timespan::fromS(10);
+    static constexpr int maxTrackPoints = 100'000; ///< Hard cap on in-memory track length
 
     // Tracks directory
     const QString m_trackDir {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/tracks"_s};

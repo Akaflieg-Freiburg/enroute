@@ -27,14 +27,14 @@ import "../items"
 
 /* Flight log entry editor dialog
  *
- * Usage: set property editFlight and flightIndex, then open().
+ * Usage: set property editFlight and flightUuid, then open().
  * On accepted, call resultFlight() to get the edited Flight value.
  */
 
 CenteringDialog {
     id: flightEditorDialog
 
-    property int flightIndex: -1
+    property string flightUuid: ""
     property flight editFlight
 
     // Output values read by the caller

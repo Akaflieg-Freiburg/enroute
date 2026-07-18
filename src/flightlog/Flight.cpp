@@ -23,6 +23,18 @@
 using namespace Qt::Literals::StringLiterals;
 
 
+// Format a duration in seconds as "H:MM"; returns {} for negative values
+static auto secsToHHMM(qint64 secs) -> QString
+{
+    if (secs < 0) {
+        return {};
+    }
+    auto hours = secs / 3600;
+    auto minutes = (secs % 3600) / 60;
+    return u"%1:%2"_s.arg(hours).arg(minutes, 2, 10, QChar(u'0'));
+}
+
+
 auto Flightlog::Flight::distance() const -> Units::Distance
 {
     if (!m_departureCoordinate.isValid() || !m_arrivalCoordinate.isValid()) {
@@ -46,25 +58,13 @@ auto Flightlog::Flight::blockTime() const -> QString
     if (!m_offBlockTime.isValid() || !m_onBlockTime.isValid()) {
         return {};
     }
-    auto secs = m_offBlockTime.secsTo(m_onBlockTime);
-    if (secs < 0) {
-        return {};
-    }
-    auto hours = secs / 3600;
-    auto minutes = (secs % 3600) / 60;
-    return u"%1:%2"_s.arg(hours).arg(minutes, 2, 10, QChar(u'0'));
+    return secsToHHMM(m_offBlockTime.secsTo(m_onBlockTime));
 }
 
 
 auto Flightlog::Flight::flightTime() const -> QString
 {
-    auto secs = flightTimeSeconds();
-    if (secs < 0) {
-        return {};
-    }
-    auto hours = secs / 3600;
-    auto minutes = (secs % 3600) / 60;
-    return u"%1:%2"_s.arg(hours).arg(minutes, 2, 10, QChar(u'0'));
+    return secsToHHMM(flightTimeSeconds());
 }
 
 
@@ -106,6 +106,8 @@ auto Flightlog::Flight::toJSON() const -> QJsonObject
         json[u"trackFile"_s] = m_trackFile;
     }
 
+    json[u"uuid"_s] = m_id.toString(QUuid::WithoutBraces);
+
     return json;
 }
 
@@ -145,12 +147,24 @@ auto Flightlog::Flight::fromJSON(const QJsonObject& json) -> Flight
         f.m_trackFile = trackFile;
     }
 
+    // Restore UUID; generate a fresh one for entries created before this field was added
+    auto uuidStr = json.value(u"uuid"_s).toString();
+    f.m_id = uuidStr.isEmpty() ? QUuid::createUuid() : QUuid::fromString(uuidStr);
+    if (f.m_id.isNull()) {
+        f.m_id = QUuid::createUuid();
+    }
+
     return f;
 }
 
 
 auto Flightlog::Flight::operator==(const Flightlog::Flight& other) const -> bool
 {
+    // Equality covers all logbook metadata and the attached track file.
+    // Departure/arrival coordinates are deliberately excluded: they are
+    // resolved asynchronously from ICAO codes and do not represent
+    // user-meaningful changes for list display or QML_VALUE_TYPE
+    // change-detection purposes.
     return m_departureICAO == other.m_departureICAO
         && m_arrivalICAO == other.m_arrivalICAO
         && m_offBlockTime == other.m_offBlockTime
@@ -160,7 +174,8 @@ auto Flightlog::Flight::operator==(const Flightlog::Flight& other) const -> bool
         && m_pilotName == other.m_pilotName
         && m_aircraftCallsign == other.m_aircraftCallsign
         && m_comments == other.m_comments
-        && m_landingCount == other.m_landingCount;
+        && m_landingCount == other.m_landingCount
+        && m_trackFile == other.m_trackFile;
 }
 
 

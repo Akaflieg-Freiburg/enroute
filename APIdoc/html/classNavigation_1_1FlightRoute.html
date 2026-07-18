@@ -115,6 +115,8 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight"><b>clear</b> ()</td></tr>
 <tr class="memdesc:aa35946b4a7bd66b5e3ded6feabc23878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index for last occurrence of the waypoint in the flight route.  <br /></td></tr>
 <tr class="memitem:a0125257af233daa8991e1ae0bed78c15" id="r_a0125257af233daa8991e1ae0bed78c15"><td class="memItemLeft">Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#a0125257af233daa8991e1ae0bed78c15">load</a> (const QString &amp;fileName)</td></tr>
 <tr class="memdesc:a0125257af233daa8991e1ae0bed78c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the route from a GeoJSON or GPX document.  <br /></td></tr>
+<tr class="memitem:a5754deb686843665cadcd3fb8753cc1a" id="r_a5754deb686843665cadcd3fb8753cc1a"><td class="memItemLeft">Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#a5754deb686843665cadcd3fb8753cc1a">move</a> (int from, int to)</td></tr>
+<tr class="memdesc:a5754deb686843665cadcd3fb8753cc1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move a waypoint from one position to another.  <br /></td></tr>
 <tr class="memitem:a36c588232f915a3f32e12dc1f2dcd681" id="r_a36c588232f915a3f32e12dc1f2dcd681"><td class="memItemLeft">Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#a36c588232f915a3f32e12dc1f2dcd681">moveDown</a> (int idx)</td></tr>
 <tr class="memdesc:a36c588232f915a3f32e12dc1f2dcd681"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move waypoint one position down in the list of waypoints.  <br /></td></tr>
 <tr class="memitem:a4fbe79cfc24e8f95841f0cdb43e3b451" id="r_a4fbe79cfc24e8f95841f0cdb43e3b451"><td class="memItemLeft">Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#a4fbe79cfc24e8f95841f0cdb43e3b451">moveUp</a> (int idx)</td></tr>
@@ -684,6 +686,37 @@ qsizetype&#160;</td><td class="memItemRight"><b>size</b></td></tr>
 
 </div>
 </div>
+<a id="a5754deb686843665cadcd3fb8753cc1a" name="a5754deb686843665cadcd3fb8753cc1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5754deb686843665cadcd3fb8753cc1a">&#9670;&#160;</a></span>move()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE void Navigation::FlightRoute::move </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>from</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>to</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Move a waypoint from one position to another. </p>
+<p>Moves the waypoint at index 'from' to index 'to', shifting the intervening waypoints. If either index is out of range or if the two indices are equal, this method does nothing.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">from</td><td>Index of the waypoint to move</td></tr>
+    <tr><td class="paramname">to</td><td>Index the waypoint should have after the move </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a36c588232f915a3f32e12dc1f2dcd681" name="a36c588232f915a3f32e12dc1f2dcd681"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a36c588232f915a3f32e12dc1f2dcd681">&#9670;&#160;</a></span>moveDown()</h2>
 
@@ -766,7 +799,7 @@ qsizetype&#160;</td><td class="memItemRight"><b>size</b></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True on equality </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00399">399</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00411">411</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>

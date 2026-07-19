@@ -152,6 +152,28 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         + android.os.Build.MODEL + ")";
   }
 
+  // Returns the total bottom window inset -- the union of the virtual
+  // keyboard, system bars and display cutout -- in physical pixels. The C++
+  // caller subtracts the part that Qt already reports in its safe-area
+  // margins; the remainder is applied as an additional margin, so that user
+  // interface elements stay clear of the keyboard on every Android version,
+  // regardless of whether the platform folds the keyboard into the insets
+  // that Qt reads.
+  public static double bottomInset() {
+    if (m_instance == null) {
+      return 0.0;
+    }
+    WindowInsets insets = m_instance.getWindow().getDecorView().getRootWindowInsets();
+    if (insets == null) {
+      return 0.0;
+    }
+    if (Build.VERSION.SDK_INT >= 30) {
+      return insets.getInsets(WindowInsets.Type.ime() | WindowInsets.Type.systemBars()
+          | WindowInsets.Type.displayCutout()).bottom;
+    }
+    return insets.getSystemWindowInsetBottom();
+  }
+
   /*
    * Get the SSID of the current WIFI network, if any. Returns a string like "<unknown SSID>"
    * otherwise

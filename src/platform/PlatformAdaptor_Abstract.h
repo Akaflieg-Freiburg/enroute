@@ -65,6 +65,36 @@ public:
 
 
     //
+    // Properties
+    //
+
+    /*! \brief Height of the virtual keyboard overlapping the window
+     *
+     *  On Android, this property holds the height (in device-independent
+     *  pixels) of the part of the window that is covered by the virtual
+     *  keyboard, and zero while the keyboard is hidden. The GUI adds this
+     *  value to the bottom safe-area margin, so that user interface elements
+     *  stay clear of the keyboard.
+     *
+     *  On all other platforms, this property is zero; iOS handles the
+     *  keyboard in QML via Qt.inputMethod, and desktop systems do not
+     *  obscure the window.
+     */
+    Q_PROPERTY(double imeBottomInset READ imeBottomInset NOTIFY imeBottomInsetChanged)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property imeBottomInset
+     */
+    [[nodiscard]] virtual double imeBottomInset() const { return 0.0; }
+
+
+    //
     // Methods
     //
 
@@ -194,6 +224,9 @@ public slots:
 
 
 signals:
+    /*! \brief Notifier signal */
+    void imeBottomInsetChanged();
+
     /*! \brief Emitted when an error occurs
      *
      *  This signal is emitted when an error occurs. The GUI will show the

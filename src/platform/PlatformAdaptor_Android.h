@@ -21,7 +21,9 @@
 #pragma once
 
 #include <QObject>
+#include <QPointer>
 #include <QTimer>
+#include <QWindow>
 #include <QtGlobal>
 
 #include "platform/PlatformAdaptor_Abstract.h"
@@ -54,6 +56,17 @@ public:
     }
 
     ~PlatformAdaptor() override = default;
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract
+     *
+     *  @returns Property imeBottomInset
+     */
+    [[nodiscard]] double imeBottomInset() const override { return m_imeBottomInset; }
 
 
     //
@@ -101,10 +114,18 @@ protected:
     /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract */
     void deferredInitialization() override;
 
+private slots:
+    // Poll the window inset occupied by the virtual keyboard and update the
+    // property imeBottomInset. Connected to the QInputMethod signals in the
+    // constructor.
+    void updateImeBottomInset();
+
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
 
     bool splashScreenHidden {false};
+    double m_imeBottomInset {0.0};
+    QPointer<QWindow> m_watchedWindow;
 };
 
 } // namespace Platform

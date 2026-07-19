@@ -50,16 +50,23 @@ AppWindow {
     // keyboard. Additional margins propagate into the SafeArea.margins of
     // every item in this window.
     SafeArea.additionalMargins.bottom: {
-        if ((Qt.platform.os !== "android") && (Qt.platform.os !== "ios"))
-            return 0
-        if (!Qt.inputMethod.visible)
-            return 0
-        // On Android, keyboardRectangle is in physical screen pixels; on iOS,
-        // in device-independent pixels.
-        var keyboardTop = Qt.inputMethod.keyboardRectangle.y
+        // On Android, Qt.inputMethod.keyboardRectangle cannot be used: with an
+        // expanded client area, Qt reports the keyboard visibility, but the
+        // keyboard geometry typically remains empty. PlatformAdaptor provides
+        // the authoritative window inset instead.
         if (Qt.platform.os === "android")
-            keyboardTop = keyboardTop/Screen.devicePixelRatio
-        return Math.max(0, view.height - keyboardTop)
+            return PlatformAdaptor.imeBottomInset
+
+        if (Qt.platform.os === "ios") {
+            if (!Qt.inputMethod.visible)
+                return 0
+            var kr = Qt.inputMethod.keyboardRectangle
+            if (kr.height <= 0) // Empty rectangle, not trustworthy
+                return 0
+            return Math.max(0, view.height - kr.y)
+        }
+
+        return 0
     }
 
     // Feed the window-global safe-area margins into the SafeInsets singleton,

@@ -20,21 +20,97 @@
 
 #include <QGuiApplication>
 #include <QHash>
+#include <QInputMethod>
 #include <QJniEnvironment>
 #include <QJniObject>
 #include <QPermissions>
 #include <QProcess>
 #include <QScreen>
+#include <QTimer>
+#include <chrono>
 
 #include "platform/PlatformAdaptor_Android.h"
 #include "traffic/TrafficDataProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
+using namespace std::chrono_literals;
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : Platform::PlatformAdaptor_Abstract(parent)
 {
+    // Keep the property imeBottomInset up-to-date. The window insets settle
+    // only after the keyboard animation has finished, so in addition to the
+    // immediate update, re-check after one second. This follows the pattern
+    // of the former SafeInsets implementation.
+    auto* inputMethod = QGuiApplication::inputMethod();
+    connect(inputMethod, &QInputMethod::visibleChanged, this, &PlatformAdaptor::updateImeBottomInset);
+    connect(inputMethod, &QInputMethod::keyboardRectangleChanged, this, &PlatformAdaptor::updateImeBottomInset);
+
+    auto* timer = new QTimer(this);
+    timer->setInterval(1s);
+    timer->setSingleShot(true);
+    connect(inputMethod, &QInputMethod::visibleChanged, timer, qOverload<>(&QTimer::start));
+    connect(inputMethod, &QInputMethod::keyboardRectangleChanged, timer, qOverload<>(&QTimer::start));
+    connect(timer, &QTimer::timeout, this, &PlatformAdaptor::updateImeBottomInset);
+}
+
+
+void Platform::PlatformAdaptor::updateImeBottomInset()
+{
+    double newInset = 0.0;
+
+    // Qt reports the keyboard visibility reliably, but not its geometry, so
+    // the total bottom inset (keyboard/system bars/cutout union) is read from
+    // the Android window via JNI. Depending on the device and Android
+    // version, Qt's own safe-area margins may or may not already contain the
+    // keyboard; subtracting them here yields exactly the part that is
+    // missing, so the combined margin is correct either way. Note that
+    // QWindow::safeAreaMargins() is the pure platform value: it never
+    // includes the additional margins that the QML code sets from this
+    // property, so there is no feedback loop.
+    if (QGuiApplication::inputMethod()->isVisible())
+    {
+        auto devicePixelRatio = QGuiApplication::primaryScreen()->devicePixelRatio();
+        if (qIsFinite(devicePixelRatio) && (devicePixelRatio > 0.0))
+        {
+            auto inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "bottomInset"));
+            if (qIsFinite(inset) && (inset > 0.0))
+            {
+                QWindow* window = QGuiApplication::focusWindow();
+                if ((window == nullptr) && !QGuiApplication::topLevelWindows().isEmpty())
+                {
+                    window = QGuiApplication::topLevelWindows().constFirst();
+                }
+
+                double qtBottomMargin = 0.0;
+                if (window != nullptr)
+                {
+                    qtBottomMargin = window->safeAreaMargins().bottom();
+
+                    // Re-check whenever Qt's own margins change, so a margin
+                    // update arriving after this poll corrects the value.
+                    if (m_watchedWindow != window)
+                    {
+                        if (!m_watchedWindow.isNull())
+                        {
+                            disconnect(m_watchedWindow, &QWindow::safeAreaMarginsChanged, this, &PlatformAdaptor::updateImeBottomInset);
+                        }
+                        connect(window, &QWindow::safeAreaMarginsChanged, this, &PlatformAdaptor::updateImeBottomInset);
+                        m_watchedWindow = window;
+                    }
+                }
+
+                newInset = qMax(0.0, inset/devicePixelRatio - qtBottomMargin);
+            }
+        }
+    }
+
+    if (newInset != m_imeBottomInset)
+    {
+        m_imeBottomInset = newInset;
+        emit imeBottomInsetChanged();
+    }
 }
 
 

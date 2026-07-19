@@ -39,6 +39,7 @@ Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     notifiers.push_back(bindableWidth().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePositionInfo().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(GlobalObject::positionProvider()->bindablePressureAltitude().addNotifier([this]() {updateProperties();}));
+    notifiers.push_back(GlobalObject::positionProvider()->bindablePressureAltitudeImplausible().addNotifier([this]() {updateProperties();}));
     notifiers.push_back(m_pixelPer10km.addNotifier([this]() {updateProperties();}));
     updateProperties();   
 }
@@ -102,6 +103,13 @@ void Ui::SideviewQuickItem::updateProperties()
     if (!ownshipCoordinate.isValid())
     {
         m_error = tr("Unable to show side view: No valid position data.");
+        return;
+    }
+    if (GlobalObject::positionProvider()->pressureAltitudeImplausible())
+    {
+        m_error = tr("Unable to show side view: Pressure altitude and GNSS altitude differ by an unrealistic amount. "
+                     "This can happen when the device does not measure static pressure, "
+                     "for instance in a pressurized cabin or when a flight simulator is used.");
         return;
     }
     auto ownshipTerrainElevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(ownshipCoordinate);

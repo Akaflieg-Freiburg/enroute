@@ -9,7 +9,15 @@
       "Bash(cmake --build build/Qt_6_11_1_f_r_Android_x86_64-Debug)",
       "Bash(cmake --build build/Qt_6_11_1_f_r_Android_x86_64-Debug --target help)",
       "Bash(cmake --build build/Qt_6_11_1_f_r_Android_x86_64-Debug --target enroute_make_apk)",
-      "Bash(nm -D build/Qt_6_11_1_f_r_Android_x86_64-Debug/src/libenroute_x86_64.so)"
+      "Bash(nm -D build/Qt_6_11_1_f_r_Android_x86_64-Debug/src/libenroute_x86_64.so)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(GH_PAGER=cat PAGER=cat gh api repos/Akaflieg-Freiburg/enroute/issues/570 --jq '{title: .title, state: .state, labels: [.labels[].name], body: .body}')",
+      "Bash(GH_PAGER=cat gh api repos/Akaflieg-Freiburg/enroute/issues/570/comments --jq '.[] | \"--- \\\\\\(.user.login\\) \\(\\\\\\(.created_at\\)\\):\\\\n\\\\\\(.body\\)\\\\n\"')",
+      "Bash(echo \"grep exit: $? \\(1 = no matches, good\\)\")",
+      "Bash(git -C /home/kebekus/Software/projects/enroute stash list)",
+      "Bash(git -C /home/kebekus/Software/projects/enroute status --short)",
+      "Bash(git -C /home/kebekus/Software/projects/enroute diff .claude/settings.json)",
+      "Bash(git -C /home/kebekus/Software/projects/enroute diff -- src/ CHANGELOG.md)"
     ]
   },
   "hooks": {

@@ -74,6 +74,15 @@ void Navigation::BaroCache::addIncomingBaroCacheData()
         return;
     }
 
+    // Reject physically implausible pairs, where pressure altitude and geometric
+    // altitude differ by more than any realistic atmospheric condition allows.
+    // This happens when the pressure sensor does not measure static pressure;
+    // see PositionProvider::pressureAltitudeImplausible.
+    if (qAbs(m_incomingPressureAltitude - m_incomingGeometricAltitude) > Positioning::PositionProvider::pressureAltitudeImplausibleThreshold)
+    {
+        return;
+    }
+
     auto FL = qRound(m_incomingPressureAltitude.toFeet()/100.0);
     m_altitudeElementsByFlightLevel[FL] = {m_incomingPressureAltitudeTimestamp, m_incomingPressureAltitude, m_incomingGeometricAltitude};
     m_incomingGeometricAltitude = {};

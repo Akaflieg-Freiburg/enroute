@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QBindable>
+#include <QElapsedTimer>
 #include <QQmlEngine>
 
 #include "GlobalObject.h"
@@ -138,6 +139,25 @@ public:
      */
     Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
 
+    /*! \brief Indicator that pressure altitude and geometric altitude are inconsistent
+     *
+     *  This property is true if pressure altitude and geometric altitude have
+     *  been differing by unrealistic amounts for a while. This typically
+     *  happens when the pressure sensor does not measure static pressure,
+     *  because the device rides in a pressurized cabin, or because the app
+     *  receives position data from a flight simulator while the device sensor
+     *  measures the air pressure at the user's desk. If this property is true,
+     *  then barometric altitude data should not be trusted.
+     *
+     *  Realistic atmospheric conditions (extremely low QNH together with
+     *  extreme temperature deviation from ISA) account for differences of no
+     *  more than about 4,000 ft. To warn, this class requires a difference of
+     *  more than 5,000 ft, persisting over 30 seconds. The warning clears as
+     *  soon as the difference drops below 3,000 ft, or as soon as one of the
+     *  two altitudes becomes unavailable.
+     */
+    Q_PROPERTY(bool pressureAltitudeImplausible READ pressureAltitudeImplausible BINDABLE bindablePressureAltitudeImplausible NOTIFY pressureAltitudeImplausibleChanged)
+
     /*! \brief Indicator that position information is being received
      *
      *  This is a shortcut for positionInfo().isValid. This property exists
@@ -251,6 +271,18 @@ public:
 
     /*! \brief Getter method for property with the same name
      *
+     *  @returns Property pressureAltitudeImplausible
+     */
+    [[nodiscard]] bool pressureAltitudeImplausible() const {return m_pressureAltitudeImplausible.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property pressureAltitudeImplausible
+     */
+    [[nodiscard]] QBindable<bool> bindablePressureAltitudeImplausible() const {return &m_pressureAltitudeImplausible;}
+
+    /*! \brief Getter method for property with the same name
+     *
      *  @returns Property receivingPositionInfo
      */
     [[nodiscard]] bool receivingPositionInfo() const {return m_receivingPositionInfo.value();}
@@ -275,6 +307,19 @@ public:
 
 
     //
+    // Constants
+    //
+
+    /*! \brief Threshold for the pressure altitude plausibility check
+     *
+     *  If pressure altitude and geometric altitude differ by more than this
+     *  value, then the pair is considered physically implausible; see the
+     *  documentation of the property pressureAltitudeImplausible.
+     */
+    static constexpr Units::Distance pressureAltitudeImplausibleThreshold = Units::Distance::fromFT(5000.0);
+
+
+    //
     // Methods
     //
 
@@ -295,6 +340,9 @@ signals:
 
     // Notifier signal
     void positionInfoChanged(const Positioning::PositionInfo& info);
+
+    // Notifier signal
+    void pressureAltitudeImplausibleChanged();
 
     // Notifier signal
     void receivingPositionInfoChanged(bool);
@@ -347,6 +395,21 @@ private:
 
     QProperty<Units::Distance> m_pressureAltitude;
     static Units::Distance computePressureAltitude();
+
+    // This method updates m_pressureAltitudeImplausible. It is called whenever
+    // m_positionInfo or m_pressureAltitude change.
+    void updatePressureAltitudeImplausible();
+    QPropertyNotifier m_pressureAltitudeNotifier;
+
+    // Hysteresis for the pressure altitude plausibility check: once the warning
+    // is active, it clears only when the difference drops below this value.
+    static constexpr Units::Distance pressureAltitudePlausibleThreshold = Units::Distance::fromFT(3000.0);
+    // The difference must persist for at least this long before the warning is raised.
+    static constexpr qint64 pressureAltitudeImplausibleDwellTime_ms = 30*1000;
+    // Measures for how long pressure altitude and geometric altitude have been
+    // differing by more than pressureAltitudeImplausibleThreshold.
+    QElapsedTimer m_pressureAltitudeDivergenceTimer;
+    Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, bool, m_pressureAltitudeImplausible, &Positioning::PositionProvider::pressureAltitudeImplausibleChanged);
 };
 
 } // namespace Positioning

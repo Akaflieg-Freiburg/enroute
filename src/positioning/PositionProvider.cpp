@@ -129,6 +129,13 @@ void Positioning::PositionProvider::deferredInitialization()
     m_statusString.setBinding([this]() {return computeStatusString();});
     m_incomingPositionInfo.setBinding([this]() {return computeIncomingPositionInfo();});
     m_incomingPositionInfoNotifier = m_incomingPositionInfo.addNotifier([this]() {onIncomingPositionInfoUpdated();});
+
+    // Watch pressure altitude and position info for implausible differences
+    // between pressure altitude and geometric altitude.
+    m_pressureAltitudeNotifier = m_pressureAltitude.addNotifier([this]() {updatePressureAltitudeImplausible();});
+    connect(this, &Positioning::PositionProvider::positionInfoChanged,
+            this, &Positioning::PositionProvider::updatePressureAltitudeImplausible);
+
     onIncomingPositionInfoUpdated();
 }
 
@@ -290,4 +297,39 @@ Units::Distance Positioning::PositionProvider::computePressureAltitude()
     }
 
     return GlobalObject::sensors()->pressureAltitude();
+}
+
+void Positioning::PositionProvider::updatePressureAltitudeImplausible()
+{
+    auto pressureAltitude = m_pressureAltitude.value();
+    auto geometricAltitude = m_positionInfo.value().trueAltitudeAMSL();
+
+    // If one of the two altitudes is unavailable, then plausibility cannot be
+    // judged. Err on the side of not warning.
+    if (!pressureAltitude.isFinite() || !geometricAltitude.isFinite())
+    {
+        m_pressureAltitudeDivergenceTimer.invalidate();
+        m_pressureAltitudeImplausible = false;
+        return;
+    }
+
+    auto divergence = qAbs(pressureAltitude - geometricAltitude);
+    if (divergence < pressureAltitudePlausibleThreshold)
+    {
+        m_pressureAltitudeDivergenceTimer.invalidate();
+        m_pressureAltitudeImplausible = false;
+        return;
+    }
+    if (divergence > pressureAltitudeImplausibleThreshold)
+    {
+        if (!m_pressureAltitudeDivergenceTimer.isValid())
+        {
+            m_pressureAltitudeDivergenceTimer.start();
+        }
+        if (m_pressureAltitudeDivergenceTimer.hasExpired(pressureAltitudeImplausibleDwellTime_ms))
+        {
+            m_pressureAltitudeImplausible = true;
+        }
+    }
+    // Divergence between the two thresholds: keep the current state.
 }

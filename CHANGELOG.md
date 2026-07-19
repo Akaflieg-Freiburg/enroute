@@ -9,6 +9,11 @@
   information can now be saved directly to a file, in addition to sharing.
   (#363)
 
+- Warn the user when pressure altitude and GNSS altitude differ by unrealistic
+  amounts, which happens when the device does not measure static pressure, for
+  instance in a pressurized cabin or when a flight simulator is used. In this
+  situation, the side view no longer shows unreliable airspace data. (#570)
+
 
 ## [3.4.0] - 2026-07-14
 

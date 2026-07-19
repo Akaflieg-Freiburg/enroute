@@ -215,6 +215,10 @@ private:
     // Called whenever map and data updates become (un)available
     void onMapAndDataUpdateSizeChanged();
 
+    // Called whenever the position provider finds that pressure altitude and
+    // geometric altitude differ by implausible amounts, or clears that status.
+    void onPressureAltitudeImplausible();
+
     // Called whenever the traffic receiver reports a runtime error, or clears
     // the error status.
     void onTrafficReceiverRuntimeError();

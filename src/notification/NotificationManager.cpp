@@ -31,6 +31,7 @@
 #include "notification/NotificationManager.h"
 #include "notification/Notification_DataUpdateAvailable.h"
 #include "platform/PlatformAdaptor.h"
+#include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include <chrono>
 
@@ -69,6 +70,8 @@ void Notifications::NotificationManager::deferredInitialization()
             this, &Notifications::NotificationManager::onTrafficReceiverRuntimeError);
     connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged,
             this, &Notifications::NotificationManager::onTrafficReceiverSelfTestError);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::pressureAltitudeImplausibleChanged,
+            this, &Notifications::NotificationManager::onPressureAltitudeImplausible);
 
     // Maps and Data
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged,
@@ -328,6 +331,24 @@ void Notifications::NotificationManager::onMapAndDataUpdateSizeChanged()
     auto* notification = new Notifications::Notification_DataUpdateAvailable(this);
     addNotification(notification);
     settings.setValue(QStringLiteral("lastGeoMapUpdateNotification"), QDateTime::currentDateTimeUtc());
+}
+
+void Notifications::NotificationManager::onPressureAltitudeImplausible()
+{
+    if (!GlobalObject::positionProvider()->pressureAltitudeImplausible())
+    {
+        return;
+    }
+    auto* notification = new Notifications::Notification(tr("Inconsistent altitude data"), Notifications::Notification::Warning);
+    notification->setText(tr("Pressure altitude and GNSS altitude differ by an unrealistic amount. "
+                             "This can happen when the device does not measure static pressure, "
+                             "for instance in a pressurized cabin or when a flight simulator is used. "
+                             "Barometric altitude data and vertical airspace boundaries are unreliable."));
+    connect(GlobalObject::positionProvider(),
+            &Positioning::PositionProvider::pressureAltitudeImplausibleChanged,
+            notification,
+            &QObject::deleteLater);
+    addNotification(notification);
 }
 
 void Notifications::NotificationManager::onTrafficReceiverRuntimeError()

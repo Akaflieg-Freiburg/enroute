@@ -43,20 +43,14 @@ AppWindow {
     rightPadding: 0
     bottomPadding: 0
 
-    // The safe area reported by Qt covers system bars and display cutouts, but
-    // not the virtual keyboard. The former C++ SafeInsets implementations did
-    // include the keyboard in the bottom inset on Android and iOS, and the
-    // QML code relies on that to keep footers and dialogs clear of the
-    // keyboard. Additional margins propagate into the SafeArea.margins of
-    // every item in this window.
+    // The safe area reported by Qt covers system bars and display cutouts,
+    // but not the virtual keyboard. On iOS, the former C++ SafeInsets
+    // implementation included the keyboard in the bottom inset, and the QML
+    // code relies on that to keep footers and dialogs clear of the keyboard.
+    // Additional margins propagate into the SafeArea.margins of every item
+    // in this window. (On Android, the keyboard is already contained in
+    // PlatformAdaptor.safeInsets, see below.)
     SafeArea.additionalMargins.bottom: {
-        // On Android, Qt.inputMethod.keyboardRectangle cannot be used: with an
-        // expanded client area, Qt reports the keyboard visibility, but the
-        // keyboard geometry typically remains empty. PlatformAdaptor provides
-        // the authoritative window inset instead.
-        if (Qt.platform.os === "android")
-            return PlatformAdaptor.imeBottomInset
-
         if (Qt.platform.os === "ios") {
             if (!Qt.inputMethod.visible)
                 return 0
@@ -70,13 +64,18 @@ AppWindow {
     }
 
     // Feed the window-global safe-area margins into the SafeInsets singleton,
-    // which the rest of the QML code reads. The unqualified SafeArea below
-    // attaches to this window, so the values include the keyboard margin set
-    // above.
-    readonly property real safeAreaBottom: SafeArea.margins.bottom
-    readonly property real safeAreaLeft: SafeArea.margins.left
-    readonly property real safeAreaRight: SafeArea.margins.right
-    readonly property real safeAreaTop: SafeArea.margins.top
+    // which the rest of the QML code reads. On Android, Qt's SafeArea margins
+    // are unreliable -- wrong in split-screen mode, and inconsistent about
+    // the virtual keyboard -- so the insets that the Android window system
+    // reports are used instead (PlatformAdaptor.safeInsets; zero on all
+    // other platforms). Elsewhere, the window's SafeArea provides the
+    // values; the unqualified SafeArea below attaches to this window, so
+    // they include the keyboard margin set above.
+    readonly property bool useNativeInsets: Qt.platform.os === "android"
+    readonly property real safeAreaBottom: useNativeInsets ? PlatformAdaptor.safeInsets.bottom : SafeArea.margins.bottom
+    readonly property real safeAreaLeft: useNativeInsets ? PlatformAdaptor.safeInsets.left : SafeArea.margins.left
+    readonly property real safeAreaRight: useNativeInsets ? PlatformAdaptor.safeInsets.right : SafeArea.margins.right
+    readonly property real safeAreaTop: useNativeInsets ? PlatformAdaptor.safeInsets.top : SafeArea.margins.top
 
     Binding { target: SafeInsets; property: "bottom"; value: view.safeAreaBottom }
     Binding { target: SafeInsets; property: "left"; value: view.safeAreaLeft }

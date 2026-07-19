@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QGeoCoordinate>
+#include <QMarginsF>
 #include <QQmlEngine>
 #include <QQuickItem>
 
@@ -68,19 +69,20 @@ public:
     // Properties
     //
 
-    /*! \brief Height of the virtual keyboard overlapping the window
+    /*! \brief Safe-area insets of the application window (Android only)
      *
-     *  On Android, this property holds the height (in device-independent
-     *  pixels) of the part of the window that is covered by the virtual
-     *  keyboard, and zero while the keyboard is hidden. The GUI adds this
-     *  value to the bottom safe-area margin, so that user interface elements
-     *  stay clear of the keyboard.
+     *  On Android, this property holds the safe-area insets of the
+     *  application window, in device-independent pixels: the union of the
+     *  system bars, the display cutout and the virtual keyboard, as reported
+     *  by the Android window system. The GUI uses these values instead of
+     *  Qt's SafeArea margins, which are unreliable on Android in
+     *  split-screen mode and do not handle the virtual keyboard
+     *  consistently.
      *
-     *  On all other platforms, this property is zero; iOS handles the
-     *  keyboard in QML via Qt.inputMethod, and desktop systems do not
-     *  obscure the window.
+     *  On all other platforms, this property is a zero margin and unused;
+     *  the GUI reads Qt's SafeArea attached property there.
      */
-    Q_PROPERTY(double imeBottomInset READ imeBottomInset NOTIFY imeBottomInsetChanged)
+    Q_PROPERTY(QMarginsF safeInsets READ safeInsets NOTIFY safeInsetsChanged)
 
 
     //
@@ -89,9 +91,9 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property imeBottomInset
+     *  @returns Property safeInsets
      */
-    [[nodiscard]] virtual double imeBottomInset() const { return 0.0; }
+    [[nodiscard]] virtual QMarginsF safeInsets() const { return {}; }
 
 
     //
@@ -225,7 +227,7 @@ public slots:
 
 signals:
     /*! \brief Notifier signal */
-    void imeBottomInsetChanged();
+    void safeInsetsChanged();
 
     /*! \brief Emitted when an error occurs
      *

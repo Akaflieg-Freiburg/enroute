@@ -64,9 +64,9 @@ public:
 
     /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract
      *
-     *  @returns Property imeBottomInset
+     *  @returns Property safeInsets
      */
-    [[nodiscard]] double imeBottomInset() const override { return m_imeBottomInset; }
+    [[nodiscard]] QMarginsF safeInsets() const override { return m_safeInsets; }
 
 
     //
@@ -115,16 +115,16 @@ protected:
     void deferredInitialization() override;
 
 private slots:
-    // Poll the window inset occupied by the virtual keyboard and update the
-    // property imeBottomInset. Connected to the QInputMethod signals in the
-    // constructor.
-    void updateImeBottomInset();
+    // Poll the safe-area insets of the application window via JNI and update
+    // the property safeInsets. Connected to a number of change signals in
+    // the constructor.
+    void updateSafeInsets();
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
 
     bool splashScreenHidden {false};
-    double m_imeBottomInset {0.0};
+    QMarginsF m_safeInsets;
     QPointer<QWindow> m_watchedWindow;
 };
 

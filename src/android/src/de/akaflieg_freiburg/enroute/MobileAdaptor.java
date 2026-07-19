@@ -152,14 +152,14 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         + android.os.Build.MODEL + ")";
   }
 
-  // Returns the total bottom window inset -- the union of the virtual
-  // keyboard, system bars and display cutout -- in physical pixels. The C++
-  // caller subtracts the part that Qt already reports in its safe-area
-  // margins; the remainder is applied as an additional margin, so that user
-  // interface elements stay clear of the keyboard on every Android version,
-  // regardless of whether the platform folds the keyboard into the insets
-  // that Qt reads.
-  public static double bottomInset() {
+  // The following methods return the safe-area insets of the window -- the
+  // union of the virtual keyboard, system bars and display cutout -- in
+  // physical pixels. These are the values that Android reports to this
+  // window, so they are also correct in split-screen mode and in any
+  // orientation, where Qt's own safe-area margins are not reliable. The
+  // keyboard inset is zero while the keyboard is hidden.
+
+  private static double safeInset(int side) {
     if (m_instance == null) {
       return 0.0;
     }
@@ -168,10 +168,37 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
       return 0.0;
     }
     if (Build.VERSION.SDK_INT >= 30) {
-      return insets.getInsets(WindowInsets.Type.ime() | WindowInsets.Type.systemBars()
-          | WindowInsets.Type.displayCutout()).bottom;
+      android.graphics.Insets in = insets.getInsets(WindowInsets.Type.ime()
+          | WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+      switch (side) {
+        case 0: return in.left;
+        case 1: return in.top;
+        case 2: return in.right;
+        default: return in.bottom;
+      }
     }
-    return insets.getSystemWindowInsetBottom();
+    switch (side) {
+      case 0: return insets.getSystemWindowInsetLeft();
+      case 1: return insets.getSystemWindowInsetTop();
+      case 2: return insets.getSystemWindowInsetRight();
+      default: return insets.getSystemWindowInsetBottom();
+    }
+  }
+
+  public static double safeInsetLeft() {
+    return safeInset(0);
+  }
+
+  public static double safeInsetTop() {
+    return safeInset(1);
+  }
+
+  public static double safeInsetRight() {
+    return safeInset(2);
+  }
+
+  public static double safeInsetBottom() {
+    return safeInset(3);
   }
 
   /*

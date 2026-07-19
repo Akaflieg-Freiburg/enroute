@@ -225,6 +225,54 @@ Page {
                                 toast.doToast(qsTr("Flight route exported"))
                         }
                     }
+
+                    MenuItem {
+                        text: qsTr("… to Garmin FPL file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", Navigator.flightRoute.suggestedFilename())
+                            if (errorString === "abort") {
+                                toast.doToast(qsTr("Aborted"))
+                                return
+                            }
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                                return
+                            }
+                            if (isAndroid)
+                                toast.doToast(qsTr("Flight route shared"))
+                            else
+                                toast.doToast(qsTr("Flight route exported"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to MSFS PLN file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toPln(), "application/xml", "pln", Navigator.flightRoute.suggestedFilename())
+                            if (errorString === "abort") {
+                                toast.doToast(qsTr("Aborted"))
+                                return
+                            }
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                                return
+                            }
+                            if (isAndroid)
+                                toast.doToast(qsTr("Flight route shared"))
+                            else
+                                toast.doToast(qsTr("Flight route exported"))
+                        }
+                    }
                 }
 
                 AutoSizingMenu {
@@ -251,6 +299,28 @@ Page {
                             highlighted = false
                             parent.highlighted = false
                             FileExchange.saveContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", Navigator.flightRoute.suggestedFilename())
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to Garmin FPL file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", Navigator.flightRoute.suggestedFilename())
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to MSFS PLN file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(Navigator.flightRoute.toPln(), "application/xml", "pln", Navigator.flightRoute.suggestedFilename())
                         }
                     }
                 }
@@ -285,6 +355,40 @@ Page {
                             parent.highlighted = false
 
                             var errorString = FileExchange.viewContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", "FlightRoute")
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                            } else
+                                toast.doToast(qsTr("Flight route opened in other app"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… in Garmin FPL format")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+
+                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", "FlightRoute")
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                            } else
+                                toast.doToast(qsTr("Flight route opened in other app"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… in MSFS PLN format")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+
+                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toPln(), "application/xml", "pln", "FlightRoute")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()

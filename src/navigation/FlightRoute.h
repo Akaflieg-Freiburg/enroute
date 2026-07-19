@@ -384,6 +384,26 @@ namespace Navigation
          */
         [[nodiscard]] Q_INVOKABLE QByteArray toGpx() const;
 
+        /*! \brief Exports to route to Garmin FPL
+         *
+         * This method serialises the current flight route as a Garmin FPL
+         * document. The document conforms to the specification outlined
+         * [here](https://www8.garmin.com/xmlschemas/FlightPlanv1.xsd)
+         *
+         * @returns QByteArray containing FPL data describing the flight route
+         */
+        [[nodiscard]] Q_INVOKABLE QByteArray toFpl() const;
+
+        /*! \brief Exports to route to MSFS PLN
+         *
+         * This method serialises the current flight route as an MSFS PLN
+         * document. The document conforms to the specification outlined
+         * [here](https://docs.flightsimulator.com/html/Content_Configuration/Flights_And_Missions/Flight_Plan_Definitions.htm)
+         *
+         * @returns QByteArray containing PLN data describing the flight route
+         */
+        [[nodiscard]] Q_INVOKABLE QByteArray toPln() const;
+
         /*! \brief Exports to route to VFR Flight Plan Format.
          *
          * This method serialises the current flight route as a simplified VFR flight plan

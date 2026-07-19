@@ -184,7 +184,9 @@ set(SOURCES
     flightlog/FlightLog.cpp
     flightlog/FlightRecorder.cpp
     navigation/FlightRoute.cpp
+    navigation/FlightRoute_FPL.cpp
     navigation/FlightRoute_GPX.cpp
+    navigation/FlightRoute_PLN.cpp
     navigation/Leg.cpp
     navigation/Navigator.cpp
     navigation/RemainingRouteInfo.cpp

@@ -35,8 +35,8 @@ Dialog {
     focus: defaultFocusItem !== null
     onOpened: if (defaultFocusItem) defaultFocusItem.forceActiveFocus()
 
-    property real avHeight: ((Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height)-2*font.pixelSize-SafeInsets.top-SafeInsets.bottom
-    property real avWidth: ((Qt.platform.os === "android") ? SafeInsets.wWidth : parent.width)-2*font.pixelSize-SafeInsets.left-SafeInsets.right
+    property real avHeight: parent.height-2*font.pixelSize-SafeInsets.top-SafeInsets.bottom
+    property real avWidth: parent.width-2*font.pixelSize-SafeInsets.left-SafeInsets.right
 
     // We center the dialog manually, taking care of safe insets
     x: SafeInsets.left + font.pixelSize + (avWidth-width)/2.0

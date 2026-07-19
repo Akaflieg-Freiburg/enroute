@@ -7,7 +7,6 @@
 #import <UserNotifications/UserNotifications.h>
 #import <CoreLocation/CoreLocation.h>
 #import "ObjectiveC.h"
-#import "SafeAreaService.h"
 
 
 //MARK: Vibration
@@ -27,20 +26,6 @@ void ObjCAdapter::vibrateLong() {
     AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
 }
 
-
-//MARK: Safe Area
-double ObjCAdapter::safeAreaTopInset() {
-    return [[SafeAreaService sharedInstance] safeAreaTop];
-}
-double ObjCAdapter::safeAreaLeftInset() {
-    return [[SafeAreaService sharedInstance] safeAreaLeft];
-}
-double ObjCAdapter::safeAreaBottomInset() {
-    return [[SafeAreaService sharedInstance] safeAreaBottom];
-}
-double ObjCAdapter::safeAreaRightInset() {
-    return [[SafeAreaService sharedInstance] safeAreaRight];
-}
 
 
 //MARK: File Transfer

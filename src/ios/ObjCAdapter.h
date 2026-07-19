@@ -9,10 +9,6 @@ class ObjCAdapter {
         static void vibrateBrief();
         static void vibrateError();
         static void vibrateLong();
-        static double safeAreaTopInset();
-        static double safeAreaLeftInset();
-        static double safeAreaBottomInset();
-        static double safeAreaRightInset();
         static void disableScreenSaver();
         static QString shareContent(const QByteArray&, const QString&, const QString&, const QString&);
         static QString preferredLanguage();

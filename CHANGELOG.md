@@ -17,6 +17,12 @@
   instance in a pressurized cabin or when a flight simulator is used. In this
   situation, the side view no longer shows unreliable airspace data. (#570)
 
+### Changed
+
+- The safe-area handling that keeps the user interface clear of display
+  cutouts, system bars and the virtual keyboard now uses Qt's SafeArea
+  support instead of custom platform code. (#584)
+
 ### Fixed
 
 - GDL90 Traffic: suppress "No GPS reception" warning when phone GNSS is primary

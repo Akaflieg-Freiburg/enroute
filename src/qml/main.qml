@@ -43,6 +43,39 @@ AppWindow {
     rightPadding: 0
     bottomPadding: 0
 
+    // The safe area reported by Qt covers system bars and display cutouts, but
+    // not the virtual keyboard. The former C++ SafeInsets implementations did
+    // include the keyboard in the bottom inset on Android and iOS, and the
+    // QML code relies on that to keep footers and dialogs clear of the
+    // keyboard. Additional margins propagate into the SafeArea.margins of
+    // every item in this window.
+    SafeArea.additionalMargins.bottom: {
+        if ((Qt.platform.os !== "android") && (Qt.platform.os !== "ios"))
+            return 0
+        if (!Qt.inputMethod.visible)
+            return 0
+        // On Android, keyboardRectangle is in physical screen pixels; on iOS,
+        // in device-independent pixels.
+        var keyboardTop = Qt.inputMethod.keyboardRectangle.y
+        if (Qt.platform.os === "android")
+            keyboardTop = keyboardTop/Screen.devicePixelRatio
+        return Math.max(0, view.height - keyboardTop)
+    }
+
+    // Feed the window-global safe-area margins into the SafeInsets singleton,
+    // which the rest of the QML code reads. The unqualified SafeArea below
+    // attaches to this window, so the values include the keyboard margin set
+    // above.
+    readonly property real safeAreaBottom: SafeArea.margins.bottom
+    readonly property real safeAreaLeft: SafeArea.margins.left
+    readonly property real safeAreaRight: SafeArea.margins.right
+    readonly property real safeAreaTop: SafeArea.margins.top
+
+    Binding { target: SafeInsets; property: "bottom"; value: view.safeAreaBottom }
+    Binding { target: SafeInsets; property: "left"; value: view.safeAreaLeft }
+    Binding { target: SafeInsets; property: "right"; value: view.safeAreaRight }
+    Binding { target: SafeInsets; property: "top"; value: view.safeAreaTop }
+
     font.pixelSize: GlobalSettings.fontSize
     font.letterSpacing: GlobalSettings.fontSize > 15 ? 0.5 : 0.25
 
@@ -686,11 +719,10 @@ AppWindow {
         }
         onCurrentItemChanged: focusCurrentPage()
 
-        // Need to explain
-        x: 0
-        y: 0
-        height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
-        width: (Qt.platform.os === "android") ? SafeInsets.wWidth : parent.width
+        // Fill the window. This formerly used SafeInsets.wHeight/wWidth to work
+        // around ApplicationWindow not tracking its size in the Android split
+        // view; current Qt versions track the window size correctly.
+        anchors.fill: parent
 
         focus: true
 

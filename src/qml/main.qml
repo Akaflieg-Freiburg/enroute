@@ -114,7 +114,7 @@ AppWindow {
                     rightPadding: 16
                     Layout.preferredHeight: 20
 
-                    text: "Akaflieg Freiburg" + " • v" + Qt.application.version
+                    text: "Akaflieg Freiburg" + " • v" + PlatformAdaptor.versionNameForDisplay()
                     font.pixelSize: 16
                     color: "white"
 

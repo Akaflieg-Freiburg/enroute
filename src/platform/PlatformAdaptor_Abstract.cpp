@@ -74,6 +74,16 @@ void Platform::PlatformAdaptor_Abstract::openSatView(const QGeoCoordinate& coord
     QDesktopServices::openUrl(url);
 }
 
+QString Platform::PlatformAdaptor_Abstract::versionNameForDisplay()
+{
+    auto versionNumber = QStringLiteral(ENROUTE_VERSION_STRING);
+    if (QStringLiteral(GIT_BRANCH) == "main") {
+        return QStringLiteral(ENROUTE_VERSION_STRING);
+    } else {
+        return versionNumber + " - Beta";
+    }
+}
+
 
 QString Platform::PlatformAdaptor_Abstract::systemInfo()
 {

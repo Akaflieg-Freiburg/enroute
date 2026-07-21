@@ -137,6 +137,12 @@ public:
      */
     Q_INVOKABLE virtual void setupInputMethodEventFilter(QQuickItem* item) { Q_UNUSED(item) }
 
+    /*! \brief Returns the application version and adds git commit hash, if it's not the main branch
+     *
+     * @returns Version String
+     */
+    Q_INVOKABLE virtual QString versionNameForDisplay();
+
     /*! \brief Information about the system, in HTML format
      *
      * @returns Info string

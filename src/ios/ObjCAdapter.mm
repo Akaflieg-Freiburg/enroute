@@ -115,6 +115,10 @@ void ObjCAdapter::postNotification(const QString& title, const QString& body) {
 //MARK: Background Location
 
 static CLLocationManager* s_bgLocationManager = nil;
+// Intentionally never released: this is a singleton for the lifetime of the
+// process, not a leak. ObjCAdapter has no instance/destructor to hook a
+// teardown into, and the manager must stay alive for as long as the app can
+// still be asked to re-enable background location (e.g. the next flight).
 
 bool ObjCAdapter::enableBackgroundLocation() {
     if (s_bgLocationManager == nil) {
@@ -138,6 +142,13 @@ bool ObjCAdapter::enableBackgroundLocation() {
         return false;
     }
 
+    // This manager's only job is to keep the process alive in the background;
+    // Qt's own CLLocationManager (QGeoPositionInfoSource) already provides the
+    // full-accuracy fix used for actual navigation. Requesting best accuracy
+    // here as well would run a second full-precision GPS session for the
+    // whole flight, for no functional benefit -- a needless battery cost on a
+    // device that may be the pilot's only navigation instrument.
+    s_bgLocationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
     s_bgLocationManager.allowsBackgroundLocationUpdates = YES;
     s_bgLocationManager.pausesLocationUpdatesAutomatically = NO;
     [s_bgLocationManager startUpdatingLocation];

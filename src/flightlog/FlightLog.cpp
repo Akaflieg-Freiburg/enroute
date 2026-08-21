@@ -548,6 +548,10 @@ auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
             continue;
         }
         auto flight = importedFlight;
+        // The JSON export format never includes the actual IGC track data,
+        // only metadata, so a trackFile name inherited from the exporting
+        // device's filesystem would not point to an existing file here.
+        flight.setTrackFile({});
         resolveCoordinates(flight);
         flights.append(flight);
         existingUuids.insert(flight.uuid());

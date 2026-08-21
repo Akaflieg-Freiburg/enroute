@@ -548,9 +548,16 @@ auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
         return {};
     }
 
+    if (!m_storage->upsertMany(newFlights)) {
+        // upsertMany() has already emitted saveError() with the details;
+        // returning a non-empty string here suppresses the "N flight(s)
+        // imported" success toast so the UI does not report success for an
+        // import that was not actually persisted.
+        return tr("Failed to save the imported flights to storage. Nothing was imported.");
+    }
+
     sortFlights(flights);
     m_flights.setValue(std::move(flights));
-    m_storage->upsertMany(newFlights);
     return {};
 }
 

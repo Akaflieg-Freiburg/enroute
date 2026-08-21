@@ -34,6 +34,7 @@
 
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/Waypoint.h"
 #include "flightlog/AirplaneFlightDetector.h"
@@ -518,17 +519,12 @@ auto Flightlog::FlightLog::exportToJSON(const QStringList& uuids) const -> QByte
 
 auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
 {
-    QString myFileName = fileName;
-    if (myFileName.startsWith(u"file://"_s)) {
-        myFileName = myFileName.mid(7);
+    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    if (!file->open(QIODevice::ReadOnly)) {
+        return tr("Cannot open file: %1").arg(file->errorString());
     }
-
-    QFile file(myFileName);
-    if (!file.open(QIODevice::ReadOnly)) {
-        return tr("Cannot open file: %1").arg(file.errorString());
-    }
-    const auto raw = file.readAll();
-    file.close();
+    const auto raw = file->readAll();
+    file->close();
 
     const auto imported = FlightLogExportJSON::fromJSON(raw);
     if (imported.isEmpty()) {

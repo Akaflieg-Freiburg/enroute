@@ -34,8 +34,13 @@ namespace {
 // Single source of truth for the 'flights' table schema. The CREATE TABLE,
 // INSERT, and SELECT statements are all generated from this list, and
 // bindFlight()/loadAll() bind/read by column name (not position) — so unlike
-// four independently hand-maintained lists, these can no longer drift apart:
-// adding, removing, or reordering a column only requires editing this array.
+// four independently hand-maintained lists, these can no longer drift apart.
+// NOTE: there is currently no migration path. CREATE TABLE IF NOT EXISTS is a
+// no-op against an existing file, so adding/removing/reordering a column here
+// only takes effect for brand-new databases — existing on-disk tables keep
+// their old columns, and SELECT will then fail on a column that doesn't
+// exist. Until a migration step (e.g. PRAGMA user_version + ALTER TABLE) is
+// added, changing this list is only safe before the schema has shipped.
 struct ColumnDef
 {
     const char* name;
@@ -117,16 +122,25 @@ Flightlog::FlightLogStorage::~FlightLogStorage()
 
 void Flightlog::FlightLogStorage::openDatabase()
 {
-    auto db = QSqlDatabase::addDatabase(u"QSQLITE"_s, m_databaseConnectionName);
-    db.setDatabaseName(m_dbFileName);
-    if (!db.open()) {
+    bool opened = false;
+    QString reason;
+    {
+        auto db = QSqlDatabase::addDatabase(u"QSQLITE"_s, m_databaseConnectionName);
+        db.setDatabaseName(m_dbFileName);
+        opened = db.open();
+        if (!opened) {
+            reason = db.lastError().text();
+        }
+    } // db destroyed here, so removeDatabase() below is not called while a
+      // QSqlDatabase referring to this connection is still alive.
+
+    if (!opened) {
         // The file exists but is not a valid SQLite database. Quarantine it
         // and start fresh rather than failing permanently.
-        const auto reason = db.lastError().text();
         QSqlDatabase::removeDatabase(m_databaseConnectionName);
         quarantineFile(m_dbFileName, reason);
 
-        db = QSqlDatabase::addDatabase(u"QSQLITE"_s, m_databaseConnectionName);
+        auto db = QSqlDatabase::addDatabase(u"QSQLITE"_s, m_databaseConnectionName);
         db.setDatabaseName(m_dbFileName);
         if (!db.open()) {
             reportError(db.lastError().text());
@@ -134,6 +148,7 @@ void Flightlog::FlightLogStorage::openDatabase()
         }
     }
 
+    auto db = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(db);
     if (!query.exec(createTableStatement())) {
         reportError(query.lastError().text());
@@ -305,6 +320,7 @@ bool Flightlog::FlightLogStorage::upsertMany(const QList<Flight>& flights)
     }
 
     if (!db.commit()) {
+        db.rollback();
         reportError(db.lastError().text());
         return false;
     }
@@ -360,6 +376,7 @@ bool Flightlog::FlightLogStorage::removeMany(const QList<QUuid>& uuids)
     }
 
     if (!db.commit()) {
+        db.rollback();
         reportError(db.lastError().text());
         return false;
     }

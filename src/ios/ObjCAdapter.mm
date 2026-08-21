@@ -116,14 +116,32 @@ void ObjCAdapter::postNotification(const QString& title, const QString& body) {
 
 static CLLocationManager* s_bgLocationManager = nil;
 
-void ObjCAdapter::enableBackgroundLocation() {
+bool ObjCAdapter::enableBackgroundLocation() {
     if (s_bgLocationManager == nil) {
         s_bgLocationManager = [[CLLocationManager alloc] init];
     }
-    [s_bgLocationManager requestAlwaysAuthorization];
+
+    CLAuthorizationStatus status = s_bgLocationManager.authorizationStatus;
+    if (status == kCLAuthorizationStatusNotDetermined) {
+        // First time ever: show the system dialog. The result arrives
+        // asynchronously; the caller will find out on its next attempt to
+        // enable background location (e.g. the next flight).
+        [s_bgLocationManager requestAlwaysAuthorization];
+        return false;
+    }
+
+    if (status != kCLAuthorizationStatusAuthorizedAlways) {
+        // Denied, restricted, or only "While Using" -- requestAlwaysAuthorization
+        // is a silent no-op once the status is already determined, so there is
+        // no way to re-prompt here. The caller is responsible for telling the
+        // user to fix this in Settings.
+        return false;
+    }
+
     s_bgLocationManager.allowsBackgroundLocationUpdates = YES;
     s_bgLocationManager.pausesLocationUpdatesAutomatically = NO;
     [s_bgLocationManager startUpdatingLocation];
+    return true;
 }
 
 void ObjCAdapter::disableBackgroundLocation() {

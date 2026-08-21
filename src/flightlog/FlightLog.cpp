@@ -128,6 +128,16 @@ void Flightlog::FlightLog::deferredInitialization()
                 emit displayedTrackPathChanged();
             });
 
+#ifdef Q_OS_IOS
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::backgroundLocationUnavailable,
+            this, [this]() {
+                emit backgroundLocationUnavailable(
+                    tr("Automatic flight detection may stop working once the app is in the "
+                       "background. Please grant \"Always\" location access to this app in the "
+                       "system Settings."));
+            });
+#endif
+
 #ifdef Q_OS_ANDROID
     // After a 30-second grace period, post a notification if auto-detection is
     // on but still no position data (e.g. GPS disabled, no traffic receiver).

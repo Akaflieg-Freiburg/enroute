@@ -1028,6 +1028,16 @@ AppWindow {
                                           })
             Global.dialogLoader.active = true
         }
+
+        function onBackgroundLocationUnavailable(message) {
+            Global.dialogLoader.active = false
+            Global.dialogLoader.setSource("dialogs/LongTextDialog.qml", {
+                                              title: qsTr("Background location access"),
+                                              text: message,
+                                              standardButtons: Dialog.Close
+                                          })
+            Global.dialogLoader.active = true
+        }
     }
 
     Connections { // SSLErrorHandler

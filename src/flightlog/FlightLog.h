@@ -351,6 +351,15 @@ signals:
      */
     void saveError(const QString& message);
 
+    /*! \brief Emitted when background location access is missing or insufficient
+     *
+     *  Automatic flight detection may not continue reliably while the app
+     *  is in the background until the user grants "Always" location access.
+     *
+     *  @param message Human-readable description, suitable for display
+     */
+    void backgroundLocationUnavailable(const QString& message);
+
 private slots:
     // Process position updates — delegates to the active FlightDetector
     void onPositionUpdated();

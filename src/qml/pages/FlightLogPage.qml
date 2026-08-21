@@ -252,6 +252,8 @@ Page {
                                                               text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
                                                               standardButtons: Dialog.Ok})
                             Global.dialogLoader.active = true
+                        } else if (page.isAndroid) {
+                            FileExchange.openFilePicker("")
                         } else {
                             importFlightLogDialog.open()
                         }
@@ -265,9 +267,9 @@ Page {
 
                         fileMode: FileDialog.OpenFile
 
-                        // Setting a non-trivial name filter on Android means we cannot select any
-                        // files at all.
-                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("Flightlog JSON File (*.json)")]
+                        // This dialog is only ever opened on desktop (see onTriggered above),
+                        // so a name filter is always safe to set here.
+                        nameFilters: [qsTr("Flightlog JSON File (*.json)")]
 
                         onAccepted: {
                             PlatformAdaptor.vibrateBrief()

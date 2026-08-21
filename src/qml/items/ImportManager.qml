@@ -117,6 +117,10 @@ Item {
                 errorDialog.open()
                 return
             }
+            if (fileFunction === FileExchange.FlightLogJSON) {
+                importFlightLogJSONDialog.open()
+                return
+            }
 
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
@@ -526,6 +530,32 @@ Item {
                 return
             }
             importManager.toast.doToast( qsTr("Trip kit imported") )
+        }
+    }
+
+    LongTextDialog {
+        id: importFlightLogJSONDialog
+
+        title: qsTr("Import Flight Log?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        text: qsTr("This will import flight log entries from the file. Flights already present in the log will be skipped.")
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+
+            var countBefore = FlightLog.count
+            var errorString = FlightLog.importFromJSON(importManager.filePath)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            var imported = FlightLog.count - countBefore
+            importManager.toast.doToast(imported > 0
+                                         ? qsTr("%1 flight(s) imported").arg(imported)
+                                         : qsTr("No new flights to import — already in the log"))
         }
     }
 

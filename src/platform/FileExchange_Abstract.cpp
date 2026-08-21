@@ -34,6 +34,7 @@
 #include "fileFormats/OpenAir.h"
 #include "fileFormats/PLN.h"
 #include "fileFormats/TripKit.h"
+#include "flightlog/FlightLogExportJSON.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/VAC.h"
 #include "platform/FileExchange_Abstract.h"
@@ -252,6 +253,13 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     if (FileFormats::OpenAir::isValid(myPath, &info))
     {
         emit openFileRequest(path, info, OpenAir);
+        return;
+    }
+
+    // Flight log JSON (Enroute's own export format)
+    if (Flightlog::FlightLogExportJSON::isValid(myPath, &info))
+    {
+        emit openFileRequest(path, {}, FlightLogJSON);
         return;
     }
 

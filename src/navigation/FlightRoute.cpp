@@ -23,6 +23,7 @@
 
 #include "FlightRoute.h"
 #include "GlobalObject.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/FPL.h"
 #include "fileFormats/PLN.h"
 #include "geomaps/GeoJSON.h"
@@ -526,20 +527,11 @@ void Navigation::FlightRoute::reverse()
 
 auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
 {
-    QFile file(fileName);
-    auto success = file.open(QIODevice::WriteOnly);
-    if (!success)
+    QString error;
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileName, toGeoJSON(), &error))
     {
-        return tr("Unable to open the file '%1' for writing.").arg(fileName);
+        return tr("Unable to write to file '%1': %2").arg(fileName, error);
     }
-    auto numBytesWritten = file.write(toGeoJSON());
-    if (numBytesWritten == -1)
-    {
-        file.close();
-        QFile::remove(fileName);
-        return tr("Unable to write to file '%1'.").arg(fileName);
-    }
-    file.close();
     return {};
 }
 

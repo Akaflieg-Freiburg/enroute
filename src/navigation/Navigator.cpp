@@ -24,6 +24,7 @@
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 
@@ -110,12 +111,8 @@ void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
         return;
     }
 
-    // Save aircraft
-    QFile file(m_aircraftFileName);
-    if (file.open(QIODevice::WriteOnly))
-    {
-        file.write(newAircraft.toJSON());
-    }
+    // Save aircraft atomically; the helper logs failures.
+    (void)FileFormats::DataFileAbstract::saveFileAtomically(m_aircraftFileName, newAircraft.toJSON());
 
     // Set new aircraft
     m_aircraft = newAircraft;

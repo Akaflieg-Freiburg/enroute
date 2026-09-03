@@ -96,6 +96,11 @@
   interrupted while saving it; the cache is now written atomically and a
   damaged cache is ignored instead of being loaded.
 
+- Fixed an error where the current aircraft, the current flight route and
+  saved routes or aircraft could be lost if the app was interrupted while
+  writing them; these files are now written atomically and write errors are
+  reported in the save dialogs.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

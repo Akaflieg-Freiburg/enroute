@@ -26,6 +26,7 @@
 #include "Aircraft.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
+#include "fileFormats/DataFileAbstract.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -253,16 +254,9 @@ QString Navigation::Aircraft::save(const QString& fileName) const
     QDir const dir;
     dir.mkpath(Librarian::directory(Librarian::Aircraft));
 
-    QFile file(fileName);
-    auto success = file.open(QIODevice::WriteOnly);
-    if (!success) {
-        return QObject::tr("Unable to open the file '%1' for writing.").arg(fileName);
-    }
-    auto numBytesWritten = file.write(toJSON());
-    if (numBytesWritten == -1) {
-        file.close();
-        QFile::remove(fileName);
-        return QObject::tr("Unable to write to file '%1'.").arg(fileName);
+    QString error;
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileName, toJSON(), &error)) {
+        return QObject::tr("Unable to write to file '%1': %2").arg(fileName, error);
     }
     return {};
 }

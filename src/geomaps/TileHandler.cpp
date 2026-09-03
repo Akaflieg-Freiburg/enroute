@@ -133,10 +133,18 @@ bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStrin
         return false;
     }
 
-    // Serve tile, if requested
-    auto z = pathElements[0].toInt();
-    auto x = pathElements[1].toInt();
-    auto y = pathElements[2].section('.', 0, 0).toInt();
+    // Serve tile, if requested. Reject anything that is not a well-formed
+    // tile coordinate: MBTILES::tile() shifts by the zoom level.
+    bool okZ = false;
+    bool okX = false;
+    bool okY = false;
+    auto z = pathElements[0].toInt(&okZ);
+    auto x = pathElements[1].toInt(&okX);
+    auto y = pathElements[2].section('.', 0, 0).toInt(&okY);
+    if (!okZ || !okX || !okY || (z < 0) || (z > 30) || (x < 0) || (y < 0) || (x >= (1 << z)) || (y >= (1 << z)))
+    {
+        return false;
+    }
 
     // Retrieve tile data from the database
     foreach(auto mbtilesPtr, m_mbtiles)

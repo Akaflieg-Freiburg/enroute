@@ -71,6 +71,10 @@
   a Bluetooth Classic connection after an app restart, so that it could no
   longer connect automatically.
 
+- Fixed the internal map tile server, which listened on all network interfaces
+  instead of the local loopback address only, and which did not validate tile
+  coordinates in incoming requests.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

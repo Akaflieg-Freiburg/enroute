@@ -48,6 +48,11 @@
 - Fixed a crash at startup on systems without any positioning backend, where
   the app dereferenced a missing satellite position source.
 
+- Fixed the conversion between liters and U.S. gallons, which used the
+  imperial gallon (4.546 l) instead of the U.S. gallon (3.785 l). Users who
+  entered fuel consumption in gallons per hour should re-check the value in
+  their aircraft settings, as the displayed figure will now differ.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

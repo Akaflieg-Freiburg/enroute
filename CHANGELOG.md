@@ -83,6 +83,11 @@
   memory when opening malformed or oversized files, such as corrupt GeoTIFF
   charts or trip kits.
 
+- Fixed an error where the chart library could be lost if the app was
+  interrupted while saving it, and where the library housekeeping deleted
+  chart files that it had just re-registered. Unreadable chart files are now
+  moved to a folder 'unrecognised' instead of being deleted.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

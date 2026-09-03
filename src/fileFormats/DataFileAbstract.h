@@ -101,6 +101,22 @@ public:
      */
     [[nodiscard]] static QSharedPointer<QFile> openFileURL(const QString& fileName);
 
+    /*! \brief Write data to a file atomically
+     *
+     *  The data is written through a QSaveFile, so that an existing file at
+     *  the path is either replaced completely or left untouched, even if the
+     *  app is killed while writing.
+     *
+     *  @param path Path of the file to write
+     *
+     *  @param data Content to write
+     *
+     *  @param error If non-null, receives a human-readable error message on failure
+     *
+     *  @returns True on success
+     */
+    [[nodiscard]] static bool saveFileAtomically(const QString& path, const QByteArray& data, QString* error = nullptr);
+
 protected:
     void addWarning(const QString& warning) { m_warnings += warning; }
     void setError(const QString& newError) { m_error = newError; }

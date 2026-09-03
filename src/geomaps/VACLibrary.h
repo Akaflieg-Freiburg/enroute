@@ -238,7 +238,7 @@ private:
 
     // This method cleans the VAC directory. It deletes all VAC from m_vacs that
     // have no raster image files. It looks for unmanaged raster image files and
-    // either imports them or deletes them.
+    // either imports them or moves them to the subdirectory "unrecognised".
     void janitor();
 
     // This method re-reads the chart index from all VAC collection files
@@ -246,7 +246,7 @@ private:
     // deletes stale entries from the extraction cache.
     void updateCollections();
 
-    // This method saves m_vacs to m_dataFile.
+    // This method saves m_vacs to m_dataFileName, atomically.
     void save();
 
     // This method returns the absolute path of a given VAC. Needed for iOS
@@ -269,7 +269,7 @@ private:
 
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC"_s};
     QString m_cacheDirectory {QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + u"/VAC"_s};
-    QFile m_dataFile {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC.data"_s};
+    QString m_dataFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC.data"_s};
 
     // Compresses multiple change notifications from DataManager into a single
     // call to updateCollections()

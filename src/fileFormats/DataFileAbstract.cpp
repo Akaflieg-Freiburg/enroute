@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDebug>
+#include <QSaveFile>
 #include <QTemporaryFile>
 #include <QUrl>
 
@@ -54,4 +56,34 @@ QSharedPointer<QFile> FileFormats::DataFileAbstract::openFileURL(const QString& 
 
     auto *file = new QFile(fileName);
     return QSharedPointer<QFile>(file);
+}
+
+
+bool FileFormats::DataFileAbstract::saveFileAtomically(const QString& path, const QByteArray& data, QString* error)
+{
+    auto fail = [&path, error](const QString& message) {
+        qWarning() << "saveFileAtomically:" << path << message;
+        if (error != nullptr)
+        {
+            *error = message;
+        }
+        return false;
+    };
+
+    QSaveFile file(path);
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        return fail(file.errorString());
+    }
+    if (file.write(data) != data.size())
+    {
+        auto message = file.errorString();
+        file.cancelWriting();
+        return fail(message);
+    }
+    if (!file.commit())
+    {
+        return fail(file.errorString());
+    }
+    return true;
 }

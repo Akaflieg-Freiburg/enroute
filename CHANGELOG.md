@@ -101,6 +101,9 @@
   writing them; these files are now written atomically and write errors are
   reported in the save dialogs.
 
+- Fixed an error where the waypoint library could be emptied if the app was
+  interrupted while saving it; the library file is now written atomically.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

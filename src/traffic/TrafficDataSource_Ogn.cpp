@@ -436,18 +436,21 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
         hDist = Units::Distance::fromM(m_currentPosition.distanceTo(ognCoordinate));
         vDist = Units::Distance::fromM(m_ognMessage.altitude - m_currentPosition.altitude());
         
-        // Only set alarm level if we're using actual GPS position, not map center
+        // Only set alarm level if we're using actual GPS position, not map center.
+        // vDist is signed (traffic above own aircraft is positive), so compare
+        // its absolute value: traffic far below must not trigger an alarm.
         if (m_usingGps)
         {
-            if (hDist.toM() < 1000 && vDist.toFeet() < 400)
+            const auto vSeparation = qAbs(vDist);
+            if (hDist.toM() < 1000 && vSeparation.toFeet() < 400)
             {
                 alarmLevel = 3; // High alert
             }
-            else if (hDist.toM() < 2000 && vDist.toFeet() < 600)
+            else if (hDist.toM() < 2000 && vSeparation.toFeet() < 600)
             {
                 alarmLevel = 2; // Medium alert
             }
-            else if (hDist.toM() < 5000 && vDist.toFeet() < 800)
+            else if (hDist.toM() < 5000 && vSeparation.toFeet() < 800)
             {
                 alarmLevel = 1; // Low alert
             }

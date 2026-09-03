@@ -53,6 +53,10 @@
   entered fuel consumption in gallons per hour should re-check the value in
   their aircraft settings, as the displayed figure will now differ.
 
+- Fixed the OGN traffic alarm, which raised an alert for any aircraft flying
+  well below the own position because the vertical distance was not taken as
+  an absolute value.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

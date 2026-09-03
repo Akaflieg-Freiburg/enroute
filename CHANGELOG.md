@@ -61,6 +61,9 @@
   Positions behind the start of a leg were attributed to the leg, and
   positions exactly on the leg could be reported as far away due to rounding.
 
+- Fixed a hang when the weather server returned a truncated or malformed
+  METAR/TAF response; the app no longer loops forever while parsing the data.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

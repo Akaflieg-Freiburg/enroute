@@ -25,7 +25,11 @@ using namespace Qt::Literals::StringLiterals;
 
 Weather::TAF::TAF(QXmlStreamReader &xml)
 {
-    while (true)
+    // Stop on a truncated or malformed document: once the reader is at the
+    // end or in an error state, readNextStartElement() never advances again
+    // and the loop below would spin forever.
+    bool complete = false;
+    while (!xml.atEnd() && !xml.hasError())
     {
         xml.readNextStartElement();
         QString const name = xml.name().toString();
@@ -77,10 +81,18 @@ Weather::TAF::TAF(QXmlStreamReader &xml)
 
         if (xml.isEndElement() && name == u"TAF"_s)
         {
+            complete = true;
             break;
         }
 
         xml.skipCurrentElement();
+    }
+
+    // A document that never reached its closing element is incomplete. Clear
+    // the ICAO code so that isValid() rejects the half-filled object.
+    if (!complete)
+    {
+        m_ICAOCode.clear();
     }
     m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(m_rawText, m_issueTime.date().addDays(5)));
 }

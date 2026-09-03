@@ -19,11 +19,13 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QDebug>
 #include <QJsonArray>
 #include <QTimer>
 #include <chrono>
 
 #include "config.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "navigation/Navigator.h"
 #include "notam/NOTAMProvider.h"
 #include "positioning/PositionProvider.h"
@@ -55,6 +57,14 @@ void NOTAM::NOTAMProvider::deferredInitialization()
         {
             inputStream >> m_readNotamNumbers;
             inputStream >> newNotamLists;
+            if (inputStream.status() != QDataStream::Ok)
+            {
+                // Truncated or damaged cache: start empty rather than with
+                // partially read data.
+                qWarning() << "NOTAMProvider: discarding damaged cache file" << m_stdFileName;
+                m_readNotamNumbers.clear();
+                newNotamLists.clear();
+            }
         }
     }
     m_notamLists = cleaned(newNotamLists);
@@ -320,14 +330,21 @@ bool NOTAM::NOTAMProvider::hasDataForPosition(const QGeoCoordinate& position, bo
 
 void NOTAM::NOTAMProvider::save() const
 {
-    auto outputFile = QFile(m_stdFileName);
-    if (outputFile.open(QIODevice::WriteOnly))
+    // Serialise first, then write atomically, so that an interrupted write
+    // cannot leave a truncated cache behind.
+    QByteArray data;
     {
-        QDataStream outputStream(&outputFile);
+        QDataStream outputStream(&data, QIODeviceBase::WriteOnly);
         outputStream << QStringLiteral(GIT_COMMIT);
         outputStream << m_readNotamNumbers;
         outputStream << m_notamLists.value();
+        if (outputStream.status() != QDataStream::Ok)
+        {
+            qWarning() << "NOTAMProvider::save: serialization failed for" << m_stdFileName;
+            return;
+        }
     }
+    (void)FileFormats::DataFileAbstract::saveFileAtomically(m_stdFileName, data);
 }
 
 void NOTAM::NOTAMProvider::startRequest(const QGeoCoordinate& coordinate)

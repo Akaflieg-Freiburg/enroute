@@ -92,6 +92,10 @@
   longer run 'git reset --hard' on the main repository when the target
   directory is missing.
 
+- Fixed an error where the cached NOTAM data could be corrupted if the app was
+  interrupted while saving it; the cache is now written atomically and a
+  damaged cache is ignored instead of being loaded.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

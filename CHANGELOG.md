@@ -104,6 +104,11 @@
 - Fixed an error where the waypoint library could be emptied if the app was
   interrupted while saving it; the library file is now written atomically.
 
+- Fixed an error where the aviation data cache and imported airspace files
+  could be left half-written if the app was interrupted; they are now written
+  atomically, and an import failure no longer deletes a previously imported
+  file of the same name.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

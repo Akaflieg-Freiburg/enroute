@@ -33,6 +33,7 @@
 #include "config.h"
 #include "dataManagement/DataManager.h"
 #include "fileFormats/CUB.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/MBTILES.h"
 #include "fileFormats/OpenAir.h"
 
@@ -231,20 +232,24 @@ QString DataManagement::DataManager::saveAirspaceJson(const QJsonDocument& json,
         return tr("Unable to create directory '%1'.").arg(path);
     }
     newFileName = newFileName+u".geojson"_s;
-    QFile::remove(newFileName);
-    QFile file(newFileName);
-    if (file.open(QIODeviceBase::WriteOnly))
+
+    // Write atomically, under the same lock that the aviation data loader
+    // and the map downloader use for these files, so that a reader never
+    // sees a half-written file. A failed write leaves any previous file
+    // of the same name untouched.
+    QString error;
+    bool ok = false;
     {
-        file.write(json.toJson());
-        file.close();
-    }
-    if (file.error() != QFileDevice::NoError)
-    {
-        QFile::remove(newFileName);
-        updateDataItemListAndWhatsNew();
-        return tr("Error writing file '%1': %2.").arg(newFileName, file.errorString());
+        QLockFile lockFile(newFileName + u".lock"_s);
+        lockFile.lock();
+        ok = FileFormats::DataFileAbstract::saveFileAtomically(newFileName, json.toJson(), &error);
+        lockFile.unlock();
     }
     updateDataItemListAndWhatsNew();
+    if (!ok)
+    {
+        return tr("Error writing file '%1': %2.").arg(newFileName, error);
+    }
     return {};
 }
 

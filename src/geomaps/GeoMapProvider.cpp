@@ -31,6 +31,7 @@
 #include "GlobalSettings.h"
 #include "Librarian.h"
 #include "dataManagement/DataManager.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/MBTILES.h"
 #include "fileFormats/VACCollection.h"
 #include "geomaps/GeoMapProvider.h"
@@ -636,12 +637,7 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
             emit waypointsChanged();
         }
         m_combinedGeoJSON = result.combinedGeoJSON;
-        QFile geoJSONCacheFile(geoJSONCache);
-        if (geoJSONCacheFile.open(QFile::WriteOnly))
-        {
-            geoJSONCacheFile.write(m_combinedGeoJSON);
-            geoJSONCacheFile.close();
-        }
+        (void)FileFormats::DataFileAbstract::saveFileAtomically(geoJSONCache, m_combinedGeoJSON);
     });
 }
 

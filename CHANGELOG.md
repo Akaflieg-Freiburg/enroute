@@ -57,6 +57,10 @@
   well below the own position because the vertical distance was not taken as
   an absolute value.
 
+- Fixed the computation of the distance between the aircraft and a route leg.
+  Positions behind the start of a leg were attributed to the leg, and
+  positions exactly on the leg could be reported as far away due to rounding.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

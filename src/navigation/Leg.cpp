@@ -20,6 +20,8 @@
 
 #include "Leg.h"
 
+#include <algorithm>
+#include <cmath>
 #include <utility>
 
 
@@ -64,12 +66,17 @@ Units::Distance distancePointToSegment(const QGeoCoordinate& segmentStart, const
 
     const double dxt = asin(sin(d13) * sin(brg13 - brg12)); // radians
 
-    // Check if projection lies outside the segment
-    const double dat = acos( cos(d13) / cos(dxt) );  // along-track distance
-    if (dat < 0)
+    // Check if projection lies outside the segment. The along-track distance
+    // computed via acos() is never negative, so the side of A must be decided
+    // from the bearing difference: if P lies more than 90 degrees off the
+    // direction A->B, its projection falls behind A.
+    if (cos(brg13 - brg12) < 0)
     {
         return Units::Distance::fromM(haversine(latP, lonP, lat1, lon1)); // closest to A
     }
+    // Rounding can push the quotient slightly beyond 1 for points on the
+    // segment; clamp so that acos() does not return NaN.
+    const double dat = acos(std::clamp(cos(d13) / cos(dxt), -1.0, 1.0));  // along-track distance
     if (dat > d12)
     {
         return Units::Distance::fromM(haversine(latP, lonP, lat2, lon2)); // closest to B

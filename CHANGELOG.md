@@ -88,6 +88,10 @@
   chart files that it had just re-registered. Unreadable chart files are now
   moved to a folder 'unrecognised' instead of being deleted.
 
+- Fixed the helper scripts that update bundled third-party data; they no
+  longer run 'git reset --hard' on the main repository when the target
+  directory is missing.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

@@ -19,12 +19,12 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QBuffer>
 #include <QDebug>
 #include <QDirIterator>
 #include <QGeoRectangle>
 #include <QImage>
 #include <QRegularExpression>
-#include <QSaveFile>
 #include <QTemporaryDir>
 #include <QTimer>
 
@@ -224,23 +224,33 @@ QString GeoMaps::VACLibrary::importVAC(GeoMaps::VAC vac)
     // Delete all existing VACs with the new name
     remove(vac.name);
 
-    // Copy file to VAC directory
+    // Write the file into the VAC directory atomically, so that a failed
+    // write cannot leave a truncated chart behind.
     QDir const dir;
     dir.mkpath(m_vacDirectory);
-    QFile::remove(newFileName);
+    QByteArray imageData;
     if (_fileName.endsWith(u".webp"_s))
     {
-        if (!QFile::copy(_fileName, newFileName))
+        QFile inputFile(_fileName);
+        if (!inputFile.open(QIODeviceBase::ReadOnly))
         {
             return tr("Error: Unable to copy the VAC file <strong>%1</strong> to destination <strong>%2</strong>.").arg(_fileName, newFileName);
         }
+        imageData = inputFile.readAll();
     }
     else
     {
-        if (!image.save(newFileName))
+        QBuffer buffer(&imageData);
+        buffer.open(QIODeviceBase::WriteOnly);
+        if (!image.save(&buffer, "WEBP"))
         {
             return tr("Error: Unable to write the VAC file <strong>%1</strong>.").arg(newFileName);
         }
+    }
+    QString error;
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(newFileName, imageData, &error))
+    {
+        return tr("Error: Unable to write the VAC file <strong>%1</strong>: %2").arg(newFileName, error);
     }
 
     // Set new file name and add to library
@@ -294,13 +304,7 @@ GeoMaps::VAC GeoMaps::VACLibrary::materialize(const GeoMaps::VAC& vac)
     }
     QDir const dir;
     dir.mkpath(cacheDirName);
-    QSaveFile cacheFile(cacheFileName);
-    if (!cacheFile.open(QIODeviceBase::WriteOnly))
-    {
-        return vac;
-    }
-    cacheFile.write(imageData);
-    if (!cacheFile.commit())
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(cacheFileName, imageData))
     {
         return vac;
     }

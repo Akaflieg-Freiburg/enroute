@@ -109,6 +109,10 @@
   atomically, and an import failure no longer deletes a previously imported
   file of the same name.
 
+- Fixed an error where importing a chart or trip kit could leave a damaged
+  chart file behind if the import was interrupted; chart files are now written
+  atomically.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDir>
+#include <QBuffer>
 #include <QFile>
 #include <QFileInfo>
 #include <QGeoCoordinate>
@@ -87,18 +88,12 @@ GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizety
     {
         return {};
     }
+    // Encode into memory if needed, then write atomically: an interrupted
+    // import must not leave a truncated chart behind.
+    QByteArray webpData;
     if (entry.ending == u"webp"_s)
     {
-        QFile out(newFileName);
-        if (!out.open(QIODeviceBase::WriteOnly))
-        {
-            return {};
-        }
-        if (out.write(imageData) != imageData.size())
-        {
-            return {};
-        }
-        out.close();
+        webpData = imageData;
     }
     else
     {
@@ -107,10 +102,16 @@ GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizety
         {
             return {};
         }
-        if (!image.save(newFileName))
+        QBuffer buffer(&webpData);
+        buffer.open(QIODeviceBase::WriteOnly);
+        if (!image.save(&buffer, "WEBP"))
         {
             return {};
         }
+    }
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(newFileName, webpData))
+    {
+        return {};
     }
 
     GeoMaps::VAC vac;

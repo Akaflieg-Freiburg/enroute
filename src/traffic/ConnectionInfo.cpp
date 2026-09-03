@@ -354,6 +354,15 @@ QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& c
 #else
         connectionInfo.m_bluetoothDeviceInfo = QBluetoothDeviceInfo(QBluetoothAddress(address), name, classOfDevice);
 #endif
+        // The constructors above leave the core configuration unknown. The
+        // traffic data sources rebuild a ConnectionInfo from this device info
+        // and derive the type from the core configuration, so restore it from
+        // the stored type. Otherwise a Bluetooth LE device would come back as
+        // Bluetooth Classic after a restart.
+        connectionInfo.m_bluetoothDeviceInfo.setCoreConfigurations(
+            connectionInfo.m_type == Traffic::ConnectionInfo::BluetoothLowEnergy
+                ? QBluetoothDeviceInfo::LowEnergyCoreConfiguration
+                : QBluetoothDeviceInfo::BaseRateCoreConfiguration);
         break;
     }
     case Traffic::ConnectionInfo::TCP:

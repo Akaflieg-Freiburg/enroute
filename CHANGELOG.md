@@ -67,6 +67,10 @@
 - Fixed an error where the map zoom level and rotation were not saved between
   sessions, so the map always reopened at the default zoom level.
 
+- Fixed an error where a Bluetooth Low Energy traffic receiver was restored as
+  a Bluetooth Classic connection after an app restart, so that it could no
+  longer connect automatically.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

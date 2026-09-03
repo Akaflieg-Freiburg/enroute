@@ -117,6 +117,10 @@
   Wi-Fi passwords could be lost if the app was interrupted while saving them;
   both files are now written through a shared atomic write helper.
 
+- Fixed an error where exporting a file on Linux or macOS could leave a
+  truncated file behind when the write failed, and where the weather cache
+  write did not report failures.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

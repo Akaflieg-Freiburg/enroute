@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include <QGuiApplication>
+#include <QDebug>
 #include <QLockFile>
-#include <QSaveFile>
 #include <QNetworkReply>
 
 #include "sunset.h"
@@ -28,6 +28,7 @@
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "weather/WeatherDataProvider.h"
 
 using namespace std::chrono_literals;
@@ -300,27 +301,28 @@ void Weather::WeatherDataProvider::save()
         return;
     }
 
-    // Open file
-    auto outputFile = QSaveFile(stdFileName);
-    if (!outputFile.open(QIODevice::WriteOnly))
+    // Serialise first, then write atomically. The stream version must stay
+    // Qt_4_0 to keep the file format identical.
+    QByteArray data;
     {
-        lockFile.unlock();
-        return;
+        QDataStream outputStream(&data, QIODeviceBase::WriteOnly);
+        outputStream.setVersion(QDataStream::Qt_4_0);
+
+        // Write magic number and version
+        outputStream << static_cast<quint32>(0x31415);
+        outputStream << static_cast<quint32>(1);
+        outputStream << updateLog;
+
+        outputStream << m_METARs.value();
+        outputStream << m_TAFs.value();
+        if (outputStream.status() != QDataStream::Ok)
+        {
+            qWarning() << "WeatherDataProvider::save: serialization failed for" << stdFileName;
+            lockFile.unlock();
+            return;
+        }
     }
-
-    // Generate output stream
-    QDataStream outputStream(&outputFile);
-    outputStream.setVersion(QDataStream::Qt_4_0);
-
-    // Write magic number and version
-    outputStream << static_cast<quint32>(0x31415);
-    outputStream << static_cast<quint32>(1);
-    outputStream << updateLog;
-
-    outputStream << m_METARs.value();
-    outputStream << m_TAFs.value();
-
-    outputFile.commit();
+    (void)FileFormats::DataFileAbstract::saveFileAtomically(stdFileName, data);
     lockFile.unlock();
 }
 

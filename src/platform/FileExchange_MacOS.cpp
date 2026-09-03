@@ -26,6 +26,7 @@
 
 #include "macos/ObjCAdapterMac.h"
 #include "platform/FileExchange_MacOS.h"
+#include "fileFormats/DataFileAbstract.h"
 
 
 
@@ -64,17 +65,13 @@ QString Platform::FileExchange::shareContent(const QByteArray& content, const QS
     {
         return QStringLiteral("abort");
     }
-    QFile file(fileNameX);
-    if (!file.open(QIODevice::WriteOnly))
+    // Write atomically, so that a failed write does not leave a truncated
+    // file at the user's chosen location.
+    QString error;
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileNameX, content, &error))
     {
-        return tr("Unable to open file <strong>%1</strong>.").arg(fileNameX);
+        return tr("Unable to write to file <strong>%1</strong>: %2").arg(fileNameX, error);
     }
-
-    if (file.write(content) != content.size())
-    {
-        return tr("Unable to write to file <strong>%1</strong>.").arg(fileNameX);
-    }
-    file.close();
     return {};
 }
 

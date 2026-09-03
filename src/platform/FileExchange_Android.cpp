@@ -28,6 +28,7 @@
 #include <QStandardPaths>
 
 #include "platform/FileExchange_Android.h"
+#include "fileFormats/DataFileAbstract.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -217,15 +218,10 @@ QString Platform::FileExchange::contentToTempFile(const QByteArray& content, con
     //
     auto filePath = fileExchangeDirectoryName + fname;
 
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(filePath, content))
     {
         return {};
     }
-
-    file.write(content);
-    file.close();
-
     return filePath;
 }
 

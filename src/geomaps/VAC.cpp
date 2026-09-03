@@ -21,6 +21,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QImage>
+#include <QRegularExpression>
 
 #include "fileFormats/GeoTIFF.h"
 #include "geomaps/VAC.h"
@@ -177,6 +178,22 @@ void GeoMaps::VAC::getNameFromUnmingledFileName(const QString& unmingledFilename
         baseName = baseName.left(idx);
     }
     name = baseName;
+}
+
+QString GeoMaps::VAC::safeFileName(const QString& name)
+{
+    static const QRegularExpression forbiddenCharacters(uR"([/\\:*?"<>|])"_s);
+
+    // Drop directory components, then neutralise separators and other
+    // characters that are unsafe in file names on any supported platform.
+    auto result = QFileInfo(name).fileName();
+    result.replace(forbiddenCharacters, u"_"_s);
+    result.replace(u".."_s, u"_"_s);
+    while (result.startsWith(u"."_s))
+    {
+        result.remove(0, 1);
+    }
+    return result.trimmed();
 }
 
 bool GeoMaps::VAC::hasValidCoordinates() const

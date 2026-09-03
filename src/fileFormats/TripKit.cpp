@@ -20,6 +20,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QGeoCoordinate>
 #include <QImage>
 #include <QJsonDocument>
@@ -74,7 +75,18 @@ GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizety
         return {};
     }
 
-    auto newFileName = u"%1/%2.webp"_s.arg(directoryPath, entry.name);
+    // The chart name comes from the trip kit and must not be trusted as a
+    // file name: a name such as "../../x" would write outside directoryPath.
+    auto safeName = GeoMaps::VAC::safeFileName(entry.name);
+    if (safeName.isEmpty())
+    {
+        return {};
+    }
+    auto newFileName = u"%1/%2.webp"_s.arg(directoryPath, safeName);
+    if (QFileInfo(newFileName).absolutePath() != QDir(directoryPath).absolutePath())
+    {
+        return {};
+    }
     if (entry.ending == u"webp"_s)
     {
         QFile out(newFileName);

@@ -75,6 +75,10 @@
   instead of the local loopback address only, and which did not validate tile
   coordinates in incoming requests.
 
+- Fixed an error where chart names from a trip kit were used unchanged as file
+  names, so that a malicious trip kit could write files outside the app's
+  chart directory.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

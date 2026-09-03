@@ -31,6 +31,7 @@
 #include "Librarian.h"
 #include "VACLibrary.h"
 #include "dataManagement/DataManager.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/TripKit.h"
 #include "fileFormats/VACCollection.h"
 
@@ -43,15 +44,15 @@
 GeoMaps::VACLibrary::VACLibrary(QObject *parent)
     : QObject(parent)
 {
-    // Restore previously saves VAC library
-    if (m_dataFile.open(QIODeviceBase::ReadOnly))
+    // Restore previously saved VAC library
+    QFile dataFile(m_dataFileName);
+    if (dataFile.open(QIODeviceBase::ReadOnly))
     {
-        QDataStream dataStream(&m_dataFile);
+        QDataStream dataStream(&dataFile);
         QVector<GeoMaps::VAC> vacs;
         dataStream >> vacs;
         m_vacs = vacs;
     }
-    m_dataFile.close();
 
     // Set up the bindings for the derived properties. They re-evaluate
     // automatically whenever m_vacs or m_collectionVacs change.
@@ -268,9 +269,7 @@ GeoMaps::VAC GeoMaps::VACLibrary::materialize(const GeoMaps::VAC& vac)
     // collection file is encoded in the file name, so the cache entry (and the
     // file URL used by the moving map) changes whenever the collection is
     // updated.
-    static const QRegularExpression forbiddenCharacters(uR"([/\\:*?"<>|])"_s);
-    auto safeName = vac.name;
-    safeName.replace(forbiddenCharacters, u"_"_s);
+    auto safeName = GeoMaps::VAC::safeFileName(vac.name);
     auto cacheDirName = m_cacheDirectory + u"/"_s + containerInfo.completeBaseName();
     auto cacheFileName = cacheDirName + u"/"_s + safeName + u"-"_s
             + QString::number(containerInfo.lastModified().toSecsSinceEpoch()) + u".webp"_s;
@@ -481,12 +480,24 @@ void GeoMaps::VACLibrary::janitor()
     }
 
     // Go through the list of image files without VAC. Try to import them.
-    // Failing that, delete those files. importVAC() updates m_vacs itself.
+    // importVAC() updates m_vacs itself and keeps a file that already sits at
+    // its proper place. Files that cannot be imported are moved aside rather
+    // than deleted, so that a damaged library index cannot destroy charts.
     foreach(auto fInfo, imageFilesWithoutVAC)
     {
         GeoMaps::VAC const vac(fInfo.filePath(), {});
-        (void)importVAC(vac);
-        QFile::remove(fInfo.filePath());
+        auto errorMessage = importVAC(vac);
+        if (errorMessage.isEmpty())
+        {
+            if (fInfo.filePath() != absolutePathForVac(vac))
+            {
+                QFile::remove(fInfo.filePath());
+            }
+            continue;
+        }
+        auto unrecognisedDir = m_vacDirectory + u"/unrecognised"_s;
+        QDir().mkpath(unrecognisedDir);
+        QFile::rename(fInfo.filePath(), unrecognisedDir + u"/"_s + fInfo.fileName());
     }
 }
 
@@ -539,12 +550,15 @@ void GeoMaps::VACLibrary::updateCollections()
 
 void GeoMaps::VACLibrary::save()
 {
-    if (m_dataFile.open(QIODeviceBase::WriteOnly))
+    // Serialise first, then write atomically. A write that was interrupted
+    // half-way used to leave an empty VAC.data behind, after which the janitor
+    // treated every chart file as orphaned.
+    QByteArray data;
     {
-        QDataStream dataStream(&m_dataFile);
+        QDataStream dataStream(&data, QIODeviceBase::WriteOnly);
         dataStream << m_vacs.value();
     }
-    m_dataFile.close();
+    (void)FileFormats::DataFileAbstract::saveFileAtomically(m_dataFileName, data);
 }
 
 QString GeoMaps::VACLibrary::absolutePathForVac(const GeoMaps::VAC& vac)
@@ -554,5 +568,6 @@ QString GeoMaps::VACLibrary::absolutePathForVac(const GeoMaps::VAC& vac)
 
 QString GeoMaps::VACLibrary::absolutePathForVac(const QString& name)
 {
-    return m_vacDirectory + "/" + name + ".webp";
+    // Names come from user files; never let them escape the VAC directory.
+    return m_vacDirectory + "/" + GeoMaps::VAC::safeFileName(name) + ".webp";
 }

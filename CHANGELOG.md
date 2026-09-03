@@ -45,6 +45,9 @@
   to wait for pending host name lookups, which take the full resolver timeout
   to fail when the network is unreachable (#544).
 
+- Fixed a crash at startup on systems without any positioning backend, where
+  the app dereferenced a missing satellite position source.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

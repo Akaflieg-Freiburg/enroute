@@ -350,7 +350,7 @@ Item {
                     // PROPERTY "bearing"
                     //
 
-                    function onBearingChanged(bearing) {
+                    onBearingChanged: {
                         if (defaultValuesSet)
                             Global.mapBearing = bearing
                     }
@@ -411,7 +411,7 @@ Item {
                     // PROPERTY "zoomLevel"
                     //
 
-                    function onZoomLevelChanged(zoomLevel) {
+                    onZoomLevelChanged: {
                         if (defaultValuesSet)
                             Global.mapZoomLevel = zoomLevel
                     }

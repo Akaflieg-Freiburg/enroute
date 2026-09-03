@@ -64,6 +64,9 @@
 - Fixed a hang when the weather server returned a truncated or malformed
   METAR/TAF response; the app no longer loops forever while parsing the data.
 
+- Fixed an error where the map zoom level and rotation were not saved between
+  sessions, so the map always reopened at the default zoom level.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

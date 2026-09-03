@@ -79,6 +79,10 @@
   names, so that a malicious trip kit could write files outside the app's
   chart directory.
 
+- Fixed the TIFF and ZIP file readers, which could crash or allocate unbounded
+  memory when opening malformed or oversized files, such as corrupt GeoTIFF
+  charts or trip kits.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

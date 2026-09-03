@@ -56,12 +56,13 @@ FileFormats::ZipFile::ZipFile(const QString& fileName)
         {
             return;
         }
-        if ((zStat.valid&ZIP_STAT_NAME) == 0)
+        if (zStat.size > static_cast<zip_uint64_t>(maxEntrySize))
         {
+            setError(QObject::tr("Zip file %1 contains an entry that is too large.", "FileFormats::ZipFile").arg(fileName));
             return;
         }
         m_fileNames += QString::fromUtf8(zStat.name);
-        m_fileSizes += (qsizetype) zStat.size;
+        m_fileSizes += static_cast<qsizetype>(zStat.size);
     }
 }
 
@@ -88,20 +89,43 @@ QByteArray FileFormats::ZipFile::extract(qsizetype index)
         return {};
     }
 
-    auto fileSize = m_fileSizes.at(index);
-    QByteArray data(fileSize, 0);
     auto* zipFile = zip_fopen_index(static_cast<zip_t*>(m_zip), index, 0);
     if (zipFile == nullptr)
     {
         return {};
     }
-    auto numBytesRead = zip_fread(zipFile, data.data(), fileSize);
-    if (numBytesRead != fileSize)
+
+    // Read in chunks instead of allocating the size announced in the archive
+    // headers up front. The announced size only serves as a consistency check.
+    const auto expectedSize = m_fileSizes.at(index);
+    QByteArray data;
+    QByteArray buffer(1024*1024, Qt::Uninitialized);
+    bool ok = true;
+    while (true)
     {
-        return {};
+        auto numBytesRead = zip_fread(zipFile, buffer.data(), buffer.size());
+        if (numBytesRead < 0)
+        {
+            ok = false;
+            break;
+        }
+        if (numBytesRead == 0)
+        {
+            break;
+        }
+        if (data.size() + numBytesRead > maxEntrySize)
+        {
+            ok = false;
+            break;
+        }
+        data.append(buffer.constData(), static_cast<qsizetype>(numBytesRead));
     }
     zip_fclose(zipFile);
 
+    if (!ok || (data.size() != expectedSize))
+    {
+        return {};
+    }
     return data;
 }
 

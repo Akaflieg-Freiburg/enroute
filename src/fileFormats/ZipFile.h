@@ -94,6 +94,10 @@ public:
 private:
     Q_DISABLE_COPY_MOVE(ZipFile)
 
+    // Upper bound for the uncompressed size of a single entry. The sizes come
+    // from the archive's own headers and must not be trusted blindly.
+    static constexpr qint64 maxEntrySize = 256LL*1024*1024;
+
     void* m_zip {nullptr};
     QSharedPointer<QFile> m_file;
     QStringList m_fileNames;

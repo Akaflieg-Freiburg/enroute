@@ -23,8 +23,9 @@
 #include <QDataStream>
 #include <QDebug>
 #include <QFile>
-#include <QSaveFile>
 #include <QStandardPaths>
+
+#include "fileFormats/DataFileAbstract.h"
 
 
 Traffic::PasswordDB::PasswordDB(QObject* parent) : QObject(parent)
@@ -73,27 +74,18 @@ void Traffic::PasswordDB::removePassword(const QString& key)
 
 bool Traffic::PasswordDB::save()
 {
-    // Use QSaveFile so a failed or partial write cannot corrupt the existing
-    // database: it writes to a temporary file and commit() atomically renames.
-    QSaveFile passwordDBFile(passwordDBFileName);
-    if (!passwordDBFile.open(QIODevice::WriteOnly)) {
-        qWarning() << "PasswordDB::save: cannot open" << passwordDBFileName << "for writing:" << passwordDBFile.errorString();
-        return false;
+    // Serialise first, then write atomically, so that a failed or partial
+    // write cannot corrupt the existing database.
+    QByteArray data;
+    {
+        QDataStream outputStream(&data, QIODeviceBase::WriteOnly);
+        outputStream << m_passwordDB;
+        if (outputStream.status() != QDataStream::Ok) {
+            qWarning() << "PasswordDB::save: serialization failed for" << passwordDBFileName;
+            return false;
+        }
     }
-
-    QDataStream outputStream(&passwordDBFile);
-    outputStream << m_passwordDB;
-    if (outputStream.status() != QDataStream::Ok) {
-        qWarning() << "PasswordDB::save: serialization failed for" << passwordDBFileName;
-        passwordDBFile.cancelWriting();
-        return false;
-    }
-
-    if (!passwordDBFile.commit()) {
-        qWarning() << "PasswordDB::save: commit failed for" << passwordDBFileName << ":" << passwordDBFile.errorString();
-        return false;
-    }
-    return true;
+    return FileFormats::DataFileAbstract::saveFileAtomically(passwordDBFileName, data);
 }
 
 

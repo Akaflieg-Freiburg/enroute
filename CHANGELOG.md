@@ -113,6 +113,10 @@
   chart file behind if the import was interrupted; chart files are now written
   atomically.
 
+- Fixed an error where the list of traffic receiver connections and the stored
+  Wi-Fi passwords could be lost if the app was interrupted while saving them;
+  both files are now written through a shared atomic write helper.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

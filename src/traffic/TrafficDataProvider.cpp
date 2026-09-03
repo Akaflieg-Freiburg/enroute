@@ -21,9 +21,9 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
-#include <QSaveFile>
 
 #include "platform/PlatformAdaptor.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Ogn.h"
 #include "traffic/TrafficDataSource_SerialPort.h"
@@ -574,26 +574,19 @@ void Traffic::TrafficDataProvider::resetWarning()
 
 void Traffic::TrafficDataProvider::saveConnectionInfos()
 {
-    // Use QSaveFile so a failed or partial write cannot corrupt the existing
-    // file: it writes to a temporary file and commit() atomically renames.
-    QSaveFile outFile(stdFileName);
-    if (!outFile.open(QIODeviceBase::WriteOnly))
+    // Serialise first, then write atomically, so that a failed or partial
+    // write cannot corrupt the existing file.
+    QByteArray data;
     {
-        qWarning() << "TrafficDataProvider::saveConnectionInfos: cannot open" << stdFileName << "for writing:" << outFile.errorString();
-        return;
+        QDataStream outStream(&data, QIODeviceBase::WriteOnly);
+        outStream << m_connectionInfos.value();
+        if (outStream.status() != QDataStream::Ok)
+        {
+            qWarning() << "TrafficDataProvider::saveConnectionInfos: serialization failed for" << stdFileName;
+            return;
+        }
     }
-    QDataStream outStream(&outFile);
-    outStream << m_connectionInfos.value();
-    if (outStream.status() != QDataStream::Ok)
-    {
-        qWarning() << "TrafficDataProvider::saveConnectionInfos: serialization failed for" << stdFileName;
-        outFile.cancelWriting();
-        return;
-    }
-    if (!outFile.commit())
-    {
-        qWarning() << "TrafficDataProvider::saveConnectionInfos: commit failed for" << stdFileName << ":" << outFile.errorString();
-    }
+    (void)FileFormats::DataFileAbstract::saveFileAtomically(stdFileName, data);
 }
 
 void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QString &password)

@@ -55,13 +55,13 @@ void Weather::WeatherDataProvider::deferredInitialization()
     // receiving data.
     QTimer::singleShot(15s, this, &Weather::WeatherDataProvider::requestUpdate);
     connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &Weather::WeatherDataProvider::requestUpdate);
-    connect(qGuiApp, &QGuiApplication::applicationStateChanged, [this](Qt::ApplicationState state) {
+    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
         if ((state & Qt::ApplicationActive) != 0)
         {
             QTimer::singleShot(0, this, &Weather::WeatherDataProvider::requestUpdate);
         }
     });
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, [this](bool rcv) {
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, [this](bool rcv) {
         if (rcv)
         {
             QTimer::singleShot(0, this, &Weather::WeatherDataProvider::requestUpdate);
@@ -562,7 +562,8 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& _bBox)
         {
             continue;
         }
-        if (nwr->property("area").value<QGeoRectangle>().contains(bBox))
+        // Replies are tagged with the bounding box they cover, see below.
+        if (nwr->property("bBox").value<QGeoRectangle>().contains(bBox))
         {
             return;
         }
@@ -598,7 +599,7 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& _bBox)
         request.setRawHeader("accept", "application/xml");
         request.setTransferTimeout(2min);
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
-
+        reply->setProperty("bBox", QVariant::fromValue(bBox));
         m_networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);

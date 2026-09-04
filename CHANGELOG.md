@@ -141,6 +141,9 @@
   shown without an end time, and a remark in decoded METARs that read
   literally '%1 observed.' instead of naming the phenomenon.
 
+- Fixed an error where the app requested the same METAR and TAF data several
+  times in a row at startup and when returning to the foreground.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

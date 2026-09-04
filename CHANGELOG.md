@@ -129,6 +129,10 @@
   the route contained two waypoints less than 100 m apart anywhere except at
   the start.
 
+- Fixed an error where the warning about a missing aviation map for the
+  current location stayed visible after the map had been installed, until the
+  aircraft moved.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

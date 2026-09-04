@@ -79,6 +79,8 @@ void Navigation::Navigator::deferredInitialization()
     connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(); });
 
+    connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::Downloadable_MultiFile::downloadablesChanged, this,
+            [this]() { m_aviationMapsGeneration = m_aviationMapsGeneration.value() + 1; });
     m_hasAviationMapForCurrentLocation.setBinding([this]() {return computeHasAviationMapForCurrentLocation();});
 }
 
@@ -368,6 +370,9 @@ void Navigation::Navigator::updateRemainingRouteInfo()
 
 bool Navigation::Navigator::computeHasAviationMapForCurrentLocation()
 {
+    // Register a dependency on the map list generation, see Navigator.h
+    (void)m_aviationMapsGeneration.value();
+
     auto coordinate = GlobalObject::positionProvider()->approximateLastValidCoordinate();
     auto aviationMaps = GlobalObject::dataManager()->aviationMaps()->downloadables();
     for(auto* map : std::as_const(aviationMaps))

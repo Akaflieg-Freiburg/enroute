@@ -121,6 +121,10 @@
   truncated file behind when the write failed, and where the weather cache
   write did not report failures.
 
+- Fixed an error where flight routes exported as GPX contained unescaped
+  waypoint names, so that names with characters such as '&' or '<' produced a
+  file that other apps could not read.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

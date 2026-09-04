@@ -90,8 +90,9 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
         }
 
         QGeoCoordinate const position = _waypoint.coordinate();
-        auto code = _waypoint.ICAOCode();
-        auto name = _waypoint.extendedName();
+        // Names are user-supplied and go into XML text content: escape them.
+        auto code = _waypoint.ICAOCode().toHtmlEscaped();
+        auto name = _waypoint.extendedName().toHtmlEscaped();
 
         if (code.isEmpty()) {
             code = name;

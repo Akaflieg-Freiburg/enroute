@@ -133,6 +133,10 @@
   current location stayed visible after the map had been installed, until the
   aircraft moved.
 
+- Fixed an error where the app did not notice a date change after sleeping
+  across midnight, so that date-dependent displays such as the NOTAM list
+  showed the previous day.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

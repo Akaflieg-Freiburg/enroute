@@ -42,8 +42,9 @@ Navigation::Clock::Clock(QObject *parent) : GlobalObject(parent)
     // Start the single shot timer once manually
     setSingleShotTimer();
 
-    // There are a few other events where we want to update the clock
-    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, &Clock::timeChanged);
+    // There are a few other events where we want to update the clock, e.g.
+    // when the app wakes up after sleeping across midnight.
+    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, &Clock::updateTime);
 }
 
 
@@ -171,8 +172,20 @@ void Navigation::Clock::setSingleShotTimer()
 {
     QTime const current = QDateTime::currentDateTime().time();
     int const msecsToNextMinute = 60 * 1000 - (current.msecsSinceStartOfDay() % (60 * 1000));
-    QTimer::singleShot(msecsToNextMinute+500, this, &Clock::timeChanged);
-    if (current.msecsSinceStartOfDay() < 1000*60) {
+    QTimer::singleShot(msecsToNextMinute+500, this, &Clock::updateTime);
+}
+
+
+void Navigation::Clock::updateTime()
+{
+    emit timeChanged();
+
+    // Compare against the last date seen instead of relying on a timer that
+    // happens to fire within the first minute after midnight.
+    auto const today = QDate::currentDate();
+    if (today != m_lastDate)
+    {
+        m_lastDate = today;
         emit dateChanged();
     }
 }

@@ -123,7 +123,9 @@ auto Navigation::FlightRoute::summary() const -> QString
     for(const auto& _leg : m_legs.value())
     {
         dist += _leg.distance();
-        if (dist.toM() > 100)
+        // Legs shorter than Leg::minLegLength have no course and hence no ETE
+        // or fuel; skip those individually, wherever they occur in the route.
+        if (_leg.distance().toM() > 100)
         {
             time += _leg.ETE(wind, aircraft);
             fuel += _leg.Fuel(wind, aircraft);

@@ -125,6 +125,10 @@
   waypoint names, so that names with characters such as '&' or '<' produced a
   file that other apps could not read.
 
+- Fixed an error where the route summary lost its time and fuel figures when
+  the route contained two waypoints less than 100 m apart anywhere except at
+  the start.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

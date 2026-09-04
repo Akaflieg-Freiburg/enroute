@@ -137,6 +137,10 @@
   across midnight, so that date-dependent displays such as the NOTAM list
   showed the previous day.
 
+- Fixed an error where TAF validity periods ending at midnight (hour 24) were
+  shown without an end time, and a remark in decoded METARs that read
+  literally '%1 observed.' instead of naming the phenomenon.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

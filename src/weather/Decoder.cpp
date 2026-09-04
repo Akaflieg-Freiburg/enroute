@@ -308,8 +308,16 @@ QString Weather::Decoder::explainDistance_FT(metaf::Distance distance)
 
 QString Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime)
 {
-    // QTime for result
-    auto metafQTime = QTime(gsl::narrow_cast<int>(metafTime.hour()), gsl::narrow_cast<int>(metafTime.minute()) );
+    // QTime for result. METAR/TAF express end-of-day as hour 24, which QTime
+    // does not accept; represent it as 00:mm of the following day.
+    auto hour = gsl::narrow_cast<int>(metafTime.hour());
+    int dayOffset = 0;
+    if (hour == 24)
+    {
+        hour = 0;
+        dayOffset = 1;
+    }
+    auto metafQTime = QTime(hour, gsl::narrow_cast<int>(metafTime.minute()) );
 
     auto currentQDate = QDate::currentDate().addDays(5);
     auto currentDate = metaf::MetafTime::Date(currentQDate.year(), currentQDate.month(), currentQDate.day());
@@ -320,7 +328,7 @@ QString Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime)
     auto metafDate = metafTime.dateBeforeRef(currentDate);
     auto metafQDate = QDate(gsl::narrow_cast<int>(metafDate.year), gsl::narrow_cast<int>(metafDate.month), gsl::narrow_cast<int>(metafDate.day) );
 
-    auto metafQDateTime = QDateTime(metafQDate, metafQTime, QTimeZone::utc());
+    auto metafQDateTime = QDateTime(metafQDate, metafQTime, QTimeZone::utc()).addDays(dayOffset);
     return Navigation::Clock::describePointInTime(metafQDateTime, m_currentTime);
 }
 
@@ -3053,7 +3061,7 @@ QString Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, Report
 
     // Here %1 is string like 'Smoke'
     QStringList results;
-    results << tr("%1 observed.");
+    results << tr("%1 observed.").arg(type);
 
     if (group.distance().isReported())
     {

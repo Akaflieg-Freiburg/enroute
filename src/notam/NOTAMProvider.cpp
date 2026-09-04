@@ -264,9 +264,14 @@ void NOTAM::NOTAMProvider::downloadFinished()
         auto data = networkReply->readAll();
         networkReply->deleteLater();
 
+        // Accept only a well-formed NOTAM response. Anything else (an error
+        // object, HTML from an intermediary) is treated like a network error,
+        // so that it is not cached as "no NOTAMs in this area".
         auto jsonDoc = QJsonDocument::fromJson(data);
-        if (jsonDoc.isNull())
+        if (!jsonDoc.isObject() || !jsonDoc.object().value(u"items"_s).isArray())
         {
+            qWarning() << "NOTAMProvider: unexpected response, retrying in 5 minutes";
+            QTimer::singleShot(5min, this, &NOTAMProvider::updateData);
             continue;
         }
         NOTAMList const notamList(jsonDoc, region, &cancelledNotams);

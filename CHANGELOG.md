@@ -144,6 +144,10 @@
 - Fixed an error where the app requested the same METAR and TAF data several
   times in a row at startup and when returning to the foreground.
 
+- Fixed an error where NOTAM texts containing characters such as '<' were cut
+  off in the NOTAM list, and the grouping of NOTAMs that take effect more than
+  90 days ahead, which now appear under their own heading.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

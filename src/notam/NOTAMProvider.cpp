@@ -362,11 +362,12 @@ void NOTAM::NOTAMProvider::startRequest(const QGeoCoordinate& coordinate)
     }
 
     const QGeoCoordinate coordinateRounded( qRound(coordinate.latitude()), qRound(coordinate.longitude()) );
+    // The proxy merges all FAA result pages into one response and ignores any
+    // paging parameters, so none are sent.
     auto urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/notam.php?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
-                     "locationRadius=%3&"
-                     "pageSize=1000"_s
+                     "locationRadius=%3"_s
                          .arg(coordinateRounded.longitude())
                          .arg(coordinateRounded.latitude())
                          .arg( qRound(requestRadius.toNM()) );

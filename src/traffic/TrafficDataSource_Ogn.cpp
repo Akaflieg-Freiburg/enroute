@@ -170,6 +170,13 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
         m_textStream.flush();
     });
 
+    // Socket options only take effect once the underlying socket exists, which
+    // is guaranteed after "connected" has been emitted.
+    connect(&m_socket, &QTcpSocket::connected, this, [this]() {
+        m_socket.setSocketOption(QAbstractSocket::LowDelayOption, 1);
+        m_socket.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
+    });
+
     connect(&m_socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Ogn::onErrorOccurred);
     connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Ogn::onReadyRead);
     connect(&m_socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Ogn::onStateChanged);
@@ -256,8 +263,6 @@ void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
     // Start new connection
     m_socket.abort();
     setErrorString();
-    m_socket.setSocketOption(QAbstractSocket::LowDelayOption, 1);
-    m_socket.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_textStream.setDevice(&m_socket);
     m_socket.connectToHost(m_hostName, m_port);
 

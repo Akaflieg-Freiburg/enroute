@@ -154,6 +154,14 @@
   attempts in progress alone, respects a manual disconnect and retries at most
   every ten seconds.
 
+- Fixed several errors in TCP connections to traffic receivers: a Wi-Fi
+  password that a device requested while it was already delivering data was
+  stored as an empty password; disconnecting from a TCP traffic receiver was
+  immediately undone by an automatic reconnect; and the keep-alive and low-
+  delay socket options were requested before the socket existed and therefore
+  never applied. The Open Glider Network connection had the same socket-option
+  error.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

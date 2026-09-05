@@ -176,6 +176,11 @@
   FLARM data and the line reads from Bluetooth Classic and serial devices are
   now bounded.
 
+- Fixed an error where traffic reports without an identification, such as
+  Mode-C transponder targets reported by a PowerFLARM, were all treated as one
+  and the same aircraft, so that the display animated between different
+  aircraft as if one of them were moving.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

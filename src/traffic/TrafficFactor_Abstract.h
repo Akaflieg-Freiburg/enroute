@@ -549,9 +549,12 @@ protected:
 
     /*! \brief Check whether a data record refers to the same factor as *this
      *
-     *  Two records describe the same factor exactly if the last \ref
-     *  idMatchLength characters of their IDs agree. This is the single identity
-     *  rule shared by the updateFrom() overloads of all subclasses.
+     *  Two records describe the same factor exactly if both carry an ID and
+     *  the last \ref idMatchLength characters of their IDs agree. Records
+     *  without an ID (the FLARM data port leaves the field empty when no
+     *  identification is known, e.g. for Mode-C transponder targets) never
+     *  match, not even each other. This is the single identity rule shared by
+     *  the updateFrom() overloads of all subclasses.
      *
      *  @param data Data record to compare against
      *

@@ -185,6 +185,13 @@ void Traffic::TrafficFactor_Abstract::replaceBy(const TrafficFactorData& data)
 
 bool Traffic::TrafficFactor_Abstract::isSameFactorAs(const TrafficFactorData& data) const
 {
+    // A target without an ID (e.g. a Mode-C transponder target reported by a
+    // PowerFLARM) cannot be recognised again; two such records may well
+    // describe different aircraft and are never merged.
+    if (ID().isEmpty() || data.ID.isEmpty())
+    {
+        return false;
+    }
     return ID().right(idMatchLength) == data.ID.right(idMatchLength);
 }
 

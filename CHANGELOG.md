@@ -148,6 +148,12 @@
   off in the NOTAM list, and the grouping of NOTAMs that take effect more than
   90 days ahead, which now appear under their own heading.
 
+- Fixed an error where the connection to the Open Glider Network could never
+  be established on slow mobile links, because a watchdog aborted every
+  connection attempt that took longer than one second. The watchdog now leaves
+  attempts in progress alone, respects a manual disconnect and retries at most
+  every ten seconds.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

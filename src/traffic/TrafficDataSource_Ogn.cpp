@@ -174,8 +174,10 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
     connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Ogn::onReadyRead);
     connect(&m_socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Ogn::onStateChanged);
     connect(&m_socket, &QAbstractSocket::disconnected, this, [this]() {
-        // Auto-reconnect only while a connection is still wanted.
-        if (m_connectionDesired)
+        // Auto-reconnect only while a connection is still wanted, and not
+        // faster than the backoff allows. If it is too early, the watchdog
+        // verifyConnection() reconnects once the backoff has passed.
+        if (m_connectionDesired && m_lastConnectionAttempt.isValid() && m_lastConnectionAttempt.hasExpired(reconnectBackoffMs))
         {
             connectToTrafficReceiver();
         }
@@ -232,6 +234,7 @@ Traffic::TrafficDataSource_Ogn::~TrafficDataSource_Ogn()
 void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
 {
     m_connectionDesired = true;
+    m_lastConnectionAttempt.start();
 
     // set Proxy
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
@@ -566,19 +569,34 @@ void Traffic::TrafficDataSource_Ogn::sendKeepAlive()
 
 void Traffic::TrafficDataSource_Ogn::verifyConnection()
 {
-    if (!m_socket.isOpen() || m_socket.state() != QAbstractSocket::ConnectedState)
+    if (m_socket.state() == QAbstractSocket::ConnectedState)
     {
-#if OGN_DEBUG
-        qWarning() << "Connection to OGN APRS-IS server lost. State:" << m_socket.state() << "Reconnecting...";
-#else
-        qWarning() << "Connection to OGN APRS-IS server lost. Reconnecting...";
-#endif
-        disconnectFromTrafficReceiver();
-        connectToTrafficReceiver();
-    }
-    else {
         setReceivingHeartbeat(true);
+        return;
     }
+
+    // A connection attempt is still in progress (host lookup, connecting,
+    // closing): leave it alone.
+    if (m_socket.state() != QAbstractSocket::UnconnectedState)
+    {
+        return;
+    }
+
+    // No connection is wanted, e.g. after disconnectFromTrafficReceiver().
+    if (!m_connectionDesired)
+    {
+        return;
+    }
+
+    // Back off after a failed attempt, so that an unreachable server is not
+    // hammered and the error string of the last failure stays visible.
+    if (m_lastConnectionAttempt.isValid() && !m_lastConnectionAttempt.hasExpired(reconnectBackoffMs))
+    {
+        return;
+    }
+
+    qWarning() << "Connection to OGN APRS-IS server lost. Reconnecting...";
+    connectToTrafficReceiver();
 }
 
 void Traffic::TrafficDataSource_Ogn::updateCurrentCoordinate()

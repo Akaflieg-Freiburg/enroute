@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QElapsedTimer>
 #include <QPointer>
 #include <QTcpSocket>
 #include <string>
@@ -171,6 +172,14 @@ private:
     // disconnectFromTrafficReceiver() can actually stop the connection — abort()
     // emits "disconnected", which would otherwise reconnect immediately.
     bool m_connectionDesired = false;
+
+    // Time of the last connection attempt. Automatic reconnects (from the
+    // "disconnected" signal and from the watchdog verifyConnection()) wait at
+    // least reconnectBackoff after an attempt before they try again, so that a
+    // slow host lookup or handshake is not aborted and an unreachable server is
+    // not hammered once per second.
+    QElapsedTimer m_lastConnectionAttempt;
+    static constexpr qint64 reconnectBackoffMs = 10'000;
 
     QString m_lineBuffer;         // Reusable buffer for reading lines
     Ogn::OgnMessage m_ognMessage; // Reusable message structure

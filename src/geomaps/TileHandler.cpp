@@ -33,8 +33,8 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
 {
     QString _name;
     QString _encoding;
-    QString _tiles;
     QString _description;
+
 
     QString _version;
 
@@ -84,17 +84,11 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
     }
 
 
-    _tiles = baseURL+"/{z}/{x}/{y}."+m_format;
-
     QJsonObject result;
     result.insert(QStringLiteral("tilejson"), "2.2.0");
 
-    // Insert tiles
-    QJsonArray tiles;
-    tiles.append(_tiles);
-    result.insert(QStringLiteral("tiles"), tiles);
-
     if (!_name.isEmpty())
+
     {
         result.insert(QStringLiteral("name"), _name);
     }
@@ -128,7 +122,19 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
     }
 
     m_tileJSON.setObject(result);
+    setBaseURL(baseURL);
 }
+
+
+void GeoMaps::TileHandler::setBaseURL(const QString& baseURLName)
+{
+    auto result = m_tileJSON.object();
+    QJsonArray tiles;
+    tiles.append(baseURLName+"/{z}/{x}/{y}."+m_format);
+    result.insert(QStringLiteral("tiles"), tiles);
+    m_tileJSON.setObject(result);
+}
+
 
 
 bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStringList &pathElements)

@@ -233,6 +233,18 @@ void GeoMaps::TileServer::restart()
 
     if (serverPortChanged)
     {
+        // The TileJSON documents served by the tile handlers contain the
+        // server URL. Bring them up to date.
+        auto URL = serverUrl();
+        for (auto iter = m_tileHandlers.cbegin(); iter != m_tileHandlers.cend(); ++iter)
+        {
+            if (iter.value().isNull())
+            {
+                continue;
+            }
+            iter.value()->setBaseURL(URL + "/" + iter.key());
+        }
         emit serverUrlChanged();
     }
 }
+

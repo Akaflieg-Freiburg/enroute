@@ -207,6 +207,10 @@
   map renderer request tiles that do not exist instead of scaling the existing
   ones.
 
+- Fixed an error on iOS where the map could stop loading tiles after the app
+  returned from the background: when the tile server had to move to a new
+  port, the tile descriptions still pointed to the old one.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

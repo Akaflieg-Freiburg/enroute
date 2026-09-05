@@ -78,7 +78,10 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::filesChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::aboutToChangeFile, this, &GeoMaps::GeoMapProvider::onMBTILESAboutToChange);
+    connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::aboutToChangeFile, this, &GeoMaps::GeoMapProvider::onMBTILESAboutToChange);
     connect(GlobalObject::globalSettings(), &GlobalSettings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+
     connect(GlobalObject::globalSettings(), &GlobalSettings::nightModeChanged, this, [this]() {delete m_styleFile; emit styleFileURLChanged();});
 
     connect(&m_tileServer, &GeoMaps::TileServer::serverUrlChanged, this, &GeoMaps::GeoMapProvider::serverUrlChanged);
@@ -542,7 +545,14 @@ void GeoMaps::GeoMapProvider::setCurrentRasterMap(const QString& mapName)
         return;
     }
 
+    serveRasterMap(mapName);
+    emit styleFileURLChanged();
+}
+
+void GeoMaps::GeoMapProvider::serveRasterMap(const QString& mapName)
+{
     auto newRasterMap = QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES());
+
     QString newRasterMapName;
     if (!mapName.isEmpty())
     {
@@ -563,8 +573,8 @@ void GeoMaps::GeoMapProvider::setCurrentRasterMap(const QString& mapName)
     m_tileServer.addMbtilesFileSet(u"rasterMap"_s, single);
     m_currentRasterMap = newRasterMapName;
     m_currentRasterMapTileSize = newRasterMap->tileSize();
-    emit styleFileURLChanged();
 }
+
 
 
 //
@@ -706,10 +716,51 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     m_tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapVectorTiles);
     m_tileServer.addMbtilesFileSet(_currentTerrainMapPath, m_terrainMapTiles);
 
+    // Serve the current raster map from the freshly opened files, not from a
+    // handle to a previous version of the file. If the map no longer exists,
+    // this clears the property currentRasterMap.
+    serveRasterMap(m_currentRasterMap.value());
+
     // Update style file
     delete m_styleFile;
     emit styleFileURLChanged();
 }
+
+void GeoMaps::GeoMapProvider::onMBTILESAboutToChange(const QString& fileName)
+{
+    auto refersToFile = [&fileName](const QSharedPointer<FileFormats::MBTILES>& mbtiles)
+    {
+        return mbtiles.isNull() || (mbtiles->fileName() == fileName);
+    };
+
+    auto rasterTiles = m_baseMapRasterTiles.value();
+    if (rasterTiles.removeIf(refersToFile) > 0)
+    {
+        m_baseMapRasterTiles = rasterTiles;
+    }
+    if (m_baseMapVectorTiles.removeIf(refersToFile) > 0)
+    {
+        m_tileServer.removeMbtilesFileSet(_currentBaseMapPath);
+        m_tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapVectorTiles);
+    }
+    if (m_terrainMapTiles.removeIf(refersToFile) > 0)
+    {
+        m_tileServer.removeMbtilesFileSet(_currentTerrainMapPath);
+        m_tileServer.addMbtilesFileSet(_currentTerrainMapPath, m_terrainMapTiles);
+        emit terrainMapTilesChanged();
+    }
+
+    // The tile handler "rasterMap" holds its own reference to the current
+    // raster map. Replace it with an invalid MBTILES until the file is back.
+    auto currentRasterMap = m_currentRasterMap.value();
+    if (!currentRasterMap.isEmpty() && (QFileInfo(fileName).baseName() == currentRasterMap))
+    {
+        m_tileServer.removeMbtilesFileSet(u"rasterMap"_s);
+        const QVector<QSharedPointer<FileFormats::MBTILES>> placeholder {QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES())};
+        m_tileServer.addMbtilesFileSet(u"rasterMap"_s, placeholder);
+    }
+}
+
 
 GeoMaps::GeoMapProvider::aviationDataCacheResult GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, bool hideGlidingSectors)
 {

@@ -193,6 +193,11 @@
   coordinate could crash the app while the aviation data was loaded; such
   airspaces are now rejected.
 
+- Fixed an error where a map download that could not be saved was silently
+  treated as successful; the app now reports the failure and, before a map
+  file is replaced or deleted, closes the map so that the update also works on
+  Windows.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

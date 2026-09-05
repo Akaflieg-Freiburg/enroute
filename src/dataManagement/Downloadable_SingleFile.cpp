@@ -385,11 +385,19 @@ void DataManagement::Downloadable_SingleFile::startDownload()
         dir.mkpath(QStringLiteral("."));
     }
 
-    // Copy the temporary file to the local file
+    // The downloaded data goes into a QSaveFile, which replaces the local
+    // file atomically once the download is complete.
     m_saveFile = new QSaveFile(m_fileName, this);
-    (void)m_saveFile->open(QIODevice::WriteOnly);
+    if (!m_saveFile->open(QIODevice::WriteOnly))
+    {
+        auto reason = m_saveFile->errorString();
+        delete m_saveFile;
+        emit error(objectName(), tr("unable to write to the file '%1' (%2)").arg(m_fileName, reason));
+        return;
+    }
 
     // Start download
+
     QNetworkRequest const request(m_url);
     m_networkReplyDownloadFile = GlobalObject::networkAccessManager()->get(request);
     connect(m_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable_SingleFile::downloadFileFinished);
@@ -681,14 +689,23 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished()
     // Save old value to see if anything changed
     auto oldUpdateSize = updateSize();
 
-    // Copy the temporary file to the local file
+    // Replace the local file with the downloaded data. Users release their
+    // handles on aboutToChangeFile(); Windows refuses to replace an open
+    // file. The signal fileContentChanged() is emitted in any case, since it
+    // tells users that the file can be used again.
     emit aboutToChangeFile(m_fileName);
     QLockFile lockFile(m_fileName + u".lock"_s);
     lockFile.lock();
-    m_saveFile->commit();
+    auto committed = m_saveFile->commit();
+    auto reason = m_saveFile->errorString();
     lockFile.unlock();
     m_hasFile = QFile::exists(m_fileName);
     emit fileContentChanged();
+    if (!committed)
+    {
+        emit error(objectName(), tr("unable to replace the file '%1' with the downloaded data (%2)").arg(m_fileName, reason));
+    }
+
 
     // Delete the data structures for the download
     delete m_saveFile;

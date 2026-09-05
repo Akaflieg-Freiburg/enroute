@@ -258,9 +258,10 @@ public:
      * Once all data has been downloaded successfully to the temporary file, the
      * process continues as follows.
      *
-     * -# The signal aboutToChangeLocalFile() is emitted. As the name suggests,
+     * -# The signal aboutToChangeFile() is emitted. As the name suggests,
      *    this indicates that the local file is about to change and that it
-     *    should not be used anymore.
+     *    should not be used anymore. Users must release open handles to the
+     *    file, since Windows refuses to replace a file that is open.
      *
      * -# A QLockFile is created at fileName()+".lock"
      *
@@ -268,8 +269,10 @@ public:
      *
      * -# The QLockFile is removed
      *
-     * -# The signal fileChanged() is emitted to indicate that the file is
-     *    again ready to be used.
+     * -# The signal fileContentChanged() is emitted to indicate that the
+     *    file is again ready to be used. If the local file could not be
+     *    replaced, the signal error() is emitted in addition.
+
      */
     Q_INVOKABLE void startDownload() override;
 
@@ -300,21 +303,8 @@ public:
 
 
 signals:
-    /*! \brief Warning that local file is about to change
-     *
-     * This signal is emitted once the download finished, just before the local
-     * file is overwritten with new data. It indicates that all users should
-     * stop using the file immediately. This signal is always followed by the
-     * signal localFileChanged(), which indicates that the local file can be
-     * used again.
-     *
-     * @param localFileName Name of the local file that has will change
-     *
-     * @see localFileChanged()
-     */
-    void aboutToChangeFile(QString localFileName);
-
     /*! \brief Download progress
+
      *
      * While the download process is running, this signal is emitted at regular
      * intervals, so the user can learn about the progress of the operation.

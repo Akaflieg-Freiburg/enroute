@@ -52,9 +52,17 @@ GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
     for (const auto coordinate : polygonCoordinates)
     {
         auto coordinateArray = coordinate.toArray();
+        if (coordinateArray.size() < 2)
+        {
+            // Malformed coordinate. Reject the whole airspace rather than
+            // reading past the end of the array.
+            m_polygon = QGeoPolygon();
+            return;
+        }
         auto geoCoordinate = QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble());
         m_polygon.addCoordinate(geoCoordinate);
     }
+
 
     // Get properties
     if (!geoJSONObject.contains(QStringLiteral("properties"))) {

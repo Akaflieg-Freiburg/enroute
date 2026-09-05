@@ -189,6 +189,10 @@
   otherwise equal, only their horizontal distance was compared although the
   vertical distance was checked; the distance in space is now used.
 
+- Fixed an error where an aviation map containing an airspace with a malformed
+  coordinate could crash the app while the aviation data was loaded; such
+  airspaces are now rejected.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

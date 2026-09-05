@@ -44,9 +44,8 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
     int _minzoom {-1};
 
     // Go through mbtile files and find real values
-    _maxzoom = 10;
-    _minzoom = 6;
     foreach (auto mbtPtr, mbtileFiles)
+
     {
         if (mbtPtr.isNull())
         {
@@ -63,14 +62,27 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
         auto tmp_maxzoom = mbtPtr->metaData().value(QStringLiteral("maxzoom")).toInt(&ok);
         if (ok)
         {
-            _maxzoom = qMax(_maxzoom, tmp_maxzoom);
+            _maxzoom = (_maxzoom < 0) ? tmp_maxzoom : qMax(_maxzoom, tmp_maxzoom);
         }
         auto tmp_minzoom = mbtPtr->metaData().value(QStringLiteral("minzoom")).toInt(&ok);
         if (ok)
         {
-            _minzoom = qMin(_minzoom, tmp_minzoom);
+            _minzoom = (_minzoom < 0) ? tmp_minzoom : qMin(_minzoom, tmp_minzoom);
         }
     }
+
+    // Fall back to the historical defaults only if none of the files
+    // specifies a zoom range. Seeding the range with these values would
+    // advertise zoom levels that the files do not contain.
+    if (_maxzoom < 0)
+    {
+        _maxzoom = 10;
+    }
+    if (_minzoom < 0)
+    {
+        _minzoom = 6;
+    }
+
 
     _tiles = baseURL+"/{z}/{x}/{y}."+m_format;
 

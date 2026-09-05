@@ -202,6 +202,11 @@
   build a local file name without checking that it stays inside the map
   directory; such entries are now ignored.
 
+- Fixed an error where the tile server advertised zoom levels 6 to 10 for
+  every map even if the map files covered a different range, which made the
+  map renderer request tiles that do not exist instead of scaling the existing
+  ones.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

@@ -775,7 +775,13 @@ void DataManagement::Downloadable_SingleFile::downloadHeaderFinished()
     {
         return;
     }
-    if (m_networkReplyDownloadHeader->error() != QNetworkReply::NoError)
+
+    // Release the reply, so that startInfoDownload() can run again.
+    auto* reply = m_networkReplyDownloadHeader.data();
+    m_networkReplyDownloadHeader = nullptr;
+    reply->deleteLater();
+
+    if (reply->error() != QNetworkReply::NoError)
     {
         return;
     }
@@ -786,10 +792,9 @@ void DataManagement::Downloadable_SingleFile::downloadHeaderFinished()
     // Update remote file information
     auto old_remoteFileDate = m_remoteFileDate;
     auto old_remoteFileSize = m_remoteFileSize;
-    m_remoteFileDate =
-        m_networkReplyDownloadHeader->header(QNetworkRequest::LastModifiedHeader).toDateTime();
-    m_remoteFileSize =
-        m_networkReplyDownloadHeader->header(QNetworkRequest::ContentLengthHeader).toLongLong();
+    m_remoteFileDate = reply->header(QNetworkRequest::LastModifiedHeader).toDateTime();
+    m_remoteFileSize = reply->header(QNetworkRequest::ContentLengthHeader).toLongLong();
+
 
     // Emit signals as appropriate
     if (m_remoteFileDate != old_remoteFileDate)

@@ -40,21 +40,6 @@ namespace {
 // this long, so whatever exceeds it cannot be the start of one and is dropped.
 constexpr qsizetype maxFLARMDataBufferSize = 4096;
 
-qreal interpretNMEALatLong(const QString& A, const QString& B)
-{
-    bool ok1 = false;
-    bool ok2 = false;
-    qreal result = A.left(2).toDouble(&ok1) + A.mid(2).toDouble(&ok2)/60.0;
-    if (!ok1 || !ok2) {
-        return qQNaN();
-    }
-
-    if ((B == u"S") || (B == u"W")) {
-        result *= -1.0;
-    }
-    return result;
-}
-
 QDateTime interpretNMEATime(const QString& timeString)
 {
     auto HH = timeString.mid(0,2);

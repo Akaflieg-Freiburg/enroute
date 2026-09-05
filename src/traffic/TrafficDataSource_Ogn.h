@@ -142,17 +142,6 @@ public slots:
      */
     void disconnectFromTrafficReceiver() override;
 
-    /*! \brief Send position report to APRS-IS server
-     *
-     *  This method sends a position report with the given parameters to the APRS-IS server.
-     *
-     *  @param coordinate The geographic coordinate (latitude, longitude, altitude).
-     *  @param course The course in degrees.
-     *  @param speed The speed in knots.
-     *  @param altitude The altitude in meters.
-     */
-    void sendPosition(const QGeoCoordinate& coordinate, double course, double speed, double altitude);
-
 private slots:
 
     // Read lines from the socket's text stream and passes the string on to
@@ -187,9 +176,6 @@ private:
 
     // our own OGN APRS CallSign, like "ENR12345"
     QString m_callSign;
-
-    // our own AircraftType
-    TrafficFactor_Abstract::Type m_aircraftType = {TrafficFactor_Abstract::Aircraft};
 
     // Radius around the approximate position for which traffic data is requested.
     static constexpr Units::Distance m_receiveRadius = Units::Distance::fromNM(20.0);

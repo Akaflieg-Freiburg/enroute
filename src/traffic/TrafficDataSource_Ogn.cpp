@@ -89,30 +89,6 @@ Traffic::TrafficFactor_Abstract::Type convertOgnAircraftType(Ogn::OgnAircraftTyp
     return Traffic::TrafficFactor_Abstract::unknown;
 }
 
-// Helper function to convert Traffic::AircraftType to OgnAircraftType
-Ogn::OgnAircraftType convertToOgnAircraftType(Traffic::TrafficFactor_Abstract::Type trafficType)
-{
-    using namespace Ogn;
-    switch (trafficType) {
-        case Traffic::TrafficFactor_Abstract::unknown:        return OgnAircraftType::unknown;
-        case Traffic::TrafficFactor_Abstract::Aircraft:       return OgnAircraftType::Aircraft;
-        case Traffic::TrafficFactor_Abstract::Airship:        return OgnAircraftType::Airship;
-        case Traffic::TrafficFactor_Abstract::Balloon:        return OgnAircraftType::Balloon;
-        case Traffic::TrafficFactor_Abstract::Copter:         return OgnAircraftType::Copter;
-        case Traffic::TrafficFactor_Abstract::Drone:          return OgnAircraftType::Drone;
-        case Traffic::TrafficFactor_Abstract::Glider:         return OgnAircraftType::Glider;
-        case Traffic::TrafficFactor_Abstract::HangGlider:     return OgnAircraftType::HangGlider;
-        case Traffic::TrafficFactor_Abstract::Jet:            return OgnAircraftType::Jet;
-        case Traffic::TrafficFactor_Abstract::Paraglider:     return OgnAircraftType::Paraglider;
-        case Traffic::TrafficFactor_Abstract::Skydiver:       return OgnAircraftType::Skydiver;
-        case Traffic::TrafficFactor_Abstract::StaticObstacle: return OgnAircraftType::StaticObstacle;
-        case Traffic::TrafficFactor_Abstract::TowPlane:       return OgnAircraftType::TowPlane;
-    }
-    // No default: above, so -Wswitch flags this switch if a Type is added.
-    // This return covers only out-of-range values.
-    return OgnAircraftType::unknown;
-}
-
 // Helper function to convert OgnAddressType to string
 QString addressTypeToString(Ogn::OgnAddressType type)
 {
@@ -508,52 +484,12 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     emit factorWithPosition(factor);
 }
 
-void Traffic::TrafficDataSource_Ogn::sendPosition(const QGeoCoordinate& coordinate, double course, double speed, double altitude)
-{
-    if (!m_socket.isOpen())
-    {
-#if OGN_DEBUG
-        qDebug() << "Socket is not open. Cannot send position.";
-#endif
-        return;
-    }
-
-    // Use the OgnParser class to format the position report
-    QString const positionReport = QString::fromStdString(Ogn::OgnParser::formatPositionReport(
-        m_callSign.toStdString(), coordinate.latitude(), coordinate.longitude(), altitude, course, speed, convertToOgnAircraftType(m_aircraftType)));
-
-    // Send the position report
-    m_textStream << positionReport;
-    m_textStream.flush();
-
-#if OGN_DEBUG
-    qDebug() << "Sent position report:" << positionReport;
-#endif
-}
-
 // called once per minute
 void Traffic::TrafficDataSource_Ogn::periodicUpdate()
 {
     sendKeepAlive();
     m_ognFilter.clean(); // Purge stale per-aircraft deduplication state (>1 hour old)
     //verifyConnection();
-
-// update position report
-#if OGN_SEND_OWN_POSITION
-    if (getOwnShipCoordinate(/*useLastValidPosition*/false).coordinate().isValid())
-    {
-        sendPosition(positionInfo.coordinate(),
-                     positionInfo.trueTrack().toDEG(),
-                     positionInfo.groundSpeed().toKN(),
-                     positionInfo.coordinate().altitude());
-    }
-    else
-    {
-#if OGN_DEBUG
-        qDebug() << "Position is invalid, skipping position report.";
-#endif
-    }
-#endif
 }
 
 void Traffic::TrafficDataSource_Ogn::sendKeepAlive()

@@ -162,6 +162,10 @@
   never applied. The Open Glider Network connection had the same socket-option
   error.
 
+- Fixed an error where only one Bluetooth Low Energy traffic receiver could be
+  added on iOS, because every further device was mistaken for a duplicate of
+  the first.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

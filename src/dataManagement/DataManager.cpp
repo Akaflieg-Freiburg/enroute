@@ -527,7 +527,9 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     foreach(auto mapSet, dump)
     {
         m_mapSets.remove(mapSet);
+        mapSet->deleteLater();
     }
+
 
     // Update the whatsNew property
     auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();

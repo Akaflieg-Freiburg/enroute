@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QDirIterator>
 #include <QGuiApplication>
 #include <QImage>
@@ -455,8 +456,17 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         {
             auto obj = map.toObject();
             auto mapFileName = obj.value(QStringLiteral("path")).toString();
-            auto localFileName = m_dataDirectory + u"/"_s + mapFileName;
-            auto mapUrlName = baseURL + u"/"_s + obj.value(QStringLiteral("path")).toString();
+
+            // The path comes from the server. Reject anything that would
+            // leave the data directory.
+            auto localFileName = QDir::cleanPath(m_dataDirectory + u"/"_s + mapFileName);
+            if (mapFileName.isEmpty() || !localFileName.startsWith(QDir::cleanPath(m_dataDirectory) + u"/"_s))
+            {
+                qWarning() << "Ignoring map with invalid path" << mapFileName;
+                continue;
+            }
+            auto mapUrlName = baseURL + u"/"_s + mapFileName;
+
             QUrl const mapUrl(mapUrlName);
             auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
             qint64 fileSize = 0;

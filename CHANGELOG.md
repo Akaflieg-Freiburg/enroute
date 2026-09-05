@@ -198,6 +198,10 @@
   file is replaced or deleted, closes the map so that the update also works on
   Windows.
 
+- Fixed an error where a map path received from the map server was used to
+  build a local file name without checking that it stays inside the map
+  directory; such entries are now ignored.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

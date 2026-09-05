@@ -185,6 +185,10 @@
   receivers was created with default permissions; it is now readable by the
   owner only.
 
+- Fixed an error in the ranking of traffic targets: when two targets were
+  otherwise equal, only their horizontal distance was compared although the
+  vertical distance was checked; the distance in space is now used.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

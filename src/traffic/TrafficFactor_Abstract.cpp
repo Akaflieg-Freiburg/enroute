@@ -214,49 +214,67 @@ bool Traffic::TrafficFactor_Abstract::isRelevant(Units::Distance hDist, Units::D
 }
 
 
-bool Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const
+namespace {
+
+// Priority ordering shared by the two hasHigherPriorityThan() variants. The
+// left-hand side is given by its components, so that both a live traffic
+// object and a freshly received data record can be compared against an
+// object.
+bool higherPriority(bool lhsValid, int lhsAlarmLevel, bool lhsRelevant, Units::Distance lhsHDist, Units::Distance lhsVDist, const Traffic::TrafficFactor_Abstract& rhs)
 {
     // Criterion: Valid instances have higher priority than invalid ones
-    if (valid() && !rhs.valid())
+    if (lhsValid && !rhs.valid())
     {
         return true;
     }
-    if (!valid() && rhs.valid())
+    if (!lhsValid && rhs.valid())
     {
         return false;
     }
 
     // Criterion: Alarm level
-    if (alarmLevel() > rhs.alarmLevel())
+    if (lhsAlarmLevel > rhs.alarmLevel())
     {
         return true;
     }
-    if (alarmLevel() < rhs.alarmLevel())
+    if (lhsAlarmLevel < rhs.alarmLevel())
     {
         return false;
     }
 
     // Criterion: Relevant instances have higher priority than irrelevant ones
-    if (relevant() && !rhs.relevant())
+    if (lhsRelevant && !rhs.relevant())
     {
         return true;
     }
-    if (!relevant() && rhs.relevant())
+    if (!lhsRelevant && rhs.relevant())
     {
         return false;
     }
 
-    if (hDist().isFinite() && vDist().isFinite() && rhs.hDist().isFinite() && rhs.vDist().isFinite())
+    // Criterion: Distance. Closer targets have higher priority. The distance
+    // in space is used when both vertical distances are known, the horizontal
+    // distance otherwise.
+    if (lhsHDist.isFinite() && rhs.hDist().isFinite())
     {
-        return (hDist().toM()*hDist().toM() < rhs.hDist().toM()*rhs.hDist().toM());
-    }
-
-    if (hDist().isFinite() && rhs.hDist().isFinite())
-    {
-        return (hDist() < rhs.hDist());
+        if (lhsVDist.isFinite() && rhs.vDist().isFinite())
+        {
+            const double lhsSquared = lhsHDist.toM()*lhsHDist.toM() + lhsVDist.toM()*lhsVDist.toM();
+            const double rhsSquared = rhs.hDist().toM()*rhs.hDist().toM() + rhs.vDist().toM()*rhs.vDist().toM();
+            return lhsSquared < rhsSquared;
+        }
+        return lhsHDist < rhs.hDist();
     }
 
     return false;
+}
+
+} // namespace
+
+
+bool Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const
+{
+    return higherPriority(valid(), alarmLevel(), relevant(), hDist(), vDist(), rhs);
 }
 
 
@@ -271,43 +289,5 @@ bool Traffic::hasHigherPriorityThan(const TrafficFactorData& lhs, const TrafficF
     // A freshly received data record always carries current data and is
     // therefore treated as valid. This mirrors
     // TrafficFactor_Abstract::hasHigherPriorityThan().
-
-    // Criterion: Valid instances have higher priority than invalid ones
-    if (!rhs.valid())
-    {
-        return true;
-    }
-
-    // Criterion: Alarm level
-    if (lhs.alarmLevel > rhs.alarmLevel())
-    {
-        return true;
-    }
-    if (lhs.alarmLevel < rhs.alarmLevel())
-    {
-        return false;
-    }
-
-    // Criterion: Relevant instances have higher priority than irrelevant ones
-    const bool lhsRelevant = TrafficFactor_Abstract::isRelevant(lhs.hDist, lhs.vDist);
-    if (lhsRelevant && !rhs.relevant())
-    {
-        return true;
-    }
-    if (!lhsRelevant && rhs.relevant())
-    {
-        return false;
-    }
-
-    if (lhs.hDist.isFinite() && lhs.vDist.isFinite() && rhs.hDist().isFinite() && rhs.vDist().isFinite())
-    {
-        return (lhs.hDist.toM()*lhs.hDist.toM() < rhs.hDist().toM()*rhs.hDist().toM());
-    }
-
-    if (lhs.hDist.isFinite() && rhs.hDist().isFinite())
-    {
-        return (lhs.hDist < rhs.hDist());
-    }
-
-    return false;
+    return higherPriority(true, lhs.alarmLevel, TrafficFactor_Abstract::isRelevant(lhs.hDist, lhs.vDist), lhs.hDist, lhs.vDist, rhs);
 }

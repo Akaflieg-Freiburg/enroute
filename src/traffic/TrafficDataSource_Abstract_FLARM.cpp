@@ -35,6 +35,11 @@ Q_GLOBAL_STATIC(QSet<QString>, unparsedFLARMSentences)
 
 namespace {
 
+// Upper bound for the amount of unprocessed FLARM/NMEA data that is buffered
+// while waiting for the end of a sentence. No valid sentence is anywhere near
+// this long, so whatever exceeds it cannot be the start of one and is dropped.
+constexpr qsizetype maxFLARMDataBufferSize = 4096;
+
 qreal interpretNMEALatLong(const QString& A, const QString& B)
 {
     bool ok1 = false;
@@ -137,6 +142,14 @@ void Traffic::TrafficDataSource_Abstract::processFLARMData(const QString& data)
         m_FLARMDataBuffer = m_FLARMDataBuffer.mid(idx);
         processFLARMSentence(potentialSentence);
         idx = m_FLARMDataBuffer.indexOf('$', 1);
+    }
+
+    // Bound the buffer: a peer that streams data without any '$' would
+    // otherwise make it grow without limit.
+    if (m_FLARMDataBuffer.size() > maxFLARMDataBufferSize)
+    {
+        m_FLARMDataBuffer.clear();
+        return;
     }
 
     // m_FLARMDataBuffer is a string that might be a full or incomplete NMEA sentence.

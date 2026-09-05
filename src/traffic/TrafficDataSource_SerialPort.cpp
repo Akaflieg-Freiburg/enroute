@@ -31,6 +31,14 @@ using namespace QtJniTypes;
 #include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataSource_SerialPort.h"
 
+#if __has_include(<QSerialPortInfo>)
+// Maximum length of a single line read from the device. A longer line is split
+// across reads rather than buffered whole, which bounds memory use should the
+// device stream data without a newline. Legitimate FLARM/NMEA lines are far
+// shorter. (On Android, reads are bounded by the JNI helper instead.)
+constexpr qint64 maxLineLength = 1024;
+#endif
+
 
 Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanonical, const QString& portNameOrDescription,
                                                                     ConnectionInfo::BaudRate baudRate,
@@ -341,7 +349,7 @@ void Traffic::TrafficDataSource_SerialPort::onReadyRead()
     }
 
     QString sentence;
-    while(m_textStream->readLineInto(&sentence))
+    while(m_textStream->readLineInto(&sentence, maxLineLength))
     {
         emit dataReceived(sentence);
         processFLARMData(sentence);

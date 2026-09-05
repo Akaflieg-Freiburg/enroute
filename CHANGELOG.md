@@ -171,6 +171,11 @@
   because expired traffic entries refused position reports with older
   timestamps.
 
+- Fixed an error where a traffic receiver that sends data without sentence
+  delimiters could make the app use ever more memory; the input buffer for
+  FLARM data and the line reads from Bluetooth Classic and serial devices are
+  now bounded.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

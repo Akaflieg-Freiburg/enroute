@@ -166,6 +166,11 @@
   added on iOS, because every further device was mistaken for a duplicate of
   the first.
 
+- Fixed an error where traffic that had disappeared from the map stayed
+  invisible for a while after the device clock was corrected backwards,
+  because expired traffic entries refused position reports with older
+  timestamps.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

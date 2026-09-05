@@ -67,10 +67,12 @@ public:
      *  - If \a data refers to the *same* factor, it is accepted. The record is
      *    then adopted only if it is newer than the data already held here:
      *    unless the timestamp of the positionInfo of \a data is strictly newer
-     *    than the timestamp of the positionInfo of *this, the record is
-     *    considered stale or out-of-order and *this is left unchanged (its
-     *    lifetime is not restarted either). A stale record is still *accepted*
-     *    — it belongs to this object, there is simply nothing newer to apply.
+     *    than the timestamp of the positionInfo of *this, and *this is still
+     *    valid, the record is considered stale or out-of-order and *this is
+     *    left unchanged (its lifetime is not restarted either). A stale record
+     *    is still *accepted* — it belongs to this object, there is simply
+     *    nothing newer to apply. Once *this has expired, the record is adopted
+     *    regardless of its timestamp.
      *
      *  When the record is adopted, the positionInfo is taken over and the
      *  remaining properties are updated through
@@ -91,8 +93,11 @@ public:
         }
 
         // Same factor: adopt the record if it is newer than what we already
-        // hold.
-        if (positionInfo().timestamp() < data.positionInfo.timestamp())
+        // hold. An expired slot holds nothing worth keeping, so it takes the
+        // record regardless of its timestamp: records are stamped with the
+        // system clock at receipt, and a clock step backwards would otherwise
+        // keep the slot frozen until the clock has caught up.
+        if (!valid() || (positionInfo().timestamp() < data.positionInfo.timestamp()))
         {
             const QScopedPropertyUpdateGroup updateGroup;
             setPositionInfo(data.positionInfo);

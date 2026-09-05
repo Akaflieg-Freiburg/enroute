@@ -85,7 +85,8 @@ bool Traffic::PasswordDB::save()
             return false;
         }
     }
-    return FileFormats::DataFileAbstract::saveFileAtomically(passwordDBFileName, data);
+    // The file holds Wi-Fi passwords in the clear: readable by the owner only.
+    return FileFormats::DataFileAbstract::saveFileAtomically(passwordDBFileName, data, nullptr, QFileDevice::ReadOwner | QFileDevice::WriteOwner);
 }
 
 

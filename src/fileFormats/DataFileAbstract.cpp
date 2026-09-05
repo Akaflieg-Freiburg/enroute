@@ -59,7 +59,7 @@ QSharedPointer<QFile> FileFormats::DataFileAbstract::openFileURL(const QString& 
 }
 
 
-bool FileFormats::DataFileAbstract::saveFileAtomically(const QString& path, const QByteArray& data, QString* error)
+bool FileFormats::DataFileAbstract::saveFileAtomically(const QString& path, const QByteArray& data, QString* error, QFileDevice::Permissions permissions)
 {
     auto fail = [&path, error](const QString& message) {
         qWarning() << "saveFileAtomically:" << path << message;
@@ -76,6 +76,12 @@ bool FileFormats::DataFileAbstract::saveFileAtomically(const QString& path, cons
         return fail(file.errorString());
     }
     if (file.write(data) != data.size())
+    {
+        auto message = file.errorString();
+        file.cancelWriting();
+        return fail(message);
+    }
+    if ((permissions != QFileDevice::Permissions{}) && !file.setPermissions(permissions))
     {
         auto message = file.errorString();
         file.cancelWriting();

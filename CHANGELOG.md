@@ -181,6 +181,10 @@
   and the same aircraft, so that the display animated between different
   aircraft as if one of them were moving.
 
+- Fixed an error where the file holding stored Wi-Fi passwords for traffic
+  receivers was created with default permissions; it is now readable by the
+  owner only.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

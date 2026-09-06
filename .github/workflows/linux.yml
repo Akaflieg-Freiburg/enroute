@@ -77,6 +77,9 @@ jobs:
           -DQTDEPLOY=ON
         cmake --build build-enroute
         cmake --build build-enroute --target install
+    - name: Lint QML
+      run: |
+        cmake --build build-enroute --target all_qmllint
     - name: Package
       run: |
         linuxdeploy-x86_64.AppImage --appdir app --output appimage

@@ -21,8 +21,6 @@
 import QtQuick
 import QtQuick.Controls
 
-import akaflieg_freiburg.enroute
-
 // Short, auto-hiding message at the lower part of the window. The instance
 // lives in main.qml and is reachable everywhere as Global.toast.
 Label {

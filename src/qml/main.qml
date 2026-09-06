@@ -21,6 +21,7 @@
 import QtCore
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Templates as T
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
@@ -811,7 +812,25 @@ AppWindow {
             function onRequestClosePages() {
                 stackView.pop()
                 if (Global.dialogLoader.item)
-                    (Global.dialogLoader.item as Popup).close()
+                    (Global.dialogLoader.item as T.Popup).close()
+            }
+
+            function onRequestOpenDrawer(open) {
+                if (open)
+                    drawer.open()
+                else
+                    drawer.close()
+            }
+
+            function onRequestOpenDialog(url, properties) {
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource(url, properties)
+                Global.dialogLoader.active = true
+            }
+
+            function onRequestOpenPage(url) {
+                stackView.pop(null)
+                stackView.push(url)
             }
 
             function onRequestOpenAircraftPage() {
@@ -837,7 +856,7 @@ AppWindow {
             function onRequestOpenWeatherDialog(station) {
                 Global.dialogLoader.setSource("dialogs/MetarTafDialog.qml",
                                               {"weatherStation": station})
-                (Global.dialogLoader.item as Popup).open()
+                (Global.dialogLoader.item as T.Popup).open()
             }
 
             function onRequestVAC(vacName) {
@@ -900,7 +919,7 @@ AppWindow {
     }
 
     Loader {
-        onLoaded: (item as Popup).open()
+        onLoaded: (item as T.Popup).open()
         Component.onCompleted: Global.dialogLoader = this
     }
 

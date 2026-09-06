@@ -20,6 +20,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Templates as T
 
 // Loader for dialogs that take their title, text or arguments from the
 // loader. The instance lives in main.qml and is reachable everywhere as
@@ -32,7 +33,7 @@ Loader {
     property var dialogArgs: undefined
 
     onLoaded: {
-        var dialog = item as Popup
+        var dialog = item as T.Popup
         dialog.anchors.centerIn = Overlay.overlay
         dialog.modal = true
         if (dialogArgs && item.hasOwnProperty('dialogArgs')) {

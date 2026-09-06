@@ -21,6 +21,7 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Templates as T
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Shapes
@@ -97,7 +98,7 @@ CenteringDialog {
         Label { // METAR info
             Loader {
                 id: secondaryDlgLoader
-                onLoaded: (item as Popup).open()
+                onLoaded: (item as T.Popup).open()
             }
             Observer {
                 id: obs
@@ -139,7 +140,7 @@ CenteringDialog {
             Loader {
                 // WARNING This does not really belong here.
                 id: dlgLoader
-                onLoaded: (item as Popup).open()
+                onLoaded: (item as T.Popup).open()
             }
 
             property notamList notamList: {

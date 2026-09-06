@@ -65,8 +65,8 @@ CenteringDialog {
 
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
-            if (Global.appWindow.activeFocusControl != null) {
-                contentItem.contentY = Global.appWindow.activeFocusControl.y
+            if (ApplicationWindow.activeFocusControl != null) {
+                contentItem.contentY = ApplicationWindow.activeFocusControl.y
             }
         }
 

@@ -25,6 +25,7 @@ import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Templates as T
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
@@ -243,7 +244,7 @@ Item {
                         target: null
 
                         // Work around https://bugreports.qt.io/browse/QTBUG-87815
-                        enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as Popup).opened)
+                        enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as T.Popup).opened)
 
                         onActiveTranslationChanged: function(delta) {
                             // Switching "Follow GPS" off is deliberately NOT done in onActiveChanged:
@@ -782,7 +783,7 @@ Item {
                     target: null
 
                     // Work around https://bugreports.qt.io/browse/QTBUG-87815
-                    enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as Popup).opened)
+                    enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as T.Popup).opened)
 
                     onActiveTranslationChanged: (delta) => cl.SplitView.preferredHeight -= delta.y
 

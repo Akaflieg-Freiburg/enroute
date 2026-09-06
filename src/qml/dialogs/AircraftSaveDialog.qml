@@ -47,8 +47,8 @@ CenteringDialog {
             text: modelData
             icon.source: "/icons/material/ic_airplanemode_active.svg"
 
-            anchors.left: parent.left
-            anchors.right: parent.right
+            // The delegate is created before the view parents it
+            width: parent ? parent.width : 0
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()

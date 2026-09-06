@@ -21,6 +21,7 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -67,7 +68,7 @@ Page {
                 anchors.leftMargin: 72
                 anchors.right: headerMenuToolButton.left
 
-                text: (Global.stackView.currentItem as Page).title
+                text: (Global.stackView.currentItem as T.Page).title
                 elide: Label.ElideRight
                 font.pixelSize: 20
                 verticalAlignment: Qt.AlignVCenter
@@ -124,8 +125,8 @@ Page {
 
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
-            if (Global.appWindow.activeFocusControl != null) {
-                contentItem.contentY = Global.appWindow.activeFocusControl.y - font.pixelSize
+            if (ApplicationWindow.activeFocusControl != null) {
+                contentItem.contentY = ApplicationWindow.activeFocusControl.y - font.pixelSize
             }
         }
 

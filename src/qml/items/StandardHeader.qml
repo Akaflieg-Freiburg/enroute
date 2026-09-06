@@ -20,6 +20,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Templates as T
 
 import akaflieg_freiburg.enroute
 
@@ -53,7 +54,7 @@ PageHeader {
         anchors.leftMargin: 72
         anchors.right: parent.right
 
-        text: (Global.stackView.currentItem as Page).title
+        text: (Global.stackView.currentItem as T.Page).title
         elide: Label.ElideRight
         font.pixelSize: 20
         verticalAlignment: Qt.AlignVCenter

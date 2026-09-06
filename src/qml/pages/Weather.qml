@@ -22,6 +22,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -71,7 +72,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: parent.right
 
-            text: (Global.stackView.currentItem as Page).title
+            text: (Global.stackView.currentItem as T.Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -95,7 +96,7 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     dlgLoader.setSource("../dialogs/MetarTafDialog.qml",
                                         {"weatherStation": model.modelData})
-                    (dlgLoader.item as Popup).open()
+                    (dlgLoader.item as T.Popup).open()
                 }
 
                 // Color according to METAR/FAA flight category
@@ -266,6 +267,6 @@ Page {
 
     Loader {
         id: dlgLoader
-        onLoaded: (item as Popup).open()
+        onLoaded: (item as T.Popup).open()
     }
 } // Page

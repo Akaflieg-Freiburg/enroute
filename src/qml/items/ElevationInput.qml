@@ -93,8 +93,9 @@ StackLayout {
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
-                if (ft_d.acceptableInput)
+                if (m_d.acceptableInput)
                     valueMeter = Number.fromLocaleString(Qt.locale(), m_d.text)
+
                 else
                     valueMeter = NaN
             }

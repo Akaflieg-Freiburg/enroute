@@ -242,6 +242,9 @@
   that a waypoint near the equator or the Greenwich meridian flipped
   hemisphere.
 
+- Fixed an error where entering a waypoint elevation in meters was ignored
+  unless the feet field happened to be valid as well.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

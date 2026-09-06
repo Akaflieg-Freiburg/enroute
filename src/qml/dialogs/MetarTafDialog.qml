@@ -158,7 +158,8 @@ CenteringDialog {
                 }
 
                 Label { // decoded TAF text
-                    visible: tafTitleLine
+                    visible: tafTitleLine.visible
+
                     text: weatherReportDialog.weatherStation.taf.decodedText(Navigator.aircraft, Clock.time)
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap

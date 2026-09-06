@@ -248,6 +248,9 @@
 - Fixed an error where the OK button of the vector-map import dialog did not
   react to the map name being typed.
 
+- Fixed an error where the decoded TAF text was shown even when no TAF was
+  available.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

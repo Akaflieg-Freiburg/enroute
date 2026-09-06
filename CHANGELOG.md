@@ -254,6 +254,9 @@
 - Fixed the first-run dialog, which showed the message for a denied location
   permission while the permission was still undetermined, and vice versa.
 
+- Fixed the confirmation shown after renaming an approach chart, which spoke
+  of a flight route.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

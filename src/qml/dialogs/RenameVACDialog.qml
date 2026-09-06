@@ -75,7 +75,8 @@ CenteringDialog {
         var errorMsg = VACLibrary.rename(renameDialog.oldName, newName.text)
 
         if (errorMsg === "")
-            Global.toast.doToast(qsTr("Flight route renamed"))
+            Global.toast.doToast(qsTr("Approach chart renamed"))
+
         else
             Global.toast.doToast(qsTr("Error: %1").arg(errorMsg))
 

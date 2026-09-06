@@ -781,6 +781,14 @@ void DemoRunner::runSmokeTest()
         delay(300ms);
     }
 
+    // The weather dialog has its own request path, used by the screenshot
+    // generator; exercise it as well.
+    qInfo().noquote() << u"Smoke test: opening the weather dialog"_s;
+    emit requestOpenWeatherDialog(weatherStation);
+    delay(1s);
+    emit requestClosePages();
+    delay(300ms);
+
     // Main menu
     qInfo().noquote() << u"Smoke test: opening the main menu"_s;
     emit requestOpenDrawer(true);

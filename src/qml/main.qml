@@ -856,7 +856,8 @@ AppWindow {
             function onRequestOpenWeatherDialog(station) {
                 Global.dialogLoader.setSource("dialogs/MetarTafDialog.qml",
                                               {"weatherStation": station})
-                (Global.dialogLoader.item as T.Popup).open()
+                var dialog = Global.dialogLoader.item as T.Popup
+                dialog.open()
             }
 
             function onRequestVAC(vacName) {

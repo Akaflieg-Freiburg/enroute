@@ -96,7 +96,8 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     dlgLoader.setSource("../dialogs/MetarTafDialog.qml",
                                         {"weatherStation": model.modelData})
-                    (dlgLoader.item as T.Popup).open()
+                    var dialog = dlgLoader.item as T.Popup
+                    dialog.open()
                 }
 
                 // Color according to METAR/FAA flight category

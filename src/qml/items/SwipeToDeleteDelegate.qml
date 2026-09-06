@@ -35,7 +35,8 @@ SwipeDelegate {
         Icon {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            opacity: iDel.swipe.position < -0.1 ? 1.0 : 0.0
+            opacity: itemDelegate.swipe.position < -0.1 ? 1.0 : 0.0
+
             Behavior on opacity { NumberAnimation { duration: 200 } }
 
             source: "/icons/material/ic_delete.svg"

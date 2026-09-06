@@ -220,11 +220,6 @@ auto main(int argc, char *argv[]) -> int
     auto* engine = new QQmlApplicationEngine();
     engine->addImportPath(u":/"_s);
 
-#if defined(Q_OS_IOS)
-    engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), QCoreApplication::applicationDirPath()+"/enrouteManual/");
-#else
-    engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
-#endif
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
     engine->load(u"qrc:/qml/main.qml"_s);
 #if defined(Q_OS_ANDROID)

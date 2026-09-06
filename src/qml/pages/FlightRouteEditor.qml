@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtPositioning
 import QtQml
 import QtQml.Models
@@ -133,14 +135,14 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        if (isIos) {
+                        if (flightRoutePage.isIos) {
                             Global.dialogLoader.active = false
                             Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
                                                               title: qsTr("Import files"),
                                                               text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
                                                               standardButtons: Dialog.Ok})
                             Global.dialogLoader.active = true
-                        } else if (isAndroid) {
+                        } else if (flightRoutePage.isAndroid) {
                             FileExchange.openFilePicker("")
                         } else {
                             importFileDialog.open()
@@ -175,7 +177,7 @@ Page {
                 }
 
                 AutoSizingMenu {
-                    title: isAndroidOrIos ? qsTr("Share…") : qsTr("Export…")
+                    title: flightRoutePage.isAndroidOrIos ? qsTr("Share…") : qsTr("Export…")
                     enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
@@ -195,9 +197,9 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroid)
+                            if (flightRoutePage.isAndroid)
                                 Global.toast.doToast(qsTr("Flight route shared"))
-                            else (!isIos)
+                            else (!flightRoutePage.isIos)
                                 Global.toast.doToast(qsTr("Flight route exported"))
                         }
                     }
@@ -219,7 +221,7 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroid)
+                            if (flightRoutePage.isAndroid)
                                 Global.toast.doToast(qsTr("Flight route shared"))
                             else
                                 Global.toast.doToast(qsTr("Flight route exported"))
@@ -243,7 +245,7 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroid)
+                            if (flightRoutePage.isAndroid)
                                 Global.toast.doToast(qsTr("Flight route shared"))
                             else
                                 Global.toast.doToast(qsTr("Flight route exported"))
@@ -267,7 +269,7 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroid)
+                            if (flightRoutePage.isAndroid)
                                 Global.toast.doToast(qsTr("Flight route shared"))
                             else
                                 Global.toast.doToast(qsTr("Flight route exported"))
@@ -803,9 +805,9 @@ Page {
 
             GridLayout {
                 anchors.left: parent.left
-                anchors.leftMargin: font.pixelSize
+                anchors.leftMargin: flightRoutePage.font.pixelSize
                 anchors.right: parent.right
-                anchors.rightMargin: font.pixelSize
+                anchors.rightMargin: flightRoutePage.font.pixelSize
 
                 columns: 3
 
@@ -1011,6 +1013,7 @@ Page {
             id: waypointDelegate
 
             WordWrappingItemDelegate {
+                required property var model
                 text: model.modelData.twoLineTitle
                 icon.source: model.modelData.icon
 
@@ -1101,7 +1104,7 @@ Page {
                     text: (textInput.filter === "")
                           ? qsTr("<h3>Sorry!</h3><p>No waypoints available. Please make sure that an aviation map is installed.</p>")
                           : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter criteria.</p>")
-                    onLinkActivated: Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => Qt.openUrlExternally(link)
                 }
 
             }

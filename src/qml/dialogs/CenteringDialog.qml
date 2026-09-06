@@ -25,6 +25,8 @@ import QtQuick.Controls.Material
 import akaflieg_freiburg.enroute
 
 Dialog {
+    id: centeringDialog
+
     parent: Overlay.overlay
 
     // Control that receives active focus when the dialog opens — e.g. a list, so
@@ -44,7 +46,7 @@ Dialog {
 
     // Delays evaluation and prevents binding loops
     Binding on height {
-        value: Math.min(avHeight, implicitHeight)
+        value: Math.min(centeringDialog.avHeight, centeringDialog.implicitHeight)
         delayed: true    // Prevent intermediary values from being assigned
     }
 

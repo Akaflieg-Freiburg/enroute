@@ -29,7 +29,6 @@ SideviewQuickItem {
     id: rawSideView
 
     clip: true
-    pixelPer10km: flightMap.pixelPer10km
 
     // Night-mode-aware colors. Sky and terrain have no equivalent on the moving
     // map; the night hues are picked to blend with the dark base map. The

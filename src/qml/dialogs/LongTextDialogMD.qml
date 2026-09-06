@@ -51,7 +51,7 @@ CenteringDialog {
             width: dialogMain.availableWidth
             textFormat: Text.MarkdownText
             wrapMode: Text.Wrap
-            onLinkActivated: Qt.openUrlExternally(link)
+            onLinkActivated: (link) => Qt.openUrlExternally(link)
         }
     }
 }

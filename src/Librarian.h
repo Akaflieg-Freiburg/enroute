@@ -42,6 +42,10 @@ class Librarian : public QObject {
     QML_ELEMENT
     QML_SINGLETON
 
+
+    /*! \brief Location of the user manual, see manualLocation() */
+    Q_PROPERTY(QString manualLocation READ manualLocation CONSTANT)
+
 public:
     /*! \brief Default constructor
      *
@@ -155,6 +159,13 @@ public:
      * @returns Pointer to the object, or a nullptr in case of error.
      */
     [[nodiscard]] Q_INVOKABLE static Navigation::FlightRoute* get(Librarian::Library library, const QString& baseName);
+
+    /*! \brief Location of the user manual
+     *
+     *  @returns Directory that holds the HTML version of the manual, as a
+     *  path or URL suitable for the platform
+     */
+    [[nodiscard]] static QString manualLocation();
 
     /*! \brief Exposes string stored in QRessource to QML
      *

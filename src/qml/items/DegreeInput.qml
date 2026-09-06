@@ -101,7 +101,7 @@ StackLayout {
                 return
 
             var dVal = Number.fromLocaleString(Qt.locale(), d_d.text)
-            value = dVal
+            stackLayout.value = dVal
         }
 
         MyTextField {
@@ -140,7 +140,7 @@ StackLayout {
             var dVal = Math.abs(Number.fromLocaleString(Qt.locale(), dm_d.text))
             var mVal = Number.fromLocaleString(Qt.locale(), dm_m.text)
             var magnitude = dVal + mVal/60.0
-            value = isNegative(dm_d.text) ? -magnitude : magnitude
+            stackLayout.value = stackLayout.isNegative(dm_d.text) ? -magnitude : magnitude
 
         }
 
@@ -200,7 +200,7 @@ StackLayout {
             var mVal = Number.fromLocaleString(Qt.locale(), dms_m.text)
             var sVal = Number.fromLocaleString(Qt.locale(), dms_s.text)
             var magnitude = dVal + mVal/60.0 + sVal/3600.0
-            value = isNegative(dms_d.text) ? -magnitude : magnitude
+            stackLayout.value = stackLayout.isNegative(dms_d.text) ? -magnitude : magnitude
 
         }
 

@@ -101,7 +101,7 @@ Page {
         anchors.fill: parent
         anchors.bottomMargin: SafeInsets.bottom
 
-        url: "file://" + manual_location + "/" + pg.fileName
+        url: "file://" + Librarian.manualLocation + "/" + pg.fileName
 
         settings.allowFileAccess: true
     }

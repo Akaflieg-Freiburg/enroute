@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -69,6 +71,7 @@ Page {
 
             RowLayout {
                 id: entryRow
+                required property var modelData
                 anchors.left: parent.left
                 anchors.right: parent.right
                 Layout.fillWidth: true
@@ -83,21 +86,21 @@ Page {
                     id: iDel
                     Layout.fillWidth: true
 
-                    text: modelData
+                    text: entryRow.modelData
                     icon.source: "/icons/material/ic_airplanemode_active.svg"
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        finalFileName = modelData
+                        page.finalFileName = entryRow.modelData
                         if (!Librarian.contains(Navigator.aircraft))
                             overwriteDialog.open()
                         else
-                            openFromLibrary()
+                            page.openFromLibrary()
                     }
 
                     swipe.onCompleted: {
                         PlatformAdaptor.vibrateBrief()
-                        finalFileName = modelData
+                        page.finalFileName = entryRow.modelData
                         removeDialog.open()
                     }
                 }
@@ -120,8 +123,8 @@ Page {
                             text: qsTr("Rename…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                finalFileName = modelData
-                                renameName.text = modelData
+                                page.finalFileName = entryRow.modelData
+                                renameName.text = entryRow.modelData
                                 renameDialog.open()
                             }
 
@@ -132,7 +135,7 @@ Page {
                             text: qsTr("Remove…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                finalFileName = modelData
+                                page.finalFileName = entryRow.modelData
                                 removeDialog.open()
                             }
                         } // removeAction
@@ -177,7 +180,7 @@ Page {
 
     }
 
-    // This is the name of the file that openFromLibrary will open
+    // This is the name of the file that page.openFromLibrary will open
     property string finalFileName;
 
     function openFromLibrary() {
@@ -217,7 +220,7 @@ Page {
                 width: fileError.availableWidth
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
             }
         }
 
@@ -229,7 +232,7 @@ Page {
         title: qsTr("Overwrite Current Aircraft?")
         standardButtons: Dialog.No | Dialog.Yes
 
-        text: qsTr("Loading the aircraft <strong>%1</strong> will overwrite the current aircraft. Once overwritten, the current aircraft cannot be restored.").arg(finalFileName)
+        text: qsTr("Loading the aircraft <strong>%1</strong> will overwrite the current aircraft. Once overwritten, the current aircraft cannot be restored.").arg(page.finalFileName)
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
@@ -276,7 +279,7 @@ Page {
             Label {
                 Layout.preferredWidth: overwriteDialog.availableWidth
 
-                text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(finalFileName)
+                text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(page.finalFileName)
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
@@ -308,7 +311,7 @@ Page {
         function doRename() {
             PlatformAdaptor.vibrateBrief()
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Aircraft, renameName.text)) {
-                Librarian.rename(Librarian.Aircraft, finalFileName, renameName.text)
+                Librarian.rename(Librarian.Aircraft, page.finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 renameDialog.close()
                 Global.toast.doToast(qsTr("Aircraft renamed"))

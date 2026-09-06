@@ -1,6 +1,8 @@
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Templates as T
 import QtQuick.Controls.impl
@@ -61,7 +63,7 @@ T.Button {
         layer.enabled: control.enabled && color.a > 0 && !control.flat
         layer.effect: RoundedElevationEffect {
             elevation: control.Material.elevation
-            roundedScale: control.background.radius
+            roundedScale: (control.background as Rectangle).radius
         }
 
         Ripple {

@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQml
 import QtQuick
 import QtQuick.Controls
@@ -92,7 +94,7 @@ Page {
         id: connectionList
 
         anchors.fill: parent
-        contentWidth: availableWidth // Disable horizontal scrolling
+        contentWidth: trafficReceiverPage.availableWidth // Disable horizontal scrolling
 
         clip: true
 
@@ -113,6 +115,7 @@ Page {
 
         delegate: Item {
             id: connectionItem
+            required property var model
             width: parent ? parent.width : 0
             height: idel.implicitHeight
 
@@ -124,9 +127,9 @@ Page {
             Rectangle {
                 anchors.fill: parent
                 color: {
-                    if (model.modelData.receivingHeartbeat)
+                    if (connectionItem.model.modelData.receivingHeartbeat)
                         return "green"
-                    if (model.modelData.errorString !== "")
+                    if (connectionItem.model.modelData.errorString !== "")
                         return "red"
                     return "transparent"
                 }
@@ -141,18 +144,18 @@ Page {
                     Layout.fillWidth: true
 
                     //enabled: model.modelData.canConnect
-                    icon.source: model.modelData.icon
+                    icon.source: connectionItem.model.modelData.icon
                     text: {
-                        var sndLine = model.modelData.connectivityStatus
-                        if (model.modelData.errorString !== "")
-                            sndLine += " • " + qsTr("Error") + ": " + model.modelData.errorString
-                        return model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(sndLine)
+                        var sndLine = connectionItem.model.modelData.connectivityStatus
+                        if (connectionItem.model.modelData.errorString !== "")
+                            sndLine += " • " + qsTr("Error") + ": " + connectionItem.model.modelData.errorString
+                        return connectionItem.model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(sndLine)
                     }
 
 
                     onClicked: {
                         Global.dialogLoader.active = false
-                        Global.dialogLoader.setSource("../dialogs/ConnectionInfoDialog.qml", {connection: model.modelData})
+                        Global.dialogLoader.setSource("../dialogs/ConnectionInfoDialog.qml", {connection: connectionItem.model.modelData})
                         Global.dialogLoader.active = true
                     }
                 }
@@ -161,7 +164,7 @@ Page {
                     id: cptMenuButton
 
                     icon.source: "/icons/material/ic_more_horiz.svg"
-                    enabled: !model.modelData.canonical
+                    enabled: !connectionItem.model.modelData.canonical
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
@@ -176,8 +179,8 @@ Page {
                             text: qsTr("Remove…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                Global.toast.doToast( qsTr("Removing Connection: %1").arg(model.modelData.sourceName))
-                                TrafficDataProvider.removeDataSource(model.modelData)
+                                Global.toast.doToast( qsTr("Removing Connection: %1").arg(connectionItem.model.modelData.sourceName))
+                                TrafficDataProvider.removeDataSource(connectionItem.model.modelData)
                                 cptMenu.close()
                             }
                         }
@@ -517,6 +520,7 @@ Page {
                 model: ConnectionScanner_SerialPort.connectionInfos
 
                 delegate: WordWrappingItemDelegate {
+                    required property var model
                     width: addSerialPortDialog.availableWidth
 
                     enabled: model.modelData.canConnect && !TrafficDataProvider.hasDataSource_SerialPort(model.modelData.host)

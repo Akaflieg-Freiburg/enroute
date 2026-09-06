@@ -65,13 +65,13 @@ CenteringDialog {
 
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
-            if (activeFocusControl != null) {
-                contentItem.contentY = activeFocusControl.y
+            if (Global.appWindow.activeFocusControl != null) {
+                contentItem.contentY = Global.appWindow.activeFocusControl.y
             }
         }
 
         GridLayout {
-            width: availableWidth
+            width: waypointEditorDialog.availableWidth
             columns: 2
 
 
@@ -87,7 +87,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
 
-                text: waypoint.extendedName
+                text: waypointEditorDialog.waypoint.extendedName
 
                 focus: true
             }
@@ -209,7 +209,7 @@ CenteringDialog {
 
                 Layout.fillWidth: true
                 currentIndex: formatChoice.currentIndex
-                value: waypoint.coordinate.latitude
+                value: waypointEditorDialog.waypoint.coordinate.latitude
                 minValue: -90.0
                 maxValue: 90.0
             }
@@ -225,7 +225,7 @@ CenteringDialog {
                 Layout.fillWidth: true
 
                 currentIndex: formatChoice.currentIndex
-                value: waypoint.coordinate.longitude
+                value: waypointEditorDialog.waypoint.coordinate.longitude
                 minValue: -180.0
                 maxValue: 180.0
             }
@@ -337,7 +337,7 @@ CenteringDialog {
 
                 Layout.fillWidth: true
                 currentIndex: eleFormatChoice.currentIndex
-                valueMeter: waypoint.coordinate.altitude
+                valueMeter: waypointEditorDialog.waypoint.coordinate.altitude
             }
 
             Label {

@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
@@ -107,14 +109,14 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        if (isIos) {
+                        if (page.isIos) {
                             Global.dialogLoader.active = false
                             Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
                                                               title: qsTr("Import files"),
                                                               text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
                                                               standardButtons: Dialog.Ok})
                             Global.dialogLoader.active = true
-                        } else if (isAndroid) {
+                        } else if (page.isAndroid) {
                             FileExchange.openFilePicker("")
                         } else {
                             importFileDialog.open()
@@ -168,7 +170,7 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroidOrIos)
+                            if (page.isAndroidOrIos)
                                 Global.toast.doToast(qsTr("Waypoint library shared"))
                             else
                                 Global.toast.doToast(qsTr("Waypoint library exported"))
@@ -192,7 +194,7 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroidOrIos)
+                            if (page.isAndroidOrIos)
                                 Global.toast.doToast(qsTr("Waypoint library shared"))
                             else
                                 Global.toast.doToast(qsTr("Waypoint library exported"))
@@ -290,6 +292,7 @@ Page {
 
         RowLayout {
             id: entryRow
+            required property var modelData
             width: wpList.width
             height: iDel.height
 
@@ -302,18 +305,18 @@ Page {
                 id: iDel
                 Layout.fillWidth: true
 
-                text: modelData.name
-                icon.source: modelData.icon
+                text: entryRow.modelData.name
+                icon.source: entryRow.modelData.icon
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    waypointDescription.waypoint = modelData
+                    waypointDescription.waypoint = entryRow.modelData
                     waypointDescription.open()
                 }
 
                 swipe.onCompleted: {
                     PlatformAdaptor.vibrateBrief()
-                    removeDialog.waypoint = modelData
+                    removeDialog.waypoint = entryRow.modelData
                     removeDialog.open()
                 }
             }
@@ -324,7 +327,7 @@ Page {
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    wpEditor.waypoint = modelData
+                    wpEditor.waypoint = entryRow.modelData
                     wpEditor.open()
                 }
             }
@@ -347,7 +350,7 @@ Page {
                         text: qsTr("Remove…")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            removeDialog.waypoint = modelData
+                            removeDialog.waypoint = entryRow.modelData
                             removeDialog.open()
                         }
                     } // removeAction

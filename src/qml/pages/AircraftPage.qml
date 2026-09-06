@@ -124,8 +124,8 @@ Page {
 
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
-            if (activeFocusControl != null) {
-                contentItem.contentY = activeFocusControl.y - font.pixelSize
+            if (Global.appWindow.activeFocusControl != null) {
+                contentItem.contentY = Global.appWindow.activeFocusControl.y - font.pixelSize
             }
         }
 

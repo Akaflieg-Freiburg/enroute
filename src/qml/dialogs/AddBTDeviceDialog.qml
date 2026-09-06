@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -70,6 +72,7 @@ CenteringDialog {
             model: ConnectionScanner_Bluetooth.connectionInfos
 
             delegate: WordWrappingItemDelegate {
+                required property var model
                 width: dlg.availableWidth
 
                 enabled: model.modelData.canConnect

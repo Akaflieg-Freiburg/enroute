@@ -130,7 +130,7 @@ CenteringDialog {
         anchors.fill: parent
 
         Label { // Second header line with distance and QUJ
-            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)
+            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), notamListDialog.waypoint.coordinate)
             visible: PositionProvider.receivingPositionInfo
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

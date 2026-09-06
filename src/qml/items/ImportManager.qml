@@ -572,7 +572,7 @@ Item {
             }
 
             Item {
-                height: txtLbl.font.pixelSize
+                implicitHeight: txtLbl.font.pixelSize
             }
 
             ProgressBar {

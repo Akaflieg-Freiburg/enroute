@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -35,7 +37,7 @@ Page {
         id: stack
 
         anchors.fill: parent
-        anchors.bottomMargin: footer.visible ? 0 : SafeInsets.bottom
+        anchors.bottomMargin: pg.footer.visible ? 0 : SafeInsets.bottom
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
 
@@ -76,10 +78,10 @@ Page {
             ColumnLayout {
                 width: sv.availableWidth
 
-                anchors.bottomMargin: font.pixelSize*1
-                anchors.topMargin: font.pixelSize*1
-                anchors.leftMargin: font.pixelSize*0.5
-                anchors.rightMargin: font.pixelSize*0.5
+                anchors.bottomMargin: pg.font.pixelSize*1
+                anchors.topMargin: pg.font.pixelSize*1
+                anchors.leftMargin: pg.font.pixelSize*0.5
+                anchors.rightMargin: pg.font.pixelSize*0.5
 
                 id: cL
 
@@ -120,9 +122,9 @@ Page {
                 }
                 Label {
                     Layout.fillWidth: true
-                    text: qsTr("
+                    text: qsTr(`
 <h4>Thank you for your help!</h4>
-")
+`)
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
                 }
@@ -152,15 +154,15 @@ Page {
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: font.pixelSize*1
-                anchors.topMargin: font.pixelSize*1
-                anchors.leftMargin: font.pixelSize*0.5
-                anchors.rightMargin: font.pixelSize*0.5
+                anchors.bottomMargin: pg.font.pixelSize*1
+                anchors.topMargin: pg.font.pixelSize*1
+                anchors.leftMargin: pg.font.pixelSize*0.5
+                anchors.rightMargin: pg.font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
 
-                    text: qsTr("
+                    text: qsTr(`
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Issue in the main application</h4>
@@ -179,10 +181,10 @@ Page and check if the problem has already been reported. If
 not, please open a new issue. If you prefer to work on
 your desktop computer, you can also send yourself a link to
 GitHub by e-mail.</p>
-")
+`)
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
-                    onLinkActivated: Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => Qt.openUrlExternally(link)
                 }
                 Button {
                     Layout.fillWidth: true
@@ -204,7 +206,7 @@ GitHub by e-mail.</p>
                 }
                 Label {
                     Layout.fillWidth: true
-                    text: qsTr("
+                    text: qsTr(`
 <p>If you have difficulties with GitHub, you can contact
 <a href='mailto:ms@squawk-vfr.de?subject=Enroute Flight
 Navigation, Issue Report'>Markus Sachs</a> by e-mail.
@@ -220,10 +222,10 @@ able to implement all feature requests. Bugfixing always
 comes first!</p>
 
 <h3>Thank you for your help!</h3>
-")
+`)
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
-                    onLinkActivated: Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => Qt.openUrlExternally(link)
                 }
             }
 
@@ -253,10 +255,10 @@ comes first!</p>
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: font.pixelSize*1
-                anchors.topMargin: font.pixelSize*1
-                anchors.leftMargin: font.pixelSize*0.5
-                anchors.rightMargin: font.pixelSize*0.5
+                anchors.bottomMargin: pg.font.pixelSize*1
+                anchors.topMargin: pg.font.pixelSize*1
+                anchors.leftMargin: pg.font.pixelSize*0.5
+                anchors.rightMargin: pg.font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -278,7 +280,7 @@ comes first!</p>
                           + "</p>")
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
-                    onLinkActivated: Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => Qt.openUrlExternally(link)
                 }
                 Button {
                     Layout.fillWidth: true
@@ -294,7 +296,7 @@ comes first!</p>
                     text: "<h3>" + qsTr("Thank you for your help!") + "</h3>"
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
-                    onLinkActivated: Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => Qt.openUrlExternally(link)
                 }
             }
         }

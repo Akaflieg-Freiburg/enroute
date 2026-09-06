@@ -18,7 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtLocation
+pragma ComponentBehavior: Bound
+
+import QtLocation // qmllint disable import
 import QtPositioning
 import QtQml
 import QtQuick
@@ -117,7 +119,7 @@ Map {
     // MapLibre declares the style parameters as QJsonObject, which QML fills from
     // object literals at run time; qmllint cannot see that, nor the plugin's
     // types, so its checks are switched off for this block.
-    // qmllint disable incompatible-type unresolved-type
+    // qmllint disable incompatible-type unqualified unresolved-type
     MapLibre.style: Style {
         id: style
 
@@ -762,7 +764,7 @@ Map {
             }
         }
     }
-    // qmllint enable incompatible-type unresolved-type
+    // qmllint enable incompatible-type unqualified unresolved-type
 
 
     //
@@ -849,6 +851,7 @@ Map {
         model: TrafficDataProvider.trafficObjects // qmllint disable unresolved-type
         delegate: Component {
             TrafficLabel {
+                required property var modelData
                 bearing: flightMap.bearing
                 trafficInfo: modelData
             }
@@ -942,6 +945,7 @@ Map {
         model: TrafficDataProvider.trafficObjects // qmllint disable unresolved-type
         delegate: Component {
             Traffic {
+                required property var modelData
                 bearing: flightMap.bearing
                 pixelPer10km: flightMap.pixelPer10km
                 trafficInfo: modelData
@@ -954,6 +958,7 @@ Map {
 
         MapQuickItem {
             id: midFieldWP
+            required property var model
 
             anchorPoint.x: image.width/2
             anchorPoint.y: image.height/2
@@ -979,9 +984,9 @@ Map {
                     anchors.verticalCenter: image.verticalCenter
                     anchors.left: image.right
                     anchors.leftMargin: 5
-                    text: model.modelData.extendedName
+                    text: midFieldWP.model.modelData.extendedName
                     color: "black" // Always black, independent of dark/light mode
-                    visible: (flightMap.zoomLevel > 11.0) && (model.modelData.extendedName !== "Waypoint")
+                    visible: (flightMap.zoomLevel > 11.0) && (midFieldWP.model.modelData.extendedName !== "Waypoint")
                     leftInset: -4
                     rightInset: -4
                     topInset: -2

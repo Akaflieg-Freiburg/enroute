@@ -61,7 +61,7 @@ Item {
                 if (!element.model.modelData.downloading
                         && (!element.model.modelData.hasFile || element.model.modelData.updatable)) {
                     PlatformAdaptor.vibrateBrief()
-                    model.modelData.startDownload()
+                    element.model.modelData.startDownload()
                 }
             }
         }

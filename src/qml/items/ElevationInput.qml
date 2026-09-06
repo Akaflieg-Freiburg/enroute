@@ -26,6 +26,8 @@ import QtQuick.Layouts
 // Set currentIndex to 0 for "feet" and 1 for "meter"
 
 StackLayout {
+    id: stackLayout
+
 
     property double valueMeter: NaN
 
@@ -36,8 +38,8 @@ StackLayout {
             return
         }
 
-        ft_d.text = Math.round(valueMeter*3.281)
-        m_d.text = Math.round(valueMeter)
+        ft_d.text = Math.round(stackLayout.valueMeter*3.281)
+        m_d.text = Math.round(stackLayout.valueMeter)
     }
 
     Component.onCompleted: setTexts()
@@ -64,9 +66,9 @@ StackLayout {
 
             onEditingFinished: {
                 if (ft_d.acceptableInput)
-                    valueMeter = Number.fromLocaleString(Qt.locale(), ft_d.text)/3.281
+                    stackLayout.valueMeter = Number.fromLocaleString(Qt.locale(), ft_d.text)/3.281
                 else
-                    valueMeter = NaN
+                    stackLayout.valueMeter = NaN
             }
         }
         Label {
@@ -94,10 +96,10 @@ StackLayout {
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 if (m_d.acceptableInput)
-                    valueMeter = Number.fromLocaleString(Qt.locale(), m_d.text)
+                    stackLayout.valueMeter = Number.fromLocaleString(Qt.locale(), m_d.text)
 
                 else
-                    valueMeter = NaN
+                    stackLayout.valueMeter = NaN
             }
         }
         Label { text: "m" }

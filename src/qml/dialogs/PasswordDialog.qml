@@ -39,7 +39,7 @@ CenteringDialog {
         anchors.fill: parent
 
         Label {
-            text: qsTr("Enter the password for the traffic data receiver in the WiFi network <strong>%1</strong>.").arg(dialogArgs)
+            text: qsTr("Enter the password for the traffic data receiver in the WiFi network <strong>%1</strong>.").arg(dlg.dialogArgs)
             Layout.fillWidth: true
             wrapMode: Text.Wrap
         }

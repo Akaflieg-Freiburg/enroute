@@ -235,11 +235,11 @@ Item {
         target: DemoRunner
 
         function onRequestFollowGPS(newVal) {
-            followGPS = newVal
+            global.followGPS = newVal
         }
 
         function onRequestMapBearingPolicy(newBearing) {
-            mapBearingPolicy = newBearing
+            global.mapBearingPolicy = newBearing
         }
     }
 

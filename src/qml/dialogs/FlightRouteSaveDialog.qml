@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -41,12 +43,13 @@ CenteringDialog {
 
         ItemDelegate {
             id: idel
+            required property var modelData
             text: modelData
             icon.source: "/icons/material/ic_directions.svg"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                finalFileName = modelData
+                dlg.finalFileName = modelData
                 dlg.close()
                 overwriteDialog.open()
             }
@@ -111,8 +114,8 @@ CenteringDialog {
         PlatformAdaptor.vibrateBrief()
         if (fileName.text === "")
             return
-        finalFileName = fileName.text
-        if (Librarian.exists(Librarian.Routes, finalFileName))
+        dlg.finalFileName = fileName.text
+        if (Librarian.exists(Librarian.Routes, dlg.finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()
@@ -124,12 +127,12 @@ CenteringDialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = Navigator.flightRoute.save(Librarian.fullPath(Librarian.Routes, finalFileName))
+        var errorString = Navigator.flightRoute.save(Librarian.fullPath(Librarian.Routes, dlg.finalFileName))
         if (errorString !== "") {
             fileError.text = errorString
             fileError.open()
         } else
-            Global.toast.doToast(qsTr("Flight route %1 saved").arg(finalFileName))
+            Global.toast.doToast(qsTr("Flight route %1 saved").arg(dlg.finalFileName))
     }
 
     LongTextDialog {
@@ -145,7 +148,7 @@ CenteringDialog {
         title: qsTr("Overwrite Flight Route?")
         standardButtons: Dialog.No | Dialog.Yes
 
-        text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
+        text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(dlg.finalFileName)
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

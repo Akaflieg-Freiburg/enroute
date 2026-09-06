@@ -215,6 +215,10 @@
   inf in place of a number was accepted and produced airspaces with invalid
   geometry; such numbers are now rejected.
 
+- Fixed an error where importing a CUP waypoint file failed as a whole if it
+  contained a blank line or a waypoint without elevation, and where the
+  reported line number was one too small.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

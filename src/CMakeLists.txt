@@ -324,7 +324,7 @@ if(ANDROID)
     )
 
     # Copy manual and other files into the Android directories
-    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION android/assets)
+    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION android/assets PATTERN ".git*" EXCLUDE)
     file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
     file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
@@ -420,7 +420,7 @@ target_precompile_headers(${PROJECT_NAME}
 )
 
 # Install (the executable itself is installed by the shared rule near the end of this file)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION ${CMAKE_INSTALL_DOCDIR} PATTERN ".git*" EXCLUDE)
 endif()
 
 

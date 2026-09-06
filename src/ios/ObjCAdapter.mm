@@ -77,9 +77,14 @@ void ObjCAdapter::disableScreenSaver() {
 }
 
 void ObjCAdapter::saveToGallery(QString& path) {
-    UIImage* image = [UIImage imageNamed:path.toNSString()];
+    // imageNamed: looks up bundle assets. The argument is a file path.
+    UIImage* image = [UIImage imageWithContentsOfFile:path.toNSString()];
+    if (image == nil) {
+        return;
+    }
     UIImageWriteToSavedPhotosAlbum(image, Nil, Nil, Nil);
 }
+
 
 
 //MARK: Flight Notifications

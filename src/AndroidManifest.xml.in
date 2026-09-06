@@ -11,8 +11,8 @@
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
   <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30"/>
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30"/>
-  <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+
   <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
   <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
@@ -23,7 +23,23 @@
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
 
+  <!--
+  The permissions above imply required hardware features, which would hide
+  the app from devices without them. None of the hardware is required: the
+  app works with traffic receivers as position source on devices without
+  GPS, and Bluetooth, Wi-Fi and USB serial receivers are all optional.
+  -->
+  <uses-feature android:name="android.hardware.location" android:required="false"/>
+  <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
+  <uses-feature android:name="android.hardware.location.network" android:required="false"/>
+  <uses-feature android:name="android.hardware.bluetooth" android:required="false"/>
+  <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
+  <uses-feature android:name="android.hardware.wifi" android:required="false"/>
+  <uses-feature android:name="android.hardware.usb.host" android:required="false"/>
+  <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+
   <supports-screens
+
     android:anyDensity="true"
     android:largeScreens="true"
     android:normalScreens="true"

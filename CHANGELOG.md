@@ -261,6 +261,10 @@
   of the sunset library that is actually used, and which did not mention the
   usb-serial-for-android and AndroidX libraries shipped in the Android app.
 
+- Fixed the Android app listing, which was hidden from tablets without GPS or
+  Bluetooth hardware although the app supports them; the app also no longer
+  requests the Bluetooth advertising permission, which it never used.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

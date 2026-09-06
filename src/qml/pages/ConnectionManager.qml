@@ -147,8 +147,9 @@ Page {
                         var sndLine = model.modelData.connectivityStatus
                         if (model.modelData.errorString !== "")
                             sndLine += " • " + qsTr("Error") + ": " + model.modelData.errorString
-                        model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(sndLine)
+                        return model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(sndLine)
                     }
+
 
                     onClicked: {
                         Global.dialogLoader.active = false

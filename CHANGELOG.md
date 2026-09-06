@@ -265,6 +265,11 @@
   Bluetooth hardware although the app supports them; the app also no longer
   requests the Bluetooth advertising permission, which it never used.
 
+- Fixed the list of third-party licenses so that it covers every Qt module the
+  app uses, including the text codecs of Qt5Compat, BlueZ and the Android
+  sensor code, and no longer credits components that only belong to Qt's
+  examples and build tools.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

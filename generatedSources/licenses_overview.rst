@@ -1,8 +1,10 @@
 - `Adobe Glyph List For New Fonts <https://github.com/adobe-type-tools/agl-aglfn>`_. BSD 3-Clause "New" or "Revised" License.
+- Android getRotationMatrix and getOrientation. Apache License 2.0.
 - `AndroidX libraries <https://developer.android.com/jetpack/androidx>`_. Apache License 2.0.
 - `Anti-aliasing rasterizer from FreeType 2 <http://www.freetype.org>`_. Freetype Project License or GNU General Public License v2.0 only.
 - `Apache Tika MimeType Definitions <https://github.com/apache/tika/tree/main/tika-core/src/main/resources/org/apache/tika/mime>`_. Apache License 2.0.
 - `BLAKE2 (reference implementation) <https://blake2.net/>`_. Creative Commons Zero v1.0 Universal or Apache License 2.0.
+- `BlueZ <http://www.bluez.org/>`_. GNU General Public License v2.0 only (This does not force user code to be GPL'ed. For more info see details.).
 - `Catch2 <https://github.com/catchorg/Catch2>`_. Boost Software License 1.0.
 - `Clip2Tri Polygon Triangulation Library <https://github.com/raptor/clip2tri>`_. MIT License.
 - `Clipper Polygon Clipping Library <https://sourceforge.net/projects/polyclipping/>`_. Boost Software License 1.0.
@@ -16,24 +18,19 @@
 - `Easing Equations by Robert Penner <http://robertpenner.com/easing/>`_. BSD 3-clause "New" or "Revised" License.
 - `Efficient Binary-Decimal and Decimal-Binary Conversion Routines for IEEE Doubles <https://github.com/google/double-conversion>`_. BSD 3-clause "New" or "Revised" License.
 - `Emoji Segmenter <https://github.com/google/emoji-segmenter>`_. Apache License 2.0.
-- `extra-cmake-modules <https://api.kde.org/ecm/>`_. BSD-3-Clause.
 - `fontawesome <https://github.com/FortAwesome/Font-Awesome>`_. SIL Open Font Licence 1.1.
 - forkfd. MIT License.
 - `Freetype 2 <http://www.freetype.org>`_. Freetype Project License or GNU General Public License v2.0 only.
 - `Freetype 2 - Bitmap Distribution Format (BDF) support <http://www.freetype.org>`_. MIT License.
 - `Freetype 2 - Portable Compiled Format (PCF) support <http://www.freetype.org>`_. MIT License and MIT Open Group variant.
 - `Freetype 2 - zlib <http://www.freetype.org>`_. zlib License.
-- Gear Icon. MIT License.
-- `Georama <https://github.com/productiontype/Georama>`_. SIL Open Font License 1.1.
 - `Google Fonts <https://github.com/google/fonts>`_. Apache 2 License.
 - `Google Material Icon Font <https://fonts.google.com/icons>`_. Apache Licence 2.0.
-- `Gradle wrapper <https://gradle.org>`_. Apache License 2.0.
 - `Guidelines Support Library <https://github.com/microsoft/GSL>`_. MIT License.
 - `HarfBuzz-NG <http://harfbuzz.org>`_. MIT License.
 - `JavaScriptCore Macro Assembler <https://trac.webkit.org/wiki/JavaScriptCore>`_. BSD 2-clause "Simplified" License.
 - `jQuery <https://github.com/jquery/jquery>`_. MIT License.
 - `KDAB's helper class for single-instance policy applications <https://github.com/KDAB/KDSingleApplication>`_. MIT License.
-- `KWin <https://www.kde.org/>`_. BSD 3-Clause "New" or "Revised" License.
 - `libdbus-1 headers <https://www.freedesktop.org/wiki/Software/dbus/>`_. Academic Free License v2.1, or GNU General Public License v2.0 or later.
 - `LibJPEG-turbo <http://libjpeg-turbo.virtualgl.org/>`_. Independent JPEG Group License and BSD 3-Clause "New" or "Revised" License.
 - `LibPNG <http://www.libpng.org/pub/png/libpng.html>`_. libpng License and PNG Reference Library version 2.
@@ -41,10 +38,8 @@
 - `libzip <https://libzip.org>`_. 3-clause BSD license.
 - `Linux Performance Events <https://www.kernel.org>`_. GNU General Public License v2.0 only with Linux Syscall Note.
 - `lunr.js <https://github.com/olivernn/lunr.js>`_. MIT License.
-- Map of Europe from Wikipedia. Creative Commons Attribution 3.0 Unported.
 - `Material Design Icons <https://github.com/google/material-design-icons>`_. Apache License.
 - `Material Sphinx Theme <https://github.com/bashtage/sphinx-material/>`_. MIT License.
-- `Material Symbols and Icons <https://fonts.google.com/icons>`_. Apache License Version 2.0.
 - MD4. Public Domain.
 - `MD4C <https://github.com/mity/md4c>`_. MIT License.
 - MD5. Public Domain.
@@ -72,10 +67,16 @@
 - `SQLite <https://www.sqlite.org/>`_. SQLite Blessing.
 - `sRGB color profile icc file <http://www.color.org/>`_. International Color Consortium License.
 - `sunset <https://github.com/buelowp/sunset>`_. GNU General Public License v2.0 or later.
+- Text Codec: EUC-JP. BSD 2-clause "Simplified" License.
+- Text Codec: EUC-KR. BSD 2-clause "Simplified" License.
+- Text Codec: GBK. BSD 2-clause "Simplified" License.
+- Text Codec: ISO 2022-JP (JIS). BSD 2-clause "Simplified" License.
+- Text Codec: Shift-JIS. BSD 2-clause "Simplified" License.
+- Text Codec: TSCII. BSD 2-clause "Simplified" License.
+- Text Codecs: Big5, Big5-HKSCS. BSD 2-clause "Simplified" License.
 - `The Public Suffix List <http://publicsuffix.org/>`_. Mozilla Public License 2.0.
 - `TIFF Software Distribution (libtiff) <http://www.simplesystems.org/libtiff/>`_. libtiff License.
 - `TinyCBOR <https://github.com/intel/tinycbor>`_. MIT License.
-- `Titillium Web Font <https://fonts.google.com/specimen/Titillium+Web>`_. SIL OPEN FONT LICENSE Version 1.1.
 - `tl::expected <https://github.com/TartanLlama/expected/>`_. Creative Commons Zero v1.0 Universal.
 - `underscore <https://github.com/jashkenas/underscore>`_. MIT License.
 - `Unicode Character Database (UCD) <https://www.unicode.org/ucd/>`_. Unicode License Agreement - Data Files and Software (2016).
@@ -109,12 +110,10 @@
 - `Wayland xdg-activation Protocol <https://wayland.freedesktop.org>`_. MIT License.
 - `Wayland xdg-decoration Protocol <https://wayland.freedesktop.org>`_. MIT License.
 - `Wayland xdg-toplevel-icon Protocol <https://wayland.freedesktop.org>`_. MIT License.
-- Weather icons from the Noto Emoji collection. Apache License 2.0.
 - `WebGradients <https://webgradients.com/>`_. MIT License.
 - `WebP (libwebp) <https://developers.google.com/speed/webp/>`_. BSD 3-clause "New" or "Revised" License.
 - Wintab API. LCS-Telegraphics License.
 - `Wlr Data Control Unstable V1 Protocol <https://gitlab.freedesktop.org/wlroots/wlr-protocols/>`_. MIT License.
-- Work Sans font by Wei Huang. SIL Open Font License 1.1.
 - `X Server helper <https://www.x.org/>`_. X11 License and Historical Permission Notice and Disclaimer.
 - `XCB-XInput <https://xcb.freedesktop.org/>`_. MIT License.
 - XSVG. Historical Permission Notice and Disclaimer - sell variant.

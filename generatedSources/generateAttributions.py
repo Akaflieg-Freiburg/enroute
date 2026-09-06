@@ -6,7 +6,7 @@ import os
 
 
 def qtattributionsscanner(path):
-    process = Popen([qtbaseDir+"/gcc_64/libexec/qtattributionsscanner", "--output-format", "json", path], stdout=PIPE)
+    process = Popen([scanner, "--output-format", "json", path], stdout=PIPE)
     (output, err) = process.communicate()
     process.wait()
     return json.loads(output)
@@ -20,16 +20,25 @@ data = []
 
 qtbaseDir = os.environ.get('Qt6_DIR_BASE')
 
-# Include data from all the Qt modules that we use
-data += qtattributionsscanner(qtbaseDir+"/Src/qtbase")
-data += qtattributionsscanner(qtbaseDir+"/Src/qtdeclarative")
-data += qtattributionsscanner(qtbaseDir+"/Src/qthttpserver")
-data += qtattributionsscanner(qtbaseDir+"/Src/qtimageformats")
-#data += qtattributionsscanner("/home/kebekus/Software/projects/qtlocation")
-data += qtattributionsscanner(qtbaseDir+"/Src/qtpositioning")
-data += qtattributionsscanner(qtbaseDir+"/Src/qtsvg")
-data += qtattributionsscanner(qtbaseDir+"/Src/qttranslations")
-data += qtattributionsscanner(qtbaseDir+"/Src/qtwebview")
+# The scanner lives in the desktop kit, whose directory name depends on the platform
+scanner = next(qtbaseDir+"/"+kit+"/libexec/qtattributionsscanner"
+               for kit in ("gcc_64", "macos")
+               if os.path.exists(qtbaseDir+"/"+kit+"/libexec/qtattributionsscanner"))
+
+# Include data from all the Qt modules that we use. Keep this list in sync
+# with the find_package(Qt6 ...) calls in CMakeLists.txt.
+qtModules = ["qt5compat", "qtbase", "qtconnectivity", "qtdeclarative",
+             "qthttpserver", "qtimageformats", "qtlocation", "qtpositioning",
+             "qtsensors", "qtserialport", "qtspeech", "qtsvg", "qttranslations",
+             "qtwebview"]
+for module in qtModules:
+    for entry in qtattributionsscanner(qtbaseDir+"/Src/"+module):
+        # Only credit what ends up in the shipped libraries. The scanner also
+        # reports components of Qt's examples, tests and build tools.
+        parts = entry.get("QtParts", [])
+        if parts and "libs" not in parts:
+            continue
+        data.append(entry)
 
 # Include data from modules in 3rdParty
 for root,directors,files in os.walk("3rdParty"):

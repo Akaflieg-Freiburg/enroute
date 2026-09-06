@@ -21,7 +21,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
 import "../items"

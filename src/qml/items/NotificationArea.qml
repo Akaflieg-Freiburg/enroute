@@ -30,10 +30,10 @@ Rectangle {
 
     border.color: GlobalSettings.nightMode ? "white" : "black"
     color: GlobalSettings.nightMode ? "black" : "white"
-    radius: 0.5*font.pixelSize
+    radius: 0.5*GlobalSettings.fontSize
     clip: true
 
-    implicitHeight: notifyCol.implicitHeight+font.pixelSize
+    implicitHeight: notifyCol.implicitHeight+GlobalSettings.fontSize
     visible: NotificationManager.currentVisualNotification
 
     Connections {

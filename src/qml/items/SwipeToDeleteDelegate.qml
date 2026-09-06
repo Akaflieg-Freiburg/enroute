@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
 
 // This is a version of SwitchDelegate that does word wrapping in the text
 

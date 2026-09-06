@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
 

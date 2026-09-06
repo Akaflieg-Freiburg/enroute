@@ -27,11 +27,10 @@
 #include <QSet>
 #include <QTextStream>
 #include <QtMath>
+#include <cmath>
 
 #include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/OpenAir.h"
-
-#include <cmath>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -54,13 +53,13 @@ public:
 
     void addCircle(const QString& qs)
     {
-        bool ok = false;
-        double const radius = qs.toDouble(&ok) * 1852;
-        if (!ok)
+        double const radius = toFiniteDouble(qs) * 1852;
+        if (radius <= 0)
         {
             throw QObject::tr("Invalid number found: %1", "OpenAir").arg(qs);
         }
         if (variableX.isValid())
+
         {
             for (int i=0; i <= 360; i += 10)
             {
@@ -75,28 +74,16 @@ public:
 
     void addArc(const QString& qs)
     {
-        bool ok = false;
         QStringList items = qs.split(u',', Qt::SkipEmptyParts);
         if (items.size() < 3)
         {
             throw QObject::tr("Invalid arc specification", "OpenAir");
         }
-        double const radius = items[0].toDouble(&ok) * 1852;
-        if (!ok)
-        {
-            throw QObject::tr("Invalid number found: %1", "OpenAir").arg(items[0]);
-        }
-        double const angleStart = items[1].toDouble(&ok);
-        if (!ok)
-        {
-            throw QObject::tr("Invalid number found: %1", "OpenAir").arg(items[1]);
-        }
-        double const angleEnd = items[2].toDouble(&ok);
-        if (!ok)
-        {
-            throw QObject::tr("Invalid number found: %1", "OpenAir").arg(items[2]);
-        }
+        double const radius = toFiniteDouble(items[0]) * 1852;
+        double const angleStart = toFiniteDouble(items[1]);
+        double const angleEnd = toFiniteDouble(items[2]);
         if (!variableX.isValid())
+
         {
             throw QObject::tr("Variable X is not set but Circle should be drawn", "OpenAir");
         }
@@ -401,27 +388,32 @@ private:
         return QString::number(qRound(feet));
     }
 
-    static double getNumber(const QString& degree)
+    /* Parses a number and throws unless it is finite. QString::toDouble()
+     * happily accepts "nan" and "inf", which would otherwise pass the range
+     * checks below (every comparison with NaN is false) and end up as
+     * coordinates in the aviation data.
+     */
+    static double toFiniteDouble(const QString& qs)
     {
         bool ok = false;
-        double ret = NAN;
+        double const result = qs.toDouble(&ok);
+        if (!ok || !std::isfinite(result))
+        {
+            throw QObject::tr("Invalid number found: %1", "OpenAir").arg(qs);
+        }
+        return result;
+    }
+
+    static double getNumber(const QString& degree)
+    {
         auto i = degree.indexOf(u":"_s);
         if (i < 0)
         {
-            ret = degree.toDouble(&ok);
-            if (!ok)
-            {
-                throw QObject::tr("Invalid number found: %1", "OpenAir").arg(degree);
-            }
-            return ret;
+            return toFiniteDouble(degree);
         }
-        ret = degree.first(i).toDouble(&ok) + getNumber(degree.sliced(i + 1)) / 60;
-        if (!ok)
-        {
-            throw QObject::tr("Invalid number found: %1", "OpenAir").arg(degree.first(i));
-        }
-        return ret;
+        return toFiniteDouble(degree.first(i)) + getNumber(degree.sliced(i + 1)) / 60;
     }
+
 
     [[nodiscard]] bool isClockwise() const
     {
@@ -499,8 +491,14 @@ private:
         {
             throw QObject::tr("Invalid coordinate found: %1", "OpenAir").arg(qs);
         }
-        return {latitude, longitude};
+        QGeoCoordinate const result(latitude, longitude);
+        if (!result.isValid())
+        {
+            throw QObject::tr("Invalid coordinate found: %1", "OpenAir").arg(qs);
+        }
+        return result;
     }
+
 };
 
 

@@ -211,6 +211,10 @@
   returned from the background: when the tile server had to move to a new
   port, the tile descriptions still pointed to the old one.
 
+- Fixed an error where an OpenAir airspace file containing the words nan or
+  inf in place of a number was accepted and produced airspaces with invalid
+  geometry; such numbers are now rejected.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

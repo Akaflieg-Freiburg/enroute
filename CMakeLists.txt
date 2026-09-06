@@ -52,8 +52,14 @@ include(GNUInstallDirs)
 # private-module warning that Qt would otherwise print on every configure.
 set(QT_NO_PRIVATE_MODULE_WARNING ON)
 
-find_package(Qt6 6.9 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location LocationPrivate Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
+find_package(Qt6 6.9 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location LocationPrivate Positioning Quick QuickControls2 Sql Svg TextToSpeech REQUIRED)
 set(QT_VERSION ${Qt6Core_VERSION})
+
+# main.cpp uses QApplication on the desktop platforms and QGuiApplication on
+# the mobile ones, so Qt Widgets is only needed on the desktop.
+if(NOT (CMAKE_SYSTEM_NAME STREQUAL "Android" OR CMAKE_SYSTEM_NAME STREQUAL "iOS"))
+    find_package(Qt6 6.9 COMPONENTS Widgets REQUIRED)
+endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
     find_package(Qt6 6.9 COMPONENTS Sensors SerialPort WebView REQUIRED)
@@ -69,7 +75,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    find_package(Qt6 6.9 COMPONENTS DBus SerialPort Widgets REQUIRED)
+    find_package(Qt6 6.9 COMPONENTS DBus SerialPort REQUIRED)
     find_package(Qt6 6.9 COMPONENTS WebView)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(LIBUDEV REQUIRED libudev)

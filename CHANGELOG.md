@@ -228,6 +228,9 @@
   characters could not be opened from another app, because the file URL was
   not decoded.
 
+- Fixed an error where importing an approach chart handed over as a file URL
+  by a desktop file manager failed with a misleading georeferencing error.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

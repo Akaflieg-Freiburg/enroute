@@ -22,6 +22,7 @@
 #include <QFileInfo>
 #include <QImage>
 #include <QRegularExpression>
+#include <QUrl>
 
 #include "fileFormats/GeoTIFF.h"
 #include "geomaps/VAC.h"
@@ -30,8 +31,12 @@ using namespace Qt::Literals::StringLiterals;
 
 
 GeoMaps::VAC::VAC(const QString& fName, const QString& unmingledFName) :
-    fileName(fName)
+    fileName(fName.startsWith(u"file://"_s) ? QUrl(fName).toLocalFile() : fName)
 {
+    // Desktop file managers hand over file:// URLs. The other file readers
+    // resolve those through DataFileAbstract::openFileURL(); this class
+    // checks the file's existence itself and therefore needs a local path.
+
     QString unmingledFileName;
     if (!unmingledFName.isEmpty())
     {

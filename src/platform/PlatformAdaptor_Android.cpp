@@ -251,8 +251,18 @@ extern "C" {
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onLanguageChanged(JNIEnv* /*unused*/, jobject /*unused*/)
 {
+    // Called on the Android UI thread from a broadcast receiver. The app
+    // terminates, so that it comes up in the new language when the user
+    // returns to it. Quit through the Qt event loop rather than calling
+    // exit(), so that pending QSettings writes reach the disk first.
+    if (GlobalObject::canConstruct())
+    {
+        QMetaObject::invokeMethod(QCoreApplication::instance(), []() { QCoreApplication::quit(); }, Qt::QueuedConnection);
+        return;
+    }
     exit(0);
 }
+
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {

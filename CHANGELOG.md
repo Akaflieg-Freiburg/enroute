@@ -234,6 +234,9 @@
 - Fixed an error on Android where generating a bug report could freeze the app
   for up to 30 seconds while collecting the system log.
 
+- Fixed an error on Android where changing the system language restarted the
+  app so abruptly that settings changed shortly before could be lost.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

@@ -231,6 +231,9 @@
 - Fixed an error where importing an approach chart handed over as a file URL
   by a desktop file manager failed with a misleading georeferencing error.
 
+- Fixed an error on Android where generating a bug report could freeze the app
+  for up to 30 seconds while collecting the system log.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

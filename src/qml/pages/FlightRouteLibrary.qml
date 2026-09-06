@@ -196,7 +196,8 @@ Page {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 Layout.fillWidth: true
-                height: iDel.heigt
+                height: iDel.height
+
 
                 // Return/Enter on the highlighted row triggers its primary action
                 // (the trailing menu button stays mouse-only).
@@ -521,7 +522,7 @@ Page {
                 Layout.fillWidth: true
                 focus: true
 
-                onAccepted: renameDialog.onAccepted()
+                onAccepted: renameDialog.doRename()
             }
 
         }
@@ -537,7 +538,8 @@ Page {
             }
         }
 
-        onAccepted: {
+        // Also called from the text field when Return is pressed.
+        function doRename() {
             PlatformAdaptor.vibrateBrief()
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Routes, renameName.text)) {
                 Librarian.rename(Librarian.Routes, finalFileName, renameName.text)
@@ -546,6 +548,7 @@ Page {
                 toast.doToast(qsTr("Flight route renamed"))
             }
         }
+        onAccepted: doRename()
         onRejected: {
             PlatformAdaptor.vibrateBrief()
             renameDialog.close()

@@ -288,7 +288,7 @@ Page {
                 Layout.fillWidth: true
                 focus: true
 
-                onAccepted: renameDialog.onAccepted()
+                onAccepted: renameDialog.doRename()
             }
 
         }
@@ -304,7 +304,8 @@ Page {
             }
         }
 
-        onAccepted: {
+        // Also called from the text field when Return is pressed.
+        function doRename() {
             PlatformAdaptor.vibrateBrief()
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Aircraft, renameName.text)) {
                 Librarian.rename(Librarian.Aircraft, finalFileName, renameName.text)
@@ -313,6 +314,7 @@ Page {
                 toast.doToast(qsTr("Aircraft renamed"))
             }
         }
+        onAccepted: doRename()
         onRejected: {
             PlatformAdaptor.vibrateBrief()
             renameDialog.close()

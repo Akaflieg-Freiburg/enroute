@@ -32,9 +32,8 @@
 GlobalSettings::GlobalSettings(QObject *parent)
     : QObject(parent)
 {
-    QCoreApplication::processEvents();
-
     // Save some values
+
     m_settings.setValue(QStringLiteral("lastVersion"), ENROUTE_VERSION_STRING);
 
     // Read values

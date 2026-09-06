@@ -256,8 +256,6 @@ set(SOURCES
     weather/TAF.cpp
     weather/WeatherDataProvider.cpp
     weather/Wind.cpp
-
-    ${HEADERS}
 )
 
 #
@@ -318,6 +316,7 @@ if(ANDROID)
         platform/FileExchange_Android.cpp
         platform/PlatformAdaptor_Android.h
         platform/PlatformAdaptor_Android.cpp
+        android/src/de/akaflieg_freiburg/enroute/FlightLogService.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
         android/src/de/akaflieg_freiburg/enroute/UsbSerialHelper.java
@@ -568,7 +567,6 @@ target_include_directories(${PROJECT_NAME}
     ui
     units
     weather
-    nunicode/include
 )
 
 set_source_files_properties(qml/items/Global.qml qml/items/SafeInsets.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)

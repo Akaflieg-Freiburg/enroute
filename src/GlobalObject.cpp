@@ -129,8 +129,10 @@ void GlobalObject::clear()
     delete g_waypointLibrary;
     delete g_weatherDataProvider;
     delete g_sensors;
+    delete g_clock;
 
     delete g_networkAccessManager;
+
 
     isConstructingOrDeconstructing = false;
 }

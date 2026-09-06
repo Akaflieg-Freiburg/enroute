@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,37 +21,23 @@
 import QtQuick
 import QtQuick.Controls
 
-import akaflieg_freiburg.enroute
-import "../items"
+// Loader for dialogs that take their title, text or arguments from the
+// loader. The instance lives in main.qml and is reachable everywhere as
+// Global.textDialogLoader.
+Loader {
+    id: loader
 
-CenteringDialog {
-    id: dlg
+    property string title
+    property string text
+    property var dialogArgs: undefined
 
-    modal: true
-    title: Global.textDialogLoader.title
-    standardButtons: Dialog.Ok
-
-    
-    DecoratedScrollView{
-        anchors.fill: parent
-        contentWidth: availableWidth // Disable horizontal scrolling
-
-        // Delays evaluation and prevents binding loops
-        Binding on implicitHeight {
-            value: lbl.implicitHeight
-            delayed: true    // Prevent intermediary values from being assigned
+    onLoaded: {
+        var dialog = item as Popup
+        dialog.anchors.centerIn = Overlay.overlay
+        dialog.modal = true
+        if (dialogArgs && item.hasOwnProperty('dialogArgs')) {
+            item.dialogArgs = dialogArgs // qmllint disable missing-property
         }
-
-        clip: true
-
-        Label {
-            id: lbl
-            text: Global.withLinkColor(Global.textDialogLoader.text)
-            width: dlg.availableWidth
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            onLinkActivated: (link) => Qt.openUrlExternally(link)
-        }
+        dialog.open()
     }
-
 }

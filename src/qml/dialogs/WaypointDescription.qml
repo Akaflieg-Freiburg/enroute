@@ -528,7 +528,7 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Direct")
-                    enabled: PositionProvider.receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
+                    enabled: PositionProvider.receivingPositionInfo && (Global.textDialogLoader.text !== "noRouteButton")
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()

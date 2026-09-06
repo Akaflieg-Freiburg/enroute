@@ -32,7 +32,6 @@ Page {
     title: qsTr("Aircraft")
 
     // Required Properties
-    required property var stackView
 
     // Static objects, used to call static functions
     property speed staticSpeed
@@ -55,7 +54,7 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    aircraftPage.stackView.pop()
+                    Global.stackView.pop()
                 }
             }
 
@@ -68,7 +67,7 @@ Page {
                 anchors.leftMargin: 72
                 anchors.right: headerMenuToolButton.left
 
-                text: aircraftPage.stackView.currentItem.title
+                text: (Global.stackView.currentItem as Page).title
                 elide: Label.ElideRight
                 font.pixelSize: 20
                 verticalAlignment: Qt.AlignVCenter
@@ -95,7 +94,7 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            aircraftPage.stackView.push("AircraftLibrary.qml")
+                            Global.stackView.push("AircraftLibrary.qml")
                         }
                     }
 

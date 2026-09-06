@@ -89,6 +89,6 @@ CenteringDialog {
         if (openExternally)
             Qt.openUrlExternally(url)
         else
-            stackView.push("../pages/URLResolver.qml", {mapURL: url})
+            Global.stackView.push("../pages/URLResolver.qml", {mapURL: url})
     }
 }

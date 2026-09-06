@@ -265,15 +265,15 @@ SideviewQuickItem {
         background: Pane { Material.elevation: 1 }
 
         onLinkActivated: {
-            dialogLoader.active = false
-            dialogLoader.setSource("../dialogs/LongTextDialog.qml",
+            Global.textDialogLoader.active = false
+            Global.textDialogLoader.setSource("../dialogs/LongTextDialog.qml",
                                    {
                                        title: qsTr("Static Pressure Unavailable"),
                                        text: Librarian.getStringFromRessource("sideView"),
                                        standardButtons: Dialog.Ok
                                    }
                                    )
-            dialogLoader.active = true
+            Global.textDialogLoader.active = true
         }
     }
 }

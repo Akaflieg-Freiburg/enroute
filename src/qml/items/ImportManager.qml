@@ -33,9 +33,6 @@ Item {
     property string filePath: ""
     property int fileFunction: FileExchange.UnknownFunction
 
-    required property var stackView
-    required property var toast
-    required property var view
 
     Component.onCompleted: {
         FileExchange.onGUISetupCompleted()
@@ -51,11 +48,11 @@ Item {
 
         function onSaveContentResult(result) {
             if (result === "") {
-                importManager.toast.doToast(qsTr("File saved"))
+                Global.toast.doToast(qsTr("File saved"))
                 return
             }
             if (result === "abort") {
-                importManager.toast.doToast(qsTr("Aborted"))
+                Global.toast.doToast(qsTr("Aborted"))
                 return
             }
             Global.dialogLoader.active = false
@@ -67,8 +64,8 @@ Item {
         }
 
         function onOpenFileRequest(fileName, info, fileFunction) {
-            importManager.view.raise()
-            importManager.view.requestActivate()
+            Global.appWindow.raise()
+            Global.appWindow.requestActivate()
 
             importManager.filePath = fileName
             importManager.fileFunction = fileFunction
@@ -124,8 +121,8 @@ Item {
         }
 
         function onOpenVACRequest(vac) {
-            importManager.view.raise()
-            importManager.view.requestActivate()
+            Global.appWindow.raise()
+            Global.appWindow.requestActivate()
 
             importVACDialog.vac = vac
             mapNameVAC.text = vac.name
@@ -264,7 +261,7 @@ Item {
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Airspace data imported") )
+            Global.toast.doToast( qsTr("Airspace data imported") )
         }
     }
 
@@ -320,7 +317,7 @@ Item {
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Visual approach chart data imported") )
+            Global.toast.doToast( qsTr("Visual approach chart data imported") )
         }
     }
 
@@ -372,7 +369,7 @@ Item {
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Raster map imported") )
+            Global.toast.doToast( qsTr("Raster map imported") )
         }
     }
 
@@ -435,7 +432,7 @@ Item {
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Vector map imported") )
+            Global.toast.doToast( qsTr("Vector map imported") )
         }
 
     }
@@ -470,11 +467,11 @@ Item {
                 return
             }
 
-            if (!(importManager.stackView.currentItem instanceof WaypointLibraryPage)) {
-                importManager.stackView.pop()
-                importManager.stackView.push("../pages/WaypointLibraryPage.qml")
+            if (!(Global.stackView.currentItem instanceof WaypointLibraryPage)) {
+                Global.stackView.pop()
+                Global.stackView.push("../pages/WaypointLibraryPage.qml")
             }
-            toast.doToast( qsTr("Waypoints imported") )
+            Global.toast.doToast( qsTr("Waypoints imported") )
         }
     }
 
@@ -503,11 +500,11 @@ Item {
                 errorDialog.open()
                 return
             }
-            if (!(importManager.stackView.currentItem instanceof FlightRouteEditor)) {
-                importManager.stackView.pop()
-                importManager.stackView.push("../pages/FlightRouteEditor.qml")
+            if (!(Global.stackView.currentItem instanceof FlightRouteEditor)) {
+                Global.stackView.pop()
+                Global.stackView.push("../pages/FlightRouteEditor.qml")
             }
-            toast.doToast( qsTr("Flight route imported") )
+            Global.toast.doToast( qsTr("Flight route imported") )
         }
 
         onAccepted: importRoute()
@@ -533,7 +530,7 @@ Item {
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Trip kit imported") )
+            Global.toast.doToast( qsTr("Trip kit imported") )
         }
     }
 

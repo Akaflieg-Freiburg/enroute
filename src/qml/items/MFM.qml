@@ -477,7 +477,7 @@ Item {
                                     qsTr("Choose <a href='xx'>Library/Maps and Data</a> to open the map management page.") + "</p>")
                         }
                         textFormat: Text.RichText
-                        onLinkActivated: stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                        onLinkActivated: Global.stackView.push("../pages/DataManagerPage.qml")
                     }
                 }
 
@@ -501,7 +501,7 @@ Item {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                drawer.open()
+                                Global.drawer.open()
                             }
                         }
 
@@ -560,8 +560,8 @@ Item {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                stackView.pop()
-                                stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+                                Global.stackView.pop()
+                                Global.stackView.push("../pages/TrafficReceiver.qml")
                             }
                         }
                     }

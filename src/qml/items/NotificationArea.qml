@@ -97,12 +97,12 @@ Rectangle {
                 if (NotificationManager.currentVisualNotification.textBodyAction === Notification.OpenMapsAndDataPage)
                 {
                     PlatformAdaptor.vibrateBrief()
-                    stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                    Global.stackView.push("../pages/DataManagerPage.qml")
                 }
                 if (NotificationManager.currentVisualNotification.textBodyAction === Notification.OpenTrafficReceiverPage)
                 {
                     PlatformAdaptor.vibrateBrief()
-                    stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+                    Global.stackView.push("../pages/TrafficReceiver.qml")
                 }
             }
         }

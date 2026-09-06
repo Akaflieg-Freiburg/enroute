@@ -57,7 +57,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -68,7 +68,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -258,7 +258,7 @@ Page {
 
                                     var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "geojson", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
                                     if (errorString === "abort") {
-                                        toast.doToast(qsTr("Aborted"))
+                                        Global.toast.doToast(qsTr("Aborted"))
                                         return
                                     }
                                     if (errorString !== "") {
@@ -267,9 +267,9 @@ Page {
                                         return
                                     }
                                     if (isAndroid)
-                                        toast.doToast(qsTr("Flight route shared"))
+                                        Global.toast.doToast(qsTr("Flight route shared"))
                                     else if(!isIos)
-                                        toast.doToast(qsTr("Flight route exported"))
+                                        Global.toast.doToast(qsTr("Flight route exported"))
                                 }
                             }
 
@@ -283,7 +283,7 @@ Page {
 
                                     var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "gpx", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
                                     if (errorString === "abort") {
-                                        toast.doToast(qsTr("Aborted"))
+                                        Global.toast.doToast(qsTr("Aborted"))
                                         return
                                     }
                                     if (errorString !== "") {
@@ -292,9 +292,9 @@ Page {
                                         return
                                     }
                                     if (isAndroid)
-                                        toast.doToast(qsTr("Flight route shared"))
+                                        Global.toast.doToast(qsTr("Flight route shared"))
                                     else if (!isIos)
-                                        toast.doToast(qsTr("Flight route exported"))
+                                        Global.toast.doToast(qsTr("Flight route exported"))
                                 }
                             }
                         }
@@ -345,7 +345,7 @@ Page {
                                         shareErrorDialog.text = errorString
                                         shareErrorDialog.open()
                                     } else
-                                        toast.doToast(qsTr("Flight route opened in other app"))
+                                        Global.toast.doToast(qsTr("Flight route opened in other app"))
                                 }
                             }
 
@@ -362,7 +362,7 @@ Page {
                                         shareErrorDialog.text = errorString
                                         shareErrorDialog.open()
                                     } else
-                                        toast.doToast(qsTr("Flight route opened in other app"))
+                                        Global.toast.doToast(qsTr("Flight route opened in other app"))
                                 }
                             }
 
@@ -444,8 +444,8 @@ Page {
             fileError.open()
             return
         }
-        toast.doToast( qsTr("Loading flight route <strong>%1</strong>").arg(finalFileName) )
-        stackView.pop()
+        Global.toast.doToast( qsTr("Loading flight route <strong>%1</strong>").arg(finalFileName) )
+        Global.stackView.pop()
     }
 
     function reloadFlightRouteList() {
@@ -489,7 +489,7 @@ Page {
             PlatformAdaptor.vibrateBrief()
             Librarian.remove(Librarian.Routes, page.finalFileName)
             page.reloadFlightRouteList()
-            toast.doToast(qsTr("Flight route removed from device"))
+            Global.toast.doToast(qsTr("Flight route removed from device"))
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
@@ -545,7 +545,7 @@ Page {
                 Librarian.rename(Librarian.Routes, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 renameDialog.close()
-                toast.doToast(qsTr("Flight route renamed"))
+                Global.toast.doToast(qsTr("Flight route renamed"))
             }
         }
         onAccepted: doRename()

@@ -603,6 +603,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/DecoratedListView.qml
     qml/items/DecoratedScrollView.qml
     qml/items/DegreeInput.qml
+    qml/items/DialogLoader.qml
     qml/items/ElevationInput.qml
     qml/items/FilterField.qml
     qml/items/FlightMap.qml
@@ -628,6 +629,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/Sideview.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml
+    qml/items/Toast.qml
     qml/items/Traffic.qml
     qml/items/TrafficLabel.qml
     qml/items/WaypointDelegate.qml

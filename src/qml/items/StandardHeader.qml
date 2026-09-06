@@ -40,7 +40,7 @@ PageHeader {
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
-            stackView.pop()
+            Global.stackView.pop()
         }
     }
 
@@ -53,7 +53,7 @@ PageHeader {
         anchors.leftMargin: 72
         anchors.right: parent.right
 
-        text: stackView.currentItem.title
+        text: (Global.stackView.currentItem as Page).title
         elide: Label.ElideRight
         font.pixelSize: 20
         verticalAlignment: Qt.AlignVCenter

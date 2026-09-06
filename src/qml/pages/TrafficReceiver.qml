@@ -34,7 +34,6 @@ Page {
 
     title: qsTr("Traffic Data Receiver")
 
-    required property var appWindow
 
 
     header: PageHeader {
@@ -54,7 +53,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -67,7 +66,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -82,7 +81,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("forward.html#traffic-infopage")
+                Global.openManual("forward.html#traffic-infopage")
             }
         }
     }
@@ -577,7 +576,7 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
-                onClicked: trafficReceiverPage.appWindow.openManual("forward.html#senseandavoid")
+                onClicked: Global.openManual("forward.html#senseandavoid")
             }
 
             WordWrappingItemDelegate {
@@ -586,7 +585,7 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a flight simulator…")
-                onClicked: trafficReceiverPage.appWindow.openManual("forward.html#simulator-tutorial")
+                onClicked: Global.openManual("forward.html#simulator-tutorial")
             }
         }
 
@@ -635,7 +634,7 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    stackView.push("ConnectionManager.qml", {"appWindow": view})
+                    Global.stackView.push("ConnectionManager.qml")
                 }
             }
         }

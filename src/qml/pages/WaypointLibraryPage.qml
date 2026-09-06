@@ -60,7 +60,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -73,7 +73,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -160,7 +160,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(WaypointLibrary.GeoJSON, "application/geo+json", "geojson", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -169,9 +169,9 @@ Page {
                                 return
                             }
                             if (isAndroidOrIos)
-                                toast.doToast(qsTr("Waypoint library shared"))
+                                Global.toast.doToast(qsTr("Waypoint library shared"))
                             else
-                                toast.doToast(qsTr("Waypoint library exported"))
+                                Global.toast.doToast(qsTr("Waypoint library exported"))
                         }
                     }
 
@@ -184,7 +184,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(WaypointLibrary.toGpx(), "application/gpx+xml", "gpx", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -193,9 +193,9 @@ Page {
                                 return
                             }
                             if (isAndroidOrIos)
-                                toast.doToast(qsTr("Waypoint library shared"))
+                                Global.toast.doToast(qsTr("Waypoint library shared"))
                             else
-                                toast.doToast(qsTr("Waypoint library exported"))
+                                Global.toast.doToast(qsTr("Waypoint library exported"))
                         }
                     }
                 }
@@ -245,7 +245,7 @@ Page {
                                 shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Waypoint library opened in other app"))
+                                Global.toast.doToast(qsTr("Waypoint library opened in other app"))
                         }
                     }
 
@@ -262,7 +262,7 @@ Page {
                                 shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Waypoint library opened in other app"))
+                                Global.toast.doToast(qsTr("Waypoint library opened in other app"))
                         }
                     }
 
@@ -471,7 +471,7 @@ Page {
             PlatformAdaptor.vibrateBrief()
             WaypointLibrary.remove(removeDialog.waypoint)
             page.reloadWaypointList()
-            toast.doToast(qsTr("Waypoint removed from device"))
+            Global.toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
@@ -492,7 +492,7 @@ Page {
             PlatformAdaptor.vibrateBrief()
             WaypointLibrary.clear()
             page.reloadWaypointList()
-            toast.doToast(qsTr("Waypoint library cleared"))
+            Global.toast.doToast(qsTr("Waypoint library cleared"))
         }
     }
 
@@ -506,7 +506,7 @@ Page {
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.replace(waypoint, newWP)
             page.reloadWaypointList()
-            toast.doToast(qsTr("Waypoint modified"))
+            Global.toast.doToast(qsTr("Waypoint modified"))
         }
 
     }
@@ -523,7 +523,7 @@ Page {
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.add(newWP)
             page.reloadWaypointList()
-            toast.doToast(qsTr("Waypoint added"))
+            Global.toast.doToast(qsTr("Waypoint added"))
         }
 
     }

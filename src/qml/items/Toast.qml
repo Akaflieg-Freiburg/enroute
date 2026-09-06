@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,36 +22,45 @@ import QtQuick
 import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
-import "../items"
 
-CenteringDialog {
-    id: dlg
+// Short, auto-hiding message at the lower part of the window. The instance
+// lives in main.qml and is reachable everywhere as Global.toast.
+Label {
+    id: toast
 
-    modal: true
-    title: Global.textDialogLoader.title
-    standardButtons: Dialog.Ok
+    width: Math.min(parent.width-4*toast.font.pixelSize, 40*toast.font.pixelSize)
+    x: (parent.width-width)/2.0
+    y: parent.height*(3.0/4.0)-height/2.0
 
-    
-    DecoratedScrollView{
-        anchors.fill: parent
-        contentWidth: availableWidth // Disable horizontal scrolling
+    text: "Lirum Larum, Löffelstiel"
+    wrapMode: Text.Wrap
 
-        // Delays evaluation and prevents binding loops
-        Binding on implicitHeight {
-            value: lbl.implicitHeight
-            delayed: true    // Prevent intermediary values from being assigned
-        }
+    color: "white"
+    bottomInset: -5
+    topInset: -5
+    leftInset: -5
+    rightInset: -5
 
-        clip: true
-
-        Label {
-            id: lbl
-            text: Global.withLinkColor(Global.textDialogLoader.text)
-            width: dlg.availableWidth
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            onLinkActivated: (link) => Qt.openUrlExternally(link)
-        }
+    horizontalAlignment: Text.AlignHCenter
+    background: Rectangle {
+        color: "teal"
+        radius: 5
     }
 
+    opacity: 0
+    SequentialAnimation {
+        id: seqA
+
+        NumberAnimation { target: toast; property: "opacity"; to: 1; duration: 400 }
+        PauseAnimation { duration: 1000 }
+        NumberAnimation { target: toast; property: "opacity"; to: 0; duration: 400 }
+    }
+
+    function doToast(string) {
+        if (seqA.running) {
+            toast.text = string + " • " + toast.text
+        } else
+            toast.text = string
+        seqA.start()
+    }
 }

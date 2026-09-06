@@ -46,7 +46,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -57,7 +57,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: backButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -112,8 +112,8 @@ Page {
             if (webView.canGoBack) {
                 webView.goBack()
             } else {
-                if (stackView.depth > 1)
-                    stackView.pop()
+                if (Global.stackView.depth > 1)
+                    Global.stackView.pop()
             }
             event.accepted = true
         }

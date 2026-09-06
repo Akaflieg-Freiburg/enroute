@@ -129,7 +129,7 @@ CenteringDialog {
             fileError.text = errorString
             fileError.open()
         } else
-            toast.doToast(qsTr("Flight route %1 saved").arg(finalFileName))
+            Global.toast.doToast(qsTr("Flight route %1 saved").arg(finalFileName))
     }
 
     LongTextDialog {

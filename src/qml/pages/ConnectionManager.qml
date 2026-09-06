@@ -33,7 +33,6 @@ Page {
 
     title: qsTr("Data Connections")
 
-    required property var appWindow
 
     // Receives active focus when the page becomes current (see main.qml), so the
     // list responds to Return/Enter and Home/End navigation.
@@ -56,7 +55,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -69,7 +68,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -84,7 +83,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("forward.html#settingsdataconnections-page")
+                Global.openManual("forward.html#settingsdataconnections-page")
             }
         }
     }

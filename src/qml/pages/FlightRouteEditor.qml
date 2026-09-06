@@ -58,7 +58,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -71,7 +71,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -107,7 +107,7 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        stackView.push("FlightRouteLibrary.qml")
+                        Global.stackView.push("FlightRouteLibrary.qml")
                     }
                 }
 
@@ -187,7 +187,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "geojson", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -196,9 +196,9 @@ Page {
                                 return
                             }
                             if (isAndroid)
-                                toast.doToast(qsTr("Flight route shared"))
+                                Global.toast.doToast(qsTr("Flight route shared"))
                             else (!isIos)
-                                toast.doToast(qsTr("Flight route exported"))
+                                Global.toast.doToast(qsTr("Flight route exported"))
                         }
                     }
 
@@ -211,7 +211,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -220,9 +220,9 @@ Page {
                                 return
                             }
                             if (isAndroid)
-                                toast.doToast(qsTr("Flight route shared"))
+                                Global.toast.doToast(qsTr("Flight route shared"))
                             else
-                                toast.doToast(qsTr("Flight route exported"))
+                                Global.toast.doToast(qsTr("Flight route exported"))
                         }
                     }
 
@@ -235,7 +235,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -244,9 +244,9 @@ Page {
                                 return
                             }
                             if (isAndroid)
-                                toast.doToast(qsTr("Flight route shared"))
+                                Global.toast.doToast(qsTr("Flight route shared"))
                             else
-                                toast.doToast(qsTr("Flight route exported"))
+                                Global.toast.doToast(qsTr("Flight route exported"))
                         }
                     }
 
@@ -259,7 +259,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toPln(), "application/xml", "pln", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -268,9 +268,9 @@ Page {
                                 return
                             }
                             if (isAndroid)
-                                toast.doToast(qsTr("Flight route shared"))
+                                Global.toast.doToast(qsTr("Flight route shared"))
                             else
-                                toast.doToast(qsTr("Flight route exported"))
+                                Global.toast.doToast(qsTr("Flight route exported"))
                         }
                     }
                 }
@@ -342,7 +342,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
+                                Global.toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -359,7 +359,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
+                                Global.toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -376,7 +376,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
+                                Global.toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -393,7 +393,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
+                                Global.toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -411,12 +411,12 @@ Page {
                         if (flightPlanText !== "") {
                             var success = PlatformAdaptor.setClipboardText(flightPlanText)
                             if (success) {
-                                toast.doToast(qsTr("Flight plan copied to clipboard"))
+                                Global.toast.doToast(qsTr("Flight plan copied to clipboard"))
                             } else {
-                                toast.doToast(qsTr("Failed to copy flight plan"))
+                                Global.toast.doToast(qsTr("Failed to copy flight plan"))
                             }
                         } else {
-                            toast.doToast(qsTr("No flight route to copy"))
+                            Global.toast.doToast(qsTr("No flight route to copy"))
                         }
                     }
                 }
@@ -432,7 +432,7 @@ Page {
                         highlighted = false
                         if (Librarian.contains(Navigator.flightRoute)) {
                             Navigator.flightRoute.clear()
-                            toast.doToast(qsTr("Flight route cleared"))
+                            Global.toast.doToast(qsTr("Flight route cleared"))
                         } else
                             clearDialog.open()
                     }
@@ -446,7 +446,7 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         Navigator.flightRoute.reverse()
-                        toast.doToast(qsTr("Flight route reversed"))
+                        Global.toast.doToast(qsTr("Flight route reversed"))
                     }
                 }
 
@@ -759,7 +759,7 @@ Page {
                                                     wpMenu.close() // Necessary on some devices, or else menu will stay open
 
                                                     WaypointLibrary.add(dragItem.modelData)
-                                                    toast.doToast(qsTr("Added %1 to waypoint library.").arg(dragItem.modelData.extendedName))
+                                                    Global.toast.doToast(qsTr("Added %1 to waypoint library.").arg(dragItem.modelData.extendedName))
                                                 }
                                             }
 
@@ -1149,7 +1149,7 @@ Page {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
-            toast.doToast(qsTr("Flight route cleared"))
+            Global.toast.doToast(qsTr("Flight route cleared"))
         }
 
         onRejected: {

@@ -189,8 +189,8 @@ Page {
             return
         }
         Navigator.aircraft = acft
-        toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
-        stackView.pop()
+        Global.toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
+        Global.stackView.pop()
     }
 
     function reloadFlightRouteList() {
@@ -253,7 +253,7 @@ Page {
             PlatformAdaptor.vibrateBrief()
             Librarian.remove(Librarian.Aircraft, page.finalFileName)
             page.reloadFlightRouteList()
-            toast.doToast(qsTr("Aircraft removed from device"))
+            Global.toast.doToast(qsTr("Aircraft removed from device"))
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
@@ -311,7 +311,7 @@ Page {
                 Librarian.rename(Librarian.Aircraft, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 renameDialog.close()
-                toast.doToast(qsTr("Aircraft renamed"))
+                Global.toast.doToast(qsTr("Aircraft renamed"))
             }
         }
         onAccepted: doRename()

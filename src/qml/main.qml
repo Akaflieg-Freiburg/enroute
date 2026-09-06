@@ -36,6 +36,7 @@ AppWindow {
     flags: ((Qt.platform.os === "android") || (Qt.platform.os === "ios")) ? Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint | Qt.Window : Qt.Window
 
     Component.onCompleted: {
+        Global.appWindow = this
         Application.styleHints.colorScheme = Qt.ColorScheme.Dark
     }
 
@@ -182,7 +183,7 @@ AppWindow {
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
                         stackView.pop()
-                        stackView.push("pages/AircraftPage.qml", {"stackView": stackView})
+                        stackView.push("pages/AircraftPage.qml")
                         drawer.close()
                     }
                 }
@@ -218,7 +219,7 @@ AppWindow {
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
                         stackView.pop()
-                        stackView.push("pages/VAC.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                        stackView.push("pages/VAC.qml")
                         drawer.close()
                     }
                 }
@@ -336,7 +337,7 @@ AppWindow {
                             enabled: Navigator.flightStatus !== Navigator.Flight
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                                stackView.push("pages/DataManagerPage.qml")
                                 libraryMenu.close()
                                 drawer.close()
                             }
@@ -430,7 +431,7 @@ AppWindow {
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
-                                stackView.push("pages/TrafficReceiver.qml", {"appWindow": view})
+                                stackView.push("pages/TrafficReceiver.qml")
                                 aboutMenu.close()
                                 drawer.close()
                             }
@@ -473,7 +474,7 @@ AppWindow {
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
-                                stackView.push("pages/InfoPage.qml", {"stackView": stackView, "toast": toast})
+                                stackView.push("pages/InfoPage.qml")
                                 aboutMenu.close()
                                 drawer.close()
                             }
@@ -734,6 +735,7 @@ AppWindow {
         focus: true
 
         Component.onCompleted: {
+            Global.stackView = this
             PlatformAdaptor.onGUISetupCompleted()
 
             if (!DataManager.aviationMaps.hasFile ||
@@ -814,7 +816,7 @@ AppWindow {
 
             function onRequestOpenAircraftPage() {
                 stackView.pop()
-                stackView.push("pages/AircraftPage.qml", {"stackView": stackView})
+                stackView.push("pages/AircraftPage.qml")
             }
 
             function onRequestOpenNearbyPage() {
@@ -864,44 +866,8 @@ AppWindow {
                    }
     }
 
-    Label {
+    Toast {
         id: toast
-
-        width: Math.min(parent.width-4*view.font.pixelSize, 40*view.font.pixelSize)
-        x: (parent.width-width)/2.0
-        y: parent.height*(3.0/4.0)-height/2.0
-
-        text: "Lirum Larum, Löffelstiel"
-        wrapMode: Text.Wrap
-
-        color: "white"
-        bottomInset: -5
-        topInset: -5
-        leftInset: -5
-        rightInset: -5
-
-        horizontalAlignment: Text.AlignHCenter
-        background: Rectangle {
-            color: "teal"
-            radius: 5
-        }
-
-        opacity: 0
-        SequentialAnimation {
-            id: seqA
-
-            NumberAnimation { target: toast; property: "opacity"; to: 1; duration: 400 }
-            PauseAnimation { duration: 1000 }
-            NumberAnimation { target: toast; property: "opacity"; to: 0; duration: 400 }
-        }
-
-        function doToast(string) {
-            if (seqA.running) {
-                toast.text = string + " • " + toast.text
-            } else
-                toast.text = string
-            seqA.start()
-        }
 
         Component.onCompleted: Global.toast = this
 
@@ -926,23 +892,11 @@ AppWindow {
         }
     }
 
-    Loader {
+    DialogLoader {
         id: dialogLoader
         anchors.fill: parent
 
-        property string title
-        property string text
-        property var dialogArgs: undefined
-
-        onLoaded: {
-            item.anchors.centerIn = Overlay.overlay
-            item.modal = true
-            if (dialogArgs && item.hasOwnProperty('dialogArgs')) {
-                item.dialogArgs = dialogArgs
-            }
-            item.open()
-        }
-
+        Component.onCompleted: Global.textDialogLoader = this
     }
 
     Loader {
@@ -952,11 +906,6 @@ AppWindow {
 
     ImportManager {
         id: importMgr
-
-        // Repeater properties
-        stackView: stackView
-        toast: toast
-        view: view
     }
 
     LongTextDialog {
@@ -1136,15 +1085,5 @@ AppWindow {
         }
     }
 
-    function openManual(pageUrl) {
-
-        if ((Qt.platform.os === "ios") ||
-                ((Qt.platform.os === "android") && (Qt.application.version < "6.7.0")))
-        {
-            stackView.push("pages/Manual.qml", {"fileName": pageUrl})
-            return
-        }
-        Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/"+pageUrl)
-    }
 }
 

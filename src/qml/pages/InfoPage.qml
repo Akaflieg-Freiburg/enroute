@@ -30,8 +30,6 @@ Page {
     id: pg
     title: qsTr("About EFN")
 
-    required property var stackView
-    required property var toast
 
     header: PageHeader {
 
@@ -50,7 +48,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                pg.stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -201,7 +199,7 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     var errorString = FileExchange.shareContent(sysInfoLabel.text, "text/plain;charset=UTF-8", "txt", "EnrouteSystemInformation")
                     if (errorString === "abort") {
-                        pg.toast.doToast(qsTr("Aborted"))
+                        Global.toast.doToast(qsTr("Aborted"))
                         return
                     }
                     if (errorString !== "") {
@@ -210,9 +208,9 @@ Page {
                         return
                     }
                     if (Qt.platform.os === "android")
-                        pg.toast.doToast(qsTr("System Info Shared"))
+                        Global.toast.doToast(qsTr("System Info Shared"))
                     else
-                        pg.toast.doToast(qsTr("System Info Exported"))
+                        Global.toast.doToast(qsTr("System Info Exported"))
 
                 }
             }

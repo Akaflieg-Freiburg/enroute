@@ -49,7 +49,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -62,7 +62,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -77,7 +77,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("forward.html#settings-page")
+                Global.openManual("forward.html#settings-page")
             }
         }
 
@@ -325,7 +325,7 @@ Page {
                 Layout.fillWidth: true
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    stackView.push("ConnectionManager.qml", {"appWindow": view})
+                    Global.stackView.push("ConnectionManager.qml")
                 }
             }
             ToolButton {
@@ -395,7 +395,7 @@ Page {
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
-                onClicked: openManual("forward.html#senseandavoid")
+                onClicked: Global.openManual("forward.html#senseandavoid")
             }
 
             WordWrappingItemDelegate {
@@ -403,7 +403,7 @@ Page {
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a flight simulator…")
-                onClicked: openManual("forward.html#simulator-tutorial")
+                onClicked: Global.openManual("forward.html#simulator-tutorial")
             }
 
             Item { // Spacer
@@ -446,7 +446,7 @@ Page {
 
         onAccepted: {
             PasswordDB.clear()
-            toast.doToast(qsTr("Password storage cleared"))
+            Global.toast.doToast(qsTr("Password storage cleared"))
         }
 
     }

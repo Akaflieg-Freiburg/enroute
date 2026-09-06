@@ -132,7 +132,7 @@ CenteringDialog {
             lbl.text = errorString
             fileError.open()
         } else
-            toast.doToast(qsTr("Aircraft %1 saved").arg(finalFileName))
+            Global.toast.doToast(qsTr("Aircraft %1 saved").arg(finalFileName))
     }
 
     CenteringDialog {

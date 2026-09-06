@@ -29,8 +29,6 @@ import "../items"
 Page {
     id: pg
 
-    required property var dialogLoader
-    required property var stackView
 
     title: qsTr("Visual Approach Charts")
 
@@ -52,7 +50,7 @@ Page {
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
                 Global.currentVAC = VACLibrary.materialize(model.modelData)
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
     }
@@ -75,7 +73,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                pg.stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -162,7 +160,7 @@ Page {
         text: VACLibrary.isEmpty
               ? Global.withLinkColor("<h3>"+ qsTr("Sorry!") + "</h3><p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.")+"</p>")
               : qsTr("<h3>Sorry!</h3><p>No approach charts match your filter.</p>")
-        onLinkActivated: openManual("forward.html#vac-tutorial")
+        onLinkActivated: Global.openManual("forward.html#vac-tutorial")
 
     }
 

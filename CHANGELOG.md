@@ -224,6 +224,10 @@
   queued voice notifications are spoken as soon as the engine is ready instead
   of after a polling delay.
 
+- Fixed an error on iOS where a file whose name contains spaces or special
+  characters could not be opened from another app, because the file URL was
+  not decoded.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

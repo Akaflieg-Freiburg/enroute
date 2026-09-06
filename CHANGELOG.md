@@ -245,6 +245,9 @@
 - Fixed an error where entering a waypoint elevation in meters was ignored
   unless the feet field happened to be valid as well.
 
+- Fixed an error where the OK button of the vector-map import dialog did not
+  react to the map name being typed.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

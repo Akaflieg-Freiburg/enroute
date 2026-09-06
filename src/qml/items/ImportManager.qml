@@ -95,7 +95,7 @@ Item {
                 if (Navigator.flightRoute.size > 0)
                     importFlightRouteDialog.open()
                 else
-                    importFlightRouteDialog.onAccepted()
+                    importFlightRouteDialog.importRoute()
                 return
             }
             if (fileFunction === FileExchange.Image) {
@@ -185,7 +185,7 @@ Item {
                     if (Navigator.flightRoute.size > 0)
                         importFlightRouteDialog.open()
                     else
-                        importFlightRouteDialog.onAccepted()
+                        importFlightRouteDialog.importRoute()
                 }
             }
 
@@ -400,10 +400,11 @@ Item {
                 Layout.fillWidth: true
                 focus: true
 
-                onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
+                onDisplayTextChanged: importVectorMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
 
                 onAccepted: {
                     if (mapNameVector.text === "")
+
                         return
                     importVectorMapDialog.accept()
                 }
@@ -421,8 +422,9 @@ Item {
 
         onAboutToShow: {
             mapNameVector.text = ""
-            importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
+            importVectorMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
         }
+
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
@@ -485,10 +487,13 @@ Item {
 
         text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
 
-        onAccepted: {
+        // Also called directly when there is no current route to overwrite,
+        // in which case the dialog is not shown.
+        function importRoute() {
             PlatformAdaptor.vibrateBrief()
 
             var errorString = ""
+
 
             if (importManager.fileFunction === FileExchange.FlightRoute)
                 errorString = Navigator.flightRoute.load(importManager.filePath)
@@ -504,10 +509,13 @@ Item {
             }
             toast.doToast( qsTr("Flight route imported") )
         }
+
+        onAccepted: importRoute()
     }
 
     LongTextDialog {
         id: importTripKitDialog
+
 
         title: qsTr("Import Trip Kit?")
         standardButtons: Dialog.No | Dialog.Yes

@@ -56,25 +56,39 @@ StackLayout {
         var minutes = 60.0*(Math.abs(value) - Math.floor(Math.abs(value)))
         var seconds = 60.0*(minutes - Math.floor(minutes))
 
+        // The degree field carries the sign of the whole value. Math.trunc()
+        // of a value between -1 and 0 is -0, which renders as "0" and would
+        // lose the sign, so the sign is written explicitly.
+        var degreeText = (value < 0 ? "-" : "") + Math.trunc(Math.abs(value))
+
         d_d.text = value.toLocaleString(Qt.locale(), 'f', 5)
         d_d.cursorPosition = 0
 
-        dm_d.text = Math.trunc(value)
+        dm_d.text = degreeText
         dm_d.cursorPosition = 0
         dm_m.text = minutes.toLocaleString(Qt.locale(), 'f', 3)
         dm_m.cursorPosition = 0
 
-        dms_d.text = Math.trunc(value)
+        dms_d.text = degreeText
         dms_d.cursorPosition = 0
+
         dms_m.text = Math.floor(minutes)
         dms_m.cursorPosition = 0
         dms_s.text = seconds.toLocaleString(Qt.locale(), 'f', 1)
         dms_s.cursorPosition = 0
     }
 
+    // Sign of a degree field. Read from the text, since the parsed number
+    // cannot distinguish "-0" from "0".
+    function isNegative(text) {
+        var trimmed = text.trim()
+        return trimmed.startsWith("-") || trimmed.startsWith(Qt.locale().negativeSign)
+    }
+
     Component.onCompleted: setTexts()
     onCurrentIndexChanged: setTexts()
     onValueChanged: setTexts()
+
 
     RowLayout { // Degree
         id: d
@@ -123,12 +137,11 @@ StackLayout {
             if (!dm_d.acceptableInput || !dm_m.acceptableInput)
                 return
 
-            var dVal = Number.fromLocaleString(Qt.locale(), dm_d.text)
+            var dVal = Math.abs(Number.fromLocaleString(Qt.locale(), dm_d.text))
             var mVal = Number.fromLocaleString(Qt.locale(), dm_m.text)
-            if (dVal >= 0)
-                value = dVal + mVal/60.0
-            else
-                value = dVal - mVal/60.0
+            var magnitude = dVal + mVal/60.0
+            value = isNegative(dm_d.text) ? -magnitude : magnitude
+
         }
 
         MyTextField {
@@ -183,13 +196,12 @@ StackLayout {
             if (!dms_d.acceptableInput || !dms_m.acceptableInput || !dms_s.acceptableInput)
                 return
 
-            var dVal = Number.fromLocaleString(Qt.locale(), dms_d.text)
+            var dVal = Math.abs(Number.fromLocaleString(Qt.locale(), dms_d.text))
             var mVal = Number.fromLocaleString(Qt.locale(), dms_m.text)
             var sVal = Number.fromLocaleString(Qt.locale(), dms_s.text)
-            if (dVal >= 0)
-                value = dVal + mVal/60.0 + sVal/3600.0
-            else
-                value = dVal - mVal/60.0 - sVal/3600.0
+            var magnitude = dVal + mVal/60.0 + sVal/3600.0
+            value = isNegative(dms_d.text) ? -magnitude : magnitude
+
         }
 
         MyTextField {

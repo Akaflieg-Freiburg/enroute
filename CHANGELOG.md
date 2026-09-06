@@ -237,6 +237,11 @@
 - Fixed an error on Android where changing the system language restarted the
   app so abruptly that settings changed shortly before could be lost.
 
+- Fixed an error where editing a coordinate between 1° west or south and 0° in
+  degrees-and-minutes or degrees-minutes-seconds notation lost the sign, so
+  that a waypoint near the equator or the Greenwich meridian flipped
+  hemisphere.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

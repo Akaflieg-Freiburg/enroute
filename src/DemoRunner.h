@@ -67,10 +67,7 @@ public:
      *
      *  @param engine Pointer to QQmlApplicationEngine
      */
-    void setEngine(QQmlApplicationEngine* engine)
-    {
-        m_engine = engine;
-    }
+    void setEngine(QQmlApplicationEngine* engine);
 
 public slots:
     // Begin to remote-control the app
@@ -85,9 +82,43 @@ public slots:
     // Begin to remote-control the app
     void generateManualScreenshots();
 
+    /*! \brief Open every page and dialog once, then quit
+     *
+     *  This is the implementation of the command line option '--smoke-test'.
+     *  It seeds a little data, walks through all pages and dialogs of the user
+     *  interface, collects the warnings and errors that the QML engine reports
+     *  along the way (including run-time errors in bindings and signal
+     *  handlers) and quits the app: with exit code 1 if there were any
+     *  problems, with exit code 0 otherwise. The flight log page and dialog are
+     *  not visited while the flight log is under development.
+     */
+    void runSmokeTest();
+
 signals:
     /*! \brief Emitted to indicate that the GUI return to the main page */
     void requestClosePages();
+
+    /*! \brief Emitted to request that the drawer with the main menu opens or closes
+     *
+     *  @param open True to open the drawer, false to close it
+     */
+    void requestOpenDrawer(bool open);
+
+    /*! \brief Emitted to request that a dialog is opened via Global.dialogLoader
+     *
+     *  @param url URL of the dialog, relative to main.qml
+     *
+     *  @param properties Initial property values for the dialog
+     */
+    void requestOpenDialog(QString url, QVariantMap properties);
+
+    /*! \brief Emitted to request that a page is pushed onto the main stack view
+     *
+     *  All other pages are popped first.
+     *
+     *  @param url URL of the page, relative to main.qml
+     */
+    void requestOpenPage(QString url);
 
     /*! \brief Emitted to indicate that the GUI close open the "Waypoint Description" dialog */
     void requestCloseWaypointDescription();
@@ -152,4 +183,8 @@ private:
     void generateScreenshotsForDevices(const QStringList &, bool);
 
     static void saveScreenshot(bool, QQuickWindow *, const QString&);
+    // Warnings and errors reported by the QML engine since setEngine() was
+    // called, see runSmokeTest()
+    QStringList m_qmlProblems;
+
 };

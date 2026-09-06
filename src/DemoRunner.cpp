@@ -22,6 +22,7 @@
 #include <QDir>
 #include <QEventLoop>
 #include <QGuiApplication>
+#include <QQmlError>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QTimer>
@@ -33,10 +34,13 @@
 #if defined(Q_OS_LINUX) || defined(Q_OS_MACOS) || defined(Q_OS_IOS)
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
+#include "Librarian.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/VACLibrary.h"
+#include "geomaps/WaypointLibrary.h"
 #include "ios/ObjCAdapter.h"
 #include "navigation/Navigator.h"
+#include "notam/NOTAMList.h"
 #include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
@@ -674,4 +678,127 @@ void DemoRunner::saveScreenshot(bool manual, QQuickWindow* window, const QString
         Platform::PlatformAdaptor_Abstract::saveScreenshot(window->grabWindow(), path);
     }
 
+}
+
+
+void DemoRunner::setEngine(QQmlApplicationEngine* engine)
+{
+    m_engine = engine;
+
+    // Collect everything that the QML engine complains about. This includes
+    // run-time errors in bindings and signal handlers, which is what a wrong
+    // id or a missing required property produces. The smoke test reports
+    // them; main() calls setEngine() before main.qml is loaded, so that
+    // problems during start-up are seen as well.
+    connect(m_engine, &QQmlApplicationEngine::warnings, this, [this](const QList<QQmlError>& warnings) {
+        for (const auto& warning : warnings)
+        {
+            m_qmlProblems << warning.toString();
+        }
+    });
+}
+
+
+void DemoRunner::runSmokeTest()
+{
+    Q_ASSERT(m_engine != nullptr);
+
+    // Seed some data, so that the lists on the pages have entries and their
+    // delegates are instantiated. main() enables the QStandardPaths test mode
+    // for the smoke test, so none of this reaches the user's files.
+    auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate(false, GlobalObject::trafficDataProvider());
+    GlobalObject::trafficDataProvider()->addDataSource(trafficSimulator);
+    trafficSimulator->connectToTrafficReceiver();
+    const GeoMaps::Waypoint waypointA(QGeoCoordinate(48.0228, 7.8322), u"Smoke Test A"_s);
+    const GeoMaps::Waypoint waypointB(QGeoCoordinate(48.3695, 7.8277), u"Smoke Test B"_s);
+    GlobalObject::waypointLibrary()->add(waypointA);
+    GlobalObject::navigator()->flightRoute()->clear();
+    GlobalObject::navigator()->flightRoute()->append(waypointA);
+    GlobalObject::navigator()->flightRoute()->append(waypointB);
+    (void)GlobalObject::navigator()->flightRoute()->save(Librarian::fullPath(Librarian::Routes, u"Smoke Test"_s));
+    (void)GlobalObject::navigator()->aircraft().save(Librarian::fullPath(Librarian::Aircraft, u"Smoke Test"_s));
+    auto* weatherStation = new Weather::Observer(this);
+    weatherStation->setWaypoint(waypointA);
+    delay(2s);
+
+    // Pages. MapPage is the initial page and always present; the flight log
+    // page is skipped while the flight log is under development.
+    const QStringList pages = {u"AircraftLibrary.qml"_s,
+                               u"AircraftPage.qml"_s,
+                               u"BugReportPage.qml"_s,
+                               u"ConnectionManager.qml"_s,
+                               u"DataManagerPage.qml"_s,
+                               u"DonatePage.qml"_s,
+                               u"FlightRouteEditor.qml"_s,
+                               u"FlightRouteLibrary.qml"_s,
+                               u"InfoPage.qml"_s,
+                               u"Manual.qml"_s,
+                               u"Nearby.qml"_s,
+                               u"ParticipatePage.qml"_s,
+                               u"Positioning.qml"_s,
+                               u"PressureAltitude.qml"_s,
+                               u"PrivacyPage.qml"_s,
+                               u"SettingsPage.qml"_s,
+                               u"TrafficReceiver.qml"_s,
+                               u"VAC.qml"_s,
+                               u"WaypointLibraryPage.qml"_s,
+                               u"Weather.qml"_s};
+    for (const auto& page : pages)
+    {
+        qInfo().noquote() << u"Smoke test: opening page %1"_s.arg(page);
+        emit requestOpenPage(u"pages/%1"_s.arg(page));
+        delay(1s);
+    }
+    emit requestClosePages();
+    delay(500ms);
+
+    // Dialogs, with the properties they require. FirstRunDialog is skipped
+    // because it requests system permissions; the flight log entry editor is
+    // skipped while the flight log is under development.
+    const QList<std::pair<QString, QVariantMap>> dialogs = {
+        {u"AddBTDeviceDialog.qml"_s, {}},
+        {u"AircraftSaveDialog.qml"_s, {}},
+        {u"ConnectionInfoDialog.qml"_s, {{u"connection"_s, QVariant::fromValue<QObject*>(trafficSimulator)}}},
+        {u"ErrorDialog.qml"_s, {}},
+        {u"FlightRouteSaveDialog.qml"_s, {}},
+        {u"LongTextDialog.qml"_s, {{u"title"_s, u"Smoke test"_s}, {u"text"_s, u"<p>Smoke test</p>"_s}}},
+        {u"LongTextDialogMD.qml"_s, {{u"title"_s, u"Smoke test"_s}, {u"text"_s, u"# Smoke test"_s}}},
+        {u"MetarTafDialog.qml"_s, {{u"weatherStation"_s, QVariant::fromValue(weatherStation)}}},
+        {u"NotamListDialog.qml"_s, {{u"notamList"_s, QVariant::fromValue(NOTAM::NOTAMList())}, {u"waypoint"_s, QVariant::fromValue(waypointA)}}},
+        {u"PasswordDialog.qml"_s, {}},
+        {u"PasswordStorageDialog.qml"_s, {}},
+        {u"PrivacyWarning.qml"_s, {{u"openExternally"_s, false}, {u"text"_s, u"Smoke test"_s}, {u"url"_s, u"https://akaflieg-freiburg.github.io/enroute/"_s}}},
+        {u"RenameVACDialog.qml"_s, {{u"oldName"_s, u"Smoke test"_s}}},
+        {u"WaypointDescription.qml"_s, {{u"waypoint"_s, QVariant::fromValue(waypointA)}}},
+        {u"WaypointEditor.qml"_s, {{u"waypoint"_s, QVariant::fromValue(waypointA)}}},
+    };
+    for (const auto& [dialog, properties] : dialogs)
+    {
+        qInfo().noquote() << u"Smoke test: opening dialog %1"_s.arg(dialog);
+        emit requestOpenDialog(u"dialogs/%1"_s.arg(dialog), properties);
+        delay(1s);
+        emit requestClosePages();
+        delay(300ms);
+    }
+
+    // Main menu
+    qInfo().noquote() << u"Smoke test: opening the main menu"_s;
+    emit requestOpenDrawer(true);
+    delay(500ms);
+    emit requestOpenDrawer(false);
+    delay(500ms);
+
+    const auto problems = m_qmlProblems;
+    if (problems.isEmpty())
+    {
+        qInfo().noquote() << u"Smoke test passed: %1 pages and %2 dialogs opened without QML warnings."_s.arg(pages.size()).arg(dialogs.size());
+        QGuiApplication::exit(0);
+        return;
+    }
+    qCritical().noquote() << u"Smoke test failed. The QML engine reported %1 problem(s):"_s.arg(problems.size());
+    for (const auto& problem : problems)
+    {
+        qCritical().noquote() << u"  %1"_s.arg(problem);
+    }
+    QGuiApplication::exit(1);
 }

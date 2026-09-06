@@ -23,6 +23,7 @@
 #include <QGuiApplication>
 #include <QIcon>
 #include <QQmlApplicationEngine>
+#include <QStandardPaths>
 #include <QQmlContext>
 #include <QQmlProperty>
 #include <QQuickItem>
@@ -87,6 +88,14 @@ auto main(int argc, char *argv[]) -> int
 #endif
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
     QGuiApplication app(argc, argv);
+
+    // The smoke test (see DemoRunner::runSmokeTest) must not touch the user's
+    // data. Enable the QStandardPaths test mode before anything computes a
+    // data path.
+    if (app.arguments().contains(u"--smoke-test"_s))
+    {
+        QStandardPaths::setTestModeEnabled(true);
+    }
 #else
     QApplication app(argc, argv);
     QGuiApplication::setDesktopFileName(QStringLiteral("de.akaflieg_freiburg.enroute"));
@@ -159,6 +168,11 @@ auto main(int argc, char *argv[]) -> int
         QCoreApplication::translate("main",
                                     "Run simulator and generate screenshots for the manual"));
     parser.addOption(manualScreenshotOption);
+    QCommandLineOption const smokeTestOption(
+        u"smoke-test"_s,
+        QCoreApplication::translate("main",
+                                    "Open every page and dialog once, then quit. The exit code is 1 if the QML engine reported problems. Runs with QStandardPaths test mode, so user data is untouched."));
+    parser.addOption(smokeTestOption);
     QCommandLineOption const extractStringOption(
         u"string"_s,
         QCoreApplication::translate(
@@ -221,6 +235,11 @@ auto main(int argc, char *argv[]) -> int
     engine->addImportPath(u":/"_s);
 
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
+    if (parser.isSet(smokeTestOption))
+    {
+        // Must happen before the load, so that start-up problems are recorded
+        GlobalObject::demoRunner()->setEngine(engine);
+    }
     engine->load(u"qrc:/qml/main.qml"_s);
 #if defined(Q_OS_ANDROID)
     QNativeInterface::QAndroidApplication::hideSplashScreen(1);
@@ -265,6 +284,10 @@ auto main(int argc, char *argv[]) -> int
     {
         GlobalObject::demoRunner()->setEngine(engine);
         QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::generateManualScreenshots);
+    }
+    if (parser.isSet(smokeTestOption))
+    {
+        QTimer::singleShot(2s, GlobalObject::demoRunner(), &DemoRunner::runSmokeTest);
     }
 
     // Load GUI and enter event loop

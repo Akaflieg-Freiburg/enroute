@@ -1,4 +1,5 @@
 - `Adobe Glyph List For New Fonts <https://github.com/adobe-type-tools/agl-aglfn>`_. BSD 3-Clause "New" or "Revised" License.
+- `AndroidX libraries <https://developer.android.com/jetpack/androidx>`_. Apache License 2.0.
 - `Anti-aliasing rasterizer from FreeType 2 <http://www.freetype.org>`_. Freetype Project License or GNU General Public License v2.0 only.
 - `Apache Tika MimeType Definitions <https://github.com/apache/tika/tree/main/tika-core/src/main/resources/org/apache/tika/mime>`_. Apache License 2.0.
 - `BLAKE2 (reference implementation) <https://blake2.net/>`_. Creative Commons Zero v1.0 Universal or Apache License 2.0.
@@ -60,7 +61,6 @@
 - `Poly2Tri Polygon Triangulation Library <https://github.com/greenm01/poly2tri>`_. BSD 3-clause "New" or "Revised" License.
 - `Presentation Time Protocol <https://wayland.freedesktop.org>`_. MIT License.
 - QEventDispatcher on macOS. BSD 3-clause "New" or "Revised" License.
-- `QHttpEngine <https://github.com/nitroshare/qhttpengine>`_. MIT License.
 - `Qt Toolkit, Libraries and Modules <https://qt.io>`_. GNU General Public License v3.0.
 - `Secure Hash Algorithm SHA-1 <http://www.dominik-reichl.de/projects/csha1/>`_. Public Domain.
 - Secure Hash Algorithm SHA-3 - brg_endian. BSD 2-clause "Simplified" License.
@@ -71,6 +71,7 @@
 - Smooth Scaling Algorithm. BSD 2-clause "Simplified" License and Imlib2 License.
 - `SQLite <https://www.sqlite.org/>`_. SQLite Blessing.
 - `sRGB color profile icc file <http://www.color.org/>`_. International Color Consortium License.
+- `sunset <https://github.com/buelowp/sunset>`_. GNU General Public License v2.0 or later.
 - `The Public Suffix List <http://publicsuffix.org/>`_. Mozilla Public License 2.0.
 - `TIFF Software Distribution (libtiff) <http://www.simplesystems.org/libtiff/>`_. libtiff License.
 - `TinyCBOR <https://github.com/intel/tinycbor>`_. MIT License.
@@ -79,6 +80,7 @@
 - `underscore <https://github.com/jashkenas/underscore>`_. MIT License.
 - `Unicode Character Database (UCD) <https://www.unicode.org/ucd/>`_. Unicode License Agreement - Data Files and Software (2016).
 - `Unicode Common Locale Data Repository (CLDR) <https://cldr.unicode.org/>`_. Unicode License v3.
+- `usb-serial-for-android <https://github.com/mik3y/usb-serial-for-android>`_. MIT License.
 - `Valgrind <http://valgrind.org/>`_. BSD 4-clause "Original" or "Old" License.
 - `Vulkan API Registry <https://www.khronos.org/>`_. Apache License 2.0 or MIT License.
 - `Vulkan Memory Allocator <https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator>`_. MIT License.

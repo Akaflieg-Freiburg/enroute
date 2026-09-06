@@ -257,6 +257,10 @@
 - Fixed the confirmation shown after renaming an approach chart, which spoke
   of a flight route.
 
+- Fixed the list of third-party licenses, which credited QHttpEngine instead
+  of the sunset library that is actually used, and which did not mention the
+  usb-serial-for-android and AndroidX libraries shipped in the Android app.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

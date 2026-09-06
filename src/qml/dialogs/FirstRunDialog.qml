@@ -152,15 +152,16 @@ CenteringDialog {
                             }
                         }
 
-                        if (Global.locationPermission.status === Qt.PermissionStatus.Denied)
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Undetermined)
                         {
                             result += "<strong>"+qsTr("Please grant location permissions, so we can suggest maps to download.")+"</strong>"
                         }
 
-                        if (Global.locationPermission.status === Qt.PermissionStatus.Undetermined)
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Denied)
                         {
                             result += "<strong>"+qsTr("We're unable to suggest maps to download because the location permission was denied.")+"</strong>"
                         }
+
 
                         result += "</p>"
 

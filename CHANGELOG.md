@@ -251,6 +251,9 @@
 - Fixed an error where the decoded TAF text was shown even when no TAF was
   available.
 
+- Fixed the first-run dialog, which showed the message for a denied location
+  permission while the permission was still undetermined, and vice versa.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

@@ -104,8 +104,8 @@ ListView {
     Keys.onEnterPressed: (event) => listView.activateCurrentItem(event)
 
     function activateCurrentItem(event) {
-        if (listView.currentItem && listView.currentItem.clicked) {
-            listView.currentItem.clicked()
+        if (listView.currentItem && listView.currentItem.clicked) { // qmllint disable missing-property
+            listView.currentItem.clicked() // qmllint disable missing-property
             event.accepted = true
         }
     }
@@ -124,8 +124,8 @@ ListView {
         // The delegate for index 0 may not exist yet after a filter change.
         listView.forceLayout()
         var item = listView.itemAtIndex(0)
-        if (item && item.clicked) {
-            item.clicked()
+        if (item && item.clicked) { // qmllint disable missing-property
+            item.clicked() // qmllint disable missing-property
         }
     }
 

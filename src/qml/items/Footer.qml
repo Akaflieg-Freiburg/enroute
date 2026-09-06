@@ -22,7 +22,7 @@ import QtQuick.Controls
 import akaflieg_freiburg.enroute
 
 
-ToolBar {
+Pane {
     width: parent.width
     topPadding: font.pixelSize
     bottomPadding: SafeInsets.bottom+font.pixelSize

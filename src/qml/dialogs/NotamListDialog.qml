@@ -190,7 +190,7 @@ CenteringDialog {
 
             clip: true
 
-            model: Array.from(notamListDialog.notamList.notams)
+            model: Array.from(notamListDialog.notamList.notams) // qmllint disable unresolved-type
                         .filter((notam) => Librarian.matches(notam.icaoLocation + " " + notam.number + " " + notam.text,
                                                              notamFilter.filter))
 

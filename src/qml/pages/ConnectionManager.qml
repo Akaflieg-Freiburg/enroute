@@ -96,7 +96,7 @@ Page {
 
         clip: true
 
-        model: TrafficDataProvider.dataSources
+        model: TrafficDataProvider.dataSources // qmllint disable unresolved-type
 
         header: Label {
             height: 2*implicitHeight

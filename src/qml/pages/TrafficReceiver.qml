@@ -538,7 +538,7 @@ Page {
                 Layout.columnSpan: 3
                 clip: true
 
-                model: trafficObserver.traffic
+                model: trafficObserver.traffic // qmllint disable unresolved-type
                 delegate: trafficDelegate
                 ScrollIndicator.vertical: ScrollIndicator {}
 

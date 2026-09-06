@@ -63,7 +63,7 @@ SideviewQuickItem {
             strokeColor: rawSideView.terrainStrokeColor
             fillColor: rawSideView.terrainFillColor
 
-            PathPolyline { path: rawSideView.terrain }
+            PathPolyline { path: rawSideView.terrain } // qmllint disable unresolved-type
         }
 
         ShapePath {

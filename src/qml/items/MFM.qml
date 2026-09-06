@@ -243,7 +243,7 @@ Item {
                         target: null
 
                         // Work around https://bugreports.qt.io/browse/QTBUG-87815
-                        enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
+                        enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as Popup).opened)
 
                         onActiveTranslationChanged: function(delta) {
                             // Switching "Follow GPS" off is deliberately NOT done in onActiveChanged:
@@ -782,7 +782,7 @@ Item {
                     target: null
 
                     // Work around https://bugreports.qt.io/browse/QTBUG-87815
-                    enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
+                    enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as Popup).opened)
 
                     onActiveTranslationChanged: (delta) => cl.SplitView.preferredHeight -= delta.y
 

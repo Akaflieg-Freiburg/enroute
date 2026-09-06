@@ -54,9 +54,9 @@ AppWindow {
     // PlatformAdaptor.safeInsets, see below.)
     SafeArea.additionalMargins.bottom: {
         if (Qt.platform.os === "ios") {
-            if (!Qt.inputMethod.visible)
+            if (!Qt.inputMethod.visible) // qmllint disable missing-property
                 return 0
-            var kr = Qt.inputMethod.keyboardRectangle
+            var kr = Qt.inputMethod.keyboardRectangle // qmllint disable missing-property
             if (kr.height <= 0) // Empty rectangle, not trustworthy
                 return 0
             return Math.max(0, view.height - kr.y)
@@ -721,9 +721,9 @@ AppWindow {
         // specific control focused on appearance expose it as defaultFocusItem;
         // focus it here whenever the current page changes (push/pop).
         function focusCurrentPage() {
-            if (currentItem && currentItem.defaultFocusItem &&
+            if (currentItem && currentItem.defaultFocusItem && // qmllint disable missing-property
                 (Qt.platform.os !== "android") && (Qt.platform.os !== "ios"))
-                currentItem.defaultFocusItem.forceActiveFocus()
+                currentItem.defaultFocusItem.forceActiveFocus() // qmllint disable missing-property
         }
         onCurrentItemChanged: focusCurrentPage()
 
@@ -811,7 +811,7 @@ AppWindow {
             function onRequestClosePages() {
                 stackView.pop()
                 if (Global.dialogLoader.item)
-                    Global.dialogLoader.item.close()
+                    (Global.dialogLoader.item as Popup).close()
             }
 
             function onRequestOpenAircraftPage() {
@@ -837,7 +837,7 @@ AppWindow {
             function onRequestOpenWeatherDialog(station) {
                 Global.dialogLoader.setSource("dialogs/MetarTafDialog.qml",
                                               {"weatherStation": station})
-                Global.dialogLoader.item.open()
+                (Global.dialogLoader.item as Popup).open()
             }
 
             function onRequestVAC(vacName) {
@@ -900,7 +900,7 @@ AppWindow {
     }
 
     Loader {
-        onLoaded: item.open()
+        onLoaded: (item as Popup).open()
         Component.onCompleted: Global.dialogLoader = this
     }
 

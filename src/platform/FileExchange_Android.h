@@ -114,7 +114,7 @@ public:
      *  @param mimeType A space-separated list of mime types for that that
      *  should be selectable
      */
-    Q_INVOKABLE static void openFilePicker(const QString& mimeType);
+    void openFilePicker(const QString& mimeType) override;
 
 public slots:
     /*! \brief Implements pure virtual method from FileExchange_Abstract */

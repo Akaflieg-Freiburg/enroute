@@ -223,7 +223,8 @@ CenteringDialog {
     closePolicy: Popup.NoAutoClose
     modal: true
 
-    title: stack.currentItem ? stack.currentItem.title : ""
+    // The pages of the stack are plain items that carry a title and an accept()
+    title: stack.currentItem ? stack.currentItem.title : "" // qmllint disable missing-property
 
     StackView {
         id: stack
@@ -264,7 +265,7 @@ CenteringDialog {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stack.currentItem.accept()
+                stack.currentItem.accept() // qmllint disable missing-property
                 if (stack.depth > 1)
                     stack.pop()
                 else

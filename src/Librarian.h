@@ -27,6 +27,7 @@
 
 #include "GlobalObject.h"
 #include "navigation/Aircraft.h"
+#include "navigation/FlightRoute.h"
 #include "units/ByteSize.h"
 
 
@@ -153,7 +154,7 @@ public:
      *
      * @returns Pointer to the object, or a nullptr in case of error.
      */
-    [[nodiscard]] Q_INVOKABLE static QObject* get(Librarian::Library library, const QString& baseName) ;
+    [[nodiscard]] Q_INVOKABLE static Navigation::FlightRoute* get(Librarian::Library library, const QString& baseName);
 
     /*! \brief Exposes string stored in QRessource to QML
      *

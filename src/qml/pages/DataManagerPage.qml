@@ -359,7 +359,7 @@ Page {
                 // DecoratedListView must keep working. The field is reached by
                 // tap or by Tab.
                 focus: mapsTab.SwipeView.isCurrentItem
-                model: Array.from(DataManager.mapSets.downloadables)
+                model: Array.from(DataManager.mapSets.downloadables) // qmllint disable unresolved-type
                             .filter((mapSet) => Librarian.matches(mapSet.objectName, mapsFilter.filter))
                 delegate: MapSet {}
 
@@ -470,7 +470,7 @@ Page {
             Layout.fillWidth: true
             clip: true
             focus: SwipeView.isCurrentItem
-            model: DataManager.databases.downloadables
+            model: DataManager.databases.downloadables // qmllint disable unresolved-type
             delegate: MapSet {}
 
             section.property: "section"

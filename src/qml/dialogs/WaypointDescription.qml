@@ -97,7 +97,7 @@ CenteringDialog {
         Label { // METAR info
             Loader {
                 id: secondaryDlgLoader
-                onLoaded: item.open()
+                onLoaded: (item as Popup).open()
             }
             Observer {
                 id: obs
@@ -139,7 +139,7 @@ CenteringDialog {
             Loader {
                 // WARNING This does not really belong here.
                 id: dlgLoader
-                onLoaded: item.open()
+                onLoaded: (item as Popup).open()
             }
 
             property notamList notamList: {

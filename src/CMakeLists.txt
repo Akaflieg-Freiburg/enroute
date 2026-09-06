@@ -577,6 +577,7 @@ qt_add_qml_module(${PROJECT_NAME}
     DEPENDENCIES
     QtPositioning
     QtQuick
+    QtTextToSpeech
     QML_FILES
     qml/main.qml
     qml/dialogs/AddBTDeviceDialog.qml

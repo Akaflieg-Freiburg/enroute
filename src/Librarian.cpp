@@ -426,7 +426,7 @@ auto Librarian::exists(Librarian::Library library, const QString &baseName) -> b
 }
 
 
-auto Librarian::get(Librarian::Library library, const QString &baseName) -> QObject *
+auto Librarian::get(Librarian::Library library, const QString &baseName) -> Navigation::FlightRoute *
 {
     if (library == Routes)
     {

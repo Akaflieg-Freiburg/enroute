@@ -114,6 +114,10 @@ Map {
     property real animatedTT: PositionProvider.lastValidTT.toDEG()
     Behavior on animatedTT { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
 
+    // MapLibre declares the style parameters as QJsonObject, which QML fills from
+    // object literals at run time; qmllint cannot see that, nor the plugin's
+    // types, so its checks are switched off for this block.
+    // qmllint disable incompatible-type unresolved-type
     MapLibre.style: Style {
         id: style
 
@@ -758,6 +762,7 @@ Map {
             }
         }
     }
+    // qmllint enable incompatible-type unresolved-type
 
 
     //
@@ -841,7 +846,7 @@ Map {
     }
 
     MapItemView { // Labels for traffic opponents
-        model: TrafficDataProvider.trafficObjects
+        model: TrafficDataProvider.trafficObjects // qmllint disable unresolved-type
         delegate: Component {
             TrafficLabel {
                 bearing: flightMap.bearing
@@ -934,7 +939,7 @@ Map {
     }
 
     MapItemView { // Traffic opponents
-        model: TrafficDataProvider.trafficObjects
+        model: TrafficDataProvider.trafficObjects // qmllint disable unresolved-type
         delegate: Component {
             Traffic {
                 bearing: flightMap.bearing

@@ -81,6 +81,6 @@ Item {
 
     Loader {
         id: wpDescriptionLoader
-        onLoaded: item.open()
+        onLoaded: (item as Popup).open()
     }
 }

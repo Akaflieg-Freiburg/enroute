@@ -157,7 +157,7 @@ Page {
 
             clip: true
 
-            model: Array.from(obsList.observers)
+            model: Array.from(obsList.observers) // qmllint disable unresolved-type
                         .filter((observer) => Librarian.matches(
                                     observer.waypoint.name + " " + observer.waypoint.ICAOCode,
                                     stationFilter.filter))
@@ -263,6 +263,6 @@ Page {
 
     Loader {
         id: dlgLoader
-        onLoaded: item.open()
+        onLoaded: (item as Popup).open()
     }
 } // Page

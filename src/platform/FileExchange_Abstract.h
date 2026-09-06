@@ -84,6 +84,16 @@ public:
      */
     Q_INVOKABLE virtual void importContent() = 0;
 
+    /*! \brief Open the system file picker
+     *
+     *  On platforms that provide a system file picker (Android), this opens the
+     *  picker and imports the file chosen by the user. The default
+     *  implementation does nothing.
+     *
+     *  @param mimeType MIME type used to filter the files shown
+     */
+    Q_INVOKABLE virtual void openFilePicker(const QString& mimeType) { Q_UNUSED(mimeType) }
+
     /*! \brief Share content
      *
      * On desktop systems, this method is supposed to show a file dialog to save

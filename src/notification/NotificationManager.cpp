@@ -54,15 +54,20 @@ Notifications::NotificationManager::NotificationManager(QObject *parent) : Globa
 void Notifications::NotificationManager::deferredInitialization()
 {
 #if defined(Q_OS_LINUX) and not defined(Q_OS_ANDROID)
-    // Under Linux, the constructor of QTextToSpeech is extremely slow. For that reason we run the constructor in a separate thread.
-    m_speakerFuture = QtConcurrent::run([this]() { setupSpeaker();} );
+    // Under Linux, the constructor of QTextToSpeech is extremely slow. For that
+    // reason we run the constructor in a separate thread. Everything that
+    // touches this object, the member m_speaker or the QML engine happens in
+    // the continuation, which runs in the GUI thread.
+    m_speakerFuture = QtConcurrent::run(&NotificationManager::createSpeaker, thread());
+    (void)m_speakerFuture.then(this, [this](QTextToSpeech* speaker) { adoptSpeaker(speaker); });
 #else
     // On other operating systems, we construct the QTextToSpeech object
     // directly.
     //
     // Note: under Android, QTextToSpeech MUST be created in the GUI thread
-    setupSpeaker();
+    adoptSpeaker(createSpeaker(thread()));
 #endif
+
 
     m_speechBreakTimer.setInterval(1s);
     m_speechBreakTimer.setSingleShot(true);
@@ -226,28 +231,40 @@ void Notifications::NotificationManager::onSpeakerStateChanged(QTextToSpeech::St
     }
 }
 
-void Notifications::NotificationManager::setupSpeaker()
+QTextToSpeech* Notifications::NotificationManager::createSpeaker(QThread* thread)
 {
     auto *speaker = new QTextToSpeech();
-    speaker->moveToThread(thread());
+    speaker->moveToThread(thread);
+    return speaker;
+}
+
+void Notifications::NotificationManager::adoptSpeaker(QTextToSpeech* speaker)
+{
+    if (speaker == nullptr)
+    {
+        return;
+    }
+
     speaker->setParent(this);
     QQmlEngine::setObjectOwnership(speaker, QQmlEngine::CppOwnership);
     speaker->setLocale(QLocale(GlobalObject::platformAdaptor()->language()));
     connect(speaker, &QTextToSpeech::stateChanged, this, &Notifications::NotificationManager::onSpeakerStateChanged);
     m_speaker = speaker;
-
     emit speakerChanged();
+
+    // Say whatever has been queued while the speaker was under construction
+    speakNext();
 }
 
 void Notifications::NotificationManager::speakNext()
 {
-    // Check that the speaker has been constructed successfully. If not, then
-    // check back in 2 seconds.
+    // Nothing to do while the speaker is under construction. adoptSpeaker()
+    // calls this method again once the speaker exists.
     if (m_speaker == nullptr)
     {
-        QTimer::singleShot(2s, this, &Notifications::NotificationManager::speakNext);
         return;
     }
+
 
     // At his point, we have a valid speaker object. Make sure that the speaker is ready
     // to speak and that the break between two messages is not running.

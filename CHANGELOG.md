@@ -219,6 +219,11 @@
   contained a blank line or a waypoint without elevation, and where the
   reported line number was one too small.
 
+- Fixed a start-up race on Linux where the speech engine was wired into the
+  app from a worker thread; only the slow construction now runs there, and
+  queued voice notifications are spoken as soon as the engine is ready instead
+  of after a polling delay.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

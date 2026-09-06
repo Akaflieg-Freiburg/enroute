@@ -179,9 +179,17 @@ private:
     // speakNext() after a one-second break.
     void onSpeakerStateChanged(QTextToSpeech::State state);
 
-    // Setup speaker: construct the speaker, move it to the GUI thread, make it
-    // a child of this and wire it up.
-    void setupSpeaker();
+    // Constructs the speaker and moves it to the given thread. Under Linux,
+    // the constructor of QTextToSpeech is very slow, so this runs on a worker
+    // thread. The object is then handed over to the GUI thread by
+    // adoptSpeaker(). This method touches nothing but the new object.
+    static QTextToSpeech* createSpeaker(QThread* thread);
+
+    // Takes over a speaker constructed by createSpeaker(): makes it a child of
+    // this, wires it up, publishes it through the property speaker and starts
+    // speaking pending notifications. Must be called in the GUI thread.
+    void adoptSpeaker(QTextToSpeech* speaker);
+
 
     // This method cleans the list m_spokenNotifications and sorts it by
     // importance. If a notification is in the list, it speaks the notication
@@ -192,13 +200,14 @@ private:
     // comes first.
     QVector<QPointer<Notifications::Notification>> m_voiceNotifications;
 
-    // Pointer to the speaker. This will be the nullpointer while the thread the
-    // constructs the object is still ongoing.
+    // Pointer to the speaker. This is the nullpointer until adoptSpeaker() has
+    // run. Written and read in the GUI thread only.
     QTextToSpeech* m_speaker {nullptr};
 
-    // Future for the worker that constructs QTextToSpeek under Linux in a
+    // Future for the worker that constructs QTextToSpeech under Linux in a
     // different thread
-    QFuture<void> m_speakerFuture;
+    QFuture<QTextToSpeech*> m_speakerFuture;
+
 
     // This timer is used to stop for one second between two spoken texts. The
     // slot start() is called when m_speaker is done speaking. The signal

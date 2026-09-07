@@ -100,6 +100,10 @@ AppWindow {
     Drawer {
         id: drawer
 
+        // Take focus while open, so that the Android Back key closes the drawer
+        // instead of falling through to the page below.
+        focus: true
+
         height: parent.height
         width: col.implicitWidth
         Material.roundedScale: Material.NotRounded
@@ -1093,7 +1097,7 @@ AppWindow {
     // solution from
     // see https://stackoverflow.com/questions/25968661/android-back-button-press-doesnt-trigger-keys-onreleased-qml
     //
-    function onClosing (close) {
+    onClosing: (close) => {
         // Use this hack only on the Android platform
         if (Qt.platform.os !== "android")
             return

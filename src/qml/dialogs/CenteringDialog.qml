@@ -33,8 +33,19 @@ Dialog {
     // text field. Mirrors the page-level convention read by main.qml. Dialogs
     // that leave it null are unaffected.
     property Item defaultFocusItem: null
-    focus: defaultFocusItem !== null
     onOpened: if (defaultFocusItem) defaultFocusItem.forceActiveFocus()
+
+    // Take focus while open. Qt closes a focused popup on Escape and, on
+    // Android, on the Back key; without focus the Back key would fall through
+    // to the page below and pop it (or quit the app) behind the dialog.
+    focus: true
+
+    // Close on release outside rather than on press outside. The Android back
+    // gesture delivers a touch press at the screen edge before the gesture is
+    // recognised and cancelled; with CloseOnPressOutside that press closed the
+    // dialog, and the Back key that followed then hit an app with no dialog
+    // and closed a page or the app instead.
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnReleaseOutside
 
     property real avHeight: parent.height-2*font.pixelSize-SafeInsets.top-SafeInsets.bottom
     property real avWidth: parent.width-2*font.pixelSize-SafeInsets.left-SafeInsets.right

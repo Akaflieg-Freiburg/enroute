@@ -34,11 +34,14 @@ import android.net.wifi.WifiManager.WifiLock;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.provider.Settings.System;
 import android.util.Log;
 import android.view.*;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.WindowCompat;
@@ -62,6 +65,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   private static WifiManager m_wifiManager;
   private static MulticastLock m_multicastLock;
   private static BroadcastReceiver m_wifiStateChangeReceiver;
+  private OnBackInvokedCallback m_backInvokedCallback;
 
   // reference Authority as defined in AndroidManifest.xml
   private static String AUTHORITY = "de.akaflieg_freiburg.enroute";
@@ -110,10 +114,38 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
       IntentFilter filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
       registerReceiver(m_localeChangedReceiver, filter);
     }
+
+    // Since the app targets API 36, Android 16+ enables predictive back by
+    // default. In that mode the system no longer dispatches KEYCODE_BACK to
+    // the activity; it invokes an OnBackInvokedCallback instead, and without
+    // one it simply finishes the activity. Qt only listens for the key event,
+    // so register a callback that synthesizes the key press. The events reach
+    // Qt through the usual dispatchKeyEvent -> onKeyDown/onKeyUp path, and
+    // the existing QML handlers (page pop, dialog close, exit confirmation)
+    // keep working unchanged.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+    {
+      m_backInvokedCallback = new OnBackInvokedCallback() {
+        @Override
+        public void onBackInvoked() {
+          long now = SystemClock.uptimeMillis();
+          dispatchKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK, 0));
+          dispatchKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK, 0));
+        }
+      };
+      getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+          OnBackInvokedDispatcher.PRIORITY_DEFAULT, m_backInvokedCallback);
+    }
   }
 
   @Override
   public void onDestroy() {
+    // Unregister back callback
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && m_backInvokedCallback != null) {
+      getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(m_backInvokedCallback);
+      m_backInvokedCallback = null;
+    }
+
     // Release WiFi lock
     if (m_wifiLock != null) {
       if (m_wifiLock.isHeld() == true) {

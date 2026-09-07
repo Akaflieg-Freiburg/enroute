@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,7 @@
 
 import Qt5Compat.GraphicalEffects
 import QtQuick
-
+import QtQuick.Controls.Material
 
 Item {
 
@@ -43,7 +43,7 @@ Item {
         id: colorOverlay
         anchors.fill: parent
         source: wpLblImg
-        color: "black"
+        color: Material.foreground
     }
 
 }

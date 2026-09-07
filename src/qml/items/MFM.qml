@@ -24,9 +24,8 @@ import QtLocation
 import QtPositioning
 import QtQml
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Templates as T
 import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute

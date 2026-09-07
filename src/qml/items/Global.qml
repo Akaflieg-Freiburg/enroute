@@ -22,7 +22,7 @@ pragma Singleton
 
 import QtCore
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 

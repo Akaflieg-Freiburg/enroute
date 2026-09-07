@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Templates as T
 import QtQuick.Layouts
 import QtTextToSpeech

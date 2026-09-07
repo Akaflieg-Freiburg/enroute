@@ -24,7 +24,7 @@ import QtLocation // qmllint disable import
 import QtPositioning
 import QtQml
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import MapLibre 3.0
 import akaflieg_freiburg.enroute

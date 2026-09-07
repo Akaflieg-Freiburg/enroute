@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Templates as T
 
 // Loader for dialogs that take their title, text or arguments from the

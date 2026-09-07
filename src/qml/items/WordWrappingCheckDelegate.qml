@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 // This is a version of CheckDelegate that does word wrapping in the text
 

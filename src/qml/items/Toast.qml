@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 // Short, auto-hiding message at the lower part of the window. The instance
 // lives in main.qml and is reachable everywhere as Global.toast.

@@ -172,13 +172,6 @@ CenteringDialog {
                 color: "yellow"
                 opacity: 0.2
             }
-
-        }
-
-        FilterField {
-            id: notamFilter
-
-            Layout.fillWidth: true
         }
 
         DecoratedListView {
@@ -191,8 +184,6 @@ CenteringDialog {
             clip: true
 
             model: Array.from(notamListDialog.notamList.notams) // qmllint disable unresolved-type
-                        .filter((notam) => Librarian.matches(notam.icaoLocation + " " + notam.number + " " + notam.text,
-                                                             notamFilter.filter))
 
             section.property: "sectionTitle"
             section.delegate: sectionHeading
@@ -203,8 +194,7 @@ CenteringDialog {
                 anchors.fill: parent
                 anchors.topMargin: font.pixelSize*2
 
-                visible: (notamlistview.count === 0) && (notamFilter.filter !== "")
-
+                visible: (notamlistview.count === 0)
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap

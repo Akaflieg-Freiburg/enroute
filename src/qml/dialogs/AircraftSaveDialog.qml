@@ -109,12 +109,10 @@ CenteringDialog {
     }
 
     onRejected: {
-        PlatformAdaptor.vibrateBrief()
         dlg.close()
     }
 
     onAccepted: {
-        PlatformAdaptor.vibrateBrief()
         if (fileName.text === "")
             return
         dlg.finalFileName = fileName.text
@@ -164,7 +162,10 @@ CenteringDialog {
                 width: dlg.availableWidth
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             } // Label
         } // DecoratedScrollView
 
@@ -179,12 +180,10 @@ CenteringDialog {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             dlg.saveToLibrary()
         }
 
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             overwriteDialog.close()
             dlg.open()
         }

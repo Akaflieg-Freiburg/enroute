@@ -61,7 +61,10 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
 
             Button {
@@ -86,7 +89,10 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
 
             Button {
@@ -116,7 +122,10 @@ Message: Enroute Flight Navigation
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
 
 

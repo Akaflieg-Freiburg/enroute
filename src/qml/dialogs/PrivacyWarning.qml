@@ -84,7 +84,6 @@ CenteringDialog {
     standardButtons: Dialog.Cancel|Dialog.Ok
 
     onAccepted: {
-        PlatformAdaptor.vibrateBrief()
         GlobalSettings.alwaysOpenExternalWebsites = alwaysOpen.checked
         if (openExternally)
             Qt.openUrlExternally(url)

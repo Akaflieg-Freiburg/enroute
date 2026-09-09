@@ -67,6 +67,9 @@ TextField {
         icon.width: font.pixelSize
         icon.height: font.pixelSize
 
-        onClicked: textField.clear()
+        onClicked: {
+            PlatformAdaptor.vibrateBrief()
+            textField.clear()
+        }
     }
 }

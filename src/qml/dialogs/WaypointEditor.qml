@@ -246,6 +246,8 @@ CenteringDialog {
                 visible: (Qt.platform.os !== "ios")
 
                 model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
+
+                onActivated: PlatformAdaptor.vibrateBrief()
             }
 
             Label {
@@ -355,6 +357,8 @@ CenteringDialog {
                 visible: (Qt.platform.os !== "ios")
 
                 model: [ qsTr("Feet"), qsTr("Meter") ]
+
+                onActivated: PlatformAdaptor.vibrateBrief()
             }
 
         }

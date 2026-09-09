@@ -47,6 +47,12 @@ Dialog {
     // and closed a page or the app instead.
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnReleaseOutside
 
+    // Haptic feedback for the standard buttons (and for Return/Escape/Back).
+    // Derived dialogs must not call vibrateBrief() in their own onAccepted /
+    // onRejected handlers, or the device vibrates twice.
+    onAccepted: PlatformAdaptor.vibrateBrief()
+    onRejected: PlatformAdaptor.vibrateBrief()
+
     property real avHeight: parent.height-2*font.pixelSize-SafeInsets.top-SafeInsets.bottom
     property real avWidth: parent.width-2*font.pixelSize-SafeInsets.left-SafeInsets.right
 

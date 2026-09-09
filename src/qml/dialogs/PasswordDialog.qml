@@ -54,6 +54,7 @@ CenteringDialog {
         CheckBox {
             id: viewBox
             text: qsTr("Show clear text")
+            onClicked: PlatformAdaptor.vibrateBrief()
         }
     }
 

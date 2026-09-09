@@ -271,7 +271,10 @@ Page {
                     }
                     return 0
                 }
-                onActivated: Navigator.aircraft.horizontalDistanceUnit = currentIndex
+                onActivated: {
+                    PlatformAdaptor.vibrateBrief()
+                    Navigator.aircraft.horizontalDistanceUnit = currentIndex
+                }
 
                 model: [ qsTr("Nautical Miles"), qsTr("Kilometers"), qsTr("Statute Miles") ]
             }
@@ -294,7 +297,10 @@ Page {
                     }
                     return 0
                 }
-                onActivated: Navigator.aircraft.verticalDistanceUnit = currentIndex
+                onActivated: {
+                    PlatformAdaptor.vibrateBrief()
+                    Navigator.aircraft.verticalDistanceUnit = currentIndex
+                }
 
                 model: [ qsTr("Feet"), qsTr("Meters") ]
             }
@@ -317,7 +323,10 @@ Page {
                     }
                     return 0
                 }
-                onActivated: Navigator.aircraft.fuelConsumptionUnit = currentIndex
+                onActivated: {
+                    PlatformAdaptor.vibrateBrief()
+                    Navigator.aircraft.fuelConsumptionUnit = currentIndex
+                }
 
                 model: [ qsTr("Liters"), qsTr("U.S. Gallons") ]
             }
@@ -690,12 +699,10 @@ Page {
         standardButtons: Dialog.Ok | Dialog.Cancel
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             Navigator.aircraft.cabinPressureEqualsStaticPressure = true
         }
 
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             pressureCheckBox.checked = false
         }
     }

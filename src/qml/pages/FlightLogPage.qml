@@ -751,12 +751,10 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             FlightLog.removeTrack(removeTrackDialog.flightUuid)
             toast.doToast(qsTr("Track deleted"))
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
         }
     }
 
@@ -770,12 +768,10 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             FlightLog.removeFlight(removeDialog.flightUuid)
             toast.doToast(qsTr("Flight removed"))
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
         }
     }
 
@@ -787,7 +783,6 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             FlightLog.clearFlights()
             toast.doToast(qsTr("Flight log cleared"))
         }
@@ -801,13 +796,11 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             FlightLog.removeFlights(page.selectedUuids)
             toast.doToast(qsTr("Flights removed"))
             page.exitSelectionMode()
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
         }
     }
 
@@ -819,11 +812,9 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             FlightLog.endFlight()
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
         }
     }
 
@@ -833,7 +824,6 @@ Page {
         title: qsTr("Edit Flight")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             FlightLog.updateFlight(flightEditor.flightUuid, flightEditor.resultFlight())
             toast.doToast(qsTr("Flight updated"))
         }
@@ -845,7 +835,6 @@ Page {
         title: qsTr("Add Flight")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             FlightLog.addFlight(addFlightEditor.resultFlight())
             toast.doToast(qsTr("Flight added"))
         }

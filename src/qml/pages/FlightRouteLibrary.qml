@@ -472,11 +472,9 @@ Page {
         text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(page.finalFileName)
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             overwriteDialog.close()
         }
     }
@@ -490,13 +488,11 @@ Page {
         text: qsTr("Once the flight route <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             Librarian.remove(Librarian.Routes, page.finalFileName)
             page.reloadFlightRouteList()
             Global.toast.doToast(qsTr("Flight route removed from device"))
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             page.reloadFlightRouteList()
             removeDialog.close()
         }
@@ -526,7 +522,10 @@ Page {
                 Layout.fillWidth: true
                 focus: true
 
-                onAccepted: renameDialog.doRename()
+                onAccepted: {
+                    PlatformAdaptor.vibrateBrief()
+                    renameDialog.doRename()
+                }
             }
 
         }
@@ -544,7 +543,6 @@ Page {
 
         // Also called from the text field when Return is pressed.
         function doRename() {
-            PlatformAdaptor.vibrateBrief()
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Routes, renameName.text)) {
                 Librarian.rename(Librarian.Routes, page.finalFileName, renameName.text)
                 page.reloadFlightRouteList()
@@ -554,7 +552,6 @@ Page {
         }
         onAccepted: doRename()
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             renameDialog.close()
         }
     }

@@ -472,13 +472,11 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             WaypointLibrary.remove(removeDialog.waypoint)
             page.reloadWaypointList()
             Global.toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             page.reloadWaypointList() // Re-display aircraft that have been swiped out
             close()
         }
@@ -493,7 +491,6 @@ Page {
         text: qsTr("Once cleared, the library cannot be restored.")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             WaypointLibrary.clear()
             page.reloadWaypointList()
             Global.toast.doToast(qsTr("Waypoint library cleared"))

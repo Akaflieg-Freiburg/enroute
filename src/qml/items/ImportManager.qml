@@ -251,8 +251,6 @@ Item {
         }
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             var errorString = importManager.fileFunction === FileExchange.Cub
                             ? DataManager.importCub(importManager.filePath, mapNameOpenAir.text)
                             : DataManager.importOpenAir(importManager.filePath, mapNameOpenAir.text)
@@ -308,8 +306,6 @@ Item {
         onAboutToShow: importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             vac.name = mapNameVAC.text
             var errorString = VACLibrary.importVAC(vac)
             if (errorString !== "") {
@@ -361,8 +357,6 @@ Item {
         }
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             var errorString = DataManager.import(importManager.filePath, mapNameRaster.text)
             if (errorString !== "") {
                 errLbl.text = errorString
@@ -424,8 +418,6 @@ Item {
 
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             var errorString = DataManager.import(importManager.filePath, mapNameVector.text)
             if (errorString !== "") {
                 errLbl.text = errorString
@@ -458,8 +450,6 @@ Item {
         }
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             var errorString = WaypointLibrary.import(importManager.filePath, skip.checked)
             if (errorString !== "") {
                 errLbl.text = errorString
@@ -487,8 +477,6 @@ Item {
         // Also called directly when there is no current route to overwrite,
         // in which case the dialog is not shown.
         function importRoute() {
-            PlatformAdaptor.vibrateBrief()
-
             var errorString = ""
 
 
@@ -521,7 +509,6 @@ Item {
         text: qsTr("This might overwrite some approach charts.")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             importTripKitDialog.close()
 
             var errorString = VACLibrary.importTripKit(importManager.filePath)

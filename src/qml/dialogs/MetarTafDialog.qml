@@ -116,6 +116,7 @@ CenteringDialog {
 
                     onLinkActivated: (linkText) =>
                                      {
+                                         PlatformAdaptor.vibrateBrief()
                                          if (linkText === "hideExplanation")
                                          Global.showMETARPerformanceExplanation = false
                                          if (linkText === "hidePerformanceWarning")

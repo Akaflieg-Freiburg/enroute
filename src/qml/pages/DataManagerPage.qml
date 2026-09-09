@@ -309,12 +309,15 @@ Page {
         currentIndex: sv.currentIndex
         TabButton {
             text: qsTr("Maps")
+            onClicked: PlatformAdaptor.vibrateBrief()
         }
         TabButton {
             text: "VAC"
+            onClicked: PlatformAdaptor.vibrateBrief()
         }
         TabButton {
             text: qsTr("Data")
+            onClicked: PlatformAdaptor.vibrateBrief()
         }
     }
 
@@ -460,7 +463,10 @@ Page {
                     text: VACLibrary.isEmpty
                           ? Global.withLinkColor("<p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.") + "</p>")
                           : qsTr("<h3>Sorry!</h3><p>No approach charts match your filter.</p>")
-                    onLinkActivated: Global.openManual("forward.html#vac-tutorial")
+                    onLinkActivated: {
+                        PlatformAdaptor.vibrateBrief()
+                        Global.openManual("forward.html#vac-tutorial")
+                    }
 
                 }
             }
@@ -653,7 +659,6 @@ Page {
               + qsTr("Charts from downloaded collections are not affected; remove them by deleting the corresponding maps.")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             VACLibrary.clear()
             Global.toast.doToast(qsTr("Approach chart library cleared"))
         }

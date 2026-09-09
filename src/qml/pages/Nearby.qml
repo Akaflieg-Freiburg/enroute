@@ -52,10 +52,10 @@ Page {
 
         currentIndex: sv.currentIndex
 
-        TabButton { text: "AD" }
-        TabButton { text: "WP" }
-        TabButton { text: "NAV" }
-        TabButton { icon.source: "/icons/material/ic_search.svg" }
+        TabButton { text: "AD"; onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: "WP"; onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: "NAV"; onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { icon.source: "/icons/material/ic_search.svg"; onClicked: PlatformAdaptor.vibrateBrief() }
     }
 
     SwipeView {

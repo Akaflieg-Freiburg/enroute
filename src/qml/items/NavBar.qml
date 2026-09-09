@@ -111,6 +111,7 @@ Rectangle {
 
             TapHandler {
                 onTapped: {
+                    PlatformAdaptor.vibrateBrief()
                     GlobalSettings.showAltitudeAGL = !GlobalSettings.showAltitudeAGL
                     if (GlobalSettings.showAltitudeAGL)
                         Global.toast.doToast(qsTr("Showing Altitude Above Ground Level"))

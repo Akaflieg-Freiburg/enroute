@@ -220,7 +220,10 @@ Page {
                 width: fileError.availableWidth
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
         }
 
@@ -235,11 +238,9 @@ Page {
         text: qsTr("Loading the aircraft <strong>%1</strong> will overwrite the current aircraft. Once overwritten, the current aircraft cannot be restored.").arg(page.finalFileName)
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             overwriteDialog.close()
         }
     }
@@ -253,13 +254,11 @@ Page {
         text: qsTr("Once the aircraft <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             Librarian.remove(Librarian.Aircraft, page.finalFileName)
             page.reloadFlightRouteList()
             Global.toast.doToast(qsTr("Aircraft removed from device"))
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             page.reloadFlightRouteList() // Re-display aircraft that have been swiped out
             removeDialog.close()
         }
@@ -291,7 +290,10 @@ Page {
                 Layout.fillWidth: true
                 focus: true
 
-                onAccepted: renameDialog.doRename()
+                onAccepted: {
+                    PlatformAdaptor.vibrateBrief()
+                    renameDialog.doRename()
+                }
             }
 
         }
@@ -309,7 +311,6 @@ Page {
 
         // Also called from the text field when Return is pressed.
         function doRename() {
-            PlatformAdaptor.vibrateBrief()
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Aircraft, renameName.text)) {
                 Librarian.rename(Librarian.Aircraft, page.finalFileName, renameName.text)
                 page.reloadFlightRouteList()
@@ -319,7 +320,6 @@ Page {
         }
         onAccepted: doRename()
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             renameDialog.close()
         }
     }

@@ -477,7 +477,10 @@ Item {
                                     qsTr("Choose <a href='xx'>Library/Maps and Data</a> to open the map management page.") + "</p>")
                         }
                         textFormat: Text.RichText
-                        onLinkActivated: Global.stackView.push("../pages/DataManagerPage.qml")
+                        onLinkActivated: {
+                            PlatformAdaptor.vibrateBrief()
+                            Global.stackView.push("../pages/DataManagerPage.qml")
+                        }
                     }
                 }
 
@@ -624,6 +627,7 @@ Item {
                             //styleColor: GlobalSettings.nightMode ? "black" : "white"
                             background: Pane { opacity: GlobalSettings.nightMode ? 0.3 : 0.8 }
                             onLinkActivated: {
+                                PlatformAdaptor.vibrateBrief()
                                 Global.dialogLoader.active = false
                                 Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
                                                                   text: GeoMapProvider.copyrightNotice,
@@ -668,6 +672,7 @@ Item {
                             icon.source: "/icons/NorthArrow.svg"
 
                             onClicked: {
+                                PlatformAdaptor.vibrateBrief()
                                 if (Global.mapBearingPolicyRect === MFM.NUp) {
                                     Global.mapBearingPolicy = MFM.TTUp
                                 } else if (Global.mapBearingPolicyRect === MFM.TTUp) {

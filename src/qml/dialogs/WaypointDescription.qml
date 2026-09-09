@@ -723,7 +723,6 @@ CenteringDialog {
         standardButtons: Dialog.Cancel|Dialog.Ok
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             GlobalSettings.alwaysOpenExternalWebsites = alwaysOpen.checked
             PlatformAdaptor.openSatView(coordinate)
         }
@@ -734,7 +733,6 @@ CenteringDialog {
         id: wpEdit
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             var newWP = waypointDescriptionDialog.waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
@@ -751,7 +749,6 @@ CenteringDialog {
         title: qsTr("Add Waypoint to Library")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             var newWP = waypointDescriptionDialog.waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
@@ -773,13 +770,11 @@ CenteringDialog {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             WaypointLibrary.remove(removeDialog.waypoint)
             waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             removeDialog.close()
         }
     }

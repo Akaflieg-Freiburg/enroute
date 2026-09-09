@@ -99,6 +99,7 @@ CenteringDialog {
 
 
             onClicked: {
+                PlatformAdaptor.vibrateBrief()
                 read = !read
                 NOTAMProvider.setRead(delItem.model.modelData.number, read)
                 if (read)
@@ -210,6 +211,7 @@ CenteringDialog {
 
             checked: GlobalSettings.expandNotamAbbreviations
 
+            onClicked: PlatformAdaptor.vibrateBrief()
             onCheckedChanged: {
                 GlobalSettings.expandNotamAbbreviations = checked
             }

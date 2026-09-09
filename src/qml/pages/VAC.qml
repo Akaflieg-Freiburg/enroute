@@ -160,7 +160,10 @@ Page {
         text: VACLibrary.isEmpty
               ? Global.withLinkColor("<h3>"+ qsTr("Sorry!") + "</h3><p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.")+"</p>")
               : qsTr("<h3>Sorry!</h3><p>No approach charts match your filter.</p>")
-        onLinkActivated: Global.openManual("forward.html#vac-tutorial")
+        onLinkActivated: {
+            PlatformAdaptor.vibrateBrief()
+            Global.openManual("forward.html#vac-tutorial")
+        }
 
     }
 

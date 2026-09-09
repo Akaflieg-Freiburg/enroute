@@ -44,7 +44,10 @@ CenteringDialog {
             width: dialogMain.availableWidth
             textFormat: Text.RichText
             wrapMode: Text.Wrap
-            onLinkActivated: (link) => Qt.openUrlExternally(link)
+            onLinkActivated: (link) => {
+                PlatformAdaptor.vibrateBrief()
+                Qt.openUrlExternally(link)
+            }
         }
     }
 }

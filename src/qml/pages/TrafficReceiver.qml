@@ -577,7 +577,10 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
-                onClicked: Global.openManual("forward.html#senseandavoid")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    Global.openManual("forward.html#senseandavoid")
+                }
             }
 
             WordWrappingItemDelegate {
@@ -586,7 +589,10 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a flight simulator…")
-                onClicked: Global.openManual("forward.html#simulator-tutorial")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    Global.openManual("forward.html#simulator-tutorial")
+                }
             }
         }
 
@@ -611,6 +617,7 @@ Page {
                 enabled: !connectTimer.running
                 visible: !TrafficDataProvider.receivingHeartbeat
                 onClicked: {
+                    PlatformAdaptor.vibrateBrief()
                     TrafficDataProvider.disconnectFromTrafficReceiver()
                     disconnectTimer.running = true;
                     connectTimer.running = true;

@@ -73,7 +73,10 @@ can get.</p>
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
     }
 

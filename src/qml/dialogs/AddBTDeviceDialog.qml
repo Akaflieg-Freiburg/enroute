@@ -80,6 +80,7 @@ CenteringDialog {
                 text: model.modelData.description
 
                 onClicked: {
+                    PlatformAdaptor.vibrateBrief()
                     var resultString = TrafficDataProvider.addDataSource(model.modelData)
                     if (resultString !== "")
                     {
@@ -100,7 +101,10 @@ CenteringDialog {
 
             enabled: !ConnectionScanner_Bluetooth.scanning
             icon.source: "/icons/material/ic_bluetooth_searching.svg"
-            onClicked: ConnectionScanner_Bluetooth.start()
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                ConnectionScanner_Bluetooth.start()
+            }
         }
     }
 

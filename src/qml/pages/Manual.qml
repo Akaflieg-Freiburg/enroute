@@ -74,6 +74,7 @@ Page {
 
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked: {
+                PlatformAdaptor.vibrateBrief()
                 webView.goBack()
             }
 
@@ -89,6 +90,7 @@ Page {
 
             icon.source: "/icons/material/ic_arrow_forward.svg"
             onClicked: {
+                PlatformAdaptor.vibrateBrief()
                 webView.goForward()
             }
 

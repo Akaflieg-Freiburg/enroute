@@ -263,6 +263,7 @@ SideviewQuickItem {
         background: Pane { Material.elevation: 1 }
 
         onLinkActivated: {
+            PlatformAdaptor.vibrateBrief()
             Global.textDialogLoader.active = false
             Global.textDialogLoader.setSource("../dialogs/LongTextDialog.qml",
                                    {

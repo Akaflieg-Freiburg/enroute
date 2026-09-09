@@ -178,6 +178,7 @@ CenteringDialog {
                 visible: connectionDescription.isSerialPort
                 Layout.fillWidth: true
                 onActivated: function (index) {
+                    PlatformAdaptor.vibrateBrief()
                     switch(index) {
                     case 0:
                         connectionDescription.connection.baudRate = ConnectionInfo.Baud1200
@@ -219,6 +220,7 @@ CenteringDialog {
                 visible: connectionDescription.isSerialPort
 
                 onActivated: function (index) {
+                    PlatformAdaptor.vibrateBrief()
                     switch(index) {
                     case 0:
                         connectionDescription.connection.stopBits = ConnectionInfo.OneStop
@@ -242,6 +244,7 @@ CenteringDialog {
                 visible: connectionDescription.isSerialPort
 
                 onActivated: function (index) {
+                    PlatformAdaptor.vibrateBrief()
                     connectionDescription.connection.flowControl = index
                 }
 

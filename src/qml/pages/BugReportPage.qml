@@ -184,7 +184,10 @@ GitHub by e-mail.</p>
 `)
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
-                    onLinkActivated: (link) => Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(link)
+                    }
                 }
                 Button {
                     Layout.fillWidth: true
@@ -225,7 +228,10 @@ comes first!</p>
 `)
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
-                    onLinkActivated: (link) => Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(link)
+                    }
                 }
             }
 
@@ -280,7 +286,10 @@ comes first!</p>
                           + "</p>")
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
-                    onLinkActivated: (link) => Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(link)
+                    }
                 }
                 Button {
                     Layout.fillWidth: true
@@ -296,7 +305,10 @@ comes first!</p>
                     text: "<h3>" + qsTr("Thank you for your help!") + "</h3>"
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
-                    onLinkActivated: (link) => Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(link)
+                    }
                 }
             }
         }

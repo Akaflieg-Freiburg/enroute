@@ -71,7 +71,6 @@ CenteringDialog {
     }
 
     onAccepted: {
-        PlatformAdaptor.vibrateBrief()
         var errorMsg = VACLibrary.rename(renameDialog.oldName, newName.text)
 
         if (errorMsg === "")
@@ -84,7 +83,6 @@ CenteringDialog {
     }
 
     onRejected: {
-        PlatformAdaptor.vibrateBrief()
         renameDialog.close()
     }
 }

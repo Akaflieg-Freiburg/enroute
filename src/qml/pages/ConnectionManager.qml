@@ -155,6 +155,7 @@ Page {
 
 
                     onClicked: {
+                        PlatformAdaptor.vibrateBrief()
                         Global.dialogLoader.active = false
                         Global.dialogLoader.setSource("../dialogs/ConnectionInfoDialog.qml", {connection: connectionItem.model.modelData})
                         Global.dialogLoader.active = true
@@ -210,6 +211,7 @@ Page {
                 enabled: !connectTimer.running
                 visible: !TrafficDataProvider.receivingHeartbeat
                 onClicked: {
+                    PlatformAdaptor.vibrateBrief()
                     TrafficDataProvider.disconnectFromTrafficReceiver()
                     disconnectTimer.running = true;
                     connectTimer.running = true;
@@ -315,7 +317,6 @@ Page {
         standardButtons: Dialog.Ok | Dialog.Cancel
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             ognWarning2.open()
         }
 
@@ -335,7 +336,6 @@ Page {
         standardButtons: Dialog.Ok | Dialog.Cancel
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             var resultString = TrafficDataProvider.addDataSource_OGN()
             if (resultString !== "")
             {
@@ -529,6 +529,7 @@ Page {
                     text: model.modelData.description
 
                     onClicked: {
+                        PlatformAdaptor.vibrateBrief()
                         var resultString = TrafficDataProvider.addDataSource(model.modelData)
                         if (resultString !== "")
                         {
@@ -548,7 +549,10 @@ Page {
                 text: qsTr("Scan for Devices")
 
                 icon.source: "/icons/material/ic_settings_ethernet.svg"
-                onClicked: ConnectionScanner_SerialPort.start()
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    ConnectionScanner_SerialPort.start()
+                }
             }
         }
 

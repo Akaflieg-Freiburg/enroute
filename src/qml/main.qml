@@ -118,6 +118,16 @@ AppWindow {
         // the current page's preferred focus once the drawer has fully closed.
         onClosed: stackView.focusCurrentPage()
 
+        // The submenus are non-modal popups stacked above the modal drawer. A
+        // tap outside is grabbed by the drawer on press, so the release never
+        // reaches the menus and their CloseOnReleaseOutside policy never fires.
+        // Close them explicitly whenever the drawer starts to hide.
+        onAboutToHide: {
+            libraryMenu.close()
+            aboutMenu.close()
+            manualMenu.close()
+        }
+
         DecoratedScrollView {
             anchors.fill: parent
 

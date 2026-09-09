@@ -106,12 +106,10 @@ CenteringDialog {
     }
 
     onRejected: {
-        PlatformAdaptor.vibrateBrief()
         dlg.close()
     }
 
     onAccepted: {
-        PlatformAdaptor.vibrateBrief()
         if (fileName.text === "")
             return
         dlg.finalFileName = fileName.text
@@ -151,12 +149,10 @@ CenteringDialog {
         text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(dlg.finalFileName)
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             dlg.saveToLibrary()
         }
 
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             overwriteDialog.close()
             dlg.open()
         }

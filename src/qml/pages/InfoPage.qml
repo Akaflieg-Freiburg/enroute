@@ -93,10 +93,10 @@ Page {
 
         currentIndex: sv.currentIndex
 
-        TabButton { text: "Enroute" }
-        TabButton { text: qsTr("Authors") }
-        TabButton { text: qsTr("License") }
-        TabButton { text: qsTr("System") }
+        TabButton { text: "Enroute"; onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: qsTr("Authors"); onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: qsTr("License"); onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: qsTr("System"); onClicked: PlatformAdaptor.vibrateBrief() }
     }
 
     SwipeView {
@@ -127,7 +127,10 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
         }
         
@@ -144,7 +147,10 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
         }
 
@@ -161,7 +167,10 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
         }
 
@@ -186,7 +195,10 @@ Page {
                     topPadding: font.pixelSize*1
                     leftPadding: font.pixelSize*0.5
                     rightPadding: font.pixelSize*0.5
-                    onLinkActivated: (link) => Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(link)
+                    }
                 }
             }
 

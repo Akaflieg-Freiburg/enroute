@@ -467,8 +467,8 @@ Page {
         rightPadding: SafeInsets.right
 
         currentIndex: sv.currentIndex
-        TabButton { text: qsTr("Route") }
-        TabButton { text: qsTr("Wind") }
+        TabButton { text: qsTr("Route"); onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: qsTr("Wind"); onClicked: PlatformAdaptor.vibrateBrief() }
     }
 
     SwipeView{
@@ -1105,7 +1105,10 @@ Page {
                     text: (textInput.filter === "")
                           ? qsTr("<h3>Sorry!</h3><p>No waypoints available. Please make sure that an aviation map is installed.</p>")
                           : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter criteria.</p>")
-                    onLinkActivated: (link) => Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(link)
+                    }
                 }
 
             }
@@ -1131,7 +1134,6 @@ Page {
         modal: true
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             let newWP = waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
@@ -1151,13 +1153,11 @@ Page {
         text: qsTr("Once erased, the current flight route cannot be restored.")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
             Global.toast.doToast(qsTr("Flight route cleared"))
         }
 
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             clearDialog.close()
         }
     }
@@ -1203,8 +1203,6 @@ Page {
         property int index: -1 // Index of waypoint in flight route
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             var newWP = waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes

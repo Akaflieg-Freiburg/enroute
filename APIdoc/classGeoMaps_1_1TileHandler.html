@@ -65,6 +65,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aec4c068aa4ff6d1c99d49179765f1f5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new tile handler.  <br /></td></tr>
 <tr class="memitem:a58ebe88bd1a4b517337ae5d71b211975" id="r_a58ebe88bd1a4b517337ae5d71b211975"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a58ebe88bd1a4b517337ae5d71b211975">process</a> (QHttpServerResponder *responder, const QStringList &amp;pathElements)</td></tr>
 <tr class="memdesc:a58ebe88bd1a4b517337ae5d71b211975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process request.  <br /></td></tr>
+<tr class="memitem:aa6da9e900b1c0bd98d6678d2c478ad7b" id="r_aa6da9e900b1c0bd98d6678d2c478ad7b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa6da9e900b1c0bd98d6678d2c478ad7b">setBaseURL</a> (const QString &amp;baseURLName)</td></tr>
+<tr class="memdesc:aa6da9e900b1c0bd98d6678d2c478ad7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set base URL.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of QHttpEngine::Handler that serves mbtile files. </p>
@@ -141,6 +143,32 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the request could be answered. </dd></dl>
+
+</div>
+</div>
+<a id="aa6da9e900b1c0bd98d6678d2c478ad7b" name="aa6da9e900b1c0bd98d6678d2c478ad7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6da9e900b1c0bd98d6678d2c478ad7b">&#9670;&#160;</a></span>setBaseURL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GeoMaps::TileHandler::setBaseURL </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>baseURLName</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set base URL. </p>
+<p>The TileJSON served by <a class="el" href="#a58ebe88bd1a4b517337ae5d71b211975" title="Process request.">process()</a> contains the URL template for the tiles, which includes the base URL. Call this method when the tile server changes its port, so that the TileJSON stays correct.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">baseURLName</td><td>The name of the URL under which the tile server allows access to this tile, see the constructor. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

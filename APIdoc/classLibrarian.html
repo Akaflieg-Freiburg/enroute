@@ -47,6 +47,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classLibrarian-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Librarian Class Reference</div></div>
 </div><!--header-->
@@ -89,8 +90,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:aef06b896f9fd0d63b86c6a4f7153ab98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if an entry with the given name exists in the library.  <br /></td></tr>
 <tr class="memitem:a56c7b61f8f22eeb8bd665a46a804e302" id="r_a56c7b61f8f22eeb8bd665a46a804e302"><td class="memItemLeft">static Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#a56c7b61f8f22eeb8bd665a46a804e302">fullPath</a> (<a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a> library, const QString &amp;baseName)</td></tr>
 <tr class="memdesc:a56c7b61f8f22eeb8bd665a46a804e302"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full path of a library entry.  <br /></td></tr>
-<tr class="memitem:a798c6e9e21d87773595ecd3756766f1a" id="r_a798c6e9e21d87773595ecd3756766f1a"><td class="memItemLeft">static Q_INVOKABLE QObject *&#160;</td><td class="memItemRight"><a class="el" href="#a798c6e9e21d87773595ecd3756766f1a">get</a> (<a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a> library, const QString &amp;baseName)</td></tr>
-<tr class="memdesc:a798c6e9e21d87773595ecd3756766f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an object from library entry.  <br /></td></tr>
+<tr class="memitem:aa4c3b515a2851cffdb556e09e1479fa5" id="r_aa4c3b515a2851cffdb556e09e1479fa5"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classNavigation_1_1FlightRoute.html">Navigation::FlightRoute</a> *&#160;</td><td class="memItemRight"><a class="el" href="#aa4c3b515a2851cffdb556e09e1479fa5">get</a> (<a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a> library, const QString &amp;baseName)</td></tr>
+<tr class="memdesc:aa4c3b515a2851cffdb556e09e1479fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an object from library entry.  <br /></td></tr>
+<tr class="memitem:a09757de8a8fe1eea535ed21c0f142996" id="r_a09757de8a8fe1eea535ed21c0f142996"><td class="memItemLeft">static QString&#160;</td><td class="memItemRight"><a class="el" href="#a09757de8a8fe1eea535ed21c0f142996">manualLocation</a> ()</td></tr>
+<tr class="memdesc:a09757de8a8fe1eea535ed21c0f142996"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location of the user manual.  <br /></td></tr>
 <tr class="memitem:a4217f59c8ca660de11177244629fc6a0" id="r_a4217f59c8ca660de11177244629fc6a0"><td class="memItemLeft">static Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#a4217f59c8ca660de11177244629fc6a0">getStringFromRessource</a> (const QString &amp;name)</td></tr>
 <tr class="memdesc:a4217f59c8ca660de11177244629fc6a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exposes string stored in QRessource to QML.  <br /></td></tr>
 <tr class="memitem:ab83fa9faeaaf937ae5dde1b47eafc293" id="r_ab83fa9faeaaf937ae5dde1b47eafc293"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classUnits_1_1ByteSize.html">Units::ByteSize</a>&#160;</td><td class="memItemRight"><a class="el" href="#ab83fa9faeaaf937ae5dde1b47eafc293">getStringHashFromRessource</a> (const QString &amp;name)</td></tr>
@@ -101,12 +104,18 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a96efe7349bbe47e5d3d56f1fdba7b9d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an entry from a library.  <br /></td></tr>
 <tr class="memitem:a6fbd6fae7ea18c086f5b5bf28182d3d6" id="r_a6fbd6fae7ea18c086f5b5bf28182d3d6"><td class="memItemLeft">static Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#a6fbd6fae7ea18c086f5b5bf28182d3d6">rename</a> (<a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a> library, const QString &amp;oldName, const QString &amp;newName)</td></tr>
 <tr class="memdesc:a6fbd6fae7ea18c086f5b5bf28182d3d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renames an entry in a library.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a098230a25a27dd34170b911ac4853821" id="r_a098230a25a27dd34170b911ac4853821"><td class="memItemLeft"><a id="a098230a25a27dd34170b911ac4853821" name="a098230a25a27dd34170b911ac4853821"></a>
+QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></td></tr>
+<tr class="memdesc:a098230a25a27dd34170b911ac4853821"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location of the user manual, see <a class="el" href="#a098230a25a27dd34170b911ac4853821" title="Location of the user manual, see manualLocation().">manualLocation()</a>. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manage libraries and text assets. </p>
 <p>This class manages libraries of aircrafts and routes, as well as text assets, and exposes these objects to QML. </p>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00039">39</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00040">40</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 </div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Member Enumeration Documentation</h2>
 <a id="aade57a59b2c1aaccee483f968aae4694" name="aade57a59b2c1aaccee483f968aae4694"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aade57a59b2c1aaccee483f968aae4694">&#9670;&#160;</a></span>Library</h2>
@@ -128,7 +137,7 @@ Static Public Member Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00065">65</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00070">70</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 
 </div>
 </div>
@@ -381,8 +390,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a798c6e9e21d87773595ecd3756766f1a" name="a798c6e9e21d87773595ecd3756766f1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a798c6e9e21d87773595ecd3756766f1a">&#9670;&#160;</a></span>get()</h2>
+<a id="aa4c3b515a2851cffdb556e09e1479fa5" name="aa4c3b515a2851cffdb556e09e1479fa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4c3b515a2851cffdb556e09e1479fa5">&#9670;&#160;</a></span>get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,7 +400,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE QObject * Librarian::get </td>
+          <td class="memname">Q_INVOKABLE <a class="el" href="classNavigation_1_1FlightRoute.html">Navigation::FlightRoute</a> * Librarian::get </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a></td>          <td class="paramname"><span class="paramname"><em>library</em></span>, </td>
         </tr>
@@ -533,6 +542,34 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An empty string in case of success, or else a human-readable, translated error message. </dd></dl>
+
+</div>
+</div>
+<a id="a09757de8a8fe1eea535ed21c0f142996" name="a09757de8a8fe1eea535ed21c0f142996"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09757de8a8fe1eea535ed21c0f142996">&#9670;&#160;</a></span>manualLocation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Librarian::manualLocation </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Location of the user manual. </p>
+<dl class="section return"><dt>Returns</dt><dd>Directory that holds the HTML version of the manual, as a path or URL suitable for the platform </dd></dl>
 
 </div>
 </div>

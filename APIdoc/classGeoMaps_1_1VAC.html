@@ -88,6 +88,8 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af1fad2150c5ab65ceca57763b3c34dc6" id="r_af1fad2150c5ab65ceca57763b3c34dc6"><td class="memItemLeft">static QStringList&#160;</td><td class="memItemRight"><a class="el" href="#af1fad2150c5ab65ceca57763b3c34dc6">mimeTypes</a> ()</td></tr>
 <tr class="memdesc:af1fad2150c5ab65ceca57763b3c34dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mime type for files that can be opened by this class.  <br /></td></tr>
+<tr class="memitem:ad88ac5234edbbbc61e3e6acff25f1c80" id="r_ad88ac5234edbbbc61e3e6acff25f1c80"><td class="memItemLeft">static QString&#160;</td><td class="memItemRight"><a class="el" href="#ad88ac5234edbbbc61e3e6acff25f1c80">safeFileName</a> (const QString &amp;<a class="el" href="#aa98e26c7b60f47490699f240ba82ccc0">name</a>)</td></tr>
+<tr class="memdesc:ad88ac5234edbbbc61e3e6acff25f1c80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sanitised file name for a chart name.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -378,6 +380,41 @@ QDataStream &amp;&#160;</td><td class="memItemRight"><b>operator&gt;&gt;</b> (QD
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True on equality </dd></dl>
+
+</div>
+</div>
+<a id="ad88ac5234edbbbc61e3e6acff25f1c80" name="ad88ac5234edbbbc61e3e6acff25f1c80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad88ac5234edbbbc61e3e6acff25f1c80">&#9670;&#160;</a></span>safeFileName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString GeoMaps::VAC::safeFileName </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sanitised file name for a chart name. </p>
+<p>Chart names come from user-supplied files (trip kits, file names) and are used to build file names inside the <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> directory. This method strips directory components and replaces characters that are unsafe in file names, so that the result can never escape that directory.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"><a class="el" href="#aa98e26c7b60f47490699f240ba82ccc0" title="Name of the VAC.">name</a></td><td>Chart name</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Sanitised base name without suffix, or an empty string if nothing usable remains </dd></dl>
 
 </div>
 </div>

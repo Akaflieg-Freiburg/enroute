@@ -161,7 +161,7 @@ $(function() {
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="comment">// This method cleans the VAC directory. It deletes all VAC from m_vacs that</span></div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="comment">// have no raster image files. It looks for unmanaged raster image files and</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="comment">// either imports them or deletes them.</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="comment">// either imports them or moves them to the subdirectory &quot;unrecognised&quot;.</span></div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordtype">void</span> janitor();</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="comment">// This method re-reads the chart index from all VAC collection files</span></div>
@@ -169,7 +169,7 @@ $(function() {
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="comment">// deletes stale entries from the extraction cache.</span></div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordtype">void</span> updateCollections();</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="comment">// This method saves m_vacs to m_dataFile.</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="comment">// This method saves m_vacs to m_dataFileName, atomically.</span></div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordtype">void</span> save();</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="comment">// This method returns the absolute path of a given VAC. Needed for iOS</span></div>
@@ -192,7 +192,7 @@ $(function() {
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u<span class="stringliteral">&quot;/VAC&quot;</span>_s};</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    QString m_cacheDirectory {QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + u<span class="stringliteral">&quot;/VAC&quot;</span>_s};</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    QFile m_dataFile {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u<span class="stringliteral">&quot;/VAC.data&quot;</span>_s};</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    QString m_dataFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u<span class="stringliteral">&quot;/VAC.data&quot;</span>_s};</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="comment">// Compresses multiple change notifications from DataManager into a single</span></div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="comment">// call to updateCollections()</span></div>

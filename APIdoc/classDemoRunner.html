@@ -44,6 +44,7 @@ $(function() {
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classDemoRunner-members.html">List of all members</a>  </div>
@@ -56,11 +57,22 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="DemoRunner_8h_source.html">DemoRunner.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-slots" class="groupheader"><a id="pub-slots" name="pub-slots"></a>
+Public Slots</h2></td></tr>
+<tr class="memitem:a3d0c7ea0986ba659a4d76d212c3c0eb3" id="r_a3d0c7ea0986ba659a4d76d212c3c0eb3"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3d0c7ea0986ba659a4d76d212c3c0eb3">runSmokeTest</a> ()</td></tr>
+<tr class="memdesc:a3d0c7ea0986ba659a4d76d212c3c0eb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open every page and dialog once, then quit.  <br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-signals" class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
 <tr class="memitem:a0f3267bf286b33d8aa5e2af7fc70ffdc" id="r_a0f3267bf286b33d8aa5e2af7fc70ffdc"><td class="memItemLeft"><a id="a0f3267bf286b33d8aa5e2af7fc70ffdc" name="a0f3267bf286b33d8aa5e2af7fc70ffdc"></a>
 void&#160;</td><td class="memItemRight"><b>requestClosePages</b> ()</td></tr>
 <tr class="memdesc:a0f3267bf286b33d8aa5e2af7fc70ffdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted to indicate that the GUI return to the main page. <br /></td></tr>
+<tr class="memitem:ac0f8e170a139c47a9e873d0076101ff9" id="r_ac0f8e170a139c47a9e873d0076101ff9"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ac0f8e170a139c47a9e873d0076101ff9">requestOpenDrawer</a> (bool open)</td></tr>
+<tr class="memdesc:ac0f8e170a139c47a9e873d0076101ff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted to request that the drawer with the main menu opens or closes.  <br /></td></tr>
+<tr class="memitem:a856665e9a5e67cbc31d0a2c4b83ad522" id="r_a856665e9a5e67cbc31d0a2c4b83ad522"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a856665e9a5e67cbc31d0a2c4b83ad522">requestOpenDialog</a> (QString url, QVariantMap properties)</td></tr>
+<tr class="memdesc:a856665e9a5e67cbc31d0a2c4b83ad522"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted to request that a dialog is opened via Global.dialogLoader.  <br /></td></tr>
+<tr class="memitem:aa97cde262079aaea373351899ba52af6" id="r_aa97cde262079aaea373351899ba52af6"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa97cde262079aaea373351899ba52af6">requestOpenPage</a> (QString url)</td></tr>
+<tr class="memdesc:aa97cde262079aaea373351899ba52af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted to request that a page is pushed onto the main stack view.  <br /></td></tr>
 <tr class="memitem:ac46d796e337281177cca40174b850960" id="r_ac46d796e337281177cca40174b850960"><td class="memItemLeft"><a id="ac46d796e337281177cca40174b850960" name="ac46d796e337281177cca40174b850960"></a>
 void&#160;</td><td class="memItemRight"><b>requestCloseWaypointDescription</b> ()</td></tr>
 <tr class="memdesc:ac46d796e337281177cca40174b850960"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted to indicate that the GUI close open the "Waypoint Description" dialog. <br /></td></tr>
@@ -185,6 +197,111 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a856665e9a5e67cbc31d0a2c4b83ad522" name="a856665e9a5e67cbc31d0a2c4b83ad522"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a856665e9a5e67cbc31d0a2c4b83ad522">&#9670;&#160;</a></span>requestOpenDialog</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DemoRunner::requestOpenDialog </td>
+          <td>(</td>
+          <td class="paramtype">QString</td>          <td class="paramname"><span class="paramname"><em>url</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QVariantMap</td>          <td class="paramname"><span class="paramname"><em>properties</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted to request that a dialog is opened via Global.dialogLoader. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">url</td><td>URL of the dialog, relative to main.qml</td></tr>
+    <tr><td class="paramname">properties</td><td>Initial property values for the dialog </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac0f8e170a139c47a9e873d0076101ff9" name="ac0f8e170a139c47a9e873d0076101ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0f8e170a139c47a9e873d0076101ff9">&#9670;&#160;</a></span>requestOpenDrawer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DemoRunner::requestOpenDrawer </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>open</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted to request that the drawer with the main menu opens or closes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">open</td><td>True to open the drawer, false to close it </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa97cde262079aaea373351899ba52af6" name="aa97cde262079aaea373351899ba52af6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa97cde262079aaea373351899ba52af6">&#9670;&#160;</a></span>requestOpenPage</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DemoRunner::requestOpenPage </td>
+          <td>(</td>
+          <td class="paramtype">QString</td>          <td class="paramname"><span class="paramname"><em>url</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted to request that a page is pushed onto the main stack view. </p>
+<p>All other pages are popped first.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">url</td><td>URL of the page, relative to main.qml </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="af091a2d144852cf2bb0a92a8bdae60bf" name="af091a2d144852cf2bb0a92a8bdae60bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af091a2d144852cf2bb0a92a8bdae60bf">&#9670;&#160;</a></span>requestShowSideView</h2>
 
@@ -251,8 +368,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac2a302b436ca39e05faeaa6b683b7f58" name="ac2a302b436ca39e05faeaa6b683b7f58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2a302b436ca39e05faeaa6b683b7f58">&#9670;&#160;</a></span>setEngine()</h2>
+<a id="a3d0c7ea0986ba659a4d76d212c3c0eb3" name="a3d0c7ea0986ba659a4d76d212c3c0eb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d0c7ea0986ba659a4d76d212c3c0eb3">&#9670;&#160;</a></span>runSmokeTest</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,17 +378,37 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
+          <td class="memname">void DemoRunner::runSmokeTest </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Open every page and dialog once, then quit. </p>
+<p>This is the implementation of the command line option '&ndash;smoke-test'. It seeds a little data, walks through all pages and dialogs of the user interface, collects the warnings and errors that the QML engine reports along the way (including run-time errors in bindings and signal handlers) and quits the app: with exit code 1 if there were any problems, with exit code 0 otherwise. The flight log page and dialog are not visited while the flight log is under development. </p>
+
+</div>
+</div>
+<a id="ac2a302b436ca39e05faeaa6b683b7f58" name="ac2a302b436ca39e05faeaa6b683b7f58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2a302b436ca39e05faeaa6b683b7f58">&#9670;&#160;</a></span>setEngine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
           <td class="memname">void DemoRunner::setEngine </td>
           <td>(</td>
           <td class="paramtype">QQmlApplicationEngine *</td>          <td class="paramname"><span class="paramname"><em>engine</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Set pointer to QQmlApplicationEngine. </p>
@@ -282,8 +419,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="definition">Definition at line <a class="el" href="DemoRunner_8h_source.html#l00070">70</a> of file <a class="el" href="DemoRunner_8h_source.html">DemoRunner.h</a>.</p>
 
 </div>
 </div>

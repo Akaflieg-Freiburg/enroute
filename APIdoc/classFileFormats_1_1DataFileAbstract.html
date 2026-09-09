@@ -91,6 +91,8 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a2380fb7a4ab503cf73d618ea96ef216c" id="r_a2380fb7a4ab503cf73d618ea96ef216c"><td class="memItemLeft">static QSharedPointer&lt; QFile &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2380fb7a4ab503cf73d618ea96ef216c">openFileURL</a> (const QString &amp;fileName)</td></tr>
 <tr class="memdesc:a2380fb7a4ab503cf73d618ea96ef216c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open file, file URL or Android content URL.  <br /></td></tr>
+<tr class="memitem:a7c5a27a2f41971794208dd8c5b1f5dfa" id="r_a7c5a27a2f41971794208dd8c5b1f5dfa"><td class="memItemLeft">static bool&#160;</td><td class="memItemRight"><a class="el" href="#a7c5a27a2f41971794208dd8c5b1f5dfa">saveFileAtomically</a> (const QString &amp;path, const QByteArray &amp;data, QString *<a class="el" href="#a292d1144d1c23b119601170f4c6b8e20">error</a>=nullptr, QFileDevice::Permissions permissions={})</td></tr>
+<tr class="memdesc:a7c5a27a2f41971794208dd8c5b1f5dfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to a file atomically.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for file reading classes. </p>
@@ -100,7 +102,7 @@ Static Public Member Functions</h2></td></tr>
 <li>There is a static method 'mimeTypes' that describes the mime types of the files that can be opened with this class. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="DataFileAbstract_8h_source.html#l00043">43</a> of file <a class="el" href="DataFileAbstract_8h_source.html">DataFileAbstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataFileAbstract_8h_source.html#l00044">44</a> of file <a class="el" href="DataFileAbstract_8h_source.html">DataFileAbstract.h</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a292d1144d1c23b119601170f4c6b8e20" name="a292d1144d1c23b119601170f4c6b8e20"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a292d1144d1c23b119601170f4c6b8e20">&#9670;&#160;</a></span>error()</h2>
@@ -129,7 +131,7 @@ Static Public Member Functions</h2></td></tr>
 <p>If the constructor found the file to be invalid, this method returns a human-readable, transated error string.</p>
 <dl class="section return"><dt>Returns</dt><dd>Error string, or an empty string if the file is valid. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataFileAbstract_8h_source.html#l00075">75</a> of file <a class="el" href="DataFileAbstract_8h_source.html">DataFileAbstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataFileAbstract_8h_source.html#l00076">76</a> of file <a class="el" href="DataFileAbstract_8h_source.html">DataFileAbstract.h</a>.</p>
 
 </div>
 </div>
@@ -161,7 +163,7 @@ Static Public Member Functions</h2></td></tr>
 <p>This method is equivalent to !error().isEmpty()</p>
 <dl class="section return"><dt>Returns</dt><dd>True if the data is valid. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataFileAbstract_8h_source.html#l00066">66</a> of file <a class="el" href="DataFileAbstract_8h_source.html">DataFileAbstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataFileAbstract_8h_source.html#l00067">67</a> of file <a class="el" href="DataFileAbstract_8h_source.html">DataFileAbstract.h</a>.</p>
 
 </div>
 </div>
@@ -200,6 +202,58 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a7c5a27a2f41971794208dd8c5b1f5dfa" name="a7c5a27a2f41971794208dd8c5b1f5dfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c5a27a2f41971794208dd8c5b1f5dfa">&#9670;&#160;</a></span>saveFileAtomically()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FileFormats::DataFileAbstract::saveFileAtomically </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QByteArray &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QString *</td>          <td class="paramname"><span class="paramname"><em>error</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QFileDevice::Permissions</td>          <td class="paramname"><span class="paramname"><em>permissions</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write data to a file atomically. </p>
+<p>The data is written through a QSaveFile, so that an existing file at the path is either replaced completely or left untouched, even if the app is killed while writing.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>Path of the file to write</td></tr>
+    <tr><td class="paramname">data</td><td>Content to write</td></tr>
+    <tr><td class="paramname"><a class="el" href="#a292d1144d1c23b119601170f4c6b8e20" title="Error string.">error</a></td><td>If non-null, receives a human-readable error message on failure</td></tr>
+    <tr><td class="paramname">permissions</td><td>If non-empty, the permissions to set on the file before it replaces the old one (e.g. owner read/write only for files with secrets). If empty, the default permissions apply.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True on success </dd></dl>
+
+</div>
+</div>
 <a id="ab770740e6d6c20e076dd342e978b86ee" name="ab770740e6d6c20e076dd342e978b86ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab770740e6d6c20e076dd342e978b86ee">&#9670;&#160;</a></span>warnings()</h2>
 
@@ -227,7 +281,7 @@ Static Public Member Functions</h2></td></tr>
 <p>If the constructor found non-critical issues in the file, this method returns a list of human-readable, transated warnings.</p>
 <dl class="section return"><dt>Returns</dt><dd>List of warning, or an empty list if there were no warnings. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataFileAbstract_8h_source.html#l00084">84</a> of file <a class="el" href="DataFileAbstract_8h_source.html">DataFileAbstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataFileAbstract_8h_source.html#l00085">85</a> of file <a class="el" href="DataFileAbstract_8h_source.html">DataFileAbstract.h</a>.</p>
 
 </div>
 </div>

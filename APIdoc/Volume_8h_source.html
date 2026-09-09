@@ -135,17 +135,19 @@ $(function() {
 </div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">double</span> LitersPerGallon = 4.54609;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="comment">// Speed in meters per second</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordtype">double</span> m_volumeInL{ NAN };</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    };</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="comment">// U.S. liquid gallon, as promised by the user interface. (The imperial</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="comment">// gallon would be 4.54609 l.)</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">double</span> LitersPerGallon = 3.785411784;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="comment">// Volume in liters</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordtype">double</span> m_volumeInL{ NAN };</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    };</div>
 </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>} <span class="comment">// namespace Units</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment">// Declare meta types</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>Q_DECLARE_METATYPE(<a class="code hl_class" href="classUnits_1_1Volume.html">Units::Volume</a>)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>} <span class="comment">// namespace Units</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment">// Declare meta types</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>Q_DECLARE_METATYPE(<a class="code hl_class" href="classUnits_1_1Volume.html">Units::Volume</a>)</div>
 <div class="ttc" id="aclassUnits_1_1Volume_html"><div class="ttname"><a href="classUnits_1_1Volume.html">Units::Volume</a></div><div class="ttdoc">Convenience class for volume computations.</div><div class="ttdef"><b>Definition</b> <a href="#l00035">Volume.h:35</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Volume_html_a283eaf584337f0dc6a46830ee9e4edb7"><div class="ttname"><a href="classUnits_1_1Volume.html#a283eaf584337f0dc6a46830ee9e4edb7">Units::Volume::isFinite</a></div><div class="ttdeci">Q_INVOKABLE bool isFinite() const</div><div class="ttdoc">Checks if the volume is valid.</div><div class="ttdef"><b>Definition</b> <a href="#l00070">Volume.h:70</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Volume_html_a30490d09c54cfc118c6cb771d108aca6"><div class="ttname"><a href="classUnits_1_1Volume.html#a30490d09c54cfc118c6cb771d108aca6">Units::Volume::operator&lt;=&gt;</a></div><div class="ttdeci">Q_INVOKABLE std::partial_ordering operator&lt;=&gt;(const Units::Volume &amp;rhs) const =default</div><div class="ttdoc">Comparison.</div></div>

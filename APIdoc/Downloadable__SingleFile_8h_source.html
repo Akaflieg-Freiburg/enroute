@@ -167,86 +167,84 @@ $(function() {
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span></div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#af973ad1f787e830499e53af5f00dd643">  241</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#af973ad1f787e830499e53af5f00dd643">deleteFiles</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#ac572ce2dd771329cfbf08c66cfd7335b">  274</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#ac572ce2dd771329cfbf08c66cfd7335b">startDownload</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#a3d5907834b2c8ebccc9a8e7324865e19">  288</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#a3d5907834b2c8ebccc9a8e7324865e19">startInfoDownload</a>();</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#a1c6cbbf4b5f6c9b7e5e83ba15a79bc10">  296</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#a1c6cbbf4b5f6c9b7e5e83ba15a79bc10">stopDownload</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span></div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#a920852ad936c2b5b1fcb3acf51135466">  299</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#a920852ad936c2b5b1fcb3acf51135466">update</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>signals:</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#adf932773896c812a988796f56f66b1c5">  315</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classDataManagement_1_1Downloadable__SingleFile.html#adf932773896c812a988796f56f66b1c5">aboutToChangeFile</a>(QString localFileName);</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span></div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#a02c9fffc8f330dd277d5599696876bc2">  324</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classDataManagement_1_1Downloadable__SingleFile.html#a02c9fffc8f330dd277d5599696876bc2">downloadProgressChanged</a>(<span class="keywordtype">int</span> percentage);</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span></div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#aa5c9aab48efc26eec891727e2205f580">  333</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classDataManagement_1_1Downloadable__SingleFile.html#aa5c9aab48efc26eec891727e2205f580">remoteFileDateChanged</a>();</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#a83d9d1f0ad108ddf13c229d7f27e3cb8">Downloadable_SingleFile</a>)</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    <span class="comment">// Called when an error occurs during the download of the remote file, this</span></div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    <span class="comment">// method deletes QTemporaryFile _tmpFile, emits the signal error() and</span></div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="comment">// deletes _networkReplyDownload by calling deleteLater.  Connected to</span></div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    <span class="comment">// &amp;QNetworkReply::error of _networkReplyDownload.</span></div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    <span class="keywordtype">void</span> downloadFileErrorReceiver(QNetworkReply::NetworkError code);</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    <span class="comment">// Called once download of the remote file is finished, this method</span></div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="comment">// overwrites the local file. It deletes the QTemporaryFile _tmpFile, and</span></div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="comment">// deletes _networkReplyDownload by calling deleteLater. Connected to</span></div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    <span class="comment">// &amp;QNetworkReply::finished of _networkReplyDownload.</span></div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <span class="keywordtype">void</span> downloadFileFinished();</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    <span class="comment">// Called during the download of the remote file, this method emits the</span></div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="comment">// signal downloadProgress().  Connected to &amp;QNetworkReply::downloadProgress</span></div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    <span class="comment">// of _networkReplyDownload.</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="keywordtype">void</span> downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal);</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="comment">// Called during the download of the remote file, this method reads all the</span></div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    <span class="comment">// data that has been downloaded so far and stores it in the QTemporaryFile</span></div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    <span class="comment">// _tmpFile.  Connected to &amp;QNetworkReply::readyRead of</span></div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <span class="comment">// _networkReplyDownload.</span></div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keywordtype">void</span> downloadFilePartialDataReceiver();</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="comment">// Called once download of the remote file header data is finished, this</span></div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="comment">// method updates the properties remoteFileDate and remoteFileSize, and</span></div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    <span class="comment">// _networkReplyDownloadHeader by calling deleteLater. Connected to</span></div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    <span class="comment">// &amp;QNetworkReply::finished of _networkReplyDownloadHeader.</span></div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>    <span class="keywordtype">void</span> downloadHeaderFinished();</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> </div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    <span class="comment">// This member holds the download progress.</span></div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    <span class="keywordtype">int</span> m_downloadProgress{0};</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    <span class="comment">// NetworkReply for downloading of remote file data. Set to nullptr when no</span></div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <span class="comment">// download is in progress.</span></div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    QPointer&lt;QNetworkReply&gt; m_networkReplyDownloadFile;</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <span class="comment">// NetworkReply for downloading of remote file header. Set to nullptr when</span></div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="comment">// no download is in progress.</span></div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    QPointer&lt;QNetworkReply&gt; m_networkReplyDownloadHeader;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#ac572ce2dd771329cfbf08c66cfd7335b">  277</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#ac572ce2dd771329cfbf08c66cfd7335b">startDownload</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#a3d5907834b2c8ebccc9a8e7324865e19">  291</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#a3d5907834b2c8ebccc9a8e7324865e19">startInfoDownload</a>();</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#a1c6cbbf4b5f6c9b7e5e83ba15a79bc10">  299</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#a1c6cbbf4b5f6c9b7e5e83ba15a79bc10">stopDownload</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#a920852ad936c2b5b1fcb3acf51135466">  302</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#a920852ad936c2b5b1fcb3acf51135466">update</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>signals:</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#a02c9fffc8f330dd277d5599696876bc2">  314</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classDataManagement_1_1Downloadable__SingleFile.html#a02c9fffc8f330dd277d5599696876bc2">downloadProgressChanged</a>(<span class="keywordtype">int</span> percentage);</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno"><a class="line" href="classDataManagement_1_1Downloadable__SingleFile.html#aa5c9aab48efc26eec891727e2205f580">  323</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classDataManagement_1_1Downloadable__SingleFile.html#aa5c9aab48efc26eec891727e2205f580">remoteFileDateChanged</a>();</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_function" href="classDataManagement_1_1Downloadable__SingleFile.html#a83d9d1f0ad108ddf13c229d7f27e3cb8">Downloadable_SingleFile</a>)</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="comment">// Called when an error occurs during the download of the remote file, this</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    <span class="comment">// method deletes QTemporaryFile _tmpFile, emits the signal error() and</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    <span class="comment">// deletes _networkReplyDownload by calling deleteLater.  Connected to</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="comment">// &amp;QNetworkReply::error of _networkReplyDownload.</span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <span class="keywordtype">void</span> downloadFileErrorReceiver(QNetworkReply::NetworkError code);</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    <span class="comment">// Called once download of the remote file is finished, this method</span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    <span class="comment">// overwrites the local file. It deletes the QTemporaryFile _tmpFile, and</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    <span class="comment">// deletes _networkReplyDownload by calling deleteLater. Connected to</span></div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    <span class="comment">// &amp;QNetworkReply::finished of _networkReplyDownload.</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    <span class="keywordtype">void</span> downloadFileFinished();</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="comment">// Called during the download of the remote file, this method emits the</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    <span class="comment">// signal downloadProgress().  Connected to &amp;QNetworkReply::downloadProgress</span></div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    <span class="comment">// of _networkReplyDownload.</span></div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="keywordtype">void</span> downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal);</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span> </div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="comment">// Called during the download of the remote file, this method reads all the</span></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="comment">// data that has been downloaded so far and stores it in the QTemporaryFile</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    <span class="comment">// _tmpFile.  Connected to &amp;QNetworkReply::readyRead of</span></div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <span class="comment">// _networkReplyDownload.</span></div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="keywordtype">void</span> downloadFilePartialDataReceiver();</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="comment">// Called once download of the remote file header data is finished, this</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    <span class="comment">// method updates the properties remoteFileDate and remoteFileSize, and</span></div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="comment">// _networkReplyDownloadHeader by calling deleteLater. Connected to</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    <span class="comment">// &amp;QNetworkReply::finished of _networkReplyDownloadHeader.</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="keywordtype">void</span> downloadHeaderFinished();</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    <span class="comment">// This member holds the download progress.</span></div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <span class="keywordtype">int</span> m_downloadProgress{0};</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    <span class="comment">// NetworkReply for downloading of remote file data. Set to nullptr when no</span></div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="comment">// download is in progress.</span></div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    QPointer&lt;QNetworkReply&gt; m_networkReplyDownloadFile;</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    <span class="comment">// NetworkReply for downloading of remote file header. Set to nullptr when</span></div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>    <span class="comment">// no download is in progress.</span></div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    QPointer&lt;QNetworkReply&gt; m_networkReplyDownloadHeader;</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    <span class="comment">// Temporary file for storing partiall data when downloading the remote</span></div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    <span class="comment">// file. Set to nullptr when no download is in progress.</span></div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    QPointer&lt;QSaveFile&gt; m_saveFile;</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    <span class="comment">// URL of the remote file, as set in the constructor</span></div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    QUrl m_url;</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span> </div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="comment">// Name of the local file, as set in the constructor</span></div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    QString m_fileName;</div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="comment">// Temporary file for storing partiall data when downloading the remote</span></div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="comment">// file. Set to nullptr when no download is in progress.</span></div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    QPointer&lt;QSaveFile&gt; m_saveFile;</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="comment">// Modification date of the remote file, set directly via a setter method or</span></div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="comment">// by calling downloadRemoteFileInfo().</span></div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    QDateTime m_remoteFileDate;</div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    <span class="comment">// URL of the remote file, as set in the constructor</span></div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    QUrl m_url;</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span> </div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="comment">// Name of the local file, as set in the constructor</span></div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    QString m_fileName;</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    <span class="comment">// Modification date of the remote file, set directly via a setter method or</span></div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    <span class="comment">// by calling downloadRemoteFileInfo().</span></div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    QDateTime m_remoteFileDate;</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span> </div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    <span class="comment">// Size of the remote file, set directly via a setter method or by calling</span></div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    <span class="comment">// downloadRemoteFileInfo().</span></div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    qint64 m_remoteFileSize{-1};</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>};</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    <span class="comment">// Size of the remote file, set directly via a setter method or by calling</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    <span class="comment">// downloadRemoteFileInfo().</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    qint64 m_remoteFileSize{-1};</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>};</div>
 </div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span> </div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>} <span class="comment">// namespace DataManagement</span></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>} <span class="comment">// namespace DataManagement</span></div>
 <div class="ttc" id="aclassDataManagement_1_1Downloadable__Abstract_html_a11d3c674e06e6c38654d20169414c1d0"><div class="ttname"><a href="classDataManagement_1_1Downloadable__Abstract.html#a11d3c674e06e6c38654d20169414c1d0">DataManagement::Downloadable_Abstract::downloadingChanged</a></div><div class="ttdeci">void downloadingChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassDataManagement_1_1Downloadable__Abstract_html_a229a98b7e114dcb75343145f070a6ab4"><div class="ttname"><a href="classDataManagement_1_1Downloadable__Abstract.html#a229a98b7e114dcb75343145f070a6ab4">DataManagement::Downloadable_Abstract::remoteFileSizeChanged</a></div><div class="ttdeci">void remoteFileSizeChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassDataManagement_1_1Downloadable__Abstract_html_a61e0319e1684029c5b27eb9c2e5b43ea"><div class="ttname"><a href="classDataManagement_1_1Downloadable__Abstract.html#a61e0319e1684029c5b27eb9c2e5b43ea">DataManagement::Downloadable_Abstract::Downloadable_Abstract</a></div><div class="ttdeci">Downloadable_Abstract(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
@@ -276,7 +274,6 @@ $(function() {
 <div class="ttc" id="aclassDataManagement_1_1Downloadable__SingleFile_html_ad009e2a7e1d70365947174375f164bbe"><div class="ttname"><a href="classDataManagement_1_1Downloadable__SingleFile.html#ad009e2a7e1d70365947174375f164bbe">DataManagement::Downloadable_SingleFile::url</a></div><div class="ttdeci">auto url() const -&gt; QUrl</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00209">Downloadable_SingleFile.h:209</a></div></div>
 <div class="ttc" id="aclassDataManagement_1_1Downloadable__SingleFile_html_ad3cab1f161975ff2d30f2950bc494e85"><div class="ttname"><a href="classDataManagement_1_1Downloadable__SingleFile.html#ad3cab1f161975ff2d30f2950bc494e85">DataManagement::Downloadable_SingleFile::downloadProgress</a></div><div class="ttdeci">int downloadProgress</div><div class="ttdoc">Download progress.</div><div class="ttdef"><b>Definition</b> <a href="#l00108">Downloadable_SingleFile.h:108</a></div></div>
 <div class="ttc" id="aclassDataManagement_1_1Downloadable__SingleFile_html_ad3fe3dad01adc6a69f4c9a37ba698287"><div class="ttname"><a href="classDataManagement_1_1Downloadable__SingleFile.html#ad3fe3dad01adc6a69f4c9a37ba698287">DataManagement::Downloadable_SingleFile::description</a></div><div class="ttdeci">auto description() -&gt; QString override</div><div class="ttdoc">Implementation of pure virtual getter method from Downloadable_Abstract.</div></div>
-<div class="ttc" id="aclassDataManagement_1_1Downloadable__SingleFile_html_adf932773896c812a988796f56f66b1c5"><div class="ttname"><a href="classDataManagement_1_1Downloadable__SingleFile.html#adf932773896c812a988796f56f66b1c5">DataManagement::Downloadable_SingleFile::aboutToChangeFile</a></div><div class="ttdeci">void aboutToChangeFile(QString localFileName)</div><div class="ttdoc">Warning that local file is about to change.</div></div>
 <div class="ttc" id="aclassDataManagement_1_1Downloadable__SingleFile_html_ae1db077996dc01dae1559de0228b79ea"><div class="ttname"><a href="classDataManagement_1_1Downloadable__SingleFile.html#ae1db077996dc01dae1559de0228b79ea">DataManagement::Downloadable_SingleFile::files</a></div><div class="ttdeci">auto files() -&gt; QStringList override</div><div class="ttdoc">Implementation of pure virtual getter method from Downloadable_Abstract.</div></div>
 <div class="ttc" id="aclassDataManagement_1_1Downloadable__SingleFile_html_af1936ac99f113ecea342d28327c35803"><div class="ttname"><a href="classDataManagement_1_1Downloadable__SingleFile.html#af1936ac99f113ecea342d28327c35803">DataManagement::Downloadable_SingleFile::setRemoteFileDate</a></div><div class="ttdeci">void setRemoteFileDate(const QDateTime &amp;date)</div><div class="ttdoc">Setter function for the property with the same name.</div></div>
 <div class="ttc" id="aclassDataManagement_1_1Downloadable__SingleFile_html_af973ad1f787e830499e53af5f00dd643"><div class="ttname"><a href="classDataManagement_1_1Downloadable__SingleFile.html#af973ad1f787e830499e53af5f00dd643">DataManagement::Downloadable_SingleFile::deleteFiles</a></div><div class="ttdeci">Q_INVOKABLE void deleteFiles() override</div><div class="ttdoc">Implementation of pure virtual method from Downloadable_Abstract.</div></div>

@@ -72,8 +72,6 @@ Inheritance diagram for DataManagement::Downloadable_SingleFile:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-signals" class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:adf932773896c812a988796f56f66b1c5" id="r_adf932773896c812a988796f56f66b1c5"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#adf932773896c812a988796f56f66b1c5">aboutToChangeFile</a> (QString localFileName)</td></tr>
-<tr class="memdesc:adf932773896c812a988796f56f66b1c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Warning that local file is about to change.  <br /></td></tr>
 <tr class="memitem:a02c9fffc8f330dd277d5599696876bc2" id="r_a02c9fffc8f330dd277d5599696876bc2"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a02c9fffc8f330dd277d5599696876bc2">downloadProgressChanged</a> (int percentage)</td></tr>
 <tr class="memdesc:a02c9fffc8f330dd277d5599696876bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Download progress.  <br /></td></tr>
 <tr class="memitem:aa5c9aab48efc26eec891727e2205f580" id="r_aa5c9aab48efc26eec891727e2205f580"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa5c9aab48efc26eec891727e2205f580">remoteFileDateChanged</a> ()</td></tr>
@@ -91,6 +89,8 @@ void&#160;</td><td class="memItemRight"><b>descriptionChanged</b> ()</td></tr>
 <tr class="memitem:a11d3c674e06e6c38654d20169414c1d0 inherit signals_classDataManagement_1_1Downloadable__Abstract" id="r_a11d3c674e06e6c38654d20169414c1d0"><td class="memItemLeft">
 void&#160;</td><td class="memItemRight"><b>downloadingChanged</b> ()</td></tr>
 <tr class="memdesc:a11d3c674e06e6c38654d20169414c1d0 inherit signals_classDataManagement_1_1Downloadable__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="memitem:a47630c0e40b3cd00e0da6d839877a0a0 inherit signals_classDataManagement_1_1Downloadable__Abstract" id="r_a47630c0e40b3cd00e0da6d839877a0a0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a47630c0e40b3cd00e0da6d839877a0a0">aboutToChangeFile</a> (QString localFileName)</td></tr>
+<tr class="memdesc:a47630c0e40b3cd00e0da6d839877a0a0 inherit signals_classDataManagement_1_1Downloadable__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Warning that a local file is about to change.  <br /></td></tr>
 <tr class="memitem:a0d0cedd2c97765a34ead1b0553389499 inherit signals_classDataManagement_1_1Downloadable__Abstract" id="r_a0d0cedd2c97765a34ead1b0553389499"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a0d0cedd2c97765a34ead1b0553389499">error</a> (QString objectName, QString message)</td></tr>
 <tr class="memdesc:a0d0cedd2c97765a34ead1b0553389499 inherit signals_classDataManagement_1_1Downloadable__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Download error.  <br /></td></tr>
 <tr class="memitem:afea09ee5100fdf287bd3491440a69e70 inherit signals_classDataManagement_1_1Downloadable__Abstract" id="r_afea09ee5100fdf287bd3491440a69e70"><td class="memItemLeft">
@@ -340,41 +340,6 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="adf932773896c812a988796f56f66b1c5" name="adf932773896c812a988796f56f66b1c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf932773896c812a988796f56f66b1c5">&#9670;&#160;</a></span>aboutToChangeFile</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void DataManagement::Downloadable_SingleFile::aboutToChangeFile </td>
-          <td>(</td>
-          <td class="paramtype">QString</td>          <td class="paramname"><span class="paramname"><em>localFileName</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Warning that local file is about to change. </p>
-<p>This signal is emitted once the download finished, just before the local file is overwritten with new data. It indicates that all users should stop using the file immediately. This signal is always followed by the signal localFileChanged(), which indicates that the local file can be used again.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">localFileName</td><td>Name of the local file that has will change</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd>localFileChanged() </dd></dl>
-
-</div>
-</div>
 <a id="af973ad1f787e830499e53af5f00dd643" name="af973ad1f787e830499e53af5f00dd643"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af973ad1f787e830499e53af5f00dd643">&#9670;&#160;</a></span>deleteFiles()</h2>
 
@@ -821,11 +786,11 @@ Additional Inherited Members</h2></td></tr>
 </ol>
 <p>Once all data has been downloaded successfully to the temporary file, the process continues as follows.</p>
 <ol type="1">
-<li>The signal aboutToChangeLocalFile() is emitted. As the name suggests, this indicates that the local file is about to change and that it should not be used anymore.</li>
+<li>The signal <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a47630c0e40b3cd00e0da6d839877a0a0" title="Warning that a local file is about to change.">aboutToChangeFile()</a> is emitted. As the name suggests, this indicates that the local file is about to change and that it should not be used anymore. Users must release open handles to the file, since Windows refuses to replace a file that is open.</li>
 <li>A QLockFile is created at <a class="el" href="#a89315c6cc9e560d2836436e7e1b05872" title="File name, as set in the constructor.">fileName()</a>+".lock"</li>
 <li>The local file is overwritten by the newly downloaded data.</li>
 <li>The QLockFile is removed</li>
-<li>The signal fileChanged() is emitted to indicate that the file is again ready to be used. </li>
+<li>The signal <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#afea09ee5100fdf287bd3491440a69e70" title="Indicates that the content of a local file (or several local files) has changed.">fileContentChanged()</a> is emitted to indicate that the file is again ready to be used. If the local file could not be replaced, the signal <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a0d0cedd2c97765a34ead1b0553389499" title="Download error.">error()</a> is emitted in addition. </li>
 </ol>
 
 <p>Implements <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a0b245f0704e7eb92fb2c15bb77233e59">DataManagement::Downloadable_Abstract</a>.</p>

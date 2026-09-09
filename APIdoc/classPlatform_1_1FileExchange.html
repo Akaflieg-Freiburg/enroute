@@ -50,7 +50,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classPlatform_1_1FileExchange-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Platform::FileExchange Class Reference</div></div>
@@ -126,6 +125,8 @@ void&#160;</td><td class="memItemRight"><b>importContent</b> () override</td></t
 <tr class="memdesc:a6c629e829bfa47fdf6a8c1dc1e13281b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements pure virtual method from <a class="el" href="classPlatform_1_1FileExchange__Abstract.html" title="Interface to platform-specific file exchange functionality.">FileExchange_Abstract</a>.  <br /></td></tr>
 <tr class="memitem:a20a2d95c39b94c7a0b0bec0428f718a3" id="r_a20a2d95c39b94c7a0b0bec0428f718a3"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a20a2d95c39b94c7a0b0bec0428f718a3">saveContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameSuffix, const QString &amp;fileNameTemplate) override</td></tr>
 <tr class="memdesc:a20a2d95c39b94c7a0b0bec0428f718a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classPlatform_1_1FileExchange__Abstract.html" title="Interface to platform-specific file exchange functionality.">FileExchange_Abstract</a>.  <br /></td></tr>
+<tr class="memitem:a90ae040898ed1eb7a96d1b10b7f695b2" id="r_a90ae040898ed1eb7a96d1b10b7f695b2"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a90ae040898ed1eb7a96d1b10b7f695b2">openFilePicker</a> (const QString &amp;mimeType) override</td></tr>
+<tr class="memdesc:a90ae040898ed1eb7a96d1b10b7f695b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the native Android file picker.  <br /></td></tr>
 <tr class="memitem:a97263069c5f3ee0ebd4bf802cb368414" id="r_a97263069c5f3ee0ebd4bf802cb368414"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a97263069c5f3ee0ebd4bf802cb368414">FileExchange</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a97263069c5f3ee0ebd4bf802cb368414"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
 <tr class="memitem:a2e60a9bd04c3360c229a8c8310cb3169" id="r_a2e60a9bd04c3360c229a8c8310cb3169"><td class="memItemLeft"><a id="a2e60a9bd04c3360c229a8c8310cb3169" name="a2e60a9bd04c3360c229a8c8310cb3169"></a>
@@ -180,10 +181,43 @@ void&#160;</td><td class="memItemRight"><b>importContent</b> () override</td></t
 <tr class="memitem:a96c4d476061f33a53b8c7de446c639eb inherit pub_methods_classGlobalObject" id="r_a96c4d476061f33a53b8c7de446c639eb"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a96c4d476061f33a53b8c7de446c639eb">~GlobalObject</a> () override=default</td></tr>
 <tr class="memdesc:a96c4d476061f33a53b8c7de446c639eb inherit pub_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard deconstructor.  <br /></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac73cd180c3efea44736dcacf4e39a176" id="r_ac73cd180c3efea44736dcacf4e39a176"><td class="memItemLeft">static Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#ac73cd180c3efea44736dcacf4e39a176">openFilePicker</a> (const QString &amp;mimeType)</td></tr>
-<tr class="memdesc:ac73cd180c3efea44736dcacf4e39a176"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the native Android file picker.  <br /></td></tr>
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a83d1fff8813619e716d518cc42956d9a" id="r_a83d1fff8813619e716d518cc42956d9a"><td class="memItemLeft"><a id="a83d1fff8813619e716d518cc42956d9a" name="a83d1fff8813619e716d518cc42956d9a"></a>
+void&#160;</td><td class="memItemRight"><b>deferredInitialization</b> () override</td></tr>
+<tr class="memdesc:a83d1fff8813619e716d518cc42956d9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classGlobalObject.html" title="Base class for global singleton objects.">GlobalObject</a>. <br /></td></tr>
+<tr class="memitem:a83d1fff8813619e716d518cc42956d9a" id="r_a83d1fff8813619e716d518cc42956d9a"><td class="memItemLeft"><a id="a83d1fff8813619e716d518cc42956d9a" name="a83d1fff8813619e716d518cc42956d9a"></a>
+void&#160;</td><td class="memItemRight"><b>deferredInitialization</b> () override</td></tr>
+<tr class="memdesc:a83d1fff8813619e716d518cc42956d9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classGlobalObject.html" title="Base class for global singleton objects.">GlobalObject</a>. <br /></td></tr>
+<tr class="memitem:aa02f3bc70cc1e4e1f2de22ee63ad919a" id="r_aa02f3bc70cc1e4e1f2de22ee63ad919a"><td class="memItemLeft"><a id="aa02f3bc70cc1e4e1f2de22ee63ad919a" name="aa02f3bc70cc1e4e1f2de22ee63ad919a"></a>
+virtual void&#160;</td><td class="memItemRight"><b>deferredInitialization</b> () override</td></tr>
+<tr class="memdesc:aa02f3bc70cc1e4e1f2de22ee63ad919a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classGlobalObject.html" title="Base class for global singleton objects.">GlobalObject</a>. <br /></td></tr>
+<tr class="memitem:aa02f3bc70cc1e4e1f2de22ee63ad919a" id="r_aa02f3bc70cc1e4e1f2de22ee63ad919a"><td class="memItemLeft"><a id="aa02f3bc70cc1e4e1f2de22ee63ad919a" name="aa02f3bc70cc1e4e1f2de22ee63ad919a"></a>
+virtual void&#160;</td><td class="memItemRight"><b>deferredInitialization</b> () override</td></tr>
+<tr class="memdesc:aa02f3bc70cc1e4e1f2de22ee63ad919a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classGlobalObject.html" title="Base class for global singleton objects.">GlobalObject</a>. <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classPlatform_1_1FileExchange__Abstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classPlatform_1_1FileExchange__Abstract')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a></td></tr>
+<tr class="memitem:a651d41093fbf8c2243fad937496c2870 inherit pub_types_classPlatform_1_1FileExchange__Abstract" id="r_a651d41093fbf8c2243fad937496c2870"><td class="memItemLeft"><a id="a651d41093fbf8c2243fad937496c2870" name="a651d41093fbf8c2243fad937496c2870"></a>enum &#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a651d41093fbf8c2243fad937496c2870">FileFunction</a> : quint8 </td></tr>
+<tr class="memdesc:a651d41093fbf8c2243fad937496c2870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Functions and types of a file that this app handles. <br /></td></tr>
+<tr class="inherit_header signals_classPlatform_1_1FileExchange__Abstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('signals_classPlatform_1_1FileExchange__Abstract')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Signals inherited from <a class="el" href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a></td></tr>
+<tr class="memitem:af73cbaa9a94c84ca492ac8529bf8de8d inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_af73cbaa9a94c84ca492ac8529bf8de8d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#af73cbaa9a94c84ca492ac8529bf8de8d">openFileRequest</a> (QString fileName, QString info, <a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a651d41093fbf8c2243fad937496c2870">Platform::FileExchange_Abstract::FileFunction</a> fileFunction)</td></tr>
+<tr class="memdesc:af73cbaa9a94c84ca492ac8529bf8de8d inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to open a file.  <br /></td></tr>
+<tr class="memitem:a38d058427b83b88006d7047c81000efc inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a38d058427b83b88006d7047c81000efc"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a38d058427b83b88006d7047c81000efc">openVACRequest</a> (<a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> vac)</td></tr>
+<tr class="memdesc:a38d058427b83b88006d7047c81000efc inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to open a VAC.  <br /></td></tr>
+<tr class="memitem:a43fe09eaac43a11140d6104a756fcae6 inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a43fe09eaac43a11140d6104a756fcae6"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a43fe09eaac43a11140d6104a756fcae6">openWaypointRequest</a> (<a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> waypoint)</td></tr>
+<tr class="memdesc:a43fe09eaac43a11140d6104a756fcae6 inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to show a waypoint.  <br /></td></tr>
+<tr class="memitem:a110558b15f0c233665b5cdc3a1fdfb93 inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a110558b15f0c233665b5cdc3a1fdfb93"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a110558b15f0c233665b5cdc3a1fdfb93">resolveURL</a> (QString url, QString site)</td></tr>
+<tr class="memdesc:a110558b15f0c233665b5cdc3a1fdfb93 inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when Google Maps URL needs to be resolved.  <br /></td></tr>
+<tr class="memitem:a17966a89f5134faa68b70b10ad2f6a1f inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a17966a89f5134faa68b70b10ad2f6a1f"><td class="memItemLeft">
+void&#160;</td><td class="memItemRight"><b>unableToProcessText</b> (QString text)</td></tr>
+<tr class="memdesc:a17966a89f5134faa68b70b10ad2f6a1f inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when processText was unable to parse a text item. <br /></td></tr>
+<tr class="memitem:ab3b2ba3348c67548290b8c9a13587a27 inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_ab3b2ba3348c67548290b8c9a13587a27"><td class="memItemLeft">
+void&#160;</td><td class="memItemRight"><b>importError</b> (QString text)</td></tr>
+<tr class="memdesc:ab3b2ba3348c67548290b8c9a13587a27 inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a general file import error occurs. <br /></td></tr>
+<tr class="memitem:a12fca1a21691f44ce8eaf468e9949d2c inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a12fca1a21691f44ce8eaf468e9949d2c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a12fca1a21691f44ce8eaf468e9949d2c">saveContentResult</a> (QString result)</td></tr>
+<tr class="memdesc:a12fca1a21691f44ce8eaf468e9949d2c inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of a <a class="el" href="classPlatform_1_1FileExchange__Abstract.html#aede05e976827a866ebce98a15035b3d7" title="Save content to a file chosen by the user.">saveContent()</a> operation.  <br /></td></tr>
 <tr class="inherit_header pub_static_methods_classGlobalObject"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_methods_classGlobalObject')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Static Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
 <tr class="memitem:ae5d0c94af509c9744e1b344201928715 inherit pub_static_methods_classGlobalObject" id="r_ae5d0c94af509c9744e1b344201928715"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#ae5d0c94af509c9744e1b344201928715">clear</a> ()</td></tr>
 <tr class="memdesc:ae5d0c94af509c9744e1b344201928715 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes all globally defined objects.  <br /></td></tr>
@@ -231,44 +265,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0fe5454852ab2b913efe469bfd2630b4 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static WaypointLibrary instance.  <br /></td></tr>
 <tr class="memitem:abff9f661cf7e78967606d10692c03412 inherit pub_static_methods_classGlobalObject" id="r_abff9f661cf7e78967606d10692c03412"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#abff9f661cf7e78967606d10692c03412">weatherDataProvider</a> ()</td></tr>
 <tr class="memdesc:abff9f661cf7e78967606d10692c03412 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static WeatherDataProvider instance.  <br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a83d1fff8813619e716d518cc42956d9a" id="r_a83d1fff8813619e716d518cc42956d9a"><td class="memItemLeft"><a id="a83d1fff8813619e716d518cc42956d9a" name="a83d1fff8813619e716d518cc42956d9a"></a>
-void&#160;</td><td class="memItemRight"><b>deferredInitialization</b> () override</td></tr>
-<tr class="memdesc:a83d1fff8813619e716d518cc42956d9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classGlobalObject.html" title="Base class for global singleton objects.">GlobalObject</a>. <br /></td></tr>
-<tr class="memitem:a83d1fff8813619e716d518cc42956d9a" id="r_a83d1fff8813619e716d518cc42956d9a"><td class="memItemLeft"><a id="a83d1fff8813619e716d518cc42956d9a" name="a83d1fff8813619e716d518cc42956d9a"></a>
-void&#160;</td><td class="memItemRight"><b>deferredInitialization</b> () override</td></tr>
-<tr class="memdesc:a83d1fff8813619e716d518cc42956d9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classGlobalObject.html" title="Base class for global singleton objects.">GlobalObject</a>. <br /></td></tr>
-<tr class="memitem:aa02f3bc70cc1e4e1f2de22ee63ad919a" id="r_aa02f3bc70cc1e4e1f2de22ee63ad919a"><td class="memItemLeft"><a id="aa02f3bc70cc1e4e1f2de22ee63ad919a" name="aa02f3bc70cc1e4e1f2de22ee63ad919a"></a>
-virtual void&#160;</td><td class="memItemRight"><b>deferredInitialization</b> () override</td></tr>
-<tr class="memdesc:aa02f3bc70cc1e4e1f2de22ee63ad919a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classGlobalObject.html" title="Base class for global singleton objects.">GlobalObject</a>. <br /></td></tr>
-<tr class="memitem:aa02f3bc70cc1e4e1f2de22ee63ad919a" id="r_aa02f3bc70cc1e4e1f2de22ee63ad919a"><td class="memItemLeft"><a id="aa02f3bc70cc1e4e1f2de22ee63ad919a" name="aa02f3bc70cc1e4e1f2de22ee63ad919a"></a>
-virtual void&#160;</td><td class="memItemRight"><b>deferredInitialization</b> () override</td></tr>
-<tr class="memdesc:aa02f3bc70cc1e4e1f2de22ee63ad919a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classGlobalObject.html" title="Base class for global singleton objects.">GlobalObject</a>. <br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classPlatform_1_1FileExchange__Abstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classPlatform_1_1FileExchange__Abstract')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a></td></tr>
-<tr class="memitem:a651d41093fbf8c2243fad937496c2870 inherit pub_types_classPlatform_1_1FileExchange__Abstract" id="r_a651d41093fbf8c2243fad937496c2870"><td class="memItemLeft"><a id="a651d41093fbf8c2243fad937496c2870" name="a651d41093fbf8c2243fad937496c2870"></a>enum &#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a651d41093fbf8c2243fad937496c2870">FileFunction</a> : quint8 </td></tr>
-<tr class="memdesc:a651d41093fbf8c2243fad937496c2870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Functions and types of a file that this app handles. <br /></td></tr>
-<tr class="inherit_header signals_classPlatform_1_1FileExchange__Abstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('signals_classPlatform_1_1FileExchange__Abstract')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Signals inherited from <a class="el" href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a></td></tr>
-<tr class="memitem:af73cbaa9a94c84ca492ac8529bf8de8d inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_af73cbaa9a94c84ca492ac8529bf8de8d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#af73cbaa9a94c84ca492ac8529bf8de8d">openFileRequest</a> (QString fileName, QString info, <a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a651d41093fbf8c2243fad937496c2870">Platform::FileExchange_Abstract::FileFunction</a> fileFunction)</td></tr>
-<tr class="memdesc:af73cbaa9a94c84ca492ac8529bf8de8d inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to open a file.  <br /></td></tr>
-<tr class="memitem:a38d058427b83b88006d7047c81000efc inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a38d058427b83b88006d7047c81000efc"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a38d058427b83b88006d7047c81000efc">openVACRequest</a> (<a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> vac)</td></tr>
-<tr class="memdesc:a38d058427b83b88006d7047c81000efc inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to open a VAC.  <br /></td></tr>
-<tr class="memitem:a43fe09eaac43a11140d6104a756fcae6 inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a43fe09eaac43a11140d6104a756fcae6"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a43fe09eaac43a11140d6104a756fcae6">openWaypointRequest</a> (<a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> waypoint)</td></tr>
-<tr class="memdesc:a43fe09eaac43a11140d6104a756fcae6 inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to show a waypoint.  <br /></td></tr>
-<tr class="memitem:a110558b15f0c233665b5cdc3a1fdfb93 inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a110558b15f0c233665b5cdc3a1fdfb93"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a110558b15f0c233665b5cdc3a1fdfb93">resolveURL</a> (QString url, QString site)</td></tr>
-<tr class="memdesc:a110558b15f0c233665b5cdc3a1fdfb93 inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when Google Maps URL needs to be resolved.  <br /></td></tr>
-<tr class="memitem:a17966a89f5134faa68b70b10ad2f6a1f inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a17966a89f5134faa68b70b10ad2f6a1f"><td class="memItemLeft">
-void&#160;</td><td class="memItemRight"><b>unableToProcessText</b> (QString text)</td></tr>
-<tr class="memdesc:a17966a89f5134faa68b70b10ad2f6a1f inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when processText was unable to parse a text item. <br /></td></tr>
-<tr class="memitem:ab3b2ba3348c67548290b8c9a13587a27 inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_ab3b2ba3348c67548290b8c9a13587a27"><td class="memItemLeft">
-void&#160;</td><td class="memItemRight"><b>importError</b> (QString text)</td></tr>
-<tr class="memdesc:ab3b2ba3348c67548290b8c9a13587a27 inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a general file import error occurs. <br /></td></tr>
-<tr class="memitem:a12fca1a21691f44ce8eaf468e9949d2c inherit signals_classPlatform_1_1FileExchange__Abstract" id="r_a12fca1a21691f44ce8eaf468e9949d2c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a12fca1a21691f44ce8eaf468e9949d2c">saveContentResult</a> (QString result)</td></tr>
-<tr class="memdesc:a12fca1a21691f44ce8eaf468e9949d2c inherit signals_classPlatform_1_1FileExchange__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of a <a class="el" href="classPlatform_1_1FileExchange__Abstract.html#aede05e976827a866ebce98a15035b3d7" title="Save content to a file chosen by the user.">saveContent()</a> operation.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of <a class="el" href="classPlatform_1_1FileExchange.html" title="Implementation of FileExchange for Android devices.">FileExchange</a> for Android devices. </p>
@@ -510,8 +506,8 @@ void&#160;</td><td class="memItemRight"><b>importError</b> (QString text)</td></
 
 </div>
 </div>
-<a id="ac73cd180c3efea44736dcacf4e39a176" name="ac73cd180c3efea44736dcacf4e39a176"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac73cd180c3efea44736dcacf4e39a176">&#9670;&#160;</a></span>openFilePicker()</h2>
+<a id="a90ae040898ed1eb7a96d1b10b7f695b2" name="a90ae040898ed1eb7a96d1b10b7f695b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90ae040898ed1eb7a96d1b10b7f695b2">&#9670;&#160;</a></span>openFilePicker()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -520,7 +516,7 @@ void&#160;</td><td class="memItemRight"><b>importError</b> (QString text)</td></
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE void Platform::FileExchange::openFilePicker </td>
+          <td class="memname">void Platform::FileExchange::openFilePicker </td>
           <td>(</td>
           <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>mimeType</em></span></td><td>)</td>
           <td></td>
@@ -528,7 +524,7 @@ void&#160;</td><td class="memItemRight"><b>importError</b> (QString text)</td></
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -541,6 +537,8 @@ void&#160;</td><td class="memItemRight"><b>importError</b> (QString text)</td></
   </table>
   </dd>
 </dl>
+
+<p>Reimplemented from <a class="el" href="classPlatform_1_1FileExchange__Abstract.html#a204f316d3ac4d8464307ec930de7a564">Platform::FileExchange_Abstract</a>.</p>
 
 </div>
 </div>

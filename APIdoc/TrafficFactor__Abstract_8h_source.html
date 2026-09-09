@@ -269,36 +269,36 @@ $(function() {
 <div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span></div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficFactor__Abstract.html#a061c5e0ffb5650e388d3f74468a86594">  548</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> qsizetype <a class="code hl_variable" href="classTraffic_1_1TrafficFactor__Abstract.html#a061c5e0ffb5650e388d3f74468a86594">idMatchLength</a> = 6;</div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span></div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficFactor__Abstract.html#a97c75a78c033f40b5a4b859b30a7f807">  560</a></span>    [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_function" href="classTraffic_1_1TrafficFactor__Abstract.html#a97c75a78c033f40b5a4b859b30a7f807">isSameFactorAs</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structTraffic_1_1TrafficFactorData.html">TrafficFactorData</a>&amp; data) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span> </div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_function" href="classTraffic_1_1TrafficFactor__Abstract.html#abd1deb339a20027579cad52a4c147462">TrafficFactor_Abstract</a>)</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficFactor__Abstract.html#a97c75a78c033f40b5a4b859b30a7f807">  563</a></span>    [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_function" href="classTraffic_1_1TrafficFactor__Abstract.html#a97c75a78c033f40b5a4b859b30a7f807">isSameFactorAs</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structTraffic_1_1TrafficFactorData.html">TrafficFactorData</a>&amp; data) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span> </div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>    <span class="comment">// Property values</span></div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>    QProperty&lt;int&gt; m_alarmLevel {0};</div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>    QProperty&lt;bool&gt; m_animate {<span class="keyword">false</span>};</div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>    QProperty&lt;QString&gt; m_callSign;</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    QProperty&lt;QString&gt; m_color {QStringLiteral(<span class="stringliteral">&quot;red&quot;</span>)};</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>    QProperty&lt;Units::Distance&gt; m_hDist;</div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>    QProperty&lt;QString&gt; m_ID;</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>    QProperty&lt;Type&gt; m_type {<a class="code hl_enumvalue" href="classTraffic_1_1TrafficFactor__Abstract.html#a7c9f5a69f8a2dd18bb335085b15f3482a6faacace95eb7c4eef83f2ec9be668c0">unknown</a>};</div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>    QProperty&lt;bool&gt; m_relevant {<span class="keyword">false</span>};</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>    QProperty&lt;QString&gt; m_relevantString;</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>    QProperty&lt;QString&gt; m_typeString;</div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>    QProperty&lt;Units::Distance&gt; m_vDist;</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span> </div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    <span class="comment">// Timer for timeout. Traffic objects become invalid if their data has not</span></div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>    <span class="comment">// been refreshed for longer than &quot;lifetime&quot;. The &quot;valid&quot; binding reads</span></div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>    <span class="comment">// lifetimeCounter.isActive(); QTimer notifies that (bindable) property when</span></div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>    <span class="comment">// the single-shot timer expires, so the binding reacts to expiry</span></div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    <span class="comment">// automatically.</span></div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    QTimer lifetimeCounter;</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>};</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_function" href="classTraffic_1_1TrafficFactor__Abstract.html#abd1deb339a20027579cad52a4c147462">TrafficFactor_Abstract</a>)</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span> </div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>    <span class="comment">// Property values</span></div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    QProperty&lt;int&gt; m_alarmLevel {0};</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>    QProperty&lt;bool&gt; m_animate {<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>    QProperty&lt;QString&gt; m_callSign;</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>    QProperty&lt;QString&gt; m_color {QStringLiteral(<span class="stringliteral">&quot;red&quot;</span>)};</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>    QProperty&lt;Units::Distance&gt; m_hDist;</div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>    QProperty&lt;QString&gt; m_ID;</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>    QProperty&lt;Type&gt; m_type {<a class="code hl_enumvalue" href="classTraffic_1_1TrafficFactor__Abstract.html#a7c9f5a69f8a2dd18bb335085b15f3482a6faacace95eb7c4eef83f2ec9be668c0">unknown</a>};</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>    QProperty&lt;bool&gt; m_relevant {<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>    QProperty&lt;QString&gt; m_relevantString;</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    QProperty&lt;QString&gt; m_typeString;</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>    QProperty&lt;Units::Distance&gt; m_vDist;</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span> </div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>    <span class="comment">// Timer for timeout. Traffic objects become invalid if their data has not</span></div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    <span class="comment">// been refreshed for longer than &quot;lifetime&quot;. The &quot;valid&quot; binding reads</span></div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    <span class="comment">// lifetimeCounter.isActive(); QTimer notifies that (bindable) property when</span></div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    <span class="comment">// the single-shot timer expires, so the binding reacts to expiry</span></div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>    <span class="comment">// automatically.</span></div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>    QTimer lifetimeCounter;</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>};</div>
 </div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span> </div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>} <span class="comment">// namespace Traffic</span></div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span> </div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>} <span class="comment">// namespace Traffic</span></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficFactor__Abstract_html_a036b0f3b64cbe93da8a816530fb95994"><div class="ttname"><a href="classTraffic_1_1TrafficFactor__Abstract.html#a036b0f3b64cbe93da8a816530fb95994">Traffic::TrafficFactor_Abstract::bindableType</a></div><div class="ttdeci">QBindable&lt; TrafficFactor_Abstract::Type &gt; bindableType()</div><div class="ttdoc">Getter method for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00376">TrafficFactor_Abstract.h:376</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficFactor__Abstract_html_a061c5e0ffb5650e388d3f74468a86594"><div class="ttname"><a href="classTraffic_1_1TrafficFactor__Abstract.html#a061c5e0ffb5650e388d3f74468a86594">Traffic::TrafficFactor_Abstract::idMatchLength</a></div><div class="ttdeci">static constexpr qsizetype idMatchLength</div><div class="ttdoc">Number of characters in ICAO HEX IDs.</div><div class="ttdef"><b>Definition</b> <a href="#l00548">TrafficFactor_Abstract.h:548</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficFactor__Abstract_html_a0b4fb3478479e97b40b5217bd55bf324"><div class="ttname"><a href="classTraffic_1_1TrafficFactor__Abstract.html#a0b4fb3478479e97b40b5217bd55bf324">Traffic::TrafficFactor_Abstract::typeString</a></div><div class="ttdeci">QString typeString() const</div><div class="ttdoc">Getter method for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00382">TrafficFactor_Abstract.h:382</a></div></div>

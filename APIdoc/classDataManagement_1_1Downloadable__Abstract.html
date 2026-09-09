@@ -102,6 +102,8 @@ void&#160;</td><td class="memItemRight"><b>descriptionChanged</b> ()</td></tr>
 <tr class="memitem:a11d3c674e06e6c38654d20169414c1d0" id="r_a11d3c674e06e6c38654d20169414c1d0"><td class="memItemLeft"><a id="a11d3c674e06e6c38654d20169414c1d0" name="a11d3c674e06e6c38654d20169414c1d0"></a>
 void&#160;</td><td class="memItemRight"><b>downloadingChanged</b> ()</td></tr>
 <tr class="memdesc:a11d3c674e06e6c38654d20169414c1d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="memitem:a47630c0e40b3cd00e0da6d839877a0a0" id="r_a47630c0e40b3cd00e0da6d839877a0a0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a47630c0e40b3cd00e0da6d839877a0a0">aboutToChangeFile</a> (QString localFileName)</td></tr>
+<tr class="memdesc:a47630c0e40b3cd00e0da6d839877a0a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Warning that a local file is about to change.  <br /></td></tr>
 <tr class="memitem:a0d0cedd2c97765a34ead1b0553389499" id="r_a0d0cedd2c97765a34ead1b0553389499"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0d0cedd2c97765a34ead1b0553389499">error</a> (QString objectName, QString message)</td></tr>
 <tr class="memdesc:a0d0cedd2c97765a34ead1b0553389499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Download error.  <br /></td></tr>
 <tr class="memitem:afea09ee5100fdf287bd3491440a69e70" id="r_afea09ee5100fdf287bd3491440a69e70"><td class="memItemLeft"><a id="afea09ee5100fdf287bd3491440a69e70" name="afea09ee5100fdf287bd3491440a69e70"></a>
@@ -287,6 +289,40 @@ QString&#160;</td><td class="memItemRight"><b>updateSizeString</b></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a47630c0e40b3cd00e0da6d839877a0a0" name="a47630c0e40b3cd00e0da6d839877a0a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47630c0e40b3cd00e0da6d839877a0a0">&#9670;&#160;</a></span>aboutToChangeFile</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DataManagement::Downloadable_Abstract::aboutToChangeFile </td>
+          <td>(</td>
+          <td class="paramtype">QString</td>          <td class="paramname"><span class="paramname"><em>localFileName</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Warning that a local file is about to change. </p>
+<p>This signal is emitted just before a local file is overwritten with new data or deleted. It indicates that all users should stop using the file immediately and release any open handle to it: Windows refuses to replace or delete a file that is open. This signal is always followed by the signal <a class="el" href="#afea09ee5100fdf287bd3491440a69e70" title="Indicates that the content of a local file (or several local files) has changed.">fileContentChanged()</a>, which indicates that the local file can be used again. Group classes forward the signal of their members.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">localFileName</td><td>Name of the local file that is about to change </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ac990c9f3b6f7be0d13a5e3f25c42bfd1" name="ac990c9f3b6f7be0d13a5e3f25c42bfd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac990c9f3b6f7be0d13a5e3f25c42bfd1">&#9670;&#160;</a></span>bindableHasFile()</h2>
 
@@ -465,7 +501,8 @@ QString&#160;</td><td class="memItemRight"><b>updateSizeString</b></td></tr>
 </div><div class="memdoc">
 
 <p>Download error. </p>
-<p>This signal is emitted if the download process fails for whatever reason. Once the signal is emitted, the download process is deleted and no further actions will take place. The local file will not be touched.</p>
+<p>This signal is emitted if the download process fails for whatever reason.</p>
+<p>Once the signal is emitted, the download process is deleted and no further actions will take place. The local file will not be touched.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">objectName</td><td>Name of this QObject, as obtained by the method objectName()</td></tr>

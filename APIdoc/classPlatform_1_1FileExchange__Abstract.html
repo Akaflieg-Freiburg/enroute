@@ -120,8 +120,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab1c9d0044f727d2d69c075ec4a590030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
 <tr class="memitem:acac26971d30dcda4d7be83f176da6b7a" id="r_acac26971d30dcda4d7be83f176da6b7a"><td class="memItemLeft">virtual Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#acac26971d30dcda4d7be83f176da6b7a">importContent</a> ()=0</td></tr>
 <tr class="memdesc:acac26971d30dcda4d7be83f176da6b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import content from file.  <br /></td></tr>
+<tr class="memitem:a204f316d3ac4d8464307ec930de7a564" id="r_a204f316d3ac4d8464307ec930de7a564"><td class="memItemLeft">virtual Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#a204f316d3ac4d8464307ec930de7a564">openFilePicker</a> (const QString &amp;mimeType)</td></tr>
+<tr class="memdesc:a204f316d3ac4d8464307ec930de7a564"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open the system file picker.  <br /></td></tr>
 <tr class="memitem:a2a1cfcf25de17f7295611815888178a7" id="r_a2a1cfcf25de17f7295611815888178a7"><td class="memItemLeft">virtual Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#a2a1cfcf25de17f7295611815888178a7">shareContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameSuffix, const QString &amp;fileNameTemplate)=0</td></tr>
-<tr class="memdesc:a2a1cfcf25de17f7295611815888178a7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classShare.html" title="The Share class provides synchronous and asynchronous communication between the android native share ...">Share</a> content.  <br /></td></tr>
+<tr class="memdesc:a2a1cfcf25de17f7295611815888178a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Share content.  <br /></td></tr>
 <tr class="memitem:aede05e976827a866ebce98a15035b3d7" id="r_aede05e976827a866ebce98a15035b3d7"><td class="memItemLeft">virtual Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#aede05e976827a866ebce98a15035b3d7">saveContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameSuffix, const QString &amp;fileNameTemplate)</td></tr>
 <tr class="memdesc:aede05e976827a866ebce98a15035b3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save content to a file chosen by the user.  <br /></td></tr>
 <tr class="memitem:ada1d76549c47c389a2b9f76eca67b3ba" id="r_ada1d76549c47c389a2b9f76eca67b3ba"><td class="memItemLeft">virtual Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#ada1d76549c47c389a2b9f76eca67b3ba">viewContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameSuffix, const QString &amp;fileNameTemplate)=0</td></tr>
@@ -281,6 +283,44 @@ Additional Inherited Members</h2></td></tr>
 
 <p>GUI setup completed. </p>
 <p>This method is must called as soon as the GUI setup is completed. On Android, this method will start looking for file import requests from the OS. On Desktop system, this method does nothing. </p>
+
+</div>
+</div>
+<a id="a204f316d3ac4d8464307ec930de7a564" name="a204f316d3ac4d8464307ec930de7a564"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a204f316d3ac4d8464307ec930de7a564">&#9670;&#160;</a></span>openFilePicker()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual Q_INVOKABLE void Platform::FileExchange_Abstract::openFilePicker </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>mimeType</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Open the system file picker. </p>
+<p>On platforms that provide a system file picker (Android), this opens the picker and imports the file chosen by the user. The default implementation does nothing.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mimeType</td><td>MIME type used to filter the files shown </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classPlatform_1_1FileExchange.html#a90ae040898ed1eb7a96d1b10b7f695b2">Platform::FileExchange</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="FileExchange__Abstract_8h_source.html#l00095">95</a> of file <a class="el" href="FileExchange__Abstract_8h_source.html">FileExchange_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -694,7 +734,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classShare.html" title="The Share class provides synchronous and asynchronous communication between the android native share ...">Share</a> content. </p>
+<p>Share content. </p>
 <p>On desktop systems, this method is supposed to show a file dialog to save the file. On mobile devices, this method is supposed to open a dialog that allows to chose the method to send this file (e-mail, dropbox, signal chat, …)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

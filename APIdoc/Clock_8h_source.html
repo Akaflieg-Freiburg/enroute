@@ -162,12 +162,17 @@ $(function() {
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="classNavigation_1_1Clock.html#a3e50182f6bf3cc5521aef04245204909">  182</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classNavigation_1_1Clock.html#a3e50182f6bf3cc5521aef04245204909">timeChanged</a>();</div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">// Sets a single shot timer to emit timeChanged just after the full minute</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">// Sets a single shot timer that calls updateTime() just after the full minute</span></div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keywordtype">void</span> setSingleShotTimer();</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>};</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="comment">// Emits timeChanged, and dateChanged if the date differs from the last one seen</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordtype">void</span> updateTime();</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    QDate m_lastDate {QDate::currentDate()};</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>};</div>
 </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>} <span class="comment">// namespace Navigation</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>} <span class="comment">// namespace Navigation</span></div>
 <div class="ttc" id="aclassGlobalObject_html_ac8dfa53c492975de42fa7972e77abbc1"><div class="ttname"><a href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject::GlobalObject</a></div><div class="ttdeci">GlobalObject(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
 <div class="ttc" id="aclassGlobalObject_html_ad479148c920adcb9c9ea9d99c762a08f"><div class="ttname"><a href="classGlobalObject.html#ad479148c920adcb9c9ea9d99c762a08f">GlobalObject::clock</a></div><div class="ttdeci">static Q_INVOKABLE Navigation::Clock * clock()</div><div class="ttdoc">Pointer to appplication-wide static Navigation::Clock instance.</div></div>
 <div class="ttc" id="aclassNavigation_1_1Clock_html"><div class="ttname"><a href="classNavigation_1_1Clock.html">Navigation::Clock</a></div><div class="ttdoc">This extremely simple class give accss to time and offers a few time-related functions.</div><div class="ttdef"><b>Definition</b> <a href="#l00039">Clock.h:39</a></div></div>

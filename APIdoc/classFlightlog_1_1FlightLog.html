@@ -94,6 +94,8 @@ void&#160;</td><td class="memItemRight"><b>showCurrentFlightTraceChanged</b> ()<
 <tr class="memdesc:ad7a71a52cb6e2e25cd6487c137eb87a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a landing is detected.  <br /></td></tr>
 <tr class="memitem:a5f3ec3368d657de60412daa08866c697" id="r_a5f3ec3368d657de60412daa08866c697"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a5f3ec3368d657de60412daa08866c697">saveError</a> (const QString &amp;message)</td></tr>
 <tr class="memdesc:a5f3ec3368d657de60412daa08866c697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when saving the flight log database fails.  <br /></td></tr>
+<tr class="memitem:a856a37f22cef0f9b527d16d18d465e12" id="r_a856a37f22cef0f9b527d16d18d465e12"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a856a37f22cef0f9b527d16d18d465e12">backgroundLocationUnavailable</a> (const QString &amp;message)</td></tr>
+<tr class="memdesc:a856a37f22cef0f9b527d16d18d465e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when background location access is missing or insufficient.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -274,6 +276,40 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">flight</td><td>The flight to add </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a856a37f22cef0f9b527d16d18d465e12" name="a856a37f22cef0f9b527d16d18d465e12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a856a37f22cef0f9b527d16d18d465e12">&#9670;&#160;</a></span>backgroundLocationUnavailable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Flightlog::FlightLog::backgroundLocationUnavailable </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted when background location access is missing or insufficient. </p>
+<p>Automatic flight detection may not continue reliably while the app is in the background until the user grants "Always" location access.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>Human-readable description, suitable for display </td></tr>
   </table>
   </dd>
 </dl>

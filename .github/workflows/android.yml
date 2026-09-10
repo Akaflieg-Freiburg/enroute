@@ -39,7 +39,7 @@ jobs:
         aqtversion: ==3.3.*
         cache: 'true'
         cache-key-prefix: 'install-qt-action-android'
-        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtsensors qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
+        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtsensors qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
         target: 'android'
         version: '6.11.2'
         arch: 'android_arm64_v8a'

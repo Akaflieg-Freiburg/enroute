@@ -39,7 +39,7 @@ jobs:
         aqtversion: ==3.3.*
         arch: linux_gcc_64
         cache: 'true'
-        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
+        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
         version: '6.11.2'
     - name: Install LinuxDeploy
       uses: miurahr/install-linuxdeploy-action@v1

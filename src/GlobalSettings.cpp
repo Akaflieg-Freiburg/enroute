@@ -69,6 +69,26 @@ auto GlobalSettings::airspaceAltitudeLimit() const -> Units::Distance
 }
 
 
+auto GlobalSettings::autoFlightDetection() const -> bool
+{
+    // Single choke point for the flight log's background activity. Every path
+    // in FlightLog.cpp that starts the Android foreground service, requests
+    // "always" location on iOS or feeds the flight detector reads this getter.
+    // Builds without the flight log must never do any of that, even if a test
+    // build has persisted the setting as true.
+    if (!flightLogEnabled()) {
+        return false;
+    }
+    return m_settings.value(QStringLiteral("FlightLog/autoFlightDetection"), false).toBool();
+}
+
+
+auto GlobalSettings::flightLogEnabled() const -> bool
+{
+    return FLIGHTLOG != 0;
+}
+
+
 auto GlobalSettings::fontSize() const -> int
 {
     auto fontSize = m_settings.value(QStringLiteral("fontSize"), 14).toInt();
@@ -224,7 +244,9 @@ void GlobalSettings::setNightMode(bool newNightMode)
 
 void GlobalSettings::setAutoFlightDetection(bool newAutoFlightDetection)
 {
-    if (newAutoFlightDetection == autoFlightDetection())
+    // Without the flight log, the setting is read-only false. The stored value
+    // is left alone, so a developer switching back to a FLIGHTLOG build keeps it.
+    if (!flightLogEnabled() || (newAutoFlightDetection == autoFlightDetection()))
     {
         return;
     }

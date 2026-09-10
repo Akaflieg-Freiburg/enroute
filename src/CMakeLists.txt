@@ -1,4 +1,36 @@
 #
+# Flight log feature flag (option FLIGHTLOG in the top-level CMakeLists.txt)
+#
+# The flight log is work in progress. Its sources (src/flightlog, the Android
+# FlightLogService, the flight log QML files and Qt Sql) are always compiled, so
+# that all QML references stay valid. The option only decides whether the
+# feature is reachable by the user: it sets GlobalSettings.flightLogEnabled
+# (hides the menu entry and forces autoFlightDetection to false, which is the
+# single choke point for the Android foreground service and for "always"
+# location on iOS), and it decides whether the store-facing declarations below
+# end up in the generated AndroidManifest.xml and Info.plist.
+#
+
+if(FLIGHTLOG)
+    set(FLIGHTLOG_ANDROID_PERMISSIONS [[  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>]])
+    set(FLIGHTLOG_ANDROID_SERVICE [[<service
+      android:name="de.akaflieg_freiburg.enroute.FlightLogService"
+      android:foregroundServiceType="location"
+      android:exported="false"/>]])
+    set(FLIGHTLOG_ANDROID_BACKGROUND_RUNNING true)
+    set(FLIGHTLOG_IOS_BACKGROUND_MODES [[<key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+    </array>]])
+else()
+    set(FLIGHTLOG_ANDROID_PERMISSIONS "")
+    set(FLIGHTLOG_ANDROID_SERVICE "")
+    set(FLIGHTLOG_ANDROID_BACKGROUND_RUNNING false)
+    set(FLIGHTLOG_IOS_BACKGROUND_MODES "")
+endif()
+
+#
 # Configure files
 #
 

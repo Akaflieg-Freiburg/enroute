@@ -20,8 +20,9 @@
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
+  <!-- Foreground service permissions for the flight log; empty unless the
+       CMake option FLIGHTLOG is set, see src/CMakeLists.txt -->
+${FLIGHTLOG_ANDROID_PERMISSIONS}
 
   <!--
   The permissions above imply required hardware features, which would hide
@@ -234,9 +235,10 @@
       after the app is suspended, so C++ objects can continue to record GPS data.
       The associated crash risk (rendering after the Android Surface is destroyed)
       is mitigated in main.cpp by hiding the QQuickWindow on
-      Qt::ApplicationSuspended.
+      Qt::ApplicationSuspended. The value is "true" only in builds with the
+      CMake option FLIGHTLOG set, see src/CMakeLists.txt.
       -->
-      <meta-data android:name="android.app.background_running" android:value="true"/>
+      <meta-data android:name="android.app.background_running" android:value="${FLIGHTLOG_ANDROID_BACKGROUND_RUNNING}"/>
       <!-- Background running -->
       
       <!-- auto screen scale factor -->
@@ -262,11 +264,10 @@
 
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
 
-    <service
-      android:name="de.akaflieg_freiburg.enroute.FlightLogService"
-      android:foregroundServiceType="location"
-      android:exported="false"/>
-    
+    <!-- Foreground service for the flight log; empty unless the CMake option
+         FLIGHTLOG is set, see src/CMakeLists.txt -->
+    ${FLIGHTLOG_ANDROID_SERVICE}
+
     <!-- NOTE: android:authorities must match AUTHORITY in de/akaflieg_freiburg/enroute/IntentLauncher.java -->
     <provider
       android:name="androidx.core.content.FileProvider"

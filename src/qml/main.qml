@@ -283,6 +283,7 @@ AppWindow {
 
                     text: qsTr("Flight Log")
                     icon.source: "/icons/material/ic_flight_takeoff.svg"
+                    visible: GlobalSettings.flightLogEnabled
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()

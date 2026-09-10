@@ -108,11 +108,23 @@ public:
      */
     Q_PROPERTY(Units::Distance airspaceAltitudeLimit_max MEMBER airspaceAltitudeLimit_max CONSTANT)
 
-    /*! \brief Automatic flight detection enabled for FlightLog start and landing time */
+    /*! \brief Automatic flight detection enabled for FlightLog start and landing time
+     *
+     *  Always false in builds without the flight log, see flightLogEnabled.
+     */
     Q_PROPERTY(bool autoFlightDetection READ autoFlightDetection WRITE setAutoFlightDetection NOTIFY autoFlightDetectionChanged)
 
     /*! \brief Should we expand notam abbreviations */
     Q_PROPERTY(bool expandNotamAbbreviations READ expandNotamAbbreviations WRITE setExpandNotamAbbreviations NOTIFY expandNotamAbbreviationsChanged)
+
+    /*! \brief True if this build includes the flight log
+     *
+     *  Set by the CMake option FLIGHTLOG. While the flight log is work in
+     *  progress, release builds leave the option off: the flight log menu entry
+     *  is hidden, and autoFlightDetection always reads as false, so the Android
+     *  foreground service and background location on iOS are never started.
+     */
+    Q_PROPERTY(bool flightLogEnabled READ flightLogEnabled CONSTANT)
 
     /*! \brief Font size
      *
@@ -199,13 +211,19 @@ public:
      *
      * @returns Property autoFlightDetection
      */
-    [[nodiscard]] auto autoFlightDetection() const -> bool { return m_settings.value(QStringLiteral("FlightLog/autoFlightDetection"), false).toBool(); }
+    [[nodiscard]] auto autoFlightDetection() const -> bool;
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property expandNotamAbbreviations
      */
     [[nodiscard]] bool expandNotamAbbreviations() const { return m_settings.value(QStringLiteral("expandNotamAbbreviations"), false).toBool(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property flightLogEnabled
+     */
+    [[nodiscard]] auto flightLogEnabled() const -> bool;
 
     /*! \brief Getter function for property with the same name
      *

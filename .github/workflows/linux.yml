@@ -82,6 +82,14 @@ jobs:
     - name: Lint QML
       run: |
         cmake --build build-enroute --target all_qmllint
+    # The AppImage below is assembled from app/, which the install step above
+    # populated with the default build. This step only keeps the FLIGHTLOG=ON
+    # configuration compiling and lint-clean while the flight log is hidden.
+    - name: Compile and lint with FLIGHTLOG=ON
+      run: |
+        cmake -B build-enroute -DFLIGHTLOG=ON
+        cmake --build build-enroute
+        cmake --build build-enroute --target all_qmllint
     - name: Package
       run: |
         linuxdeploy-x86_64.AppImage --appdir app --output appimage

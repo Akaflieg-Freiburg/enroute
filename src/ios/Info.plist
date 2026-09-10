@@ -389,11 +389,9 @@
 
     <!-- Enable continuous location updates when the app is in the background.
          This is required so the flight detector keeps receiving GPS fixes
-         even after the pilot switches away from the app during a flight. -->
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>location</string>
-    </array>
+         even after the pilot switches away from the app during a flight.
+         Empty unless the CMake option FLIGHTLOG is set, see src/CMakeLists.txt. -->
+    ${FLIGHTLOG_IOS_BACKGROUND_MODES}
 
 </dict>
 </plist>

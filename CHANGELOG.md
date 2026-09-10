@@ -11,9 +11,8 @@
 - Flight routes can now be exported in Garmin FPL and MSFS PLN formats, for
   transfer to Garmin avionics and flight simulators. (#443, #640)
 
-- On Android, flight routes, the waypoint library, flight logs and system
-  information can now be saved directly to a file, in addition to sharing.
-  (#363)
+- On Android, flight routes, the waypoint library and system information can
+  now be saved directly to a file, in addition to sharing. (#363)
 
 - Warn the user when pressure altitude and GNSS altitude differ by unrealistic
   amounts, which happens when the device does not measure static pressure, for

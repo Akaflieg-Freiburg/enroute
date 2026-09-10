@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(ExternalProject)
 option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
+option(FLIGHTLOG "Build the flight log UI and its background-location declarations (work in progress)" OFF)
 
 # Qt for iOS ships one fat static library per module, with an arm64 slice for the device
 # and an x86_64 slice for the simulator; there is no arm64 simulator slice, so a simulator

@@ -47,7 +47,7 @@ jobs:
         plugins: appimage
     - name: Install Additional Software
       run: |
-        sudo apt install appstream extra-cmake-modules fuse libudev-dev libxcb-cursor0 libzip-dev ninja-build spirv-tools zipcmp zipmerge ziptool
+        sudo apt install appstream extra-cmake-modules fuse libudev-dev libxcb-cursor0 libzip-dev ninja-build patchelf spirv-tools zipcmp zipmerge ziptool
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -75,7 +75,8 @@ jobs:
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr \
-          -DQTDEPLOY=ON
+          -DQTDEPLOY=ON \
+          -DQT_DEPLOY_USE_PATCHELF=ON
         cmake --build build-enroute
         cmake --build build-enroute --target install
     - name: Lint QML

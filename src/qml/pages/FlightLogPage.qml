@@ -33,7 +33,8 @@ Page {
     title: qsTr("Flight Log")
 
     property bool isAndroid: Qt.platform.os === "android"
-    property bool isAndroidOrIos: isAndroid || Qt.platform.os === "ios"
+    property bool isIos: Qt.platform.os === "ios"
+    property bool isAndroidOrIos: isAndroid || isIos
 
     // Selection state
     property bool selectionMode: false
@@ -244,7 +245,18 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        importFlightLogDialog.open()
+                        if (page.isIos) {
+                            Global.dialogLoader.active = false
+                            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                                              title: qsTr("Import files"),
+                                                              text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
+                                                              standardButtons: Dialog.Ok})
+                            Global.dialogLoader.active = true
+                        } else if (page.isAndroid) {
+                            FileExchange.openFilePicker("")
+                        } else {
+                            importFlightLogDialog.open()
+                        }
                     }
 
                     FileDialog {
@@ -255,9 +267,9 @@ Page {
 
                         fileMode: FileDialog.OpenFile
 
-                        // Setting a non-trivial name filter on Android means we cannot select any
-                        // files at all.
-                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("Flightlog JSON File (*.json)")]
+                        // This dialog is only ever opened on desktop (see onTriggered above),
+                        // so a name filter is always safe to set here.
+                        nameFilters: [qsTr("Flightlog JSON File (*.json)")]
 
                         onAccepted: {
                             PlatformAdaptor.vibrateBrief()

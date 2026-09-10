@@ -360,6 +360,15 @@ signals:
     // Notifier signal
     void receivingPositionInfoChanged(bool);
 
+    /*! \brief Emitted when background location was requested but iOS did not
+     *         grant (or has not yet granted) "Always" location access
+     *
+     *  Automatic flight detection will not reliably continue while the app
+     *  is in the background until the user grants "Always" access, which
+     *  may require a manual change in the system Settings app.
+     */
+    void backgroundLocationUnavailable();
+
 private slots:
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.

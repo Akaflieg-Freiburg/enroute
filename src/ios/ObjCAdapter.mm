@@ -120,15 +120,44 @@ void ObjCAdapter::postNotification(const QString& title, const QString& body) {
 //MARK: Background Location
 
 static CLLocationManager* s_bgLocationManager = nil;
+// Intentionally never released: this is a singleton for the lifetime of the
+// process, not a leak. ObjCAdapter has no instance/destructor to hook a
+// teardown into, and the manager must stay alive for as long as the app can
+// still be asked to re-enable background location (e.g. the next flight).
 
-void ObjCAdapter::enableBackgroundLocation() {
+bool ObjCAdapter::enableBackgroundLocation() {
     if (s_bgLocationManager == nil) {
         s_bgLocationManager = [[CLLocationManager alloc] init];
     }
-    [s_bgLocationManager requestAlwaysAuthorization];
+
+    CLAuthorizationStatus status = s_bgLocationManager.authorizationStatus;
+    if (status == kCLAuthorizationStatusNotDetermined) {
+        // First time ever: show the system dialog. The result arrives
+        // asynchronously; the caller will find out on its next attempt to
+        // enable background location (e.g. the next flight).
+        [s_bgLocationManager requestAlwaysAuthorization];
+        return false;
+    }
+
+    if (status != kCLAuthorizationStatusAuthorizedAlways) {
+        // Denied, restricted, or only "While Using" -- requestAlwaysAuthorization
+        // is a silent no-op once the status is already determined, so there is
+        // no way to re-prompt here. The caller is responsible for telling the
+        // user to fix this in Settings.
+        return false;
+    }
+
+    // This manager's only job is to keep the process alive in the background;
+    // Qt's own CLLocationManager (QGeoPositionInfoSource) already provides the
+    // full-accuracy fix used for actual navigation. Requesting best accuracy
+    // here as well would run a second full-precision GPS session for the
+    // whole flight, for no functional benefit -- a needless battery cost on a
+    // device that may be the pilot's only navigation instrument.
+    s_bgLocationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
     s_bgLocationManager.allowsBackgroundLocationUpdates = YES;
     s_bgLocationManager.pausesLocationUpdatesAutomatically = NO;
     [s_bgLocationManager startUpdatingLocation];
+    return true;
 }
 
 void ObjCAdapter::disableBackgroundLocation() {

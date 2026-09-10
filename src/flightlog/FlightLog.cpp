@@ -34,6 +34,7 @@
 
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/Waypoint.h"
 #include "flightlog/AirplaneFlightDetector.h"
@@ -127,6 +128,16 @@ void Flightlog::FlightLog::deferredInitialization()
                 emit showCurrentFlightTraceChanged();
                 emit displayedTrackPathChanged();
             });
+
+#ifdef Q_OS_IOS
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::backgroundLocationUnavailable,
+            this, [this]() {
+                emit backgroundLocationUnavailable(
+                    tr("Automatic flight detection may stop working once the app is in the "
+                       "background. Please grant \"Always\" location access to this app in the "
+                       "system Settings."));
+            });
+#endif
 
 #ifdef Q_OS_ANDROID
     // After a 30-second grace period, post a notification if auto-detection is
@@ -508,17 +519,12 @@ auto Flightlog::FlightLog::exportToJSON(const QStringList& uuids) const -> QByte
 
 auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
 {
-    QString myFileName = fileName;
-    if (myFileName.startsWith(u"file://"_s)) {
-        myFileName = myFileName.mid(7);
+    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    if (!file->open(QIODevice::ReadOnly)) {
+        return tr("Cannot open file: %1").arg(file->errorString());
     }
-
-    QFile file(myFileName);
-    if (!file.open(QIODevice::ReadOnly)) {
-        return tr("Cannot open file: %1").arg(file.errorString());
-    }
-    const auto raw = file.readAll();
-    file.close();
+    const auto raw = file->readAll();
+    file->close();
 
     const auto imported = FlightLogExportJSON::fromJSON(raw);
     if (imported.isEmpty()) {
@@ -538,6 +544,10 @@ auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
             continue;
         }
         auto flight = importedFlight;
+        // The JSON export format never includes the actual IGC track data,
+        // only metadata, so a trackFile name inherited from the exporting
+        // device's filesystem would not point to an existing file here.
+        flight.setTrackFile({});
         resolveCoordinates(flight);
         flights.append(flight);
         existingUuids.insert(flight.uuid());
@@ -548,9 +558,16 @@ auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
         return {};
     }
 
+    if (!m_storage->upsertMany(newFlights)) {
+        // upsertMany() has already emitted saveError() with the details;
+        // returning a non-empty string here suppresses the "N flight(s)
+        // imported" success toast so the UI does not report success for an
+        // import that was not actually persisted.
+        return tr("Failed to save the imported flights to storage. Nothing was imported.");
+    }
+
     sortFlights(flights);
     m_flights.setValue(std::move(flights));
-    m_storage->upsertMany(newFlights);
     return {};
 }
 

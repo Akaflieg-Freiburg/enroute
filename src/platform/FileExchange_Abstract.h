@@ -57,7 +57,8 @@ public:
         Image, /*< Image without georeferencing information */
         TripKit, /*< Trip Kit */
         ZipFile, /*< Zip File */
-        Cub /*< Airspace data in CUB format */
+        Cub, /*< Airspace data in CUB format */
+        FlightLogJSON /*< Flight log in Enroute's JSON export format */
       };
     Q_ENUM(FileFunction)
 

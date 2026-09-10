@@ -359,8 +359,8 @@ void Positioning::PositionProvider::updateBackgroundLocation()
 {
     if (m_backgroundUpdateCallers.isEmpty()) {
         ObjCAdapter::disableBackgroundLocation();
-    } else {
-        ObjCAdapter::enableBackgroundLocation();
+    } else if (!ObjCAdapter::enableBackgroundLocation()) {
+        emit backgroundLocationUnavailable();
     }
 }
 #endif

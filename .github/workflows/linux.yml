@@ -55,7 +55,7 @@ jobs:
     - name: Compile and Install maplibre-native-qt
       run: |
         $QT_ROOT_DIR/bin/qt-cmake \
-          -S enrouteDependencies/maplibre-native-qt \
+          -S enrouteDependencies/maplibre-native-qt-flat \
           -B build-maplibre-native-qt \
           -G Ninja \
           -DMLN_QT_WITH_INTERNAL_ICU=ON \

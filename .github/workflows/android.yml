@@ -86,7 +86,7 @@ jobs:
       run: |
         export QT_HOST_PATH="$(readlink -f "$QT_ROOT_DIR/../gcc_64")"
         $QT_ROOT_DIR/bin/qt-cmake \
-          -S enrouteDependencies/maplibre-native-qt \
+          -S enrouteDependencies/maplibre-native-qt-flat \
           -B build-maplibre-native-qt \
           -G Ninja \
           -DBUILD_TESTING=OFF \

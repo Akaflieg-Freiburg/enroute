@@ -73,7 +73,7 @@
         {
           "type": "git",
           "url": "https://github.com/qt/qthttpserver.git",
-          "tag": "v6.9.0"
+          "tag": "v6.10.3"
         }
       ],
       "buildsystem": "cmake-ninja"

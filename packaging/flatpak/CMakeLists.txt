@@ -9,6 +9,12 @@
 
 configure_file(${APP_ID}.json.in ${APP_ID}.json @ONLY)
 
+# The runtime branch is maintained in the manifest template (see
+# runtime_policy.py, run by the fastlane lane flathubRelease); read it from
+# there so the sample build below installs the matching SDK and base app.
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/${APP_ID}.json.in FLATPAK_MANIFEST_TEMPLATE)
+string(JSON FLATPAK_RUNTIME_VERSION GET "${FLATPAK_MANIFEST_TEMPLATE}" runtime-version)
+
 
 #
 # Sample build
@@ -16,8 +22,8 @@ configure_file(${APP_ID}.json.in ${APP_ID}.json @ONLY)
 
 add_custom_target(flatpak-binary
     COMMAND flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    COMMAND flatpak install --system --assumeyes runtime/org.kde.Sdk/x86_64/6.8
-    COMMAND flatpak install --system --assumeyes app/io.qt.qtwebengine.BaseApp/x86_64/6.8
+    COMMAND flatpak install --system --assumeyes runtime/org.kde.Sdk/x86_64/${FLATPAK_RUNTIME_VERSION}
+    COMMAND flatpak install --system --assumeyes app/io.qt.qtwebengine.BaseApp/x86_64/${FLATPAK_RUNTIME_VERSION}
     COMMAND flatpak-builder --force-clean flatpakBuildDirectory ${APP_ID}.json
     COMMAND echo ""
     COMMAND echo ""

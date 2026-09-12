@@ -37,6 +37,14 @@ Create GitHub Release, using SSH authentication
 
 Create Flathub test build for release
 
+### flathubRuntime
+
+```sh
+[bundle exec] fastlane flathubRuntime
+```
+
+Show which org.kde.Platform runtime the next Flathub release would use
+
 ----
 
 

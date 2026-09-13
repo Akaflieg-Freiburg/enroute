@@ -271,6 +271,16 @@ lane :flathubRelease do
   sh("python3 ../packaging/flatpak/inject_releases.py ../CHANGELOG.md #{appdata_path}")
   sh("python3 -c \"import xml.dom.minidom, sys; xml.dom.minidom.parse('#{appdata_path}')\"")
 
+  # Flathub shows the screenshots referenced in the AppStream metainfo. They
+  # are the ten-inch Google Play renders, wrapped in a GNOME-style window
+  # frame and published as assets of the GitHub pre-release "screenshots"
+  # (see packaging/flatpak/publish_screenshots.py). Uploading them here keeps
+  # Flathub in step with the Play Store set; Flathub fetches the images when
+  # it builds the app. The script also fails the lane if the metainfo and
+  # the generated files disagree.
+  UI.message('Publishing Flathub screenshots as GitHub release assets...')
+  sh("python3 ../packaging/flatpak/publish_screenshots.py --appdata #{appdata_path} --work ../build/build-linux-release/screenshots")
+
   # Get current git commit hash
   commit_hash = sh("git rev-parse --short HEAD").strip
   
@@ -339,7 +349,7 @@ lane :flathubRelease do
 
   # Create PR using gh CLI
   Dir.chdir(clone_folder) do
-    pr_body = "Updates the Flatpak manifest to latest commit #{commit_hash}\n\nRuntime: #{runtime_note}\n\nSource commit message: #{commit_message}"
+    pr_body = "Updates the Flatpak manifest to latest commit #{commit_hash}\n\nRuntime: #{runtime_note}\n\nScreenshots: refreshed at https://github.com/Akaflieg-Freiburg/enroute/releases/tag/screenshots\n\nSource commit message: #{commit_message}"
     sh("gh pr create --title 'Update manifest to #{commit_hash}' --body '#{pr_body}' --base master --head #{branch_name}")
   end
   
@@ -351,4 +361,11 @@ desc "Show which org.kde.Platform runtime the next Flathub release would use"
 lane :flathubRuntime do
   sh('python3 ../packaging/flatpak/runtime_policy.py select ' \
      '--manifest ../packaging/flatpak/de.akaflieg_freiburg.enroute.json.in')
+end
+
+desc "Decorate the Flathub screenshots for inspection, without uploading them"
+lane :flathubScreenshots do
+  work = File.expand_path('../build/flathub-screenshots')
+  sh("python3 ../packaging/flatpak/publish_screenshots.py --dry-run --work #{work}")
+  UI.success("Decorated screenshots are in #{work}")
 end

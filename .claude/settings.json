@@ -19,7 +19,13 @@
       "Bash(head -c 200000000 /dev/zero)",
       "Bash(rm bigcache.bin)",
       "Bash(adb exec-out *)",
-      "Bash(curl -s \"https://enroute-data.akaflieg-freiburg.de/enroute-GeoJSONv003/Europe/Germany.geojson\" -o Germany.geojson)"
+      "Bash(curl -s \"https://enroute-data.akaflieg-freiburg.de/enroute-GeoJSONv003/Europe/Germany.geojson\" -o Germany.geojson)",
+      "Bash(gh --version)",
+      "Bash(time python3 packaging/flatpak/publish_screenshots.py --dry-run --work /tmp/claude-1000/-home-kebekus-Software-projects-enroute/0b94308c-b69b-4deb-a655-cc8dd632fd5b/scratchpad/shots)",
+      "Bash(identify /tmp/claude-1000/-home-kebekus-Software-projects-enroute/0b94308c-b69b-4deb-a655-cc8dd632fd5b/scratchpad/shots/en-US-1.png)",
+      "Bash(python3 packaging/flatpak/publish_screenshots.py --dry-run --work /tmp/claude-1000/-home-kebekus-Software-projects-enroute/0b94308c-b69b-4deb-a655-cc8dd632fd5b/scratchpad/shots)",
+      "Bash(git -C 3rdParty/enrouteText status -sb --short)",
+      "Bash(git -C 3rdParty/enrouteText diff --stat)"
     ],
     "additionalDirectories": [
       "/home/kebekus/Software/projects/enrouteServer/scripts"

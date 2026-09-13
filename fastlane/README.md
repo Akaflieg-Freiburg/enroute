@@ -45,6 +45,14 @@ Create Flathub test build for release
 
 Show which org.kde.Platform runtime the next Flathub release would use
 
+### flathubScreenshots
+
+```sh
+[bundle exec] fastlane flathubScreenshots
+```
+
+Decorate the Flathub screenshots for inspection, without uploading them
+
 ----
 
 

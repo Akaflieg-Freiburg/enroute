@@ -195,6 +195,12 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
     //
     // GENERATE SCREENSHOTS FOR GOOGLE PLAY
     //
+    // The ten-inch renders double as Flathub screenshots:
+    // packaging/flatpak/publish_screenshots.py wraps them in a window frame,
+    // and the captions in enrouteText's desktop/linux/*.appdata.xml.in follow
+    // the scene order below. Keep both in step when scenes are added, removed
+    // or reordered.
+    //
 
     {
         foreach(auto device, devices)

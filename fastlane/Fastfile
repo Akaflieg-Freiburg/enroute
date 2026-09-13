@@ -1,6 +1,8 @@
 # This file contains the fastlane.tools configuration
 # You can find the documentation at https://docs.fastlane.tools
 
+require 'json'
+
 default_platform(:android)
 
 # Returns the most recent released version in CHANGELOG.md, together with its
@@ -283,6 +285,16 @@ lane :flathubRelease do
   sh("python3 ../packaging/flatpak/inject_releases.py ../CHANGELOG.md #{appdata_path}")
   sh("python3 -c \"import xml.dom.minidom, sys; xml.dom.minidom.parse('#{appdata_path}')\"")
 
+  # Flathub shows the screenshots referenced in the AppStream metainfo. They
+  # are the ten-inch Google Play renders, wrapped in a GNOME-style window
+  # frame and published as assets of the GitHub pre-release "screenshots"
+  # (see packaging/flatpak/publish_screenshots.py). Uploading them here keeps
+  # Flathub in step with the Play Store set; Flathub fetches the images when
+  # it builds the app. The script also fails the lane if the metainfo and
+  # the generated files disagree.
+  UI.message('Publishing Flathub screenshots as GitHub release assets...')
+  sh("python3 ../packaging/flatpak/publish_screenshots.py --appdata #{appdata_path} --work ../build/build-linux-release/screenshots")
+
   # Get current git commit hash
   commit_hash = sh("git rev-parse --short HEAD").strip
   
@@ -295,6 +307,31 @@ lane :flathubRelease do
   
   # Clone the repository
   sh("git clone git@github.com:#{flathub_repo}.git #{clone_folder}")
+
+  # Choose the org.kde.Platform runtime branch and the matching qthttpserver
+  # tag. The flatpak uses Qt private API and aborts when the runtime's Qt patch
+  # version differs from the one it was built against, so the manifest must
+  # follow the runtime that flathub actually ships. The policy (see
+  # packaging/flatpak/runtime_policy.py) uses a supported branch whose Qt
+  # series is finished and hops to a newer one only once that branch carries
+  # its final Qt patch release; if no such branch exists, the script and thus
+  # this lane fail. The manifest deployed on flathub serves as reference so a
+  # release never moves back to an older runtime.
+  UI.message('Selecting the org.kde.Platform runtime for this release...')
+  decision_path = '../build/build-linux-release/flatpak-runtime-decision.json'
+  sh([
+    'python3 ../packaging/flatpak/runtime_policy.py apply',
+    "--manifest #{manifest_path}",
+    "--reference #{clone_folder}/de.akaflieg_freiburg.enroute.json",
+    '--template ../packaging/flatpak/de.akaflieg_freiburg.enroute.json.in',
+    "--json-out #{decision_path}"
+  ].join(' '))
+  decision = JSON.parse(File.read(decision_path))
+  runtime_note = "org.kde.Platform//#{decision['branch']} (Qt #{decision['qt']})"
+  UI.important("Flatpak runtime: #{runtime_note}: #{decision['reason']}")
+  if decision['changed'].any? { |path| path.end_with?('.json.in') }
+    UI.important('packaging/flatpak/de.akaflieg_freiburg.enroute.json.in was updated to match; commit it.')
+  end
   
   # Create a new branch
   branch_name = "update-#{commit_hash}"
@@ -326,10 +363,23 @@ lane :flathubRelease do
 
   # Create PR using gh CLI
   Dir.chdir(clone_folder) do
-    pr_body = "Updates the Flatpak manifest to latest commit #{commit_hash}\n\nSource commit message: #{commit_message}"
+    pr_body = "Updates the Flatpak manifest to latest commit #{commit_hash}\n\nRuntime: #{runtime_note}\n\nScreenshots: refreshed at https://github.com/Akaflieg-Freiburg/enroute/releases/tag/screenshots\n\nSource commit message: #{commit_message}"
     sh("gh pr create --title 'Update manifest to #{commit_hash}' --body '#{pr_body}' --base master --head #{branch_name}")
   end
   
   # Clean up
   FileUtils.rm_rf(clone_folder)
+end
+
+desc "Show which org.kde.Platform runtime the next Flathub release would use"
+lane :flathubRuntime do
+  sh('python3 ../packaging/flatpak/runtime_policy.py select ' \
+     '--manifest ../packaging/flatpak/de.akaflieg_freiburg.enroute.json.in')
+end
+
+desc "Decorate the Flathub screenshots for inspection, without uploading them"
+lane :flathubScreenshots do
+  work = File.expand_path('../build/flathub-screenshots')
+  sh("python3 ../packaging/flatpak/publish_screenshots.py --dry-run --work #{work}")
+  UI.success("Decorated screenshots are in #{work}")
 end

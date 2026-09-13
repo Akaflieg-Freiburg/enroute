@@ -621,7 +621,7 @@ AppWindow {
 
                 ItemDelegate { // Exit
                     Layout.fillWidth: true
-                    visible: Qt.platform.os !== "ios"
+                    visible: Qt.platform.os !== "ios" && Qt.platform.os !== "osx"
                     leftPadding: 16+SafeInsets.left
 
                     text: qsTr("Exit")

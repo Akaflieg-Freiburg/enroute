@@ -545,9 +545,9 @@ Item {
                 return
             }
             var imported = FlightLog.count - countBefore
-            importManager.toast.doToast(imported > 0
-                                         ? qsTr("%1 flight(s) imported").arg(imported)
-                                         : qsTr("No new flights to import — already in the log"))
+            Global.toast.doToast(imported > 0
+                                 ? qsTr("%1 flight(s) imported").arg(imported)
+                                 : qsTr("No new flights to import — already in the log"))
         }
     }
 

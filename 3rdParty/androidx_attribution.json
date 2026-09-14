@@ -1,0 +1,10 @@
+{
+    "Id": "androidx",
+    "Name": "AndroidX libraries",
+    "Description": "androidx.core and androidx.documentfile, used by the Android build of this app",
+    "Homepage": "https://developer.android.com/jetpack/androidx",
+    "License": "Apache License 2.0",
+    "LicenseId": "Apache-2.0",
+    "LicenseFile": "https://www.apache.org/licenses/LICENSE-2.0",
+    "Copyright": "Copyright (C) The Android Open Source Project"
+}

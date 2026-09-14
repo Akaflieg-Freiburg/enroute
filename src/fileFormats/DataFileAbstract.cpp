@@ -18,7 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDebug>
+#include <QSaveFile>
 #include <QTemporaryFile>
+#include <QUrl>
 
 #include "fileFormats/DataFileAbstract.h"
 
@@ -29,7 +32,9 @@ QSharedPointer<QFile> FileFormats::DataFileAbstract::openFileURL(const QString& 
 {
     if (fileName.startsWith(u"file://"_s))
     {
-        auto* file = new QFile(fileName.mid(7));
+        // Desktop file managers hand over percent-encoded URLs, so the path
+        // must be decoded rather than obtained by stripping the scheme.
+        auto* file = new QFile(QUrl(fileName).toLocalFile());
         return QSharedPointer<QFile>(file);
     }
 
@@ -51,4 +56,40 @@ QSharedPointer<QFile> FileFormats::DataFileAbstract::openFileURL(const QString& 
 
     auto *file = new QFile(fileName);
     return QSharedPointer<QFile>(file);
+}
+
+
+bool FileFormats::DataFileAbstract::saveFileAtomically(const QString& path, const QByteArray& data, QString* error, QFileDevice::Permissions permissions)
+{
+    auto fail = [&path, error](const QString& message) {
+        qWarning() << "saveFileAtomically:" << path << message;
+        if (error != nullptr)
+        {
+            *error = message;
+        }
+        return false;
+    };
+
+    QSaveFile file(path);
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        return fail(file.errorString());
+    }
+    if (file.write(data) != data.size())
+    {
+        auto message = file.errorString();
+        file.cancelWriting();
+        return fail(message);
+    }
+    if ((permissions != QFileDevice::Permissions{}) && !file.setPermissions(permissions))
+    {
+        auto message = file.errorString();
+        file.cancelWriting();
+        return fail(message);
+    }
+    if (!file.commit())
+    {
+        return fail(file.errorString());
+    }
+    return true;
 }

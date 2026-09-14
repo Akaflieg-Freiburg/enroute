@@ -104,6 +104,13 @@ public:
      */
     Q_PROPERTY(QString sectionTitle MEMBER m_sectionTitle)
 
+    /*! \brief Plain text of the NOTAM
+     *
+     *  Unlike richText(), this is the raw text without any markup, which makes
+     *  it suitable for filtering.
+     */
+    Q_PROPERTY(QString text READ text CONSTANT)
+
     /*! \brief Traffic entry of the NOTAM */
     Q_PROPERTY(QString traffic READ traffic CONSTANT)
 
@@ -171,6 +178,12 @@ public:
      *  @returns Property region
      */
     Q_REQUIRED_RESULT QGeoCircle region() const { return m_region; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property text
+     */
+    Q_REQUIRED_RESULT QString text() const { return m_text; }
 
     /*! \brief Getter function for the property with the same name
      *

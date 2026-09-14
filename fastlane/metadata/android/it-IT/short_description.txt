@@ -1,1 +1,1 @@
-App di navigazione per i piloti VFR
+Un'app di navigazione aerea per piloti VFR

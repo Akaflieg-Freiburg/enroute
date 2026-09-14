@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -116,6 +116,7 @@ CenteringDialog {
 
                     onLinkActivated: (linkText) =>
                                      {
+                                         PlatformAdaptor.vibrateBrief()
                                          if (linkText === "hideExplanation")
                                          Global.showMETARPerformanceExplanation = false
                                          if (linkText === "hidePerformanceWarning")
@@ -158,7 +159,8 @@ CenteringDialog {
                 }
 
                 Label { // decoded TAF text
-                    visible: tafTitleLine
+                    visible: tafTitleLine.visible
+
                     text: weatherReportDialog.weatherStation.taf.decodedText(Navigator.aircraft, Clock.time)
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap

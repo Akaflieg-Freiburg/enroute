@@ -19,12 +19,20 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
 Menu {
     id: menu
+
+    // Close on release outside rather than on press outside. The Android back
+    // gesture delivers a touch press at the screen edge before the gesture is
+    // recognised and cancelled; with CloseOnPressOutside that press closed the
+    // menu, and the Back key that followed then popped the page below or quit
+    // the app. See also CenteringDialog.qml.
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnReleaseOutside
+
     bottomMargin: SafeInsets.bottom
     leftMargin: Math.max(SafeInsets.left, 75)
     rightMargin: SafeInsets.right

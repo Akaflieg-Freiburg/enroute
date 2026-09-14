@@ -19,9 +19,8 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
-import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
 import "../items"
@@ -66,13 +65,13 @@ CenteringDialog {
 
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
-            if (activeFocusControl != null) {
-                contentItem.contentY = activeFocusControl.y
+            if (ApplicationWindow.activeFocusControl != null) {
+                contentItem.contentY = ApplicationWindow.activeFocusControl.y
             }
         }
 
         GridLayout {
-            width: availableWidth
+            width: waypointEditorDialog.availableWidth
             columns: 2
 
 
@@ -88,7 +87,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
 
-                text: waypoint.extendedName
+                text: waypointEditorDialog.waypoint.extendedName
 
                 focus: true
             }
@@ -210,7 +209,7 @@ CenteringDialog {
 
                 Layout.fillWidth: true
                 currentIndex: formatChoice.currentIndex
-                value: waypoint.coordinate.latitude
+                value: waypointEditorDialog.waypoint.coordinate.latitude
                 minValue: -90.0
                 maxValue: 90.0
             }
@@ -226,7 +225,7 @@ CenteringDialog {
                 Layout.fillWidth: true
 
                 currentIndex: formatChoice.currentIndex
-                value: waypoint.coordinate.longitude
+                value: waypointEditorDialog.waypoint.coordinate.longitude
                 minValue: -180.0
                 maxValue: 180.0
             }
@@ -247,6 +246,8 @@ CenteringDialog {
                 visible: (Qt.platform.os !== "ios")
 
                 model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
+
+                onActivated: PlatformAdaptor.vibrateBrief()
             }
 
             Label {
@@ -338,7 +339,7 @@ CenteringDialog {
 
                 Layout.fillWidth: true
                 currentIndex: eleFormatChoice.currentIndex
-                valueMeter: waypoint.coordinate.altitude
+                valueMeter: waypointEditorDialog.waypoint.coordinate.altitude
             }
 
             Label {
@@ -356,6 +357,8 @@ CenteringDialog {
                 visible: (Qt.platform.os !== "ios")
 
                 model: [ qsTr("Feet"), qsTr("Meter") ]
+
+                onActivated: PlatformAdaptor.vibrateBrief()
             }
 
         }

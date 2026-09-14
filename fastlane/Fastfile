@@ -5,6 +5,24 @@ require 'json'
 
 default_platform(:android)
 
+# Returns the most recent released version in CHANGELOG.md, together with its
+# release notes. Only headings of the form "## [MAJOR.MINOR.PATCH] - DATE" are
+# considered, so that the "## [Unreleased]" section that is present during
+# development is skipped instead of being mistaken for a version number.
+def latest_changelog_entry
+  match = File.read("../CHANGELOG.md").match(/^##\s+\[?(\d+\.\d+\.\d+)\]?\s*-[^\n]*\n(.*?)(?=^##\s|\z)/m)
+  UI.user_error!("Could not find version information in CHANGELOG.md") if match.nil?
+  [match[1], match[2].strip]
+end
+
+# Google Play version code for a "MAJOR.MINOR.PATCH" version string. Must agree
+# with android:versionCode in src/AndroidManifest.xml.in, which appends a "0" to
+# PROJECT_VERSION_CODE as computed in CMakeLists.txt.
+def version_code_for(version)
+  major, minor, patch = version.split('.').map(&:to_i)
+  100000 * major + 1000 * minor + 10 * patch
+end
+
 desc "Build Linux Binary"
 lane :linuxBinary do
   # Clean up previous builds
@@ -40,6 +58,11 @@ platform :android do
       '-DCMAKE_BUILD_TYPE:STRING=Release',
       '-DCMAKE_C_COMPILER_LAUNCHER=ccache',
       '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache',
+      # The NDK toolchain still declares cmake_minimum_required(3.6), which CMake 4
+      # flags as deprecated on every configure. Silence this in the main configure
+      # and (via the forward list) in the per-ABI sub-configures.
+      '-DCMAKE_WARN_DEPRECATED=OFF',
+      '-DQT_ANDROID_MULTI_ABI_FORWARD_VARS=CMAKE_WARN_DEPRECATED',
       '-DQT_ANDROID_BUILD_ALL_ABIS=ON',
       '-DQT_ANDROID_SIGN_APK=ON',
       '-DQT_ANDROID_SIGN_AAB=ON',
@@ -68,14 +91,13 @@ platform :android do
     UI.success("Signed AAB file is available at #{File.expand_path(aab_dest)}")
   end
 
-  desc "Updata Meta Data for Google Play"
+  desc "Update Meta Data for Google Play"
   lane :metadata do
-    # Update Changelog files
-    matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
-    latest_version, changelog_text = matches.first
-    major, minor, patch = latest_version.split('.').map(&:to_i)
-    version_code = 100000 * major + 1000 * minor + 10 * patch
-    File.write("metadata/android/en-US/#{version_code}.txt", changelog_text.strip)      
+    # Update Changelog files. Note that supply reads release notes exclusively
+    # from the "changelogs" subdirectory of the respective language directory.
+    latest_version, changelog_text = latest_changelog_entry
+    version_code = version_code_for(latest_version)
+    File.write("metadata/android/en-US/changelogs/#{version_code}.txt", changelog_text)
   end
 
   desc "Validate a new version with Google Play"
@@ -105,10 +127,8 @@ platform :android do
 
   desc "Promote Beta to Release"
   lane :promoteBetaToRelease do
-    matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
-    latest_version, changelog_text = matches.first
-    major, minor, patch = latest_version.split('.').map(&:to_i)
-    version_code = 100000 * major + 1000 * minor + 10 * patch
+    latest_version, = latest_changelog_entry
+    version_code = version_code_for(latest_version)
     upload_to_play_store(
       track: 'beta',
       track_promote_to: 'production',
@@ -205,14 +225,8 @@ lane :gitHubRelease do
   sh("fastlane android build")
 
   # Extract version info from CHANGELOG.md
-  matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
-  latest_version, changelog_text = matches.first
-  
-  # Ensure we have a valid version
-  if latest_version.nil? || latest_version.empty?
-    UI.user_error!("Could not find version information in CHANGELOG.md")
-  end
-  
+  latest_version, changelog_text = latest_changelog_entry
+
   # Get the current git tag
   current_tag = "v#{latest_version}"
   
@@ -224,7 +238,7 @@ lane :gitHubRelease do
   
   # Create a notes file for the release
   notes_file = "/tmp/release_notes_#{latest_version}.md"
-  File.write(notes_file, changelog_text.strip)
+  File.write(notes_file, changelog_text)
   
   # Create the release using GitHub CLI (uses SSH authentication)
   UI.message("Creating GitHub release for version #{latest_version}")
@@ -238,7 +252,7 @@ lane :gitHubRelease do
   FileUtils.rm(notes_file)
   
   UI.success("Successfully created GitHub release for #{latest_version}")
-  UI.success("Release URL: https://github.com/YOUR_USERNAME/YOUR_REPO/releases/tag/#{current_tag}")
+  UI.success("Release URL: https://github.com/Akaflieg-Freiburg/enroute/releases/tag/#{current_tag}")
 end
 
 desc "Create Flathub test build for release"

@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -70,6 +72,7 @@ CenteringDialog {
             model: ConnectionScanner_Bluetooth.connectionInfos
 
             delegate: WordWrappingItemDelegate {
+                required property var model
                 width: dlg.availableWidth
 
                 enabled: model.modelData.canConnect
@@ -77,6 +80,7 @@ CenteringDialog {
                 text: model.modelData.description
 
                 onClicked: {
+                    PlatformAdaptor.vibrateBrief()
                     var resultString = TrafficDataProvider.addDataSource(model.modelData)
                     if (resultString !== "")
                     {
@@ -97,7 +101,10 @@ CenteringDialog {
 
             enabled: !ConnectionScanner_Bluetooth.scanning
             icon.source: "/icons/material/ic_bluetooth_searching.svg"
-            onClicked: ConnectionScanner_Bluetooth.start()
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                ConnectionScanner_Bluetooth.start()
+            }
         }
     }
 

@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -41,15 +43,16 @@ CenteringDialog {
 
         ItemDelegate {
             id: idel
+            required property var modelData
             text: modelData
             icon.source: "/icons/material/ic_airplanemode_active.svg"
 
-            anchors.left: parent.left
-            anchors.right: parent.right
+            // The delegate is created before the view parents it
+            width: parent ? parent.width : 0
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                finalFileName = modelData
+                dlg.finalFileName = modelData
                 dlg.close()
                 overwriteDialog.open()
             }
@@ -91,7 +94,9 @@ CenteringDialog {
             Layout.preferredHeight: contentHeight
 
             clip: true
-            model: Librarian.entries(Librarian.Aircraft)
+            // The name that is being typed doubles as a filter, so that the
+            // list narrows down to the entries that would be overwritten.
+            model: Librarian.entries(Librarian.Aircraft, fileName.displayText)
 
             delegate: fileDelegate
         }
@@ -104,16 +109,14 @@ CenteringDialog {
     }
 
     onRejected: {
-        PlatformAdaptor.vibrateBrief()
         dlg.close()
     }
 
     onAccepted: {
-        PlatformAdaptor.vibrateBrief()
         if (fileName.text === "")
             return
-        finalFileName = fileName.text
-        if (Librarian.exists(Librarian.Aircraft, finalFileName))
+        dlg.finalFileName = fileName.text
+        if (Librarian.exists(Librarian.Aircraft, dlg.finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()
@@ -125,12 +128,12 @@ CenteringDialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = Navigator.aircraft.save(Librarian.fullPath(Librarian.Aircraft, finalFileName))
+        var errorString = Navigator.aircraft.save(Librarian.fullPath(Librarian.Aircraft, dlg.finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
         } else
-            toast.doToast(qsTr("Aircraft %1 saved").arg(finalFileName))
+            Global.toast.doToast(qsTr("Aircraft %1 saved").arg(dlg.finalFileName))
     }
 
     CenteringDialog {
@@ -159,7 +162,10 @@ CenteringDialog {
                 width: dlg.availableWidth
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             } // Label
         } // DecoratedScrollView
 
@@ -169,17 +175,15 @@ CenteringDialog {
         id: overwriteDialog
 
         title: qsTr("Overwrite Aircraft?")
-        text: qsTr("The aircraft <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
+        text: qsTr("The aircraft <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(dlg.finalFileName)
 
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             dlg.saveToLibrary()
         }
 
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             overwriteDialog.close()
             dlg.open()
         }

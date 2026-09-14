@@ -24,6 +24,7 @@
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 
@@ -78,6 +79,8 @@ void Navigation::Navigator::deferredInitialization()
     connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(); });
 
+    connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::Downloadable_MultiFile::downloadablesChanged, this,
+            [this]() { m_aviationMapsGeneration = m_aviationMapsGeneration.value() + 1; });
     m_hasAviationMapForCurrentLocation.setBinding([this]() {return computeHasAviationMapForCurrentLocation();});
 }
 
@@ -110,12 +113,8 @@ void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
         return;
     }
 
-    // Save aircraft
-    QFile file(m_aircraftFileName);
-    if (file.open(QIODevice::WriteOnly))
-    {
-        file.write(newAircraft.toJSON());
-    }
+    // Save aircraft atomically; the helper logs failures.
+    (void)FileFormats::DataFileAbstract::saveFileAtomically(m_aircraftFileName, newAircraft.toJSON());
 
     // Set new aircraft
     m_aircraft = newAircraft;
@@ -371,6 +370,9 @@ void Navigation::Navigator::updateRemainingRouteInfo()
 
 bool Navigation::Navigator::computeHasAviationMapForCurrentLocation()
 {
+    // Register a dependency on the map list generation, see Navigator.h
+    (void)m_aviationMapsGeneration.value();
+
     auto coordinate = GlobalObject::positionProvider()->approximateLastValidCoordinate();
     auto aviationMaps = GlobalObject::dataManager()->aviationMaps()->downloadables();
     for(auto* map : std::as_const(aviationMaps))

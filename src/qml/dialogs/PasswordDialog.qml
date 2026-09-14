@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -39,7 +39,7 @@ CenteringDialog {
         anchors.fill: parent
 
         Label {
-            text: qsTr("Enter the password for the traffic data receiver in the WiFi network <strong>%1</strong>.").arg(dialogArgs)
+            text: qsTr("Enter the password for the traffic data receiver in the WiFi network <strong>%1</strong>.").arg(dlg.dialogArgs)
             Layout.fillWidth: true
             wrapMode: Text.Wrap
         }
@@ -54,6 +54,7 @@ CenteringDialog {
         CheckBox {
             id: viewBox
             text: qsTr("Show clear text")
+            onClicked: PlatformAdaptor.vibrateBrief()
         }
     }
 

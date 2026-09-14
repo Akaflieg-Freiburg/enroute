@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include <QGuiApplication>
+#include <QDebug>
 #include <QLockFile>
-#include <QSaveFile>
 #include <QNetworkReply>
 
 #include "sunset.h"
@@ -28,6 +28,7 @@
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "weather/WeatherDataProvider.h"
 
 using namespace std::chrono_literals;
@@ -54,13 +55,13 @@ void Weather::WeatherDataProvider::deferredInitialization()
     // receiving data.
     QTimer::singleShot(15s, this, &Weather::WeatherDataProvider::requestUpdate);
     connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &Weather::WeatherDataProvider::requestUpdate);
-    connect(qGuiApp, &QGuiApplication::applicationStateChanged, [this](Qt::ApplicationState state) {
+    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
         if ((state & Qt::ApplicationActive) != 0)
         {
             QTimer::singleShot(0, this, &Weather::WeatherDataProvider::requestUpdate);
         }
     });
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, [this](bool rcv) {
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, [this](bool rcv) {
         if (rcv)
         {
             QTimer::singleShot(0, this, &Weather::WeatherDataProvider::requestUpdate);
@@ -300,27 +301,28 @@ void Weather::WeatherDataProvider::save()
         return;
     }
 
-    // Open file
-    auto outputFile = QSaveFile(stdFileName);
-    if (!outputFile.open(QIODevice::WriteOnly))
+    // Serialise first, then write atomically. The stream version must stay
+    // Qt_4_0 to keep the file format identical.
+    QByteArray data;
     {
-        lockFile.unlock();
-        return;
+        QDataStream outputStream(&data, QIODeviceBase::WriteOnly);
+        outputStream.setVersion(QDataStream::Qt_4_0);
+
+        // Write magic number and version
+        outputStream << static_cast<quint32>(0x31415);
+        outputStream << static_cast<quint32>(1);
+        outputStream << updateLog;
+
+        outputStream << m_METARs.value();
+        outputStream << m_TAFs.value();
+        if (outputStream.status() != QDataStream::Ok)
+        {
+            qWarning() << "WeatherDataProvider::save: serialization failed for" << stdFileName;
+            lockFile.unlock();
+            return;
+        }
     }
-
-    // Generate output stream
-    QDataStream outputStream(&outputFile);
-    outputStream.setVersion(QDataStream::Qt_4_0);
-
-    // Write magic number and version
-    outputStream << static_cast<quint32>(0x31415);
-    outputStream << static_cast<quint32>(1);
-    outputStream << updateLog;
-
-    outputStream << m_METARs.value();
-    outputStream << m_TAFs.value();
-
-    outputFile.commit();
+    (void)FileFormats::DataFileAbstract::saveFileAtomically(stdFileName, data);
     lockFile.unlock();
 }
 
@@ -560,7 +562,8 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& _bBox)
         {
             continue;
         }
-        if (nwr->property("area").value<QGeoRectangle>().contains(bBox))
+        // Replies are tagged with the bounding box they cover, see below.
+        if (nwr->property("bBox").value<QGeoRectangle>().contains(bBox))
         {
             return;
         }
@@ -596,7 +599,7 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& _bBox)
         request.setRawHeader("accept", "application/xml");
         request.setTransferTimeout(2min);
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
-
+        reply->setProperty("bBox", QVariant::fromValue(bBox));
         m_networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);

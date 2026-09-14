@@ -230,6 +230,20 @@ public:
                 u"image/webp"_s};
     }
 
+    /*! \brief Sanitised file name for a chart name
+     *
+     *  Chart names come from user-supplied files (trip kits, file names) and
+     *  are used to build file names inside the VAC directory. This method
+     *  strips directory components and replaces characters that are unsafe in
+     *  file names, so that the result can never escape that directory.
+     *
+     *  @param name Chart name
+     *
+     *  @returns Sanitised base name without suffix, or an empty string if
+     *  nothing usable remains
+     */
+    [[nodiscard]] static QString safeFileName(const QString& name);
+
 
 
     //

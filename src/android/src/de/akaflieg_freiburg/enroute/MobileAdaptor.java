@@ -34,11 +34,14 @@ import android.net.wifi.WifiManager.WifiLock;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.provider.Settings.System;
 import android.util.Log;
 import android.view.*;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.WindowCompat;
@@ -54,7 +57,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
   public static native void onLanguageChanged();
   public static native void onWifiConnected();
-  public static native void onWindowSizeChanged();
 
   private static MobileAdaptor m_instance;
   private static Vibrator m_vibrator;
@@ -63,12 +65,28 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   private static WifiManager m_wifiManager;
   private static MulticastLock m_multicastLock;
   private static BroadcastReceiver m_wifiStateChangeReceiver;
+  private OnBackInvokedCallback m_backInvokedCallback;
 
   // reference Authority as defined in AndroidManifest.xml
   private static String AUTHORITY = "de.akaflieg_freiburg.enroute";
   private static String TAG = "IntentLauncher";
 
   private static final int PICK_FILE_REQUEST = 1;
+  private static final int CREATE_FILE_REQUEST = 2;
+
+  /**
+   * Request POST_NOTIFICATIONS permission on Android 13+.
+   * Safe to call from any context — uses m_instance which IS the Activity.
+   */
+  public static void requestNotificationPermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+        && m_instance != null
+        && m_instance.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+               != PackageManager.PERMISSION_GRANTED) {
+      m_instance.requestPermissions(
+          new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 0);
+    }
+  }
 
   public MobileAdaptor() 
   {
@@ -97,25 +115,37 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
       registerReceiver(m_localeChangedReceiver, filter);
     }
 
-    // Be informed when the window size changes, and call the C++ method
-    // onWindowSizeChanged() whenever it changes. The window size changes when
-    // the user starts/end the split view mode, or when the user drags the
-    // slider in order to adjust the relative size of the two windows shown.
-    View rootView = getWindow().getDecorView().getRootView();
-    rootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() 
-      {
+    // Since the app targets API 36, Android 16+ enables predictive back by
+    // default. In that mode the system no longer dispatches KEYCODE_BACK to
+    // the activity; it invokes an OnBackInvokedCallback instead, and without
+    // one it simply finishes the activity. Qt only listens for the key event,
+    // so register a callback that synthesizes the key press. The events reach
+    // Qt through the usual dispatchKeyEvent -> onKeyDown/onKeyUp path, and
+    // the existing QML handlers (page pop, dialog close, exit confirmation)
+    // keep working unchanged.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+    {
+      m_backInvokedCallback = new OnBackInvokedCallback() {
         @Override
-        public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft,
-            int oldTop, int oldRight, int oldBottom) 
-        {
-          onWindowSizeChanged();
+        public void onBackInvoked() {
+          long now = SystemClock.uptimeMillis();
+          dispatchKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK, 0));
+          dispatchKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK, 0));
         }
-      }
-    );
+      };
+      getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+          OnBackInvokedDispatcher.PRIORITY_DEFAULT, m_backInvokedCallback);
+    }
   }
 
   @Override
   public void onDestroy() {
+    // Unregister back callback
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && m_backInvokedCallback != null) {
+      getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(m_backInvokedCallback);
+      m_backInvokedCallback = null;
+    }
+
     // Release WiFi lock
     if (m_wifiLock != null) {
       if (m_wifiLock.isHeld() == true) {
@@ -154,60 +184,53 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         + android.os.Build.MODEL + ")";
   }
 
-  // Returns the height of the screen, taking the Android split view
-  // into account
-  public static double windowHeight() {
-    return m_instance.getWindow().getDecorView().getRootView().getHeight();
-  }
+  // The following methods return the safe-area insets of the window -- the
+  // union of the virtual keyboard, system bars and display cutout -- in
+  // physical pixels. These are the values that Android reports to this
+  // window, so they are also correct in split-screen mode and in any
+  // orientation, where Qt's own safe-area margins are not reliable. The
+  // keyboard inset is zero while the keyboard is hidden.
 
-  // Returns the width of the screen, taking the Android split view
-  // into account
-  public static double windowWidth() {
-    return m_instance.getWindow().getDecorView().getRootView().getWidth();
-  }
-
-  // Returns the bottom inset required to avoid system bars and display cutouts
-  public static double safeInsetBottom() {
-    if (Build.VERSION.SDK_INT >= 30) {
-      return m_instance.getWindow().getDecorView().getRootWindowInsets()
-          .getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.ime()
-              | WindowInsets.Type.displayCutout()).bottom;
+  private static double safeInset(int side) {
+    if (m_instance == null) {
+      return 0.0;
     }
-
-    return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetBottom();
+    WindowInsets insets = m_instance.getWindow().getDecorView().getRootWindowInsets();
+    if (insets == null) {
+      return 0.0;
+    }
+    if (Build.VERSION.SDK_INT >= 30) {
+      android.graphics.Insets in = insets.getInsets(WindowInsets.Type.ime()
+          | WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+      switch (side) {
+        case 0: return in.left;
+        case 1: return in.top;
+        case 2: return in.right;
+        default: return in.bottom;
+      }
+    }
+    switch (side) {
+      case 0: return insets.getSystemWindowInsetLeft();
+      case 1: return insets.getSystemWindowInsetTop();
+      case 2: return insets.getSystemWindowInsetRight();
+      default: return insets.getSystemWindowInsetBottom();
+    }
   }
 
-  // Returns the left inset required to avoid system bars and display cutouts
   public static double safeInsetLeft() {
-    if (Build.VERSION.SDK_INT >= 30) {
-      return m_instance.getWindow().getDecorView().getRootWindowInsets()
-          .getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.ime()
-              | WindowInsets.Type.displayCutout()).left;
-    }
-
-    return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetLeft();
+    return safeInset(0);
   }
 
-  // Returns the right inset required to avoid system bars and display cutouts
-  public static double safeInsetRight() {
-    if (Build.VERSION.SDK_INT >= 30) {
-      return m_instance.getWindow().getDecorView().getRootWindowInsets()
-          .getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.ime()
-              | WindowInsets.Type.displayCutout()).right;
-    }
-
-    return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetRight();
-  }
-
-  // Returns the top inset required to avoid system bars and display cutouts
   public static double safeInsetTop() {
-    if (Build.VERSION.SDK_INT >= 30) {
-      return m_instance.getWindow().getDecorView().getRootWindowInsets()
-          .getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.ime()
-              | WindowInsets.Type.displayCutout()).top;
-    }
+    return safeInset(1);
+  }
 
-    return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetTop();
+  public static double safeInsetRight() {
+    return safeInset(2);
+  }
+
+  public static double safeInsetBottom() {
+    return safeInset(3);
   }
 
   /*
@@ -423,9 +446,37 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   }
 
   /**
+   * Open the system 'create document' dialog (Storage Access Framework).
+   *
+   * This method lets the user choose a location and name for a new file. The result is reported
+   * asynchronously through the native method onCreateFileResult().
+   *
+   * @param mimeType the mime type of the file to create.
+   *
+   * @param suggestedName suggested display name for the new file, including suffix.
+   *
+   */
+  public void createFile(String mimeType, String suggestedName) {
+    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+    intent.addCategory(Intent.CATEGORY_OPENABLE);
+    if (!mimeType.isEmpty()) {
+      intent.setType(mimeType);
+    } else {
+      intent.setType("application/octet-stream");
+    }
+    intent.putExtra(Intent.EXTRA_TITLE, suggestedName);
+    startActivityForResult(intent, CREATE_FILE_REQUEST);
+  }
+
+  /**
    * Result of file picking
    */
   public static native void setFileReceived(String fileName, String unmingled);
+
+  /**
+   * Result of the 'create document' dialog. An empty string means the user aborted.
+   */
+  public static native void onCreateFileResult(String uri);
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -437,6 +488,12 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         String name = (docFile != null && docFile.getName() != null) ? docFile.getName() : "";
         setFileReceived(uri.toString(), name);
       }
+    }
+    if (requestCode == CREATE_FILE_REQUEST) {
+      // Cancellation must be reported, so that the C++ side can clear its
+      // pending save buffer.
+      Uri uri = (resultCode == RESULT_OK && data != null) ? data.getData() : null;
+      onCreateFileResult(uri != null ? uri.toString() : "");
     }
     super.onActivityResult(requestCode, resultCode, data);
   }

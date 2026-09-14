@@ -18,9 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQml
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -33,7 +36,6 @@ Page {
 
     title: qsTr("Data Connections")
 
-    required property var appWindow
 
     // Receives active focus when the page becomes current (see main.qml), so the
     // list responds to Return/Enter and Home/End navigation.
@@ -56,7 +58,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -69,7 +71,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as T.Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -84,7 +86,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("forward.html#settingsdataconnections-page")
+                Global.openManual("forward.html#settingsdataconnections-page")
             }
         }
     }
@@ -93,11 +95,11 @@ Page {
         id: connectionList
 
         anchors.fill: parent
-        contentWidth: availableWidth // Disable horizontal scrolling
+        contentWidth: trafficReceiverPage.availableWidth // Disable horizontal scrolling
 
         clip: true
 
-        model: TrafficDataProvider.dataSources
+        model: TrafficDataProvider.dataSources // qmllint disable unresolved-type
 
         header: Label {
             height: 2*implicitHeight
@@ -114,6 +116,7 @@ Page {
 
         delegate: Item {
             id: connectionItem
+            required property var model
             width: parent ? parent.width : 0
             height: idel.implicitHeight
 
@@ -125,9 +128,9 @@ Page {
             Rectangle {
                 anchors.fill: parent
                 color: {
-                    if (model.modelData.receivingHeartbeat)
+                    if (connectionItem.model.modelData.receivingHeartbeat)
                         return "green"
-                    if (model.modelData.errorString !== "")
+                    if (connectionItem.model.modelData.errorString !== "")
                         return "red"
                     return "transparent"
                 }
@@ -142,17 +145,19 @@ Page {
                     Layout.fillWidth: true
 
                     //enabled: model.modelData.canConnect
-                    icon.source: model.modelData.icon
+                    icon.source: connectionItem.model.modelData.icon
                     text: {
-                        var sndLine = model.modelData.connectivityStatus
-                        if (model.modelData.errorString !== "")
-                            sndLine += " • " + qsTr("Error") + ": " + model.modelData.errorString
-                        model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(sndLine)
+                        var sndLine = connectionItem.model.modelData.connectivityStatus
+                        if (connectionItem.model.modelData.errorString !== "")
+                            sndLine += " • " + qsTr("Error") + ": " + connectionItem.model.modelData.errorString
+                        return connectionItem.model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(sndLine)
                     }
 
+
                     onClicked: {
+                        PlatformAdaptor.vibrateBrief()
                         Global.dialogLoader.active = false
-                        Global.dialogLoader.setSource("../dialogs/ConnectionInfoDialog.qml", {connection: model.modelData})
+                        Global.dialogLoader.setSource("../dialogs/ConnectionInfoDialog.qml", {connection: connectionItem.model.modelData})
                         Global.dialogLoader.active = true
                     }
                 }
@@ -161,7 +166,7 @@ Page {
                     id: cptMenuButton
 
                     icon.source: "/icons/material/ic_more_horiz.svg"
-                    enabled: !model.modelData.canonical
+                    enabled: !connectionItem.model.modelData.canonical
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
@@ -176,8 +181,8 @@ Page {
                             text: qsTr("Remove…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                Global.toast.doToast( qsTr("Removing Connection: %1").arg(model.modelData.sourceName))
-                                TrafficDataProvider.removeDataSource(model.modelData)
+                                Global.toast.doToast( qsTr("Removing Connection: %1").arg(connectionItem.model.modelData.sourceName))
+                                TrafficDataProvider.removeDataSource(connectionItem.model.modelData)
                                 cptMenu.close()
                             }
                         }
@@ -206,6 +211,7 @@ Page {
                 enabled: !connectTimer.running
                 visible: !TrafficDataProvider.receivingHeartbeat
                 onClicked: {
+                    PlatformAdaptor.vibrateBrief()
                     TrafficDataProvider.disconnectFromTrafficReceiver()
                     disconnectTimer.running = true;
                     connectTimer.running = true;
@@ -311,7 +317,6 @@ Page {
         standardButtons: Dialog.Ok | Dialog.Cancel
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             ognWarning2.open()
         }
 
@@ -331,7 +336,6 @@ Page {
         standardButtons: Dialog.Ok | Dialog.Cancel
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             var resultString = TrafficDataProvider.addDataSource_OGN()
             if (resultString !== "")
             {
@@ -517,6 +521,7 @@ Page {
                 model: ConnectionScanner_SerialPort.connectionInfos
 
                 delegate: WordWrappingItemDelegate {
+                    required property var model
                     width: addSerialPortDialog.availableWidth
 
                     enabled: model.modelData.canConnect && !TrafficDataProvider.hasDataSource_SerialPort(model.modelData.host)
@@ -524,6 +529,7 @@ Page {
                     text: model.modelData.description
 
                     onClicked: {
+                        PlatformAdaptor.vibrateBrief()
                         var resultString = TrafficDataProvider.addDataSource(model.modelData)
                         if (resultString !== "")
                         {
@@ -543,7 +549,10 @@ Page {
                 text: qsTr("Scan for Devices")
 
                 icon.source: "/icons/material/ic_settings_ethernet.svg"
-                onClicked: ConnectionScanner_SerialPort.start()
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    ConnectionScanner_SerialPort.start()
+                }
             }
         }
 

@@ -18,9 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick.Controls.Material
 
 // This is a version of SwitchDelegate that does word wrapping in the text
 
@@ -35,7 +36,8 @@ SwipeDelegate {
         Icon {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            opacity: iDel.swipe.position < -0.1 ? 1.0 : 0.0
+            opacity: itemDelegate.swipe.position < -0.1 ? 1.0 : 0.0
+
             Behavior on opacity { NumberAnimation { duration: 200 } }
 
             source: "/icons/material/ic_delete.svg"

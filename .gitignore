@@ -33,3 +33,6 @@ CMakeLists.txt.user
 generatedSources/.bundle
 generatedSources/rubyStuff
 generatedSources/vendor
+
+# Personal Claude Code permission grants (machine-specific)
+.claude/settings.local.json

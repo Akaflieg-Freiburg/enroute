@@ -20,8 +20,8 @@
 
 import QtPositioning
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Layouts
 import QtQuick.Shapes
 
@@ -97,7 +97,7 @@ CenteringDialog {
         Label { // METAR info
             Loader {
                 id: secondaryDlgLoader
-                onLoaded: item.open()
+                onLoaded: (item as T.Popup).open()
             }
             Observer {
                 id: obs
@@ -139,7 +139,7 @@ CenteringDialog {
             Loader {
                 // WARNING This does not really belong here.
                 id: dlgLoader
-                onLoaded: item.open()
+                onLoaded: (item as T.Popup).open()
             }
 
             property notamList notamList: {
@@ -528,7 +528,7 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Direct")
-                    enabled: PositionProvider.receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
+                    enabled: PositionProvider.receivingPositionInfo && (Global.textDialogLoader.text !== "noRouteButton")
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -723,7 +723,6 @@ CenteringDialog {
         standardButtons: Dialog.Cancel|Dialog.Ok
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             GlobalSettings.alwaysOpenExternalWebsites = alwaysOpen.checked
             PlatformAdaptor.openSatView(coordinate)
         }
@@ -734,7 +733,6 @@ CenteringDialog {
         id: wpEdit
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             var newWP = waypointDescriptionDialog.waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
@@ -751,7 +749,6 @@ CenteringDialog {
         title: qsTr("Add Waypoint to Library")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             var newWP = waypointDescriptionDialog.waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
@@ -773,13 +770,11 @@ CenteringDialog {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             WaypointLibrary.remove(removeDialog.waypoint)
             waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             removeDialog.close()
         }
     }

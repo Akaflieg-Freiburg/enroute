@@ -18,9 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtPositioning
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
@@ -60,7 +63,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -73,7 +76,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as T.Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -95,6 +98,10 @@ Page {
                 id: headerMenuX
                 cascade: true
 
+                // The 'Save…' submenu applies to Android only. Submenu entries
+                // cannot be hidden declaratively, so remove it on other platforms.
+                Component.onCompleted: if (!page.isAndroid) headerMenuX.removeMenu(saveMenu)
+
                 MenuItem {
                     id: menuImport
 
@@ -103,14 +110,14 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        if (isIos) {
+                        if (page.isIos) {
                             Global.dialogLoader.active = false
                             Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
                                                               title: qsTr("Import files"),
                                                               text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
                                                               standardButtons: Dialog.Ok})
                             Global.dialogLoader.active = true
-                        } else if (isAndroid) {
+                        } else if (page.isAndroid) {
                             FileExchange.openFilePicker("")
                         } else {
                             importFileDialog.open()
@@ -156,7 +163,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(WaypointLibrary.GeoJSON, "application/geo+json", "geojson", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -164,10 +171,10 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroidOrIos)
-                                toast.doToast(qsTr("Waypoint library shared"))
+                            if (page.isAndroidOrIos)
+                                Global.toast.doToast(qsTr("Waypoint library shared"))
                             else
-                                toast.doToast(qsTr("Waypoint library exported"))
+                                Global.toast.doToast(qsTr("Waypoint library exported"))
                         }
                     }
 
@@ -180,7 +187,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(WaypointLibrary.toGpx(), "application/gpx+xml", "gpx", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -188,10 +195,38 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroidOrIos)
-                                toast.doToast(qsTr("Waypoint library shared"))
+                            if (page.isAndroidOrIos)
+                                Global.toast.doToast(qsTr("Waypoint library shared"))
                             else
-                                toast.doToast(qsTr("Waypoint library exported"))
+                                Global.toast.doToast(qsTr("Waypoint library exported"))
+                        }
+                    }
+                }
+
+                AutoSizingMenu {
+                    id: saveMenu
+                    title: qsTr("Save…")
+                    enabled: WaypointLibrary.waypoints.length > 0
+
+                    MenuItem {
+                        text: qsTr("… to GeoJSON file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(WaypointLibrary.GeoJSON, "application/geo+json", "geojson", qsTr("Waypoint Library"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to GPX file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(WaypointLibrary.toGpx(), "application/gpx+xml", "gpx", qsTr("Waypoint Library"))
                         }
                     }
                 }
@@ -213,7 +248,7 @@ Page {
                                 shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Waypoint library opened in other app"))
+                                Global.toast.doToast(qsTr("Waypoint library opened in other app"))
                         }
                     }
 
@@ -230,7 +265,7 @@ Page {
                                 shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Waypoint library opened in other app"))
+                                Global.toast.doToast(qsTr("Waypoint library opened in other app"))
                         }
                     }
 
@@ -258,6 +293,7 @@ Page {
 
         RowLayout {
             id: entryRow
+            required property var modelData
             width: wpList.width
             height: iDel.height
 
@@ -270,18 +306,18 @@ Page {
                 id: iDel
                 Layout.fillWidth: true
 
-                text: modelData.name
-                icon.source: modelData.icon
+                text: entryRow.modelData.name
+                icon.source: entryRow.modelData.icon
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    waypointDescription.waypoint = modelData
+                    waypointDescription.waypoint = entryRow.modelData
                     waypointDescription.open()
                 }
 
                 swipe.onCompleted: {
                     PlatformAdaptor.vibrateBrief()
-                    removeDialog.waypoint = modelData
+                    removeDialog.waypoint = entryRow.modelData
                     removeDialog.open()
                 }
             }
@@ -292,7 +328,7 @@ Page {
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    wpEditor.waypoint = modelData
+                    wpEditor.waypoint = entryRow.modelData
                     wpEditor.open()
                 }
             }
@@ -315,7 +351,7 @@ Page {
                         text: qsTr("Remove…")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            removeDialog.waypoint = modelData
+                            removeDialog.waypoint = entryRow.modelData
                             removeDialog.open()
                         }
                     } // removeAction
@@ -333,19 +369,17 @@ Page {
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
 
-        Item {
-            Layout.preferredHeight: textInput.font.pixelSize/4.0
-        }
 
 
-        MyTextField {
+        FilterField {
             id: textInput
+
+            // Return opens the top hit.
+            listView: wpList
 
             Layout.fillWidth: true
             Layout.leftMargin: font.pixelSize/2.0
             Layout.rightMargin: font.pixelSize/2.0
-
-            placeholderText: qsTr("Filter by Name")
         }
 
         DecoratedListView {
@@ -356,13 +390,14 @@ Page {
 
             clip: true
 
-            model:
-            Binding {
-                wpList.model: {
-                    // Mention waypoints to ensure that the list gets updated
+            Binding on model {
+                value: {
+                    // Mention waypoints and reloadTrigger to ensure that the
+                    // list gets updated
                     WaypointLibrary.waypoints
+                    textInput.reloadTrigger
 
-                    return WaypointLibrary.filteredWaypoints(textInput.displayText)
+                    return WaypointLibrary.filteredWaypoints(textInput.filter)
                 }
                 delayed: true
             }
@@ -382,7 +417,7 @@ Page {
 
             textFormat: Text.RichText
             wrapMode: Text.Wrap
-            text: (textInput.text === "")
+            text: (textInput.filter === "")
                   ? qsTr("<h3>Sorry!</h3><p>No waypoint available. To add a waypoint here, choose 'Add Waypoint' below or double-tap on a point in the moving map.</p>")
                   : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter.</p>")
         }
@@ -416,9 +451,7 @@ Page {
     property string finalFileName;
 
     function reloadWaypointList() {
-        var cache = textInput.text
-        textInput.text = textInput.text+"XXXXX"
-        textInput.text = cache
+        textInput.reload()
     }
 
     LongTextDialog {
@@ -439,13 +472,11 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             WaypointLibrary.remove(removeDialog.waypoint)
             page.reloadWaypointList()
-            toast.doToast(qsTr("Waypoint removed from device"))
+            Global.toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             page.reloadWaypointList() // Re-display aircraft that have been swiped out
             close()
         }
@@ -460,10 +491,9 @@ Page {
         text: qsTr("Once cleared, the library cannot be restored.")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             WaypointLibrary.clear()
             page.reloadWaypointList()
-            toast.doToast(qsTr("Waypoint library cleared"))
+            Global.toast.doToast(qsTr("Waypoint library cleared"))
         }
     }
 
@@ -477,7 +507,7 @@ Page {
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.replace(waypoint, newWP)
             page.reloadWaypointList()
-            toast.doToast(qsTr("Waypoint modified"))
+            Global.toast.doToast(qsTr("Waypoint modified"))
         }
 
     }
@@ -494,7 +524,7 @@ Page {
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.add(newWP)
             page.reloadWaypointList()
-            toast.doToast(qsTr("Waypoint added"))
+            Global.toast.doToast(qsTr("Waypoint added"))
         }
 
     }

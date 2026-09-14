@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 import "../items"
@@ -51,7 +51,10 @@ CenteringDialog {
             width: dialogMain.availableWidth
             textFormat: Text.MarkdownText
             wrapMode: Text.Wrap
-            onLinkActivated: Qt.openUrlExternally(link)
+            onLinkActivated: (link) => {
+                PlatformAdaptor.vibrateBrief()
+                Qt.openUrlExternally(link)
+            }
         }
     }
 }

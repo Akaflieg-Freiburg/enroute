@@ -21,7 +21,9 @@
 #pragma once
 
 #include <QObject>
+#include <QPointer>
 #include <QTimer>
+#include <QWindow>
 #include <QtGlobal>
 
 #include "platform/PlatformAdaptor_Abstract.h"
@@ -54,6 +56,17 @@ public:
     }
 
     ~PlatformAdaptor() override = default;
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract
+     *
+     *  @returns Property safeInsets
+     */
+    [[nodiscard]] QMarginsF safeInsets() const override { return m_safeInsets; }
 
 
     //
@@ -101,10 +114,18 @@ protected:
     /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract */
     void deferredInitialization() override;
 
+private slots:
+    // Poll the safe-area insets of the application window via JNI and update
+    // the property safeInsets. Connected to a number of change signals in
+    // the constructor.
+    void updateSafeInsets();
+
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
 
     bool splashScreenHidden {false};
+    QMarginsF m_safeInsets;
+    QPointer<QWindow> m_watchedWindow;
 };
 
 } // namespace Platform

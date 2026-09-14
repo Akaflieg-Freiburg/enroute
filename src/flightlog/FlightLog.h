@@ -1,0 +1,444 @@
+/***************************************************************************
+ *   Copyright (C) 2026 by Stefan Kebekus                                  *
+ *   stefan.kebekus@gmail.com                                              *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#pragma once
+
+#include <memory>
+
+#include <QGeoPath>
+#include <QObjectBindableProperty>
+#include <QQmlEngine>
+#include <QTimer>
+#include <QUuid>
+#include <QVariant>
+
+#include "GlobalObject.h"
+#include "flightlog/Flight.h"
+#include "flightlog/FlightDetector.h"
+#include "geomaps/Waypoint.h"
+
+using namespace Qt::Literals::StringLiterals;
+
+namespace Flightlog {
+
+class FlightLogStorage;
+class FlightRecorder;
+
+/*! \brief Flight log manager with pluggable automatic flight detection
+ *
+ *  This class manages a persistent list of flight log entries and provides
+ *  CRUD operations for flights. Automatic takeoff/landing detection is
+ *  delegated to a FlightDetector subclass, which can be swapped at runtime
+ *  to support different types of flying (e.g. powered aircraft, paragliders).
+ *
+ *  The detection state is forwarded from the active FlightDetector and
+ *  exposed to QML via the detectionState property.
+ */
+
+class FlightLog : public GlobalObject
+{
+    Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
+public:
+
+    //
+    // Constructors and Destructors
+    //
+
+    /*! \brief Standard constructor
+     *
+     *  @param parent The standard QObject parent pointer
+     */
+    explicit FlightLog(QObject* parent = nullptr);
+
+    // deferred initialization
+    void deferredInitialization() override;
+
+    // No default constructor, important for QML singleton
+    explicit FlightLog() = delete;
+
+    /*! \brief Standard destructor */
+    ~FlightLog() override;
+
+    // factory function for QML singleton
+    static FlightLog* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::flightLog();
+    }
+
+
+    //
+    // PROPERTIES
+    //
+
+    /*! \brief List of all recorded flights, newest first */
+    Q_PROPERTY(QList<Flightlog::Flight> flights READ flights NOTIFY flightsChanged)
+    [[nodiscard]] auto flights() const -> QList<Flight> { return m_flights; }
+
+    /*! \brief Current state of the automatic detection state machine */
+    Q_PROPERTY(Flightlog::FlightDetector::DetectionState detectionState READ detectionState NOTIFY detectionStateChanged)
+    [[nodiscard]] auto detectionState() const -> FlightDetector::DetectionState;
+
+    /*! \brief Number of recorded flights */
+    Q_PROPERTY(int count READ count NOTIFY flightsChanged)
+    [[nodiscard]] auto count() const -> int { return static_cast<int>(m_flights.value().size()); }
+
+    /*! \brief Coordinates of the track currently displayed on the map
+     *
+     *  Returns the geo path of the selected saved track, or the live
+     *  recording track if in flight and no saved track is selected.
+     *  Empty when no track is displayed.
+     */
+    Q_PROPERTY(QGeoPath displayedTrackPath READ displayedTrackPath NOTIFY displayedTrackPathChanged)
+    [[nodiscard]] auto displayedTrackPath() const -> QGeoPath;
+
+    /*! \brief UUID of the flight whose track is displayed, or empty string if none
+     *
+     *  Computed from the displayed track file. Returns an empty string when showing
+     *  the live track or no track.
+     */
+    Q_PROPERTY(QString displayedTrackUuid READ displayedTrackUuid NOTIFY displayedTrackPathChanged)
+    [[nodiscard]] auto displayedTrackUuid() const -> QString;
+
+    /*! \brief Whether GPS track recording is enabled
+     *
+     *  When true, the recorder captures track points during flight
+     *  and saves them as IGC files on landing. Default is true.
+     */
+    Q_PROPERTY(bool trackRecording READ trackRecording WRITE setTrackRecording NOTIFY trackRecordingChanged)
+    [[nodiscard]] auto trackRecording() const -> bool;
+    void setTrackRecording(bool enabled);
+
+    /*! \brief Whether the live trace of the current flight is shown on map
+     *
+     *  When true, the current in-memory live track is exposed through
+     *  displayedTrackPath while no saved track is selected. Default is true.
+     */
+    Q_PROPERTY(bool showCurrentFlightTrace READ showCurrentFlightTrace WRITE setShowCurrentFlightTrace NOTIFY showCurrentFlightTraceChanged)
+    [[nodiscard]] auto showCurrentFlightTrace() const -> bool;
+    void setShowCurrentFlightTrace(bool enabled);
+
+
+    //
+    // Methods
+    //
+
+    /*! \brief Add a new flight to the log
+     *
+     *  The flight is prepended (newest first). Coordinates are resolved
+     *  from the ICAO codes if possible.
+     *
+     *  @param flight The flight to add
+     */
+    Q_INVOKABLE void addFlight(const Flightlog::Flight& flight);
+
+    /*! \brief Remove a flight from the log by UUID
+     *
+     *  Does nothing if no flight with the given UUID exists.
+     *
+     *  @param uuid The UUID of the flight to remove (with or without braces)
+     */
+    Q_INVOKABLE void removeFlight(const QString& uuid);
+
+    /*! \brief Remove multiple flights from the log by UUID
+     *
+     *  Removes all flights whose UUIDs appear in @p uuids. Saves and
+     *  emits flightsChanged() exactly once regardless of how many are removed.
+     *  Does nothing if none of the UUIDs match.
+     *
+     *  @param uuids UUIDs of the flights to remove (with or without braces)
+     */
+    Q_INVOKABLE void removeFlights(const QStringList& uuids);
+
+    /*! \brief Remove all flights from the log
+     *
+     *  Deletes every flight entry and its associated track file, then
+     *  saves and emits flightsChanged() once.
+     */
+    Q_INVOKABLE void clearFlights();
+
+    /*! \brief Update an existing flight in the log
+     *
+     *  A coordinate is only re-derived from its ICAO code when that code
+     *  actually changes. This means edits to unrelated fields never replace
+     *  a coordinate that came from a real GPS fix (automatic flight
+     *  detection or the "End Flight" button) with an ICAO-based
+     *  approximation.
+     *
+     *  @param uuid UUID of the flight to update (with or without braces)
+     *  @param flight The updated flight data
+     */
+    Q_INVOKABLE void updateFlight(const QString& uuid, const Flightlog::Flight& flight);
+
+    /*! \brief Create a Flight value from individual field strings
+     *
+     *  This factory method is intended for QML use, where constructing
+     *  a Q_GADGET value type with all properties is cumbersome.
+     *
+     *  @param departureICAO ICAO code of departure airport
+     *  @param arrivalICAO ICAO code of arrival airport
+     *  @param date Date string in yyyy-MM-dd format
+     *  @param offBlockTimeStr Off-block time string in HH:mm format, or empty
+     *  @param startTimeStr Start time string in HH:mm format
+     *  @param landingTimeStr Landing time string in HH:mm format
+     *  @param onBlockTimeStr On-block time string in HH:mm format, or empty
+     *  @param pilotName Pilot name, or empty
+     *  @param aircraftCallsign Aircraft callsign (e.g. D-KEBE), or empty
+     *  @param comments Free-text comments, or empty
+     *  @returns A new Flight with the given values
+     */
+    Q_INVOKABLE static Flightlog::Flight createFlight(
+        const QString& departureICAO,
+        const QString& arrivalICAO,
+        const QString& date,
+        const QString& offBlockTimeStr,
+        const QString& startTimeStr,
+        const QString& landingTimeStr,
+        const QString& onBlockTimeStr,
+        const QString& pilotName,
+        const QString& aircraftCallsign,
+        const QString& comments);
+
+    /*! \brief Manually end the current in-flight recording
+     *
+     *  Delegates to the active FlightDetector. If the detector is in
+     *  InFlight or LandingPhase state, it completes the flight entry with
+     *  the current UTC time. Does nothing if not in InFlight or LandingPhase.
+     */
+    Q_INVOKABLE void endFlight();
+
+    /*! \brief Find the last arrival ICAO for a given aircraft
+     *
+     *  Searches the flight log for the most recent flight with the
+     *  given aircraft callsign and returns its arrival ICAO code.
+     *  Returns an empty string if no matching flight is found.
+     *
+     *  @param aircraftCallsign The callsign to search for
+     *  @returns Arrival ICAO of the most recent matching flight
+     */
+    Q_INVOKABLE QString lastArrivalICAO(const QString& aircraftCallsign) const;
+
+    /*! \brief Find the nearest airfield within 5 km
+     *
+     *  Returns the closest airfield (type "AD") to the given position,
+     *  provided it is within @p proximityM metres. Returns an invalid Waypoint if none found.
+     *  If no position is given (or an invalid one), the last valid coordinate
+     *  from PositionProvider is used.
+     *
+     *  @param position The geographic position to search near (default: current GPS position)
+     *  @param proximityM Maximum search radius in metres (default: 5000)
+     *  @returns The nearest airfield, or an invalid Waypoint
+     */
+    Q_INVOKABLE static GeoMaps::Waypoint nearestAirfield(const QGeoCoordinate& position = {}, double proximityM = 5000.0);
+
+    /*! \brief Get IGC track content for a flight
+     *
+     *  Returns the raw IGC file bytes ready for sharing.
+     *  Returns an empty array if the flight has no track or the file cannot be read.
+     *
+     *  @param uuid UUID of the flight to export (with or without braces)
+     *  @returns IGC file content, or empty
+     */
+    [[nodiscard]] Q_INVOKABLE QByteArray exportToIGC(const QString& uuid) const;
+
+    /*! \brief Generate ForeFlight CSV content for selected flights
+     *
+     *  Returns the CSV bytes ready for sharing. If @p uuids is empty,
+     *  all flights are included.
+     *
+     *  @param uuids UUIDs of the flights to include; empty means all
+     *  @returns CSV content as UTF-8, or empty if no matching flights
+     */
+    [[nodiscard]] Q_INVOKABLE QByteArray exportToForeFlight(const QStringList& uuids) const;
+
+    /*! \brief Generate JSON content for selected flights
+     *
+     *  Returns the JSON bytes ready for sharing, in the format produced by
+     *  FlightLogExportJSON. If @p uuids is empty, all flights are included.
+     *
+     *  @param uuids UUIDs of the flights to include; empty means all
+     *  @returns JSON content, or empty if no matching flights
+     */
+    [[nodiscard]] Q_INVOKABLE QByteArray exportToJSON(const QStringList& uuids) const;
+
+    /*! \brief Import flights from a JSON file
+     *
+     *  Reads a JSON file in the format produced by exportToJSON(), and adds
+     *  every flight whose UUID isn't already present in the log. A flight
+     *  whose UUID matches an existing entry is skipped. Coordinates are
+     *  filled in from the ICAO code for any imported flight that doesn't
+     *  already carry one.
+     *
+     *  @param fileName Path of the file to import (a leading "file://" prefix is stripped)
+     *  @returns Empty string on success, a translated error message otherwise
+     */
+    [[nodiscard]] Q_INVOKABLE QString importFromJSON(const QString& fileName);
+
+    /*! \brief Delete the recorded track for a flight
+     *
+     *  Removes the IGC file from disk and clears the trackFile
+     *  property on the flight entry.
+     *
+     *  @param uuid UUID of the flight whose track to delete (with or without braces)
+     */
+    Q_INVOKABLE void removeTrack(const QString& uuid);
+
+    /*! \brief Show a flight's track on the map
+     *
+     *  Loads the track if needed and sets it as the displayed track.
+     *  Only one track can be displayed at a time.
+     *
+     *  @param uuid UUID of the flight whose track to show (with or without braces)
+     */
+    Q_INVOKABLE void showTrack(const QString& uuid);
+
+    /*! \brief Hide the currently displayed track from the map */
+    Q_INVOKABLE void hideTrack();
+
+signals:
+    /*! \brief Notifier signal */
+    void flightsChanged();
+
+    /*! \brief Notifier signal */
+    void detectionStateChanged();
+
+    /*! \brief Notifier signal for displayedTrackPath and displayedTrackIndex */
+    void displayedTrackPathChanged();
+
+    /*! \brief Notifier signal */
+    void trackRecordingChanged();
+
+    /*! \brief Notifier signal */
+    void showCurrentFlightTraceChanged();
+
+    /*! \brief Emitted when a takeoff is detected
+     *
+     *  @param time The takeoff time as a human-readable UTC string (HH:mm)
+     */
+    void takeoffDetected(const QString& time);
+
+    /*! \brief Emitted when a landing is detected
+     *
+     *  @param time The landing time as a human-readable UTC string (HH:mm)
+     */
+    void landingDetected(const QString& time);
+
+    /*! \brief Emitted when saving the flight log database fails
+     *
+     *  The previously saved flight log data remains intact, but the
+     *  latest change could not be persisted.
+     *
+     *  @param message Human-readable error description
+     */
+    void saveError(const QString& message);
+
+    /*! \brief Emitted when background location access is missing or insufficient
+     *
+     *  Automatic flight detection may not continue reliably while the app
+     *  is in the background until the user grants "Always" location access.
+     *
+     *  @param message Human-readable description, suitable for display
+     */
+    void backgroundLocationUnavailable(const QString& message);
+
+private slots:
+    // Process position updates — delegates to the active FlightDetector
+    void onPositionUpdated();
+
+    // Handle detection state change — forwards signal
+    void onDetectionStateChanged();
+
+    // Handle auto-detection setting change — manages Android foreground service
+    void onAutoFlightDetectionChanged();
+
+#ifdef Q_OS_ANDROID
+    // Posted after a grace period when auto-detection is on but no position
+    // data is arriving. Cancelled when GPS resumes or detection is disabled.
+    void onReceivingPositionInfoChanged(bool receiving);
+#endif
+
+    // Handle takeoff detected by the FlightDetector
+    void onTakeoffDetected(const QString& departureICAO,
+                           const QGeoCoordinate& departureCoordinate,
+                           const QDateTime& startTime,
+                           const QString& aircraftCallsign);
+
+    // Handle landing detected by the FlightDetector
+    void onLandingDetected(const QString& arrivalICAO,
+                           const QGeoCoordinate& arrivalCoordinate,
+                           const QDateTime& landingTime,
+                           int landingCount);
+
+private:
+    Q_DISABLE_COPY_MOVE(FlightLog)
+
+    // Install signal connections for the given detector
+    void connectDetector(FlightDetector* detector);
+
+    // Load flights via m_storage
+    void load();
+
+    // Fill in a coordinate from its ICAO code via the GeoMapProvider, but
+    // only if the coordinate isn't already set (e.g. from a real GPS fix)
+    void resolveCoordinates(Flight& flight);
+
+    // Sort flights by startTime descending
+    void sortFlights(QList<Flight>& flights);
+
+    // Collect the flights matching the given UUID strings; returns all flights if the list is empty
+    [[nodiscard]] auto flightsForUuids(const QStringList& uuids) const -> QList<Flight>;
+
+    // Helper to parse a date+time string to QDateTime
+    static auto parseDateTime(const QString& date, const QString& timeStr) -> QDateTime;
+
+    Q_OBJECT_BINDABLE_PROPERTY(FlightLog, QList<Flightlog::Flight>, m_flights, &FlightLog::flightsChanged)
+
+    // UUID of the flight currently being recorded, or null if none
+    QUuid m_currentFlightUuid;
+
+    // Filename of the flight whose saved track is displayed, or empty
+    QString m_displayedTrackFile;
+
+    // Cached geo path for the displayed saved track
+    QGeoPath m_displayedTrackPath;
+
+    // The active flight detector (owned by this object)
+    FlightDetector* m_detector {nullptr};
+
+    // The flight recorder (owned by this object)
+    std::unique_ptr<FlightRecorder> m_recorder;
+
+    // The persistent storage backend (owned by this object)
+    std::unique_ptr<FlightLogStorage> m_storage;
+
+#ifdef Q_OS_ANDROID
+    // Tracks whether the Android foreground service is running
+    bool m_foregroundServiceRunning {false};
+
+    // Fires after a grace period to post the "no GPS" notification. Started
+    // when auto-detection is enabled with no position data; cancelled when
+    // position arrives or auto-detection is disabled.
+    QTimer m_noGPSTimer;
+#endif
+};
+
+} // namespace Flightlog

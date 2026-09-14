@@ -33,8 +33,8 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
 {
     QString _name;
     QString _encoding;
-    QString _tiles;
     QString _description;
+
 
     QString _version;
 
@@ -44,9 +44,8 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
     int _minzoom {-1};
 
     // Go through mbtile files and find real values
-    _maxzoom = 10;
-    _minzoom = 6;
     foreach (auto mbtPtr, mbtileFiles)
+
     {
         if (mbtPtr.isNull())
         {
@@ -63,26 +62,33 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
         auto tmp_maxzoom = mbtPtr->metaData().value(QStringLiteral("maxzoom")).toInt(&ok);
         if (ok)
         {
-            _maxzoom = qMax(_maxzoom, tmp_maxzoom);
+            _maxzoom = (_maxzoom < 0) ? tmp_maxzoom : qMax(_maxzoom, tmp_maxzoom);
         }
         auto tmp_minzoom = mbtPtr->metaData().value(QStringLiteral("minzoom")).toInt(&ok);
         if (ok)
         {
-            _minzoom = qMin(_minzoom, tmp_minzoom);
+            _minzoom = (_minzoom < 0) ? tmp_minzoom : qMin(_minzoom, tmp_minzoom);
         }
     }
 
-    _tiles = baseURL+"/{z}/{x}/{y}."+m_format;
+    // Fall back to the historical defaults only if none of the files
+    // specifies a zoom range. Seeding the range with these values would
+    // advertise zoom levels that the files do not contain.
+    if (_maxzoom < 0)
+    {
+        _maxzoom = 10;
+    }
+    if (_minzoom < 0)
+    {
+        _minzoom = 6;
+    }
+
 
     QJsonObject result;
     result.insert(QStringLiteral("tilejson"), "2.2.0");
 
-    // Insert tiles
-    QJsonArray tiles;
-    tiles.append(_tiles);
-    result.insert(QStringLiteral("tiles"), tiles);
-
     if (!_name.isEmpty())
+
     {
         result.insert(QStringLiteral("name"), _name);
     }
@@ -116,7 +122,19 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
     }
 
     m_tileJSON.setObject(result);
+    setBaseURL(baseURL);
 }
+
+
+void GeoMaps::TileHandler::setBaseURL(const QString& baseURLName)
+{
+    auto result = m_tileJSON.object();
+    QJsonArray tiles;
+    tiles.append(baseURLName+"/{z}/{x}/{y}."+m_format);
+    result.insert(QStringLiteral("tiles"), tiles);
+    m_tileJSON.setObject(result);
+}
+
 
 
 bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStringList &pathElements)
@@ -133,10 +151,18 @@ bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStrin
         return false;
     }
 
-    // Serve tile, if requested
-    auto z = pathElements[0].toInt();
-    auto x = pathElements[1].toInt();
-    auto y = pathElements[2].section('.', 0, 0).toInt();
+    // Serve tile, if requested. Reject anything that is not a well-formed
+    // tile coordinate: MBTILES::tile() shifts by the zoom level.
+    bool okZ = false;
+    bool okX = false;
+    bool okY = false;
+    auto z = pathElements[0].toInt(&okZ);
+    auto x = pathElements[1].toInt(&okX);
+    auto y = pathElements[2].section('.', 0, 0).toInt(&okY);
+    if (!okZ || !okX || !okY || (z < 0) || (z > 30) || (x < 0) || (y < 0) || (x >= (1 << z)) || (y >= (1 << z)))
+    {
+        return false;
+    }
 
     // Retrieve tile data from the database
     foreach(auto mbtilesPtr, m_mbtiles)

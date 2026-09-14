@@ -25,6 +25,7 @@
 #include <QTemporaryFile>
 
 #include "platform/FileExchange_Linux.h"
+#include "fileFormats/DataFileAbstract.h"
 
 
 
@@ -49,29 +50,38 @@ void Platform::FileExchange::importContent()
 }
 
 
-QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& /*mimeType*/, const QString& /*fileNameSuffix*/, const QString& fileNameTemplate)
+QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate)
 {
     QMimeDatabase const mimeDataBase;
-    QMimeType const mime = mimeDataBase.mimeTypeForData(content);
+    // Prefer the explicitly supplied suffix/mime; fall back to content sniffing
+    // so that formats like CSV or JSON are not mis-detected as text/plain.
+    QString suffix = fileNameSuffix;
+    QString mimeComment;
+    if (!suffix.isEmpty()) {
+        QMimeType const mt = mimeType.isEmpty()
+            ? mimeDataBase.mimeTypeForFile(u"x."_s + suffix, QMimeDatabase::MatchExtension)
+            : mimeDataBase.mimeTypeForName(mimeType);
+        mimeComment = mt.isValid() ? mt.comment() : suffix.toUpper();
+    } else {
+        QMimeType const mt = mimeDataBase.mimeTypeForData(content);
+        suffix = mt.preferredSuffix();
+        mimeComment = mt.comment();
+    }
     auto fileNameX = QFileDialog::getSaveFileName(nullptr,
                                                   tr("Export Data"),
-                                                  QDir::homePath() + u"/"_s + fileNameTemplate + u"."_s + mime.preferredSuffix(),
-                                                  tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix()));
+                                                  QDir::homePath() + u"/"_s + fileNameTemplate + u"."_s + suffix,
+                                                  tr("%1 (*.%2);;All files (*)").arg(mimeComment, suffix));
     if (fileNameX.isEmpty())
     {
         return QStringLiteral("abort");
     }
-    QFile file(fileNameX);
-    if (!file.open(QIODevice::WriteOnly))
+    // Write atomically, so that a failed write does not leave a truncated
+    // file at the user's chosen location.
+    QString error;
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileNameX, content, &error))
     {
-        return tr("Unable to open file <strong>%1</strong>.").arg(fileNameX);
+        return tr("Unable to write to file <strong>%1</strong>: %2").arg(fileNameX, error);
     }
-
-    if (file.write(content) != content.size())
-    {
-        return tr("Unable to write to file <strong>%1</strong>.").arg(fileNameX);
-    }
-    file.close();
     return {};
 }
 

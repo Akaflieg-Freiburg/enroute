@@ -1,36 +1,4 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(curl -s https://enroute-data.akaflieg-freiburg.de/enroute-GeoJSONv003/maps.json -o maps.json)",
-      "Bash(python3 -c ' *)",
-      "Bash(curl -s \"https://enroute-data.akaflieg-freiburg.de/enroute-GeoJSONv003/North%20America/USA%20South.geojson\" -o \"USA_South.geojson\")",
-      "Bash(adb devices *)",
-      "Bash(adb shell *)",
-      "Bash(adb push *)",
-      "Bash(adb logcat *)",
-      "Bash(python3 -m py_compile deploy-hetzner.py openAIP2.py)",
-      "Bash(echo \"qmllint exit: $?\")",
-      "Bash(export ANDROID_SDK_ROOT=$HOME/Software/buildsystems/android-sdk)",
-      "Bash(export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/26.1.10909125)",
-      "Bash(~/Software/buildsystems/Qt/6.11.1/android_x86_64/bin/qt-cmake -S ~/Software/projects/enroute -B /tmp/claude-1000/-home-kebekus-Software-projects-enroute/ab9da52a-ff72-4d59-b06d-67e0dc8c8948/scratchpad/build-android -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache)",
-      "Bash(cmake --build /tmp/claude-1000/-home-kebekus-Software-projects-enroute/ab9da52a-ff72-4d59-b06d-67e0dc8c8948/scratchpad/build-android --target apk)",
-      "Bash(git -C /home/kebekus/Software/projects/enroute submodule status)",
-      "Bash(adb install *)",
-      "Bash(head -c 200000000 /dev/zero)",
-      "Bash(rm bigcache.bin)",
-      "Bash(adb exec-out *)",
-      "Bash(curl -s \"https://enroute-data.akaflieg-freiburg.de/enroute-GeoJSONv003/Europe/Germany.geojson\" -o Germany.geojson)",
-      "Bash(gh --version)",
-      "Bash(time python3 packaging/flatpak/publish_screenshots.py --dry-run --work /tmp/claude-1000/-home-kebekus-Software-projects-enroute/0b94308c-b69b-4deb-a655-cc8dd632fd5b/scratchpad/shots)",
-      "Bash(identify /tmp/claude-1000/-home-kebekus-Software-projects-enroute/0b94308c-b69b-4deb-a655-cc8dd632fd5b/scratchpad/shots/en-US-1.png)",
-      "Bash(python3 packaging/flatpak/publish_screenshots.py --dry-run --work /tmp/claude-1000/-home-kebekus-Software-projects-enroute/0b94308c-b69b-4deb-a655-cc8dd632fd5b/scratchpad/shots)",
-      "Bash(git -C 3rdParty/enrouteText status -sb --short)",
-      "Bash(git -C 3rdParty/enrouteText diff --stat)"
-    ],
-    "additionalDirectories": [
-      "/home/kebekus/Software/projects/enrouteServer/scripts"
-    ]
-  },
   "hooks": {
     "PostToolUse": [
       {

@@ -8,15 +8,6 @@ set(material-design-icons_SOURCE_DIR
 
 
 #
-# MapBox fonts
-#
-
-set(mapBoxFont_SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/openseamap-gl
-    CACHE INTERNAL "" FORCE)
-
-
-#
 # KDSingleApplication
 #
 

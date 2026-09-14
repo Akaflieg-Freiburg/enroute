@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -38,8 +40,11 @@ Page {
 
     header: StandardHeader {}
 
-    RowLayout {
-        id: filterRow
+    FilterField {
+        id: textInput
+
+        // Return opens the top hit.
+        listView: wpList
 
         anchors.left: parent.left
         anchors.leftMargin: SafeInsets.left+font.pixelSize
@@ -47,24 +52,11 @@ Page {
         anchors.rightMargin: SafeInsets.right+font.pixelSize
         anchors.top: parent.top
         anchors.topMargin: page.font.pixelSize
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-
-            text: qsTr("Filter")
-        }
-
-        MyTextField {
-            id: textInput
-
-            Layout.alignment: Qt.AlignBaseline
-            Layout.fillWidth: true
-        }
     }
 
     Pane {
 
-        anchors.top: filterRow.bottom
+        anchors.top: textInput.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
@@ -79,6 +71,7 @@ Page {
 
             RowLayout {
                 id: entryRow
+                required property var modelData
                 anchors.left: parent.left
                 anchors.right: parent.right
                 Layout.fillWidth: true
@@ -93,21 +86,21 @@ Page {
                     id: iDel
                     Layout.fillWidth: true
 
-                    text: modelData
+                    text: entryRow.modelData
                     icon.source: "/icons/material/ic_airplanemode_active.svg"
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        finalFileName = modelData
+                        page.finalFileName = entryRow.modelData
                         if (!Librarian.contains(Navigator.aircraft))
                             overwriteDialog.open()
                         else
-                            openFromLibrary()
+                            page.openFromLibrary()
                     }
 
                     swipe.onCompleted: {
                         PlatformAdaptor.vibrateBrief()
-                        finalFileName = modelData
+                        page.finalFileName = entryRow.modelData
                         removeDialog.open()
                     }
                 }
@@ -130,8 +123,8 @@ Page {
                             text: qsTr("Rename…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                finalFileName = modelData
-                                renameName.text = modelData
+                                page.finalFileName = entryRow.modelData
+                                renameName.text = entryRow.modelData
                                 renameDialog.open()
                             }
 
@@ -142,7 +135,7 @@ Page {
                             text: qsTr("Remove…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                finalFileName = modelData
+                                page.finalFileName = entryRow.modelData
                                 removeDialog.open()
                             }
                         } // removeAction
@@ -159,7 +152,13 @@ Page {
 
             clip: true
 
-            model: Librarian.entries(Librarian.Aircraft, textInput.displayText)
+            model: {
+                // Mention reloadTrigger: Librarian.entries() has no change
+                // notification, so reload() is the only way to re-evaluate.
+                textInput.reloadTrigger
+
+                return Librarian.entries(Librarian.Aircraft, textInput.filter)
+            }
             delegate: entryDelegate
         }
 
@@ -174,14 +173,14 @@ Page {
 
             textFormat: Text.StyledText
             wrapMode: Text.Wrap
-            text: (textInput.text === "")
+            text: (textInput.filter === "")
                   ? qsTr("<h3>Sorry!</h3><p>No aircraft available. To add a route here, choose 'Aircraft' from the main menu, and save the current aircraft to the library.</p>") //TODO: Fix text (route)
                   : qsTr("<h3>Sorry!</h3><p>No aircraft match your filter criteria.</p>")
         }
 
     }
 
-    // This is the name of the file that openFromLibrary will open
+    // This is the name of the file that page.openFromLibrary will open
     property string finalFileName;
 
     function openFromLibrary() {
@@ -193,14 +192,12 @@ Page {
             return
         }
         Navigator.aircraft = acft
-        toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
-        stackView.pop()
+        Global.toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
+        Global.stackView.pop()
     }
 
     function reloadFlightRouteList() {
-        var cache = textInput.text
-        textInput.text = textInput.text+"XXXXX"
-        textInput.text = cache
+        textInput.reload()
     }
 
     CenteringDialog {
@@ -223,7 +220,10 @@ Page {
                 width: fileError.availableWidth
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
         }
 
@@ -235,14 +235,12 @@ Page {
         title: qsTr("Overwrite Current Aircraft?")
         standardButtons: Dialog.No | Dialog.Yes
 
-        text: qsTr("Loading the aircraft <strong>%1</strong> will overwrite the current aircraft. Once overwritten, the current aircraft cannot be restored.").arg(finalFileName)
+        text: qsTr("Loading the aircraft <strong>%1</strong> will overwrite the current aircraft. Once overwritten, the current aircraft cannot be restored.").arg(page.finalFileName)
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             overwriteDialog.close()
         }
     }
@@ -256,13 +254,11 @@ Page {
         text: qsTr("Once the aircraft <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             Librarian.remove(Librarian.Aircraft, page.finalFileName)
             page.reloadFlightRouteList()
-            toast.doToast(qsTr("Aircraft removed from device"))
+            Global.toast.doToast(qsTr("Aircraft removed from device"))
         }
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             page.reloadFlightRouteList() // Re-display aircraft that have been swiped out
             removeDialog.close()
         }
@@ -282,7 +278,7 @@ Page {
             Label {
                 Layout.preferredWidth: overwriteDialog.availableWidth
 
-                text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(finalFileName)
+                text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(page.finalFileName)
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
@@ -294,7 +290,10 @@ Page {
                 Layout.fillWidth: true
                 focus: true
 
-                onAccepted: renameDialog.onAccepted()
+                onAccepted: {
+                    PlatformAdaptor.vibrateBrief()
+                    renameDialog.doRename()
+                }
             }
 
         }
@@ -310,17 +309,17 @@ Page {
             }
         }
 
-        onAccepted: {
-            PlatformAdaptor.vibrateBrief()
+        // Also called from the text field when Return is pressed.
+        function doRename() {
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Aircraft, renameName.text)) {
-                Librarian.rename(Librarian.Aircraft, finalFileName, renameName.text)
+                Librarian.rename(Librarian.Aircraft, page.finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 renameDialog.close()
-                toast.doToast(qsTr("Aircraft renamed"))
+                Global.toast.doToast(qsTr("Aircraft renamed"))
             }
         }
+        onAccepted: doRename()
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             renameDialog.close()
         }
     }

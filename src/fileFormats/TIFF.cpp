@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <exception>
 
 #include "TIFF.h"
 #include "fileFormats/DataFileAbstract.h"
@@ -26,6 +27,11 @@
 //
 // Enums and static helper functions
 //
+
+// Upper bound for the number of values in a single TIFF field. Real
+// GeoTIFF metadata is far below this; the count is read from the file and
+// must be bounded before any allocation depends on it.
+constexpr quint32 maxFieldCount = 65536;
 
 enum DataType : quint8 {
     DT_Byte = 1,
@@ -169,6 +175,11 @@ void FileFormats::TIFF::readTIFFData(QIODevice& device)
     {
         setError(message);
     }
+    catch (const std::exception& exception)
+    {
+        // E.g. std::bad_alloc from a malformed file; report instead of aborting.
+        setError(QString::fromLatin1(exception.what()));
+    }
 }
 
 
@@ -223,7 +234,7 @@ void FileFormats::TIFF::readTIFFField(QIODevice& device, QDataStream& dataStream
     // Save file position and move to the position where the data actually
     // resides.
     auto filePos = device.pos();
-    auto byteSize = typeSize*count;
+    const qint64 byteSize = static_cast<qint64>(typeSize)*count;
     if (byteSize > 4)
     {
         quint32 newPos = 0;
@@ -233,6 +244,13 @@ void FileFormats::TIFF::readTIFFField(QIODevice& device, QDataStream& dataStream
         {
             throw device.errorString();
         }
+    }
+
+    // Reject fields whose declared size is implausible or exceeds the data
+    // that is actually left in the device.
+    if ((count > maxFieldCount) || (byteSize > device.size() - device.pos()))
+    {
+        throw QObject::tr("Cannot read data.", "FileFormats::TIFF");
     }
 
     // Read data entries from the device
@@ -253,7 +271,6 @@ void FileFormats::TIFF::readTIFFField(QIODevice& device, QDataStream& dataStream
     }
     break;
     case DT_Short:
-        values.reserve(count);
         for (quint32 i = 0; i < count; ++i)
         {
             quint16 tmpInt = 0;
@@ -263,7 +280,6 @@ void FileFormats::TIFF::readTIFFField(QIODevice& device, QDataStream& dataStream
         }
         break;
     case DT_Double:
-        values.reserve(count);
         for (quint32 i = 0; i < count; ++i)
         {
             double tmpFloat = NAN;

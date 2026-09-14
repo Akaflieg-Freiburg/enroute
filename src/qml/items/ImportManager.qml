@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -33,9 +33,6 @@ Item {
     property string filePath: ""
     property int fileFunction: FileExchange.UnknownFunction
 
-    required property var stackView
-    required property var toast
-    required property var view
 
     Component.onCompleted: {
         FileExchange.onGUISetupCompleted()
@@ -49,9 +46,26 @@ Item {
             errorDialog.open()
         }
 
+        function onSaveContentResult(result) {
+            if (result === "") {
+                Global.toast.doToast(qsTr("File saved"))
+                return
+            }
+            if (result === "abort") {
+                Global.toast.doToast(qsTr("Aborted"))
+                return
+            }
+            Global.dialogLoader.active = false
+            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                              title: qsTr("Error Saving Data…"),
+                                              text: result,
+                                              standardButtons: Dialog.Ok})
+            Global.dialogLoader.active = true
+        }
+
         function onOpenFileRequest(fileName, info, fileFunction) {
-            importManager.view.raise()
-            importManager.view.requestActivate()
+            Global.appWindow.raise()
+            Global.appWindow.requestActivate()
 
             importManager.filePath = fileName
             importManager.fileFunction = fileFunction
@@ -78,7 +92,7 @@ Item {
                 if (Navigator.flightRoute.size > 0)
                     importFlightRouteDialog.open()
                 else
-                    importFlightRouteDialog.onAccepted()
+                    importFlightRouteDialog.importRoute()
                 return
             }
             if (fileFunction === FileExchange.Image) {
@@ -90,7 +104,7 @@ Item {
                 importTripKitDialog.open()
                 return
             }
-            if (fileFunction === FileExchange.OpenAir) {
+            if (fileFunction === FileExchange.OpenAir || fileFunction === FileExchange.Cub) {
                 openAirInfoLabel.text = info;
                 importOpenAirDialog.open()
                 return
@@ -100,6 +114,10 @@ Item {
                 errorDialog.open()
                 return
             }
+            if (fileFunction === FileExchange.FlightLogJSON) {
+                importFlightLogJSONDialog.open()
+                return
+            }
 
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
@@ -107,8 +125,8 @@ Item {
         }
 
         function onOpenVACRequest(vac) {
-            importManager.view.raise()
-            importManager.view.requestActivate()
+            Global.appWindow.raise()
+            Global.appWindow.requestActivate()
 
             importVACDialog.vac = vac
             mapNameVAC.text = vac.name
@@ -168,7 +186,7 @@ Item {
                     if (Navigator.flightRoute.size > 0)
                         importFlightRouteDialog.open()
                     else
-                        importFlightRouteDialog.onAccepted()
+                        importFlightRouteDialog.importRoute()
                 }
             }
 
@@ -237,15 +255,15 @@ Item {
         }
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
-            var errorString = DataManager.importOpenAir(importManager.filePath, mapNameOpenAir.text)
+            var errorString = importManager.fileFunction === FileExchange.Cub
+                            ? DataManager.importCub(importManager.filePath, mapNameOpenAir.text)
+                            : DataManager.importOpenAir(importManager.filePath, mapNameOpenAir.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Airspace data imported") )
+            Global.toast.doToast( qsTr("Airspace data imported") )
         }
     }
 
@@ -292,8 +310,6 @@ Item {
         onAboutToShow: importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             vac.name = mapNameVAC.text
             var errorString = VACLibrary.importVAC(vac)
             if (errorString !== "") {
@@ -301,7 +317,7 @@ Item {
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Visual approach chart data imported") )
+            Global.toast.doToast( qsTr("Visual approach chart data imported") )
         }
     }
 
@@ -345,15 +361,13 @@ Item {
         }
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             var errorString = DataManager.import(importManager.filePath, mapNameRaster.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Raster map imported") )
+            Global.toast.doToast( qsTr("Raster map imported") )
         }
     }
 
@@ -381,10 +395,11 @@ Item {
                 Layout.fillWidth: true
                 focus: true
 
-                onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
+                onDisplayTextChanged: importVectorMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
 
                 onAccepted: {
                     if (mapNameVector.text === "")
+
                         return
                     importVectorMapDialog.accept()
                 }
@@ -402,19 +417,18 @@ Item {
 
         onAboutToShow: {
             mapNameVector.text = ""
-            importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
+            importVectorMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
         }
 
-        onAccepted: {
-            PlatformAdaptor.vibrateBrief()
 
+        onAccepted: {
             var errorString = DataManager.import(importManager.filePath, mapNameVector.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Vector map imported") )
+            Global.toast.doToast( qsTr("Vector map imported") )
         }
 
     }
@@ -440,8 +454,6 @@ Item {
         }
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             var errorString = WaypointLibrary.import(importManager.filePath, skip.checked)
             if (errorString !== "") {
                 errLbl.text = errorString
@@ -449,11 +461,11 @@ Item {
                 return
             }
 
-            if (!(importManager.stackView.currentItem instanceof WaypointLibraryPage)) {
-                importManager.stackView.pop()
-                importManager.stackView.push("../pages/WaypointLibraryPage.qml")
+            if (!(Global.stackView.currentItem instanceof WaypointLibraryPage)) {
+                Global.stackView.pop()
+                Global.stackView.push("../pages/WaypointLibraryPage.qml")
             }
-            toast.doToast( qsTr("Waypoints imported") )
+            Global.toast.doToast( qsTr("Waypoints imported") )
         }
     }
 
@@ -466,10 +478,11 @@ Item {
 
         text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
 
-        onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
+        // Also called directly when there is no current route to overwrite,
+        // in which case the dialog is not shown.
+        function importRoute() {
             var errorString = ""
+
 
             if (importManager.fileFunction === FileExchange.FlightRoute)
                 errorString = Navigator.flightRoute.load(importManager.filePath)
@@ -479,16 +492,19 @@ Item {
                 errorDialog.open()
                 return
             }
-            if (!(importManager.stackView.currentItem instanceof FlightRouteEditor)) {
-                importManager.stackView.pop()
-                importManager.stackView.push("../pages/FlightRouteEditor.qml")
+            if (!(Global.stackView.currentItem instanceof FlightRouteEditor)) {
+                Global.stackView.pop()
+                Global.stackView.push("../pages/FlightRouteEditor.qml")
             }
-            toast.doToast( qsTr("Flight route imported") )
+            Global.toast.doToast( qsTr("Flight route imported") )
         }
+
+        onAccepted: importRoute()
     }
 
     LongTextDialog {
         id: importTripKitDialog
+
 
         title: qsTr("Import Trip Kit?")
         standardButtons: Dialog.No | Dialog.Yes
@@ -497,7 +513,6 @@ Item {
         text: qsTr("This might overwrite some approach charts.")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             importTripKitDialog.close()
 
             var errorString = VACLibrary.importTripKit(importManager.filePath)
@@ -506,7 +521,33 @@ Item {
                 errorDialog.open()
                 return
             }
-            importManager.toast.doToast( qsTr("Trip kit imported") )
+            Global.toast.doToast( qsTr("Trip kit imported") )
+        }
+    }
+
+    LongTextDialog {
+        id: importFlightLogJSONDialog
+
+        title: qsTr("Import Flight Log?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        text: qsTr("This will import flight log entries from the file. Flights already present in the log will be skipped.")
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+
+            var countBefore = FlightLog.count
+            var errorString = FlightLog.importFromJSON(importManager.filePath)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            var imported = FlightLog.count - countBefore
+            Global.toast.doToast(imported > 0
+                                 ? qsTr("%1 flight(s) imported").arg(imported)
+                                 : qsTr("No new flights to import — already in the log"))
         }
     }
 
@@ -548,7 +589,7 @@ Item {
             }
 
             Item {
-                height: txtLbl.font.pixelSize
+                implicitHeight: txtLbl.font.pixelSize
             }
 
             ProgressBar {

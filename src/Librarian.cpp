@@ -18,10 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
 #include <QSysInfo>
 #include <QtGlobal>
+#include <algorithm>
 
 #include "config.h"
 #include "Librarian.h"
@@ -321,6 +323,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
         result += u"<p>"_s
                   + tr("There are now specialized icons for obstacle NOTAMs and NOTAMs about drone flights. We thank Christian Engelhardt for the implementation!")
                   + u"</p>"_s;
+        result += u"<p>"_s
+                  + tr("Waypoints in your flight route can now be rearranged by drag-and-drop: press the drag handle next to a waypoint and move it to its new position in the list.")
+                  + u"</p>"_s;
 #if !defined(Q_OS_IOS)
         result += u"<p>"_s
                   + tr("Support for Bluetooth Classic and Bluetooth Low Energy is now a regular feature and no longer in tech preview. Please report any issues that you may find!")
@@ -422,7 +427,7 @@ auto Librarian::exists(Librarian::Library library, const QString &baseName) -> b
 }
 
 
-auto Librarian::get(Librarian::Library library, const QString &baseName) -> QObject *
+auto Librarian::get(Librarian::Library library, const QString &baseName) -> Navigation::FlightRoute *
 {
     if (library == Routes)
     {
@@ -441,6 +446,16 @@ auto Librarian::get(Librarian::Library library, const QString &baseName) -> QObj
     }
 
     return nullptr;
+}
+
+
+auto Librarian::manualLocation() -> QString
+{
+#if defined(Q_OS_IOS)
+    return QCoreApplication::applicationDirPath()+u"/enrouteManual/"_s;
+#else
+    return QStringLiteral(MANUAL_LOCATION);
+#endif
 }
 
 
@@ -549,14 +564,25 @@ auto Librarian::entries(Library library, const QString &filter) -> QStringList
 }
 
 
+auto Librarian::matches(const QString& text, const QString& filter) -> bool
+{
+    // Split before simplifying: simplifySpecialChars() removes whitespace, so
+    // "EDDF EDDM" would otherwise collapse into one word that never matches.
+    auto const words = filter.split(u' ', Qt::SkipEmptyParts);
+    auto const simplifiedText = simplifySpecialChars(text);
+
+    return std::ranges::all_of(words, [this, &simplifiedText](const QString& word) {
+        return simplifiedText.contains(simplifySpecialChars(word), Qt::CaseInsensitive);
+    });
+}
+
+
 auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter) -> QStringList
 {
-    QString const simplifiedFilter = simplifySpecialChars(filter);
-
     QStringList result;
     foreach(auto inputString, inputStrings)
     {
-        if (simplifySpecialChars(inputString).contains(simplifiedFilter, Qt::CaseInsensitive))
+        if (matches(inputString, filter))
         {
             result << inputString;
         }
@@ -568,12 +594,22 @@ auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString 
 
 auto Librarian::simplifySpecialChars(const QString &string) -> QString
 {
-    QString cacheString = simplifySpecialChars_cache.value(string);
-    if (!cacheString.isEmpty())
+    auto const it = simplifySpecialChars_cache.constFind(string);
+    if (it != simplifySpecialChars_cache.constEnd())
     {
-        return cacheString;
+        return *it;
     }
 
-    QString normalizedString = string.normalized(QString::NormalizationForm_KD);
-    return normalizedString.remove(specialChars);
+    QString simplified = string.normalized(QString::NormalizationForm_KD);
+    simplified.remove(specialChars);
+
+    // Bound the cache: every prefix that a user ever types into a filter field
+    // becomes a key here.
+    if (simplifySpecialChars_cache.size() > 10000)
+    {
+        simplifySpecialChars_cache.clear();
+    }
+    simplifySpecialChars_cache.insert(string, simplified);
+
+    return simplified;
 }

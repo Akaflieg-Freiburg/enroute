@@ -1,5 +1,274 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- Airspace data can now be imported in the binary CUB format used by Naviter
+  and LXNav products, such as SeeYou and the LX9000. (#601)
+
+- Waypoints in the flight route can now be reordered by drag-and-drop. (#52)
+
+- Flight routes can now be exported in Garmin FPL and MSFS PLN formats, for
+  transfer to Garmin avionics and flight simulators. (#443, #640)
+
+- On Android, flight routes, the waypoint library and system information can
+  now be saved directly to a file, in addition to sharing. (#363)
+
+- Warn the user when pressure altitude and GNSS altitude differ by unrealistic
+  amounts, which happens when the device does not measure static pressure, for
+  instance in a pressurized cabin or when a flight simulator is used. In this
+  situation, the side view no longer shows unreliable airspace data. (#570)
+
+- OpenAIR import now understands the AY record (airspace type) and the
+  airspace classes E, F and G. Gliding sectors and similar zones are now drawn
+  with their proper airspace category, instead of appearing as generic special
+  use airspace.
+
+### Changed
+
+- The safe-area handling that keeps the user interface clear of display
+  cutouts, system bars and the virtual keyboard now uses Qt's SafeArea
+  support instead of custom platform code. (#584)
+
+### Fixed
+
+- GDL90 Traffic: suppress "No GPS reception" warning when phone GNSS is primary
+  source #673
+
+- Fixes several issues with OpenAIR import.
+
+- OpenAIR files that specify activation times now warn that these times are not
+  evaluated, so that seasonal airspace is not mistaken for permanent airspace.
+
+- The app no longer hangs on exit when there is no network connection. It used
+  to wait for pending host name lookups, which take the full resolver timeout
+  to fail when the network is unreachable (#544).
+
+- Fixed a crash at startup on systems without any positioning backend, where
+  the app dereferenced a missing satellite position source.
+
+- Fixed the conversion between liters and U.S. gallons, which used the
+  imperial gallon (4.546 l) instead of the U.S. gallon (3.785 l). Users who
+  entered fuel consumption in gallons per hour should re-check the value in
+  their aircraft settings, as the displayed figure will now differ.
+
+- Fixed the OGN traffic alarm, which raised an alert for any aircraft flying
+  well below the own position because the vertical distance was not taken as
+  an absolute value.
+
+- Fixed the computation of the distance between the aircraft and a route leg.
+  Positions behind the start of a leg were attributed to the leg, and
+  positions exactly on the leg could be reported as far away due to rounding.
+
+- Fixed a hang when the weather server returned a truncated or malformed
+  METAR/TAF response; the app no longer loops forever while parsing the data.
+
+- Fixed an error where the map zoom level and rotation were not saved between
+  sessions, so the map always reopened at the default zoom level.
+
+- Fixed an error where a Bluetooth Low Energy traffic receiver was restored as
+  a Bluetooth Classic connection after an app restart, so that it could no
+  longer connect automatically.
+
+- Fixed the internal map tile server, which listened on all network interfaces
+  instead of the local loopback address only, and which did not validate tile
+  coordinates in incoming requests.
+
+- Fixed an error where chart names from a trip kit were used unchanged as file
+  names, so that a malicious trip kit could write files outside the app's
+  chart directory.
+
+- Fixed the TIFF and ZIP file readers, which could crash or allocate unbounded
+  memory when opening malformed or oversized files, such as corrupt GeoTIFF
+  charts or trip kits.
+
+- Fixed an error where the chart library could be lost if the app was
+  interrupted while saving it, and where the library housekeeping deleted
+  chart files that it had just re-registered. Unreadable chart files are now
+  moved to a folder 'unrecognised' instead of being deleted.
+
+- Fixed the helper scripts that update bundled third-party data; they no
+  longer run 'git reset --hard' on the main repository when the target
+  directory is missing.
+
+- Fixed an error where the cached NOTAM data could be corrupted if the app was
+  interrupted while saving it; the cache is now written atomically and a
+  damaged cache is ignored instead of being loaded.
+
+- Fixed an error where the current aircraft, the current flight route and
+  saved routes or aircraft could be lost if the app was interrupted while
+  writing them; these files are now written atomically and write errors are
+  reported in the save dialogs.
+
+- Fixed an error where the waypoint library could be emptied if the app was
+  interrupted while saving it; the library file is now written atomically.
+
+- Fixed an error where the aviation data cache and imported airspace files
+  could be left half-written if the app was interrupted; they are now written
+  atomically, and an import failure no longer deletes a previously imported
+  file of the same name.
+
+- Fixed an error where importing a chart or trip kit could leave a damaged
+  chart file behind if the import was interrupted; chart files are now written
+  atomically.
+
+- Fixed an error where the list of traffic receiver connections and the stored
+  Wi-Fi passwords could be lost if the app was interrupted while saving them;
+  both files are now written through a shared atomic write helper.
+
+- Fixed an error where exporting a file on Linux or macOS could leave a
+  truncated file behind when the write failed, and where the weather cache
+  write did not report failures.
+
+- Fixed an error where flight routes exported as GPX contained unescaped
+  waypoint names, so that names with characters such as '&' or '<' produced a
+  file that other apps could not read.
+
+- Fixed an error where the route summary lost its time and fuel figures when
+  the route contained two waypoints less than 100 m apart anywhere except at
+  the start.
+
+- Fixed an error where the warning about a missing aviation map for the
+  current location stayed visible after the map had been installed, until the
+  aircraft moved.
+
+- Fixed an error where the app did not notice a date change after sleeping
+  across midnight, so that date-dependent displays such as the NOTAM list
+  showed the previous day.
+
+- Fixed an error where TAF validity periods ending at midnight (hour 24) were
+  shown without an end time, and a remark in decoded METARs that read
+  literally '%1 observed.' instead of naming the phenomenon.
+
+- Fixed an error where the app requested the same METAR and TAF data several
+  times in a row at startup and when returning to the foreground.
+
+- Fixed an error where NOTAM texts containing characters such as '<' were cut
+  off in the NOTAM list, and the grouping of NOTAMs that take effect more than
+  90 days ahead, which now appear under their own heading.
+
+- Fixed an error where the connection to the Open Glider Network could never
+  be established on slow mobile links, because a watchdog aborted every
+  connection attempt that took longer than one second. The watchdog now leaves
+  attempts in progress alone, respects a manual disconnect and retries at most
+  every ten seconds.
+
+- Fixed several errors in TCP connections to traffic receivers: a Wi-Fi
+  password that a device requested while it was already delivering data was
+  stored as an empty password; disconnecting from a TCP traffic receiver was
+  immediately undone by an automatic reconnect; and the keep-alive and low-
+  delay socket options were requested before the socket existed and therefore
+  never applied. The Open Glider Network connection had the same socket-option
+  error.
+
+- Fixed an error where only one Bluetooth Low Energy traffic receiver could be
+  added on iOS, because every further device was mistaken for a duplicate of
+  the first.
+
+- Fixed an error where traffic that had disappeared from the map stayed
+  invisible for a while after the device clock was corrected backwards,
+  because expired traffic entries refused position reports with older
+  timestamps.
+
+- Fixed an error where a traffic receiver that sends data without sentence
+  delimiters could make the app use ever more memory; the input buffer for
+  FLARM data and the line reads from Bluetooth Classic and serial devices are
+  now bounded.
+
+- Fixed an error where traffic reports without an identification, such as
+  Mode-C transponder targets reported by a PowerFLARM, were all treated as one
+  and the same aircraft, so that the display animated between different
+  aircraft as if one of them were moving.
+
+- Fixed an error where the file holding stored Wi-Fi passwords for traffic
+  receivers was created with default permissions; it is now readable by the
+  owner only.
+
+- Fixed an error in the ranking of traffic targets: when two targets were
+  otherwise equal, only their horizontal distance was compared although the
+  vertical distance was checked; the distance in space is now used.
+
+- Fixed an error where an aviation map containing an airspace with a malformed
+  coordinate could crash the app while the aviation data was loaded; such
+  airspaces are now rejected.
+
+- Fixed an error where a map download that could not be saved was silently
+  treated as successful; the app now reports the failure and, before a map
+  file is replaced or deleted, closes the map so that the update also works on
+  Windows.
+
+- Fixed an error where a map path received from the map server was used to
+  build a local file name without checking that it stays inside the map
+  directory; such entries are now ignored.
+
+- Fixed an error where the tile server advertised zoom levels 6 to 10 for
+  every map even if the map files covered a different range, which made the
+  map renderer request tiles that do not exist instead of scaling the existing
+  ones.
+
+- Fixed an error on iOS where the map could stop loading tiles after the app
+  returned from the background: when the tile server had to move to a new
+  port, the tile descriptions still pointed to the old one.
+
+- Fixed an error where an OpenAir airspace file containing the words nan or
+  inf in place of a number was accepted and produced airspaces with invalid
+  geometry; such numbers are now rejected.
+
+- Fixed an error where importing a CUP waypoint file failed as a whole if it
+  contained a blank line or a waypoint without elevation, and where the
+  reported line number was one too small.
+
+- Fixed a start-up race on Linux where the speech engine was wired into the
+  app from a worker thread; only the slow construction now runs there, and
+  queued voice notifications are spoken as soon as the engine is ready instead
+  of after a polling delay.
+
+- Fixed an error on iOS where a file whose name contains spaces or special
+  characters could not be opened from another app, because the file URL was
+  not decoded.
+
+- Fixed an error where importing an approach chart handed over as a file URL
+  by a desktop file manager failed with a misleading georeferencing error.
+
+- Fixed an error on Android where generating a bug report could freeze the app
+  for up to 30 seconds while collecting the system log.
+
+- Fixed an error on Android where changing the system language restarted the
+  app so abruptly that settings changed shortly before could be lost.
+
+- Fixed an error where editing a coordinate between 1° west or south and 0° in
+  degrees-and-minutes or degrees-minutes-seconds notation lost the sign, so
+  that a waypoint near the equator or the Greenwich meridian flipped
+  hemisphere.
+
+- Fixed an error where entering a waypoint elevation in meters was ignored
+  unless the feet field happened to be valid as well.
+
+- Fixed an error where the OK button of the vector-map import dialog did not
+  react to the map name being typed.
+
+- Fixed an error where the decoded TAF text was shown even when no TAF was
+  available.
+
+- Fixed the first-run dialog, which showed the message for a denied location
+  permission while the permission was still undetermined, and vice versa.
+
+- Fixed the confirmation shown after renaming an approach chart, which spoke
+  of a flight route.
+
+- Fixed the list of third-party licenses, which credited QHttpEngine instead
+  of the sunset library that is actually used, and which did not mention the
+  usb-serial-for-android and AndroidX libraries shipped in the Android app.
+
+- Fixed the Android app listing, which was hidden from tablets without GPS or
+  Bluetooth hardware although the app supports them; the app also no longer
+  requests the Bluetooth advertising permission, which it never used.
+
+- Fixed the list of third-party licenses so that it covers every Qt module the
+  app uses, including the text codecs of Qt5Compat, BlueZ and the Android
+  sensor code, and no longer credits components that only belong to Qt's
+  examples and build tools.
+
 ## [3.4.1] - 2026-08-06
 
 ### Fixed

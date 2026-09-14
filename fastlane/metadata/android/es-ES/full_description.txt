@@ -1,0 +1,11 @@
+Enroute es una aplicación de navegación aérea no comercial escrita por aficionados a la aviación para pilotos VFR. Diseñada para ser sencilla, funcional y elegante, le quita el estrés a su próximo vuelo.
+
+Enroute ofrece un mapa móvil de estilo similar al de las cartas oficiales de la OACI. Se marcan su posición actual y su trayectoria de vuelo para los próximos cinco minutos, así como la ruta de vuelo prevista. Con un simple toque obtiene toda la información sobre espacios aéreos, aeródromos y radioayudas: frecuencias, códigos, elevaciones e información de pistas.
+
+Nuestras cartas aeronáuticas son gratuitas, se actualizan semanalmente y cubren gran parte del mundo. Algunas cartas muestran además los circuitos de tráfico y los procedimientos de vuelo para las zonas de control.
+
+Enroute permite la planificación básica de vuelos. Le permite calcular de forma rápida y sencilla distancias, rutas y rumbos. Le ofrece una estimación del tiempo de vuelo y del consumo de combustible. Si el tiempo empeora, la aplicación le mostrará los aeródromos más cercanos para aterrizar, con distancias, direcciones, información de pistas y frecuencias.
+
+No hay publicidad ni versión comercial «pro» de la aplicación. No le espiamos. No necesita registrarse para obtener una «membresía». Y no le molestamos con correos electrónicos. ¡Ni siquiera tenemos su dirección, ni la queremos!
+
+Aviso legal: Publicamos esta aplicación gratuita con la esperanza de que resulte útil como ayuda para una navegación prudente. No ofrece garantía alguna. Puede que no funcione como se espera. Los datos no proceden de fuentes oficiales y pueden estar incompletos, desactualizados o ser incorrectos. Esta aplicación no sustituye una preparación adecuada del vuelo ni una buena pericia como piloto. Confiar en ella como medio principal de navegación es muy probablemente ilegal, sin duda estúpido y potencialmente suicida.

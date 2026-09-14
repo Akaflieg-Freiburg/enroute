@@ -18,11 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtPositioning
 import QtQml
+import QtQml.Models
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Dialogs
+import QtQuick.Effects
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -38,141 +43,6 @@ Page {
     property bool isAndroidOrIos: isAndroid || isIos
     property angle staticAngle
     property speed staticSpeed
-
-    Component {
-        id: waypointComponent
-
-        RowLayout {
-            id: waypointLayout
-
-            property var waypoint: ({})
-            property int index: -1
-
-            width: co.width
-
-            WaypointDelegate {
-                Layout.fillWidth: true
-                waypoint: waypointLayout.waypoint
-            }
-
-            ToolButton {
-                id: editButton
-
-                visible: waypoint.icon.indexOf("WP") !== -1
-                icon.source: "/icons/material/ic_mode_edit.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    wpEditor.waypoint = waypoint
-                    wpEditor.index = waypointLayout.index
-                    wpEditor.open()
-                }
-            }
-
-            ToolButton {
-                id: wpMenuTB
-
-                icon.source: "/icons/material/ic_more_horiz.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    wpMenu.open()
-                }
-
-                AutoSizingMenu {
-                    id: wpMenu
-
-                    Action {
-                        text: qsTr("Move Up")
-
-                        enabled: index > 0
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            wpMenu.close() // Necessary on some devices, or else menu will stay open
-
-                            Navigator.flightRoute.moveUp(index)
-                        }
-                    }
-
-                    Action {
-                        text: qsTr("Move Down")
-
-                        enabled: index < Navigator.flightRoute.size-1
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            wpMenu.close() // Necessary on some devices, or else menu will stay open
-
-                            Navigator.flightRoute.moveDown(index)
-                        }
-                    }
-
-                    Action {
-                        text: qsTr("Remove")
-
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            wpMenu.close() // Necessary on some devices, or else menu will stay open
-
-                            Navigator.flightRoute.removeWaypoint(index)
-                        }
-                    }
-
-                    Rectangle {
-                        height: 1
-                        Layout.fillWidth: true
-                        color: Global.dividerColor
-                    }
-
-                    Action {
-                        text: qsTr("Add to waypoint library")
-                        enabled: {
-                            // Mention waypoints, in order to update
-                            WaypointLibrary.waypoints
-
-                            return (waypoint.category === "WP") && !WaypointLibrary.hasNearbyEntry(waypoint)
-                        }
-
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            wpMenu.close() // Necessary on some devices, or else menu will stay open
-
-                            WaypointLibrary.add(waypoint)
-                            toast.doToast(qsTr("Added %1 to waypoint library.").arg(waypoint.extendedName))
-                        }
-                    }
-
-                }
-            }
-
-        }
-    }
-
-    Component {
-        id: legComponent
-
-        ColumnLayout {
-            id: grid
-
-            property leg leg: ({});
-
-            Layout.fillWidth: true
-
-            ItemDelegate {
-                icon.source: "/icons/vertLine.svg"
-                Layout.fillWidth: true
-                enabled: false
-                text: {
-                    // Mention units
-                    Navigator.aircraft.horizontalDistanceUnit
-                    Navigator.aircraft.fuelConsumptionUnit
-
-                    if (leg == null)
-                        return ""
-                    return leg.description(Navigator.wind, Navigator.aircraft)
-                }
-            }
-
-        }
-    }
-
 
     header: PageHeader {
 
@@ -191,7 +61,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -204,7 +74,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as T.Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -231,12 +101,16 @@ Page {
 
                 topMargin: SafeInsets.top
 
+                // The 'Save…' submenu applies to Android only. Submenu entries
+                // cannot be hidden declaratively, so remove it on other platforms.
+                Component.onCompleted: if (!flightRoutePage.isAndroid) headerMenuX.removeMenu(saveMenu)
+
                 MenuItem {
                     text: qsTr("View Library…")
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        stackView.push("FlightRouteLibrary.qml")
+                        Global.stackView.push("FlightRouteLibrary.qml")
                     }
                 }
 
@@ -262,14 +136,14 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        if (isIos) {
+                        if (flightRoutePage.isIos) {
                             Global.dialogLoader.active = false
                             Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
                                                               title: qsTr("Import files"),
                                                               text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
                                                               standardButtons: Dialog.Ok})
                             Global.dialogLoader.active = true
-                        } else if (isAndroid) {
+                        } else if (flightRoutePage.isAndroid) {
                             FileExchange.openFilePicker("")
                         } else {
                             importFileDialog.open()
@@ -304,7 +178,7 @@ Page {
                 }
 
                 AutoSizingMenu {
-                    title: isAndroidOrIos ? qsTr("Share…") : qsTr("Export…")
+                    title: flightRoutePage.isAndroidOrIos ? qsTr("Share…") : qsTr("Export…")
                     enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
@@ -316,7 +190,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "geojson", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -324,10 +198,10 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroid)
-                                toast.doToast(qsTr("Flight route shared"))
-                            else (!isIos)
-                                toast.doToast(qsTr("Flight route exported"))
+                            if (flightRoutePage.isAndroid)
+                                Global.toast.doToast(qsTr("Flight route shared"))
+                            else (!flightRoutePage.isIos)
+                                Global.toast.doToast(qsTr("Flight route exported"))
                         }
                     }
 
@@ -340,7 +214,7 @@ Page {
                             parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
+                                Global.toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
@@ -348,10 +222,108 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (isAndroid)
-                                toast.doToast(qsTr("Flight route shared"))
+                            if (flightRoutePage.isAndroid)
+                                Global.toast.doToast(qsTr("Flight route shared"))
                             else
-                                toast.doToast(qsTr("Flight route exported"))
+                                Global.toast.doToast(qsTr("Flight route exported"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to Garmin FPL file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", Navigator.flightRoute.suggestedFilename())
+                            if (errorString === "abort") {
+                                Global.toast.doToast(qsTr("Aborted"))
+                                return
+                            }
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                                return
+                            }
+                            if (flightRoutePage.isAndroid)
+                                Global.toast.doToast(qsTr("Flight route shared"))
+                            else
+                                Global.toast.doToast(qsTr("Flight route exported"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to MSFS PLN file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toPln(), "application/xml", "pln", Navigator.flightRoute.suggestedFilename())
+                            if (errorString === "abort") {
+                                Global.toast.doToast(qsTr("Aborted"))
+                                return
+                            }
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                                return
+                            }
+                            if (flightRoutePage.isAndroid)
+                                Global.toast.doToast(qsTr("Flight route shared"))
+                            else
+                                Global.toast.doToast(qsTr("Flight route exported"))
+                        }
+                    }
+                }
+
+                AutoSizingMenu {
+                    id: saveMenu
+                    title: qsTr("Save…")
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
+
+                    MenuItem {
+                        text: qsTr("… to GeoJSON file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "geojson", Navigator.flightRoute.suggestedFilename())
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to GPX file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", Navigator.flightRoute.suggestedFilename())
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to Garmin FPL file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", Navigator.flightRoute.suggestedFilename())
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to MSFS PLN file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            FileExchange.saveContent(Navigator.flightRoute.toPln(), "application/xml", "pln", Navigator.flightRoute.suggestedFilename())
                         }
                     }
                 }
@@ -373,7 +345,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
+                                Global.toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -390,7 +362,41 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
+                                Global.toast.doToast(qsTr("Flight route opened in other app"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… in Garmin FPL format")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+
+                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", "FlightRoute")
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                            } else
+                                Global.toast.doToast(qsTr("Flight route opened in other app"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… in MSFS PLN format")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+
+                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toPln(), "application/xml", "pln", "FlightRoute")
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                            } else
+                                Global.toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -408,12 +414,12 @@ Page {
                         if (flightPlanText !== "") {
                             var success = PlatformAdaptor.setClipboardText(flightPlanText)
                             if (success) {
-                                toast.doToast(qsTr("Flight plan copied to clipboard"))
+                                Global.toast.doToast(qsTr("Flight plan copied to clipboard"))
                             } else {
-                                toast.doToast(qsTr("Failed to copy flight plan"))
+                                Global.toast.doToast(qsTr("Failed to copy flight plan"))
                             }
                         } else {
-                            toast.doToast(qsTr("No flight route to copy"))
+                            Global.toast.doToast(qsTr("No flight route to copy"))
                         }
                     }
                 }
@@ -429,7 +435,7 @@ Page {
                         highlighted = false
                         if (Librarian.contains(Navigator.flightRoute)) {
                             Navigator.flightRoute.clear()
-                            toast.doToast(qsTr("Flight route cleared"))
+                            Global.toast.doToast(qsTr("Flight route cleared"))
                         } else
                             clearDialog.open()
                     }
@@ -443,7 +449,7 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         Navigator.flightRoute.reverse()
-                        toast.doToast(qsTr("Flight route reversed"))
+                        Global.toast.doToast(qsTr("Flight route reversed"))
                     }
                 }
 
@@ -461,8 +467,8 @@ Page {
         rightPadding: SafeInsets.right
 
         currentIndex: sv.currentIndex
-        TabButton { text: qsTr("Route") }
-        TabButton { text: qsTr("Wind") }
+        TabButton { text: qsTr("Route"); onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: qsTr("Wind"); onClicked: PlatformAdaptor.vibrateBrief() }
     }
 
     SwipeView{
@@ -497,53 +503,297 @@ Page {
                 text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
 
-            DecoratedScrollView {
-                anchors.fill: parent
+            DecoratedListView {
+                id: routeView
 
-                contentWidth: availableWidth
+                anchors.fill: parent
 
                 clip: true
 
-                ColumnLayout {
-                    id: co
-                    width: parent.width
+                // Index of the waypoint currently picked up for dragging, or -1
+                // while idle. Doubles as a guard that stops the list from flicking
+                // while a drag is in progress.
+                property int draggedIndex: -1
+                interactive: draggedIndex === -1
 
-                    Connections {
-                        target: Navigator.flightRoute
-                        function onWaypointsChanged() {
-                            co.createItems()
+                displaced: Transition {
+                    NumberAnimation { properties: "y"; duration: 150; easing.type: Easing.OutQuad }
+                }
+
+                model: DelegateModel {
+                    id: routeDelegateModel
+
+                    model: Navigator.flightRoute.waypoints
+
+                    delegate: Item {
+                        id: dragItem
+
+                        required property int index
+                        required property waypoint modelData
+
+                        width: routeView.width
+                        height: content.height
+
+                        // While a row is being dragged, slide it into whatever slot its
+                        // centre currently overlaps, so the other rows open a gap. Driven
+                        // by geometry (indexAt) rather than a DropArea: in this delegate the
+                        // DropArea does not reliably receive the drag-move events.
+                        function updateDrag() {
+                            if (!dragHandler.active) {
+                                return
+                            }
+                            let c = content.mapToItem(routeView.contentItem, content.width/2, content.height/2)
+                            let idx = routeView.indexAt(c.x, c.y)
+                            if (idx < 0) {
+                                idx = (c.y <= 0) ? 0 : routeView.count-1
+                            }
+                            let cur = dragItem.DelegateModel.itemsIndex
+                            if (idx !== cur) {
+                                routeDelegateModel.items.move(cur, idx)
+                            }
                         }
-                    }
 
-                    Component.onCompleted: co.createItems()
+                        // While dragging near the top or bottom edge of the viewport,
+                        // scroll the list so a waypoint can be moved across a route that is
+                        // longer than the screen. Speed ramps up towards the very edge.
+                        function autoScrollStep() {
+                            if (!dragHandler.active) {
+                                return
+                            }
+                            let margin = routeView.height*0.15
+                            let center = content.y + content.height/2
+                            let maxContentY = Math.max(0, routeView.contentHeight - routeView.height)
+                            if (maxContentY <= 0) {
+                                return
+                            }
+                            let step = 0
+                            if ((center < margin) && (routeView.contentY > 0)) {
+                                let pUp = Math.max(0, Math.min(1, (margin-center)/margin))
+                                step = -(3 + 12*pUp)
+                            } else if ((center > routeView.height-margin) && (routeView.contentY < maxContentY)) {
+                                let pDown = Math.max(0, Math.min(1, (center-(routeView.height-margin))/margin))
+                                step = 3 + 12*pDown
+                            }
+                            if (step !== 0) {
+                                routeView.contentY = Math.max(0, Math.min(maxContentY, routeView.contentY + step))
+                                dragItem.updateDrag()
+                            }
+                        }
 
-                    function createItems() {
-                        // Delete old text items
-                        let childCount = co.children.length;
-                        // Iterate through the children in reverse order
-                        for (let i = childCount - 1; i >= 0; i--) {
-                            // Check if the child is a valid QML item
-                            if (co.children[i] instanceof QtObject) {
-                                    // Destroy the child item
-                                    co.children[i].destroy();
+                        Rectangle {
+                            id: content
+
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: dragItem.width
+                            height: itemColumn.implicitHeight
+                            color: Global.pageBackgroundColor
+
+                            onYChanged: dragItem.updateDrag()
+
+                            // Drives edge auto-scrolling for the whole duration of a drag.
+                            Timer {
+                                running: dragHandler.active
+                                repeat: true
+                                interval: 16
+                                onTriggered: dragItem.autoScrollStep()
+                            }
+
+                            // While dragging, lift the row above the others with a drop
+                            // shadow and a slight shrink, so the sliding rows stay visible
+                            // at the left and right edges. Both are only active mid-drag.
+                            Behavior on scale { NumberAnimation { duration: 100 } }
+                            layer.enabled: dragHandler.active
+                            layer.effect: MultiEffect {
+                                shadowEnabled: true
+                                shadowColor: "#000000"
+                                shadowOpacity: 0.35
+                                shadowBlur: 0.7
+                                shadowVerticalOffset: 4
+                                blurMax: 24
+                            }
+
+                            // While dragging, detach the row from its slot and lift it
+                            // above the other delegates so it can float under the finger.
+                            states: State {
+                                when: dragHandler.active
+                                ParentChange { target: content; parent: routeView }
+                                AnchorChanges {
+                                    target: content
+                                    anchors.horizontalCenter: undefined
+                                    anchors.verticalCenter: undefined
+                                }
+                                PropertyChanges { content.scale: 0.95 }
+                            }
+
+                            Column {
+                                id: itemColumn
+
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+                                spacing: 0
+
+                                RowLayout {
+                                    width: itemColumn.width
+
+                                    WaypointDelegate {
+                                        Layout.fillWidth: true
+                                        waypoint: dragItem.modelData
+                                    }
+
+                                    ToolButton {
+                                        id: editButton
+
+                                        visible: dragItem.modelData.icon.indexOf("WP") !== -1
+                                        icon.source: "/icons/material/ic_mode_edit.svg"
+                                        onClicked: {
+                                            PlatformAdaptor.vibrateBrief()
+                                            wpEditor.waypoint = dragItem.modelData
+                                            wpEditor.index = dragItem.index
+                                            wpEditor.open()
+                                        }
+                                    }
+
+                                    // A drag handle. This must NOT be a Button: an
+                                    // AbstractButton grabs the pointer and the DragHandler
+                                    // inside it would never activate. A plain Item works.
+                                    Item {
+                                        id: dragHandle
+
+                                        implicitWidth: editButton.implicitWidth
+                                        implicitHeight: editButton.implicitHeight
+                                        Layout.alignment: Qt.AlignVCenter
+
+                                        Icon {
+                                            anchors.centerIn: parent
+                                            width: 24
+                                            height: 24
+                                            source: "/icons/material/ic_drag_handle.svg"
+                                        }
+
+                                        DragHandler {
+                                            id: dragHandler
+
+                                            target: content
+                                            xAxis.enabled: false
+                                            yAxis.enabled: true
+
+                                            onActiveChanged: {
+                                                if (active) {
+                                                    routeView.draggedIndex = dragItem.DelegateModel.itemsIndex
+                                                } else {
+                                                    let from = routeView.draggedIndex
+                                                    let to = dragItem.DelegateModel.itemsIndex
+                                                    routeView.draggedIndex = -1
+                                                    if ((from >= 0) && (from !== to)) {
+                                                        PlatformAdaptor.vibrateBrief()
+                                                        Navigator.flightRoute.move(from, to)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    ToolButton {
+                                        id: wpMenuTB
+
+                                        icon.source: "/icons/material/ic_more_horiz.svg"
+                                        onClicked: {
+                                            PlatformAdaptor.vibrateBrief()
+                                            wpMenu.open()
+                                        }
+
+                                        AutoSizingMenu {
+                                            id: wpMenu
+
+                                            Action {
+                                                text: qsTr("Move Up")
+
+                                                enabled: dragItem.index > 0
+                                                onTriggered: {
+                                                    PlatformAdaptor.vibrateBrief()
+                                                    wpMenu.close() // Necessary on some devices, or else menu will stay open
+
+                                                    Navigator.flightRoute.moveUp(dragItem.index)
+                                                }
+                                            }
+
+                                            Action {
+                                                text: qsTr("Move Down")
+
+                                                enabled: dragItem.index < Navigator.flightRoute.size-1
+                                                onTriggered: {
+                                                    PlatformAdaptor.vibrateBrief()
+                                                    wpMenu.close() // Necessary on some devices, or else menu will stay open
+
+                                                    Navigator.flightRoute.moveDown(dragItem.index)
+                                                }
+                                            }
+
+                                            Action {
+                                                text: qsTr("Remove")
+
+                                                onTriggered: {
+                                                    PlatformAdaptor.vibrateBrief()
+                                                    wpMenu.close() // Necessary on some devices, or else menu will stay open
+
+                                                    Navigator.flightRoute.removeWaypoint(dragItem.index)
+                                                }
+                                            }
+
+                                            Rectangle {
+                                                height: 1
+                                                Layout.fillWidth: true
+                                                color: Global.dividerColor
+                                            }
+
+                                            Action {
+                                                text: qsTr("Add to waypoint library")
+                                                enabled: {
+                                                    // Mention waypoints, in order to update
+                                                    WaypointLibrary.waypoints
+
+                                                    return (dragItem.modelData.category === "WP") && !WaypointLibrary.hasNearbyEntry(dragItem.modelData)
+                                                }
+
+                                                onTriggered: {
+                                                    PlatformAdaptor.vibrateBrief()
+                                                    wpMenu.close() // Necessary on some devices, or else menu will stay open
+
+                                                    WaypointLibrary.add(dragItem.modelData)
+                                                    Global.toast.doToast(qsTr("Added %1 to waypoint library.").arg(dragItem.modelData.extendedName))
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                                ItemDelegate {
+                                    width: itemColumn.width
+
+                                    visible: dragItem.index < Navigator.flightRoute.size-1
+                                    icon.source: "/icons/vertLine.svg"
+                                    enabled: false
+                                    text: {
+                                        // Mention units
+                                        Navigator.aircraft.horizontalDistanceUnit
+                                        Navigator.aircraft.fuelConsumptionUnit
+
+                                        // dragItem.index is transiently -1 while a delegate is
+                                        // being torn down, so guard against a missing leg.
+                                        let leg = Navigator.flightRoute.legs[dragItem.index]
+                                        if (leg === undefined)
+                                            return ""
+                                        return leg.description(Navigator.wind, Navigator.aircraft)
+                                    }
                                 }
                             }
-
-                        if (Navigator.flightRoute.size > 0) {
-                            // Create first waypointComponent
-                            waypointComponent.createObject(co, {waypoint: Navigator.flightRoute.waypoints[0], index: 0});
-
-                            // Create leg description items
-                            var legs = Navigator.flightRoute.legs
-                            var j
-                            for (j=0; j<legs.length; j++) {
-                                legComponent.createObject(co, {leg: legs[j]});
-                                waypointComponent.createObject(co, {waypoint: legs[j].endPoint, index: j+1});
-                            }
                         }
-                    }
-                } // ColumnLayout
 
+                    }
+                }
             }
 
         }
@@ -556,9 +806,9 @@ Page {
 
             GridLayout {
                 anchors.left: parent.left
-                anchors.leftMargin: font.pixelSize
+                anchors.leftMargin: flightRoutePage.font.pixelSize
                 anchors.right: parent.right
-                anchors.rightMargin: font.pixelSize
+                anchors.rightMargin: flightRoutePage.font.pixelSize
 
                 columns: 3
 
@@ -695,6 +945,15 @@ Page {
 
     }
 
+    // Lets the DemoRunner switch to the "Wind" tab when generating screenshots.
+    Connections {
+        target: DemoRunner
+
+        function onRequestShowWindTab() {
+            sv.currentIndex = 1
+        }
+    }
+
 
     footer: Footer {
         ColumnLayout {
@@ -755,6 +1014,7 @@ Page {
             id: waypointDelegate
 
             WordWrappingItemDelegate {
+                required property var model
                 text: model.modelData.twoLineTitle
                 icon.source: model.modelData.icon
 
@@ -791,15 +1051,16 @@ Page {
                 visible: textInput.displayText === ""
             }
 
-            MyTextField {
+            FilterField {
                 id: textInput
 
                 Layout.fillWidth: true
 
-                placeholderText: qsTr("Filter by Name")
-
                 focus: true
 
+                // Deliberately replaces FilterField's default Return handler:
+                // here Return must add the waypoint and close the dialog, not
+                // open the waypoint description that a click would bring up.
                 onAccepted: {
                     if (wpList.model.length > 0) {
                         PlatformAdaptor.vibrateBrief()
@@ -807,9 +1068,6 @@ Page {
                         flightRouteAddWPDialog.close()
                     }
                 }
-
-                // On iOS17, the property displayText sees many bounces.
-                onDisplayTextChanged: debounceTimer.restart()
             }
 
             Label {
@@ -833,14 +1091,7 @@ Page {
 
                 clip: true
 
-                // Debounce timer to update the property model only 200ms after the last change of textInput.displayText
-                Timer {
-                    id: debounceTimer
-                    interval: 200 // 200ms
-                    onTriggered: wpList.model = GeoMapProvider.filteredWaypoints(textInput.displayText)
-                }
-
-                model: GeoMapProvider.filteredWaypoints(textInput.displayText)
+                model: GeoMapProvider.filteredWaypoints(textInput.filter)
                 delegate: waypointDelegate
 
                 Label {
@@ -851,10 +1102,13 @@ Page {
                     horizontalAlignment: Text.AlignHCenter
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
-                    text: (textInput.text === "")
+                    text: (textInput.filter === "")
                           ? qsTr("<h3>Sorry!</h3><p>No waypoints available. Please make sure that an aviation map is installed.</p>")
                           : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter criteria.</p>")
-                    onLinkActivated: Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(link)
+                    }
                 }
 
             }
@@ -880,7 +1134,6 @@ Page {
         modal: true
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             let newWP = waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
@@ -900,13 +1153,11 @@ Page {
         text: qsTr("Once erased, the current flight route cannot be restored.")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
-            toast.doToast(qsTr("Flight route cleared"))
+            Global.toast.doToast(qsTr("Flight route cleared"))
         }
 
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             clearDialog.close()
         }
     }
@@ -916,8 +1167,9 @@ Page {
         anchors.fill: parent
 
         onLoaded: {
-            item.modal = true
-            item.open()
+            var dialog = item as Popup
+            dialog.modal = true
+            dialog.open()
         }
     }
 
@@ -951,8 +1203,6 @@ Page {
         property int index: -1 // Index of waypoint in flight route
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
-
             var newWP = waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes

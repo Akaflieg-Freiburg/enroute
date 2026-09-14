@@ -24,8 +24,8 @@ import QtLocation
 import QtPositioning
 import QtQml
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -243,7 +243,7 @@ Item {
                         target: null
 
                         // Work around https://bugreports.qt.io/browse/QTBUG-87815
-                        enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
+                        enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as T.Popup).opened)
 
                         onActiveTranslationChanged: function(delta) {
                             // Switching "Follow GPS" off is deliberately NOT done in onActiveChanged:
@@ -350,7 +350,7 @@ Item {
                     // PROPERTY "bearing"
                     //
 
-                    function onBearingChanged(bearing) {
+                    onBearingChanged: {
                         if (defaultValuesSet)
                             Global.mapBearing = bearing
                     }
@@ -411,7 +411,7 @@ Item {
                     // PROPERTY "zoomLevel"
                     //
 
-                    function onZoomLevelChanged(zoomLevel) {
+                    onZoomLevelChanged: {
                         if (defaultValuesSet)
                             Global.mapZoomLevel = zoomLevel
                     }
@@ -477,7 +477,10 @@ Item {
                                     qsTr("Choose <a href='xx'>Library/Maps and Data</a> to open the map management page.") + "</p>")
                         }
                         textFormat: Text.RichText
-                        onLinkActivated: stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                        onLinkActivated: {
+                            PlatformAdaptor.vibrateBrief()
+                            Global.stackView.push("../pages/DataManagerPage.qml")
+                        }
                     }
                 }
 
@@ -501,7 +504,7 @@ Item {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                drawer.open()
+                                Global.drawer.open()
                             }
                         }
 
@@ -560,8 +563,8 @@ Item {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                stackView.pop()
-                                stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+                                Global.stackView.pop()
+                                Global.stackView.push("../pages/TrafficReceiver.qml")
                             }
                         }
                     }
@@ -624,6 +627,7 @@ Item {
                             //styleColor: GlobalSettings.nightMode ? "black" : "white"
                             background: Pane { opacity: GlobalSettings.nightMode ? 0.3 : 0.8 }
                             onLinkActivated: {
+                                PlatformAdaptor.vibrateBrief()
                                 Global.dialogLoader.active = false
                                 Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
                                                                   text: GeoMapProvider.copyrightNotice,
@@ -668,6 +672,7 @@ Item {
                             icon.source: "/icons/NorthArrow.svg"
 
                             onClicked: {
+                                PlatformAdaptor.vibrateBrief()
                                 if (Global.mapBearingPolicyRect === MFM.NUp) {
                                     Global.mapBearingPolicy = MFM.TTUp
                                 } else if (Global.mapBearingPolicyRect === MFM.TTUp) {
@@ -782,7 +787,7 @@ Item {
                     target: null
 
                     // Work around https://bugreports.qt.io/browse/QTBUG-87815
-                    enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
+                    enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as T.Popup).opened)
 
                     onActiveTranslationChanged: (delta) => cl.SplitView.preferredHeight -= delta.y
 

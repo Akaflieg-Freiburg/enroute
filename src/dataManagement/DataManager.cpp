@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QDirIterator>
 #include <QGuiApplication>
 #include <QImage>
@@ -32,8 +33,10 @@
 
 #include "config.h"
 #include "dataManagement/DataManager.h"
+#include "fileFormats/CUB.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/MBTILES.h"
-#include "geomaps/OpenAir.h"
+#include "fileFormats/OpenAir.h"
 
 using namespace std::chrono_literals;
 using namespace Qt::Literals::StringLiterals;
@@ -191,13 +194,26 @@ QString DataManagement::DataManager::import(const QString& fileName, const QStri
 
 QString DataManagement::DataManager::importOpenAir(const QString& fileName, const QString& newName)
 {
-
-    auto path = m_dataDirectory + u"/Unsupported"_s;
-    auto newFileName = path + u"/"_s + newName;
-
     QStringList errors;
     QStringList warnings;
-    auto json = GeoMaps::openAir::parse(fileName, errors, warnings);
+    auto json = FileFormats::OpenAir::parse(fileName, errors, warnings);
+    return saveAirspaceJson(json, errors, newName);
+}
+
+
+QString DataManagement::DataManager::importCub(const QString& fileName, const QString& newName)
+{
+    QStringList errors;
+    QStringList warnings;
+    auto json = FileFormats::CUB::parse(fileName, errors, warnings);
+    return saveAirspaceJson(json, errors, newName);
+}
+
+
+QString DataManagement::DataManager::saveAirspaceJson(const QJsonDocument& json, const QStringList& errors, const QString& newName)
+{
+    auto path = m_dataDirectory + u"/Unsupported"_s;
+    auto newFileName = path + u"/"_s + newName;
 
     if (!errors.isEmpty())
     {
@@ -217,20 +233,24 @@ QString DataManagement::DataManager::importOpenAir(const QString& fileName, cons
         return tr("Unable to create directory '%1'.").arg(path);
     }
     newFileName = newFileName+u".geojson"_s;
-    QFile::remove(newFileName);
-    QFile file(newFileName);
-    if (file.open(QIODeviceBase::WriteOnly))
+
+    // Write atomically, under the same lock that the aviation data loader
+    // and the map downloader use for these files, so that a reader never
+    // sees a half-written file. A failed write leaves any previous file
+    // of the same name untouched.
+    QString error;
+    bool ok = false;
     {
-        file.write(json.toJson());
-        file.close();
-    }
-    if (file.error() != QFileDevice::NoError)
-    {
-        QFile::remove(newFileName);
-        updateDataItemListAndWhatsNew();
-        return tr("Error writing file '%1': %2.").arg(newFileName, file.errorString());
+        QLockFile lockFile(newFileName + u".lock"_s);
+        lockFile.lock();
+        ok = FileFormats::DataFileAbstract::saveFileAtomically(newFileName, json.toJson(), &error);
+        lockFile.unlock();
     }
     updateDataItemListAndWhatsNew();
+    if (!ok)
+    {
+        return tr("Error writing file '%1': %2.").arg(newFileName, error);
+    }
     return {};
 }
 
@@ -436,8 +456,17 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         {
             auto obj = map.toObject();
             auto mapFileName = obj.value(QStringLiteral("path")).toString();
-            auto localFileName = m_dataDirectory + u"/"_s + mapFileName;
-            auto mapUrlName = baseURL + u"/"_s + obj.value(QStringLiteral("path")).toString();
+
+            // The path comes from the server. Reject anything that would
+            // leave the data directory.
+            auto localFileName = QDir::cleanPath(m_dataDirectory + u"/"_s + mapFileName);
+            if (mapFileName.isEmpty() || !localFileName.startsWith(QDir::cleanPath(m_dataDirectory) + u"/"_s))
+            {
+                qWarning() << "Ignoring map with invalid path" << mapFileName;
+                continue;
+            }
+            auto mapUrlName = baseURL + u"/"_s + mapFileName;
+
             QUrl const mapUrl(mapUrlName);
             auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
             qint64 fileSize = 0;
@@ -498,7 +527,9 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     foreach(auto mapSet, dump)
     {
         m_mapSets.remove(mapSet);
+        mapSet->deleteLater();
     }
+
 
     // Update the whatsNew property
     auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();

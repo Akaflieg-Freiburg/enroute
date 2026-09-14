@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
+import QtQuick.Templates as T
 
 import akaflieg_freiburg.enroute
 
@@ -81,6 +82,6 @@ Item {
 
     Loader {
         id: wpDescriptionLoader
-        onLoaded: item.open()
+        onLoaded: (item as T.Popup).open()
     }
 }

@@ -18,9 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtPositioning
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 import "../items"
@@ -119,7 +118,7 @@ Page {
         // updated or uninstalled), the chart that is currently displayed might
         // have disappeared, or its raster image might have moved to a new
         // file. Reset or refresh the current chart accordingly.
-        function onDataChanged() {
+        function onVacsChanged() {
             if (Global.currentVAC.name === "")
                 return
             var freshVAC = VACLibrary.get(Global.currentVAC.name)

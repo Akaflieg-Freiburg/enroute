@@ -22,16 +22,34 @@ pragma Singleton
 
 import QtCore
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
 Item {
     id: global
 
+    // Objects from main.qml that are needed all over the user interface.
+    // They are set from main.qml when the objects have been created.
+    property ApplicationWindow appWindow
     property Loader dialogLoader
+    property DialogLoader textDialogLoader
     property Drawer drawer
-    property var toast
+    property StackView stackView
+    property Toast toast
+
+    // Open the manual page pageUrl (relative to the manual root). This uses
+    // the external browser where possible and an in-app viewer otherwise.
+    function openManual(pageUrl) {
+
+        if ((Qt.platform.os === "ios") ||
+                ((Qt.platform.os === "android") && (Qt.application.version < "6.7.0")))
+        {
+            stackView.push(Qt.resolvedUrl("../pages/Manual.qml"), {"fileName": pageUrl})
+            return
+        }
+        Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/"+pageUrl)
+    }
     property vac currentVAC
     property vac defaultVAC
 
@@ -217,11 +235,11 @@ Item {
         target: DemoRunner
 
         function onRequestFollowGPS(newVal) {
-            followGPS = newVal
+            global.followGPS = newVal
         }
 
         function onRequestMapBearingPolicy(newBearing) {
-            mapBearingPolicy = newBearing
+            global.mapBearingPolicy = newBearing
         }
     }
 

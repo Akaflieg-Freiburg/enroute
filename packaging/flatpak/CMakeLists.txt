@@ -7,6 +7,10 @@
 # Configure
 #
 
+# Version of the KDE runtime and the QtWebEngine base app. Used in the manifest
+# and by the helper targets below, so that both always agree.
+set(FLATPAK_RUNTIME_VERSION 6.9)
+
 configure_file(${APP_ID}.json.in ${APP_ID}.json @ONLY)
 
 # The runtime branch is maintained in the manifest template (see
@@ -58,12 +62,11 @@ add_custom_target(flatpak-publish
     COMMAND git clone --depth 1 --branch upstream git@github.com:flathub/de.akaflieg_freiburg.enroute.git
     COMMAND cp de.akaflieg_freiburg.enroute.json de.akaflieg_freiburg.enroute
     COMMAND cp ${CMAKE_SOURCE_DIR}/CHANGELOG.md de.akaflieg_freiburg.enroute
-    COMMAND cd de.akaflieg_freiburg.enroute
-    COMMAND git diff-index --quiet HEAD || git commit -am "New upstream release"
-    COMMAND git push
-    COMMAND gh pr create --title "New upstream release" --body "Please merge the following new upstream release"
-    COMMAND cd ..
+    # One shell invocation: with the Makefile generators every COMMAND runs in
+    # its own shell, so a separate "cd" would not carry over to the next line.
+    COMMAND sh -c "cd de.akaflieg_freiburg.enroute && (git diff-index --quiet HEAD || git commit -am 'New upstream release') && git push && gh pr create --title 'New upstream release' --body 'Please merge the following new upstream release'"
     COMMAND rm -rf de.akaflieg_freiburg.enroute
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Publishing flatpak"
+    VERBATIM
     )

@@ -99,23 +99,29 @@ GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QStringList& fields)
         }
     }
 
+    // Get Elevation. The field may be empty, in which case the waypoint has
+    // no altitude.
     double ele = NAN;
     {
-        const auto &eleString = fields[5];
-        bool ok = false;
-        if (eleString.endsWith(u"m"))
+        const auto eleString = fields[5].trimmed();
+        if (!eleString.isEmpty())
         {
-            ele = eleString.chopped(1).toDouble(&ok);
-        }
-        if (eleString.endsWith(u"ft"))
-        {
-            ele = eleString.chopped(2).toDouble(&ok) * 0.3048;
-        }
-        if (!ok)
-        {
-            return {};
+            bool ok = false;
+            if (eleString.endsWith(u"m"))
+            {
+                ele = eleString.chopped(1).toDouble(&ok);
+            }
+            else if (eleString.endsWith(u"ft"))
+            {
+                ele = eleString.chopped(2).toDouble(&ok) * 0.3048;
+            }
+            if (!ok || !std::isfinite(ele))
+            {
+                return {};
+            }
         }
     }
+
 
     // Get additional information
     QStringList notes;
@@ -156,7 +162,10 @@ FileFormats::CUP::CUP(const QString& fileName)
         return;
     }
 
-    int lineNumber = 0;
+    // The CSV reader has already consumed the header, which is line 1 of the
+    // file. Count from there, so that error messages name the line as it
+    // appears in the file.
+    int lineNumber = 1;
     foreach (auto& line, csv.lines())
     {
         lineNumber++;
@@ -164,7 +173,24 @@ FileFormats::CUP::CUP(const QString& fileName)
         {
             break;
         }
+
+        // Skip blank lines
+        bool blank = true;
+        for (const auto& field : line)
+        {
+            if (!field.trimmed().isEmpty())
+            {
+                blank = false;
+                break;
+            }
+        }
+        if (blank)
+        {
+            continue;
+        }
+
         auto waypoint = readWaypoint(line);
+
         if (!waypoint.isValid())
         {
             setError(QObject::tr("Error reading line %1 in the CUP file %2.", "FileFormats::CUP").arg(lineNumber).arg(fileName));

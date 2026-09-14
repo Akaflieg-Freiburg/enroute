@@ -75,7 +75,19 @@ public:
     */
     bool process(QHttpServerResponder* responder, const QStringList& pathElements);
 
+    /*! \brief Set base URL
+    *
+    *  The TileJSON served by process() contains the URL template for the
+    *  tiles, which includes the base URL. Call this method when the tile
+    *  server changes its port, so that the TileJSON stays correct.
+    *
+    *  @param baseURLName The name of the URL under which the tile server
+    *  allows access to this tile, see the constructor.
+    */
+    void setBaseURL(const QString& baseURLName);
+
 private:
+
     Q_DISABLE_COPY_MOVE(TileHandler)
 
     // List of MBTiles

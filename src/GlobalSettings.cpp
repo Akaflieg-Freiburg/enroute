@@ -32,9 +32,8 @@
 GlobalSettings::GlobalSettings(QObject *parent)
     : QObject(parent)
 {
-    QCoreApplication::processEvents();
-
     // Save some values
+
     m_settings.setValue(QStringLiteral("lastVersion"), ENROUTE_VERSION_STRING);
 
     // Read values
@@ -67,6 +66,26 @@ auto GlobalSettings::airspaceAltitudeLimit() const -> Units::Distance
         aspAlttLimit = Units::Distance::fromFT( qInf() );
     }
     return aspAlttLimit;
+}
+
+
+auto GlobalSettings::autoFlightDetection() const -> bool
+{
+    // Single choke point for the flight log's background activity. Every path
+    // in FlightLog.cpp that starts the Android foreground service, requests
+    // "always" location on iOS or feeds the flight detector reads this getter.
+    // Builds without the flight log must never do any of that, even if a test
+    // build has persisted the setting as true.
+    if (!flightLogEnabled()) {
+        return false;
+    }
+    return m_settings.value(QStringLiteral("FlightLog/autoFlightDetection"), false).toBool();
+}
+
+
+auto GlobalSettings::flightLogEnabled() const -> bool
+{
+    return FLIGHTLOG != 0;
 }
 
 
@@ -223,6 +242,20 @@ void GlobalSettings::setNightMode(bool newNightMode)
 }
 
 
+void GlobalSettings::setAutoFlightDetection(bool newAutoFlightDetection)
+{
+    // Without the flight log, the setting is read-only false. The stored value
+    // is left alone, so a developer switching back to a FLIGHTLOG build keeps it.
+    if (!flightLogEnabled() || (newAutoFlightDetection == autoFlightDetection()))
+    {
+        return;
+    }
+
+    m_settings.setValue(QStringLiteral("FlightLog/autoFlightDetection"), newAutoFlightDetection);
+    emit autoFlightDetectionChanged();
+}
+
+
 void GlobalSettings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver)
 {
     m_settings.setValue(QStringLiteral("positioningByTrafficDataReceiver"), newPositioningByTrafficDataReceiver);
@@ -238,6 +271,28 @@ void GlobalSettings::setShowAltitudeAGL(bool newShowAltitudeAGL)
     }
     m_settings.setValue(QStringLiteral("showAltitudeAGL"), newShowAltitudeAGL);
     emit showAltitudeAGLChanged();
+}
+
+
+void GlobalSettings::setShowCurrentFlightTrace(bool newShowCurrentFlightTrace)
+{
+    if (newShowCurrentFlightTrace == showCurrentFlightTrace())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("FlightLog/showCurrentFlightTrace"), newShowCurrentFlightTrace);
+    emit showCurrentFlightTraceChanged();
+}
+
+
+void GlobalSettings::setTrackRecording(bool newTrackRecording)
+{
+    if (newTrackRecording == trackRecording())
+    {
+        return;
+    }
+    m_settings.setValue(QStringLiteral("FlightLog/trackRecording"), newTrackRecording);
+    emit trackRecordingChanged();
 }
 
 

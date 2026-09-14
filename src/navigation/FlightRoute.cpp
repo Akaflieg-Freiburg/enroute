@@ -23,6 +23,7 @@
 
 #include "FlightRoute.h"
 #include "GlobalObject.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/FPL.h"
 #include "fileFormats/PLN.h"
 #include "geomaps/GeoJSON.h"
@@ -122,7 +123,9 @@ auto Navigation::FlightRoute::summary() const -> QString
     for(const auto& _leg : m_legs.value())
     {
         dist += _leg.distance();
-        if (dist.toM() > 100)
+        // Legs shorter than Leg::minLegLength have no course and hence no ETE
+        // or fuel; skip those individually, wherever they occur in the route.
+        if (_leg.distance().toM() > 100)
         {
             time += _leg.ETE(wind, aircraft);
             fuel += _leg.Fuel(wind, aircraft);
@@ -440,6 +443,21 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
     return {};
 }
 
+void Navigation::FlightRoute::move(int from, int to)
+{
+    QVector<GeoMaps::Waypoint> newWaypoints = m_waypoints.value();
+
+    // Paranoid safety checks
+    if ((from < 0) || (from >= newWaypoints.size()) ||
+        (to < 0) || (to >= newWaypoints.size()) || (from == to))
+    {
+        return;
+    }
+
+    newWaypoints.move(from, to);
+    m_waypoints = newWaypoints;
+}
+
 void Navigation::FlightRoute::moveDown(int idx)
 {
     QVector<GeoMaps::Waypoint> newWaypoints = m_waypoints.value();
@@ -511,20 +529,11 @@ void Navigation::FlightRoute::reverse()
 
 auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
 {
-    QFile file(fileName);
-    auto success = file.open(QIODevice::WriteOnly);
-    if (!success)
+    QString error;
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileName, toGeoJSON(), &error))
     {
-        return tr("Unable to open the file '%1' for writing.").arg(fileName);
+        return tr("Unable to write to file '%1': %2").arg(fileName, error);
     }
-    auto numBytesWritten = file.write(toGeoJSON());
-    if (numBytesWritten == -1)
-    {
-        file.close();
-        QFile::remove(fileName);
-        return tr("Unable to write to file '%1'.").arg(fileName);
-    }
-    file.close();
     return {};
 }
 

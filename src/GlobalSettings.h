@@ -108,8 +108,23 @@ public:
      */
     Q_PROPERTY(Units::Distance airspaceAltitudeLimit_max MEMBER airspaceAltitudeLimit_max CONSTANT)
 
+    /*! \brief Automatic flight detection enabled for FlightLog start and landing time
+     *
+     *  Always false in builds without the flight log, see flightLogEnabled.
+     */
+    Q_PROPERTY(bool autoFlightDetection READ autoFlightDetection WRITE setAutoFlightDetection NOTIFY autoFlightDetectionChanged)
+
     /*! \brief Should we expand notam abbreviations */
     Q_PROPERTY(bool expandNotamAbbreviations READ expandNotamAbbreviations WRITE setExpandNotamAbbreviations NOTIFY expandNotamAbbreviationsChanged)
+
+    /*! \brief True if this build includes the flight log
+     *
+     *  Set by the CMake option FLIGHTLOG. While the flight log is work in
+     *  progress, release builds leave the option off: the flight log menu entry
+     *  is hidden, and autoFlightDetection always reads as false, so the Android
+     *  foreground service and background location on iOS are never started.
+     */
+    Q_PROPERTY(bool flightLogEnabled READ flightLogEnabled CONSTANT)
 
     /*! \brief Font size
      *
@@ -156,6 +171,12 @@ public:
     /*! \brief Show Altitude AGL */
     Q_PROPERTY(bool showAltitudeAGL READ showAltitudeAGL WRITE setShowAltitudeAGL NOTIFY showAltitudeAGLChanged)
 
+    /*! \brief Show current flight trace on map */
+    Q_PROPERTY(bool showCurrentFlightTrace READ showCurrentFlightTrace WRITE setShowCurrentFlightTrace NOTIFY showCurrentFlightTraceChanged)
+
+    /*! \brief Flight track recording enabled */
+    Q_PROPERTY(bool trackRecording READ trackRecording WRITE setTrackRecording NOTIFY trackRecordingChanged)
+
     /*! \brief Voice notifications that should be played
      *
      *  This property is an "or" of the entries of Notifications::Notification::Importance. It determines
@@ -188,9 +209,21 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @returns Property autoFlightDetection
+     */
+    [[nodiscard]] auto autoFlightDetection() const -> bool;
+
+    /*! \brief Getter function for property of the same name
+     *
      * @returns Property expandNotamAbbreviations
      */
     [[nodiscard]] bool expandNotamAbbreviations() const { return m_settings.value(QStringLiteral("expandNotamAbbreviations"), false).toBool(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property flightLogEnabled
+     */
+    [[nodiscard]] auto flightLogEnabled() const -> bool;
 
     /*! \brief Getter function for property with the same name
      *
@@ -272,6 +305,18 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @returns Property showCurrentFlightTrace
+     */
+    [[nodiscard]] auto showCurrentFlightTrace() const -> bool { return m_settings.value(QStringLiteral("FlightLog/showCurrentFlightTrace"), true).toBool(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property trackRecording
+     */
+    [[nodiscard]] auto trackRecording() const -> bool { return m_settings.value(QStringLiteral("FlightLog/trackRecording"), true).toBool(); }
+
+    /*! \brief Getter function for property of the same name
+     *
      * @returns Property voiceNotifications
      */
     [[nodiscard]] auto voiceNotifications() const -> uint
@@ -309,6 +354,12 @@ public:
      * @param newAirspaceAltitudeLimit Property airspaceAltitudeLimit
      */
     void setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newAutoFlightDetection Property autoFlightDetection
+     */
+    void setAutoFlightDetection(bool newAutoFlightDetection);
 
     /*! \brief Setter function for property of the same name
      *
@@ -378,6 +429,18 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * @param newShowCurrentFlightTrace Property showCurrentFlightTrace
+     */
+    void setShowCurrentFlightTrace(bool newShowCurrentFlightTrace);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newTrackRecording Property trackRecording
+     */
+    void setTrackRecording(bool newTrackRecording);
+
+    /*! \brief Setter function for property of the same name
+     *
      * @param newVoiceNotifications Property voiceNotifications
      */
     void setVoiceNotifications(uint newVoiceNotifications);
@@ -399,6 +462,9 @@ signals:
 
     /*! \brief Notifier signal */
     void airspaceAltitudeLimitChanged();
+
+    /*! \brief Notifier signal */
+    void autoFlightDetectionChanged();
 
     /*! \brief Notifier signal */
     void expandNotamAbbreviationsChanged();
@@ -429,6 +495,12 @@ signals:
 
     /*! \brief Notifier signal */
     void showAltitudeAGLChanged();
+
+    /*! \brief Notifier signal */
+    void showCurrentFlightTraceChanged();
+
+    /*! \brief Notifier signal */
+    void trackRecordingChanged();
 
     /*! \brief Notifier signal */
     void voiceNotificationsChanged();

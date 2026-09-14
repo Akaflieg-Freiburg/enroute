@@ -20,7 +20,8 @@
 
 import QtQml
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -34,7 +35,6 @@ Page {
 
     title: qsTr("Traffic Data Receiver")
 
-    required property var appWindow
 
 
     header: PageHeader {
@@ -54,7 +54,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -67,7 +67,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as T.Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -82,7 +82,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("forward.html#traffic-infopage")
+                Global.openManual("forward.html#traffic-infopage")
             }
         }
     }
@@ -539,7 +539,7 @@ Page {
                 Layout.columnSpan: 3
                 clip: true
 
-                model: trafficObserver.traffic
+                model: trafficObserver.traffic // qmllint disable unresolved-type
                 delegate: trafficDelegate
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -577,7 +577,10 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
-                onClicked: trafficReceiverPage.appWindow.openManual("forward.html#senseandavoid")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    Global.openManual("forward.html#senseandavoid")
+                }
             }
 
             WordWrappingItemDelegate {
@@ -586,7 +589,10 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a flight simulator…")
-                onClicked: trafficReceiverPage.appWindow.openManual("forward.html#simulator-tutorial")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    Global.openManual("forward.html#simulator-tutorial")
+                }
             }
         }
 
@@ -611,6 +617,7 @@ Page {
                 enabled: !connectTimer.running
                 visible: !TrafficDataProvider.receivingHeartbeat
                 onClicked: {
+                    PlatformAdaptor.vibrateBrief()
                     TrafficDataProvider.disconnectFromTrafficReceiver()
                     disconnectTimer.running = true;
                     connectTimer.running = true;
@@ -635,7 +642,7 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    stackView.push("ConnectionManager.qml", {"appWindow": view})
+                    Global.stackView.push("ConnectionManager.qml")
                 }
             }
         }

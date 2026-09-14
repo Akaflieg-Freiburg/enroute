@@ -23,6 +23,7 @@
 #include <QGuiApplication>
 #include <QIcon>
 #include <QQmlApplicationEngine>
+#include <QStandardPaths>
 #include <QQmlContext>
 #include <QQmlProperty>
 #include <QQuickItem>
@@ -30,6 +31,7 @@
 #include <QQuickWindow>
 #include <QSettings>
 #include <QTranslator>
+#include <cstdlib>
 
 #if __has_include (<QtWebView/QtWebView>)
 #include <QtWebView/QtWebView>
@@ -86,6 +88,14 @@ auto main(int argc, char *argv[]) -> int
 #endif
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
     QGuiApplication app(argc, argv);
+
+    // The smoke test (see DemoRunner::runSmokeTest) must not touch the user's
+    // data. Enable the QStandardPaths test mode before anything computes a
+    // data path.
+    if (app.arguments().contains(u"--smoke-test"_s))
+    {
+        QStandardPaths::setTestModeEnabled(true);
+    }
 #else
     QApplication app(argc, argv);
     QGuiApplication::setDesktopFileName(QStringLiteral("de.akaflieg_freiburg.enroute"));
@@ -158,6 +168,11 @@ auto main(int argc, char *argv[]) -> int
         QCoreApplication::translate("main",
                                     "Run simulator and generate screenshots for the manual"));
     parser.addOption(manualScreenshotOption);
+    QCommandLineOption const smokeTestOption(
+        u"smoke-test"_s,
+        QCoreApplication::translate("main",
+                                    "Open every page and dialog once, then quit. The exit code is 1 if the QML engine reported problems. Runs with QStandardPaths test mode, so user data is untouched."));
+    parser.addOption(smokeTestOption);
     QCommandLineOption const extractStringOption(
         u"string"_s,
         QCoreApplication::translate(
@@ -219,15 +234,35 @@ auto main(int argc, char *argv[]) -> int
     auto* engine = new QQmlApplicationEngine();
     engine->addImportPath(u":/"_s);
 
-#if defined(Q_OS_IOS)
-    engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), QCoreApplication::applicationDirPath()+"/enrouteManual/");
-#else
-    engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
-#endif
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
+    if (parser.isSet(smokeTestOption))
+    {
+        // Must happen before the load, so that start-up problems are recorded
+        GlobalObject::demoRunner()->setEngine(engine);
+    }
     engine->load(u"qrc:/qml/main.qml"_s);
 #if defined(Q_OS_ANDROID)
     QNativeInterface::QAndroidApplication::hideSplashScreen(1);
+
+    // Guard against rendering after the Android Surface is destroyed.
+    //
+    // android.app.background_running = true keeps the Qt event loop running
+    // after the app is backgrounded, which is required for flight recording.
+    // However, signals fired in the background can trigger QML repaints. With
+    // the "basic" render loop (QSG_RENDER_LOOP=basic), Qt's platform plugin
+    // already suspends rendering on onPause() before the Surface is destroyed,
+    // so there is no race condition. We additionally hide the QQuickWindow on
+    // Qt::ApplicationSuspended to prevent any queued repaints from executing
+    // against the destroyed Surface.
+    {
+        auto* window = qobject_cast<QQuickWindow*>(engine->rootObjects().value(0));
+        if (window != nullptr) {
+            QObject::connect(qGuiApp, &QGuiApplication::applicationStateChanged,
+                             window, [window](Qt::ApplicationState state) {
+                                 window->setVisible(state != Qt::ApplicationSuspended);
+                             });
+        }
+    }
 #endif
 
     if (parser.isSet(googlePlayScreenshotOption))
@@ -250,6 +285,10 @@ auto main(int argc, char *argv[]) -> int
         GlobalObject::demoRunner()->setEngine(engine);
         QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::generateManualScreenshots);
     }
+    if (parser.isSet(smokeTestOption))
+    {
+        QTimer::singleShot(2s, GlobalObject::demoRunner(), &DemoRunner::runSmokeTest);
+    }
 
     // Load GUI and enter event loop
     auto result = QGuiApplication::exec();
@@ -262,7 +301,20 @@ auto main(int argc, char *argv[]) -> int
     delete engine;
     GlobalObject::clear();
 
-    return result;
+    // Terminate without running the destructor of QGuiApplication.
+    //
+    // Qt resolves host names on a thread pool inside QHostInfoLookupManager,
+    // and blocks in QThreadPool::waitForDone() when QCoreApplication is
+    // destroyed. A running getaddrinfo() cannot be interrupted, so with a dead
+    // network the app would linger for the full resolver timeout after the
+    // window is gone. See https://github.com/Akaflieg-Freiburg/enroute/issues/544
+    //
+    // At this point all state has been written to disk: the aboutToQuit
+    // handlers have run inside exec(), and GlobalObject::clear() has destructed
+    // GlobalSettings along with its QSettings member. The lock file and local
+    // socket of KDSingleApplication are left behind, which is harmless; the
+    // next start detects and removes them, exactly as it does after a crash.
+    std::_Exit(result);
 }
 
 

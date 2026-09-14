@@ -20,12 +20,14 @@
 
 #pragma once
 
+#include <QElapsedTimer>
 #include <QPointer>
 #include <QTcpSocket>
 #include <string>
 #include <vector>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
+#include "OgnFilter.h"  // From enrouteOGN library
 #include "OgnParser.h"  // From enrouteOGN library
 
 using namespace Qt::Literals::StringLiterals;
@@ -140,17 +142,6 @@ public slots:
      */
     void disconnectFromTrafficReceiver() override;
 
-    /*! \brief Send position report to APRS-IS server
-     *
-     *  This method sends a position report with the given parameters to the APRS-IS server.
-     *
-     *  @param coordinate The geographic coordinate (latitude, longitude, altitude).
-     *  @param course The course in degrees.
-     *  @param speed The speed in knots.
-     *  @param altitude The altitude in meters.
-     */
-    void sendPosition(const QGeoCoordinate& coordinate, double course, double speed, double altitude);
-
 private slots:
 
     // Read lines from the socket's text stream and passes the string on to
@@ -171,14 +162,20 @@ private:
     // emits "disconnected", which would otherwise reconnect immediately.
     bool m_connectionDesired = false;
 
+    // Time of the last connection attempt. Automatic reconnects (from the
+    // "disconnected" signal and from the watchdog verifyConnection()) wait at
+    // least reconnectBackoff after an attempt before they try again, so that a
+    // slow host lookup or handshake is not aborted and an unreachable server is
+    // not hammered once per second.
+    QElapsedTimer m_lastConnectionAttempt;
+    static constexpr qint64 reconnectBackoffMs = 10'000;
+
     QString m_lineBuffer;         // Reusable buffer for reading lines
     Ogn::OgnMessage m_ognMessage; // Reusable message structure
+    Ogn::OgnFilter m_ognFilter;   // Deduplication and out-of-order packet filter
 
     // our own OGN APRS CallSign, like "ENR12345"
     QString m_callSign;
-
-    // our own AircraftType
-    TrafficFactor_Abstract::Type m_aircraftType = {TrafficFactor_Abstract::Aircraft};
 
     // Radius around the approximate position for which traffic data is requested.
     static constexpr Units::Distance m_receiveRadius = Units::Distance::fromNM(20.0);

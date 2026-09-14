@@ -20,7 +20,7 @@
 
 import QtQml
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
@@ -67,6 +67,9 @@ TextField {
         icon.width: font.pixelSize
         icon.height: font.pixelSize
 
-        onClicked: textField.clear()
+        onClicked: {
+            PlatformAdaptor.vibrateBrief()
+            textField.clear()
+        }
     }
 }

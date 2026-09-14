@@ -37,7 +37,10 @@ QString Traffic::TrafficDataProvider::addDataSource_BluetoothLowEnergy(const Tra
         auto* dataSourceBTLowEnergy = qobject_cast<TrafficDataSource_BluetoothLowEnergy*>(_dataSource);
         if (dataSourceBTLowEnergy != nullptr)
         {
-            if (connectionInfo.bluetoothDeviceInfo().address() == dataSourceBTLowEnergy->sourceInfo().address())
+            // Compare through ConnectionInfo: iOS never exposes Bluetooth
+            // addresses, so comparing address() would flag every device as a
+            // duplicate of the first one added.
+            if (connectionInfo.sameConnectionAs(dataSourceBTLowEnergy->connectionInfo()))
             {
                 return tr("A connection to this device already exists.");
             }

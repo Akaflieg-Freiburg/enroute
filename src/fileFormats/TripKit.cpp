@@ -19,7 +19,9 @@
  ***************************************************************************/
 
 #include <QDir>
+#include <QBuffer>
 #include <QFile>
+#include <QFileInfo>
 #include <QGeoCoordinate>
 #include <QImage>
 #include <QJsonDocument>
@@ -74,19 +76,24 @@ GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizety
         return {};
     }
 
-    auto newFileName = u"%1/%2.webp"_s.arg(directoryPath, entry.name);
+    // The chart name comes from the trip kit and must not be trusted as a
+    // file name: a name such as "../../x" would write outside directoryPath.
+    auto safeName = GeoMaps::VAC::safeFileName(entry.name);
+    if (safeName.isEmpty())
+    {
+        return {};
+    }
+    auto newFileName = u"%1/%2.webp"_s.arg(directoryPath, safeName);
+    if (QFileInfo(newFileName).absolutePath() != QDir(directoryPath).absolutePath())
+    {
+        return {};
+    }
+    // Encode into memory if needed, then write atomically: an interrupted
+    // import must not leave a truncated chart behind.
+    QByteArray webpData;
     if (entry.ending == u"webp"_s)
     {
-        QFile out(newFileName);
-        if (!out.open(QIODeviceBase::WriteOnly))
-        {
-            return {};
-        }
-        if (out.write(imageData) != imageData.size())
-        {
-            return {};
-        }
-        out.close();
+        webpData = imageData;
     }
     else
     {
@@ -95,10 +102,16 @@ GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizety
         {
             return {};
         }
-        if (!image.save(newFileName))
+        QBuffer buffer(&webpData);
+        buffer.open(QIODeviceBase::WriteOnly);
+        if (!image.save(&buffer, "WEBP"))
         {
             return {};
         }
+    }
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(newFileName, webpData))
+    {
+        return {};
     }
 
     GeoMaps::VAC vac;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,14 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick.Controls
+import QtQuick.Controls.Material
+
+import akaflieg_freiburg.enroute
+
 
 RoundButton {
-    height: 3*font.pixelSize
-    width: 3*font.pixelSize
-
-    visible: enabled
+    height: 4*font.pixelSize
+    width: 4*font.pixelSize
 
     icon.height: 2*font.pixelSize
     icon.width: 2*font.pixelSize
+
+    Material.background: GlobalSettings.nightMode ? undefined : "white"
 }

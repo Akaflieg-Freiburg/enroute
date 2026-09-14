@@ -2,30 +2,45 @@
 
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.akaflieg_freiburg.enroute"
     android:versionName="${PROJECT_VERSION}"
     android:versionCode="${PROJECT_VERSION_CODE}0"
     android:installLocation="auto">
-  <uses-sdk
-    android:minSdkVersion="28"
-    android:targetSdkVersion="35"/>
-  
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
   <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30"/>
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30"/>
-  <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+
   <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+  <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
+  <!-- Foreground service permissions for the flight log; empty unless the
+       CMake option FLIGHTLOG is set, see src/CMakeLists.txt -->
+${FLIGHTLOG_ANDROID_PERMISSIONS}
+
+  <!--
+  The permissions above imply required hardware features, which would hide
+  the app from devices without them. None of the hardware is required: the
+  app works with traffic receivers as position source on devices without
+  GPS, and Bluetooth, Wi-Fi and USB serial receivers are all optional.
+  -->
+  <uses-feature android:name="android.hardware.location" android:required="false"/>
+  <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
+  <uses-feature android:name="android.hardware.location.network" android:required="false"/>
+  <uses-feature android:name="android.hardware.bluetooth" android:required="false"/>
+  <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
+  <uses-feature android:name="android.hardware.wifi" android:required="false"/>
+  <uses-feature android:name="android.hardware.usb.host" android:required="false"/>
+  <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
   <supports-screens
+
     android:anyDensity="true"
     android:largeScreens="true"
     android:normalScreens="true"
@@ -88,6 +103,14 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <data android:mimeType="application/octet-stream"/>
       </intent-filter>
+      <!-- Android's built-in MIME table maps the extension ".cub" to the
+      Gaussian-cube chemistry format, so file managers send CUB airspace files
+      with this MIME type -->
+      <intent-filter>
+        <action android:name="android.intent.action.SEND"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="chemical/x-gaussian-cube"/>
+      </intent-filter>
       <intent-filter>
         <action android:name="android.intent.action.SEND"/>
         <category android:name="android.intent.category.DEFAULT"/>
@@ -119,6 +142,14 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <data android:mimeType="application/octet-stream"/>
+      </intent-filter>
+      <!-- Android's built-in MIME table maps the extension ".cub" to the
+      Gaussian-cube chemistry format, so file managers send CUB airspace files
+      with this MIME type -->
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="chemical/x-gaussian-cube"/>
       </intent-filter>
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>
@@ -198,12 +229,16 @@
       <!-- Splash screen -->
 	
       <!-- Background running -->
-      <!-- 
-      Warning: changing this value to true may cause unexpected crashes if the
-      application still try to draw after
-      "applicationStateChanged(Qt::ApplicationSuspended)" signal is sent! 
+      <!--
+      background_running is required for flight log and IGC file recording to
+      work when the app is in the background. It keeps the Qt event loop running
+      after the app is suspended, so C++ objects can continue to record GPS data.
+      The associated crash risk (rendering after the Android Surface is destroyed)
+      is mitigated in main.cpp by hiding the QQuickWindow on
+      Qt::ApplicationSuspended. The value is "true" only in builds with the
+      CMake option FLIGHTLOG set, see src/CMakeLists.txt.
       -->
-      <meta-data android:name="android.app.background_running" android:value="false"/>
+      <meta-data android:name="android.app.background_running" android:value="${FLIGHTLOG_ANDROID_BACKGROUND_RUNNING}"/>
       <!-- Background running -->
       
       <!-- auto screen scale factor -->
@@ -228,7 +263,11 @@
     </activity>
 
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
-    
+
+    <!-- Foreground service for the flight log; empty unless the CMake option
+         FLIGHTLOG is set, see src/CMakeLists.txt -->
+    ${FLIGHTLOG_ANDROID_SERVICE}
+
     <!-- NOTE: android:authorities must match AUTHORITY in de/akaflieg_freiburg/enroute/IntentLauncher.java -->
     <provider
       android:name="androidx.core.content.FileProvider"

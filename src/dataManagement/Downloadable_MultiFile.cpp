@@ -548,7 +548,9 @@ bool DataManagement::Downloadable_MultiFile::rawAdd(DataManagement::Downloadable
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize);
 
     // Wire up: directly forward error messages and file content changed signals
+    connect(map, &DataManagement::Downloadable_Abstract::aboutToChangeFile, this, &DataManagement::Downloadable_MultiFile::aboutToChangeFile);
     connect(map, &DataManagement::Downloadable_Abstract::error, this, &DataManagement::Downloadable_MultiFile::error);
+
     connect(map, &DataManagement::Downloadable_Abstract::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::fileContentChanged);
 
     // Copy downloadable metadata into this

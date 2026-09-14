@@ -1,0 +1,11 @@
+Enroute je nekomerční navigační aplikace, kterou napsali nadšenci létání pro piloty VFR. Je navržena tak, aby byla jednoduchá, funkční a elegantní, a zbaví vás stresu z příštího letu.
+
+Enroute nabízí pohyblivou mapu ve stylu oficiálních map ICAO. Vyznačena je vaše aktuální poloha i dráha letu na příštích pět minut, stejně jako vaše plánovaná trať. Jednoduchým klepnutím získáte všechny informace o vzdušných prostorech, letištích a navigačních zařízeních – včetně frekvencí, kódů, nadmořských výšek a údajů o drahách.
+
+Naše letecké mapy jsou zdarma, aktualizují se každý týden a pokrývají velkou část světa. Vybrané mapy zobrazují letištní okruhy a letové postupy pro řízené okrsky.
+
+Enroute podporuje základní plánování letu. Umožňuje rychle a snadno vypočítat vzdálenosti, tratě a kurzy. Poskytuje odhad doby letu a spotřeby paliva. Pokud se počasí zhorší, aplikace vám ukáže nejbližší letiště vhodná k přistání, včetně vzdáleností, směrů, údajů o drahách a frekvencí.
+
+Aplikace neobsahuje žádnou reklamu ani komerční verzi „pro“. Nešpehujeme vás. Nemusíte se registrovat k žádnému „členství“. A neobtěžujeme vás e-maily. Vaši adresu nemáme a ani ji nechceme!
+
+Upozornění: Tuto bezplatnou aplikaci zveřejňujeme v naději, že může být užitečná jako pomůcka pro obezřetnou navigaci. Neposkytujeme na ni žádnou záruku. Nemusí fungovat podle očekávání. Data nepocházejí z oficiálních zdrojů a mohou být neúplná, zastaralá nebo jinak nesprávná. Tato aplikace nenahrazuje řádnou přípravu letu ani dobré pilotní dovednosti. Spoléhat se na ni jako na hlavní prostředek navigace je nejspíše nezákonné, nepochybně hloupé a potenciálně sebevražedné.

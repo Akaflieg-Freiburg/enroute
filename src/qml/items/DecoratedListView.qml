@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
@@ -104,9 +104,28 @@ ListView {
     Keys.onEnterPressed: (event) => listView.activateCurrentItem(event)
 
     function activateCurrentItem(event) {
-        if (listView.currentItem && listView.currentItem.clicked) {
-            listView.currentItem.clicked()
+        if (listView.currentItem && listView.currentItem.clicked) { // qmllint disable missing-property
+            listView.currentItem.clicked() // qmllint disable missing-property
             event.accepted = true
+        }
+    }
+
+    // Activates the first entry, as if it had been clicked. FilterField calls
+    // this when Return is pressed in a filter field, so that typing a few
+    // letters and hitting Return opens the top hit. Delegates opt in through
+    // the same clicked() contract as the key handling above; for lists whose
+    // delegates have no clicked(), this does nothing.
+    function activateFirstItem() {
+        if (listView.count === 0) {
+            return
+        }
+        listView.positionViewAtBeginning()
+        listView.currentIndex = 0
+        // The delegate for index 0 may not exist yet after a filter change.
+        listView.forceLayout()
+        var item = listView.itemAtIndex(0)
+        if (item && item.clicked) { // qmllint disable missing-property
+            item.clicked() // qmllint disable missing-property
         }
     }
 

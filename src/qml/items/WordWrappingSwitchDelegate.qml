@@ -19,13 +19,17 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
+
+import akaflieg_freiburg.enroute
 
 // This is a version of SwitchDelegate that does word wrapping in the text
 
 SwitchDelegate {
     id: itemDelegate
+
+    onClicked: PlatformAdaptor.vibrateBrief()
 
     contentItem: RowLayout {
         Button {

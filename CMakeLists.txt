@@ -8,13 +8,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(ExternalProject)
 option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
+option(FLIGHTLOG "Build the flight log UI and its background-location declarations (work in progress)" OFF)
+
+# Qt for iOS ships one fat static library per module, with an arm64 slice for the device
+# and an x86_64 slice for the simulator; there is no arm64 simulator slice, so a simulator
+# build has to target x86_64 (which the simulator runs under Rosetta on Apple Silicon).
+# Left alone, Qt's toolchain file pins CMAKE_OSX_ARCHITECTURES to arm64 and the link then
+# fails with "building for 'iOS-simulator', but linking in object file built for 'iOS'".
+# This has to happen before project(), which is where the toolchain file is read.
+if(CMAKE_OSX_SYSROOT MATCHES "iphonesimulator" AND NOT CMAKE_OSX_ARCHITECTURES)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE STRING "Build architectures for iOS" FORCE)
+endif()
 
 
 #
 # Project data
 #
 
-project(enroute VERSION 3.4.1)
+project(enroute VERSION 3.5.0)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
@@ -38,8 +49,18 @@ include(GNUInstallDirs)
 # Qt Setup
 #
 
-find_package(Qt6 6.9 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location LocationPrivate Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
+# LocationPrivate is a deliberate dependency (required by QMapLibre); silence the
+# private-module warning that Qt would otherwise print on every configure.
+set(QT_NO_PRIVATE_MODULE_WARNING ON)
+
+find_package(Qt6 6.9 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location LocationPrivate Positioning Quick QuickControls2 Sql Svg TextToSpeech REQUIRED)
 set(QT_VERSION ${Qt6Core_VERSION})
+
+# main.cpp uses QApplication on the desktop platforms and QGuiApplication on
+# the mobile ones, so Qt Widgets is only needed on the desktop.
+if(NOT (CMAKE_SYSTEM_NAME STREQUAL "Android" OR CMAKE_SYSTEM_NAME STREQUAL "iOS"))
+    find_package(Qt6 6.9 COMPONENTS Widgets REQUIRED)
+endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
     find_package(Qt6 6.9 COMPONENTS Sensors SerialPort WebView REQUIRED)
@@ -55,7 +76,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    find_package(Qt6 6.9 COMPONENTS DBus SerialPort Widgets REQUIRED)
+    find_package(Qt6 6.9 COMPONENTS DBus SerialPort REQUIRED)
     find_package(Qt6 6.9 COMPONENTS WebView)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(LIBUDEV REQUIRED libudev)

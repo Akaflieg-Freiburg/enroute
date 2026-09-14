@@ -1,0 +1,10 @@
+{
+    "Id": "usb-serial-for-android",
+    "Name": "usb-serial-for-android",
+    "Description": "Android USB host serial driver library, used by the Android build of this app",
+    "Homepage": "https://github.com/mik3y/usb-serial-for-android",
+    "License": "MIT License",
+    "LicenseId": "MIT",
+    "LicenseFile": "MIT License",
+    "Copyright": "Copyright 2011-2013 Google Inc., Copyright 2013 mike wakerly"
+}

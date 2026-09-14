@@ -82,17 +82,16 @@ auto Platform::FileExchange::viewContent(const QByteArray & /*content*/,
 
 void Platform::FileExchange::handleFileUrlReceived(const QUrl &url)
 {
-    QString myUrl = url.toString();
-
-    //Remove the "file://" Prefix
-    myUrl.remove(0, 7);
-    // … remove "file://" from Url
-    // … then check if File exists
-    QFileInfo const fileInfo = QFileInfo(myUrl);
-    if(fileInfo.exists()) {
-        Platform::FileExchange_Abstract::processFileOpenRequest(myUrl, {});
-    } else {
-        //TODO: Missing translation
-        emit GlobalObject::platformAdaptor()->error(tr("Could not find file ") + myUrl);
+    // Decode the URL properly. Merely stripping the scheme leaves paths with
+    // spaces or umlauts percent-encoded, and those files are then not found.
+    QString const path = url.isLocalFile() ? url.toLocalFile() : url.toString();
+    if (QFileInfo::exists(path))
+    {
+        Platform::FileExchange_Abstract::processFileOpenRequest(path, {});
+    }
+    else
+    {
+        emit GlobalObject::platformAdaptor()->error(tr("Could not find file %1").arg(path));
     }
 }
+

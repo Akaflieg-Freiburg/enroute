@@ -19,11 +19,13 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QDebug>
 #include <QJsonArray>
 #include <QTimer>
 #include <chrono>
 
 #include "config.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "navigation/Navigator.h"
 #include "notam/NOTAMProvider.h"
 #include "positioning/PositionProvider.h"
@@ -55,6 +57,14 @@ void NOTAM::NOTAMProvider::deferredInitialization()
         {
             inputStream >> m_readNotamNumbers;
             inputStream >> newNotamLists;
+            if (inputStream.status() != QDataStream::Ok)
+            {
+                // Truncated or damaged cache: start empty rather than with
+                // partially read data.
+                qWarning() << "NOTAMProvider: discarding damaged cache file" << m_stdFileName;
+                m_readNotamNumbers.clear();
+                newNotamLists.clear();
+            }
         }
     }
     m_notamLists = cleaned(newNotamLists);
@@ -254,9 +264,14 @@ void NOTAM::NOTAMProvider::downloadFinished()
         auto data = networkReply->readAll();
         networkReply->deleteLater();
 
+        // Accept only a well-formed NOTAM response. Anything else (an error
+        // object, HTML from an intermediary) is treated like a network error,
+        // so that it is not cached as "no NOTAMs in this area".
         auto jsonDoc = QJsonDocument::fromJson(data);
-        if (jsonDoc.isNull())
+        if (!jsonDoc.isObject() || !jsonDoc.object().value(u"items"_s).isArray())
         {
+            qWarning() << "NOTAMProvider: unexpected response, retrying in 5 minutes";
+            QTimer::singleShot(5min, this, &NOTAMProvider::updateData);
             continue;
         }
         NOTAMList const notamList(jsonDoc, region, &cancelledNotams);
@@ -320,14 +335,21 @@ bool NOTAM::NOTAMProvider::hasDataForPosition(const QGeoCoordinate& position, bo
 
 void NOTAM::NOTAMProvider::save() const
 {
-    auto outputFile = QFile(m_stdFileName);
-    if (outputFile.open(QIODevice::WriteOnly))
+    // Serialise first, then write atomically, so that an interrupted write
+    // cannot leave a truncated cache behind.
+    QByteArray data;
     {
-        QDataStream outputStream(&outputFile);
+        QDataStream outputStream(&data, QIODeviceBase::WriteOnly);
         outputStream << QStringLiteral(GIT_COMMIT);
         outputStream << m_readNotamNumbers;
         outputStream << m_notamLists.value();
+        if (outputStream.status() != QDataStream::Ok)
+        {
+            qWarning() << "NOTAMProvider::save: serialization failed for" << m_stdFileName;
+            return;
+        }
     }
+    (void)FileFormats::DataFileAbstract::saveFileAtomically(m_stdFileName, data);
 }
 
 void NOTAM::NOTAMProvider::startRequest(const QGeoCoordinate& coordinate)
@@ -345,11 +367,12 @@ void NOTAM::NOTAMProvider::startRequest(const QGeoCoordinate& coordinate)
     }
 
     const QGeoCoordinate coordinateRounded( qRound(coordinate.latitude()), qRound(coordinate.longitude()) );
+    // The proxy merges all FAA result pages into one response and ignores any
+    // paging parameters, so none are sent.
     auto urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/notam.php?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
-                     "locationRadius=%3&"
-                     "pageSize=1000"_s
+                     "locationRadius=%3"_s
                          .arg(coordinateRounded.longitude())
                          .arg(coordinateRounded.latitude())
                          .arg( qRound(requestRadius.toNM()) );

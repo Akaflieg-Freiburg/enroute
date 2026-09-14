@@ -293,6 +293,18 @@ namespace Navigation
          */
         Q_INVOKABLE QString load(const QString& fileName);
 
+        /*! \brief Move a waypoint from one position to another
+         *
+         * Moves the waypoint at index 'from' to index 'to', shifting the
+         * intervening waypoints. If either index is out of range or if the two
+         * indices are equal, this method does nothing.
+         *
+         * @param from Index of the waypoint to move
+         *
+         * @param to Index the waypoint should have after the move
+         */
+        Q_INVOKABLE void move(int from, int to);
+
         /*! \brief Move waypoint one position down in the list of waypoints
          *
          * @param idx Index of the waypoint
@@ -371,6 +383,26 @@ namespace Navigation
          * @returns QByteArray containing GPX data describing the flight route
          */
         [[nodiscard]] Q_INVOKABLE QByteArray toGpx() const;
+
+        /*! \brief Exports to route to Garmin FPL
+         *
+         * This method serialises the current flight route as a Garmin FPL
+         * document. The document conforms to the specification outlined
+         * [here](https://www8.garmin.com/xmlschemas/FlightPlanv1.xsd)
+         *
+         * @returns QByteArray containing FPL data describing the flight route
+         */
+        [[nodiscard]] Q_INVOKABLE QByteArray toFpl() const;
+
+        /*! \brief Exports to route to MSFS PLN
+         *
+         * This method serialises the current flight route as an MSFS PLN
+         * document. The document conforms to the specification outlined
+         * [here](https://docs.flightsimulator.com/html/Content_Configuration/Flights_And_Missions/Flight_Plan_Definitions.htm)
+         *
+         * @returns QByteArray containing PLN data describing the flight route
+         */
+        [[nodiscard]] Q_INVOKABLE QByteArray toPln() const;
 
         /*! \brief Exports to route to VFR Flight Plan Format.
          *

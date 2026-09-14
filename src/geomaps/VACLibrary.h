@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QFile>
+#include <QProperty>
 #include <QStandardPaths>
 #include <QTimer>
 
@@ -64,17 +65,17 @@ public:
     //
 
     /*! \brief True if the library contains manually imported charts. */
-    Q_PROPERTY(bool hasManuallyImported READ hasManuallyImported NOTIFY dataChanged)
+    Q_PROPERTY(bool hasManuallyImported READ hasManuallyImported BINDABLE bindableHasManuallyImported NOTIFY hasManuallyImportedChanged)
 
     /*! \brief True if library is empty. */
-    Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY dataChanged)
+    Q_PROPERTY(bool isEmpty READ isEmpty BINDABLE bindableIsEmpty NOTIFY isEmptyChanged)
 
     /*! \brief List of all VACs installed
      *
      * This property holds the list of all installed VACs, sorted alphabetically
      * by name.
      */
-    Q_PROPERTY(QList<GeoMaps::VAC> vacs READ vacs NOTIFY dataChanged)
+    Q_PROPERTY(QList<GeoMaps::VAC> vacs READ vacs BINDABLE bindableVacs NOTIFY vacsChanged)
 
 
     //
@@ -85,19 +86,37 @@ public:
      *
      * @returns Property hasManuallyImported
      */
-    [[nodiscard]] bool hasManuallyImported() const { return !m_vacs.isEmpty(); }
+    [[nodiscard]] bool hasManuallyImported() const { return m_hasManuallyImported.value(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property hasManuallyImported
+     */
+    [[nodiscard]] QBindable<bool> bindableHasManuallyImported() const { return &m_hasManuallyImported; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property isEmpty
      */
-    [[nodiscard]] bool isEmpty() const { return m_vacs.isEmpty() && m_collectionVacs.isEmpty(); }
+    [[nodiscard]] bool isEmpty() const { return m_isEmpty.value(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property isEmpty
+     */
+    [[nodiscard]] QBindable<bool> bindableIsEmpty() const { return &m_isEmpty; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property vacs
      */
-    [[nodiscard]] QList<GeoMaps::VAC> vacs();
+    [[nodiscard]] QList<GeoMaps::VAC> vacs() const { return m_sortedVacs.value(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property vacs
+     */
+    [[nodiscard]] QBindable<QList<GeoMaps::VAC>> bindableVacs() const { return &m_sortedVacs; }
 
 
     //
@@ -197,7 +216,13 @@ public:
 
 signals:
     /*! \brief Notifier signal */
-    void dataChanged();
+    void hasManuallyImportedChanged();
+
+    /*! \brief Notifier signal */
+    void isEmptyChanged();
+
+    /*! \brief Notifier signal */
+    void vacsChanged();
 
     /*! \brief Progress report when importing a trip kit.
      *
@@ -213,7 +238,7 @@ private:
 
     // This method cleans the VAC directory. It deletes all VAC from m_vacs that
     // have no raster image files. It looks for unmanaged raster image files and
-    // either imports them or deletes them.
+    // either imports them or moves them to the subdirectory "unrecognised".
     void janitor();
 
     // This method re-reads the chart index from all VAC collection files
@@ -221,7 +246,7 @@ private:
     // deletes stale entries from the extraction cache.
     void updateCollections();
 
-    // This method saves m_vacs to m_dataFile.
+    // This method saves m_vacs to m_dataFileName, atomically.
     void save();
 
     // This method returns the absolute path of a given VAC. Needed for iOS
@@ -229,11 +254,22 @@ private:
     QString absolutePathForVac(const GeoMaps::VAC&);
     QString absolutePathForVac(const QString& name);
 
-    QVector<GeoMaps::VAC> m_vacs;
-    QVector<GeoMaps::VAC> m_collectionVacs;
+    // Source data: manually imported charts and charts from VAC collections.
+    // These are bindable so that the derived properties below update through
+    // automatic dependency tracking. Mutations must follow the rules for
+    // bindable properties: modify a local copy, then assign it back in a
+    // single write (see "Qt Bindable Properties" in the Qt documentation).
+    QProperty<QVector<GeoMaps::VAC>> m_vacs;
+    QProperty<QVector<GeoMaps::VAC>> m_collectionVacs;
+
+    // Derived properties, computed through bindings set up in the constructor
+    Q_OBJECT_BINDABLE_PROPERTY(GeoMaps::VACLibrary, QVector<GeoMaps::VAC>, m_sortedVacs, &GeoMaps::VACLibrary::vacsChanged)
+    Q_OBJECT_BINDABLE_PROPERTY(GeoMaps::VACLibrary, bool, m_isEmpty, &GeoMaps::VACLibrary::isEmptyChanged)
+    Q_OBJECT_BINDABLE_PROPERTY(GeoMaps::VACLibrary, bool, m_hasManuallyImported, &GeoMaps::VACLibrary::hasManuallyImportedChanged)
+
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC"_s};
     QString m_cacheDirectory {QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + u"/VAC"_s};
-    QFile m_dataFile {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC.data"_s};
+    QString m_dataFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/VAC.data"_s};
 
     // Compresses multiple change notifications from DataManager into a single
     // call to updateCollections()

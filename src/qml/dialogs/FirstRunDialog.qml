@@ -18,9 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtCore
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
@@ -58,7 +56,10 @@ CenteringDialog {
 
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
 
             function accept() {
@@ -92,7 +93,10 @@ CenteringDialog {
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
 
             function accept() {
@@ -117,6 +121,52 @@ CenteringDialog {
 
             property string title: qsTr("Download Maps")
 
+            // All map sets covering the current position. Accessing
+            // DataManager.mapSets.downloadables makes this binding re-evaluate
+            // when the list of available maps arrives after the position fix.
+            readonly property var mapSets4Location: {
+                if (DataManager.mapSets.downloadables.length === 0) // qmllint disable unresolved-type
+                    return []
+                return DataManager.mapSets.downloadables4Location(PositionProvider.lastValidCoordinate)
+            }
+
+            // Map sets that contain an aviation map. These are what the app needs
+            // to work, and they are downloaded automatically.
+            readonly property var recommendedMapSets: sv.mapSets4Location.filter(set => sv.hasAviationMap(set))
+
+            // Remaining map sets covering the current position, e.g. raster charts
+            // such as 'Switzerland ICAO'. These are offered, but not downloaded
+            // automatically.
+            readonly property var otherMapSets: sv.mapSets4Location.filter(set => !sv.hasAviationMap(set))
+
+            // Ensures that the automatic download is triggered only once, so that
+            // a download cancelled by the user is not restarted.
+            property bool autoDownloadStarted: false
+
+            // Map sets are assembled file by file while maps.json is parsed, and
+            // recommendedMapSets changes on every step. Defer the download until
+            // control returns to the event loop, when all sets are complete.
+            onRecommendedMapSetsChanged: Qt.callLater(sv.startAutoDownload)
+
+            function hasAviationMap(mapSet) : bool {
+                const parts = mapSet.downloadables // qmllint disable unresolved-type
+                for (let i = 0; i < parts.length; i++)
+                    if (parts[i].contentType === Downloadable_Abstract.AviationMap)
+                        return true
+                return false
+            }
+
+            function startAutoDownload() {
+                if (sv.autoDownloadStarted || (sv.recommendedMapSets.length === 0))
+                    return
+                sv.autoDownloadStarted = true
+                for (let i = 0; i < sv.recommendedMapSets.length; i++) {
+                    const mapSet = sv.recommendedMapSets[i]
+                    if (!mapSet.hasFile && !mapSet.downloading)
+                        mapSet.startDownload()
+                }
+            }
+
             ColumnLayout {
                 id: cl
 
@@ -134,11 +184,13 @@ CenteringDialog {
                             {
                                 if (PositionProvider.positionInfo.isValid())
                                 {
-                                    if (lv.model.length === 0)
+                                    if (sv.mapSets4Location.length === 0)
                                         result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
-                                    if (lv.model.length === 1)
-                                        result += qsTr("Based on your location, we reckon that the following map might be relevant for you. Click on the map to start the download, then click on 'Done' to close this dialog.")
-                                    if (lv.model.length > 1)
+                                    else if (sv.recommendedMapSets.length === 1)
+                                        result += qsTr("Based on your location, we are downloading the following map for you. Click on 'Done' to close this dialog. The download continues in the background.")
+                                    else if (sv.recommendedMapSets.length > 1)
+                                        result += qsTr("Based on your location, we are downloading the following maps for you. Click on 'Done' to close this dialog. The download continues in the background.")
+                                    else
                                         result += qsTr("Based on your location, we reckon that the following maps might be relevant for you. Click on any map to start the download, then click on 'Done' to close this dialog.")
                                 }
                                 else
@@ -152,15 +204,16 @@ CenteringDialog {
                             }
                         }
 
-                        if (Global.locationPermission.status === Qt.PermissionStatus.Denied)
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Undetermined)
                         {
                             result += "<strong>"+qsTr("Please grant location permissions, so we can suggest maps to download.")+"</strong>"
                         }
 
-                        if (Global.locationPermission.status === Qt.PermissionStatus.Undetermined)
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Denied)
                         {
                             result += "<strong>"+qsTr("We're unable to suggest maps to download because the location permission was denied.")+"</strong>"
                         }
+
 
                         result += "</p>"
 
@@ -174,21 +227,21 @@ CenteringDialog {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
                     color: Global.dividerColor
-                    visible: PositionProvider.receivingPositionInfo
+                    visible: recommendedList.visible
                 }
 
                 DecoratedListView {
-                    id: lv
+                    id: recommendedList
 
                     Layout.preferredHeight: contentHeight
                     Layout.fillWidth: true
 
                     flickableDirection: Flickable.HorizontalFlick
 
-                    visible: PositionProvider.receivingPositionInfo
+                    visible: PositionProvider.receivingPositionInfo && (sv.recommendedMapSets.length > 0)
 
                     clip: true
-                    model: DataManager.mapSets.downloadables4Location(PositionProvider.lastValidCoordinate)
+                    model: sv.recommendedMapSets
                     delegate: MapSet {}
                 }
 
@@ -196,7 +249,47 @@ CenteringDialog {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
                     color: Global.dividerColor
-                    visible: PositionProvider.receivingPositionInfo
+                    visible: recommendedList.visible
+                }
+
+                Label {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: implicitHeight
+                    visible: otherList.visible && (sv.recommendedMapSets.length > 0)
+                    text: "<p>"
+                          + qsTr("The following additional maps are available for your region. They are not required. Click on a map to start the download.")
+                          + "</p>"
+                    textFormat: Text.RichText
+                    wrapMode: Text.Wrap
+                }
+
+                Rectangle {
+                    Layout.preferredHeight: 1
+                    Layout.fillWidth: true
+                    color: Global.dividerColor
+                    visible: otherList.visible
+                }
+
+                DecoratedListView {
+                    id: otherList
+
+                    Layout.preferredHeight: contentHeight
+                    Layout.fillWidth: true
+
+                    flickableDirection: Flickable.HorizontalFlick
+
+                    visible: PositionProvider.receivingPositionInfo && (sv.otherMapSets.length > 0)
+
+                    clip: true
+                    model: sv.otherMapSets
+                    delegate: MapSet {}
+                }
+
+                Rectangle {
+                    Layout.preferredHeight: 1
+                    Layout.fillWidth: true
+                    color: Global.dividerColor
+                    visible: otherList.visible
                 }
 
                 Label {
@@ -214,7 +307,10 @@ CenteringDialog {
             function accept() {
             }
 
-            Component.onCompleted: Global.locationPermission.request()
+            Component.onCompleted: {
+                Global.locationPermission.request()
+                Qt.callLater(sv.startAutoDownload)
+            }
 
         }
     }
@@ -223,7 +319,8 @@ CenteringDialog {
     closePolicy: Popup.NoAutoClose
     modal: true
 
-    title: stack.currentItem ? stack.currentItem.title : ""
+    // The pages of the stack are plain items that carry a title and an accept()
+    title: stack.currentItem ? stack.currentItem.title : "" // qmllint disable missing-property
 
     StackView {
         id: stack
@@ -264,7 +361,7 @@ CenteringDialog {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stack.currentItem.accept()
+                stack.currentItem.accept() // qmllint disable missing-property
                 if (stack.depth > 1)
                     stack.pop()
                 else

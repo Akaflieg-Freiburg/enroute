@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -41,12 +43,13 @@ CenteringDialog {
 
         ItemDelegate {
             id: idel
+            required property var modelData
             text: modelData
             icon.source: "/icons/material/ic_directions.svg"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                finalFileName = modelData
+                dlg.finalFileName = modelData
                 dlg.close()
                 overwriteDialog.open()
             }
@@ -88,7 +91,9 @@ CenteringDialog {
             Layout.preferredHeight: contentHeight
 
             clip: true
-            model: Librarian.entries(Librarian.Routes)
+            // The name that is being typed doubles as a filter, so that the
+            // list narrows down to the entries that would be overwritten.
+            model: Librarian.entries(Librarian.Routes, fileName.displayText)
 
             delegate: fileDelegate
         }
@@ -101,16 +106,14 @@ CenteringDialog {
     }
 
     onRejected: {
-        PlatformAdaptor.vibrateBrief()
         dlg.close()
     }
 
     onAccepted: {
-        PlatformAdaptor.vibrateBrief()
         if (fileName.text === "")
             return
-        finalFileName = fileName.text
-        if (Librarian.exists(Librarian.Routes, finalFileName))
+        dlg.finalFileName = fileName.text
+        if (Librarian.exists(Librarian.Routes, dlg.finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()
@@ -122,12 +125,12 @@ CenteringDialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = Navigator.flightRoute.save(Librarian.fullPath(Librarian.Routes, finalFileName))
+        var errorString = Navigator.flightRoute.save(Librarian.fullPath(Librarian.Routes, dlg.finalFileName))
         if (errorString !== "") {
             fileError.text = errorString
             fileError.open()
         } else
-            toast.doToast(qsTr("Flight route %1 saved").arg(finalFileName))
+            Global.toast.doToast(qsTr("Flight route %1 saved").arg(dlg.finalFileName))
     }
 
     LongTextDialog {
@@ -143,15 +146,13 @@ CenteringDialog {
         title: qsTr("Overwrite Flight Route?")
         standardButtons: Dialog.No | Dialog.Yes
 
-        text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
+        text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(dlg.finalFileName)
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             dlg.saveToLibrary()
         }
 
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             overwriteDialog.close()
             dlg.open()
         }

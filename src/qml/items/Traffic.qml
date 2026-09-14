@@ -56,6 +56,8 @@ MapQuickItem {
     }
 
     sourceItem: Item {
+        id: trafficSymbol
+
         // Does this traffic have a meaningful heading to point at?
         readonly property bool hasHeading:
                traffic1MapItem.trafficInfo.type !== TrafficFactor_Abstract.Balloon
@@ -96,7 +98,10 @@ MapQuickItem {
             animate: traffic1MapItem.trafficInfo.animate
             pixelPerTenKM: traffic1MapItem.pixelPer10km
             groundSpeedInMetersPerSecond: traffic1MapItem.trafficPositionInfo.groundSpeed().toMPS()
-            visible: (groundSpeedInMetersPerSecond > 5) && traffic1MapItem.trafficTrueTrackValid
+            // Gate on hasHeading, not only on a valid track: the parent item is
+            // not rotated for balloons and static obstacles, so a bar drawn for
+            // them would always point straight up the screen.
+            visible: trafficSymbol.hasHeading && (groundSpeedInMetersPerSecond > 5)
         }
 
         Image {

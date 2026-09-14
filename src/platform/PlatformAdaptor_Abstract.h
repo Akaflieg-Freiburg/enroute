@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QGeoCoordinate>
+#include <QMarginsF>
 #include <QQmlEngine>
 #include <QQuickItem>
 
@@ -62,6 +63,37 @@ public:
     explicit PlatformAdaptor_Abstract(QObject* parent = nullptr);
 
     ~PlatformAdaptor_Abstract() override = default;
+
+
+    //
+    // Properties
+    //
+
+    /*! \brief Safe-area insets of the application window (Android only)
+     *
+     *  On Android, this property holds the safe-area insets of the
+     *  application window, in device-independent pixels: the union of the
+     *  system bars, the display cutout and the virtual keyboard, as reported
+     *  by the Android window system. The GUI uses these values instead of
+     *  Qt's SafeArea margins, which are unreliable on Android in
+     *  split-screen mode and do not handle the virtual keyboard
+     *  consistently.
+     *
+     *  On all other platforms, this property is a zero margin and unused;
+     *  the GUI reads Qt's SafeArea attached property there.
+     */
+    Q_PROPERTY(QMarginsF safeInsets READ safeInsets NOTIFY safeInsetsChanged)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property safeInsets
+     */
+    [[nodiscard]] virtual QMarginsF safeInsets() const { return {}; }
 
 
     //
@@ -137,6 +169,12 @@ public:
      */
     Q_INVOKABLE virtual void setupInputMethodEventFilter(QQuickItem* item) { Q_UNUSED(item) }
 
+    /*! \brief Returns the application version and adds git commit hash, if it's not the main branch
+     *
+     * @returns Version String
+     */
+    Q_INVOKABLE virtual QString versionNameForDisplay();
+
     /*! \brief Information about the system, in HTML format
      *
      * @returns Info string
@@ -194,6 +232,9 @@ public slots:
 
 
 signals:
+    /*! \brief Notifier signal */
+    void safeInsetsChanged();
+
     /*! \brief Emitted when an error occurs
      *
      *  This signal is emitted when an error occurs. The GUI will show the

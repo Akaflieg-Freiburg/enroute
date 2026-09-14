@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtWebView
 
 import akaflieg_freiburg.enroute
@@ -47,7 +47,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -58,7 +58,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: backButton.left
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as T.Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -74,6 +74,7 @@ Page {
 
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked: {
+                PlatformAdaptor.vibrateBrief()
                 webView.goBack()
             }
 
@@ -89,6 +90,7 @@ Page {
 
             icon.source: "/icons/material/ic_arrow_forward.svg"
             onClicked: {
+                PlatformAdaptor.vibrateBrief()
                 webView.goForward()
             }
 
@@ -102,7 +104,7 @@ Page {
         anchors.fill: parent
         anchors.bottomMargin: SafeInsets.bottom
 
-        url: "file://" + manual_location + "/" + pg.fileName
+        url: "file://" + Librarian.manualLocation + "/" + pg.fileName
 
         settings.allowFileAccess: true
     }
@@ -113,8 +115,8 @@ Page {
             if (webView.canGoBack) {
                 webView.goBack()
             } else {
-                if (stackView.depth > 1)
-                    stackView.pop()
+                if (Global.stackView.depth > 1)
+                    Global.stackView.pop()
             }
             event.accepted = true
         }

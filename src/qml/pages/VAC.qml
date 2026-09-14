@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -29,8 +29,6 @@ import "../items"
 Page {
     id: pg
 
-    required property var dialogLoader
-    required property var stackView
 
     title: qsTr("Visual Approach Charts")
 
@@ -52,7 +50,7 @@ Page {
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
                 Global.currentVAC = VACLibrary.materialize(model.modelData)
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
     }
@@ -75,7 +73,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                pg.stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -111,23 +109,23 @@ Page {
     ColumnLayout {
         anchors.fill: parent
 
-        Item {
-            Layout.preferredHeight: textInput.font.pixelSize/4.0
-        }
 
-        MyTextField {
+        FilterField {
             id: textInput
+
+            // Return opens the top hit.
+            listView: vacList
 
             Layout.fillWidth: true
             Layout.leftMargin: font.pixelSize/2.0
             Layout.rightMargin: font.pixelSize/2.0
 
             focus: true
-
-            placeholderText: qsTr("Filter by Name")
         }
 
         DecoratedListView {
+            id: vacList
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.bottomMargin: SafeInsets.bottom
@@ -137,7 +135,7 @@ Page {
                 // Mention downloadable in order to get updates
                 VACLibrary.vacs
 
-                return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate, textInput.displayText)
+                return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate, textInput.filter)
             }
             delegate: approachChartItem
         }
@@ -152,15 +150,20 @@ Page {
         anchors.topMargin: font.pixelSize
 
         background: Rectangle {color: Global.pageBackgroundColor}
-        visible: VACLibrary.isEmpty
+        visible: VACLibrary.isEmpty || (vacList.count === 0)
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment : Text.AlignVCenter
         textFormat: Text.RichText
         wrapMode: Text.Wrap
 
-        text: Global.withLinkColor("<h3>"+ qsTr("Sorry!") + "</h3><p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.")+"</p>")
-        onLinkActivated: openManual("forward.html#vac-tutorial")
+        text: VACLibrary.isEmpty
+              ? Global.withLinkColor("<h3>"+ qsTr("Sorry!") + "</h3><p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.")+"</p>")
+              : qsTr("<h3>Sorry!</h3><p>No approach charts match your filter.</p>")
+        onLinkActivated: {
+            PlatformAdaptor.vibrateBrief()
+            Global.openManual("forward.html#vac-tutorial")
+        }
 
     }
 

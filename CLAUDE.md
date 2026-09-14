@@ -15,6 +15,9 @@ cmake --build build/claude
 cmake --build build/claude --target all_qmllint   # lint all QML (resolves project modules)
 # NOTE: this project has no test target — `ctest` reports 0 tests. Verify via build +
 # qmllint (and, if needed, by launching the app).
+# The flight log (src/flightlog, FlightLogPage.qml) is work in progress and hidden in
+# default builds. Add -DFLIGHTLOG=ON to the configure line to work on it. The option is
+# cached in build/claude, so pass -DFLIGHTLOG=OFF/ON explicitly when the state matters.
 
 ## Layout
 src/        C++ (QObject-derived types marked QML_ELEMENT, module URI "akaflieg_freiburg.enroute")

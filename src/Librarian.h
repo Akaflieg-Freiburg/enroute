@@ -27,6 +27,7 @@
 
 #include "GlobalObject.h"
 #include "navigation/Aircraft.h"
+#include "navigation/FlightRoute.h"
 #include "units/ByteSize.h"
 
 
@@ -40,6 +41,10 @@ class Librarian : public QObject {
     Q_OBJECT
     QML_ELEMENT
     QML_SINGLETON
+
+
+    /*! \brief Location of the user manual, see manualLocation() */
+    Q_PROPERTY(QString manualLocation READ manualLocation CONSTANT)
 
 public:
     /*! \brief Default constructor
@@ -153,7 +158,14 @@ public:
      *
      * @returns Pointer to the object, or a nullptr in case of error.
      */
-    [[nodiscard]] Q_INVOKABLE static QObject* get(Librarian::Library library, const QString& baseName) ;
+    [[nodiscard]] Q_INVOKABLE static Navigation::FlightRoute* get(Librarian::Library library, const QString& baseName);
+
+    /*! \brief Location of the user manual
+     *
+     *  @returns Directory that holds the HTML version of the manual, as a
+     *  path or URL suitable for the platform
+     */
+    [[nodiscard]] static QString manualLocation();
 
     /*! \brief Exposes string stored in QRessource to QML
      *
@@ -217,17 +229,38 @@ public:
      */
     Q_INVOKABLE static void rename(Librarian::Library library, const QString& oldName, const QString& newName);
 
+    /*! \brief Checks if a text matches a filter string, in a fuzzy way
+     *
+     * This method splits the filter into words at whitespace. The text matches
+     * if it contains every one of these words. The comparison ignores case and
+     * special characters, so that "Zürich" matches "u", "Ü", "ù" and "zurich".
+     * An empty filter matches every text.
+     *
+     * This is the single filter primitive of this app. Use it from QML to
+     * filter list models, as in
+     *
+     * model: Array.from(SomeSingleton.items).filter((i) => Librarian.matches(i.name, filterField.filter))
+     *
+     * @param text Text that is searched
+     *
+     * @param filter Filter, possibly consisting of several words
+     *
+     * @returns True if the text matches the filter
+     */
+    Q_INVOKABLE bool matches(const QString& text, const QString& filter);
+
     /*! \brief Filters a QStringList in a fuzzy way
      *
      * This helper method filters a QStringList. It returns a sublist of those
-     * entries whose name approximately contain the filter string.  For
-     * instance, "Zürich" is supposed to contain "u", "Ü" and "ù"
+     * entries that match the filter, in the sense of the method matches().
      *
      * @param input QStringList that is to be filtered
      *
      * @param filter Filter
      *
      * @returns Filteres QStringList
+     *
+     * @see matches
      */
     QStringList permissiveFilter(const QStringList &input, const QString &filter);
 

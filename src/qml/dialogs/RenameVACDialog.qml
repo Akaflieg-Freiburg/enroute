@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -71,11 +71,11 @@ CenteringDialog {
     }
 
     onAccepted: {
-        PlatformAdaptor.vibrateBrief()
         var errorMsg = VACLibrary.rename(renameDialog.oldName, newName.text)
 
         if (errorMsg === "")
-            Global.toast.doToast(qsTr("Flight route renamed"))
+            Global.toast.doToast(qsTr("Approach chart renamed"))
+
         else
             Global.toast.doToast(qsTr("Error: %1").arg(errorMsg))
 
@@ -83,7 +83,6 @@ CenteringDialog {
     }
 
     onRejected: {
-        PlatformAdaptor.vibrateBrief()
         renameDialog.close()
     }
 }

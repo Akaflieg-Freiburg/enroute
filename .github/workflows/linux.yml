@@ -36,17 +36,18 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        aqtversion: ==3.1.*
+        aqtversion: ==3.3.*
+        arch: linux_gcc_64
         cache: 'true'
-        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
-        version: '6.9.3'
+        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
+        version: '6.11.2'
     - name: Install LinuxDeploy
       uses: miurahr/install-linuxdeploy-action@v1
       with:
         plugins: appimage
     - name: Install Additional Software
       run: |
-        sudo apt install appstream extra-cmake-modules fuse libudev-dev libxcb-cursor0 libzip-dev ninja-build spirv-tools zipcmp zipmerge ziptool
+        sudo apt install appstream extra-cmake-modules fuse libudev-dev libxcb-cursor0 libzip-dev ninja-build patchelf spirv-tools zipcmp zipmerge ziptool
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -54,7 +55,7 @@ jobs:
     - name: Compile and Install maplibre-native-qt
       run: |
         $QT_ROOT_DIR/bin/qt-cmake \
-          -S enrouteDependencies/maplibre-native-qt \
+          -S enrouteDependencies/maplibre-native-qt-flat \
           -B build-maplibre-native-qt \
           -G Ninja \
           -DMLN_QT_WITH_INTERNAL_ICU=ON \
@@ -74,9 +75,21 @@ jobs:
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr \
-          -DQTDEPLOY=ON
+          -DQTDEPLOY=ON \
+          -DQT_DEPLOY_USE_PATCHELF=ON
         cmake --build build-enroute
         cmake --build build-enroute --target install
+    - name: Lint QML
+      run: |
+        cmake --build build-enroute --target all_qmllint
+    # The AppImage below is assembled from app/, which the install step above
+    # populated with the default build. This step only keeps the FLIGHTLOG=ON
+    # configuration compiling and lint-clean while the flight log is hidden.
+    - name: Compile and lint with FLIGHTLOG=ON
+      run: |
+        cmake -B build-enroute -S enroute -DFLIGHTLOG=ON
+        cmake --build build-enroute
+        cmake --build build-enroute --target all_qmllint
     - name: Package
       run: |
         linuxdeploy-x86_64.AppImage --appdir app --output appimage

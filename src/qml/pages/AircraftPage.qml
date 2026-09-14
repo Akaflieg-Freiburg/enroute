@@ -20,7 +20,8 @@
 
 import QtQml
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -32,7 +33,6 @@ Page {
     title: qsTr("Aircraft")
 
     // Required Properties
-    required property var stackView
 
     // Static objects, used to call static functions
     property speed staticSpeed
@@ -55,7 +55,7 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    aircraftPage.stackView.pop()
+                    Global.stackView.pop()
                 }
             }
 
@@ -68,7 +68,7 @@ Page {
                 anchors.leftMargin: 72
                 anchors.right: headerMenuToolButton.left
 
-                text: aircraftPage.stackView.currentItem.title
+                text: (Global.stackView.currentItem as T.Page).title
                 elide: Label.ElideRight
                 font.pixelSize: 20
                 verticalAlignment: Qt.AlignVCenter
@@ -95,7 +95,7 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            aircraftPage.stackView.push("AircraftLibrary.qml")
+                            Global.stackView.push("AircraftLibrary.qml")
                         }
                     }
 
@@ -125,8 +125,8 @@ Page {
 
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
-            if (activeFocusControl != null) {
-                contentItem.contentY = activeFocusControl.y - font.pixelSize
+            if (ApplicationWindow.activeFocusControl != null) {
+                contentItem.contentY = ApplicationWindow.activeFocusControl.y - font.pixelSize
             }
         }
 
@@ -271,7 +271,10 @@ Page {
                     }
                     return 0
                 }
-                onActivated: Navigator.aircraft.horizontalDistanceUnit = currentIndex
+                onActivated: {
+                    PlatformAdaptor.vibrateBrief()
+                    Navigator.aircraft.horizontalDistanceUnit = currentIndex
+                }
 
                 model: [ qsTr("Nautical Miles"), qsTr("Kilometers"), qsTr("Statute Miles") ]
             }
@@ -294,7 +297,10 @@ Page {
                     }
                     return 0
                 }
-                onActivated: Navigator.aircraft.verticalDistanceUnit = currentIndex
+                onActivated: {
+                    PlatformAdaptor.vibrateBrief()
+                    Navigator.aircraft.verticalDistanceUnit = currentIndex
+                }
 
                 model: [ qsTr("Feet"), qsTr("Meters") ]
             }
@@ -317,7 +323,10 @@ Page {
                     }
                     return 0
                 }
-                onActivated: Navigator.aircraft.fuelConsumptionUnit = currentIndex
+                onActivated: {
+                    PlatformAdaptor.vibrateBrief()
+                    Navigator.aircraft.fuelConsumptionUnit = currentIndex
+                }
 
                 model: [ qsTr("Liters"), qsTr("U.S. Gallons") ]
             }
@@ -659,8 +668,9 @@ Page {
         anchors.fill: parent
 
         onLoaded: {
-            item.modal = true
-            item.open()
+            var dialog = item as Popup
+            dialog.modal = true
+            dialog.open()
         }
     }
 
@@ -689,12 +699,10 @@ Page {
         standardButtons: Dialog.Ok | Dialog.Cancel
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             Navigator.aircraft.cabinPressureEqualsStaticPressure = true
         }
 
         onRejected: {
-            PlatformAdaptor.vibrateBrief()
             pressureCheckBox.checked = false
         }
     }

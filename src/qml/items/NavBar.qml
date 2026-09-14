@@ -23,7 +23,7 @@ import QtQuick
 // indicator from akaflieg_freiburg.enroute, but the transform below needs
 // QtQuick's Scale.
 import QtQuick as Quick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -111,6 +111,7 @@ Rectangle {
 
             TapHandler {
                 onTapped: {
+                    PlatformAdaptor.vibrateBrief()
                     GlobalSettings.showAltitudeAGL = !GlobalSettings.showAltitudeAGL
                     if (GlobalSettings.showAltitudeAGL)
                         Global.toast.doToast(qsTr("Showing Altitude Above Ground Level"))

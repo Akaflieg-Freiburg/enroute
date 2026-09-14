@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -61,7 +61,10 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
 
             Button {
@@ -86,19 +89,22 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
 
             Button {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Send e-mail")
 
-                property string bankAccountData: qsTr("
+                property string bankAccountData: qsTr(`
 IBAN:    DE35 6809 0000 0027 6409 07
 BIC:     GENODE61FR1
 Bank:    Volksbank Freiburg
 Message: Enroute Flight Navigation
-")
+`)
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
@@ -116,7 +122,10 @@ Message: Enroute Flight Navigation
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
 
 

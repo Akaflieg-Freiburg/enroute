@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -30,8 +30,6 @@ Page {
     id: pg
     title: qsTr("About EFN")
 
-    required property var stackView
-    required property var toast
 
     header: PageHeader {
 
@@ -50,7 +48,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                pg.stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -95,10 +93,10 @@ Page {
 
         currentIndex: sv.currentIndex
 
-        TabButton { text: "Enroute" }
-        TabButton { text: qsTr("Authors") }
-        TabButton { text: qsTr("License") }
-        TabButton { text: qsTr("System") }
+        TabButton { text: "Enroute"; onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: qsTr("Authors"); onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: qsTr("License"); onClicked: PlatformAdaptor.vibrateBrief() }
+        TabButton { text: qsTr("System"); onClicked: PlatformAdaptor.vibrateBrief() }
     }
 
     SwipeView {
@@ -129,7 +127,10 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
         }
         
@@ -146,7 +147,10 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
         }
 
@@ -163,7 +167,10 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
         }
 
@@ -188,7 +195,10 @@ Page {
                     topPadding: font.pixelSize*1
                     leftPadding: font.pixelSize*0.5
                     rightPadding: font.pixelSize*0.5
-                    onLinkActivated: (link) => Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(link)
+                    }
                 }
             }
 
@@ -201,7 +211,7 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     var errorString = FileExchange.shareContent(sysInfoLabel.text, "text/plain;charset=UTF-8", "txt", "EnrouteSystemInformation")
                     if (errorString === "abort") {
-                        pg.toast.doToast(qsTr("Aborted"))
+                        Global.toast.doToast(qsTr("Aborted"))
                         return
                     }
                     if (errorString !== "") {
@@ -210,10 +220,20 @@ Page {
                         return
                     }
                     if (Qt.platform.os === "android")
-                        pg.toast.doToast(qsTr("System Info Shared"))
+                        Global.toast.doToast(qsTr("System Info Shared"))
                     else
-                        pg.toast.doToast(qsTr("System Info Exported"))
+                        Global.toast.doToast(qsTr("System Info Exported"))
 
+                }
+            }
+
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+                visible: Qt.platform.os === "android"
+                text: qsTr("Save Info")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    FileExchange.saveContent(sysInfoLabel.text, "text/plain;charset=UTF-8", "txt", "EnrouteSystemInformation")
                 }
             }
 

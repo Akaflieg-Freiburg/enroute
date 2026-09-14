@@ -19,7 +19,8 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Templates as T
 
 import akaflieg_freiburg.enroute
 
@@ -40,7 +41,7 @@ PageHeader {
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
-            stackView.pop()
+            Global.stackView.pop()
         }
     }
 
@@ -53,7 +54,7 @@ PageHeader {
         anchors.leftMargin: 72
         anchors.right: parent.right
 
-        text: stackView.currentItem.title
+        text: (Global.stackView.currentItem as T.Page).title
         elide: Label.ElideRight
         font.pixelSize: 20
         verticalAlignment: Qt.AlignVCenter

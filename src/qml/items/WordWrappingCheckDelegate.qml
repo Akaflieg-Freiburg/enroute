@@ -19,12 +19,16 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
+
+import akaflieg_freiburg.enroute
 
 // This is a version of CheckDelegate that does word wrapping in the text
 
 CheckDelegate {
     id: itemDelegate
+
+    onClicked: PlatformAdaptor.vibrateBrief()
 
     contentItem: Label { // Text
         rightPadding: itemDelegate.indicator.width + itemDelegate.spacing

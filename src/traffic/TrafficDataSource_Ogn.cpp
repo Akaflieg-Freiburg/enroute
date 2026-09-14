@@ -24,6 +24,7 @@
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "OgnParser.h"
+#include "OgnFilter.h"
 #include "traffic/ConnectionInfo.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_AbstractSocket.h"
@@ -88,30 +89,6 @@ Traffic::TrafficFactor_Abstract::Type convertOgnAircraftType(Ogn::OgnAircraftTyp
     return Traffic::TrafficFactor_Abstract::unknown;
 }
 
-// Helper function to convert Traffic::AircraftType to OgnAircraftType
-Ogn::OgnAircraftType convertToOgnAircraftType(Traffic::TrafficFactor_Abstract::Type trafficType)
-{
-    using namespace Ogn;
-    switch (trafficType) {
-        case Traffic::TrafficFactor_Abstract::unknown:        return OgnAircraftType::unknown;
-        case Traffic::TrafficFactor_Abstract::Aircraft:       return OgnAircraftType::Aircraft;
-        case Traffic::TrafficFactor_Abstract::Airship:        return OgnAircraftType::Airship;
-        case Traffic::TrafficFactor_Abstract::Balloon:        return OgnAircraftType::Balloon;
-        case Traffic::TrafficFactor_Abstract::Copter:         return OgnAircraftType::Copter;
-        case Traffic::TrafficFactor_Abstract::Drone:          return OgnAircraftType::Drone;
-        case Traffic::TrafficFactor_Abstract::Glider:         return OgnAircraftType::Glider;
-        case Traffic::TrafficFactor_Abstract::HangGlider:     return OgnAircraftType::HangGlider;
-        case Traffic::TrafficFactor_Abstract::Jet:            return OgnAircraftType::Jet;
-        case Traffic::TrafficFactor_Abstract::Paraglider:     return OgnAircraftType::Paraglider;
-        case Traffic::TrafficFactor_Abstract::Skydiver:       return OgnAircraftType::Skydiver;
-        case Traffic::TrafficFactor_Abstract::StaticObstacle: return OgnAircraftType::StaticObstacle;
-        case Traffic::TrafficFactor_Abstract::TowPlane:       return OgnAircraftType::TowPlane;
-    }
-    // No default: above, so -Wswitch flags this switch if a Type is added.
-    // This return covers only out-of-range values.
-    return OgnAircraftType::unknown;
-}
-
 // Helper function to convert OgnAddressType to string
 QString addressTypeToString(Ogn::OgnAddressType type)
 {
@@ -169,12 +146,21 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
         m_textStream.flush();
     });
 
+    // Socket options only take effect once the underlying socket exists, which
+    // is guaranteed after "connected" has been emitted.
+    connect(&m_socket, &QTcpSocket::connected, this, [this]() {
+        m_socket.setSocketOption(QAbstractSocket::LowDelayOption, 1);
+        m_socket.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
+    });
+
     connect(&m_socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Ogn::onErrorOccurred);
     connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Ogn::onReadyRead);
     connect(&m_socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Ogn::onStateChanged);
     connect(&m_socket, &QAbstractSocket::disconnected, this, [this]() {
-        // Auto-reconnect only while a connection is still wanted.
-        if (m_connectionDesired)
+        // Auto-reconnect only while a connection is still wanted, and not
+        // faster than the backoff allows. If it is too early, the watchdog
+        // verifyConnection() reconnects once the backoff has passed.
+        if (m_connectionDesired && m_lastConnectionAttempt.isValid() && m_lastConnectionAttempt.hasExpired(reconnectBackoffMs))
         {
             connectToTrafficReceiver();
         }
@@ -231,6 +217,7 @@ Traffic::TrafficDataSource_Ogn::~TrafficDataSource_Ogn()
 void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
 {
     m_connectionDesired = true;
+    m_lastConnectionAttempt.start();
 
     // set Proxy
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
@@ -252,8 +239,6 @@ void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
     // Start new connection
     m_socket.abort();
     setErrorString();
-    m_socket.setSocketOption(QAbstractSocket::LowDelayOption, 1);
-    m_socket.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_textStream.setDevice(&m_socket);
     m_socket.connectToHost(m_hostName, m_port);
 
@@ -360,6 +345,13 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
         }
     #endif
 
+    // Discard out-of-order and duplicate packets (multiple ground stations may forward
+    // the same beacon; packets do not necessarily arrive in chronological order).
+    if (!m_ognFilter.filter(m_ognMessage))
+    {
+        return;
+    }
+
     // Filter out ownship by ICAO 24-bit address (supports multiple codes separated by spaces).
     // Cached codes are uppercase, case-sensitive comparison.
     for (const std::string& code : m_ownTransponderCodes)
@@ -428,39 +420,32 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
         hDist = Units::Distance::fromM(m_currentPosition.distanceTo(ognCoordinate));
         vDist = Units::Distance::fromM(m_ognMessage.altitude - m_currentPosition.altitude());
         
-        // Only set alarm level if we're using actual GPS position, not map center
+        // Only set alarm level if we're using actual GPS position, not map center.
+        // vDist is signed (traffic above own aircraft is positive), so compare
+        // its absolute value: traffic far below must not trigger an alarm.
         if (m_usingGps)
         {
-            if (hDist.toM() < 1000 && vDist.toFeet() < 400)
+            const auto vSeparation = qAbs(vDist);
+            if (hDist.toM() < 1000 && vSeparation.toFeet() < 400)
             {
                 alarmLevel = 3; // High alert
             }
-            else if (hDist.toM() < 2000 && vDist.toFeet() < 600)
+            else if (hDist.toM() < 2000 && vSeparation.toFeet() < 600)
             {
                 alarmLevel = 2; // Medium alert
             }
-            else if (hDist.toM() < 5000 && vDist.toFeet() < 800)
+            else if (hDist.toM() < 5000 && vSeparation.toFeet() < 800)
             {
                 alarmLevel = 1; // Low alert
             }
         }
     }
 
-    // PositionInfo
-    auto timestampString = QString::fromUtf8(m_ognMessage.timestamp);
-    auto hour   = timestampString.mid(0, 2).toInt();
-    auto minute = timestampString.mid(2, 2).toInt();
-    auto second = timestampString.mid(4, 2).toInt();
-    auto today = QDateTime::currentDateTimeUtc().date();
-    QDateTime timestamp(today, QTime(hour, minute, second), QTimeZone::UTC);
-    // If the time appears more than 12 hours in the future, it likely belongs to the previous day
-    if (timestamp > QDateTime::currentDateTimeUtc().addSecs(12LL * 3600))
-    {
-        timestamp = timestamp.addDays(-1);
-    }
+    // PositionInfo - use the OGN beacon timestamp (time of transmission by the aircraft)
+    QDateTime const timestamp = QDateTime::fromStdTimePoint(
+        std::chrono::time_point_cast<std::chrono::milliseconds>(m_ognMessage.timestamp));
 
-    QGeoPositionInfo pInfo(QGeoCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude),
-                           timestamp.isValid() ? timestamp : QDateTime::currentDateTimeUtc());
+    QGeoPositionInfo pInfo(QGeoCoordinate(m_ognMessage.latitude, m_ognMessage.longitude, m_ognMessage.altitude), timestamp);
     pInfo.setAttribute(QGeoPositionInfo::Direction, m_ognMessage.course);  // Already in degrees
     pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, m_ognMessage.speed * 0.514444);  // Convert knots to m/s
     pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, m_ognMessage.verticalSpeed);
@@ -470,7 +455,7 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     }
 
     // Prepare the factor object
-    Traffic::TrafficFactorData_WithPosition factor = {
+    const Traffic::TrafficFactorData_WithPosition factor = {
         .data = {
             .alarmLevel = alarmLevel,
             .callSign = callsign,
@@ -499,51 +484,12 @@ void Traffic::TrafficDataSource_Ogn::processOgnMessage(const QString& data)
     emit factorWithPosition(factor);
 }
 
-void Traffic::TrafficDataSource_Ogn::sendPosition(const QGeoCoordinate& coordinate, double course, double speed, double altitude)
-{
-    if (!m_socket.isOpen())
-    {
-#if OGN_DEBUG
-        qDebug() << "Socket is not open. Cannot send position.";
-#endif
-        return;
-    }
-
-    // Use the OgnParser class to format the position report
-    QString const positionReport = QString::fromStdString(Ogn::OgnParser::formatPositionReport(
-        m_callSign.toStdString(), coordinate.latitude(), coordinate.longitude(), altitude, course, speed, convertToOgnAircraftType(m_aircraftType)));
-
-    // Send the position report
-    m_textStream << positionReport;
-    m_textStream.flush();
-
-#if OGN_DEBUG
-    qDebug() << "Sent position report:" << positionReport;
-#endif
-}
-
 // called once per minute
 void Traffic::TrafficDataSource_Ogn::periodicUpdate()
 {
     sendKeepAlive();
+    m_ognFilter.clean(); // Purge stale per-aircraft deduplication state (>1 hour old)
     //verifyConnection();
-
-// update position report
-#if OGN_SEND_OWN_POSITION
-    if (getOwnShipCoordinate(/*useLastValidPosition*/false).coordinate().isValid())
-    {
-        sendPosition(positionInfo.coordinate(),
-                     positionInfo.trueTrack().toDEG(),
-                     positionInfo.groundSpeed().toKN(),
-                     positionInfo.coordinate().altitude());
-    }
-    else
-    {
-#if OGN_DEBUG
-        qDebug() << "Position is invalid, skipping position report.";
-#endif
-    }
-#endif
 }
 
 void Traffic::TrafficDataSource_Ogn::sendKeepAlive()
@@ -564,19 +510,34 @@ void Traffic::TrafficDataSource_Ogn::sendKeepAlive()
 
 void Traffic::TrafficDataSource_Ogn::verifyConnection()
 {
-    if (!m_socket.isOpen() || m_socket.state() != QAbstractSocket::ConnectedState)
+    if (m_socket.state() == QAbstractSocket::ConnectedState)
     {
-#if OGN_DEBUG
-        qWarning() << "Connection to OGN APRS-IS server lost. State:" << m_socket.state() << "Reconnecting...";
-#else
-        qWarning() << "Connection to OGN APRS-IS server lost. Reconnecting...";
-#endif
-        disconnectFromTrafficReceiver();
-        connectToTrafficReceiver();
-    }
-    else {
         setReceivingHeartbeat(true);
+        return;
     }
+
+    // A connection attempt is still in progress (host lookup, connecting,
+    // closing): leave it alone.
+    if (m_socket.state() != QAbstractSocket::UnconnectedState)
+    {
+        return;
+    }
+
+    // No connection is wanted, e.g. after disconnectFromTrafficReceiver().
+    if (!m_connectionDesired)
+    {
+        return;
+    }
+
+    // Back off after a failed attempt, so that an unreachable server is not
+    // hammered and the error string of the last failure stays visible.
+    if (m_lastConnectionAttempt.isValid() && !m_lastConnectionAttempt.hasExpired(reconnectBackoffMs))
+    {
+        return;
+    }
+
+    qWarning() << "Connection to OGN APRS-IS server lost. Reconnecting...";
+    connectToTrafficReceiver();
 }
 
 void Traffic::TrafficDataSource_Ogn::updateCurrentCoordinate()

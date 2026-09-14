@@ -429,6 +429,18 @@ private:
     // sets up the tile server to and generates a new style file.
     void onMBTILESChanged();
 
+    // This slot is called just before one of the MBTile files is replaced or
+    // deleted. It releases every handle to the file, so that the file can be
+    // replaced (Windows refuses to rename over or delete an open file). The
+    // tile server is set up again with the new file in onMBTILESChanged().
+    void onMBTILESAboutToChange(const QString& fileName);
+
+    // Sets up the tile server to serve the raster map with the given name
+    // under "rasterMap" and updates the properties currentRasterMap and
+    // currentRasterMapTileSize. Does not emit styleFileURLChanged().
+    void serveRasterMap(const QString& mapName);
+
+
     // Interal function that does most of the work for aviationMapsChanged()
     // emits geoJSONChanged() when done. This function is meant to be run in a
     // separate thread.

@@ -80,6 +80,10 @@ private:
 
     auto registrationFromFile(const QString& key) -> QString;
 
+    // Writes a placeholder database file with an old modification time, so
+    // that the real database is downloaded at the next update check.
+    void writePlaceholderFile(const QString& fileName);
+
     QPointer<DataManagement::Downloadable_SingleFile> flarmnetDBDownloadable;
 
     QCache<QString, QString> m_cache;

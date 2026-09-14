@@ -21,6 +21,8 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QImage>
+#include <QRegularExpression>
+#include <QUrl>
 
 #include "fileFormats/GeoTIFF.h"
 #include "geomaps/VAC.h"
@@ -29,8 +31,12 @@ using namespace Qt::Literals::StringLiterals;
 
 
 GeoMaps::VAC::VAC(const QString& fName, const QString& unmingledFName) :
-    fileName(fName)
+    fileName(fName.startsWith(u"file://"_s) ? QUrl(fName).toLocalFile() : fName)
 {
+    // Desktop file managers hand over file:// URLs. The other file readers
+    // resolve those through DataFileAbstract::openFileURL(); this class
+    // checks the file's existence itself and therefore needs a local path.
+
     QString unmingledFileName;
     if (!unmingledFName.isEmpty())
     {
@@ -177,6 +183,22 @@ void GeoMaps::VAC::getNameFromUnmingledFileName(const QString& unmingledFilename
         baseName = baseName.left(idx);
     }
     name = baseName;
+}
+
+QString GeoMaps::VAC::safeFileName(const QString& name)
+{
+    static const QRegularExpression forbiddenCharacters(uR"([/\\:*?"<>|])"_s);
+
+    // Drop directory components, then neutralise separators and other
+    // characters that are unsafe in file names on any supported platform.
+    auto result = QFileInfo(name).fileName();
+    result.replace(forbiddenCharacters, u"_"_s);
+    result.replace(u".."_s, u"_"_s);
+    while (result.startsWith(u"."_s))
+    {
+        result.remove(0, 1);
+    }
+    return result.trimmed();
 }
 
 bool GeoMaps::VAC::hasValidCoordinates() const

@@ -20,21 +20,95 @@
 
 #include <QGuiApplication>
 #include <QHash>
+#include <QInputMethod>
 #include <QJniEnvironment>
 #include <QJniObject>
 #include <QPermissions>
 #include <QProcess>
 #include <QScreen>
+#include <QTimer>
+#include <chrono>
 
 #include "platform/PlatformAdaptor_Android.h"
 #include "traffic/TrafficDataProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
+using namespace std::chrono_literals;
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : Platform::PlatformAdaptor_Abstract(parent)
 {
+    // Keep the property safeInsets up-to-date. The window insets settle only
+    // after animations (keyboard, split-screen changes) have finished, so in
+    // addition to the immediate updates, re-check after one second. This
+    // follows the pattern of the former SafeInsets implementation.
+    auto* inputMethod = QGuiApplication::inputMethod();
+    connect(inputMethod, &QInputMethod::visibleChanged, this, &PlatformAdaptor::updateSafeInsets);
+    connect(inputMethod, &QInputMethod::keyboardRectangleChanged, this, &PlatformAdaptor::updateSafeInsets);
+    connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, this, &PlatformAdaptor::updateSafeInsets);
+
+    auto* timer = new QTimer(this);
+    timer->setInterval(1s);
+    timer->setSingleShot(true);
+    connect(inputMethod, &QInputMethod::visibleChanged, timer, qOverload<>(&QTimer::start));
+    connect(inputMethod, &QInputMethod::keyboardRectangleChanged, timer, qOverload<>(&QTimer::start));
+    connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, timer, qOverload<>(&QTimer::start));
+    connect(timer, &QTimer::timeout, this, &PlatformAdaptor::updateSafeInsets);
+
+    updateSafeInsets();
+}
+
+
+void Platform::PlatformAdaptor::updateSafeInsets()
+{
+    auto devicePixelRatio = QGuiApplication::primaryScreen()->devicePixelRatio();
+    if (!qIsFinite(devicePixelRatio) || (devicePixelRatio <= 0.0))
+    {
+        return;
+    }
+
+    auto inset = [devicePixelRatio](const char* methodName) {
+        auto value = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", methodName));
+        if (!qIsFinite(value) || (value < 0.0))
+        {
+            return 0.0;
+        }
+        return value/devicePixelRatio;
+    };
+
+    QMarginsF const newInsets(inset("safeInsetLeft"),
+                              inset("safeInsetTop"),
+                              inset("safeInsetRight"),
+                              inset("safeInsetBottom"));
+
+    // The signals connected in the constructor do not cover all changes:
+    // entering or leaving split-screen mode, or dragging the split-screen
+    // divider, resize the window and change Qt's safe-area margins without
+    // any keyboard or orientation signal. Watch the application window and
+    // re-check on those changes, too.
+    QWindow* window = QGuiApplication::focusWindow();
+    if ((window == nullptr) && !QGuiApplication::topLevelWindows().isEmpty())
+    {
+        window = QGuiApplication::topLevelWindows().constFirst();
+    }
+    if ((window != nullptr) && (m_watchedWindow != window))
+    {
+        if (!m_watchedWindow.isNull())
+        {
+            disconnect(m_watchedWindow, nullptr, this, nullptr);
+        }
+        connect(window, &QWindow::safeAreaMarginsChanged, this, &PlatformAdaptor::updateSafeInsets);
+        connect(window, &QWindow::widthChanged, this, &PlatformAdaptor::updateSafeInsets);
+        connect(window, &QWindow::heightChanged, this, &PlatformAdaptor::updateSafeInsets);
+        m_watchedWindow = window;
+    }
+
+    if (newInsets != m_safeInsets)
+    {
+        m_safeInsets = newInsets;
+        emit safeInsetsChanged();
+    }
 }
 
 
@@ -142,10 +216,16 @@ QString Platform::PlatformAdaptor::systemInfo()
     result += u"<h3>Device</h3>\n"_s;
     result += stringObject.toString();
 
-    // System Log
+    // System Log. This runs on the GUI thread, so bound the wait instead of
+    // accepting QProcess's default of 30 seconds.
     QProcess proc;
     proc.startCommand(u"logcat -t 300"_s);
-    proc.waitForFinished();
+    if (!proc.waitForFinished(3000))
+    {
+        proc.kill();
+        proc.waitForFinished(500);
+    }
+
     result += u"<h3>System Log</h3>\n"_s;
     result += u"<pre>\n"_s + proc.readAllStandardOutput() + u"\n</pre>\n"_s;
 
@@ -171,8 +251,18 @@ extern "C" {
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onLanguageChanged(JNIEnv* /*unused*/, jobject /*unused*/)
 {
+    // Called on the Android UI thread from a broadcast receiver. The app
+    // terminates, so that it comes up in the new language when the user
+    // returns to it. Quit through the Qt event loop rather than calling
+    // exit(), so that pending QSettings writes reach the disk first.
+    if (GlobalObject::canConstruct())
+    {
+        QMetaObject::invokeMethod(QCoreApplication::instance(), []() { QCoreApplication::quit(); }, Qt::QueuedConnection);
+        return;
+    }
     exit(0);
 }
+
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {

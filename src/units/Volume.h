@@ -111,9 +111,11 @@ namespace Units {
         }
 
     private:
-        static constexpr double LitersPerGallon = 4.54609;
+        // U.S. liquid gallon, as promised by the user interface. (The imperial
+        // gallon would be 4.54609 l.)
+        static constexpr double LitersPerGallon = 3.785411784;
 
-        // Speed in meters per second
+        // Volume in liters
         double m_volumeInL{ NAN };
     };
 } // namespace Units

@@ -33,6 +33,7 @@
 #include "notification/Notification_DataUpdateAvailable.h"
 #include "notification/Notification_OversizedMap.h"
 #include "platform/PlatformAdaptor.h"
+#include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include <chrono>
 
@@ -53,15 +54,20 @@ Notifications::NotificationManager::NotificationManager(QObject *parent) : Globa
 void Notifications::NotificationManager::deferredInitialization()
 {
 #if defined(Q_OS_LINUX) and not defined(Q_OS_ANDROID)
-    // Under Linux, the constructor of QTextToSpeech is extremely slow. For that reason we run the constructor in a separate thread.
-    m_speakerFuture = QtConcurrent::run([this]() { setupSpeaker();} );
+    // Under Linux, the constructor of QTextToSpeech is extremely slow. For that
+    // reason we run the constructor in a separate thread. Everything that
+    // touches this object, the member m_speaker or the QML engine happens in
+    // the continuation, which runs in the GUI thread.
+    m_speakerFuture = QtConcurrent::run(&NotificationManager::createSpeaker, thread());
+    (void)m_speakerFuture.then(this, [this](QTextToSpeech* speaker) { adoptSpeaker(speaker); });
 #else
     // On other operating systems, we construct the QTextToSpeech object
     // directly.
     //
     // Note: under Android, QTextToSpeech MUST be created in the GUI thread
-    setupSpeaker();
+    adoptSpeaker(createSpeaker(thread()));
 #endif
+
 
     m_speechBreakTimer.setInterval(1s);
     m_speechBreakTimer.setSingleShot(true);
@@ -71,6 +77,8 @@ void Notifications::NotificationManager::deferredInitialization()
             this, &Notifications::NotificationManager::onTrafficReceiverRuntimeError);
     connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged,
             this, &Notifications::NotificationManager::onTrafficReceiverSelfTestError);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::pressureAltitudeImplausibleChanged,
+            this, &Notifications::NotificationManager::onPressureAltitudeImplausible);
 
     // Maps and Data
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged,
@@ -223,28 +231,40 @@ void Notifications::NotificationManager::onSpeakerStateChanged(QTextToSpeech::St
     }
 }
 
-void Notifications::NotificationManager::setupSpeaker()
+QTextToSpeech* Notifications::NotificationManager::createSpeaker(QThread* thread)
 {
     auto *speaker = new QTextToSpeech();
-    speaker->moveToThread(thread());
+    speaker->moveToThread(thread);
+    return speaker;
+}
+
+void Notifications::NotificationManager::adoptSpeaker(QTextToSpeech* speaker)
+{
+    if (speaker == nullptr)
+    {
+        return;
+    }
+
     speaker->setParent(this);
     QQmlEngine::setObjectOwnership(speaker, QQmlEngine::CppOwnership);
     speaker->setLocale(QLocale(GlobalObject::platformAdaptor()->language()));
     connect(speaker, &QTextToSpeech::stateChanged, this, &Notifications::NotificationManager::onSpeakerStateChanged);
     m_speaker = speaker;
-
     emit speakerChanged();
+
+    // Say whatever has been queued while the speaker was under construction
+    speakNext();
 }
 
 void Notifications::NotificationManager::speakNext()
 {
-    // Check that the speaker has been constructed successfully. If not, then
-    // check back in 2 seconds.
+    // Nothing to do while the speaker is under construction. adoptSpeaker()
+    // calls this method again once the speaker exists.
     if (m_speaker == nullptr)
     {
-        QTimer::singleShot(2s, this, &Notifications::NotificationManager::speakNext);
         return;
     }
+
 
     // At his point, we have a valid speaker object. Make sure that the speaker is ready
     // to speak and that the break between two messages is not running.
@@ -335,6 +355,24 @@ void Notifications::NotificationManager::onMapAndDataUpdateSizeChanged()
     auto* notification = new Notifications::Notification_DataUpdateAvailable(this);
     addNotification(notification);
     settings.setValue(QStringLiteral("lastGeoMapUpdateNotification"), QDateTime::currentDateTimeUtc());
+}
+
+void Notifications::NotificationManager::onPressureAltitudeImplausible()
+{
+    if (!GlobalObject::positionProvider()->pressureAltitudeImplausible())
+    {
+        return;
+    }
+    auto* notification = new Notifications::Notification(tr("Inconsistent altitude data"), Notifications::Notification::Warning);
+    notification->setText(tr("Pressure altitude and GNSS altitude differ by an unrealistic amount. "
+                             "This can happen when the device does not measure static pressure, "
+                             "for instance in a pressurized cabin or when a flight simulator is used. "
+                             "Barometric altitude data and vertical airspace boundaries are unreliable."));
+    connect(GlobalObject::positionProvider(),
+            &Positioning::PositionProvider::pressureAltitudeImplausibleChanged,
+            notification,
+            &QObject::deleteLater);
+    addNotification(notification);
 }
 
 void Notifications::NotificationManager::onOversizedMapsChanged()

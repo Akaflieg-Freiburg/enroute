@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
@@ -28,7 +28,6 @@ SideviewQuickItem {
     id: rawSideView
 
     clip: true
-    pixelPer10km: flightMap.pixelPer10km
 
     // Night-mode-aware colors. Sky and terrain have no equivalent on the moving
     // map; the night hues are picked to blend with the dark base map. The
@@ -62,7 +61,7 @@ SideviewQuickItem {
             strokeColor: rawSideView.terrainStrokeColor
             fillColor: rawSideView.terrainFillColor
 
-            PathPolyline { path: rawSideView.terrain }
+            PathPolyline { path: rawSideView.terrain } // qmllint disable unresolved-type
         }
 
         ShapePath {
@@ -264,15 +263,16 @@ SideviewQuickItem {
         background: Pane { Material.elevation: 1 }
 
         onLinkActivated: {
-            dialogLoader.active = false
-            dialogLoader.setSource("../dialogs/LongTextDialog.qml",
+            PlatformAdaptor.vibrateBrief()
+            Global.textDialogLoader.active = false
+            Global.textDialogLoader.setSource("../dialogs/LongTextDialog.qml",
                                    {
                                        title: qsTr("Static Pressure Unavailable"),
                                        text: Librarian.getStringFromRessource("sideView"),
                                        standardButtons: Dialog.Ok
                                    }
                                    )
-            dialogLoader.active = true
+            Global.textDialogLoader.active = true
         }
     }
 }

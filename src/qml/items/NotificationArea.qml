@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -30,10 +30,10 @@ Rectangle {
 
     border.color: GlobalSettings.nightMode ? "white" : "black"
     color: GlobalSettings.nightMode ? "black" : "white"
-    radius: 0.5*font.pixelSize
+    radius: 0.5*GlobalSettings.fontSize
     clip: true
 
-    implicitHeight: notifyCol.implicitHeight+font.pixelSize
+    implicitHeight: notifyCol.implicitHeight+GlobalSettings.fontSize
     visible: NotificationManager.currentVisualNotification
 
     Connections {
@@ -97,12 +97,12 @@ Rectangle {
                 if (NotificationManager.currentVisualNotification.textBodyAction === Notification.OpenMapsAndDataPage)
                 {
                     PlatformAdaptor.vibrateBrief()
-                    stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                    Global.stackView.push("../pages/DataManagerPage.qml")
                 }
                 if (NotificationManager.currentVisualNotification.textBodyAction === Notification.OpenTrafficReceiverPage)
                 {
                     PlatformAdaptor.vibrateBrief()
-                    stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+                    Global.stackView.push("../pages/TrafficReceiver.qml")
                 }
             }
         }

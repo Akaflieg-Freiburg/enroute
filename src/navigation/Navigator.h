@@ -172,6 +172,11 @@ private:
     QProperty<bool> m_hasAviationMapForCurrentLocation {false};
     bool computeHasAviationMapForCurrentLocation();
 
+    // Bumped whenever the list of aviation maps changes. The binding of
+    // m_hasAviationMapForCurrentLocation reads it, so that a newly installed
+    // map re-evaluates the binding; the map list itself is not bindable.
+    QProperty<int> m_aviationMapsGeneration {0};
+
 
     // Hysteresis for flight speed
     static constexpr auto flightSpeedHysteresis = Units::Speed::fromKN(5.0);

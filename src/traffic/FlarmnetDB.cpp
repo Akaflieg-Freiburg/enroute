@@ -19,10 +19,13 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QDateTime>
+#include <QFile>
 #include <QTimer>
 
 #include "GlobalObject.h"
 #include "dataManagement/DataManager.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "traffic/FlarmnetDB.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -91,13 +94,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
         // next convenience.
         if (!QFile::exists(flarmnetDBDownloadable->fileName()))
         {
-            QFile dataFile(flarmnetDBDownloadable->fileName());
-            if (dataFile.open(QIODevice::WriteOnly))
-            {
-                dataFile.write(tr("Placeholder file.").toLatin1());
-                dataFile.flush();
-                dataFile.setFileTime(QDateTime( QDate(2021, 8, 21), QTime(13, 0)), QFileDevice::FileModificationTime);
-            }
+            writePlaceholderFile(flarmnetDBDownloadable->fileName());
         }
 
     }
@@ -137,12 +134,7 @@ auto Traffic::FlarmnetDB::registrationFromFile(const QString& key) -> QString
     QFile dataFile(flarmnetDBDownloadable->fileName());
     if (!dataFile.open(QIODevice::ReadOnly))
     {
-        if (dataFile.open(QIODevice::WriteOnly))
-        {
-            dataFile.write(tr("Placeholder file.").toLatin1());
-            dataFile.flush();
-            dataFile.setFileTime(QDateTime( QDate(2021, 8, 21), QTime(13, 0)), QFileDevice::FileModificationTime);
-        }
+        writePlaceholderFile(flarmnetDBDownloadable->fileName());
         return {};
     }
     dataFile.readLine();
@@ -200,4 +192,22 @@ auto Traffic::FlarmnetDB::registrationFromFile(const QString& key) -> QString
     }while(startIndex != endIndex);
 
     return {};
+}
+
+
+void Traffic::FlarmnetDB::writePlaceholderFile(const QString& fileName)
+{
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileName, tr("Placeholder file.").toLatin1()))
+    {
+        return;
+    }
+
+    // Backdate the file so that it is refreshed at the next update check.
+    // setFileTime() needs an open handle; open read-write so that the
+    // content is not truncated.
+    QFile file(fileName);
+    if (file.open(QIODevice::ReadWrite))
+    {
+        (void)file.setFileTime(QDateTime(QDate(2021, 8, 21), QTime(13, 0)), QFileDevice::FileModificationTime);
+    }
 }

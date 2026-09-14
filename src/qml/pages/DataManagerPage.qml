@@ -19,7 +19,8 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
@@ -29,8 +30,6 @@ Page {
     id: pg
     objectName: "DataManagerPage"
 
-    required property var dialogLoader
-    required property var stackView
     property bool isIos: Qt.platform.os === "ios"
     property bool isAndroid: Qt.platform.os === "android"
 
@@ -163,7 +162,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                pg.stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -176,7 +175,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: pg.stackView.currentItem.title
+            text: (Global.stackView.currentItem as T.Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -261,6 +260,7 @@ Page {
                         // Setting a non-trivial name filter on Android means we cannot select any
                         // files at all.
                         nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("OpenAir Airspace Data (*.txt)"),
+                                                                                 qsTr("CUB Airspace Data (*.cub)"),
                                                                                  qsTr("Raster and Vector Maps (*.mbtiles)"),
                                                                                  qsTr("Trip Kits (*.zip)"),
                                                                                  qsTr("Visual Approach Charts (*.tif *.tiff)")]
@@ -309,12 +309,15 @@ Page {
         currentIndex: sv.currentIndex
         TabButton {
             text: qsTr("Maps")
+            onClicked: PlatformAdaptor.vibrateBrief()
         }
         TabButton {
             text: "VAC"
+            onClicked: PlatformAdaptor.vibrateBrief()
         }
         TabButton {
             text: qsTr("Data")
+            onClicked: PlatformAdaptor.vibrateBrief()
         }
     }
 
@@ -338,26 +341,133 @@ Page {
 
         clip: true
 
-        DecoratedListView {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            clip: true
-            focus: SwipeView.isCurrentItem
-            model: DataManager.mapSets.downloadables
-            delegate: MapSet {}
+        ColumnLayout {
+            id: mapsTab
 
-            section.property: "section"
-            section.delegate: sectionHeading
+            FilterField {
+                id: mapsFilter
 
-            // Refresh list of maps on overscroll
-            property int refreshFlick: 0
-            onFlickStarted: {
-                refreshFlick = atYBeginning
+                Layout.fillWidth: true
+                Layout.leftMargin: font.pixelSize/2.0
+                Layout.rightMargin: font.pixelSize/2.0
             }
-            onFlickEnded: {
-                if ( atYBeginning && refreshFlick ) {
-                    PlatformAdaptor.vibrateBrief()
-                    DataManager.mapList.startDownload()
+
+            DecoratedListView {
+                id: mapsList
+
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                clip: true
+                // The list, not the filter field, owns focus here: this page is
+                // primarily browsed, and the keyboard navigation of
+                // DecoratedListView must keep working. The field is reached by
+                // tap or by Tab.
+                focus: mapsTab.SwipeView.isCurrentItem
+                model: Array.from(DataManager.mapSets.downloadables) // qmllint disable unresolved-type
+                            .filter((mapSet) => Librarian.matches(mapSet.objectName, mapsFilter.filter))
+                delegate: MapSet {}
+
+                section.property: "section"
+                section.delegate: sectionHeading
+
+                // Refresh list of maps on overscroll
+                property int refreshFlick: 0
+                onFlickStarted: {
+                    refreshFlick = atYBeginning
+                }
+                onFlickEnded: {
+                    if ( atYBeginning && refreshFlick ) {
+                        PlatformAdaptor.vibrateBrief()
+                        DataManager.mapList.startDownload()
+                    }
+                }
+
+                Label {
+                    anchors.fill: parent
+                    anchors.topMargin: font.pixelSize*2
+
+                    // Only shown for an active filter. The empty-library cases
+                    // are covered by the page-wide labels further below.
+                    visible: (mapsList.count === 0) && (mapsFilter.filter !== "")
+
+                    horizontalAlignment: Text.AlignHCenter
+                    leftPadding: font.pixelSize*2
+                    rightPadding: font.pixelSize*2
+                    textFormat: Text.StyledText
+                    wrapMode: Text.Wrap
+
+                    text: qsTr("<h3>Sorry!</h3><p>No maps match your filter.</p>")
+                }
+            }
+        }
+
+        ColumnLayout {
+            id: vacTab
+
+            FilterField {
+                id: vacFilter
+
+                Layout.fillWidth: true
+                Layout.leftMargin: font.pixelSize/2.0
+                Layout.rightMargin: font.pixelSize/2.0
+            }
+
+            DecoratedListView {
+                id: vacList
+
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                clip: true
+                focus: vacTab.SwipeView.isCurrentItem
+                // This delayed binding is necessary, or else there will be terrible delays
+                // when the user deletes all VACs -- the GUI is re-rendered after
+                // every delete, which takes very long time.
+                Binding on model {
+                    value: Array.from(VACLibrary.vacs)
+                                .filter((vac) => Librarian.matches(vac.name, vacFilter.filter))
+                    delayed: true    // Prevent intermediary values from being assigned
+                }
+
+                delegate: vacDelegate
+
+                section.property: "section"
+                section.delegate: sectionHeading
+
+                // Refresh list of maps on overscroll
+                property int refreshFlick: 0
+                onFlickStarted: {
+                    refreshFlick = atYBeginning
+                }
+                onFlickEnded: {
+                    if ( atYBeginning && refreshFlick ) {
+                        PlatformAdaptor.vibrateBrief()
+                        DataManager.mapList.startDownload()
+                    }
+                }
+
+                Label {
+                    anchors.fill: parent
+                    anchors.bottomMargin: font.pixelSize
+                    anchors.leftMargin: font.pixelSize
+                    anchors.rightMargin: font.pixelSize
+                    anchors.topMargin: font.pixelSize
+
+                    background: Rectangle {color: Global.pageBackgroundColor}
+                    visible: VACLibrary.isEmpty || (vacList.count === 0)
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment : Text.AlignVCenter
+                    textFormat: Text.RichText
+                    wrapMode: Text.Wrap
+
+                    text: VACLibrary.isEmpty
+                          ? Global.withLinkColor("<p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.") + "</p>")
+                          : qsTr("<h3>Sorry!</h3><p>No approach charts match your filter.</p>")
+                    onLinkActivated: {
+                        PlatformAdaptor.vibrateBrief()
+                        Global.openManual("forward.html#vac-tutorial")
+                    }
+
                 }
             }
         }
@@ -367,58 +477,7 @@ Page {
             Layout.fillWidth: true
             clip: true
             focus: SwipeView.isCurrentItem
-            // This delayed binding is necessary, or else there will be terrible delays
-            // when the user deletes all VACs -- the GUI is re-rendered after
-            // every delete, which takes very long time.
-            Binding on model {
-                value: VACLibrary.vacs
-                delayed: true    // Prevent intermediary values from being assigned
-            }
-
-            delegate: vacDelegate
-
-            section.property: "section"
-            section.delegate: sectionHeading
-
-            // Refresh list of maps on overscroll
-            property int refreshFlick: 0
-            onFlickStarted: {
-                refreshFlick = atYBeginning
-            }
-            onFlickEnded: {
-                if ( atYBeginning && refreshFlick ) {
-                    PlatformAdaptor.vibrateBrief()
-                    DataManager.mapList.startDownload()
-                }
-            }
-
-            Label {
-                anchors.fill: parent
-                anchors.bottomMargin: font.pixelSize
-                anchors.leftMargin: font.pixelSize
-                anchors.rightMargin: font.pixelSize
-                anchors.topMargin: font.pixelSize
-
-                background: Rectangle {color: Global.pageBackgroundColor}
-                visible: VACLibrary.isEmpty
-
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment : Text.AlignVCenter
-                textFormat: Text.RichText
-                wrapMode: Text.Wrap
-
-                text: Global.withLinkColor("<p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.") + "</p>")
-                onLinkActivated: openManual("forward.html#vac-tutorial")
-
-            }
-        }
-
-        DecoratedListView {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            clip: true
-            focus: SwipeView.isCurrentItem
-            model: DataManager.databases.downloadables
+            model: DataManager.databases.downloadables // qmllint disable unresolved-type
             delegate: MapSet {}
 
             section.property: "section"
@@ -582,11 +641,11 @@ Page {
     Connections {
         target: DataManager
         function onError (message) {
-            pg.dialogLoader.active = false
-            pg.dialogLoader.title = qsTr("Download Error")
-            pg.dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
-            pg.dialogLoader.source = "dialogs/ErrorDialog.qml"
-            pg.dialogLoader.active = true
+            Global.textDialogLoader.active = false
+            Global.textDialogLoader.title = qsTr("Download Error")
+            Global.textDialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
+            Global.textDialogLoader.source = "dialogs/ErrorDialog.qml"
+            Global.textDialogLoader.active = true
         }
     }
 
@@ -600,7 +659,6 @@ Page {
               + qsTr("Charts from downloaded collections are not affected; remove them by deleting the corresponding maps.")
 
         onAccepted: {
-            PlatformAdaptor.vibrateBrief()
             VACLibrary.clear()
             Global.toast.doToast(qsTr("Approach chart library cleared"))
         }

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 import "../items"
@@ -54,7 +54,10 @@ Page {
             textFormat: Text.RichText
             wrapMode: Text.Wrap
 
-            onLinkActivated: (link) => Qt.openUrlExternally(link)
+            onLinkActivated: (link) => {
+                PlatformAdaptor.vibrateBrief()
+                Qt.openUrlExternally(link)
+            }
         }
     }
 

@@ -25,15 +25,17 @@
 #include <QNetworkRequest>
 #include <QUrl>
 
+#include "fileFormats/CUB.h"
 #include "fileFormats/CUP.h"
 #include "fileFormats/FPL.h"
 #include "fileFormats/GeoTIFF.h"
 #include "fileFormats/MBTILES.h"
 #include "fileFormats/MapURL.h"
+#include "fileFormats/OpenAir.h"
 #include "fileFormats/PLN.h"
 #include "fileFormats/TripKit.h"
+#include "flightlog/FlightLogExportJSON.h"
 #include "geomaps/GeoJSON.h"
-#include "geomaps/OpenAir.h"
 #include "geomaps/VAC.h"
 #include "platform/FileExchange_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
@@ -52,6 +54,15 @@ Platform::FileExchange_Abstract::FileExchange_Abstract(QObject *parent)
 //
 // Methods
 //
+
+void Platform::FileExchange_Abstract::saveContent(const QByteArray& content, const QString& mimeType, const QString& fileNameSuffix, const QString& fileNameTemplate)
+{
+    Q_UNUSED(content)
+    Q_UNUSED(mimeType)
+    Q_UNUSED(fileNameSuffix)
+    Q_UNUSED(fileNameTemplate)
+}
+
 
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& path)
 {
@@ -230,11 +241,25 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         }
     }
 
-    // OpenAir
+    // CUB
     QString info;
-    if (GeoMaps::openAir::isValid(myPath, &info))
+    if (FileFormats::CUB::isValid(myPath, &info))
+    {
+        emit openFileRequest(path, info, Cub);
+        return;
+    }
+
+    // OpenAir
+    if (FileFormats::OpenAir::isValid(myPath, &info))
     {
         emit openFileRequest(path, info, OpenAir);
+        return;
+    }
+
+    // Flight log JSON (Enroute's own export format)
+    if (Flightlog::FlightLogExportJSON::isValid(myPath, &info))
+    {
+        emit openFileRequest(path, {}, FlightLogJSON);
         return;
     }
 

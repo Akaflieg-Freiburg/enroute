@@ -25,6 +25,7 @@
 
 #include "Librarian.h"
 #include "fileFormats/CUP.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/FPL.h"
 #include "fileFormats/PLN.h"
 #include "geomaps/GPX.h"
@@ -271,20 +272,11 @@ auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
         fileName = stdFileName;
     }
 
-    QFile file(fileName);
-    auto success = file.open(QIODevice::WriteOnly);
-    if (!success)
+    QString error;
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileName, GeoJSON(), &error))
     {
-        return tr("Unable to open the file '%1' for writing.").arg(fileName);
+        return tr("Unable to write to file '%1': %2").arg(fileName, error);
     }
-    auto numBytesWritten = file.write(GeoJSON());
-    if (numBytesWritten == -1)
-    {
-        file.close();
-        QFile::remove(fileName);
-        return tr("Unable to write to file '%1'.").arg(fileName);
-    }
-    file.close();
     return {};
 }
 

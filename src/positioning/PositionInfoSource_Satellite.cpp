@@ -48,6 +48,12 @@ Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject 
 
 void Positioning::PositionInfoSource_Satellite::startUpdates()
 {
+    // createDefaultSource() returns nullptr on systems without a positioning
+    // backend; the constructor and updateStatusString() already handle that.
+    if (source == nullptr)
+    {
+        return;
+    }
     source->startUpdates();
 }
 

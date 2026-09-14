@@ -19,8 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 import "../items"
@@ -46,7 +45,7 @@ Page {
         Label {
                 id: lbl1
                 textFormat: Text.StyledText
-                text: qsTr("
+                text: qsTr(`
 <h3>Participate in the development</h3>
 
 <p>We have great plans for <strong>Enroute Flight
@@ -68,13 +67,16 @@ required.</p>
 with the programming, please get in touch with us by
 opening a GitHub issue. We are grateful for any help we
 can get.</p>
-")
+`)
                 width: sView.availableWidth
                 wrapMode: Text.Wrap
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: (link) => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally(link)
+                }
             }
     }
 

@@ -72,10 +72,12 @@ static QByteArray nightVersionOf(const QString& fileName)
 GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
+    // Listen on the loopback interface only. The server hands out map tiles,
+    // aviation data and Qt resources to the map renderer in this process and
+    // must not be reachable from the local network.
     auto* localServer = new QTcpServer();
-    localServer->listen();
+    localServer->listen(QHostAddress::LocalHost);
     bind(localServer);
-//    listen(QHostAddress(QStringLiteral("127.0.0.1")));
 
 #if defined(Q_OS_IOS)
     connect(qGuiApp,
@@ -231,6 +233,18 @@ void GeoMaps::TileServer::restart()
 
     if (serverPortChanged)
     {
+        // The TileJSON documents served by the tile handlers contain the
+        // server URL. Bring them up to date.
+        auto URL = serverUrl();
+        for (auto iter = m_tileHandlers.cbegin(); iter != m_tileHandlers.cend(); ++iter)
+        {
+            if (iter.value().isNull())
+            {
+                continue;
+            }
+            iter.value()->setBaseURL(URL + "/" + iter.key());
+        }
         emit serverUrlChanged();
     }
 }
+

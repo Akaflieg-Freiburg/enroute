@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -84,11 +84,10 @@ CenteringDialog {
     standardButtons: Dialog.Cancel|Dialog.Ok
 
     onAccepted: {
-        PlatformAdaptor.vibrateBrief()
         GlobalSettings.alwaysOpenExternalWebsites = alwaysOpen.checked
         if (openExternally)
             Qt.openUrlExternally(url)
         else
-            stackView.push("../pages/URLResolver.qml", {mapURL: url})
+            Global.stackView.push("../pages/URLResolver.qml", {mapURL: url})
     }
 }

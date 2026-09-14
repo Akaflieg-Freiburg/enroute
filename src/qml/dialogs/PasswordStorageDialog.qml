@@ -19,8 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
@@ -36,7 +35,7 @@ CenteringDialog {
     Label {
         width: dlg.availableWidth
 
-        text: qsTr("<p><strong>Enroute Flight Navigation</strong> is now connected to the traffic data receiver in the WiFi network <strong>%1</strong>.</p>").arg(dialogArgs)
+        text: qsTr("<p><strong>Enroute Flight Navigation</strong> is now connected to the traffic data receiver in the WiFi network <strong>%1</strong>.</p>").arg(dlg.dialogArgs)
               +qsTr("<p>Would you like to store the password for the traffic data receiver? Note that the stored password will not be encrypted. You can clear the password storage from the setting page.</p>")
         textFormat: Text.RichText
         wrapMode: Text.Wrap
@@ -56,6 +55,6 @@ CenteringDialog {
 
     }
 
-    onAccepted: PasswordDB.setPassword(dialogArgs, dialogLoader.text)
+    onAccepted: PasswordDB.setPassword(dialogArgs, Global.textDialogLoader.text)
 
 } // Dialog

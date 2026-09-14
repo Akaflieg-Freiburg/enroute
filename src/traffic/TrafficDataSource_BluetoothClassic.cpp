@@ -22,6 +22,12 @@
 
 #include "traffic/TrafficDataSource_BluetoothClassic.h"
 
+// Maximum length of a single line read from the device. A longer line is split
+// across reads rather than buffered whole, which bounds memory use should the
+// device stream data without a newline. Legitimate FLARM/NMEA lines are far
+// shorter.
+constexpr qint64 maxLineLength = 1024;
+
 
 Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent) :
     TrafficDataSource_AbstractSocket(isCanonical, parent),
@@ -150,7 +156,7 @@ void Traffic::TrafficDataSource_BluetoothClassic::onStateChanged(QBluetoothSocke
 void Traffic::TrafficDataSource_BluetoothClassic::onReadyRead()
 {
     QString sentence;
-    while(m_textStream.readLineInto(&sentence) )
+    while(m_textStream.readLineInto(&sentence, maxLineLength) )
     {
         emit dataReceived(sentence);
         processFLARMData(sentence);

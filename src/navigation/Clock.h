@@ -182,8 +182,13 @@ signals:
     void timeChanged();
 
 private:
-    // Sets a single shot timer to emit timeChanged just after the full minute
+    // Sets a single shot timer that calls updateTime() just after the full minute
     void setSingleShotTimer();
+
+    // Emits timeChanged, and dateChanged if the date differs from the last one seen
+    void updateTime();
+
+    QDate m_lastDate {QDate::currentDate()};
 };
 
 } // namespace Navigation

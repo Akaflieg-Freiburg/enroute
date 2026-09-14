@@ -42,7 +42,20 @@ Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(bool isCanonical, QString 
     connect(&m_socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Tcp::onErrorOccurred);
     connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Tcp::onReadyRead);
     connect(&m_socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Tcp::onStateChanged);
-    connect(&m_socket, &QAbstractSocket::disconnected, this, &Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver, Qt::ConnectionType::QueuedConnection);
+    connect(&m_socket, &QAbstractSocket::disconnected, this, [this]() {
+        // Auto-reconnect only while a connection is still wanted.
+        if (m_connectionDesired)
+        {
+            connectToTrafficReceiver();
+        }
+    }, Qt::ConnectionType::QueuedConnection);
+
+    // Socket options only take effect once the underlying socket exists, which
+    // is guaranteed after "connected" has been emitted.
+    connect(&m_socket, &QAbstractSocket::connected, this, [this]() {
+        m_socket.setSocketOption(QAbstractSocket::LowDelayOption, 1);
+        m_socket.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
+    });
 
     // Set up text stream
     m_textStream.setDevice(&m_socket);
@@ -73,10 +86,9 @@ void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
     resetPasswordLifecycle();
 
     // Start new connection
+    m_connectionDesired = true;
     m_socket.abort();
     setErrorString();
-    m_socket.setSocketOption(QAbstractSocket::LowDelayOption, 1);
-    m_socket.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_socket.connectToHost(m_hostName, m_port);
     m_textStream.setDevice(&m_socket);
 
@@ -88,6 +100,10 @@ void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 {
     // Reset password lifecycle
     resetPasswordLifecycle();
+
+    // No longer want a connection, so that aborting the socket below does not
+    // trigger the automatic reconnect wired to the "disconnected" signal.
+    m_connectionDesired = false;
 
     // Disconnect socket.
     m_socket.abort();
@@ -150,9 +166,10 @@ void Traffic::TrafficDataSource_Tcp::setPassword(const QString& SSID, const QStr
         // emit a password storage request if appropriate
         auto* passwordDB = GlobalObject::passwordDB();
         if (!passwordDB->contains(passwordRequest_SSID) ||
-            (passwordDB->password(passwordRequest_SSID) != passwordRequest_password)) {
-            emit passwordStorageRequest(passwordRequest_SSID, passwordRequest_password);
+            (passwordDB->password(passwordRequest_SSID) != password)) {
+            emit passwordStorageRequest(passwordRequest_SSID, password);
         }
+        resetPasswordLifecycle();
         return;
     }
 

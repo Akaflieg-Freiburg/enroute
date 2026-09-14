@@ -287,9 +287,23 @@ signals:
     /*! \brief Notifier signal */
     void downloadingChanged();
 
+    /*! \brief Warning that a local file is about to change
+     *
+     * This signal is emitted just before a local file is overwritten with new
+     * data or deleted. It indicates that all users should stop using the file
+     * immediately and release any open handle to it: Windows refuses to
+     * replace or delete a file that is open. This signal is always followed
+     * by the signal fileContentChanged(), which indicates that the local file
+     * can be used again. Group classes forward the signal of their members.
+     *
+     * @param localFileName Name of the local file that is about to change
+     */
+    void aboutToChangeFile(QString localFileName);
+
     /*! \brief Download error
      *
      * This signal is emitted if the download process fails for whatever reason.
+
      * Once the signal is emitted, the download process is deleted and no
      * further actions will take place. The local file will not be touched.
      *

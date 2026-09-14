@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -99,6 +99,7 @@ CenteringDialog {
 
 
             onClicked: {
+                PlatformAdaptor.vibrateBrief()
                 read = !read
                 NOTAMProvider.setRead(delItem.model.modelData.number, read)
                 if (read)
@@ -130,7 +131,7 @@ CenteringDialog {
         anchors.fill: parent
 
         Label { // Second header line with distance and QUJ
-            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)
+            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), notamListDialog.waypoint.coordinate)
             visible: PositionProvider.receivingPositionInfo
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -172,7 +173,6 @@ CenteringDialog {
                 color: "yellow"
                 opacity: 0.2
             }
-
         }
 
         DecoratedListView {
@@ -184,13 +184,24 @@ CenteringDialog {
 
             clip: true
 
-            model: notamListDialog.notamList.notams
+            model: Array.from(notamListDialog.notamList.notams) // qmllint disable unresolved-type
 
             section.property: "sectionTitle"
             section.delegate: sectionHeading
 
             delegate: notamDelegate
 
+            Label {
+                anchors.fill: parent
+                anchors.topMargin: font.pixelSize*2
+
+                visible: (notamlistview.count === 0)
+                horizontalAlignment: Text.AlignHCenter
+                textFormat: Text.StyledText
+                wrapMode: Text.Wrap
+
+                text: qsTr("<h3>Sorry!</h3><p>No NOTAMs match your filter.</p>")
+            }
         }
 
         CheckDelegate {
@@ -200,6 +211,7 @@ CenteringDialog {
 
             checked: GlobalSettings.expandNotamAbbreviations
 
+            onClicked: PlatformAdaptor.vibrateBrief()
             onCheckedChanged: {
                 GlobalSettings.expandNotamAbbreviations = checked
             }

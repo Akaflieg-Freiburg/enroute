@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QFileDevice>
 #include <QFile>
 #include <QObject>
 #include <QSharedPointer>
@@ -100,6 +101,26 @@ public:
      *  The file might have an error condition set.
      */
     [[nodiscard]] static QSharedPointer<QFile> openFileURL(const QString& fileName);
+
+    /*! \brief Write data to a file atomically
+     *
+     *  The data is written through a QSaveFile, so that an existing file at
+     *  the path is either replaced completely or left untouched, even if the
+     *  app is killed while writing.
+     *
+     *  @param path Path of the file to write
+     *
+     *  @param data Content to write
+     *
+     *  @param error If non-null, receives a human-readable error message on failure
+     *
+     *  @param permissions If non-empty, the permissions to set on the file
+     *  before it replaces the old one (e.g. owner read/write only for files
+     *  with secrets). If empty, the default permissions apply.
+     *
+     *  @returns True on success
+     */
+    [[nodiscard]] static bool saveFileAtomically(const QString& path, const QByteArray& data, QString* error = nullptr, QFileDevice::Permissions permissions = {});
 
 protected:
     void addWarning(const QString& warning) { m_warnings += warning; }

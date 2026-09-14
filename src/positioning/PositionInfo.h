@@ -100,7 +100,7 @@ public:
      *  @returns Elevation of the terrain at position, or
      *  NaN if the terrain elevation is unknown
      */
-    [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL();
+    [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL() const;
 
     /*! \brief Timestamp
      *
@@ -125,7 +125,7 @@ public:
      *  @returns True altitude with geoid correction taken into account or NaN
      *  if unknown.
      */
-    [[nodiscard]] Q_INVOKABLE Units::Distance trueAltitudeAGL();
+    [[nodiscard]] Q_INVOKABLE Units::Distance trueAltitudeAGL() const;
 
     /*! \brief True Altitude above main sea level
      *
@@ -196,8 +196,8 @@ public:
 private:
     QGeoPositionInfo m_positionInfo;
     QString m_source;
-    Units::Distance m_terrainAMSL;
-    Units::Distance m_trueAltitudeAGL;
+    mutable Units::Distance m_terrainAMSL;
+    mutable Units::Distance m_trueAltitudeAGL;
 };
 
 } // namespace Positioning

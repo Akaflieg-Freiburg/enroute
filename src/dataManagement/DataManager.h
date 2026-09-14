@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QJsonDocument>
 #include <QQmlEngine>
 #include <QStandardPaths>
 
@@ -237,6 +238,22 @@ public:
      */
     Q_INVOKABLE QString importOpenAir(const QString& fileName, const QString& newName);
 
+    /*! \brief Import airspace data into the library of locally installed
+     * maps
+     *
+     * This method imports airspace data in CUB format into the
+     * library of locally installed maps.
+     *
+     * @param fileName File name of an airspace data file in CUB format.
+     *
+     * @param newName Name under which the map is available in the library. If
+     * the name exists, the library entry will be replaced.
+     *
+     * @returns A human-readable HTML string on error, or an empty string on
+     * success
+     */
+    Q_INVOKABLE QString importCub(const QString& fileName, const QString& newName);
+
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items
      *
@@ -263,6 +280,11 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(DataManager)
+
+    // Shared backend for importOpenAir and importCub: reports parse errors as
+    // an HTML string, or writes the GeoJSON document to the directory of
+    // manually imported maps. Returns an empty string on success.
+    QString saveAirspaceJson(const QJsonDocument& json, const QStringList& errors, const QString& newName);
 
     // Clean the data directory.
     //

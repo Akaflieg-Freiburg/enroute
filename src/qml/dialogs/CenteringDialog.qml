@@ -19,12 +19,13 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
 Dialog {
+    id: centeringDialog
+
     parent: Overlay.overlay
 
     // Control that receives active focus when the dialog opens — e.g. a list, so
@@ -32,11 +33,28 @@ Dialog {
     // text field. Mirrors the page-level convention read by main.qml. Dialogs
     // that leave it null are unaffected.
     property Item defaultFocusItem: null
-    focus: defaultFocusItem !== null
     onOpened: if (defaultFocusItem) defaultFocusItem.forceActiveFocus()
 
-    property real avHeight: ((Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height)-2*font.pixelSize-SafeInsets.top-SafeInsets.bottom
-    property real avWidth: ((Qt.platform.os === "android") ? SafeInsets.wWidth : parent.width)-2*font.pixelSize-SafeInsets.left-SafeInsets.right
+    // Take focus while open. Qt closes a focused popup on Escape and, on
+    // Android, on the Back key; without focus the Back key would fall through
+    // to the page below and pop it (or quit the app) behind the dialog.
+    focus: true
+
+    // Close on release outside rather than on press outside. The Android back
+    // gesture delivers a touch press at the screen edge before the gesture is
+    // recognised and cancelled; with CloseOnPressOutside that press closed the
+    // dialog, and the Back key that followed then hit an app with no dialog
+    // and closed a page or the app instead.
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnReleaseOutside
+
+    // Haptic feedback for the standard buttons (and for Return/Escape/Back).
+    // Derived dialogs must not call vibrateBrief() in their own onAccepted /
+    // onRejected handlers, or the device vibrates twice.
+    onAccepted: PlatformAdaptor.vibrateBrief()
+    onRejected: PlatformAdaptor.vibrateBrief()
+
+    property real avHeight: parent.height-2*font.pixelSize-SafeInsets.top-SafeInsets.bottom
+    property real avWidth: parent.width-2*font.pixelSize-SafeInsets.left-SafeInsets.right
 
     // We center the dialog manually, taking care of safe insets
     x: SafeInsets.left + font.pixelSize + (avWidth-width)/2.0
@@ -44,7 +62,7 @@ Dialog {
 
     // Delays evaluation and prevents binding loops
     Binding on height {
-        value: Math.min(avHeight, implicitHeight)
+        value: Math.min(centeringDialog.avHeight, centeringDialog.implicitHeight)
         delayed: true    // Prevent intermediary values from being assigned
     }
 

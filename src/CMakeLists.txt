@@ -1,4 +1,36 @@
 #
+# Flight log feature flag (option FLIGHTLOG in the top-level CMakeLists.txt)
+#
+# The flight log is work in progress. Its sources (src/flightlog, the Android
+# FlightLogService, the flight log QML files and Qt Sql) are always compiled, so
+# that all QML references stay valid. The option only decides whether the
+# feature is reachable by the user: it sets GlobalSettings.flightLogEnabled
+# (hides the menu entry and forces autoFlightDetection to false, which is the
+# single choke point for the Android foreground service and for "always"
+# location on iOS), and it decides whether the store-facing declarations below
+# end up in the generated AndroidManifest.xml and Info.plist.
+#
+
+if(FLIGHTLOG)
+    set(FLIGHTLOG_ANDROID_PERMISSIONS [[  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>]])
+    set(FLIGHTLOG_ANDROID_SERVICE [[<service
+      android:name="de.akaflieg_freiburg.enroute.FlightLogService"
+      android:foregroundServiceType="location"
+      android:exported="false"/>]])
+    set(FLIGHTLOG_ANDROID_BACKGROUND_RUNNING true)
+    set(FLIGHTLOG_IOS_BACKGROUND_MODES [[<key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+    </array>]])
+else()
+    set(FLIGHTLOG_ANDROID_PERMISSIONS "")
+    set(FLIGHTLOG_ANDROID_SERVICE "")
+    set(FLIGHTLOG_ANDROID_BACKGROUND_RUNNING false)
+    set(FLIGHTLOG_IOS_BACKGROUND_MODES "")
+endif()
+
+#
 # Configure files
 #
 
@@ -38,12 +70,14 @@ set(SOURCES
     dataManagement/Downloadable_SingleFile.h
     dataManagement/SSLErrorHandler.h
     fileFormats/CSV.h
+    fileFormats/CUB.h
     fileFormats/CUP.h
     fileFormats/DataFileAbstract.h
     fileFormats/FPL.h
     fileFormats/GeoTIFF.h
     fileFormats/MapURL.h
     fileFormats/MBTILES.h
+    fileFormats/OpenAir.h
     fileFormats/PLN.h
     fileFormats/TIFF.h
     fileFormats/TripKit.h
@@ -54,7 +88,6 @@ set(SOURCES
     geomaps/GeoJSON.h
     geomaps/GeoMapProvider.h
     geomaps/GPX.h
-    geomaps/OpenAir.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
     geomaps/Waypoint.h
@@ -70,6 +103,15 @@ set(SOURCES
     navigation/BaroCache.h
     navigation/Clock.h
     navigation/FlightRoute.h
+    flightlog/Flight.h
+    flightlog/FlightDetector.h
+    flightlog/AirplaneFlightDetector.h
+    flightlog/FlightLog.h
+    flightlog/FlightLogExportForeFlight.h
+    flightlog/FlightLogExportJSON.h
+    flightlog/FlightLogStorage.h
+    flightlog/FlightRecorder.h
+    flightlog/FlightTrack.h
     navigation/Leg.h
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
@@ -84,7 +126,6 @@ set(SOURCES
     platform/FileExchange_Abstract.h
     platform/PlatformAdaptor.h
     platform/PlatformAdaptor_Abstract.h
-    platform/SafeInsets_Abstract.h
     positioning/Geoid.h
     positioning/PositionInfo.h
     positioning/PositionInfoSource_Abstract.h
@@ -143,12 +184,14 @@ set(SOURCES
     dataManagement/SSLErrorHandler.cpp
     DemoRunner.cpp
     fileFormats/CSV.cpp
+    fileFormats/CUB.cpp
     fileFormats/CUP.cpp
     fileFormats/DataFileAbstract.cpp
     fileFormats/FPL.cpp
     fileFormats/GeoTIFF.cpp
     fileFormats/MapURL.cpp
     fileFormats/MBTILES.cpp
+    fileFormats/OpenAir.cpp
     fileFormats/PLN.cpp
     fileFormats/TIFF.cpp
     fileFormats/TripKit.cpp
@@ -158,7 +201,6 @@ set(SOURCES
     geomaps/GeoJSON.cpp
     geomaps/GeoMapProvider.cpp
     geomaps/GPX.cpp
-    geomaps/OpenAir.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
@@ -174,8 +216,17 @@ set(SOURCES
     navigation/Atmosphere.cpp
     navigation/BaroCache.cpp
     navigation/Clock.cpp
+    flightlog/Flight.cpp
+    flightlog/AirplaneFlightDetector.cpp
+    flightlog/FlightLog.cpp
+    flightlog/FlightLogExportForeFlight.cpp
+    flightlog/FlightLogExportJSON.cpp
+    flightlog/FlightLogStorage.cpp
+    flightlog/FlightRecorder.cpp
     navigation/FlightRoute.cpp
+    navigation/FlightRoute_FPL.cpp
     navigation/FlightRoute_GPX.cpp
+    navigation/FlightRoute_PLN.cpp
     navigation/Leg.cpp
     navigation/Navigator.cpp
     navigation/RemainingRouteInfo.cpp
@@ -188,7 +239,6 @@ set(SOURCES
     notification/NotificationManager.cpp
     platform/FileExchange_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp
-    platform/SafeInsets_Abstract.cpp
     positioning/Geoid.cpp
     positioning/PositionInfo.cpp
     positioning/PositionInfoSource_Abstract.cpp
@@ -238,8 +288,6 @@ set(SOURCES
     weather/TAF.cpp
     weather/WeatherDataProvider.cpp
     weather/Wind.cpp
-
-    ${HEADERS}
 )
 
 #
@@ -300,8 +348,7 @@ if(ANDROID)
         platform/FileExchange_Android.cpp
         platform/PlatformAdaptor_Android.h
         platform/PlatformAdaptor_Android.cpp
-        platform/SafeInsets_Android.h
-        platform/SafeInsets_Android.cpp
+        android/src/de/akaflieg_freiburg/enroute/FlightLogService.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
         android/src/de/akaflieg_freiburg/enroute/UsbSerialHelper.java
@@ -309,7 +356,7 @@ if(ANDROID)
     )
 
     # Copy manual and other files into the Android directories
-    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION android/assets)
+    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION android/assets PATTERN ".git*" EXCLUDE)
     file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
     file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
@@ -330,9 +377,9 @@ if(ANDROID)
 
     qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
     qt_import_plugins(${PROJECT_NAME}
-        INCLUDE_BY_TYPE imageformats Qt::QSvgPlugin Qt::QJpegPlugin Qt::QWebpPlugin  Qt::QTiffPlugin Qt::QPngPlugin
+        INCLUDE_BY_TYPE imageformats Qt::QSvgPlugin Qt::QJpegPlugin Qt::QWebpPlugin  Qt::QTiffPlugin
         INCLUDE_BY_TYPE geoservices QMapLibre::PluginGeoServices
-        EXCLUDE_BY_TYPE platforminputcontexts qmltooling
+        EXCLUDE_BY_TYPE platforminputcontexts qmltooling multimedia
     )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
@@ -344,8 +391,9 @@ if(ANDROID)
     add_android_openssl_libraries(${PROJECT_NAME})
     qmaplibre_location_setup_plugins(${PROJECT_NAME})
     set_target_properties(${PROJECT_NAME} PROPERTIES
+        QT_ANDROID_PACKAGE_NAME "de.akaflieg_freiburg.enroute"
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
-        QT_ANDROID_TARGET_SDK_VERSION 35
+        QT_ANDROID_TARGET_SDK_VERSION 36
         QT_ANDROID_MIN_SDK_VERSION 28
     )
 
@@ -376,8 +424,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         platform/FileExchange_Linux.cpp
         platform/PlatformAdaptor_Linux.h
         platform/PlatformAdaptor_Linux.cpp
-        platform/SafeInsets_Desktop.h
-        platform/SafeInsets_Desktop.cpp
     )
 
 # Compile definitions
@@ -406,7 +452,7 @@ target_precompile_headers(${PROJECT_NAME}
 )
 
 # Install (the executable itself is installed by the shared rule near the end of this file)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual DESTINATION ${CMAKE_INSTALL_DOCDIR} PATTERN ".git*" EXCLUDE)
 endif()
 
 
@@ -430,8 +476,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         platform/FileExchange_MacOS.cpp
         platform/PlatformAdaptor_MacOS.h
         platform/PlatformAdaptor_MacOS.cpp
-        platform/SafeInsets_Desktop.h
-        platform/SafeInsets_Desktop.cpp
     )
 
     # Compile definitions
@@ -470,14 +514,10 @@ if (IOS)
         platform/FileExchange_iOS.cpp
         platform/PlatformAdaptor_iOS.h
         platform/PlatformAdaptor_iOS.cpp
-        platform/SafeInsets_iOS.h
-        platform/SafeInsets_iOS.cpp
         ios/ObjCAdapter.mm
         ios/ObjCAdapter.h
         ios/ObjectiveC.h
         ios/ObjectiveC.m
-        ios/SafeAreaService.h
-        ios/SafeAreaService.m
     )
 
     # Compile definitions
@@ -490,6 +530,7 @@ if (IOS)
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ${ENROUTE_COMMON_LIBRARIES}
+        "-framework UserNotifications"
         Qt6::Location
         Qt6::Sensors
         Qt6::WebView
@@ -516,6 +557,7 @@ if (IOS)
     #Resources
     set(bundle_resources
         "ios/Assets.xcassets"
+        "ios/cs.lproj"
         "ios/de.lproj"
         "ios/en.lproj"
         "ios/es.lproj"
@@ -547,6 +589,7 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteOGN/lib
     dataManagement
     fileFormats
+    flightlog
     geomaps
     navigation
     notam
@@ -557,10 +600,13 @@ target_include_directories(${PROJECT_NAME}
     ui
     units
     weather
-    nunicode/include
 )
 
-set_source_files_properties(qml/items/Global.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+set_source_files_properties(qml/items/Global.qml qml/items/SafeInsets.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+# The flight log is under active development; its QML is not linted until it is
+# done. Remove this when pages/FlightLogPage.qml and dialogs/FlightLogEntryEditor.qml
+# are clean under `cmake --build <dir> --target all_qmllint`.
+set_source_files_properties(qml/dialogs/FlightLogEntryEditor.qml qml/pages/FlightLogPage.qml PROPERTIES QT_QML_SKIP_QMLLINT TRUE)
 qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute
     VERSION 1.0
@@ -568,6 +614,7 @@ qt_add_qml_module(${PROJECT_NAME}
     DEPENDENCIES
     QtPositioning
     QtQuick
+    QtTextToSpeech
     QML_FILES
     qml/main.qml
     qml/dialogs/AddBTDeviceDialog.qml
@@ -575,6 +622,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/ConnectionInfoDialog.qml
     qml/dialogs/LongTextDialog.qml
     qml/dialogs/AircraftSaveDialog.qml
+    qml/dialogs/FlightLogEntryEditor.qml
     qml/dialogs/ErrorDialog.qml
     qml/dialogs/FirstRunDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml
@@ -588,22 +636,20 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
     qml/items/AppWindow.qml
-    qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml
     qml/items/DecoratedListView.qml
     qml/items/DecoratedScrollView.qml
     qml/items/DegreeInput.qml
+    qml/items/DialogLoader.qml
     qml/items/ElevationInput.qml
+    qml/items/FilterField.qml
     qml/items/FlightMap.qml
     qml/items/FlightVector.qml
     qml/items/Footer.qml
-    qml/items/+Material/Footer.qml
     qml/items/Global.qml
     qml/items/Icon.qml
-    qml/items/+Material/Icon.qml
     qml/items/ImportManager.qml
     qml/items/MapButton.qml
-    qml/items/+Material/MapButton.qml
     qml/items/MapSet.qml
     qml/items/MFM.qml
     qml/items/MyTextField.qml
@@ -611,11 +657,12 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/NotificationArea.qml
     qml/items/NotificationButton.qml
     qml/items/PageHeader.qml
-    qml/items/+Material/PageHeader.qml
     qml/items/RemainingRouteBar.qml
+    qml/items/SafeInsets.qml
     qml/items/Sideview.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml
+    qml/items/Toast.qml
     qml/items/Traffic.qml
     qml/items/TrafficLabel.qml
     qml/items/WaypointDelegate.qml
@@ -629,6 +676,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/BugReportPage.qml
     qml/pages/ConnectionManager.qml
     qml/pages/DonatePage.qml
+    qml/pages/FlightLogPage.qml
     qml/pages/FlightRouteEditor.qml
     qml/pages/FlightRouteLibrary.qml
     qml/pages/InfoPage.qml

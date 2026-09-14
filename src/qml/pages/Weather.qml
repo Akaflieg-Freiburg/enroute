@@ -18,8 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -56,7 +59,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                Global.stackView.pop()
             }
         }
 
@@ -69,7 +72,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: parent.right
 
-            text: stackView.currentItem.title
+            text: (Global.stackView.currentItem as T.Page).title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -81,6 +84,7 @@ Page {
 
             Item {
                 id: stationItem
+                required property var model
                 width: stationList.width
                 height: idel.height
 
@@ -92,13 +96,14 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     dlgLoader.setSource("../dialogs/MetarTafDialog.qml",
                                         {"weatherStation": model.modelData})
-                    dlgLoader.item.open()
+                    var dialog = dlgLoader.item as T.Popup
+                    dialog.open()
                 }
 
                 // Color according to METAR/FAA flight category
                 Rectangle {
                     anchors.fill: parent
-                    color: model.modelData.metar.isValid ? model.modelData.metar.flightCategoryColor : "transparent"
+                    color: stationItem.model.modelData.metar.isValid ? stationItem.model.modelData.metar.flightCategoryColor : "transparent"
                     opacity: 0.2
                 }
 
@@ -108,18 +113,18 @@ Page {
 
                     id: idel
                     text: {
-                        var result = model.modelData.waypoint.twoLineTitle
+                        var result = stationItem.model.modelData.waypoint.twoLineTitle
 
-                        var wayTo = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.waypoint.coordinate)
+                        var wayTo = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), stationItem.model.modelData.waypoint.coordinate)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
-                        if (model.modelData.metar.isValid)
-                            result = result + "<br>" + model.modelData.metar.summary(Navigator.aircraft, Clock.time)
+                        if (stationItem.model.modelData.metar.isValid)
+                            result = result + "<br>" + stationItem.model.modelData.metar.summary(Navigator.aircraft, Clock.time)
 
                         return result
                     }
-                    icon.source: model.modelData.waypoint.icon
+                    icon.source: stationItem.model.modelData.waypoint.icon
                     icon.color: "transparent"
 
                     width: parent.width
@@ -133,21 +138,39 @@ Page {
         id: obsList
     }
 
-    DecoratedListView {
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
+
+        FilterField {
+            id: stationFilter
+
+            // Return opens the top hit.
+            listView: stationList
+
+            Layout.fillWidth: true
+            Layout.leftMargin: font.pixelSize/2.0
+            Layout.rightMargin: font.pixelSize/2.0
+        }
+
+        DecoratedListView {
             id: stationList
 
-            anchors.fill: parent
-            anchors.leftMargin: SafeInsets.left
-            anchors.rightMargin: SafeInsets.right
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
             clip: true
 
-            model: obsList.observers
+            model: Array.from(obsList.observers) // qmllint disable unresolved-type
+                        .filter((observer) => Librarian.matches(
+                                    observer.waypoint.name + " " + observer.waypoint.ICAOCode,
+                                    stationFilter.filter))
             delegate: stationDelegate
 
             Rectangle {  // No data label
                 anchors.fill: parent
-                color: "white"
+                color: Global.pageBackgroundColor
                 visible: stationList.count === 0
 
                 Text {
@@ -161,7 +184,9 @@ Page {
                     verticalAlignment: Text.AlignVCenter
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
-                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. Updates will be requested automatically.</p>")
+                    text: (stationFilter.filter === "")
+                          ? qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. Updates will be requested automatically.</p>")
+                          : qsTr("<h3>Sorry!</h3><p>No weather stations match your filter.</p>")
                 }
             }
 
@@ -193,6 +218,7 @@ Page {
             }
 
         }
+    }
 
     footer: Footer {
         visible: (sunLabel.text !== "") || (qnhLabel.text !== "")
@@ -242,6 +268,6 @@ Page {
 
     Loader {
         id: dlgLoader
-        onLoaded: item.open()
+        onLoaded: (item as T.Popup).open()
     }
 } // Page

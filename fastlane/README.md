@@ -72,7 +72,7 @@ Build Android Binary
 [bundle exec] fastlane android metadata
 ```
 
-Updata Meta Data for Google Play
+Update Meta Data for Google Play
 
 ### android validate
 

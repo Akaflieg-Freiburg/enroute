@@ -1,0 +1,7 @@
+/*
+  InfoPlist.strings
+  enroute
+*/
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Pro navigaci je vyžadován přístup k poloze";
+"NSLocationWhenInUseUsageDescription" = "Pro navigaci je vyžadován přístup k poloze";
+"NSMotionUsageDescription" = "Enroute potřebuje toto oprávnění k měření aktuálního tlaku";

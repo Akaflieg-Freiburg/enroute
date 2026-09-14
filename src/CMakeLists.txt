@@ -557,6 +557,7 @@ if (IOS)
     #Resources
     set(bundle_resources
         "ios/Assets.xcassets"
+        "ios/cs.lproj"
         "ios/de.lproj"
         "ios/en.lproj"
         "ios/es.lproj"

@@ -2,17 +2,54 @@
 # You can find the documentation at https://docs.fastlane.tools
 
 require 'json'
+require 'shellwords'
 
 default_platform(:android)
+
+# Returns the application version declared in the project() call of
+# CMakeLists.txt, e.g. "3.5.0".
+def cmake_project_version
+  match = File.read("../CMakeLists.txt").match(/^project\s*\(\s*enroute\s+VERSION\s+(\d+\.\d+\.\d+)/)
+  UI.user_error!("Could not find the project version in CMakeLists.txt") if match.nil?
+  match[1]
+end
 
 # Returns the most recent released version in CHANGELOG.md, together with its
 # release notes. Only headings of the form "## [MAJOR.MINOR.PATCH] - DATE" are
 # considered, so that the "## [Unreleased]" section that is present during
 # development is skipped instead of being mistaken for a version number.
+#
+# Every caller publishes something under this version number, so the version is
+# also checked against CMakeLists.txt. A mismatch typically means that the
+# "## [Unreleased]" heading has not yet been renamed for the new release.
 def latest_changelog_entry
   match = File.read("../CHANGELOG.md").match(/^##\s+\[?(\d+\.\d+\.\d+)\]?\s*-[^\n]*\n(.*?)(?=^##\s|\z)/m)
   UI.user_error!("Could not find version information in CHANGELOG.md") if match.nil?
-  [match[1], match[2].strip]
+  changelog_version = match[1]
+  project_version = cmake_project_version
+  if changelog_version != project_version
+    UI.user_error!("Version mismatch: CHANGELOG.md lists #{changelog_version} as the latest release, " \
+                   "but CMakeLists.txt declares version #{project_version}. " \
+                   "Rename the '## [Unreleased]' heading in CHANGELOG.md to '## [#{project_version}] - YYYY-MM-DD'.")
+  end
+  [changelog_version, match[2].strip]
+end
+
+# Directory of the Qt kit for the machine this lane runs on: Qt6_DIR_MACOS on
+# macOS, Qt6_DIR_LINUX on Linux. Used by lanes that merely configure the CMake
+# project to obtain generated files, which do not depend on the platform.
+def desktop_qt_dir
+  on_mac = FastlaneCore::Helper.mac?
+  variable = on_mac ? 'Qt6_DIR_MACOS' : 'Qt6_DIR_LINUX'
+  dir = ENV[variable].to_s
+  if dir.empty?
+    UI.user_error!("Please set #{variable} to the Qt installation to use, " \
+                   "e.g. ~/Qt/6.9.3/#{on_mac ? 'macos' : 'gcc_64'}")
+  end
+  unless File.executable?("#{dir}/bin/qt-cmake")
+    UI.user_error!("#{variable}=#{dir} is not a Qt installation: bin/qt-cmake not found")
+  end
+  dir
 end
 
 # Google Play version code for a "MAJOR.MINOR.PATCH" version string. Must agree
@@ -257,23 +294,28 @@ end
 
 desc "Create Flathub test build for release"
 lane :flathubRelease do
-  # Clean up previous builds
-  FileUtils.rm_rf('../build/build-linux-release')
+  # This lane does not compile anything. It configures the CMake project once,
+  # to obtain the generated flatpak manifest and AppStream metainfo, and then
+  # works with those files. The generated files do not depend on the platform,
+  # so the lane runs on macOS as well as on Linux, against whichever desktop
+  # Qt kit is available. The configure tree is kept separate from the trees
+  # used by the binary-building lanes.
+  build_dir = '../build/build-flathub'
+  FileUtils.rm_rf(build_dir)
   
   # Configure CMake build
-  qt6_linux_dir = ENV['Qt6_DIR_LINUX']
   cmake_config_cmd = [
-    "#{qt6_linux_dir}/bin/qt-cmake",
+    "#{desktop_qt_dir}/bin/qt-cmake",
     '-G Ninja',
     '-DCMAKE_BUILD_TYPE:STRING=Release',
     '-S ..',
-    '-B ../build/build-linux-release'
+    "-B #{build_dir}"
   ].join(' ')
   
   # Execute CMake configuration
   sh(cmake_config_cmd)
   
-  manifest_path = '../build/build-linux-release/packaging/flatpak/de.akaflieg_freiburg.enroute.json'
+  manifest_path = "#{build_dir}/packaging/flatpak/de.akaflieg_freiburg.enroute.json"
 
   # The Flathub build runs packaging/flatpak/inject_releases.py to splice the
   # changelog into the AppStream metainfo, which is how release notes are
@@ -281,7 +323,7 @@ lane :flathubRelease do
   # configured metainfo, so a malformed CHANGELOG.md fails the lane early
   # instead of breaking the Flathub build.
   UI.message('Validating changelog conversion to AppStream release notes...')
-  appdata_path = '../build/build-linux-release/metadata/de.akaflieg_freiburg.enroute.appdata.xml'
+  appdata_path = "#{build_dir}/metadata/de.akaflieg_freiburg.enroute.appdata.xml"
   sh("python3 ../packaging/flatpak/inject_releases.py ../CHANGELOG.md #{appdata_path}")
   sh("python3 -c \"import xml.dom.minidom, sys; xml.dom.minidom.parse('#{appdata_path}')\"")
 
@@ -293,7 +335,7 @@ lane :flathubRelease do
   # it builds the app. The script also fails the lane if the metainfo and
   # the generated files disagree.
   UI.message('Publishing Flathub screenshots as GitHub release assets...')
-  sh("python3 ../packaging/flatpak/publish_screenshots.py --appdata #{appdata_path} --work ../build/build-linux-release/screenshots")
+  sh("python3 ../packaging/flatpak/publish_screenshots.py --appdata #{appdata_path} --work #{build_dir}/screenshots")
 
   # Get current git commit hash
   commit_hash = sh("git rev-parse --short HEAD").strip
@@ -318,7 +360,7 @@ lane :flathubRelease do
   # this lane fail. The manifest deployed on flathub serves as reference so a
   # release never moves back to an older runtime.
   UI.message('Selecting the org.kde.Platform runtime for this release...')
-  decision_path = '../build/build-linux-release/flatpak-runtime-decision.json'
+  decision_path = "#{build_dir}/flatpak-runtime-decision.json"
   sh([
     'python3 ../packaging/flatpak/runtime_policy.py apply',
     "--manifest #{manifest_path}",
@@ -364,7 +406,7 @@ lane :flathubRelease do
   # Create PR using gh CLI
   Dir.chdir(clone_folder) do
     pr_body = "Updates the Flatpak manifest to latest commit #{commit_hash}\n\nRuntime: #{runtime_note}\n\nScreenshots: refreshed at https://github.com/Akaflieg-Freiburg/enroute/releases/tag/screenshots\n\nSource commit message: #{commit_message}"
-    sh("gh pr create --title 'Update manifest to #{commit_hash}' --body '#{pr_body}' --base master --head #{branch_name}")
+    sh("gh pr create --title 'Update manifest to #{commit_hash}' --body #{Shellwords.escape(pr_body)} --base master --head #{branch_name}")
   end
   
   # Clean up

@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QAbstractListModel>
 #include <QFile>
 #include <QProperty>
 #include <QStandardPaths>
@@ -42,9 +43,15 @@ namespace GeoMaps
  * These charts are not stored in the library data file, cannot be renamed or
  * removed individually, and their raster data is extracted on demand; see
  * materialize().
+ *
+ * The library is a list model with one row per chart, sorted by section and
+ * name, and with the roles 'vac', 'name', 'section' and 'center'. Changes are
+ * announced with row-granular model signals, and with the coarse signal
+ * vacsChanged() for consumers of the property 'vacs'. In QML, bind a view to
+ * this singleton through a NameFilterProxyModel or a DistanceSortProxyModel.
  */
 
-class VACLibrary : public QObject
+class VACLibrary : public QAbstractListModel
 {
     Q_OBJECT
     QML_ELEMENT
@@ -60,6 +67,21 @@ public:
     /*! \brief Destructor */
     ~VACLibrary() override;
 
+    /*! \brief Model roles */
+    enum Role : int {
+        /*! \brief The chart, of type GeoMaps::VAC */
+        VacRole = Qt::UserRole + 1,
+
+        /*! \brief Name of the chart, a QString */
+        NameRole,
+
+        /*! \brief Section of the chart, a QString; see GeoMaps::VAC::section() */
+        SectionRole,
+
+        /*! \brief Center of the chart, a QGeoCoordinate */
+        CenterRole
+    };
+
     //
     // Properties
     //
@@ -72,10 +94,10 @@ public:
 
     /*! \brief List of all VACs installed
      *
-     * This property holds the list of all installed VACs, sorted alphabetically
-     * by name.
+     * This property holds the list of all installed VACs, in model order:
+     * sorted by section, then by name.
      */
-    Q_PROPERTY(QList<GeoMaps::VAC> vacs READ vacs BINDABLE bindableVacs NOTIFY vacsChanged)
+    Q_PROPERTY(QList<GeoMaps::VAC> vacs READ vacs NOTIFY vacsChanged)
 
 
     //
@@ -110,13 +132,36 @@ public:
      *
      * @returns Property vacs
      */
-    [[nodiscard]] QList<GeoMaps::VAC> vacs() const { return m_sortedVacs.value(); }
+    [[nodiscard]] QList<GeoMaps::VAC> vacs() const { return m_rows; }
 
-    /*! \brief Getter function for property of the same name
+
+    //
+    // Model API
+    //
+
+    /*! \brief Re-implemented from QAbstractListModel
      *
-     * @returns Property vacs
+     *  @param parent Parent index, invalid for the list itself
+     *
+     *  @returns Number of charts, or zero for a valid parent
      */
-    [[nodiscard]] QBindable<QList<GeoMaps::VAC>> bindableVacs() const { return &m_sortedVacs; }
+    [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+
+    /*! \brief Re-implemented from QAbstractListModel
+     *
+     *  @param index Model index
+     *
+     *  @param role One of the roles in VACLibrary::Role
+     *
+     *  @returns Data for the role, or an invalid QVariant
+     */
+    [[nodiscard]] QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+
+    /*! \brief Re-implemented from QAbstractListModel
+     *
+     *  @returns Names of the roles in VACLibrary::Role
+     */
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
 
     //
@@ -190,19 +235,6 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE QString rename(const QString& oldName, const QString& newName);
 
-    /*! \brief List of all VACs installed
-     *
-     * This method returns the list of all installed VACs, sorted by distance to
-     * position (closest waypoints first).
-     *
-     * @param position Geographic position used for sorting
-     *
-     * @param filter List of words
-     *
-     * @returns List of all VACs installed
-     */
-    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position, const QString& filter);
-
     /*! \brief List of all VACs that contain a given point.
      *
      * This method returns the list of all installed VACs that contain the given
@@ -254,16 +286,31 @@ private:
     QString absolutePathForVac(const GeoMaps::VAC&);
     QString absolutePathForVac(const QString& name);
 
-    // Source data: manually imported charts and charts from VAC collections.
-    // These are bindable so that the derived properties below update through
-    // automatic dependency tracking. Mutations must follow the rules for
-    // bindable properties: modify a local copy, then assign it back in a
-    // single write (see "Qt Bindable Properties" in the Qt documentation).
-    QProperty<QVector<GeoMaps::VAC>> m_vacs;
-    QProperty<QVector<GeoMaps::VAC>> m_collectionVacs;
+    // Replaces the manually imported charts and rebuilds the model rows
+    void setManualVacs(const QVector<GeoMaps::VAC>& vacs);
 
-    // Derived properties, computed through bindings set up in the constructor
-    Q_OBJECT_BINDABLE_PROPERTY(GeoMaps::VACLibrary, QVector<GeoMaps::VAC>, m_sortedVacs, &GeoMaps::VACLibrary::vacsChanged)
+    // Replaces the charts from VAC collections and rebuilds the model rows
+    void setCollectionVacs(const QVector<GeoMaps::VAC>& vacs);
+
+    // Recomputes m_rows from m_vacs and m_collectionVacs, announces the
+    // difference with row-granular model signals, updates the derived
+    // properties and emits vacsChanged() if anything changed.
+    void rebuildRows();
+
+    // Sort order of the model rows: by section, then by name, then by file
+    // name, so that distinct charts never compare equal
+    static bool lessThan(const GeoMaps::VAC& first, const GeoMaps::VAC& second);
+
+    // Source data: manually imported charts and charts from VAC collections.
+    // Mutations go through setManualVacs() and setCollectionVacs(): modify a
+    // local copy, then assign it back in a single call.
+    QVector<GeoMaps::VAC> m_vacs;
+    QVector<GeoMaps::VAC> m_collectionVacs;
+
+    // Model rows: m_vacs and m_collectionVacs together, sorted with lessThan()
+    QVector<GeoMaps::VAC> m_rows;
+
+    // Derived properties, updated by rebuildRows()
     Q_OBJECT_BINDABLE_PROPERTY(GeoMaps::VACLibrary, bool, m_isEmpty, &GeoMaps::VACLibrary::isEmptyChanged)
     Q_OBJECT_BINDABLE_PROPERTY(GeoMaps::VACLibrary, bool, m_hasManuallyImported, &GeoMaps::VACLibrary::hasManuallyImportedChanged)
 

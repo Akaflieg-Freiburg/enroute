@@ -56,12 +56,7 @@ CenteringDialog {
             contentItem: Label {
                 id: lbl
                 wrapMode: Text.WordWrap
-                text: {
-                    GlobalSettings.expandNotamAbbreviations
-                    Clock.date
-
-                    delItem.model.modelData.richText()
-                }
+                text: delItem.model.modelData.richText(GlobalSettings.expandNotamAbbreviations, Clock.time)
                 textFormat: Text.RichText
                 opacity: delItem.read ? 0.5 : 1.0
                 Behavior on opacity {

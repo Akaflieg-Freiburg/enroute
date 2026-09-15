@@ -43,8 +43,8 @@ CenteringDialog {
 
         ItemDelegate {
             id: idel
-            required property var modelData
-            text: modelData
+            required property string name
+            text: idel.name
             icon.source: "/icons/material/ic_airplanemode_active.svg"
 
             // The delegate is created before the view parents it
@@ -52,7 +52,7 @@ CenteringDialog {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                dlg.finalFileName = modelData
+                dlg.finalFileName = idel.name
                 dlg.close()
                 overwriteDialog.open()
             }
@@ -96,7 +96,10 @@ CenteringDialog {
             clip: true
             // The name that is being typed doubles as a filter, so that the
             // list narrows down to the entries that would be overwritten.
-            model: Librarian.entries(Librarian.Aircraft, fileName.displayText)
+            model: NameFilterProxyModel {
+                sourceModel: Librarian.aircraftModel
+                filter: fileName.displayText
+            }
 
             delegate: fileDelegate
         }
@@ -132,8 +135,10 @@ CenteringDialog {
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
-        } else
+        } else {
+            Librarian.aircraftModel.refresh()
             Global.toast.doToast(qsTr("Aircraft %1 saved").arg(dlg.finalFileName))
+        }
     }
 
     CenteringDialog {

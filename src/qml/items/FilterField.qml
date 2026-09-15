@@ -59,14 +59,6 @@ MyTextField {
         }
     }
 
-    // Some list models have no change notification, so that their bindings do
-    // not re-evaluate when the underlying data changes. Librarian.entries() is
-    // the typical example. Lists using such a model mention reloadTrigger in
-    // their model binding and call reload() after adding, renaming or removing
-    // an entry.
-    property int reloadTrigger: 0
-    function reload() { filterField.reloadTrigger += 1 }
-
     onDisplayTextChanged: {
         // Clearing takes effect at once. Debouncing it would leave a stale
         // filter behind for another 200ms, which is visible when a dialog

@@ -36,3 +36,17 @@ CMakeLists.txt uses qt_add_executable + qt_add_qml_module; AUTOMOC is on.
   the user's live desktop and may use real sensors/Bluetooth/position — don't launch it
   unprompted; ask first.
 - Match existing qmlformat / clang-format style; don't reformat unrelated lines.
+- Bindings must consume every dependency they rely on. Never "mention" a property
+  (`Foo.bar; return f()`) to force re-evaluation: the QML-to-C++ compiler drops
+  unused reads together with their change captures. Use the value in the
+  expression, pass it to the C++ function as an argument (e.g.
+  `metar.summary(Navigator.aircraft, Clock.time)`), or use a Connections handler
+  with an imperative assignment.
+- Lists over library data bind once to an item model: the library is a
+  QAbstractListModel (WaypointLibrary, VACLibrary, Librarian.aircraftModel /
+  routesModel); pages filter and sort through NameFilterProxyModel or
+  DistanceSortProxyModel (src/ui/). No Q_INVOKABLE functions returning arrays as
+  list models, no reload triggers. Delegates declare typed `required property`
+  roles (`required property waypoint waypoint`), not `modelData`.
+- Library-style data emits row-granular signals (begin/endInsertRows,
+  begin/endRemoveRows, dataChanged); beginResetModel only for bulk replacement.

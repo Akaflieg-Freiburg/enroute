@@ -126,9 +126,6 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 text: {
-                    // Mention
-                    Navigator.aircraft.verticalDistanceUnit
-
                     if (GlobalSettings.showAltitudeAGL) {
                         const talt = PositionProvider.positionInfo.trueAltitudeAGL();
                         return Navigator.aircraft.verticalDistanceToString(talt)

@@ -22,7 +22,6 @@
 #include <QJsonObject>
 
 #include "GlobalObject.h"
-#include "GlobalSettings.h"
 #include "notam/NOTAM.h"
 #include "notam/NOTAMProvider.h"
 
@@ -232,7 +231,7 @@ QString NOTAM::NOTAM::category() const
 }
 
 
-QString NOTAM::NOTAM::richText() const
+QString NOTAM::NOTAM::richText(bool expandAbbreviations, const QDateTime& now) const
 {
     QStringList result;
 
@@ -240,13 +239,13 @@ QString NOTAM::NOTAM::richText() const
     auto effectiveStartString = m_effectiveStartString;
     if (m_effectiveStart.isValid())
     {
-        if (m_effectiveStart < QDateTime::currentDateTime())
+        if (m_effectiveStart < now)
         {
             effectiveStartString.clear();
         }
         else
         {
-            if (m_effectiveStart.date() == QDateTime::currentDateTimeUtc().date())
+            if (m_effectiveStart.date() == now.toUTC().date())
             {
                 effectiveStartString = u"Today %1"_s.arg(m_effectiveStart.toString(u"hh:mm"_s));
             }
@@ -299,7 +298,7 @@ QString NOTAM::NOTAM::richText() const
     // The text is rendered as rich text: escape it, so that characters such
     // as '<' in "VIS <800M" do not truncate the display.
     QString text = m_text.toHtmlEscaped();
-    if (GlobalObject::globalSettings()->expandNotamAbbreviations())
+    if (expandAbbreviations)
     {
         foreach(auto contraction, *contractions)
         {

@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Templates as T
@@ -68,7 +70,7 @@ Page {
             width: parent ? parent.width : undefined
             height: gridLayout.height
 
-            required property var model
+            required property vac vac
 
             GridLayout {
                 id: gridLayout
@@ -83,7 +85,7 @@ Page {
                 columns: 6
 
                 WordWrappingItemDelegate {
-                    text: element.model.modelData.name + `<br><font color="#606060" size="2">${element.model.modelData.infoText}</font>`
+                    text: element.vac.name + `<br><font color="#606060" size="2">${element.vac.infoText}</font>`
                     icon.source: "/icons/material/ic_map.svg"
                     Layout.fillWidth: true
                 }
@@ -108,8 +110,8 @@ Page {
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
                                 Global.dialogLoader.active = false
-                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.model.modelData.name,
-                                                                  text: element.model.modelData.description,
+                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.vac.name,
+                                                                  text: element.vac.description,
                                                                   standardButtons: Dialog.Ok})
                                 Global.dialogLoader.active = true
                             }
@@ -118,12 +120,12 @@ Page {
                             id: renameAction
 
                             text: qsTr("Rename")
-                            enabled: element.model.modelData.collection === ""
+                            enabled: element.vac.collection === ""
 
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
                                 Global.dialogLoader.active = false
-                                Global.dialogLoader.setSource("../dialogs/RenameVACDialog.qml", {oldName: element.model.modelData.name})
+                                Global.dialogLoader.setSource("../dialogs/RenameVACDialog.qml", {oldName: element.vac.name})
                                 Global.dialogLoader.active = true
                             }
                         }
@@ -131,11 +133,11 @@ Page {
                             id: removeAction
 
                             text: qsTr("Uninstall")
-                            enabled: element.model.modelData.collection === ""
+                            enabled: element.vac.collection === ""
 
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                VACLibrary.remove(element.model.modelData.name)
+                                VACLibrary.remove(element.vac.name)
                             }
                         }
                     }
@@ -419,13 +421,9 @@ Page {
                 Layout.fillWidth: true
                 clip: true
                 focus: vacTab.SwipeView.isCurrentItem
-                // This delayed binding is necessary, or else there will be terrible delays
-                // when the user deletes all VACs -- the GUI is re-rendered after
-                // every delete, which takes very long time.
-                Binding on model {
-                    value: Array.from(VACLibrary.vacs)
-                                .filter((vac) => Librarian.matches(vac.name, vacFilter.filter))
-                    delayed: true    // Prevent intermediary values from being assigned
+                model: NameFilterProxyModel {
+                    sourceModel: VACLibrary
+                    filter: vacFilter.filter
                 }
 
                 delegate: vacDelegate

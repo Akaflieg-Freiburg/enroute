@@ -71,9 +71,10 @@ Page {
 
             RowLayout {
                 id: entryRow
-                required property var modelData
-                anchors.left: parent.left
-                anchors.right: parent.right
+                required property string name
+                // Size from the list, not from parent: the delegate is created
+                // and destroyed while it has no parent.
+                width: wpList.width
                 Layout.fillWidth: true
                 height: iDel.height
 
@@ -86,12 +87,12 @@ Page {
                     id: iDel
                     Layout.fillWidth: true
 
-                    text: entryRow.modelData
+                    text: entryRow.name
                     icon.source: "/icons/material/ic_airplanemode_active.svg"
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        page.finalFileName = entryRow.modelData
+                        page.finalFileName = entryRow.name
                         if (!Librarian.contains(Navigator.aircraft))
                             overwriteDialog.open()
                         else
@@ -100,8 +101,11 @@ Page {
 
                     swipe.onCompleted: {
                         PlatformAdaptor.vibrateBrief()
-                        page.finalFileName = entryRow.modelData
+                        page.finalFileName = entryRow.name
                         removeDialog.open()
+                        // The row is removed from the model if the user confirms.
+                        // Otherwise it stays, so return it to its normal position.
+                        iDel.swipe.close()
                     }
                 }
 
@@ -123,8 +127,8 @@ Page {
                             text: qsTr("Rename…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                page.finalFileName = entryRow.modelData
-                                renameName.text = entryRow.modelData
+                                page.finalFileName = entryRow.name
+                                renameName.text = entryRow.name
                                 renameDialog.open()
                             }
 
@@ -135,7 +139,7 @@ Page {
                             text: qsTr("Remove…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                page.finalFileName = entryRow.modelData
+                                page.finalFileName = entryRow.name
                                 removeDialog.open()
                             }
                         } // removeAction
@@ -152,12 +156,9 @@ Page {
 
             clip: true
 
-            model: {
-                // Mention reloadTrigger: Librarian.entries() has no change
-                // notification, so reload() is the only way to re-evaluate.
-                textInput.reloadTrigger
-
-                return Librarian.entries(Librarian.Aircraft, textInput.filter)
+            model: NameFilterProxyModel {
+                sourceModel: Librarian.aircraftModel
+                filter: textInput.filter
             }
             delegate: entryDelegate
         }
@@ -194,10 +195,6 @@ Page {
         Navigator.aircraft = acft
         Global.toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
         Global.stackView.pop()
-    }
-
-    function reloadFlightRouteList() {
-        textInput.reload()
     }
 
     CenteringDialog {
@@ -255,13 +252,9 @@ Page {
 
         onAccepted: {
             Librarian.remove(Librarian.Aircraft, page.finalFileName)
-            page.reloadFlightRouteList()
             Global.toast.doToast(qsTr("Aircraft removed from device"))
         }
-        onRejected: {
-            page.reloadFlightRouteList() // Re-display aircraft that have been swiped out
-            removeDialog.close()
-        }
+        onRejected: removeDialog.close()
 
     }
 
@@ -313,7 +306,6 @@ Page {
         function doRename() {
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Aircraft, renameName.text)) {
                 Librarian.rename(Librarian.Aircraft, page.finalFileName, renameName.text)
-                page.reloadFlightRouteList()
                 renameDialog.close()
                 Global.toast.doToast(qsTr("Aircraft renamed"))
             }

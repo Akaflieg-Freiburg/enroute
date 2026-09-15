@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022-2025 by Stefan Kebekus                             *
+ *   Copyright (C) 2022-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,8 +22,9 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QXmlStreamWriter>
+#include <algorithm>
+#include <iterator>
 
-#include "Librarian.h"
 #include "fileFormats/CUP.h"
 #include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/FPL.h"
@@ -33,13 +34,10 @@
 #include "geomaps/WaypointLibrary.h"
 
 GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
-    : GlobalObject(parent)
+    : QAbstractListModel(parent)
 {
-}
-
-
-void GeoMaps::WaypointLibrary::deferredInitialization()
-{
+    // Load first and connect afterwards, so that the initial load does not
+    // write the file back.
     (void)loadFromGeoJSON();
     connect(this, &GeoMaps::WaypointLibrary::waypointsChanged, this, [this]() { (void)save(); });
 }
@@ -72,6 +70,47 @@ QByteArray GeoMaps::WaypointLibrary::GeoJSON() const
 
 
 //
+// Model API
+//
+
+int GeoMaps::WaypointLibrary::rowCount(const QModelIndex& parent) const
+{
+    if (parent.isValid())
+    {
+        return 0;
+    }
+    return static_cast<int>(m_waypoints.size());
+}
+
+
+QVariant GeoMaps::WaypointLibrary::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid() || (index.row() < 0) || (index.row() >= m_waypoints.size()))
+    {
+        return {};
+    }
+
+    auto const& waypoint = m_waypoints.at(index.row());
+    switch (role)
+    {
+    case WaypointRole:
+        return QVariant::fromValue(waypoint);
+    case NameRole:
+    case Qt::DisplayRole:
+        return waypoint.name();
+    default:
+        return {};
+    }
+}
+
+
+QHash<int, QByteArray> GeoMaps::WaypointLibrary::roleNames() const
+{
+    return {{WaypointRole, "waypoint"}, {NameRole, "name"}};
+}
+
+
+//
 // Methods
 //
 
@@ -82,11 +121,13 @@ void GeoMaps::WaypointLibrary::add(const GeoMaps::Waypoint &waypoint)
         return;
     }
 
-    m_waypoints.append(waypoint);
-    std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
-    { return a.name() < b.name(); });
+    auto const row = insertionRow(waypoint.name());
+    beginInsertRows({}, row, row);
+    m_waypoints.insert(row, waypoint);
+    endInsertRows();
     emit waypointsChanged();
 }
+
 
 void GeoMaps::WaypointLibrary::clear()
 {
@@ -95,25 +136,12 @@ void GeoMaps::WaypointLibrary::clear()
         return;
     }
 
+    beginRemoveRows({}, 0, static_cast<int>(m_waypoints.size()) - 1);
     m_waypoints.clear();
+    endRemoveRows();
     emit waypointsChanged();
 }
 
-QVector<GeoMaps::Waypoint> GeoMaps::WaypointLibrary::filteredWaypoints(const QString &filter) const
-{
-    QVector<GeoMaps::Waypoint> result;
-
-    QString const simplifiedFilter = GlobalObject::librarian()->simplifySpecialChars(filter);
-    foreach (auto waypoint, m_waypoints)
-    {
-        auto simplifiedName = GlobalObject::librarian()->simplifySpecialChars(waypoint.name());
-        if (simplifiedName.contains(simplifiedFilter, Qt::CaseInsensitive))
-        {
-            result.append(waypoint);
-        }
-    }
-    return result;
-}
 
 bool GeoMaps::WaypointLibrary::hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const
 {
@@ -126,6 +154,7 @@ bool GeoMaps::WaypointLibrary::hasNearbyEntry(const GeoMaps::Waypoint &waypoint)
     }
     return false;
 }
+
 
 auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
 {
@@ -154,7 +183,7 @@ auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
         return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
     }
 
-    QVector<GeoMaps::Waypoint> newWaypoints;
+    QList<GeoMaps::Waypoint> newWaypoints;
     const auto features = document.object()[QStringLiteral("features")].toArray();
     for (const auto value : features)
     {
@@ -165,12 +194,16 @@ auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
         }
         newWaypoints.append(wp);
     }
+    sortByName(newWaypoints);
 
+    beginResetModel();
     m_waypoints = newWaypoints;
+    endResetModel();
     emit waypointsChanged();
 
     return {};
 }
+
 
 auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QString
 {
@@ -206,46 +239,55 @@ auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QSt
         return tr("Error reading waypoints from file '%1'.").arg(fileName);
     }
 
+    auto newWaypoints = m_waypoints;
     if (skip)
     {
         foreach(const auto& newWaypoint, result)
         {
-            bool skip = false;
-            foreach(const auto& existingWaypoint, m_waypoints)
+            bool skipWaypoint = false;
+            foreach(const auto& existingWaypoint, newWaypoints)
             {
                 if (newWaypoint.isNear(existingWaypoint))
                 {
-                    skip = true;
+                    skipWaypoint = true;
                     break;
                 }
             }
-            if (!skip)
+            if (!skipWaypoint)
             {
-                m_waypoints.append(newWaypoint);
+                newWaypoints.append(newWaypoint);
             }
         }
     }
     else
     {
-        m_waypoints += result;
+        newWaypoints += result;
     }
+    sortByName(newWaypoints);
 
-    std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
-    { return a.name() < b.name(); });
-
+    beginResetModel();
+    m_waypoints = newWaypoints;
+    endResetModel();
     emit waypointsChanged();
     return {};
 }
 
+
 bool GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint &waypoint)
 {
-    if (m_waypoints.removeOne(waypoint))
+    auto const row = static_cast<int>(m_waypoints.indexOf(waypoint));
+    if (row < 0)
     {
-        emit waypointsChanged();
-        return true;
+        return false;
     }
-    return false;
+
+    beginRemoveRows({}, row, row);
+    m_waypoints.removeAt(row);
+    endRemoveRows();
+    emit waypointsChanged();
+    return true;
 }
+
 
 bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint& oldWaypoint, const GeoMaps::Waypoint& newWaypoint)
 {
@@ -254,16 +296,34 @@ bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint& oldWaypoint, con
         return false;
     }
 
-    if (m_waypoints.removeOne(oldWaypoint))
+    auto const row = static_cast<int>(m_waypoints.indexOf(oldWaypoint));
+    if (row < 0)
     {
-        m_waypoints.append(newWaypoint);
-        std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
-        { return a.name() < b.name(); });
-        emit waypointsChanged();
-        return true;
+        return false;
     }
-    return false;
+
+    if (oldWaypoint.name() == newWaypoint.name())
+    {
+        // The sorted position does not change
+        m_waypoints[row] = newWaypoint;
+        auto const idx = index(row);
+        emit dataChanged(idx, idx, {WaypointRole, NameRole});
+    }
+    else
+    {
+        beginRemoveRows({}, row, row);
+        m_waypoints.removeAt(row);
+        endRemoveRows();
+
+        auto const newRow = insertionRow(newWaypoint.name());
+        beginInsertRows({}, newRow, newRow);
+        m_waypoints.insert(newRow, newWaypoint);
+        endInsertRows();
+    }
+    emit waypointsChanged();
+    return true;
 }
+
 
 auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
 {
@@ -279,6 +339,7 @@ auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
     }
     return {};
 }
+
 
 auto GeoMaps::WaypointLibrary::toGpx() const -> QByteArray
 {
@@ -307,4 +368,21 @@ auto GeoMaps::WaypointLibrary::toGpx() const -> QByteArray
     stream.writeEndDocument();
 
     return result;
+}
+
+
+//
+// Private Methods
+//
+
+int GeoMaps::WaypointLibrary::insertionRow(const QString& name) const
+{
+    auto const it = std::ranges::upper_bound(m_waypoints, name, {}, &GeoMaps::Waypoint::name);
+    return static_cast<int>(std::distance(m_waypoints.cbegin(), it));
+}
+
+
+void GeoMaps::WaypointLibrary::sortByName(QList<GeoMaps::Waypoint>& waypoints)
+{
+    std::ranges::stable_sort(waypoints, {}, &GeoMaps::Waypoint::name);
 }

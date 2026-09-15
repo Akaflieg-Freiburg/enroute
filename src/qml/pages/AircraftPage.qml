@@ -668,7 +668,7 @@ Page {
         anchors.fill: parent
 
         onLoaded: {
-            var dialog = item as Popup
+            var dialog = item as T.Popup
             dialog.modal = true
             dialog.open()
         }

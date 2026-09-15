@@ -51,6 +51,24 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
         }
     }
     dir.rmdir(oldlibraryPath);
+
+    // The models watch the library directories. Create them after the
+    // migration above, so that migrated routes are part of the first scan.
+    m_aircraftModel = new FileLibraryModel(directory(Aircraft), u".json"_s, this);
+    m_routesModel = new FileLibraryModel(directory(Routes), u".geojson"_s, this);
+}
+
+
+FileLibraryModel* Librarian::model(Librarian::Library library) const
+{
+    switch (library)
+    {
+    case Aircraft:
+        return m_aircraftModel;
+    case Routes:
+        return m_routesModel;
+    }
+    return nullptr;
 }
 
 
@@ -513,6 +531,7 @@ QString Librarian::import(Librarian::Library library, const QString& fileName)
         return errorMsg;
     }
 
+    GlobalObject::librarian()->model(library)->refresh();
     return {};
 }
 
@@ -520,12 +539,14 @@ QString Librarian::import(Librarian::Library library, const QString& fileName)
 void Librarian::remove(Librarian::Library library, const QString& baseName) 
 {
     QFile::remove(fullPath(library, baseName));
+    GlobalObject::librarian()->model(library)->refresh();
 }
 
 
 void Librarian::rename(Librarian::Library library, const QString &oldName, const QString &newName) 
 {
     QFile::rename(fullPath(library, oldName), fullPath(library, newName));
+    GlobalObject::librarian()->model(library)->refresh();
 }
 
 
@@ -546,24 +567,6 @@ auto Librarian::directory(Library library) -> QString
 }
 
 
-auto Librarian::entries(Library library, const QString &filter) -> QStringList
-{
-    QStringList filterList;
-    filterList << QStringLiteral("*");
-
-    QDir const dir(directory(library));
-    auto fileNames = dir.entryList(filterList, QDir::Files);
-
-    QStringList fileBaseNames;
-    foreach(auto fileName, fileNames)
-    {
-        fileBaseNames << fileName.section('.', 0, -2);
-    }
-
-    return permissiveFilter(fileBaseNames, filter);
-}
-
-
 auto Librarian::matches(const QString& text, const QString& filter) -> bool
 {
     // Split before simplifying: simplifySpecialChars() removes whitespace, so
@@ -574,21 +577,6 @@ auto Librarian::matches(const QString& text, const QString& filter) -> bool
     return std::ranges::all_of(words, [this, &simplifiedText](const QString& word) {
         return simplifiedText.contains(simplifySpecialChars(word), Qt::CaseInsensitive);
     });
-}
-
-
-auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter) -> QStringList
-{
-    QStringList result;
-    foreach(auto inputString, inputStrings)
-    {
-        if (matches(inputString, filter))
-        {
-            result << inputString;
-        }
-    }
-
-    return result;
 }
 
 

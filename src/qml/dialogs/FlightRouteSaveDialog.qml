@@ -43,13 +43,13 @@ CenteringDialog {
 
         ItemDelegate {
             id: idel
-            required property var modelData
-            text: modelData
+            required property string name
+            text: idel.name
             icon.source: "/icons/material/ic_directions.svg"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                dlg.finalFileName = modelData
+                dlg.finalFileName = idel.name
                 dlg.close()
                 overwriteDialog.open()
             }
@@ -93,7 +93,10 @@ CenteringDialog {
             clip: true
             // The name that is being typed doubles as a filter, so that the
             // list narrows down to the entries that would be overwritten.
-            model: Librarian.entries(Librarian.Routes, fileName.displayText)
+            model: NameFilterProxyModel {
+                sourceModel: Librarian.routesModel
+                filter: fileName.displayText
+            }
 
             delegate: fileDelegate
         }
@@ -129,8 +132,10 @@ CenteringDialog {
         if (errorString !== "") {
             fileError.text = errorString
             fileError.open()
-        } else
+        } else {
+            Librarian.routesModel.refresh()
             Global.toast.doToast(qsTr("Flight route %1 saved").arg(dlg.finalFileName))
+        }
     }
 
     LongTextDialog {

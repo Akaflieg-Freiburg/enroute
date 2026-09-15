@@ -228,12 +228,18 @@ public:
 
     /*! \brief Rich text description of the NOTAM
      *
-     *  The description and changes with time (e.g. when passing the effective start
-     *  date of the NOTAM.
+     *  The description changes with time (e.g. when passing the effective
+     *  start date of the NOTAM). Both inputs are explicit parameters, so that
+     *  QML bindings depend on them properly.
+     *
+     *  @param expandAbbreviations If true, common NOTAM contractions are
+     *  expanded to plain words; see GlobalSettings::expandNotamAbbreviations
+     *
+     *  @param now The current time
      *
      *  @return HTML string
      */
-    Q_REQUIRED_RESULT Q_INVOKABLE QString richText() const;
+    Q_REQUIRED_RESULT Q_INVOKABLE QString richText(bool expandAbbreviations, const QDateTime& now) const;
 
     /*! \brief Update section title according to the current time
      *

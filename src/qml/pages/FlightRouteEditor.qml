@@ -707,6 +707,11 @@ Page {
                                         AutoSizingMenu {
                                             id: wpMenu
 
+                                            // The library changes while this delegate exists. The
+                                            // state only matters while the menu is open, so evaluate
+                                            // it on opening rather than tracking every change.
+                                            onAboutToShow: addToLibraryAction.enabled = (dragItem.modelData.category === "WP") && !WaypointLibrary.hasNearbyEntry(dragItem.modelData)
+
                                             Action {
                                                 text: qsTr("Move Up")
 
@@ -749,13 +754,9 @@ Page {
                                             }
 
                                             Action {
-                                                text: qsTr("Add to waypoint library")
-                                                enabled: {
-                                                    // Mention waypoints, in order to update
-                                                    WaypointLibrary.waypoints
+                                                id: addToLibraryAction
 
-                                                    return (dragItem.modelData.category === "WP") && !WaypointLibrary.hasNearbyEntry(dragItem.modelData)
-                                                }
+                                                text: qsTr("Add to waypoint library")
 
                                                 onTriggered: {
                                                     PlatformAdaptor.vibrateBrief()
@@ -777,10 +778,6 @@ Page {
                                     icon.source: "/icons/vertLine.svg"
                                     enabled: false
                                     text: {
-                                        // Mention units
-                                        Navigator.aircraft.horizontalDistanceUnit
-                                        Navigator.aircraft.fuelConsumptionUnit
-
                                         // dragItem.index is transiently -1 while a delegate is
                                         // being torn down, so guard against a missing leg.
                                         let leg = Navigator.flightRoute.legs[dragItem.index]
@@ -1167,7 +1164,7 @@ Page {
         anchors.fill: parent
 
         onLoaded: {
-            var dialog = item as Popup
+            var dialog = item as T.Popup
             dialog.modal = true
             dialog.open()
         }

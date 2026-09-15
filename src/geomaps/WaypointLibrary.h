@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2022-2026 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QAbstractListModel>
 #include <QQmlEngine>
 #include <QStandardPaths>
 
@@ -31,19 +32,25 @@ namespace GeoMaps
 
     /*! \brief Library of user-defined waypoints
      *
-     *  This simple class that is little more than a list of waypoints, together
-     *  with some auxiliary methods. The list is automatically loaded on startup,
-     *  and saved every time that a change is made.
+     *  This class holds the list of user-defined waypoints, sorted by name, and
+     *  exposes it as a list model with the roles 'waypoint' and 'name'. The
+     *  library is loaded from a GeoJSON file on construction and saved every
+     *  time that a change is made.
+     *
+     *  Changes are announced with row-granular model signals, so that views
+     *  bound to this model update incrementally, and with the coarse signal
+     *  waypointsChanged() for consumers of the property 'waypoints'. In QML,
+     *  bind a view to this singleton through a NameFilterProxyModel.
      */
 
-    class WaypointLibrary : public GlobalObject
+    class WaypointLibrary : public QAbstractListModel
     {
         Q_OBJECT
         QML_ELEMENT
         QML_SINGLETON
 
     public:
-        /*! \brief Creates a new waypoin library
+        /*! \brief Creates a new waypoint library
          *
          * This constructor creates a new WaypointLibrary instance. The library
          * is loaded from a GeoJSON file whose name is found in the private
@@ -63,6 +70,15 @@ namespace GeoMaps
         }
 
         ~WaypointLibrary() override = default;
+
+        /*! \brief Model roles */
+        enum Role : int {
+            /*! \brief The waypoint, of type GeoMaps::Waypoint */
+            WaypointRole = Qt::UserRole + 1,
+
+            /*! \brief Name of the waypoint, a QString */
+            NameRole
+        };
 
 
         //
@@ -103,6 +119,35 @@ namespace GeoMaps
 
 
         //
+        // Model API
+        //
+
+        /*! \brief Re-implemented from QAbstractListModel
+         *
+         *  @param parent Parent index, invalid for the list itself
+         *
+         *  @returns Number of waypoints, or zero for a valid parent
+         */
+        [[nodiscard]] int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+
+        /*! \brief Re-implemented from QAbstractListModel
+         *
+         *  @param index Model index
+         *
+         *  @param role One of the roles in WaypointLibrary::Role
+         *
+         *  @returns Data for the role, or an invalid QVariant
+         */
+        [[nodiscard]] QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+
+        /*! \brief Re-implemented from QAbstractListModel
+         *
+         *  @returns Names of the roles in WaypointLibrary::Role
+         */
+        [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
+
+
+        //
         // Methods
         //
 
@@ -127,17 +172,6 @@ namespace GeoMaps
         {
             return m_waypoints.contains(waypoint);
         }
-
-        /*! \brief Lists all entries in the waypoint library whose name contains
-         * the string 'filter'
-         *
-         * The check for string containment is done in a fuzzy way.
-         *
-         * @param filter String used to filter the list
-         *
-         * @returns A filtered list with of waypoint, in alphabetical order
-         */
-        [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString &filter) const;
 
         /*! \brief Check if the library contains a waypoint near to a given one
          *
@@ -185,7 +219,7 @@ namespace GeoMaps
          *
          * @returns True if a waypoint has indeed been removed.
          */
-        [[nodiscard]] Q_INVOKABLE bool remove(const GeoMaps::Waypoint &waypoint);
+        Q_INVOKABLE bool remove(const GeoMaps::Waypoint &waypoint);
 
         /*! \brief Replace waypoint
          *
@@ -200,7 +234,7 @@ namespace GeoMaps
          *
          * @returns True if a waypoint has indeed been replaced.
          */
-        [[nodiscard]] Q_INVOKABLE bool replace(const GeoMaps::Waypoint &oldWaypoint, const GeoMaps::Waypoint &newWaypoint);
+        Q_INVOKABLE bool replace(const GeoMaps::Waypoint &oldWaypoint, const GeoMaps::Waypoint &newWaypoint);
 
         /*! \brief Save to file
          *
@@ -226,20 +260,27 @@ namespace GeoMaps
         [[nodiscard]] Q_INVOKABLE QByteArray toGpx() const;
 
     signals:
-        /*! \brief Notification signal for the property with the same name */
+        /*! \brief Notification signal for the property with the same name
+         *
+         *  This coarse signal is emitted after every change, following the
+         *  row-granular model signals.
+         */
         void waypointsChanged();
-
-    protected:
-        void deferredInitialization() override;
-
 
     private:
         Q_DISABLE_COPY_MOVE(WaypointLibrary)
 
+        // Row at which a waypoint with the given name is to be inserted, so
+        // that m_waypoints stays sorted by name
+        [[nodiscard]] int insertionRow(const QString& name) const;
+
+        // Sorts a list of waypoints by name
+        static void sortByName(QList<GeoMaps::Waypoint>& waypoints);
+
         // Standard file name for save() and loadFromGeoJGON() methods
         QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/waypoint library.geojson"};
 
-        // Acutual list of waypoints.
+        // Acutual list of waypoints, sorted by name
         QList<GeoMaps::Waypoint> m_waypoints;
     };
 

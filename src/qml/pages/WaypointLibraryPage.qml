@@ -293,7 +293,7 @@ Page {
 
         RowLayout {
             id: entryRow
-            required property var modelData
+            required property waypoint waypoint
             width: wpList.width
             height: iDel.height
 
@@ -306,19 +306,22 @@ Page {
                 id: iDel
                 Layout.fillWidth: true
 
-                text: entryRow.modelData.name
-                icon.source: entryRow.modelData.icon
+                text: entryRow.waypoint.name
+                icon.source: entryRow.waypoint.icon
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    waypointDescription.waypoint = entryRow.modelData
+                    waypointDescription.waypoint = entryRow.waypoint
                     waypointDescription.open()
                 }
 
                 swipe.onCompleted: {
                     PlatformAdaptor.vibrateBrief()
-                    removeDialog.waypoint = entryRow.modelData
+                    removeDialog.waypoint = entryRow.waypoint
                     removeDialog.open()
+                    // The row is removed from the model if the user confirms.
+                    // Otherwise it stays, so return it to its normal position.
+                    iDel.swipe.close()
                 }
             }
 
@@ -328,7 +331,7 @@ Page {
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    wpEditor.waypoint = entryRow.modelData
+                    wpEditor.waypoint = entryRow.waypoint
                     wpEditor.open()
                 }
             }
@@ -351,7 +354,7 @@ Page {
                         text: qsTr("Remove…")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            removeDialog.waypoint = entryRow.modelData
+                            removeDialog.waypoint = entryRow.waypoint
                             removeDialog.open()
                         }
                     } // removeAction
@@ -390,16 +393,9 @@ Page {
 
             clip: true
 
-            Binding on model {
-                value: {
-                    // Mention waypoints and reloadTrigger to ensure that the
-                    // list gets updated
-                    WaypointLibrary.waypoints
-                    textInput.reloadTrigger
-
-                    return WaypointLibrary.filteredWaypoints(textInput.filter)
-                }
-                delayed: true
+            model: NameFilterProxyModel {
+                sourceModel: WaypointLibrary
+                filter: textInput.filter
             }
 
             delegate: waypointDelegate
@@ -450,10 +446,6 @@ Page {
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;
 
-    function reloadWaypointList() {
-        textInput.reload()
-    }
-
     LongTextDialog {
         id: shareErrorDialog
 
@@ -473,13 +465,9 @@ Page {
 
         onAccepted: {
             WaypointLibrary.remove(removeDialog.waypoint)
-            page.reloadWaypointList()
             Global.toast.doToast(qsTr("Waypoint removed from device"))
         }
-        onRejected: {
-            page.reloadWaypointList() // Re-display aircraft that have been swiped out
-            close()
-        }
+        onRejected: close()
     }
 
     LongTextDialog {
@@ -492,7 +480,6 @@ Page {
 
         onAccepted: {
             WaypointLibrary.clear()
-            page.reloadWaypointList()
             Global.toast.doToast(qsTr("Waypoint library cleared"))
         }
     }
@@ -506,7 +493,6 @@ Page {
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.replace(waypoint, newWP)
-            page.reloadWaypointList()
             Global.toast.doToast(qsTr("Waypoint modified"))
         }
 
@@ -523,7 +509,6 @@ Page {
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.add(newWP)
-            page.reloadWaypointList()
             Global.toast.doToast(qsTr("Waypoint added"))
         }
 

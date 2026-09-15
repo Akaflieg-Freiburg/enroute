@@ -91,7 +91,7 @@ public:
      *  This is the time of the last successful data download from the FAA
      *  server. The property holds an invalid QDateTime if no data is available.
      */
-    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate BINDABLE bindableLastUpdate)
+    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate BINDABLE bindableLastUpdate NOTIFY lastUpdateChanged)
 
     /*! \brief Status
      *
@@ -121,7 +121,7 @@ public:
      *
      *  @returns Property lastUpdate
      */
-    Q_REQUIRED_RESULT QDateTime lastUpdate() const {return {m_lastUpdate};}
+    Q_REQUIRED_RESULT QDateTime lastUpdate() const {return m_lastUpdate.value();}
 
     /*! \brief Getter function for the property with the same name
      *
@@ -181,6 +181,10 @@ public:
      *  @param read True if notam is to be registred as read
      */
     Q_INVOKABLE void setRead(const QString& number, bool read);
+
+signals:
+    /*! \brief Notification signal for property with the same name */
+    void lastUpdateChanged();
 
 private:
 
@@ -260,7 +264,7 @@ private:
     Q_REQUIRED_RESULT QByteArray computeGeoJSON() const;
 
     // Time of last update to data
-    QProperty<QDateTime> m_lastUpdate;
+    Q_OBJECT_BINDABLE_PROPERTY(NOTAMProvider, QDateTime, m_lastUpdate, &NOTAMProvider::lastUpdateChanged)
     Q_REQUIRED_RESULT QDateTime computeLastUpdate() const;
 
     // Filename for loading/saving NOTAM data

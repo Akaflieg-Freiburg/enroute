@@ -120,9 +120,6 @@ Page {
                     if (!altitudeLimit.isFinite()) {
                         secondLineString = qsTr("Currently showing all airspaces")
                     } else {
-                        // Mention
-                        Navigator.aircraft.verticalDistanceUnit
-
                         var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
                         var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                         secondLineString = qsTr("Currently showing airspaces up to %1").arg(airspaceAltitudeLimitString)

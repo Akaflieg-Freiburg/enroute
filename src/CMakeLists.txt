@@ -96,6 +96,7 @@ set(SOURCES
     geomaps/VACLibrary.h
     GlobalObject.h
     GlobalSettings.h
+    FileLibraryModel.h
     Librarian.h
     Sensors.h
     navigation/Aircraft.h
@@ -209,6 +210,7 @@ set(SOURCES
     geomaps/VACLibrary.cpp
     GlobalObject.cpp
     GlobalSettings.cpp
+    FileLibraryModel.cpp
     Librarian.cpp
     Sensors.cpp
     main.cpp
@@ -693,6 +695,10 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml
     SOURCES
+    ui/DistanceSortProxyModel.h
+    ui/DistanceSortProxyModel.cpp
+    ui/NameFilterProxyModel.h
+    ui/NameFilterProxyModel.cpp
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
     ui/SideviewQuickItem.h

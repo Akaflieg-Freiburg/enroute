@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Layouts
@@ -40,16 +42,18 @@ Page {
         id: approachChartItem
 
         WordWrappingItemDelegate {
+            id: vacItem
+
             width: parent ? parent.width : undefined
 
-            required property var model
+            required property vac vac
 
-            text: model.modelData.name + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
+            text: vacItem.vac.name + `<br><font color="#606060" size="2">${vacItem.vac.infoText}</font>`
             icon.source: "/icons/material/ic_map.svg"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                Global.currentVAC = VACLibrary.materialize(model.modelData)
+                Global.currentVAC = VACLibrary.materialize(vacItem.vac)
                 Global.stackView.pop()
             }
         }
@@ -131,11 +135,10 @@ Page {
             Layout.bottomMargin: SafeInsets.bottom
 
             clip: true
-            model: {
-                // Mention downloadable in order to get updates
-                VACLibrary.vacs
-
-                return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate, textInput.filter)
+            model: DistanceSortProxyModel {
+                sourceModel: VACLibrary
+                filter: textInput.filter
+                referenceCoordinate: PositionProvider.lastValidCoordinate
             }
             delegate: approachChartItem
         }

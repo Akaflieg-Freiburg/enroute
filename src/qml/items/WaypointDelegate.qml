@@ -63,9 +63,6 @@ Item {
         icon.source: waypointDelegate.waypoint.icon
 
         text: {
-            // Mention horizontal distance
-            Navigator.aircraft.horizontalDistanceUnit
-
             var result = waypointDelegate.waypoint.twoLineTitle
 
             var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypointDelegate.waypoint.coordinate)

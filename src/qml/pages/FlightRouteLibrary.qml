@@ -148,7 +148,6 @@ Page {
                             else
                             {
                                 Global.toast.doToast(qsTr("Flight Route Imported"))
-                                textInput.reload()
                             }
                         }
                         onRejected: {
@@ -196,9 +195,10 @@ Page {
 
             RowLayout {
                 id: entryRow
-                required property var modelData
-                anchors.left: parent.left
-                anchors.right: parent.right
+                required property string name
+                // Size from the list, not from parent: the delegate is created
+                // and destroyed while it has no parent.
+                width: wpList.width
                 Layout.fillWidth: true
                 height: iDel.height
 
@@ -212,12 +212,12 @@ Page {
                     id: iDel
                     Layout.fillWidth: true
 
-                    text: entryRow.modelData
+                    text: entryRow.name
                     icon.source: "/icons/material/ic_directions.svg"
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        page.finalFileName = entryRow.modelData
+                        page.finalFileName = entryRow.name
                         if ((Navigator.flightRoute.size > 0) && !Librarian.contains(Navigator.flightRoute))
                             overwriteDialog.open()
                         else
@@ -226,8 +226,11 @@ Page {
 
                     swipe.onCompleted: {
                         PlatformAdaptor.vibrateBrief()
-                        page.finalFileName = entryRow.modelData
+                        page.finalFileName = entryRow.name
                         removeDialog.open()
+                        // The row is removed from the model if the user confirms.
+                        // Otherwise it stays, so return it to its normal position.
+                        iDel.swipe.close()
                     }
 
                 }
@@ -260,7 +263,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, entryRow.modelData).toGeoJSON(), "application/geo+json", "geojson", Librarian.get(Librarian.Routes, entryRow.modelData).suggestedFilename())
+                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, entryRow.name).toGeoJSON(), "application/geo+json", "geojson", Librarian.get(Librarian.Routes, entryRow.name).suggestedFilename())
                                     if (errorString === "abort") {
                                         Global.toast.doToast(qsTr("Aborted"))
                                         return
@@ -285,7 +288,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, entryRow.modelData).toGpx(), "application/gpx+xml", "gpx", Librarian.get(Librarian.Routes, entryRow.modelData).suggestedFilename())
+                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, entryRow.name).toGpx(), "application/gpx+xml", "gpx", Librarian.get(Librarian.Routes, entryRow.name).suggestedFilename())
                                     if (errorString === "abort") {
                                         Global.toast.doToast(qsTr("Aborted"))
                                         return
@@ -315,7 +318,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    FileExchange.saveContent(Librarian.get(Librarian.Routes, entryRow.modelData).toGeoJSON(), "application/geo+json", "geojson", Librarian.get(Librarian.Routes, entryRow.modelData).suggestedFilename())
+                                    FileExchange.saveContent(Librarian.get(Librarian.Routes, entryRow.name).toGeoJSON(), "application/geo+json", "geojson", Librarian.get(Librarian.Routes, entryRow.name).suggestedFilename())
                                 }
                             }
 
@@ -327,7 +330,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    FileExchange.saveContent(Librarian.get(Librarian.Routes, entryRow.modelData).toGpx(), "application/gpx+xml", "gpx", Librarian.get(Librarian.Routes, entryRow.modelData).suggestedFilename())
+                                    FileExchange.saveContent(Librarian.get(Librarian.Routes, entryRow.name).toGpx(), "application/gpx+xml", "gpx", Librarian.get(Librarian.Routes, entryRow.name).suggestedFilename())
                                 }
                             }
                         }
@@ -344,7 +347,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, entryRow.modelData).toGeoJSON(), "application/geo+json", "geojson", "FlightRoute-%1.geojson")
+                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, entryRow.name).toGeoJSON(), "application/geo+json", "geojson", "FlightRoute-%1.geojson")
                                     if (errorString !== "") {
                                         shareErrorDialog.text = errorString
                                         shareErrorDialog.open()
@@ -361,7 +364,7 @@ Page {
                                     highlighted = false
                                     parent.highlighted = false
 
-                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, entryRow.modelData).toGpx(), "application/gpx+xml", "gpx", "FlightRoute-%1.gpx")
+                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, entryRow.name).toGpx(), "application/gpx+xml", "gpx", "FlightRoute-%1.gpx")
                                     if (errorString !== "") {
                                         shareErrorDialog.text = errorString
                                         shareErrorDialog.open()
@@ -379,8 +382,8 @@ Page {
                             text: qsTr("Rename…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                page.finalFileName = entryRow.modelData
-                                renameName.text = entryRow.modelData
+                                page.finalFileName = entryRow.name
+                                renameName.text = entryRow.name
                                 renameDialog.open()
                             }
 
@@ -391,7 +394,7 @@ Page {
                             text: qsTr("Remove…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                page.finalFileName = entryRow.modelData
+                                page.finalFileName = entryRow.name
                                 removeDialog.open()
                             }
                         } // removeAction
@@ -410,12 +413,9 @@ Page {
 
             clip: true
 
-            model: {
-                // Mention reloadTrigger: Librarian.entries() has no change
-                // notification, so reload() is the only way to re-evaluate.
-                textInput.reloadTrigger
-
-                return Librarian.entries(Librarian.Routes, textInput.filter)
+            model: NameFilterProxyModel {
+                sourceModel: Librarian.routesModel
+                filter: textInput.filter
             }
             delegate: flightRouteDelegate
         }
@@ -452,10 +452,6 @@ Page {
         Global.stackView.pop()
     }
 
-    function reloadFlightRouteList() {
-        textInput.reload()
-    }
-
     CenteringDialog {
         id: fileError
 
@@ -489,13 +485,9 @@ Page {
 
         onAccepted: {
             Librarian.remove(Librarian.Routes, page.finalFileName)
-            page.reloadFlightRouteList()
             Global.toast.doToast(qsTr("Flight route removed from device"))
         }
-        onRejected: {
-            page.reloadFlightRouteList()
-            removeDialog.close()
-        }
+        onRejected: removeDialog.close()
     }
 
     CenteringDialog {
@@ -545,7 +537,6 @@ Page {
         function doRename() {
             if ((renameName.text !== "") && !Librarian.exists(Librarian.Routes, renameName.text)) {
                 Librarian.rename(Librarian.Routes, page.finalFileName, renameName.text)
-                page.reloadFlightRouteList()
                 renameDialog.close()
                 Global.toast.doToast(qsTr("Flight route renamed"))
             }

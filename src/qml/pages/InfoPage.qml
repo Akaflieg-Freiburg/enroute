@@ -184,10 +184,15 @@ Page {
 
                 Label {
                     id: sysInfoLabel
-                    text: {
-                        // Mention time, so this property get updated every minute
-                        Clock.time
-                        return PlatformAdaptor.systemInfo()
+                    text: PlatformAdaptor.systemInfo()
+
+                    // The system info contains timestamps that move on. Re-query
+                    // it every minute.
+                    Connections {
+                        target: Clock
+                        function onTimeChanged() {
+                            sysInfoLabel.text = PlatformAdaptor.systemInfo()
+                        }
                     }
                     textFormat: Text.RichText
                     width: sv.availableWidth

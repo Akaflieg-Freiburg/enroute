@@ -48,9 +48,9 @@ $(function() {
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGeoMaps_1_1WaypointLibrary-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">GeoMaps::WaypointLibrary Class Reference</div></div>
@@ -61,30 +61,33 @@ $(function() {
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for GeoMaps::WaypointLibrary:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="classGeoMaps_1_1WaypointLibrary.png" usemap="#GeoMaps_3A_3AWaypointLibrary_map" alt=""/>
-  <map id="GeoMaps_3A_3AWaypointLibrary_map" name="GeoMaps_3A_3AWaypointLibrary_map">
-<area href="classGlobalObject.html" title="Base class for global singleton objects." alt="GlobalObject" shape="rect" coords="0,0,165,24"/>
-  </map>
-</div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:accf930dc5853080c49a73729ec6443ab" id="r_accf930dc5853080c49a73729ec6443ab"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#accf930dc5853080c49a73729ec6443ab">Role</a> : int { <a class="el" href="#accf930dc5853080c49a73729ec6443abab2584213aa08ca886b7ceb2665dc621e">WaypointRole</a> = Qt::UserRole + 1
+, <a class="el" href="#accf930dc5853080c49a73729ec6443aba12f6423672a7f6d7458a82bde9851ba5">NameRole</a>
+ }</td></tr>
+<tr class="memdesc:accf930dc5853080c49a73729ec6443ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model roles.  <a href="#accf930dc5853080c49a73729ec6443ab">More...</a><br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-signals" class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:a3aee65bd57d8b123b6944effb2c1819a" id="r_a3aee65bd57d8b123b6944effb2c1819a"><td class="memItemLeft"><a id="a3aee65bd57d8b123b6944effb2c1819a" name="a3aee65bd57d8b123b6944effb2c1819a"></a>
-void&#160;</td><td class="memItemRight"><b>waypointsChanged</b> ()</td></tr>
-<tr class="memdesc:a3aee65bd57d8b123b6944effb2c1819a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notification signal for the property with the same name. <br /></td></tr>
+<tr class="memitem:a3aee65bd57d8b123b6944effb2c1819a" id="r_a3aee65bd57d8b123b6944effb2c1819a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3aee65bd57d8b123b6944effb2c1819a">waypointsChanged</a> ()</td></tr>
+<tr class="memdesc:a3aee65bd57d8b123b6944effb2c1819a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notification signal for the property with the same name.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a260cef19f2cb41e1a82759eb54073581" id="r_a260cef19f2cb41e1a82759eb54073581"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a260cef19f2cb41e1a82759eb54073581">WaypointLibrary</a> (QObject *parent=nullptr)</td></tr>
-<tr class="memdesc:a260cef19f2cb41e1a82759eb54073581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new waypoin library.  <br /></td></tr>
+<tr class="memdesc:a260cef19f2cb41e1a82759eb54073581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new waypoint library.  <br /></td></tr>
 <tr class="memitem:ae91e470e3b3681734781cb261d979a96" id="r_ae91e470e3b3681734781cb261d979a96"><td class="memItemLeft">QList&lt; <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ae91e470e3b3681734781cb261d979a96">waypoints</a> () const</td></tr>
 <tr class="memdesc:ae91e470e3b3681734781cb261d979a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
 <tr class="memitem:af19e0b19db5cbc51272fca344c4f8b3d" id="r_af19e0b19db5cbc51272fca344c4f8b3d"><td class="memItemLeft">QByteArray&#160;</td><td class="memItemRight"><a class="el" href="#af19e0b19db5cbc51272fca344c4f8b3d">GeoJSON</a> () const</td></tr>
 <tr class="memdesc:af19e0b19db5cbc51272fca344c4f8b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="memitem:a35920bcdc362658496f62e9c29a4dddd" id="r_a35920bcdc362658496f62e9c29a4dddd"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a35920bcdc362658496f62e9c29a4dddd">rowCount</a> (const QModelIndex &amp;parent=QModelIndex()) const override</td></tr>
+<tr class="memdesc:a35920bcdc362658496f62e9c29a4dddd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implemented from QAbstractListModel.  <br /></td></tr>
+<tr class="memitem:ae1d9f7d159b69c9a0bd4731c83016d1a" id="r_ae1d9f7d159b69c9a0bd4731c83016d1a"><td class="memItemLeft">QVariant&#160;</td><td class="memItemRight"><a class="el" href="#ae1d9f7d159b69c9a0bd4731c83016d1a">data</a> (const QModelIndex &amp;index, int role=Qt::DisplayRole) const override</td></tr>
+<tr class="memdesc:ae1d9f7d159b69c9a0bd4731c83016d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implemented from QAbstractListModel.  <br /></td></tr>
+<tr class="memitem:a686818cd146334264c2912441d3f42ea" id="r_a686818cd146334264c2912441d3f42ea"><td class="memItemLeft">QHash&lt; int, QByteArray &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a686818cd146334264c2912441d3f42ea">roleNames</a> () const override</td></tr>
+<tr class="memdesc:a686818cd146334264c2912441d3f42ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implemented from QAbstractListModel.  <br /></td></tr>
 <tr class="memitem:a518937549eb2f288b6268df9d8e04164" id="r_a518937549eb2f288b6268df9d8e04164"><td class="memItemLeft">Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#a518937549eb2f288b6268df9d8e04164">add</a> (const <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;waypoint)</td></tr>
 <tr class="memdesc:a518937549eb2f288b6268df9d8e04164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a waypoint to the library.  <br /></td></tr>
 <tr class="memitem:a2a2675539efa6618d9c74e31585b1e5c" id="r_a2a2675539efa6618d9c74e31585b1e5c"><td class="memItemLeft"><a id="a2a2675539efa6618d9c74e31585b1e5c" name="a2a2675539efa6618d9c74e31585b1e5c"></a>
@@ -92,8 +95,6 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight"><b>clear</b> ()</td></tr>
 <tr class="memdesc:a2a2675539efa6618d9c74e31585b1e5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the waypoint library. <br /></td></tr>
 <tr class="memitem:a054cddbd6494111494fec58285d3ac47" id="r_a054cddbd6494111494fec58285d3ac47"><td class="memItemLeft">Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#a054cddbd6494111494fec58285d3ac47">contains</a> (const <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;waypoint) const</td></tr>
 <tr class="memdesc:a054cddbd6494111494fec58285d3ac47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if library contains an given waypoint.  <br /></td></tr>
-<tr class="memitem:aeb83487c2433059eb7e8bb387d3dac6b" id="r_aeb83487c2433059eb7e8bb387d3dac6b"><td class="memItemLeft">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#aeb83487c2433059eb7e8bb387d3dac6b">filteredWaypoints</a> (const QString &amp;filter) const</td></tr>
-<tr class="memdesc:aeb83487c2433059eb7e8bb387d3dac6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists all entries in the waypoint library whose name contains the string 'filter'.  <br /></td></tr>
 <tr class="memitem:a1e2e10b450e6dd1155650e493a9ff86c" id="r_a1e2e10b450e6dd1155650e493a9ff86c"><td class="memItemLeft">Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#a1e2e10b450e6dd1155650e493a9ff86c">hasNearbyEntry</a> (const <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;waypoint) const</td></tr>
 <tr class="memdesc:a1e2e10b450e6dd1155650e493a9ff86c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the library contains a waypoint near to a given one.  <br /></td></tr>
 <tr class="memitem:a964b014cac391400fbc9bc1fd7d35f36" id="r_a964b014cac391400fbc9bc1fd7d35f36"><td class="memItemLeft">Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#a964b014cac391400fbc9bc1fd7d35f36">import</a> (const QString &amp;fileName, bool skip)</td></tr>
@@ -108,16 +109,6 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight"><b>clear</b> ()</td></tr>
 <tr class="memdesc:ad3aa867c447354b223779ca8a0a6ec02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save to file.  <br /></td></tr>
 <tr class="memitem:a11c65b802ee48efdb1fc393ba1f16861" id="r_a11c65b802ee48efdb1fc393ba1f16861"><td class="memItemLeft">Q_INVOKABLE QByteArray&#160;</td><td class="memItemRight"><a class="el" href="#a11c65b802ee48efdb1fc393ba1f16861">toGpx</a> () const</td></tr>
 <tr class="memdesc:a11c65b802ee48efdb1fc393ba1f16861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize into <a class="el" href="classGeoMaps_1_1GPX.html" title="GPX file support class.">GPX</a> document.  <br /></td></tr>
-<tr class="inherit_header pub_methods_classGlobalObject"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classGlobalObject')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
-<tr class="memitem:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject" id="r_ac8dfa53c492975de42fa7972e77abbc1"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a> (QObject *parent=nullptr)</td></tr>
-<tr class="memdesc:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
-<tr class="memitem:a96c4d476061f33a53b8c7de446c639eb inherit pub_methods_classGlobalObject" id="r_a96c4d476061f33a53b8c7de446c639eb"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a96c4d476061f33a53b8c7de446c639eb">~GlobalObject</a> () override=default</td></tr>
-<tr class="memdesc:a96c4d476061f33a53b8c7de446c639eb inherit pub_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard deconstructor.  <br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:abbb862953248d9a40444e0e27eef3c95" id="r_abbb862953248d9a40444e0e27eef3c95"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#abbb862953248d9a40444e0e27eef3c95">deferredInitialization</a> () override</td></tr>
-<tr class="memdesc:abbb862953248d9a40444e0e27eef3c95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-constructor initialization.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -125,63 +116,39 @@ Properties</h2></td></tr>
 <tr class="memdesc:a9986d8dcae3b5e14cc7c513a9f4a02d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of waypoints.  <br /></td></tr>
 <tr class="memitem:a0a10af13405ca71c7ee0b0fcf8e57007" id="r_a0a10af13405ca71c7ee0b0fcf8e57007"><td class="memItemLeft">QByteArray&#160;</td><td class="memItemRight"><a class="el" href="#a0a10af13405ca71c7ee0b0fcf8e57007">GeoJSON</a></td></tr>
 <tr class="memdesc:a0a10af13405ca71c7ee0b0fcf8e57007"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of waypoints.  <br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_methods_classGlobalObject"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_methods_classGlobalObject')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Static Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
-<tr class="memitem:ae5d0c94af509c9744e1b344201928715 inherit pub_static_methods_classGlobalObject" id="r_ae5d0c94af509c9744e1b344201928715"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#ae5d0c94af509c9744e1b344201928715">clear</a> ()</td></tr>
-<tr class="memdesc:ae5d0c94af509c9744e1b344201928715 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes all globally defined objects.  <br /></td></tr>
-<tr class="memitem:a0501f0fd4dbb0252ff120fd07ea2f703 inherit pub_static_methods_classGlobalObject" id="r_a0501f0fd4dbb0252ff120fd07ea2f703"><td class="memItemLeft">static Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a0501f0fd4dbb0252ff120fd07ea2f703">canConstruct</a> ()</td></tr>
-<tr class="memdesc:a0501f0fd4dbb0252ff120fd07ea2f703 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if the static methods are ready to be used.  <br /></td></tr>
-<tr class="memitem:ad479148c920adcb9c9ea9d99c762a08f inherit pub_static_methods_classGlobalObject" id="r_ad479148c920adcb9c9ea9d99c762a08f"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classNavigation_1_1Clock.html">Navigation::Clock</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#ad479148c920adcb9c9ea9d99c762a08f">clock</a> ()</td></tr>
-<tr class="memdesc:ad479148c920adcb9c9ea9d99c762a08f inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classNavigation_1_1Clock.html" title="This extremely simple class give accss to time and offers a few time-related functions.">Navigation::Clock</a> instance.  <br /></td></tr>
-<tr class="memitem:a88f9800ff5290634fbb1507bd509afc9 inherit pub_static_methods_classGlobalObject" id="r_a88f9800ff5290634fbb1507bd509afc9"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classDataManagement_1_1DataManager.html">DataManagement::DataManager</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a88f9800ff5290634fbb1507bd509afc9">dataManager</a> ()</td></tr>
-<tr class="memdesc:a88f9800ff5290634fbb1507bd509afc9 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static GeoMaps::DataManager instance.  <br /></td></tr>
-<tr class="memitem:abb18a18cba455a65c8773aa5f4fbcdd6 inherit pub_static_methods_classGlobalObject" id="r_abb18a18cba455a65c8773aa5f4fbcdd6"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classDemoRunner.html">DemoRunner</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#abb18a18cba455a65c8773aa5f4fbcdd6">demoRunner</a> ()</td></tr>
-<tr class="memdesc:abb18a18cba455a65c8773aa5f4fbcdd6 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classDemoRunner.html" title="Remote controls the app and takes screenshot images.">DemoRunner</a> instance.  <br /></td></tr>
-<tr class="memitem:ad195e7630ee65b97b837fb8bc26e1ba9 inherit pub_static_methods_classGlobalObject" id="r_ad195e7630ee65b97b837fb8bc26e1ba9"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classTraffic_1_1FlarmnetDB.html">Traffic::FlarmnetDB</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#ad195e7630ee65b97b837fb8bc26e1ba9">flarmnetDB</a> ()</td></tr>
-<tr class="memdesc:ad195e7630ee65b97b837fb8bc26e1ba9 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static FlarmnetDB instance.  <br /></td></tr>
-<tr class="memitem:a8b026fc0cee08bc0486f29ed1eaf18b6 inherit pub_static_methods_classGlobalObject" id="r_a8b026fc0cee08bc0486f29ed1eaf18b6"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classPlatform_1_1FileExchange.html">Platform::FileExchange</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a8b026fc0cee08bc0486f29ed1eaf18b6">fileExchange</a> ()</td></tr>
-<tr class="memdesc:a8b026fc0cee08bc0486f29ed1eaf18b6 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static FileExchange instance.  <br /></td></tr>
-<tr class="memitem:ac95122a72dd99d7e805a47eed8637b6a inherit pub_static_methods_classGlobalObject" id="r_ac95122a72dd99d7e805a47eed8637b6a"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classFlightlog_1_1FlightLog.html">Flightlog::FlightLog</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#ac95122a72dd99d7e805a47eed8637b6a">flightLog</a> ()</td></tr>
-<tr class="memdesc:ac95122a72dd99d7e805a47eed8637b6a inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static FlightLog instance.  <br /></td></tr>
-<tr class="memitem:a241d8d74ad20f5b5fdfa3eff30a20077 inherit pub_static_methods_classGlobalObject" id="r_a241d8d74ad20f5b5fdfa3eff30a20077"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a241d8d74ad20f5b5fdfa3eff30a20077">geoMapProvider</a> ()</td></tr>
-<tr class="memdesc:a241d8d74ad20f5b5fdfa3eff30a20077 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Provides geographic information.">GeoMaps::GeoMapProvider</a> instance.  <br /></td></tr>
-<tr class="memitem:af94f3ad5c6bb06982abf5d2759b63186 inherit pub_static_methods_classGlobalObject" id="r_af94f3ad5c6bb06982abf5d2759b63186"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classGlobalSettings.html">GlobalSettings</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#af94f3ad5c6bb06982abf5d2759b63186">globalSettings</a> ()</td></tr>
-<tr class="memdesc:af94f3ad5c6bb06982abf5d2759b63186 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static Settings instance.  <br /></td></tr>
-<tr class="memitem:a311415802470c0ca323e8a44c96d2773 inherit pub_static_methods_classGlobalObject" id="r_a311415802470c0ca323e8a44c96d2773"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classLibrarian.html">Librarian</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a311415802470c0ca323e8a44c96d2773">librarian</a> ()</td></tr>
-<tr class="memdesc:a311415802470c0ca323e8a44c96d2773 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static librarian instance.  <br /></td></tr>
-<tr class="memitem:a1ef30c74add453f96a346bb91a9b564d inherit pub_static_methods_classGlobalObject" id="r_a1ef30c74add453f96a346bb91a9b564d"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classPlatform_1_1PlatformAdaptor.html">Platform::PlatformAdaptor</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a1ef30c74add453f96a346bb91a9b564d">platformAdaptor</a> ()</td></tr>
-<tr class="memdesc:a1ef30c74add453f96a346bb91a9b564d inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static PlatformAdaptor instance.  <br /></td></tr>
-<tr class="memitem:a8df42e3160bee431602e14e9b605ffa8 inherit pub_static_methods_classGlobalObject" id="r_a8df42e3160bee431602e14e9b605ffa8"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classSensors.html">Sensors</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a8df42e3160bee431602e14e9b605ffa8">sensors</a> ()</td></tr>
-<tr class="memdesc:a8df42e3160bee431602e14e9b605ffa8 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classNavigation_1_1Clock.html" title="This extremely simple class give accss to time and offers a few time-related functions.">Navigation::Clock</a> instance.  <br /></td></tr>
-<tr class="memitem:a6e6835796fd3ab2f304c96272f50054c inherit pub_static_methods_classGlobalObject" id="r_a6e6835796fd3ab2f304c96272f50054c"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classNavigation_1_1Navigator.html">Navigation::Navigator</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a6e6835796fd3ab2f304c96272f50054c">navigator</a> ()</td></tr>
-<tr class="memdesc:a6e6835796fd3ab2f304c96272f50054c inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data.">Navigation::Navigator</a> instance.  <br /></td></tr>
-<tr class="memitem:a0ac7c3ccb518e122c8565e40c1fb8cdb inherit pub_static_methods_classGlobalObject" id="r_a0ac7c3ccb518e122c8565e40c1fb8cdb"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classTraffic_1_1PasswordDB.html">Traffic::PasswordDB</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a0ac7c3ccb518e122c8565e40c1fb8cdb">passwordDB</a> ()</td></tr>
-<tr class="memdesc:a0ac7c3ccb518e122c8565e40c1fb8cdb inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static PasswordDB instance.  <br /></td></tr>
-<tr class="memitem:a7837aeb4bcabe6542db1bccdab5ebd59 inherit pub_static_methods_classGlobalObject" id="r_a7837aeb4bcabe6542db1bccdab5ebd59"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classPositioning_1_1PositionProvider.html">Positioning::PositionProvider</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a7837aeb4bcabe6542db1bccdab5ebd59">positionProvider</a> ()</td></tr>
-<tr class="memdesc:a7837aeb4bcabe6542db1bccdab5ebd59 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static PositionProvider instance.  <br /></td></tr>
-<tr class="memitem:ae068cf2680dc46a9a8d084ce246055d9 inherit pub_static_methods_classGlobalObject" id="r_ae068cf2680dc46a9a8d084ce246055d9"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classNOTAM_1_1NOTAMProvider.html">NOTAM::NOTAMProvider</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#ae068cf2680dc46a9a8d084ce246055d9">notamProvider</a> ()</td></tr>
-<tr class="memdesc:ae068cf2680dc46a9a8d084ce246055d9 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static notification manager instance.  <br /></td></tr>
-<tr class="memitem:aa90c2b17a6930dfb2cd258c8349e94cc inherit pub_static_methods_classGlobalObject" id="r_aa90c2b17a6930dfb2cd258c8349e94cc"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classNotifications_1_1NotificationManager.html">Notifications::NotificationManager</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#aa90c2b17a6930dfb2cd258c8349e94cc">notificationManager</a> ()</td></tr>
-<tr class="memdesc:aa90c2b17a6930dfb2cd258c8349e94cc inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static notification manager instance.  <br /></td></tr>
-<tr class="memitem:aece9ee1f2507b4bcd825d4f61ebd4643 inherit pub_static_methods_classGlobalObject" id="r_aece9ee1f2507b4bcd825d4f61ebd4643"><td class="memItemLeft">static Q_INVOKABLE QNetworkAccessManager *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#aece9ee1f2507b4bcd825d4f61ebd4643">networkAccessManager</a> ()</td></tr>
-<tr class="memdesc:aece9ee1f2507b4bcd825d4f61ebd4643 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static QNetworkAccessManager instance.  <br /></td></tr>
-<tr class="memitem:ab4e66c880bdcfa33720b51364c484044 inherit pub_static_methods_classGlobalObject" id="r_ab4e66c880bdcfa33720b51364c484044"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classDataManagement_1_1SSLErrorHandler.html">DataManagement::SSLErrorHandler</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#ab4e66c880bdcfa33720b51364c484044">sslErrorHandler</a> ()</td></tr>
-<tr class="memdesc:ab4e66c880bdcfa33720b51364c484044 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static QNetworkAccessManager instance.  <br /></td></tr>
-<tr class="memitem:acc3b67374f1eac467da729151c31aff6 inherit pub_static_methods_classGlobalObject" id="r_acc3b67374f1eac467da729151c31aff6"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#acc3b67374f1eac467da729151c31aff6">trafficDataProvider</a> ()</td></tr>
-<tr class="memdesc:acc3b67374f1eac467da729151c31aff6 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static TrafficDataProvider instance.  <br /></td></tr>
-<tr class="memitem:a0fe5454852ab2b913efe469bfd2630b4 inherit pub_static_methods_classGlobalObject" id="r_a0fe5454852ab2b913efe469bfd2630b4"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1WaypointLibrary.html">GeoMaps::WaypointLibrary</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#a0fe5454852ab2b913efe469bfd2630b4">waypointLibrary</a> ()</td></tr>
-<tr class="memdesc:a0fe5454852ab2b913efe469bfd2630b4 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static WaypointLibrary instance.  <br /></td></tr>
-<tr class="memitem:abff9f661cf7e78967606d10692c03412 inherit pub_static_methods_classGlobalObject" id="r_abff9f661cf7e78967606d10692c03412"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a> *&#160;</td><td class="memItemRight"><a class="el" href="classGlobalObject.html#abff9f661cf7e78967606d10692c03412">weatherDataProvider</a> ()</td></tr>
-<tr class="memdesc:abff9f661cf7e78967606d10692c03412 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static WeatherDataProvider instance.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Library of user-defined waypoints. </p>
-<p>This simple class that is little more than a list of waypoints, together with some auxiliary methods. The list is automatically loaded on startup, and saved every time that a change is made. </p>
+<p>This class holds the list of user-defined waypoints, sorted by name, and exposes it as a list model with the roles 'waypoint' and 'name'. The library is loaded from a <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> file on construction and saved every time that a change is made.</p>
+<p>Changes are announced with row-granular model signals, so that views bound to this model update incrementally, and with the coarse signal <a class="el" href="#a3aee65bd57d8b123b6944effb2c1819a" title="Notification signal for the property with the same name.">waypointsChanged()</a> for consumers of the property 'waypoints'. In QML, bind a view to this singleton through a NameFilterProxyModel. </p>
 
-<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00039">39</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
-</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00046">46</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
+</div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Member Enumeration Documentation</h2>
+<a id="accf930dc5853080c49a73729ec6443ab" name="accf930dc5853080c49a73729ec6443ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accf930dc5853080c49a73729ec6443ab">&#9670;&#160;</a></span>Role</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#accf930dc5853080c49a73729ec6443ab">GeoMaps::WaypointLibrary::Role</a> : int</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Model roles. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="accf930dc5853080c49a73729ec6443abab2584213aa08ca886b7ceb2665dc621e" name="accf930dc5853080c49a73729ec6443abab2584213aa08ca886b7ceb2665dc621e"></a>WaypointRole&#160;</td><td class="fielddoc"><p>The waypoint, of type <a class="el" href="classGeoMaps_1_1Waypoint.html" title="Waypoint, such as an airfield, a navaid station or a reporting point.">GeoMaps::Waypoint</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="accf930dc5853080c49a73729ec6443aba12f6423672a7f6d7458a82bde9851ba5" name="accf930dc5853080c49a73729ec6443aba12f6423672a7f6d7458a82bde9851ba5"></a>NameRole&#160;</td><td class="fielddoc"><p>Name of the waypoint, a QString. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00075">75</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a260cef19f2cb41e1a82759eb54073581" name="a260cef19f2cb41e1a82759eb54073581"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a260cef19f2cb41e1a82759eb54073581">&#9670;&#160;</a></span>WaypointLibrary()</h2>
 
@@ -205,7 +172,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a new waypoin library. </p>
+<p>Creates a new waypoint library. </p>
 <p>This constructor creates a new <a class="el" href="classGeoMaps_1_1WaypointLibrary.html" title="Library of user-defined waypoints.">WaypointLibrary</a> instance. The library is loaded from a <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> file whose name is found in the private member stdFileName.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -274,12 +241,12 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if an exact copy of the waypoint is found in the library </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00126">126</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00171">171</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
 
 </div>
 </div>
-<a id="abbb862953248d9a40444e0e27eef3c95" name="abbb862953248d9a40444e0e27eef3c95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbb862953248d9a40444e0e27eef3c95">&#9670;&#160;</a></span>deferredInitialization()</h2>
+<a id="ae1d9f7d159b69c9a0bd4731c83016d1a" name="ae1d9f7d159b69c9a0bd4731c83016d1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1d9f7d159b69c9a0bd4731c83016d1a">&#9670;&#160;</a></span>data()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -288,58 +255,32 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void GeoMaps::WaypointLibrary::deferredInitialization </td>
+          <td class="memname">QVariant GeoMaps::WaypointLibrary::data </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">const QModelIndex &amp;</td>          <td class="paramname"><span class="paramname"><em>index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>role</em></span><span class="paramdefsep"> = </span><span class="paramdefval">Qt::DisplayRole</span>&#160;) const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Non-constructor initialization. </p>
-<p>This method is called by the static methods that create global instances immediately after the constructor returns. This class can be re-implemented to perform initialization steps that refer to other singleton objects. </p>
-
-<p>Reimplemented from <a class="el" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f">GlobalObject</a>.</p>
-
-</div>
-</div>
-<a id="aeb83487c2433059eb7e8bb387d3dac6b" name="aeb83487c2433059eb7e8bb387d3dac6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb83487c2433059eb7e8bb387d3dac6b">&#9670;&#160;</a></span>filteredWaypoints()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &gt; GeoMaps::WaypointLibrary::filteredWaypoints </td>
-          <td>(</td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Lists all entries in the waypoint library whose name contains the string 'filter'. </p>
-<p>The check for string containment is done in a fuzzy way.</p>
+<p>Re-implemented from QAbstractListModel. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filter</td><td>String used to filter the list</td></tr>
+    <tr><td class="paramname">index</td><td>Model index</td></tr>
+    <tr><td class="paramname">role</td><td>One of the roles in <a class="el" href="#accf930dc5853080c49a73729ec6443ab" title="Model roles.">WaypointLibrary::Role</a></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A filtered list with of waypoint, in alphabetical order </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Data for the role, or an invalid QVariant </dd></dl>
 
 </div>
 </div>
@@ -486,9 +427,6 @@ Additional Inherited Members</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Q_INVOKABLE bool GeoMaps::WaypointLibrary::remove </td>
@@ -497,11 +435,6 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Remove waypoint. </p>
@@ -521,9 +454,6 @@ Additional Inherited Members</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Q_INVOKABLE bool GeoMaps::WaypointLibrary::replace </td>
@@ -536,11 +466,6 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramtype">const <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>newWaypoint</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Replace waypoint. </p>
@@ -553,6 +478,68 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if a waypoint has indeed been replaced. </dd></dl>
+
+</div>
+</div>
+<a id="a686818cd146334264c2912441d3f42ea" name="a686818cd146334264c2912441d3f42ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a686818cd146334264c2912441d3f42ea">&#9670;&#160;</a></span>roleNames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QHash&lt; int, QByteArray &gt; GeoMaps::WaypointLibrary::roleNames </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Re-implemented from QAbstractListModel. </p>
+<dl class="section return"><dt>Returns</dt><dd>Names of the roles in <a class="el" href="#accf930dc5853080c49a73729ec6443ab" title="Model roles.">WaypointLibrary::Role</a> </dd></dl>
+
+</div>
+</div>
+<a id="a35920bcdc362658496f62e9c29a4dddd" name="a35920bcdc362658496f62e9c29a4dddd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35920bcdc362658496f62e9c29a4dddd">&#9670;&#160;</a></span>rowCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int GeoMaps::WaypointLibrary::rowCount </td>
+          <td>(</td>
+          <td class="paramtype">const QModelIndex &amp;</td>          <td class="paramname"><span class="paramname"><em>parent</em></span><span class="paramdefsep"> = </span><span class="paramdefval">QModelIndex()</span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Re-implemented from QAbstractListModel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parent</td><td>Parent index, invalid for the list itself</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of waypoints, or zero for a valid parent </dd></dl>
 
 </div>
 </div>
@@ -646,7 +633,35 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property waypoints </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00093">93</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00109">109</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
+
+</div>
+</div>
+<a id="a3aee65bd57d8b123b6944effb2c1819a" name="a3aee65bd57d8b123b6944effb2c1819a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aee65bd57d8b123b6944effb2c1819a">&#9670;&#160;</a></span>waypointsChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GeoMaps::WaypointLibrary::waypointsChanged </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Notification signal for the property with the same name. </p>
+<p>This coarse signal is emitted after every change, following the row-granular model signals. </p>
 
 </div>
 </div>
@@ -674,7 +689,7 @@ Additional Inherited Members</h2></td></tr>
 <p>List of waypoints. </p>
 <p>This property holds the list of waypoints, in alphabetical order. </p>
 
-<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00082">82</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00098">98</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
 
 </div>
 </div>
@@ -701,7 +716,7 @@ Additional Inherited Members</h2></td></tr>
 <p>List of waypoints. </p>
 <p>This property holds the list of waypoints, in alphabetical order </p>
 
-<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00076">76</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WaypointLibrary_8h_source.html#l00092">92</a> of file <a class="el" href="WaypointLibrary_8h_source.html">WaypointLibrary.h</a>.</p>
 
 </div>
 </div>

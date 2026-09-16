@@ -48,6 +48,7 @@ $(function() {
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
@@ -61,6 +62,15 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a7a575b0e65837aa1725fb79105c3a78d" id="r_a7a575b0e65837aa1725fb79105c3a78d"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#a7a575b0e65837aa1725fb79105c3a78d">Role</a> : int { <a class="el" href="#a7a575b0e65837aa1725fb79105c3a78daeb7add3be5d4ae37ca43fa44c014c136">VacRole</a> = Qt::UserRole + 1
+, <a class="el" href="#a7a575b0e65837aa1725fb79105c3a78da1465bd1ff77c51df74d64c5a34194d97">NameRole</a>
+, <a class="el" href="#a7a575b0e65837aa1725fb79105c3a78dafed5259c62245332c57d2ba6a8b832b0">SectionRole</a>
+, <a class="el" href="#a7a575b0e65837aa1725fb79105c3a78da791e8b0fc9e3071229224ef3ab816289">CenterRole</a>
+ }</td></tr>
+<tr class="memdesc:a7a575b0e65837aa1725fb79105c3a78d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model roles.  <a href="#a7a575b0e65837aa1725fb79105c3a78d">More...</a><br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-signals" class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
 <tr class="memitem:a94b8c2fd10a2d5018d5e7dc57c05a433" id="r_a94b8c2fd10a2d5018d5e7dc57c05a433"><td class="memItemLeft"><a id="a94b8c2fd10a2d5018d5e7dc57c05a433" name="a94b8c2fd10a2d5018d5e7dc57c05a433"></a>
@@ -92,8 +102,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a01a0cd2af089671cfd892bf323d3bbf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
 <tr class="memitem:ac3d6553efa3d1a243e6a88293de011d0" id="r_ac3d6553efa3d1a243e6a88293de011d0"><td class="memItemLeft">QList&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ac3d6553efa3d1a243e6a88293de011d0">vacs</a> () const</td></tr>
 <tr class="memdesc:ac3d6553efa3d1a243e6a88293de011d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
-<tr class="memitem:ac4dac7d9b7df2640eb282ce4b3ef2de7" id="r_ac4dac7d9b7df2640eb282ce4b3ef2de7"><td class="memItemLeft">QBindable&lt; QList&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ac4dac7d9b7df2640eb282ce4b3ef2de7">bindableVacs</a> () const</td></tr>
-<tr class="memdesc:ac4dac7d9b7df2640eb282ce4b3ef2de7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
+<tr class="memitem:a1eb2a80e4f034127c64201e9c22cd7cb" id="r_a1eb2a80e4f034127c64201e9c22cd7cb"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a1eb2a80e4f034127c64201e9c22cd7cb">rowCount</a> (const QModelIndex &amp;parent=QModelIndex()) const override</td></tr>
+<tr class="memdesc:a1eb2a80e4f034127c64201e9c22cd7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implemented from QAbstractListModel.  <br /></td></tr>
+<tr class="memitem:af30e405a03159a613f019d7bc626c7d4" id="r_af30e405a03159a613f019d7bc626c7d4"><td class="memItemLeft">QVariant&#160;</td><td class="memItemRight"><a class="el" href="#af30e405a03159a613f019d7bc626c7d4">data</a> (const QModelIndex &amp;index, int role=Qt::DisplayRole) const override</td></tr>
+<tr class="memdesc:af30e405a03159a613f019d7bc626c7d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implemented from QAbstractListModel.  <br /></td></tr>
+<tr class="memitem:a03ba6cd987c0a5b68b6d425b426663a3" id="r_a03ba6cd987c0a5b68b6d425b426663a3"><td class="memItemLeft">QHash&lt; int, QByteArray &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a03ba6cd987c0a5b68b6d425b426663a3">roleNames</a> () const override</td></tr>
+<tr class="memdesc:a03ba6cd987c0a5b68b6d425b426663a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implemented from QAbstractListModel.  <br /></td></tr>
 <tr class="memitem:a0b828737405263d36cfa544488c076a6" id="r_a0b828737405263d36cfa544488c076a6"><td class="memItemLeft">Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#a0b828737405263d36cfa544488c076a6">clear</a> ()</td></tr>
 <tr class="memdesc:a0b828737405263d36cfa544488c076a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all VACs.  <br /></td></tr>
 <tr class="memitem:a1aff765f4f51f2e4e4f60b6c2acac204" id="r_a1aff765f4f51f2e4e4f60b6c2acac204"><td class="memItemLeft">Q_INVOKABLE <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a>&#160;</td><td class="memItemRight"><a class="el" href="#a1aff765f4f51f2e4e4f60b6c2acac204">get</a> (const QString &amp;name)</td></tr>
@@ -108,8 +122,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1c85f944148edc2fd500121be5b6c302"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove one VACs.  <br /></td></tr>
 <tr class="memitem:ae228d118883c75c7af215060d784b709" id="r_ae228d118883c75c7af215060d784b709"><td class="memItemLeft">Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#ae228d118883c75c7af215060d784b709">rename</a> (const QString &amp;oldName, const QString &amp;newName)</td></tr>
 <tr class="memdesc:ae228d118883c75c7af215060d784b709"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rename a VACs.  <br /></td></tr>
-<tr class="memitem:a0393e90282b284d398fd13fef0009885" id="r_a0393e90282b284d398fd13fef0009885"><td class="memItemLeft">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a0393e90282b284d398fd13fef0009885">vacsByDistance</a> (const QGeoCoordinate &amp;position, const QString &amp;filter)</td></tr>
-<tr class="memdesc:a0393e90282b284d398fd13fef0009885"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all VACs installed.  <br /></td></tr>
 <tr class="memitem:aceb02f2d34da71b0a54ed4cf01432ce5" id="r_aceb02f2d34da71b0a54ed4cf01432ce5"><td class="memItemLeft">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#aceb02f2d34da71b0a54ed4cf01432ce5">vacs4Point</a> (const QGeoCoordinate &amp;position)</td></tr>
 <tr class="memdesc:aceb02f2d34da71b0a54ed4cf01432ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all VACs that contain a given point.  <br /></td></tr>
 </table><table class="memberdecls">
@@ -127,10 +139,40 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Library of visual approach charts. </p>
 <p>This class collects visual approach charts that the user has installed. The list is automatically loaded on startup, and saved every time that a change is made.</p>
-<p>In addition to manually imported charts, this class presents the charts contained in the <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> collections managed by <a class="el" href="classDataManagement_1_1DataManager.html" title="Manages the list of geographic maps.">DataManagement::DataManager</a>. These charts are not stored in the library data file, cannot be renamed or removed individually, and their raster data is extracted on demand; see <a class="el" href="#ad9cfbe7fe1a15657b30b8596531661e0" title="Obtain a VAC whose fileName points to a raster image file.">materialize()</a>. </p>
+<p>In addition to manually imported charts, this class presents the charts contained in the <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">VAC</a> collections managed by <a class="el" href="classDataManagement_1_1DataManager.html" title="Manages the list of geographic maps.">DataManagement::DataManager</a>. These charts are not stored in the library data file, cannot be renamed or removed individually, and their raster data is extracted on demand; see <a class="el" href="#ad9cfbe7fe1a15657b30b8596531661e0" title="Obtain a VAC whose fileName points to a raster image file.">materialize()</a>.</p>
+<p>The library is a list model with one row per chart, sorted by section and name, and with the roles 'vac', 'name', 'section' and 'center'. Changes are announced with row-granular model signals, and with the coarse signal <a class="el" href="#af24c037f960dceca1595710bcb98caed" title="Notifier signal.">vacsChanged()</a> for consumers of the property 'vacs'. In QML, bind a view to this singleton through a NameFilterProxyModel or a DistanceSortProxyModel. </p>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00047">47</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
-</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00054">54</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+</div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Member Enumeration Documentation</h2>
+<a id="a7a575b0e65837aa1725fb79105c3a78d" name="a7a575b0e65837aa1725fb79105c3a78d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a575b0e65837aa1725fb79105c3a78d">&#9670;&#160;</a></span>Role</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a7a575b0e65837aa1725fb79105c3a78d">GeoMaps::VACLibrary::Role</a> : int</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Model roles. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7a575b0e65837aa1725fb79105c3a78daeb7add3be5d4ae37ca43fa44c014c136" name="a7a575b0e65837aa1725fb79105c3a78daeb7add3be5d4ae37ca43fa44c014c136"></a>VacRole&#160;</td><td class="fielddoc"><p>The chart, of type <a class="el" href="classGeoMaps_1_1VAC.html" title="Visual approach chart.">GeoMaps::VAC</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7a575b0e65837aa1725fb79105c3a78da1465bd1ff77c51df74d64c5a34194d97" name="a7a575b0e65837aa1725fb79105c3a78da1465bd1ff77c51df74d64c5a34194d97"></a>NameRole&#160;</td><td class="fielddoc"><p>Name of the chart, a QString. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7a575b0e65837aa1725fb79105c3a78dafed5259c62245332c57d2ba6a8b832b0" name="a7a575b0e65837aa1725fb79105c3a78dafed5259c62245332c57d2ba6a8b832b0"></a>SectionRole&#160;</td><td class="fielddoc"><p>Section of the chart, a QString; see <a class="el" href="classGeoMaps_1_1VAC.html#a89e4366f0a5f1cd42aa982232aac2a9e" title="Section name, for grouping in GUI lists.">GeoMaps::VAC::section()</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7a575b0e65837aa1725fb79105c3a78da791e8b0fc9e3071229224ef3ab816289" name="a7a575b0e65837aa1725fb79105c3a78da791e8b0fc9e3071229224ef3ab816289"></a>CenterRole&#160;</td><td class="fielddoc"><p>Center of the chart, a QGeoCoordinate. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00071">71</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a60293890ca87e0d4b56d321b8c4a6e9c" name="a60293890ca87e0d4b56d321b8c4a6e9c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60293890ca87e0d4b56d321b8c4a6e9c">&#9670;&#160;</a></span>VACLibrary()</h2>
 
@@ -183,7 +225,7 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property hasManuallyImported </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00095">95</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00117">117</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
 
 </div>
 </div>
@@ -213,37 +255,7 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property isEmpty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00107">107</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
-
-</div>
-</div>
-<a id="ac4dac7d9b7df2640eb282ce4b3ef2de7" name="ac4dac7d9b7df2640eb282ce4b3ef2de7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4dac7d9b7df2640eb282ce4b3ef2de7">&#9670;&#160;</a></span>bindableVacs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QBindable&lt; QList&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt; &gt; GeoMaps::VACLibrary::bindableVacs </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for property of the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property vacs </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00119">119</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00129">129</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
 
 </div>
 </div>
@@ -264,6 +276,45 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 
 <p>Removes all VACs. </p>
 <p>This method also deletes the associated files. </p>
+
+</div>
+</div>
+<a id="af30e405a03159a613f019d7bc626c7d4" name="af30e405a03159a613f019d7bc626c7d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af30e405a03159a613f019d7bc626c7d4">&#9670;&#160;</a></span>data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QVariant GeoMaps::VACLibrary::data </td>
+          <td>(</td>
+          <td class="paramtype">const QModelIndex &amp;</td>          <td class="paramname"><span class="paramname"><em>index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>role</em></span><span class="paramdefsep"> = </span><span class="paramdefval">Qt::DisplayRole</span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Re-implemented from QAbstractListModel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>Model index</td></tr>
+    <tr><td class="paramname">role</td><td>One of the roles in <a class="el" href="#a7a575b0e65837aa1725fb79105c3a78d" title="Model roles.">VACLibrary::Role</a></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Data for the role, or an invalid QVariant </dd></dl>
 
 </div>
 </div>
@@ -327,7 +378,7 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property hasManuallyImported </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00089">89</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00111">111</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
 
 </div>
 </div>
@@ -460,7 +511,7 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property isEmpty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00101">101</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00123">123</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
 
 </div>
 </div>
@@ -564,6 +615,68 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 
 </div>
 </div>
+<a id="a03ba6cd987c0a5b68b6d425b426663a3" name="a03ba6cd987c0a5b68b6d425b426663a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03ba6cd987c0a5b68b6d425b426663a3">&#9670;&#160;</a></span>roleNames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QHash&lt; int, QByteArray &gt; GeoMaps::VACLibrary::roleNames </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Re-implemented from QAbstractListModel. </p>
+<dl class="section return"><dt>Returns</dt><dd>Names of the roles in <a class="el" href="#a7a575b0e65837aa1725fb79105c3a78d" title="Model roles.">VACLibrary::Role</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1eb2a80e4f034127c64201e9c22cd7cb" name="a1eb2a80e4f034127c64201e9c22cd7cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1eb2a80e4f034127c64201e9c22cd7cb">&#9670;&#160;</a></span>rowCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int GeoMaps::VACLibrary::rowCount </td>
+          <td>(</td>
+          <td class="paramtype">const QModelIndex &amp;</td>          <td class="paramname"><span class="paramname"><em>parent</em></span><span class="paramdefsep"> = </span><span class="paramdefval">QModelIndex()</span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Re-implemented from QAbstractListModel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parent</td><td>Parent index, invalid for the list itself</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of charts, or zero for a valid parent </dd></dl>
+
+</div>
+</div>
 <a id="ac3d6553efa3d1a243e6a88293de011d0" name="ac3d6553efa3d1a243e6a88293de011d0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3d6553efa3d1a243e6a88293de011d0">&#9670;&#160;</a></span>vacs()</h2>
 
@@ -590,7 +703,7 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property vacs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00113">113</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00135">135</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
 
 </div>
 </div>
@@ -629,46 +742,6 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 
 </div>
 </div>
-<a id="a0393e90282b284d398fd13fef0009885" name="a0393e90282b284d398fd13fef0009885"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0393e90282b284d398fd13fef0009885">&#9670;&#160;</a></span>vacsByDistance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt; GeoMaps::VACLibrary::vacsByDistance </td>
-          <td>(</td>
-          <td class="paramtype">const QGeoCoordinate &amp;</td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>List of all VACs installed. </p>
-<p>This method returns the list of all installed VACs, sorted by distance to position (closest waypoints first).</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">position</td><td>Geographic position used for sorting</td></tr>
-    <tr><td class="paramname">filter</td><td>List of words</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>List of all VACs installed </dd></dl>
-
-</div>
-</div>
 <a name="doc-property-members" id="doc-property-members"></a><h2 id="header-doc-property-members" class="groupheader">Property Documentation</h2>
 <a id="a61db59a9c57cc96d01d5e7250031754f" name="a61db59a9c57cc96d01d5e7250031754f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a61db59a9c57cc96d01d5e7250031754f">&#9670;&#160;</a></span>vacs</h2>
@@ -691,9 +764,9 @@ bool&#160;</td><td class="memItemRight"><b>isEmpty</b></td></tr>
 </div><div class="memdoc">
 
 <p>List of all VACs installed. </p>
-<p>This property holds the list of all installed VACs, sorted alphabetically by name. </p>
+<p>This property holds the list of all installed VACs, in model order: sorted by section, then by name. </p>
 
-<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00078">78</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VACLibrary_8h_source.html#l00100">100</a> of file <a class="el" href="VACLibrary_8h_source.html">VACLibrary.h</a>.</p>
 
 </div>
 </div>

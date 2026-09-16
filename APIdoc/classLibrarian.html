@@ -69,12 +69,14 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a8d33e313658242b6ac8f37c01fc75e" id="r_a7a8d33e313658242b6ac8f37c01fc75e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a7a8d33e313658242b6ac8f37c01fc75e">Librarian</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a7a8d33e313658242b6ac8f37c01fc75e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="memitem:aa51ac87e98c51f9da434a9c4fc0d0e2d" id="r_aa51ac87e98c51f9da434a9c4fc0d0e2d"><td class="memItemLeft">Q_INVOKABLE QStringList&#160;</td><td class="memItemRight"><a class="el" href="#aa51ac87e98c51f9da434a9c4fc0d0e2d">entries</a> (<a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a> library, const QString &amp;filter=QString())</td></tr>
-<tr class="memdesc:aa51ac87e98c51f9da434a9c4fc0d0e2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists all entries in the library whose name contains the string 'filter'.  <br /></td></tr>
+<tr class="memitem:a6ac4b60cd429e6fbdc380b36be059e20" id="r_a6ac4b60cd429e6fbdc380b36be059e20"><td class="memItemLeft"><a class="el" href="classFileLibraryModel.html">FileLibraryModel</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a6ac4b60cd429e6fbdc380b36be059e20">aircraftModel</a> () const</td></tr>
+<tr class="memdesc:a6ac4b60cd429e6fbdc380b36be059e20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:a45e8d48b177557ef705210b25f63db39" id="r_a45e8d48b177557ef705210b25f63db39"><td class="memItemLeft"><a class="el" href="classFileLibraryModel.html">FileLibraryModel</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a45e8d48b177557ef705210b25f63db39">routesModel</a> () const</td></tr>
+<tr class="memdesc:a45e8d48b177557ef705210b25f63db39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:af571d804996e429ee38ee568f8d0dd1d" id="r_af571d804996e429ee38ee568f8d0dd1d"><td class="memItemLeft"><a class="el" href="classFileLibraryModel.html">FileLibraryModel</a> *&#160;</td><td class="memItemRight"><a class="el" href="#af571d804996e429ee38ee568f8d0dd1d">model</a> (<a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a> library) const</td></tr>
+<tr class="memdesc:af571d804996e429ee38ee568f8d0dd1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model listing the entries of a library.  <br /></td></tr>
 <tr class="memitem:a2b33e49300ec5e4e2841ff4dd62843cd" id="r_a2b33e49300ec5e4e2841ff4dd62843cd"><td class="memItemLeft">Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#a2b33e49300ec5e4e2841ff4dd62843cd">matches</a> (const QString &amp;text, const QString &amp;filter)</td></tr>
 <tr class="memdesc:a2b33e49300ec5e4e2841ff4dd62843cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a text matches a filter string, in a fuzzy way.  <br /></td></tr>
-<tr class="memitem:a62c49a3f1b314849a6f2ad8366275fb0" id="r_a62c49a3f1b314849a6f2ad8366275fb0"><td class="memItemLeft">QStringList&#160;</td><td class="memItemRight"><a class="el" href="#a62c49a3f1b314849a6f2ad8366275fb0">permissiveFilter</a> (const QStringList &amp;input, const QString &amp;filter)</td></tr>
-<tr class="memdesc:a62c49a3f1b314849a6f2ad8366275fb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filters a QStringList in a fuzzy way.  <br /></td></tr>
 <tr class="memitem:a1c41138e3775e3a2b0c8235f193e9889" id="r_a1c41138e3775e3a2b0c8235f193e9889"><td class="memItemLeft">QString&#160;</td><td class="memItemRight"><a class="el" href="#a1c41138e3775e3a2b0c8235f193e9889">simplifySpecialChars</a> (const QString &amp;string)</td></tr>
 <tr class="memdesc:a1c41138e3775e3a2b0c8235f193e9889"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simplifies string by transforming and removing special characters.  <br /></td></tr>
 </table><table class="memberdecls">
@@ -110,12 +112,18 @@ Properties</h2></td></tr>
 <tr class="memitem:a098230a25a27dd34170b911ac4853821" id="r_a098230a25a27dd34170b911ac4853821"><td class="memItemLeft"><a id="a098230a25a27dd34170b911ac4853821" name="a098230a25a27dd34170b911ac4853821"></a>
 QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></td></tr>
 <tr class="memdesc:a098230a25a27dd34170b911ac4853821"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location of the user manual, see <a class="el" href="#a098230a25a27dd34170b911ac4853821" title="Location of the user manual, see manualLocation().">manualLocation()</a>. <br /></td></tr>
+<tr class="memitem:a9af827aed66b55614a940f83e286253d" id="r_a9af827aed66b55614a940f83e286253d"><td class="memItemLeft"><a id="a9af827aed66b55614a940f83e286253d" name="a9af827aed66b55614a940f83e286253d"></a>
+<a class="el" href="classFileLibraryModel.html">FileLibraryModel</a> *&#160;</td><td class="memItemRight"><b>aircraftModel</b></td></tr>
+<tr class="memdesc:a9af827aed66b55614a940f83e286253d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model listing the entries of the aircraft library, see <a class="el" href="#af571d804996e429ee38ee568f8d0dd1d" title="Model listing the entries of a library.">model()</a>. <br /></td></tr>
+<tr class="memitem:ab3a986a1d88e949681f1096f5efee724" id="r_ab3a986a1d88e949681f1096f5efee724"><td class="memItemLeft"><a id="ab3a986a1d88e949681f1096f5efee724" name="ab3a986a1d88e949681f1096f5efee724"></a>
+<a class="el" href="classFileLibraryModel.html">FileLibraryModel</a> *&#160;</td><td class="memItemRight"><b>routesModel</b></td></tr>
+<tr class="memdesc:ab3a986a1d88e949681f1096f5efee724"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model listing the entries of the flight route library, see <a class="el" href="#af571d804996e429ee38ee568f8d0dd1d" title="Model listing the entries of a library.">model()</a>. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manage libraries and text assets. </p>
 <p>This class manages libraries of aircrafts and routes, as well as text assets, and exposes these objects to QML. </p>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00040">40</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00041">41</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 </div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Member Enumeration Documentation</h2>
 <a id="aade57a59b2c1aaccee483f968aae4694" name="aade57a59b2c1aaccee483f968aae4694"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aade57a59b2c1aaccee483f968aae4694">&#9670;&#160;</a></span>Library</h2>
@@ -137,7 +145,7 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00070">70</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00077">77</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 
 </div>
 </div>
@@ -176,6 +184,36 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a6ac4b60cd429e6fbdc380b36be059e20" name="a6ac4b60cd429e6fbdc380b36be059e20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ac4b60cd429e6fbdc380b36be059e20">&#9670;&#160;</a></span>aircraftModel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classFileLibraryModel.html">FileLibraryModel</a> * Librarian::aircraftModel </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property aircraftModel </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00091">91</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+
+</div>
+</div>
 <a id="a7ed53478439695f8e0395617b6199e08" name="a7ed53478439695f8e0395617b6199e08"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ed53478439695f8e0395617b6199e08">&#9670;&#160;</a></span>contains() <span class="overload">[1/2]</span></h2>
 
@@ -276,39 +314,6 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Name of the directory, without trailing slash </dd></dl>
-
-</div>
-</div>
-<a id="aa51ac87e98c51f9da434a9c4fc0d0e2d" name="aa51ac87e98c51f9da434a9c4fc0d0e2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa51ac87e98c51f9da434a9c4fc0d0e2d">&#9670;&#160;</a></span>entries()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE QStringList Librarian::entries </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a></td>          <td class="paramname"><span class="paramname"><em>library</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span><span class="paramdefsep"> = </span><span class="paramdefval">QString()</span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Lists all entries in the library whose name contains the string 'filter'. </p>
-<p>The check for string containment is done in a fuzzy way.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">library</td><td>The library that is to be searched</td></tr>
-    <tr><td class="paramname">filter</td><td>String used to filter the list</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A filtered QStringList with the base names of flight routes</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a62c49a3f1b314849a6f2ad8366275fb0" title="Filters a QStringList in a fuzzy way.">permissiveFilter</a> </dd></dl>
 
 </div>
 </div>
@@ -594,7 +599,7 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
 
 <p>Checks if a text matches a filter string, in a fuzzy way. </p>
 <p>This method splits the filter into words at whitespace. The text matches if it contains every one of these words. The comparison ignores case and special characters, so that "Zürich" matches "u", "Ü", "ù" and "zurich". An empty filter matches every text.</p>
-<p>This is the single filter primitive of this app. Use it from QML to filter list models, as in</p>
+<p>This is the single filter primitive of this app. Lists over item models use it through <a class="el" href="classUi_1_1NameFilterProxyModel.html" title="Filters a list model by a fuzzy name match.">Ui::NameFilterProxyModel</a>; ad-hoc lists use it from QML, as in</p>
 <p>model: Array.from(SomeSingleton.items).filter((i) =&gt; <a class="el" href="#a2b33e49300ec5e4e2841ff4dd62843cd" title="Checks if a text matches a filter string, in a fuzzy way.">Librarian.matches</a>(i.name, filterField.filter))</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -607,36 +612,38 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
 
 </div>
 </div>
-<a id="a62c49a3f1b314849a6f2ad8366275fb0" name="a62c49a3f1b314849a6f2ad8366275fb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62c49a3f1b314849a6f2ad8366275fb0">&#9670;&#160;</a></span>permissiveFilter()</h2>
+<a id="af571d804996e429ee38ee568f8d0dd1d" name="af571d804996e429ee38ee568f8d0dd1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af571d804996e429ee38ee568f8d0dd1d">&#9670;&#160;</a></span>model()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QStringList Librarian::permissiveFilter </td>
+          <td class="memname"><a class="el" href="classFileLibraryModel.html">FileLibraryModel</a> * Librarian::model </td>
           <td>(</td>
-          <td class="paramtype">const QStringList &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a></td>          <td class="paramname"><span class="paramname"><em>library</em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Filters a QStringList in a fuzzy way. </p>
-<p>This helper method filters a QStringList. It returns a sublist of those entries that match the filter, in the sense of the method <a class="el" href="#a2b33e49300ec5e4e2841ff4dd62843cd" title="Checks if a text matches a filter string, in a fuzzy way.">matches()</a>.</p>
+<p>Model listing the entries of a library. </p>
+<p>The model follows the library directory and announces changes with row-granular signals. It is owned by this instance.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">input</td><td>QStringList that is to be filtered</td></tr>
-    <tr><td class="paramname">filter</td><td>Filter</td></tr>
+    <tr><td class="paramname">library</td><td>The library</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Filteres QStringList</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a2b33e49300ec5e4e2841ff4dd62843cd" title="Checks if a text matches a filter string, in a fuzzy way.">matches</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the model </dd></dl>
 
 </div>
 </div>
@@ -719,6 +726,36 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a45e8d48b177557ef705210b25f63db39" name="a45e8d48b177557ef705210b25f63db39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45e8d48b177557ef705210b25f63db39">&#9670;&#160;</a></span>routesModel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classFileLibraryModel.html">FileLibraryModel</a> * Librarian::routesModel </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property routesModel </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00097">97</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 
 </div>
 </div>

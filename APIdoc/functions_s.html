@@ -63,6 +63,7 @@ $(function() {
 <li>scanningChanged()&#160;:&#160;<a class="el" href="classTraffic_1_1ConnectionScanner__Abstract.html#a52a55fc9984c69939955d9245d71668d">Traffic::ConnectionScanner_Abstract</a></li>
 <li>section&#160;:&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a0a22a2a62205d794701b6caba5cc0d7c">DataManagement::Downloadable_Abstract</a>, <a class="el" href="classGeoMaps_1_1VAC.html#a89e4366f0a5f1cd42aa982232aac2a9e">GeoMaps::VAC</a></li>
 <li>sectionChanged()&#160;:&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a9b8e65e9d12d2ee730636b6e46f71370">DataManagement::Downloadable_Abstract</a></li>
+<li>SectionRole&#160;:&#160;<a class="el" href="classGeoMaps_1_1VACLibrary.html#a7a575b0e65837aa1725fb79105c3a78dafed5259c62245332c57d2ba6a8b832b0">GeoMaps::VACLibrary</a></li>
 <li>sectionTitle&#160;:&#160;<a class="el" href="classNOTAM_1_1NOTAM.html#a8ae135f7f5db6ac4230be8e8688217a7">NOTAM::NOTAM</a></li>
 <li>sectionUnmasked()&#160;:&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#aa6b43143d5590f932c6e6667da877d8f">DataManagement::Downloadable_Abstract</a></li>
 <li>Sensors()&#160;:&#160;<a class="el" href="classSensors.html#ad629186293e8b68dd553c9a7bcff7ee4">Sensors</a></li>
@@ -94,6 +95,7 @@ $(function() {
 <li>setConnectivityStatus()&#160;:&#160;<a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac88a41ad7a4268a53f6d416effbdffb7">Traffic::TrafficDataSource_Abstract</a></li>
 <li>setContentType()&#160;:&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a41f6582173aeca47eeb2f9a72cf44adf">DataManagement::Downloadable_Abstract</a></li>
 <li>setCoordinate()&#160;:&#160;<a class="el" href="classGeoMaps_1_1Waypoint.html#aed15231057ecf21ff9f3b842ba3b051e">GeoMaps::Waypoint</a>, <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a7db621e3f202d40f17b479a3a2bbb91e">Traffic::TrafficDataSource_Simulate</a>, <a class="el" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#aed748d651683b113df785ade1a9928ab">Traffic::TrafficFactor_DistanceOnly</a></li>
+<li>setCoordinateRoleName()&#160;:&#160;<a class="el" href="classUi_1_1DistanceSortProxyModel.html#aec0aacd3872d97775dc7eb9f6d351240">Ui::DistanceSortProxyModel</a></li>
 <li>setCruiseSpeed()&#160;:&#160;<a class="el" href="classNavigation_1_1Aircraft.html#ab6a8866d7f983b3799de29d6336cf844">Navigation::Aircraft</a></li>
 <li>setCurrentRasterMap()&#160;:&#160;<a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ae7d12ecda2c466a84a363224262b8038">GeoMaps::GeoMapProvider</a></li>
 <li>setDepartureCoordinate()&#160;:&#160;<a class="el" href="classFlightlog_1_1Flight.html#aced8fb48f92860ce063d37ec5516bc09">Flightlog::Flight</a></li>
@@ -103,6 +105,8 @@ $(function() {
 <li>setEngine()&#160;:&#160;<a class="el" href="classDemoRunner.html#ac2a302b436ca39e05faeaa6b683b7f58">DemoRunner</a></li>
 <li>setErrorString()&#160;:&#160;<a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a571c20201fb3a902e8a5df99efab1377">Traffic::TrafficDataSource_Abstract</a></li>
 <li>setExpandNotamAbbreviations()&#160;:&#160;<a class="el" href="classGlobalSettings.html#a7e76b8c10e7cc0703d4d251b859bbbdc">GlobalSettings</a></li>
+<li>setFilter()&#160;:&#160;<a class="el" href="classUi_1_1NameFilterProxyModel.html#a0b298b5445086a8545dc9998063a0eae">Ui::NameFilterProxyModel</a></li>
+<li>setFilterRoleName()&#160;:&#160;<a class="el" href="classUi_1_1NameFilterProxyModel.html#a7c14d74c74c1a11a920bb5705534f94e">Ui::NameFilterProxyModel</a></li>
 <li>setFontSize()&#160;:&#160;<a class="el" href="classGlobalSettings.html#a18e5d39ad72b1db37ca49f0b7fcce463">GlobalSettings</a></li>
 <li>setFuelConsumption()&#160;:&#160;<a class="el" href="classNavigation_1_1Aircraft.html#a8daf01175fe106c5a1c7e5823f38680f">Navigation::Aircraft</a></li>
 <li>setFuelConsumptionUnit()&#160;:&#160;<a class="el" href="classNavigation_1_1Aircraft.html#a999dd1cc9af871e29f8d9921c8ab3cc8">Navigation::Aircraft</a></li>
@@ -134,11 +138,14 @@ $(function() {
 <li>setReactionTime()&#160;:&#160;<a class="el" href="classNotifications_1_1Notification.html#a190496fc699406dc0bebc6fddcc1c1de">Notifications::Notification</a></li>
 <li>setRead()&#160;:&#160;<a class="el" href="classNOTAM_1_1NOTAMProvider.html#a3638207a3e0cff7e3818c2f223d3faf8">NOTAM::NOTAMProvider</a></li>
 <li>setReceivingHeartbeat()&#160;:&#160;<a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a53d634de1067eddc68df8a43f0898fc5">Traffic::TrafficDataSource_Abstract</a></li>
+<li>setReferenceCoordinate()&#160;:&#160;<a class="el" href="classUi_1_1DistanceSortProxyModel.html#a1f34306720959fd9afb6be05947c069f">Ui::DistanceSortProxyModel</a></li>
 <li>setRemoteFileDate()&#160;:&#160;<a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#af1936ac99f113ecea342d28327c35803">DataManagement::Downloadable_SingleFile</a></li>
 <li>setRemoteFileSize()&#160;:&#160;<a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#a86f4334efc9833d6394d26cb745548b4">DataManagement::Downloadable_SingleFile</a></li>
+<li>setResortDistance()&#160;:&#160;<a class="el" href="classUi_1_1DistanceSortProxyModel.html#ab6ebefce08a660f3e5d37e017be43484">Ui::DistanceSortProxyModel</a></li>
 <li>setSection()&#160;:&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#aea2628d41d9b7bf68506e94f797a627e">DataManagement::Downloadable_Abstract</a></li>
 <li>setShowAltitudeAGL()&#160;:&#160;<a class="el" href="classGlobalSettings.html#a03697ca1f0be6436b2b5e601391df585">GlobalSettings</a></li>
 <li>setShowCurrentFlightTrace()&#160;:&#160;<a class="el" href="classGlobalSettings.html#a1241a581d59419f7a7640e9a28ccfe42">GlobalSettings</a></li>
+<li>setSourceModel()&#160;:&#160;<a class="el" href="classUi_1_1DistanceSortProxyModel.html#a3dbead09dde8118a8e5e139f19f23ad2">Ui::DistanceSortProxyModel</a>, <a class="el" href="classUi_1_1NameFilterProxyModel.html#a933fc3c22952f56c3550856203e6ca61">Ui::NameFilterProxyModel</a></li>
 <li>setSpeed()&#160;:&#160;<a class="el" href="classWeather_1_1Wind.html#af4334f78aad064f8f9f565ed78cf30ee">Weather::Wind</a></li>
 <li>setSpokenText()&#160;:&#160;<a class="el" href="classNotifications_1_1Notification.html#a17d970d899ad3d879c4ad20d18b10290">Notifications::Notification</a></li>
 <li>setStartTime()&#160;:&#160;<a class="el" href="classFlightlog_1_1Flight.html#ad0433134c69c1fd9bc2c8d67d958abe5">Flightlog::Flight</a></li>

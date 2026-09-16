@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [3.5.0] - 2026-09-14
 
 ### Added
 - Airspace data can now be imported in the binary CUB format used by Naviter

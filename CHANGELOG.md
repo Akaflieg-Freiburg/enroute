@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.5.1] - 2026-09-16
+
+### Fixed
+
+- Fixed an error where several parts of the user interface no longer updated
+  when the underlying data changed. 
+
+- Fixed the save dialogs for aircraft and routes and the approach chart lists.
+
+- Fixed an error where a library entry that had been swiped out for removal
+  stayed swiped out if the removal was cancelled.
+
 ## [3.5.0] - 2026-09-14
 
 ### Added

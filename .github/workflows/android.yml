@@ -39,6 +39,10 @@ jobs:
         aqtversion: ==3.3.*
         cache: 'true'
         cache-key-prefix: 'install-qt-action-android'
+        # Qt >= 6.8 ships its Android packages under the 'all_os' host, not 'linux'.
+        # install-qt-action >= 4.4.0 queries 'aqt list-qt <host> android' before
+        # installing, and that query only finds 6.8+ under 'all_os'.
+        host: 'all_os'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtsensors qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
         target: 'android'
         version: '6.11.2'

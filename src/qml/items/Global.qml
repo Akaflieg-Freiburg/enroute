@@ -155,6 +155,114 @@ Item {
     readonly property string airspaceYellow:  GlobalSettings.nightMode ? "#b8a63c" : "yellow"
     readonly property string airspaceNeutral: GlobalSettings.nightMode ? "#e0e0e0" : "black"
 
+    //
+    // Drawing style per airspace category
+    //
+    // Shared by the airspace views of WaypointDescription: the color legend of
+    // AirspaceList and the boxes of AirspaceStack draw the same category in the
+    // same way. Kept next to the palette above, so that a new category has to
+    // be added in one place only.
+    //
+    // The outline style is reported as a boolean rather than a ShapePath value,
+    // so that this singleton does not have to import QtQuick.Shapes.
+    //
+    function airspaceOutlineColor(CAT: string) : color {
+        switch(CAT) {
+        case "A":
+        case "B":
+        case "C":
+        case "D":
+        case "E":
+        case "F":
+        case "G":
+        case "CTR":
+        case "ATZ":
+        case "RMZ":
+        case "TIZ":
+        case "TIA":
+            return global.airspaceBlue;
+        case "GLD":
+            return global.airspaceYellow;
+        case "DNG":
+        case "P":
+        case "PJE":
+        case "R":
+        case "SUA":
+            return global.airspaceRed;
+        case "TMZ":
+            return global.airspaceNeutral;
+        case "FIR":
+        case "FIS":
+        case "NRA":
+            return global.airspaceGreen;
+        }
+        return "transparent"
+    }
+
+    function airspaceOutlineIsSolid(CAT: string) : bool {
+        switch(CAT) {
+        case "A":
+        case "B":
+        case "C":
+        case "D":
+        case "E":
+        case "F":
+        case "G":
+        case "GLD":
+        case "NRA":
+            return true;
+        }
+        return false
+    }
+
+    function airspaceDashPattern(CAT: string) : var {
+        switch(CAT) {
+        case "TMZ":
+            return [4, 2, 1, 2];
+        case "FIR":
+        case "FIS":
+            return [4, 0];
+        }
+        return [4, 4]
+    }
+
+    // The wide, translucent band that some categories draw inside their outline
+    function airspaceBandColor(CAT: string) : color {
+        switch(CAT) {
+        case "A":
+        case "B":
+        case "C":
+        case "D":
+        case "ATZ":
+        case "RMZ":
+        case "TIZ":
+        case "TIA":
+            return Qt.alpha(global.airspaceBlue, 0.25);
+        case "DNG":
+        case "P":
+        case "R":
+            return Qt.alpha(global.airspaceRed, 0.25);
+        case "NRA":
+            return Qt.alpha(global.airspaceGreen, 0.25);
+        }
+        return "transparent"
+    }
+
+    function airspaceFillColor(CAT: string) : color {
+        switch(CAT) {
+        case "CTR":
+            return Qt.alpha(global.airspaceRed, 0.25);
+        case "GLD":
+            return Qt.alpha(global.airspaceYellow, 0.25);
+        case "ATZ":
+        case "RMZ":
+        case "TIZ":
+        case "TIA":
+            return Qt.alpha(global.airspaceBlue, 0.25);
+        }
+        return "transparent"
+    }
+
 
     //
     // Traffic label colors

@@ -23,7 +23,6 @@ import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Templates as T
 import QtQuick.Layouts
-import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
 
@@ -67,12 +66,12 @@ CenteringDialog {
         for (var j in pro)
             waypointPropertyDelegate.createObject(co, {text: pro[j]});
 
-        // Create airspace description items
+        // Create airspace view, with its list and diagram tabs
         var asl = GeoMapProvider.airspacesAtPosition(waypoint.coordinate)
-        for (i in asl)
-            airspaceDelegate.createObject(co, {airspace: asl[i]});
+        if (asl.length > 0)
+            airspaceViewDelegate.createObject(co, {airspaces: asl});
 
-        // Create airspace description items
+        // Create VAC items
         var vac = VACLibrary.vacs4Point(waypoint.coordinate)
         for (i in vac)
             vacButtonDelegate.createObject(co, {vac: vac[i]});
@@ -213,201 +212,10 @@ CenteringDialog {
     }
 
     Component {
-        id: airspaceDelegate
+        id: airspaceViewDelegate
 
-        GridLayout {
-            id: gridLYO
-
-            columns: 3
-            rowSpacing: 0
-
+        AirspaceView {
             Layout.preferredWidth: sv.width
-
-            property var airspace: ({});
-
-            // Airspace legend colors, kept in sync with the moving map through the
-            // Global singleton so day/night styling matches the map exactly.
-            readonly property color asBlue:   Global.airspaceBlue
-            readonly property color asRed:    Global.airspaceRed
-            readonly property color asGreen:  Global.airspaceGreen
-            readonly property color asYellow: Global.airspaceYellow
-
-
-            Item {
-                id: box
-
-                Layout.preferredWidth: colorGlean.font.pixelSize*3
-                Layout.preferredHeight: colorGlean.font.pixelSize*2.5
-                Layout.rowSpan: 3
-                Layout.alignment: Qt.AlignLeft
-
-                Shape {
-                    anchors.fill: parent
-
-                    ShapePath {
-                        strokeWidth: 2
-                        fillColor: "transparent"
-                        strokeColor:  {
-                            switch(gridLYO.airspace.CAT) {
-                            case "A":
-                            case "B":
-                            case "C":
-                            case "D":
-                            case "E":
-                            case "F":
-                            case "G":
-                                return Global.airspaceBlue;
-                            case "CTR":
-                                return Global.airspaceBlue;
-                            case "GLD":
-                                return Global.airspaceYellow;
-                            case "DNG":
-                            case "P":
-                            case "PJE":
-                            case "R":
-                                return Global.airspaceRed;
-                            case "ATZ":
-                            case "RMZ":
-                            case "TIZ":
-                            case "TIA":
-                                return Global.airspaceBlue;
-                            case "TMZ":
-                                return Global.airspaceNeutral;
-                            case "FIR":
-                            case "FIS":
-                            case "NRA":
-                                return Global.airspaceGreen;
-                            case "SUA":
-                                return Global.airspaceRed;
-                            }
-                            return "transparent"
-                        }
-                        strokeStyle:  {
-                            switch(gridLYO.airspace.CAT) {
-                            case "A":
-                            case "B":
-                            case "C":
-                            case "D":
-                            case "E":
-                            case "F":
-                            case "G":
-                            case "GLD":
-                            case "NRA":
-                                return ShapePath.SolidLine;
-                            }
-                            return ShapePath.DashLine
-                        }
-                        dashPattern:  {
-                            switch(gridLYO.airspace.CAT) {
-                            case "TMZ":
-                                return [4, 2, 1, 2];
-                            case "FIR":
-                            case "FIS":
-                                return [4, 0]
-                            }
-                            return [4, 4]
-                        }
-
-                        startX: 1; startY: 1
-                        PathLine { x: 1;           y: box.height-1 }
-                        PathLine { x: box.width-1; y: box.height-1 }
-                        PathLine { x: box.width-1; y: 1 }
-                        PathLine { x: 1;           y: 1 }
-                    }
-                }
-
-                Rectangle {
-                    width: box.width
-                    height: box.height
-
-                    border.color: {
-                        switch(gridLYO.airspace.CAT) {
-                        case "A":
-                        case "B":
-                        case "C":
-                        case "D":
-                            return Qt.rgba(gridLYO.asBlue.r, gridLYO.asBlue.g, gridLYO.asBlue.b, 0.25);
-                        case "DNG":
-                        case "P":
-                        case "R":
-                            return Qt.rgba(gridLYO.asRed.r, gridLYO.asRed.g, gridLYO.asRed.b, 0.25);
-                        case "ATZ":
-                        case "RMZ":
-                        case "TIZ":
-                        case "TIA":
-                            return Qt.rgba(gridLYO.asBlue.r, gridLYO.asBlue.g, gridLYO.asBlue.b, 0.25);
-                        case "NRA":
-                            return Qt.rgba(gridLYO.asGreen.r, gridLYO.asGreen.g, gridLYO.asGreen.b, 0.25);
-                        }
-                        return "transparent"
-                    }
-                    border.width: 6
-
-                    color: {
-                        switch(gridLYO.airspace.CAT) {
-                        case "CTR":
-                            return Qt.rgba(gridLYO.asRed.r, gridLYO.asRed.g, gridLYO.asRed.b, 0.25);
-                        case "GLD":
-                            return Qt.rgba(gridLYO.asYellow.r, gridLYO.asYellow.g, gridLYO.asYellow.b, 0.25);
-                        case "ATZ":
-                        case "RMZ":
-                        case "TIZ":
-                        case "TIA":
-                            return Qt.rgba(gridLYO.asBlue.r, gridLYO.asBlue.g, gridLYO.asBlue.b, 0.25);
-                        }
-                        return "transparent"
-                    }
-
-                    Label {
-                        anchors.centerIn: parent
-                        text: gridLYO.airspace.CAT
-                    }
-
-                }
-
-            }
-
-            Label {
-                Layout.fillWidth: true
-                Layout.rowSpan: 3
-                Layout.alignment: Qt.AlignVCenter
-                text: gridLYO.airspace.name
-                wrapMode: Text.WordWrap
-            }
-
-            Label {
-                id: colorGlean
-                Layout.alignment: Qt.AlignHCenter|Qt.AlignBottom
-                text: {
-                    switch(Navigator.aircraft.verticalDistanceUnit) {
-                    case Aircraft.Feet:
-                        return gridLYO.airspace.upperBound
-                    case Aircraft.Meters:
-                        return gridLYO.airspace.upperBoundMetric
-                    }
-                }
-                wrapMode: Text.WordWrap
-            }
-
-            Rectangle {
-                Layout.alignment: Qt.AlignHCenter
-                color:  colorGlean.color
-                Layout.preferredHeight: 1
-                Layout.preferredWidth: colorGlean.font.pixelSize*5
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
-                text: {
-                    switch(Navigator.aircraft.verticalDistanceUnit) {
-                    case Aircraft.Feet:
-                        return gridLYO.airspace.lowerBound
-                    case Aircraft.Meters:
-                        return gridLYO.airspace.lowerBoundMetric
-                    }
-                }
-                wrapMode: Text.WordWrap
-            }
         }
     }
 

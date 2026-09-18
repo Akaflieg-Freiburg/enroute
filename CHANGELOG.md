@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.5.2] - 2026-09-18
+
+### Fixed
+
+- Fixed an issue where Enroute couldn’t access device locations on iOS and iPadOS.
+
 ## [3.5.1] - 2026-09-16
 
 ### Fixed

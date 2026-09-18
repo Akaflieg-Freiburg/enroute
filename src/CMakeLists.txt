@@ -525,6 +525,9 @@ if (IOS)
     # Compile definitions
     add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteManual")
 
+
+    configure_file(ios/Info.plist ios/Info.plist)
+
     # Add executable and libraries
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
     set(CMAKE_MACOSX_RPATH OFF)

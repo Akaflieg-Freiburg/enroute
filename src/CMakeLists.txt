@@ -525,6 +525,9 @@ if (IOS)
     # Compile definitions
     add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/enrouteManual")
 
+
+    configure_file(ios/Info.plist ios/Info.plist)
+
     # Add executable and libraries
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
     set(CMAKE_MACOSX_RPATH OFF)
@@ -542,7 +545,7 @@ if (IOS)
         MACOSX_BUNDLE_GUI_IDENTIFIER ${PRODUCT_BUNDLE_IDENTIFIER}
         XCODE_GENERATE_SCHEME ON
         XCODE_SCHEME_LAUNCH_CONFIGURATION "Release"
-        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/ios/Info.plist"
     )
     set_source_files_properties(
         PROPERTIES MACOSX_PACKAGE_LOCATION Resources)

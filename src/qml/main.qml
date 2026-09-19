@@ -688,9 +688,9 @@ AppWindow {
                 Rectangle {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
+                    visible: Qt.platform.os !== "ios" && Qt.platform.os !== "osx"
 
                     color: Global.dividerColor
-                    visible: Qt.platform.os !== "ios" && Navigator.flightStatus !== Navigator.Flight
                 }
 
                 ItemDelegate { // Exit

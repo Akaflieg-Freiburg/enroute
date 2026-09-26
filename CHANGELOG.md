@@ -12,6 +12,8 @@
 
 - Fixed a crash that occurred when a map download failed while the first-run
   dialog was open.
+- Fixed a crash that could occur when Enroute reconnected to an OGN server or
+  to a traffic receiver over TCP/IP.
 
 ## [3.5.2] - 2026-09-18
 

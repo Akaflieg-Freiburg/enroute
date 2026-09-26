@@ -142,8 +142,12 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
             "enroute",
             QCoreApplication::applicationVersion().toStdString()
         ));
-        m_textStream << loginString;
-        m_textStream.flush();
+        // Write to the socket directly, never through m_textStream. The text
+        // stream flushes pending output when the socket emits aboutToClose(),
+        // and QAbstractSocket::abort() tears down the socket's write buffer
+        // before it emits that signal, so any text left in the stream would
+        // be written into a destroyed buffer and crash the app.
+        m_socket.write(loginString.toLatin1());
     });
 
     // Socket options only take effect once the underlying socket exists, which
@@ -494,15 +498,17 @@ void Traffic::TrafficDataSource_Ogn::periodicUpdate()
 
 void Traffic::TrafficDataSource_Ogn::sendKeepAlive()
 {
-    if (!m_socket.isOpen()) {
+    // Test the connection state, not isOpen(): a socket stays open after the
+    // peer closed the connection, and a write to it would fail.
+    if (m_socket.state() != QAbstractSocket::ConnectedState) {
 #if OGN_DEBUG
-        qDebug() << "Cannot send keep-alive: socket not open";
+        qDebug() << "Cannot send keep-alive: socket not connected";
 #endif
         return;
     }
-    // Send a keep-alive comment (APRS-IS protocol)
-    m_textStream << "# keep-alive\n";
-    m_textStream.flush();
+    // Send a keep-alive comment (APRS-IS protocol). Write to the socket
+    // directly, never through m_textStream; see the login code above.
+    m_socket.write("# keep-alive\n");
 #if OGN_DEBUG
     qDebug() << "Sent keep-alive to APRS-IS server";
 #endif

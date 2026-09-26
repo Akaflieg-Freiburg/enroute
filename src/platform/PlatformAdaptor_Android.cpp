@@ -264,35 +264,10 @@ void Platform::PlatformAdaptor::vibrateLong()
 // C Methods
 //
 
-namespace {
-
 // The JNI callbacks below run on the Android UI thread, possibly while main()
 // is still constructing the QGuiApplication or has not yet created the global
-// objects. They must therefore not touch any GlobalObject themselves:
-// constructing a singleton on the Android thread races with the Qt thread, and
-// the PlatformAdaptor constructor needs the primary screen, which does not
-// exist yet while QGuiApplication is being constructed. This helper defers
-// `function` to the Qt main thread, where it runs once the event loop is up
-// and all global objects are in place. Without a QCoreApplication, the call is
-// dropped.
-template <typename Function>
-void runOnQtThread(Function&& function)
-{
-    auto* app = QCoreApplication::instance();
-    if (app == nullptr)
-    {
-        return;
-    }
-    QMetaObject::invokeMethod(app, [function = std::forward<Function>(function)]() {
-        if (GlobalObject::canConstruct())
-        {
-            function();
-        }
-    }, Qt::QueuedConnection);
-}
-
-} // namespace
-
+// objects. They must not touch any GlobalObject themselves; see
+// GlobalObject::runOnMainThread().
 
 extern "C" {
 
@@ -313,7 +288,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onLangua
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
-    runOnQtThread([]() { emit GlobalObject::platformAdaptor()->wifiConnected(); });
+    GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->wifiConnected(); });
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* env, jobject /*unused*/, jstring deviceName)
@@ -324,7 +299,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUS
     const QString name = QString::fromUtf8(fname);
     env->ReleaseStringUTFChars(deviceName, fname);
 
-    runOnQtThread([name]() {
+    GlobalObject::runOnMainThread([name]() {
         GlobalObject::trafficDataProvider()->addDataSource(Traffic::ConnectionInfo(name));
         emit GlobalObject::platformAdaptor()->serialPortsChanged();
     });
@@ -332,13 +307,13 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUS
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_UsbConnectionReceiver_onSerialPortConnectionsChanged(JNIEnv* /*unused*/, jobject /*unused*/)
 {
-    runOnQtThread([]() { emit GlobalObject::platformAdaptor()->serialPortsChanged(); });
+    GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->serialPortsChanged(); });
 }
 
 JNIEXPORT void JNICALL
 Java_de_akaflieg_1freiburg_enroute_UsbSerialHelper_onPermissionResult(JNIEnv* /*unused*/, jclass /*unused*/, jstring /*unused*/, jboolean /*unused*/)
 {
-    runOnQtThread([]() { emit GlobalObject::platformAdaptor()->serialPortsChanged(); });
+    GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->serialPortsChanged(); });
 }
 
 }

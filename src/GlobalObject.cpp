@@ -150,6 +150,20 @@ auto GlobalObject::canConstruct() -> bool
 }
 
 
+void GlobalObject::runOnMainThread(std::function<void()> function)
+{
+    auto* app = QCoreApplication::instance();
+    if (app == nullptr) {
+        return;
+    }
+    QMetaObject::invokeMethod(app, [function = std::move(function)]() {
+        if (canConstruct()) {
+            function();
+        }
+    }, Qt::QueuedConnection);
+}
+
+
 auto GlobalObject::fileExchange() -> Platform::FileExchange*
 {
     return allocateInternal<Platform::FileExchange>(g_fileExchange);

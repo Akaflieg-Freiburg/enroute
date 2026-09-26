@@ -14,8 +14,12 @@
   dialog was open.
 - Fixed a crash that could occur when Enroute reconnected to an OGN server or
   to a traffic receiver over TCP/IP.
+- Fixed crashes on Android that could occur when a USB device was plugged in
+  or unplugged, or when a file was opened with Enroute, while Enroute was
+  starting up.
 - Fixed a crash on Android that could occur when a USB device was plugged in
-  or unplugged while Enroute was starting up.
+  or unplugged while Enroute was not running. Unplugging a USB device no
+  longer starts Enroute.
 
 ## [3.5.2] - 2026-09-18
 

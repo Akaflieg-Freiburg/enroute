@@ -267,44 +267,47 @@ QString toQString(JNIEnv* env, jstring jString)
 
 extern "C" {
 
+// The JNI callbacks below run on the Android UI thread, possibly while main()
+// is still constructing the QGuiApplication or has not yet created the global
+// objects. They must not touch any GlobalObject themselves; in particular,
+// GlobalObject::fileExchange() must not be called here, because that would
+// construct the singleton with Android-thread affinity and QML would later
+// abort when connecting to it. Convert the Java strings on this thread (the
+// JNIEnv is only valid here) and defer everything else to the main thread;
+// see GlobalObject::runOnMainThread().
+
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname, jstring junmingled)
 {
-    // A little complicated because GlobalObject::fileExchange() lives in a different thread
-    QMetaObject::invokeMethod(GlobalObject::fileExchange(),
-                              "processFileOpenRequest",
-                              Qt::QueuedConnection,
-                              Q_ARG( QString, toQString(env, jfname)),
-                              Q_ARG( QString, toQString(env, junmingled))
-                              );
+    const QString fname = toQString(env, jfname);
+    const QString unmingled = toQString(env, junmingled);
+    GlobalObject::runOnMainThread([fname, unmingled]() {
+        GlobalObject::fileExchange()->processFileOpenRequest(fname, unmingled);
+    });
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onCreateFileResult(JNIEnv* env, jobject /*unused*/, jstring juri)
 {
-    // A little complicated because GlobalObject::fileExchange() lives in a different thread
-    QMetaObject::invokeMethod(GlobalObject::fileExchange(),
-                              "onCreateFileResult",
-                              Qt::QueuedConnection,
-                              Q_ARG( QString, toQString(env, juri)) );
+    const QString uri = toQString(env, juri);
+    GlobalObject::runOnMainThread([uri]() {
+        GlobalObject::fileExchange()->onCreateFileResult(uri);
+    });
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname, jstring junmingled)
 {
-    // A little complicated because GlobalObject::fileExchange() lives in a different thread
-    QMetaObject::invokeMethod(GlobalObject::fileExchange(),
-                              "processFileOpenRequest",
-                              Qt::QueuedConnection,
-                              Q_ARG( QString, toQString(env, jfname)),
-                              Q_ARG( QString, toQString(env, junmingled))
-                              );
+    const QString fname = toQString(env, jfname);
+    const QString unmingled = toQString(env, junmingled);
+    GlobalObject::runOnMainThread([fname, unmingled]() {
+        GlobalObject::fileExchange()->processFileOpenRequest(fname, unmingled);
+    });
 }
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setTextReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setTextReceived(JNIEnv* env, jobject /*unused*/, jstring jtext)
 {
-    // A little complicated because GlobalObject::fileExchange() lives in a different thread
-    QMetaObject::invokeMethod(GlobalObject::fileExchange(),
-                              "processText",
-                              Qt::QueuedConnection,
-                              Q_ARG( QString, toQString(env, jfname)) );
+    const QString text = toQString(env, jtext);
+    GlobalObject::runOnMainThread([text]() {
+        GlobalObject::fileExchange()->processText(text);
+    });
 }
 
 

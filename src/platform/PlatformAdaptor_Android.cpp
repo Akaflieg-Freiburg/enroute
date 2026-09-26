@@ -167,6 +167,11 @@ void Platform::PlatformAdaptor::lockWifi(bool lock)
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
 }
 
+void Platform::PlatformAdaptor::setDarkStatusBarIcons(bool dark)
+{
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "setDarkStatusBarIcons", "(Z)V", dark);
+}
+
 void Platform::PlatformAdaptor::onGUISetupCompleted()
 {
     if (splashScreenHidden)

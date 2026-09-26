@@ -38,7 +38,31 @@ AppWindow {
     Component.onCompleted: {
         Global.appWindow = this
         Application.styleHints.colorScheme = Qt.ColorScheme.Dark
+        view.applyStatusBarIcons()
     }
+
+    // Android only: the moving map draws under the status bar whenever the
+    // route bar at the top of the map is empty (see RemainingRouteBar). Choose
+    // the status-bar icon color for what lies underneath: dark icons on the
+    // light day-mode map; white icons at night and whenever the dark route bar,
+    // the teal page header, another page or the drawer covers the status-bar
+    // strip. Other platforms keep the fixed dark color scheme set above.
+    readonly property bool darkStatusBarIcons: (Qt.platform.os === "android")
+                                               && !GlobalSettings.nightMode
+                                               && !Global.routeBarHasContent
+                                               && !Global.currentVAC.isValid
+                                               && (stackView.depth === 1)
+                                               && !drawer.visible
+
+    // Applied imperatively rather than through a binding: on API < 30, Qt
+    // replaces the decor system-UI flags whenever it re-applies the expanded
+    // client area (window shown or raised), which drops the light-status-bar
+    // flag, so the value is re-sent when the window becomes active.
+    function applyStatusBarIcons() {
+        PlatformAdaptor.setDarkStatusBarIcons(view.darkStatusBarIcons)
+    }
+    onDarkStatusBarIconsChanged: applyStatusBarIcons()
+    onActiveChanged: if (active) applyStatusBarIcons()
 
     topPadding: 0
     leftPadding: 0

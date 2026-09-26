@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- On Android, the moving map now extends under the status bar whenever the
+  route bar at the top of the map is empty. The status-bar icons switch between
+  dark and light so that they remain readable over the map.
+
 ## [3.5.2] - 2026-09-18
 
 ### Fixed

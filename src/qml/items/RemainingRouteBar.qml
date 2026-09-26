@@ -30,7 +30,13 @@ Rectangle {
     // Remaining route info shown in this item
     property var rri: Navigator.remainingRouteInfo
 
-    implicitHeight: grid.implicitHeight + SafeInsets.top
+    // On Android, the window extends under the status bar. When the bar has
+    // nothing to show, collapse it entirely so that the map draws under the
+    // status bar (main.qml then colors the status-bar icons to match). On all
+    // other platforms the bar always covers the top inset, as before.
+    readonly property bool collapsed: (Qt.platform.os === "android") && !Global.routeBarHasContent
+
+    implicitHeight: baseRect.collapsed ? 0 : grid.implicitHeight + SafeInsets.top
     Behavior on implicitHeight { NumberAnimation { duration: 100 } }
 
     clip: true

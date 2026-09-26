@@ -88,6 +88,12 @@ public:
      */
     void lockWifi(bool lock) override;
 
+    /*! \brief Implements a virtual method from PlatformAdaptor_Abstract
+     *
+     *  @param dark see PlatformAdaptor_Abstract
+     */
+    void setDarkStatusBarIcons(bool dark) override;
+
     /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract
      *
      *  @returns QVector with connection infos

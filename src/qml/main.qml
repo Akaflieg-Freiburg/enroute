@@ -243,6 +243,22 @@ AppWindow {
                     }
                 }
 
+                SwitchDelegate {
+                    id: nightMode
+
+                    leftPadding: 16+SafeInsets.left
+
+                    text: qsTr("Background GPS Monitor")
+                    icon.source: "/icons/material/ic_brightness_3.svg"
+                    Layout.fillWidth: true
+                    Component.onCompleted: {
+                        nightMode.checked = GlobalSettings.nightMode
+                    }
+                    onToggled: {
+                        //GlobalSettings.nightMode = nightMode.checked
+                    }
+                }
+
                 ItemDelegate {
                     Layout.fillWidth: true
 

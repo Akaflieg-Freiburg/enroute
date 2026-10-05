@@ -53,6 +53,14 @@ Item {
     property vac currentVAC
     property vac defaultVAC
 
+    // True while the route bar at the top of the moving map has something to
+    // show: a visual notification or remaining-route information. Shared by
+    // RemainingRouteBar (which collapses on Android when empty) and main.qml
+    // (status-bar icon color).
+    readonly property bool routeBarHasContent: (NotificationManager.currentVisualNotification !== null)
+                                               || (Navigator.remainingRouteInfo.status !== RemainingRouteInfo.NoRoute)
+                                               || (Navigator.remainingRouteInfo.note !== "")
+
     //
     // GUI Warnings
     //

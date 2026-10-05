@@ -76,6 +76,8 @@ Item {
         spacing: 0
 
         RemainingRouteBar {
+            id: routeBar
+
             Layout.fillWidth: true
 
             visible: !Global.currentVAC.isValid
@@ -352,7 +354,7 @@ Item {
 
                     onBearingChanged: {
                         if (defaultValuesSet)
-                            Global.mapBearing = bearing
+                            Global.mapBearing = flightMap.bearing
                     }
                     Binding on bearing {
                         id: bearingBinding
@@ -413,7 +415,7 @@ Item {
 
                     onZoomLevelChanged: {
                         if (defaultValuesSet)
-                            Global.mapZoomLevel = zoomLevel
+                            Global.mapZoomLevel = flightMap.zoomLevel
                     }
                     Behavior on zoomLevel {
                         id: zoomLevelBehavior
@@ -488,6 +490,11 @@ Item {
                     id: gridView
 
                     anchors.fill: parent
+                    // Keep the overlay clear of the status bar while the route
+                    // bar is collapsed (Android only, see RemainingRouteBar).
+                    // Tracks the bar's height animation; zero whenever the bar
+                    // or the approach-chart header covers the top inset.
+                    anchors.topMargin: routeBar.visible ? Math.max(0, SafeInsets.top - routeBar.height) : 0
 
                     columns: 3
 

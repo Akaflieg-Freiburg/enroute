@@ -46,15 +46,22 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     auto* inputMethod = QGuiApplication::inputMethod();
     connect(inputMethod, &QInputMethod::visibleChanged, this, &PlatformAdaptor::updateSafeInsets);
     connect(inputMethod, &QInputMethod::keyboardRectangleChanged, this, &PlatformAdaptor::updateSafeInsets);
-    connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, this, &PlatformAdaptor::updateSafeInsets);
 
     auto* timer = new QTimer(this);
     timer->setInterval(1s);
     timer->setSingleShot(true);
     connect(inputMethod, &QInputMethod::visibleChanged, timer, qOverload<>(&QTimer::start));
     connect(inputMethod, &QInputMethod::keyboardRectangleChanged, timer, qOverload<>(&QTimer::start));
-    connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, timer, qOverload<>(&QTimer::start));
     connect(timer, &QTimer::timeout, this, &PlatformAdaptor::updateSafeInsets);
+
+    // The primary screen does not exist while QGuiApplication is still being
+    // constructed. Never dereference it unconditionally.
+    auto* screen = QGuiApplication::primaryScreen();
+    if (screen != nullptr)
+    {
+        connect(screen, &QScreen::orientationChanged, this, &PlatformAdaptor::updateSafeInsets);
+        connect(screen, &QScreen::orientationChanged, timer, qOverload<>(&QTimer::start));
+    }
 
     updateSafeInsets();
 }
@@ -62,7 +69,12 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 
 void Platform::PlatformAdaptor::updateSafeInsets()
 {
-    auto devicePixelRatio = QGuiApplication::primaryScreen()->devicePixelRatio();
+    auto* screen = QGuiApplication::primaryScreen();
+    if (screen == nullptr)
+    {
+        return;
+    }
+    auto devicePixelRatio = screen->devicePixelRatio();
     if (!qIsFinite(devicePixelRatio) || (devicePixelRatio <= 0.0))
     {
         return;
@@ -167,6 +179,11 @@ void Platform::PlatformAdaptor::lockWifi(bool lock)
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
 }
 
+void Platform::PlatformAdaptor::setDarkStatusBarIcons(bool dark)
+{
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "setDarkStatusBarIcons", "(Z)V", dark);
+}
+
 void Platform::PlatformAdaptor::onGUISetupCompleted()
 {
     if (splashScreenHidden)
@@ -247,6 +264,11 @@ void Platform::PlatformAdaptor::vibrateLong()
 // C Methods
 //
 
+// The JNI callbacks below run on the Android UI thread, possibly while main()
+// is still constructing the QGuiApplication or has not yet created the global
+// objects. They must not touch any GlobalObject themselves; see
+// GlobalObject::runOnMainThread().
+
 extern "C" {
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onLanguageChanged(JNIEnv* /*unused*/, jobject /*unused*/)
@@ -266,59 +288,32 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onLangua
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (GlobalObject::canConstruct())
-    {
-        emit GlobalObject::platformAdaptor()->wifiConnected();
-    }
+    GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->wifiConnected(); });
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* env, jobject /*unused*/, jstring deviceName)
 {
 
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (GlobalObject::canConstruct())
-    {
-        // A little complicated because GlobalObject::fileExchange() lives in a different thread
-        const char* fname = env->GetStringUTFChars(deviceName, nullptr);
-        QMetaObject::invokeMethod(GlobalObject::trafficDataProvider(), "addDataSource", Qt::QueuedConnection,
-                                  Q_ARG( Traffic::ConnectionInfo, Traffic::ConnectionInfo(QString::fromUtf8(fname))) );
-        env->ReleaseStringUTFChars(deviceName, fname);
+    // Copy the device name here: the JNIEnv is only valid on this thread.
+    const char* fname = env->GetStringUTFChars(deviceName, nullptr);
+    const QString name = QString::fromUtf8(fname);
+    env->ReleaseStringUTFChars(deviceName, fname);
 
+    GlobalObject::runOnMainThread([name]() {
+        GlobalObject::trafficDataProvider()->addDataSource(Traffic::ConnectionInfo(name));
         emit GlobalObject::platformAdaptor()->serialPortsChanged();
-    }
-
+    });
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_UsbConnectionReceiver_onSerialPortConnectionsChanged(JNIEnv* /*unused*/, jobject /*unused*/)
 {
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (GlobalObject::canConstruct())
-    {
-        emit GlobalObject::platformAdaptor()->serialPortsChanged();
-    }
+    GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->serialPortsChanged(); });
 }
 
 JNIEXPORT void JNICALL
 Java_de_akaflieg_1freiburg_enroute_UsbSerialHelper_onPermissionResult(JNIEnv* /*unused*/, jclass /*unused*/, jstring /*unused*/, jboolean /*unused*/)
 {
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (GlobalObject::canConstruct())
-    {
-        emit GlobalObject::platformAdaptor()->serialPortsChanged();
-    }
+    GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->serialPortsChanged(); });
 }
 
 }

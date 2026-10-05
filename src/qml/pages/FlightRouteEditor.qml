@@ -516,6 +516,27 @@ Page {
                 property int draggedIndex: -1
                 interactive: draggedIndex === -1
 
+                // Runs 'action' (a change to Navigator.flightRoute) and keeps the
+                // row at the top of the viewport where it is. The flight route is
+                // a plain list property, so every change replaces the whole model
+                // and the ListView rebuilds all delegates, anchoring row 0 at the
+                // position of the previously first cached row. Without this the
+                // view jumps to the top of the route after a drop, a move, a
+                // removal or a rename.
+                function keepingScrollPosition(action) {
+                    let top = indexAt(0, contentY)
+                    let topItem = (top >= 0) ? itemAtIndex(top) : null
+                    let offset = topItem ? (contentY - topItem.y) : 0
+                    action()
+                    if (!topItem || (count === 0)) {
+                        return
+                    }
+                    forceLayout()
+                    positionViewAtIndex(Math.min(top, count-1), ListView.Beginning)
+                    contentY += offset
+                    returnToBounds()
+                }
+
                 displaced: Transition {
                     NumberAnimation { properties: "y"; duration: 150; easing.type: Easing.OutQuad }
                 }
@@ -534,6 +555,16 @@ Page {
                         width: routeView.width
                         height: content.height
 
+                        // Should the ListView release this delegate while its row is
+                        // being dragged (the slot left the cache window), the
+                        // DragHandler dies with it and never reports the release:
+                        // unlock the list instead of leaving it non-interactive.
+                        Component.onDestruction: {
+                            if (dragHandler.active) {
+                                routeView.draggedIndex = -1
+                            }
+                        }
+
                         // While a row is being dragged, slide it into whatever slot its
                         // centre currently overlaps, so the other rows open a gap. Driven
                         // by geometry (indexAt) rather than a DropArea: in this delegate the
@@ -545,7 +576,20 @@ Page {
                             let c = content.mapToItem(routeView.contentItem, content.width/2, content.height/2)
                             let idx = routeView.indexAt(c.x, c.y)
                             if (idx < 0) {
-                                idx = (c.y <= 0) ? 0 : routeView.count-1
+                                // Over no row: above the first row, below the last row, or
+                                // in a gap that a displaced row is still animating out of.
+                                // The content does not start at y = 0 (originY moves as the
+                                // ListView re-estimates), so compare with the real rows and
+                                // keep the current slot in the transient case.
+                                let first = routeView.itemAtIndex(0)
+                                let last = routeView.itemAtIndex(routeView.count-1)
+                                if (first && (c.y < first.y)) {
+                                    idx = 0
+                                } else if (last && (c.y > last.y + last.height)) {
+                                    idx = routeView.count-1
+                                } else {
+                                    return
+                                }
                             }
                             let cur = dragItem.DelegateModel.itemsIndex
                             if (idx !== cur) {
@@ -562,20 +606,31 @@ Page {
                             }
                             let margin = routeView.height*0.15
                             let center = content.y + content.height/2
-                            let maxContentY = Math.max(0, routeView.contentHeight - routeView.height)
-                            if (maxContentY <= 0) {
-                                return
+                            // Scrollable range of contentY. The content does not start at
+                            // y = 0: originY moves as the ListView re-estimates its origin,
+                            // and contentHeight is an estimate that can run past the real
+                            // last row. Prefer the bounds of the real first and last rows.
+                            let minY = routeView.originY
+                            let maxY = routeView.originY + routeView.contentHeight - routeView.height
+                            let first = routeView.itemAtIndex(0)
+                            if (first) {
+                                minY = first.y
                             }
+                            let last = routeView.itemAtIndex(routeView.count-1)
+                            if (last) {
+                                maxY = Math.min(maxY, last.y + last.height - routeView.height)
+                            }
+                            maxY = Math.max(minY, maxY)
                             let step = 0
-                            if ((center < margin) && (routeView.contentY > 0)) {
+                            if ((center < margin) && (routeView.contentY > minY)) {
                                 let pUp = Math.max(0, Math.min(1, (margin-center)/margin))
                                 step = -(3 + 12*pUp)
-                            } else if ((center > routeView.height-margin) && (routeView.contentY < maxContentY)) {
+                            } else if ((center > routeView.height-margin) && (routeView.contentY < maxY)) {
                                 let pDown = Math.max(0, Math.min(1, (center-(routeView.height-margin))/margin))
                                 step = 3 + 12*pDown
                             }
                             if (step !== 0) {
-                                routeView.contentY = Math.max(0, Math.min(maxContentY, routeView.contentY + step))
+                                routeView.contentY = Math.max(minY, Math.min(maxY, routeView.contentY + step))
                                 dragItem.updateDrag()
                             }
                         }
@@ -688,7 +743,7 @@ Page {
                                                     routeView.draggedIndex = -1
                                                     if ((from >= 0) && (from !== to)) {
                                                         PlatformAdaptor.vibrateBrief()
-                                                        Navigator.flightRoute.move(from, to)
+                                                        routeView.keepingScrollPosition(() => Navigator.flightRoute.move(from, to))
                                                     }
                                                 }
                                             }
@@ -720,7 +775,7 @@ Page {
                                                     PlatformAdaptor.vibrateBrief()
                                                     wpMenu.close() // Necessary on some devices, or else menu will stay open
 
-                                                    Navigator.flightRoute.moveUp(dragItem.index)
+                                                    routeView.keepingScrollPosition(() => Navigator.flightRoute.moveUp(dragItem.index))
                                                 }
                                             }
 
@@ -732,7 +787,7 @@ Page {
                                                     PlatformAdaptor.vibrateBrief()
                                                     wpMenu.close() // Necessary on some devices, or else menu will stay open
 
-                                                    Navigator.flightRoute.moveDown(dragItem.index)
+                                                    routeView.keepingScrollPosition(() => Navigator.flightRoute.moveDown(dragItem.index))
                                                 }
                                             }
 
@@ -743,7 +798,7 @@ Page {
                                                     PlatformAdaptor.vibrateBrief()
                                                     wpMenu.close() // Necessary on some devices, or else menu will stay open
 
-                                                    Navigator.flightRoute.removeWaypoint(dragItem.index)
+                                                    routeView.keepingScrollPosition(() => Navigator.flightRoute.removeWaypoint(dragItem.index))
                                                 }
                                             }
 
@@ -1204,7 +1259,7 @@ Page {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
-            Navigator.flightRoute.replaceWaypoint(index, newWP)
+            routeView.keepingScrollPosition(() => Navigator.flightRoute.replaceWaypoint(wpEditor.index, newWP))
             wpEditor.close()
         }
     }

@@ -194,8 +194,12 @@ void Traffic::TrafficDataSource_Tcp::sendPassword_internal()
     connect(this, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnHeartbeatChange);
     connect(&m_socket, &QTcpSocket::disconnected, this, &Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnDisconnected);
 
-    m_textStream << passwordRequest_password + u"\n"_s;
-    m_textStream.flush();
+    // Write to the socket directly, never through m_textStream. The text
+    // stream flushes pending output when the socket emits aboutToClose(), and
+    // QAbstractSocket::abort() tears down the socket's write buffer before it
+    // emits that signal, so any text left in the stream would be written into
+    // a destroyed buffer and crash the app.
+    m_socket.write((passwordRequest_password + u"\n"_s).toLatin1());
     passwordRequest_Status = waitingForDevice;
 
 }

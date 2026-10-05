@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <functional>
 
 class DemoRunner;
 class GlobalSettings;
@@ -141,6 +142,25 @@ public:
      *  pointer-returning methods should not be used.
      */
     Q_INVOKABLE static bool canConstruct();
+
+    /*! \brief Run a function on the main thread once the event loop is up
+     *
+     *  Helper for callbacks that arrive on foreign threads, such as Android
+     *  JNI callbacks on the Android UI thread, possibly while main() is still
+     *  constructing the QGuiApplication or has not yet created the global
+     *  objects. Such callbacks must not touch any global object themselves:
+     *  constructing a singleton on a foreign thread gives it the wrong thread
+     *  affinity (QML then aborts with "Illegal attempt to connect to … that is
+     *  in a different thread than the QML engine"), and constructors may rely
+     *  on state that does not exist yet, such as the primary screen.
+     *
+     *  This method queues the function to the application object. It runs on
+     *  the main thread, provided that canConstruct() is still true at that
+     *  time. Without a QCoreApplication instance, the call is dropped.
+     *
+     *  @param function Function to run on the main thread
+     */
+    static void runOnMainThread(std::function<void()> function);
 
     /*! \brief Pointer to appplication-wide static Navigation::Clock instance
      *

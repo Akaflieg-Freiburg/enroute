@@ -144,6 +144,18 @@ public:
      */
     Q_INVOKABLE virtual void lockWifi(bool lock) { Q_UNUSED(lock) }
 
+    /*! \brief Choose the color of the system status-bar icons
+     *
+     * On platforms where the app draws underneath the system status bar, this
+     * method chooses the icon color of that bar so that the icons remain
+     * readable over the app's content. The default implementation does
+     * nothing.
+     *
+     * @param dark If true, request dark icons (for light content). If false,
+     * request light icons (for dark content).
+     */
+    Q_INVOKABLE virtual void setDarkStatusBarIcons(bool dark) { Q_UNUSED(dark) }
+
     /*! \brief Open an external app or web site showing a satellite view
      *
      *  This implementation uses QDesktopServices::openUrl() to open the

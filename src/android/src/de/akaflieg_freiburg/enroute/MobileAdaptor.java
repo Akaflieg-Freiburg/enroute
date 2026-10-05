@@ -45,6 +45,7 @@ import android.window.OnBackInvokedDispatcher;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.File;
@@ -231,6 +232,26 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
   public static double safeInsetBottom() {
     return safeInset(3);
+  }
+
+  // Choose dark status-bar icons (for light content underneath the status
+  // bar) or light ones. Only the status bar is affected; the navigation bar
+  // keeps the appearance that Qt derives from the application color scheme.
+  // androidx maps the request to WindowInsetsController on API 30+ and to the
+  // legacy decor view flags on older versions. Must run on the UI thread.
+  public static void setDarkStatusBarIcons(boolean dark) {
+    if (m_instance == null) {
+      return;
+    }
+    m_instance.runOnUiThread(() -> {
+      Window window = m_instance.getWindow();
+      if (window == null) {
+        return;
+      }
+      WindowInsetsControllerCompat controller =
+          WindowCompat.getInsetsController(window, window.getDecorView());
+      controller.setAppearanceLightStatusBars(dark);
+    });
   }
 
   /*

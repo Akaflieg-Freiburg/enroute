@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [3.5.3] - 2026-10-05
 
 ### Changed
 
@@ -12,16 +12,16 @@
 
 - Fixed a crash that occurred when a map download failed while the first-run
   dialog was open.
-- Fixed a crash that could occur when Enroute reconnected to an OGN server or
-  to a traffic receiver over TCP/IP.
-- Fixed crashes on Android that could occur when a USB device was plugged in
-  or unplugged, or when a file was opened with Enroute, while Enroute was
-  starting up.
-- Fixed a crash on Android that could occur when a USB device was plugged in
-  or unplugged while Enroute was not running. Unplugging a USB device no
-  longer starts Enroute.
-- Fixed an issue where the waypoint list on the route page jumped to a
-  different position after a waypoint was moved, removed, or renamed.
+- Fixed a crash that could occur when Enroute reconnected to an OGN server or to
+  a traffic receiver over TCP/IP.
+- Fixed crashes on Android that could occur when a USB device was plugged in or
+  unplugged, or when a file was opened with Enroute, while Enroute was starting
+  up.
+- Fixed a crash on Android that could occur when a USB device was plugged in or
+  unplugged while Enroute was not running. Unplugging a USB device no longer
+  starts Enroute.
+- Fixed an issue where the waypoint list on the route page jumped to a different
+  position after a waypoint was moved, removed, or renamed.
 - Fixed an issue where the waypoint list on the route page stopped reacting to
   touch and mouse input after a waypoint had been dragged across a long route.
 

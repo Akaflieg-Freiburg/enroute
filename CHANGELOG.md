@@ -20,6 +20,10 @@
 - Fixed a crash on Android that could occur when a USB device was plugged in
   or unplugged while Enroute was not running. Unplugging a USB device no
   longer starts Enroute.
+- Fixed an issue where the waypoint list on the route page jumped to a
+  different position after a waypoint was moved, removed, or renamed.
+- Fixed an issue where the waypoint list on the route page stopped reacting to
+  touch and mouse input after a waypoint had been dragged across a long route.
 
 ## [3.5.2] - 2026-09-18
 

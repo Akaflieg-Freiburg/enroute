@@ -22,6 +22,7 @@
 	<string>${MACOSX_BUNDLE_BUNDLE_VERSION}</string>
     <key>CFBundleLocalizations</key>
     <array>
+        <string>cs</string>
         <string>de</string>
         <string>es</string>
         <string>fr</string>
@@ -33,7 +34,7 @@
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.navigation</string>
     <key>NSLocationUsageDescription</key>
-    <string>Navigation App needs Location</string>
+    <string>Enroute uses your location to show your aircraft's position on the map and for navigation.</string>
     <key>NSBluetoothAlwaysUsageDescription</key>   
     <string>This app uses Bluetooth to connect to traffic data receivers.</string>
 	<key>com.apple.security.network.client</key>

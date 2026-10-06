@@ -5,6 +5,6 @@
   Created by Simon Schneider on 15.05.23.
   
 */
-"NSLocationAlwaysAndWhenInUseUsageDescription" = "Navigation requires location sharing";
-"NSLocationWhenInUseUsageDescription" = "Navigation requires location sharing";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Enroute uses your location to show your aircraft's position on the map and for navigation.";
+"NSLocationWhenInUseUsageDescription" = "Enroute uses your location to show your aircraft's position on the map and for navigation.";
 "NSMotionUsageDescription" = "Enroute needs this permission to measure the current pressure";

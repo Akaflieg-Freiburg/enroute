@@ -5,6 +5,6 @@
   Created by Simon Schneider on 22.06.23.
 
 */
-"NSLocationAlwaysAndWhenInUseUsageDescription" = "Une autorisation du site est nécessaire pour la navigation";
-"NSLocationWhenInUseUsageDescription" = "Une autorisation du site est nécessaire pour la navigation";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Enroute utilise votre position pour afficher celle de votre aéronef sur la carte et pour la navigation.";
+"NSLocationWhenInUseUsageDescription" = "Enroute utilise votre position pour afficher celle de votre aéronef sur la carte et pour la navigation.";
 "NSMotionUsageDescription" = "Enroute a besoin de cette autorisation pour mesurer la pression actuelle";

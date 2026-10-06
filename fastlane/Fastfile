@@ -189,6 +189,8 @@ platform :mac do
     sh("#{qt6_macos_dir}/bin/qt-cmake",
       '-G Ninja',
       '-DCMAKE_BUILD_TYPE:STRING=Release',
+      # Requires universal builds of all dependencies (libzip, QMapLibre) in the Qt prefix
+      '-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64',
       '-DCMAKE_C_COMPILER_LAUNCHER=ccache',
       '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache',
       '-DCMAKE_INSTALL_PREFIX=../build/',

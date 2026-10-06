@@ -5,6 +5,6 @@
   Created by Simon Schneider on 15.05.23.
   
 */
-"NSLocationAlwaysAndWhenInUseUsageDescription" = "Für die Navigation ist eine Standortfreigabe erforderlich";
-"NSLocationWhenInUseUsageDescription" = "Für die Navigation ist eine Standortfreigabe erforderlich";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Enroute verwendet Ihren Standort, um die Position Ihres Luftfahrzeugs auf der Karte anzuzeigen und für die Navigation.";
+"NSLocationWhenInUseUsageDescription" = "Enroute verwendet Ihren Standort, um die Position Ihres Luftfahrzeugs auf der Karte anzuzeigen und für die Navigation.";
 "NSMotionUsageDescription" = "Enroute benötigt diese Berechtigung um den aktuellen Druck messen zu können";

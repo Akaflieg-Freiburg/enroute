@@ -71,13 +71,13 @@
     </array>
 
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Navigation App needs Location</string>
+    <string>Enroute uses your location to show your aircraft's position on the map and for navigation.</string>
 
     <key>NSMotionUsageDescription</key>
     <string>Enroute needs this permission to measure the current pressure</string>
 
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Navigation App needs Location</string>
+    <string>Enroute uses your location to show your aircraft's position on the map and for navigation.</string>
 
     <key>NSCameraUsageDescription</key>
     <string>Enroute does not use the camera</string>

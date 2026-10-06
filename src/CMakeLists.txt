@@ -12,6 +12,7 @@
 #
 
 if(FLIGHTLOG)
+    message("Enable FLIGHTLOG")
     set(FLIGHTLOG_ANDROID_PERMISSIONS [[  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>]])
     set(FLIGHTLOG_ANDROID_SERVICE [[<service
@@ -494,6 +495,15 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         MACOSX_BUNDLE_ICON_FILE enroute.icns
         MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"
     )
+
+    # Localized Info.plist strings; Ninja copies bundle resources file by file, not as directories
+    foreach(lang cs de en es fr it pl)
+        target_sources(${PROJECT_NAME} PRIVATE macos/${lang}.lproj/InfoPlist.strings)
+        set_source_files_properties(macos/${lang}.lproj/InfoPlist.strings PROPERTIES
+            MACOSX_PACKAGE_LOCATION "Resources/${lang}.lproj"
+        )
+    endforeach()
+
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         "-framework IOKit"
@@ -782,7 +792,7 @@ if ( QTDEPLOY )
         NO_UNSUPPORTED_PLATFORM_ERROR
         MACOS_BUNDLE_POST_BUILD
         DEPLOY_TOOL_OPTIONS
-        "-sign-for-notarization=Stefan Kebekus"
+        "-sign-for-notarization=DEEDB93E3C9BC425A307D401366E336E732AFA7B"
     )
 
     # Call the deployment script on "cmake --install".

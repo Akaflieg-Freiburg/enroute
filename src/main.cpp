@@ -69,8 +69,11 @@ auto main(int argc, char *argv[]) -> int
 
 #if defined(Q_OS_LINUX)
     // Silence warnings on Linux: "Failed to register with host portal", "Could not register
-    // app ID: Connection already associated with an application ID"
-    QLoggingCategory::setFilterRules(u"qt.qpa.services.warning=false"_s);
+    // app ID: Connection already associated with an application ID", and the harmless Qt
+    // Wayland bug "QWaylandTextInputv3::disableSurface ... Trying to disable ... but 0x0 is
+    // focused" that appears whenever a text field loses focus under a text-input-v3 compositor.
+    QLoggingCategory::setFilterRules(u"qt.qpa.services.warning=false\n"
+                                      "qt.qpa.wayland.textinput.warning=false"_s);
 #endif
 
     // Register types

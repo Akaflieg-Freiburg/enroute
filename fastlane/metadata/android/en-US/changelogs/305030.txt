@@ -1,0 +1,13 @@
+### Changed
+
+- On Android, the moving map now extends under the status bar when the route
+  bar is empty.
+
+### Fixed
+
+- Fixed crashes after failed map downloads during first-run setup, and when
+  reconnecting to OGN or TCP/IP traffic receivers.
+- Fixed crashes on Android involving USB devices or opened files. Unplugging a
+  USB device no longer starts Enroute.
+- Fixed waypoint list on the route page jumping or freezing after waypoints
+  were edited or dragged.

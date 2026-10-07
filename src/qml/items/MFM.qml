@@ -354,7 +354,7 @@ Item {
 
                     onBearingChanged: {
                         if (defaultValuesSet)
-                            Global.mapBearing = bearing
+                            Global.mapBearing = flightMap.bearing
                     }
                     Binding on bearing {
                         id: bearingBinding
@@ -415,7 +415,7 @@ Item {
 
                     onZoomLevelChanged: {
                         if (defaultValuesSet)
-                            Global.mapZoomLevel = zoomLevel
+                            Global.mapZoomLevel = flightMap.zoomLevel
                     }
                     Behavior on zoomLevel {
                         id: zoomLevelBehavior

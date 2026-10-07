@@ -234,6 +234,32 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
     return safeInset(3);
   }
 
+  // The following methods return the size of the application window in
+  // physical pixels, as laid out by the Android window manager. In
+  // split-screen mode, this is the size of the pane that the app occupies.
+  // Qt's own window size is wrong there on Android 10 and below, see
+  // PlatformAdaptor_Android.cpp.
+
+  private static double windowExtent(int axis) {
+    if (m_instance == null) {
+      return 0.0;
+    }
+    Window window = m_instance.getWindow();
+    if (window == null) {
+      return 0.0;
+    }
+    View decorView = window.getDecorView();
+    return (axis == 0) ? decorView.getWidth() : decorView.getHeight();
+  }
+
+  public static double windowWidth() {
+    return windowExtent(0);
+  }
+
+  public static double windowHeight() {
+    return windowExtent(1);
+  }
+
   // Choose dark status-bar icons (for light content underneath the status
   // bar) or light ones. Only the status bar is affected; the navigation bar
   // keeps the appearance that Qt derives from the application color scheme.

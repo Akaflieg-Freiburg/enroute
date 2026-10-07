@@ -114,6 +114,12 @@ AppWindow {
     visible: true
     title: "Enroute Flight Navigation"
 
+    readonly property bool isMobile: (Qt.platform.os === "android") || (Qt.platform.os === "ios")
+    width: 1000
+    height: 800
+    minimumWidth: isMobile ? 0 : 400
+    minimumHeight: isMobile ? 0 : 500
+
     Settings {
         property alias x: view.x
         property alias y: view.y

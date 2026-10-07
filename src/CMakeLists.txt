@@ -531,7 +531,14 @@ if (IOS)
     # Add executable and libraries
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
     set(CMAKE_MACOSX_RPATH OFF)
-    qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
+    # The FFmpeg xcframeworks in Qt 6.12's ios_simulator_arm64 kit have no arm64 simulator
+    # slice (only arm64 device and x86_64 simulator), so the FFmpeg media plugin cannot be
+    # linked there. Leave it out; the Darwin media plugin remains.
+    if(CMAKE_OSX_SYSROOT MATCHES "iphonesimulator" AND CMAKE_OSX_ARCHITECTURES STREQUAL "arm64")
+        qt_import_plugins(${PROJECT_NAME} EXCLUDE Qt::QFFmpegMediaPlugin)
+    else()
+        qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
+    endif()
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ${ENROUTE_COMMON_LIBRARIES}

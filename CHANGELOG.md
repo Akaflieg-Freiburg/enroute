@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.4] - 2026-10-08
+
+### Fixed
+
+- Fixes an issue with the split-screen mode on Android 10. (#686)
+
+
 ## [3.5.3] - 2026-10-05
 
 ### Changed

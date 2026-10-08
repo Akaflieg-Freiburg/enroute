@@ -29,7 +29,7 @@ endif()
 # Project data
 #
 
-project(enroute VERSION 3.5.3)
+project(enroute VERSION 3.5.4)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})

@@ -6,32 +6,42 @@ on:
     paths-ignore:
       - ".gitignore"
       - "README.md"
+      - "fastlane/metadata/**"
       # ignore CI for other platforms
       - ".github/workflows/android.yml"
       - ".github/workflows/ios.yml"
       - ".github/workflows/linux.yml"
       - ".github/workflows/macos.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write  # push to the gh-pages branch
+
+# A newer push supersedes the builds of an older one
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: Checkout Enroute
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         submodules: false
         fetch-depth: 0
     - name: Install Doxygen
-      uses: ssciwr/doxygen-install@v1
+      uses: ssciwr/doxygen-install@v2
     - name: Generate documentation
       working-directory: doc
       run: |
         doxygen
         mv APIdoc ..
     - name: Publish Documentation
-      if: github.event_name == 'push'
+      if: github.ref == 'refs/heads/develop'
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages

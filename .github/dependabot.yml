@@ -1,0 +1,13 @@
+# Keeps the actions used in .github/workflows up to date. Pull requests target
+# develop, where development happens.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "develop"
+    schedule:
+      interval: "monthly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"

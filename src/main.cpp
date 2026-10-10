@@ -91,6 +91,10 @@ auto main(int argc, char *argv[]) -> int
 #endif
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
     QGuiApplication app(argc, argv);
+#else
+    QApplication app(argc, argv);
+    QGuiApplication::setDesktopFileName(QStringLiteral("de.akaflieg_freiburg.enroute"));
+#endif
 
     // The smoke test (see DemoRunner::runSmokeTest) must not touch the user's
     // data. Enable the QStandardPaths test mode before anything computes a
@@ -99,10 +103,6 @@ auto main(int argc, char *argv[]) -> int
     {
         QStandardPaths::setTestModeEnabled(true);
     }
-#else
-    QApplication app(argc, argv);
-    QGuiApplication::setDesktopFileName(QStringLiteral("de.akaflieg_freiburg.enroute"));
-#endif
     QCoreApplication::setOrganizationName(QStringLiteral("Akaflieg Freiburg"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("akaflieg_freiburg.de"));
     QCoreApplication::setApplicationName(QStringLiteral("enroute flight navigation"));

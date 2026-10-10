@@ -6,6 +6,7 @@ on:
     paths-ignore: &paths-ignore
       - ".gitignore"
       - "README.md"
+      - "fastlane/metadata/**"
       # ignore CI for other platforms
       - ".github/workflows/android.yml"
       - ".github/workflows/api.yml"
@@ -14,6 +15,15 @@ on:
   pull_request:
     branches: [ main, develop ]
     paths-ignore: *paths-ignore
+  workflow_dispatch:
+
+permissions:
+  contents: write  # gh release upload to developerBuilds
+
+# A newer push supersedes the builds of an older one
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -22,31 +32,29 @@ jobs:
     
     steps:
     - name: Checkout Enroute
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         path: enroute
         submodules: recursive
         fetch-depth: 0
     - name: Checkout Enroute Dependencies
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         path: enrouteDependencies
         repository: Akaflieg-Freiburg/enrouteDependencies
         submodules: recursive
-    - name: Set up macOS
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.8'
+    - name: Read Qt version
+      run: echo "QT_VERSION=$(cat enroute/.github/qt-version)" >> "$GITHUB_ENV"
     - name: Install Ninja
       run: brew install ninja
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
         cache: 'true'
-        version: '6.11.2'
+        version: ${{ env.QT_VERSION }}
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.24
       with:
         key: macos
     - name: Compile and Install libzip

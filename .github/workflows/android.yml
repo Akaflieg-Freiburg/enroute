@@ -6,6 +6,7 @@ on:
     paths-ignore: &paths-ignore
       - ".gitignore"
       - "README.md"
+      - "fastlane/metadata/**"
       # ignore CI for other platforms
       - ".github/workflows/api.yml"
       - ".github/workflows/ios.yml"
@@ -14,25 +15,36 @@ on:
   pull_request:
     branches: [ main, develop ]
     paths-ignore: *paths-ignore
+  workflow_dispatch:
+
+permissions:
+  contents: write  # gh release upload to developerBuilds
+
+# A newer push supersedes the builds of an older one
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: Checkout enroute
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         path: enroute
         submodules: recursive
         fetch-depth: 0
     - name: Checkout enrouteDependencies
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         path: enrouteDependencies
         repository: Akaflieg-Freiburg/enrouteDependencies
         submodules: recursive
+    - name: Read Qt version
+      run: echo "QT_VERSION=$(cat enroute/.github/qt-version)" >> "$GITHUB_ENV"
     - name: Install Qt for Android arm64
       uses: jurplel/install-qt-action@v4
       with:
@@ -45,28 +57,34 @@ jobs:
         host: 'all_os'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtsensors qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
         target: 'android'
-        version: '6.11.2'
+        version: ${{ env.QT_VERSION }}
         arch: 'android_arm64_v8a'
     - name: Set up OpenJDK 21
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v6
       with:
-        distribution: adopt
+        distribution: temurin
         java-version: 21
-    - name: Setup ninja
-      uses: seanmiddleditch/gha-setup-ninja@v5
     - name: Install Additional Software
       run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build
         echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "platform-tools" "build-tools;36.0.0"
         echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "ndk;27.2.12479018"
         echo ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/27.2.12479018 >> $GITHUB_ENV
     - name: Remove Unwanted Software
       run: |
-        echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --uninstall "platforms;android-33-ext4" "platforms;android-33-ext5" "platforms;android-34-ext8" "platforms;android-35-ext14"
+        # Remove whatever SDK extension platforms the runner image ships, without
+        # depending on their exact names
+        SDKMANAGER=${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager
+        EXT_PLATFORMS=$($SDKMANAGER --list_installed | awk '$1 ~ /^platforms;android-.*-ext/ {print $1}')
+        if [ -n "$EXT_PLATFORMS" ]; then
+          echo "y" | $SDKMANAGER --uninstall $EXT_PLATFORMS
+        fi
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.24
       with:
         key: android
-        max-size: "500M"  # Limit cache size (default is 2G)  
+        max-size: "500M"  # Limit cache size (default is 2G)
     - name: Compile and Install libzip
       run: |
         export QT_HOST_PATH="$(readlink -f "$QT_ROOT_DIR/../gcc_64")"
@@ -108,7 +126,9 @@ jobs:
           -S enroute \
           -B build-enroute\
           -G Ninja\
-          -DCMAKE_BUILD_TYPE:STRING=Debug
+          -DCMAKE_BUILD_TYPE:STRING=Debug \
+          -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
         cmake --build build-enroute
     - name: Upload to developerBuilds
       if: github.event_name == 'push' && github.ref == 'refs/heads/develop'

@@ -370,14 +370,14 @@ lane :flathubRelease do
   sh("git clone git@github.com:#{flathub_repo}.git #{clone_folder}")
 
   # Choose the org.kde.Platform runtime branch and the matching qthttpserver
-  # tag. The flatpak uses Qt private API and aborts when the runtime's Qt patch
-  # version differs from the one it was built against, so the manifest must
-  # follow the runtime that flathub actually ships. The policy (see
-  # packaging/flatpak/runtime_policy.py) uses a supported branch whose Qt
-  # series is finished and hops to a newer one only once that branch carries
-  # its final Qt patch release; if no such branch exists, the script and thus
-  # this lane fail. The manifest deployed on flathub serves as reference so a
-  # release never moves back to an older runtime.
+  # tag and commit. The flatpak uses Qt private API and aborts when the
+  # runtime's Qt patch version differs from the one it was built against, so
+  # the manifest must follow the runtime that flathub actually ships. The
+  # policy (see packaging/flatpak/runtime_policy.py) uses a supported branch
+  # whose Qt series is finished and hops to a newer one only once that branch
+  # carries its final Qt patch release; if no such branch exists, the script
+  # and thus this lane fail. The manifest deployed on flathub serves as
+  # reference so a release never moves back to an older runtime.
   UI.message('Selecting the org.kde.Platform runtime for this release...')
   decision_path = "#{build_dir}/flatpak-runtime-decision.json"
   sh([

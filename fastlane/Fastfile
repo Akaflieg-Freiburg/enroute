@@ -302,6 +302,27 @@ lane :flathubRelease do
   # so the lane runs on macOS as well as on Linux, against whichever desktop
   # Qt kit is available. The configure tree is kept separate from the trees
   # used by the binary-building lanes.
+
+  # Get current git commit hash
+  commit_hash = sh("git rev-parse --short HEAD").strip
+  flathub_repo = "flathub/de.akaflieg_freiburg.enroute"
+  branch_name = "update-#{commit_hash}"
+
+  # The manifest pins the source commit, which Flathub fetches from GitHub, so
+  # the commit must be pushed before the lane runs. A run with a commit that is
+  # not on GitHub opens a pull request whose Flathub build cannot succeed.
+  sh("git fetch --quiet origin")
+  unless system("git merge-base --is-ancestor HEAD origin/main")
+    UI.user_error!("#{commit_hash} is not on origin/main; push it before running flathubRelease")
+  end
+
+  # An earlier run for the same commit has already pushed its branch and opened
+  # a pull request. Pushing again would be rejected, because the new manifest
+  # commit differs from the one on the branch.
+  unless sh("git ls-remote --heads git@github.com:#{flathub_repo}.git #{branch_name}").strip.empty?
+    UI.user_error!("#{flathub_repo} already has branch #{branch_name}; a pull request for #{commit_hash} was opened by an earlier run")
+  end
+
   build_dir = '../build/build-flathub'
   FileUtils.rm_rf(build_dir)
   
@@ -339,11 +360,7 @@ lane :flathubRelease do
   UI.message('Publishing Flathub screenshots as GitHub release assets...')
   sh("python3 ../packaging/flatpak/publish_screenshots.py --appdata #{appdata_path} --work #{build_dir}/screenshots")
 
-  # Get current git commit hash
-  commit_hash = sh("git rev-parse --short HEAD").strip
-  
   # Clone Flathub repository
-  flathub_repo = "flathub/de.akaflieg_freiburg.enroute"
   clone_folder = "../flathub-repo"
   
   # Remove existing clone if present
@@ -378,8 +395,6 @@ lane :flathubRelease do
   end
   
   # Create a new branch
-  branch_name = "update-#{commit_hash}"
-  
   Dir.chdir(clone_folder) do
     sh("git checkout -b #{branch_name}")
   

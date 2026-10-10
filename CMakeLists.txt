@@ -10,13 +10,17 @@ include(ExternalProject)
 option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
 option(FLIGHTLOG "Build the flight log UI and its background-location declarations (work in progress)" OFF)
 
-# Qt for iOS ships one fat static library per module, with an arm64 slice for the device
-# and an x86_64 slice for the simulator; there is no arm64 simulator slice, so a simulator
-# build has to target x86_64 (which the simulator runs under Rosetta on Apple Silicon).
-# Left alone, Qt's toolchain file pins CMAKE_OSX_ARCHITECTURES to arm64 and the link then
-# fails with "building for 'iOS-simulator', but linking in object file built for 'iOS'".
+# Up to Qt 6.11, Qt for iOS ships a single "ios" kit with one fat static library per
+# module, with an arm64 slice for the device and an x86_64 slice for the simulator; there
+# is no arm64 simulator slice, so a simulator build has to target x86_64 (which the
+# simulator runs under Rosetta on Apple Silicon). Left alone, Qt's toolchain file pins
+# CMAKE_OSX_ARCHITECTURES to arm64 and the link then fails with "building for
+# 'iOS-simulator', but linking in object file built for 'iOS'". Since Qt 6.12 there are
+# separate thin kits (ios_device, ios_simulator_arm64, ios_simulator_x86_64) whose
+# toolchain files set the right architecture themselves, so leave those alone.
 # This has to happen before project(), which is where the toolchain file is read.
-if(CMAKE_OSX_SYSROOT MATCHES "iphonesimulator" AND NOT CMAKE_OSX_ARCHITECTURES)
+if(CMAKE_OSX_SYSROOT MATCHES "iphonesimulator" AND CMAKE_TOOLCHAIN_FILE MATCHES "/ios/lib/cmake/"
+   AND NOT CMAKE_OSX_ARCHITECTURES)
     set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE STRING "Build architectures for iOS" FORCE)
 endif()
 
@@ -25,7 +29,7 @@ endif()
 # Project data
 #
 
-project(enroute VERSION 3.5.3)
+project(enroute VERSION 3.5.4)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})

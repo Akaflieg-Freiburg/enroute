@@ -728,7 +728,13 @@ void DemoRunner::runSmokeTest()
     delay(2s);
 
     // Pages. MapPage is the initial page and always present; the flight log
-    // page is skipped while the flight log is under development.
+    // page is skipped while the flight log is under development. Manual.qml
+    // shows the manual in a WebView and is reachable only on Android and iOS
+    // (see Global.openManual and the manual menu in main.qml); on the desktop
+    // platforms the manual opens in the external browser. Qt WebView aborts
+    // the process (qFatal) when no backend plug-in is available, which is the
+    // case on Linux unless Qt WebEngine is installed, so the page is visited
+    // only where the app actually uses it.
     const QStringList pages = {u"AircraftLibrary.qml"_s,
                                u"AircraftPage.qml"_s,
                                u"BugReportPage.qml"_s,
@@ -738,7 +744,9 @@ void DemoRunner::runSmokeTest()
                                u"FlightRouteEditor.qml"_s,
                                u"FlightRouteLibrary.qml"_s,
                                u"InfoPage.qml"_s,
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
                                u"Manual.qml"_s,
+#endif
                                u"Nearby.qml"_s,
                                u"ParticipatePage.qml"_s,
                                u"Positioning.qml"_s,

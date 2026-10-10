@@ -90,7 +90,8 @@ public slots:
      *  along the way (including run-time errors in bindings and signal
      *  handlers) and quits the app: with exit code 1 if there were any
      *  problems, with exit code 0 otherwise. The flight log page and dialog are
-     *  not visited while the flight log is under development.
+     *  not visited while the flight log is under development. The manual page
+     *  is visited only on Android and iOS, the platforms where the app shows it.
      */
     void runSmokeTest();
 

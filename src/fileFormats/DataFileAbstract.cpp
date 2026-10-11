@@ -71,6 +71,9 @@ bool FileFormats::DataFileAbstract::saveFileAtomically(const QString& path, cons
     };
 
     QSaveFile file(path);
+    // The macOS sandbox grants access to the user-selected file only, not to its
+    // directory, so QSaveFile cannot create its temporary file next to it there.
+    file.setDirectWriteFallback(true);
     if (!file.open(QIODevice::WriteOnly))
     {
         return fail(file.errorString());

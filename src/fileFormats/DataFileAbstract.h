@@ -108,6 +108,10 @@ public:
      *  the path is either replaced completely or left untouched, even if the
      *  app is killed while writing.
      *
+     *  If the directory does not allow creating the temporary file (as for a
+     *  user-selected file in the macOS sandbox), the file is written directly,
+     *  without atomicity guarantee.
+     *
      *  @param path Path of the file to write
      *
      *  @param data Content to write

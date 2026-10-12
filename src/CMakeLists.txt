@@ -680,6 +680,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/NotificationButton.qml
     qml/items/PageHeader.qml
     qml/items/RemainingRouteBar.qml
+    qml/items/RouteMenu.qml
     qml/items/SafeInsets.qml
     qml/items/Sideview.qml
     qml/items/StandardHeader.qml

@@ -335,6 +335,26 @@ Item {
                         }
                     }
 
+                    TapHandler {
+                        acceptedButtons: Qt.RightButton
+
+                        onTapped: {
+                            if (!gridView.contains(point.position))
+                                return
+
+                            const pos = point.position
+                            const posTr = Qt.point(pos.x+25,pos.y)
+
+                            const wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
+                                                                    flightMap.toCoordinate(posTr))
+                            if (!wp.isValid)
+                                return
+
+                            routeMenu.waypoint = wp
+                            routeMenu.popup()
+                        }
+                    }
+
                     Shortcut {
                         enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
                         sequences: [StandardKey.ZoomIn]
@@ -859,5 +879,9 @@ Item {
     WaypointDescription {
         id: waypointDescription
         objectName: "waypointDescription"
+    }
+
+    RouteMenu {
+        id: routeMenu
     }
 }

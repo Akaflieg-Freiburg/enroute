@@ -529,81 +529,12 @@ CenteringDialog {
                 addMenu.open()
             }
 
-            AutoSizingMenu {
+            RouteMenu {
                 id: addMenu
 
-                // The route can change while the dialog is open. The state
-                // only matters while the menu is open, so evaluate it on
-                // opening rather than tracking every change.
-                onAboutToShow: {
-                    appendToRouteAction.enabled = Navigator.flightRoute.canAppend(waypointDescriptionDialog.waypoint)
-                    insertIntoRouteAction.enabled = Navigator.flightRoute.canInsert(waypointDescriptionDialog.waypoint)
-                    removeFromRouteAction.enabled = Navigator.flightRoute.contains(waypointDescriptionDialog.waypoint)
-                }
+                waypoint: waypointDescriptionDialog.waypoint
 
-                Action {
-                    text: qsTr("Direct")
-                    enabled: PositionProvider.receivingPositionInfo && (Global.textDialogLoader.text !== "noRouteButton")
-
-                    onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        Navigator.flightRoute.directTo(waypointDescriptionDialog.waypoint, PositionProvider.positionInfo)
-                        Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
-                        addMenu.close()
-                        waypointDescriptionDialog.close()
-                    }
-                }
-
-                Rectangle {
-                    height: 1
-                    Layout.fillWidth: true
-                    color: Global.airspaceNeutral
-                }
-
-                Action {
-                    id: appendToRouteAction
-
-                    text: qsTr("Append")
-
-                    onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
-                        addMenu.close()
-                        waypointDescriptionDialog.close()
-                        Global.toast.doToast(qsTr("Added %1 to route.").arg(waypointDescriptionDialog.waypoint.extendedName))
-                    }
-                }
-
-                Action {
-                    id: insertIntoRouteAction
-
-                    text: qsTr("Insert")
-
-                    onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        Navigator.flightRoute.insert(waypointDescriptionDialog.waypoint)
-                        addMenu.close()
-                        waypointDescriptionDialog.close()
-                        Global.toast.doToast(qsTr("Inserted %1 into route.").arg(waypointDescriptionDialog.waypoint.extendedName))
-                    }
-                }
-
-                Action {
-                    id: removeFromRouteAction
-
-                    text: qsTr("Remove")
-
-                    onTriggered: {
-                        PlatformAdaptor.vibrateBrief()                        
-                        var index = Navigator.flightRoute.lastIndexOf(waypointDescriptionDialog.waypoint)
-                        if (index < 0)
-                            return
-                        Navigator.flightRoute.removeWaypoint(index)
-                        addMenu.close()
-                        waypointDescriptionDialog.close()
-                        Global.toast.doToast(qsTr("Removed %1 from route.").arg(waypointDescriptionDialog.waypoint.extendedName))
-                    }
-                }
+                onRouteChanged: waypointDescriptionDialog.close()
             }
         }
 

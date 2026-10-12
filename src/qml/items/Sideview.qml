@@ -29,19 +29,8 @@ SideviewQuickItem {
 
     clip: true
 
-    // Night-mode-aware colors. Sky and terrain have no equivalent on the moving
-    // map; the night hues are picked to blend with the dark base map. The
-    // airspace hues themselves live in the Global singleton (Global.airspaceBlue
-    // etc.), see FlightMap.
-    readonly property color skyColor:           GlobalSettings.nightMode ? "#101820" : "lightblue"
-    readonly property color terrainFillColor:   GlobalSettings.nightMode ? "#33251a" : "brown"
-    readonly property color terrainStrokeColor: GlobalSettings.nightMode ? "#54402c" : "saddlebrown"
-
-    // Same role as the properties of the same name in FlightMap: the
-    // semi-transparent airspace bands and fills wash out to near-invisible over
-    // a dark base, so their opacity is raised at night.
-    readonly property real airspaceBandOpacity: GlobalSettings.nightMode ? 0.35 : 0.2
-    readonly property real airspaceFillOpacity: GlobalSettings.nightMode ? 0.30 : 0.2
+    // Night-mode-aware sky color. Terrain and airspace colors are in ProfileShape.
+    readonly property color skyColor: GlobalSettings.nightMode ? "#101820" : "lightblue"
 
     Rectangle {
         id: sky
@@ -49,122 +38,16 @@ SideviewQuickItem {
         color: rawSideView.skyColor
     }
 
+    ProfileShape {
+        terrain: rawSideView.terrain // qmllint disable unresolved-type
+        airspaces: rawSideView.airspaces
+    }
+
     Shape {
         id: shp
 
         preferredRendererType: Shape.CurveRenderer
         asynchronous: true
-
-        ShapePath {
-            id: terrain
-            strokeWidth: -1
-            strokeColor: rawSideView.terrainStrokeColor
-            fillColor: rawSideView.terrainFillColor
-
-            PathPolyline { path: rawSideView.terrain } // qmllint disable unresolved-type
-        }
-
-        ShapePath {
-            id: airspacesABorder
-            strokeWidth: 10
-            strokeColor: Qt.alpha(Global.airspaceBlue, rawSideView.airspaceBandOpacity)
-            fillColor: "transparent"
-
-            PathMultiline { paths: rawSideView.airspaces["A"] }
-        }
-
-        ShapePath {
-            id: airspacesA
-            strokeWidth: 2
-            strokeColor: Global.airspaceBlue
-            fillColor: "transparent"
-
-            PathMultiline { paths: rawSideView.airspaces["A"] }
-        }
-
-        ShapePath {
-            id: airspacesRBorder
-            strokeWidth: 10
-            strokeColor: Qt.alpha(Global.airspaceRed, rawSideView.airspaceBandOpacity)
-            fillColor: "transparent"
-            fillRule: ShapePath.WindingFill
-
-            PathMultiline { paths: rawSideView.airspaces["R"] }
-        }
-
-        ShapePath {
-            id: airspacesR
-            strokeWidth: 2
-            strokeColor: Global.airspaceRed
-            fillColor: "transparent"
-
-            PathMultiline { paths: rawSideView.airspaces["R"] }
-        }
-
-        ShapePath {
-            id: airspacesPJE
-            strokeWidth: 2
-            strokeColor: Global.airspaceRed
-            fillColor: "transparent"
-            dashPattern: [4,3]
-            strokeStyle: ShapePath.DashLine
-
-            PathMultiline { paths: rawSideView.airspaces["PJE"] }
-        }
-
-        ShapePath {
-            id: airspacesTMZ
-            strokeWidth: 2
-            strokeColor: Global.airspaceNeutral
-            fillColor: "transparent"
-            dashPattern: [4.0, 3.0, 0.5, 3.0]
-            strokeStyle: ShapePath.DashLine
-
-            PathMultiline { paths: rawSideView.airspaces["TMZ"] }
-        }
-
-        ShapePath {
-            id: airspacesNRABorder
-            strokeWidth: 10
-            strokeColor: Qt.alpha(Global.airspaceGreen, rawSideView.airspaceBandOpacity)
-            fillColor: "transparent"
-            fillRule: ShapePath.WindingFill
-
-            PathMultiline { paths: rawSideView.airspaces["NRA"] }
-        }
-
-        ShapePath {
-            id: airspacesNRA
-            strokeWidth: 2
-            strokeColor: Global.airspaceGreen
-            fillColor: "transparent"
-
-            PathMultiline { paths: rawSideView.airspaces["NRA"] }
-        }
-
-        ShapePath {
-            id: airspacesRMZ
-            strokeWidth: 2
-            strokeColor: Global.airspaceBlue
-            fillColor: Qt.alpha(Global.airspaceBlue, rawSideView.airspaceFillOpacity)
-            dashPattern: [4,3]
-            strokeStyle: ShapePath.DashLine
-            fillRule: ShapePath.WindingFill
-
-            PathMultiline { paths: rawSideView.airspaces["RMZ"] }
-        }
-
-        ShapePath {
-            id: airspacesCTR
-            strokeWidth: 2
-            strokeColor: Global.airspaceBlue
-            fillColor: Qt.alpha(Global.airspaceRed, rawSideView.airspaceFillOpacity)
-            dashPattern: [4,3]
-            strokeStyle: ShapePath.DashLine
-            fillRule: ShapePath.WindingFill
-
-            PathMultiline { paths: rawSideView.airspaces["CTR"] }
-        }
 
         property double animatedFiveMinuteBarX: rawSideView.fiveMinuteBar.x
         Behavior on animatedFiveMinuteBarX { NumberAnimation {duration: 1000} }

@@ -681,7 +681,9 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/NotificationArea.qml
     qml/items/NotificationButton.qml
     qml/items/PageHeader.qml
+    qml/items/ProfileShape.qml
     qml/items/RemainingRouteBar.qml
+    qml/items/RouteProfile.qml
     qml/items/RouteMenu.qml
     qml/items/SafeInsets.qml
     qml/items/Sideview.qml
@@ -722,6 +724,10 @@ qt_add_qml_module(${PROJECT_NAME}
     ui/DistanceSortProxyModel.cpp
     ui/NameFilterProxyModel.h
     ui/NameFilterProxyModel.cpp
+    ui/ProfileSampling.h
+    ui/ProfileSampling.cpp
+    ui/RouteProfileQuickItem.h
+    ui/RouteProfileQuickItem.cpp
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
     ui/SideviewQuickItem.h

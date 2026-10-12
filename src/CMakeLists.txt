@@ -657,6 +657,8 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/RenameVACDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
+    qml/items/AirspaceDelegate.qml
+    qml/items/AirspaceTooltip.qml
     qml/items/AppWindow.qml
     qml/items/AutoSizingMenu.qml
     qml/items/DecoratedListView.qml

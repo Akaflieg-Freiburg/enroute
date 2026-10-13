@@ -682,7 +682,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/ProfileShape.qml
     qml/items/RemainingRouteBar.qml
     qml/items/RouteProfile.qml
-    qml/items/RouteMenu.qml
     qml/items/SafeInsets.qml
     qml/items/Sideview.qml
     qml/items/StandardHeader.qml

@@ -21,10 +21,12 @@
 #include "GeoMapProvider.h"
 #include "PositionProvider.h"
 #include "SideviewQuickItem.h"
-#include "ui/ProfileSampling.h"
 #include "weather/WeatherDataProvider.h"
 
 using namespace Qt::Literals::StringLiterals;
+
+QStringList airspaceCategories = {"ATZ", "TMZ", "RMZ", "TIA", "TIZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R", "P", "PJE", "SUA"};
+
 
 Ui::SideviewQuickItem::SideviewQuickItem(QQuickItem *parent)
     : QQuickItem(parent), m_baroCache(new Navigation::BaroCache(this))
@@ -70,7 +72,16 @@ void Ui::SideviewQuickItem::updateProperties()
     m_error = QString();
     m_terrain = QPolygonF();
 
-    m_airspaces = Ui::ProfileSampling::emptyAirspacePolygons();
+    QVariantMap newAirspaces;
+    const QVector<QPolygonF> empty;
+    newAirspaces[u"A"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"CTR"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"R"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"RMZ"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"NRA"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"PJE"_s] = QVariant::fromValue(empty);
+    newAirspaces[u"TMZ"_s] = QVariant::fromValue(empty);
+    m_airspaces = newAirspaces;
 
     // If the side view is really small, safe CPU cycles by doing nothing
     if (height() < 5.0)
@@ -176,26 +187,50 @@ void Ui::SideviewQuickItem::updateProperties()
     }
 
     //
-    // Sample the profile every few pixels along the track
+    // Compute array of x-coordinates in pixels.
     //
     const int step = 4.0;
-    QList<Ui::ProfileSampling::Sample> samples;
-    samples.reserve( qRound((width()+20)/step) );
+    QList<int> xCoordinates;
+    xCoordinates.reserve( qRound((width()+20)/step) );
     for(int x = -10; x <= width()+10; x += step)
     {
-        auto dist = 10000.0*(x-0.2*width())/(m_pixelPer10km.value());
-        samples << Ui::ProfileSampling::Sample{static_cast<double>(x), ownshipCoordinate.atDistanceAndAzimuth(dist, ownshipTrack.toDEG()), {}};
+        xCoordinates << x;
     }
-    if (!Ui::ProfileSampling::fillTerrain(samples))
+
+    //
+    // For each x-coordinate, compute the associated QGeoCoordinate
+    //
+    QList<QGeoCoordinate> geoCoordinates;
+    geoCoordinates.reserve(xCoordinates.size());
+    for(auto x : std::as_const(xCoordinates))
     {
-        m_error = tr("Incomplete terrain data. Please install the relevant terrain maps.");
+        auto dist = 10000.0*(x-0.2*width())/(m_pixelPer10km.value());
+        auto geoCoordinate = ownshipCoordinate.atDistanceAndAzimuth(dist, ownshipTrack.toDEG());
+        geoCoordinates << geoCoordinate;
     }
+
+    // For each geoCoordinate, compute the elevation
+    QList<Units::Distance> elevations;
+    elevations.reserve(geoCoordinates.size());
     Units::Distance minElevation = ownshipTerrainElevation;
     Units::Distance maxElevation = ownshipTerrainElevation;
-    for(const auto& sample : std::as_const(samples))
+    for(const auto& geoCoordinate : std::as_const(geoCoordinates))
     {
-        minElevation = qMin(minElevation, sample.terrain);
-        maxElevation = qMax(maxElevation, sample.terrain);
+        auto elevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(geoCoordinate);
+        if (!elevation.isFinite())
+        {
+            elevation = Units::Distance::fromM(0.0);
+            m_error = tr("Incomplete terrain data. Please install the relevant terrain maps.");
+        }
+        elevations << elevation;
+        if (elevation < minElevation)
+        {
+            minElevation = elevation;
+        }
+        if (elevation > maxElevation)
+        {
+            maxElevation = elevation;
+        }
     }
 
     //
@@ -236,9 +271,104 @@ void Ui::SideviewQuickItem::updateProperties()
     }
 
     // Terrain
-    m_terrain = Ui::ProfileSampling::terrainPolygon(samples, altToYCoordinate, width(), height());
+    QPolygonF polygon;
+    polygon.reserve( elevations.size()+4 );
+    for(qsizetype i = 0; i < elevations.size(); i++)
+    {
+        polygon << QPointF(xCoordinates[i], altToYCoordinate(elevations[i]));
+    }
+    polygon  << QPointF(width(), height()+2000) << QPointF(-20, height()+2000);
+    m_terrain = polygon;
+    //qWarning() << "SideviewQuickItem terrain" << m_elapsedTimer.elapsed();
 
     // Airspaces
-    m_airspaces = Ui::ProfileSampling::airspacePolygons(samples, altToYCoordinate, QNH, ownshipGeometricAltitude, ownshipPressureAltitude);
+    auto airspaces = GlobalObject::geoMapProvider()->airspaces();
+    QVector<QPolygonF> airspacePolygonsA;
+    QVector<QPolygonF> airspacePolygonsCTR;
+    QVector<QPolygonF> airspacePolygonsR;
+    QVector<QPolygonF> airspacePolygonsRMZ;
+    QVector<QPolygonF> airspacePolygonsNRA;
+    QVector<QPolygonF> airspacePolygonsPJE;
+    QVector<QPolygonF> airspacePolygonsTMZ;
+    QList<QPointF> upper;
+    QList<QPointF> lower;
+    QGeoRectangle const viewBBox(QList({geoCoordinates.constFirst(), geoCoordinates.constLast()}));
+    for(const auto& airspace : std::as_const(airspaces))
+    {
+        if (!airspaceCategories.contains(airspace.CAT()))
+        {
+            continue;
+        }
+        auto bbox = airspace.polygon().boundingGeoRectangle();
+        if (!bbox.intersects(viewBBox))
+        {
+            continue;
+        }
+
+        auto airspacePolygon = airspace.polygon();
+        for(int i=0; i < xCoordinates.size(); i++)
+        {
+            auto x = xCoordinates[i];
+            const auto& geoCoordinate = geoCoordinates[i];
+            if ((i != xCoordinates.size()-1) && airspacePolygon.contains(geoCoordinate))
+            {
+                auto u = airspace.estimatedUpperBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude);
+                auto l = airspace.estimatedLowerBoundMSL(elevations[i], QNH, ownshipGeometricAltitude, ownshipPressureAltitude);
+                if (l < u)
+                {
+                    upper << QPointF(x, altToYCoordinate(u));
+                    lower << QPointF(x, altToYCoordinate(l));
+                    continue;
+                }
+            }
+
+            if (!upper.isEmpty())
+            {
+                std::reverse(lower.begin(), lower.end());
+                QPolygonF polygon(upper + lower);
+                polygon << upper[0];
+                if ((airspace.CAT() == u"A"_s) || (airspace.CAT() == u"B"_s) || (airspace.CAT() == u"C"_s) || (airspace.CAT() == u"D"_s))
+                {
+                    airspacePolygonsA << polygon;
+                }
+                if (airspace.CAT() == u"CTR"_s)
+                {
+                    airspacePolygonsCTR << polygon;
+                }
+                if ((airspace.CAT() == u"R"_s) || (airspace.CAT() == u"P"_s) || (airspace.CAT() == u"DNG"_s))
+                {
+                    airspacePolygonsR << polygon;
+                }
+                if ((airspace.CAT() == u"ATZ"_s) || (airspace.CAT() == u"RMZ"_s) || (airspace.CAT() == u"TIA"_s) || (airspace.CAT() == u"TIZ"_s))
+                {
+                    airspacePolygonsRMZ << polygon;
+                }
+                if (airspace.CAT() == u"NRA"_s)
+                {
+                    airspacePolygonsNRA << polygon;
+                }
+                if ((airspace.CAT() == u"PJE"_s) || (airspace.CAT() == u"SUA"_s))
+                {
+                    airspacePolygonsPJE << polygon;
+                }
+                if (airspace.CAT() == u"TMZ"_s)
+                {
+                    airspacePolygonsTMZ << polygon;
+                }
+                upper.clear();
+                lower.clear();
+            }
+        }
+    }
+
+    newAirspaces[u"A"_s] = QVariant::fromValue(airspacePolygonsA);
+    newAirspaces[u"CTR"_s] = QVariant::fromValue(airspacePolygonsCTR);
+    newAirspaces[u"R"_s] = QVariant::fromValue(airspacePolygonsR);
+    newAirspaces[u"RMZ"_s] = QVariant::fromValue(airspacePolygonsRMZ);
+    newAirspaces[u"NRA"_s] = QVariant::fromValue(airspacePolygonsNRA);
+    newAirspaces[u"PJE"_s] = QVariant::fromValue(airspacePolygonsPJE);
+    newAirspaces[u"TMZ"_s] = QVariant::fromValue(airspacePolygonsTMZ);
+
+    m_airspaces = newAirspaces;
     //qWarning() << "SideviewQuickItem full" << m_elapsedTimer.elapsed();
 }

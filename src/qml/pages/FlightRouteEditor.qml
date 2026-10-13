@@ -469,7 +469,6 @@ Page {
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route"); onClicked: PlatformAdaptor.vibrateBrief() }
         TabButton { text: qsTr("Wind"); onClicked: PlatformAdaptor.vibrateBrief() }
-        TabButton { text: qsTr("Profile"); onClicked: PlatformAdaptor.vibrateBrief() }
     }
 
     SwipeView{
@@ -994,10 +993,6 @@ Page {
 
             }
 
-        }
-
-        RouteProfile {
-            id: profileTab
         }
 
     }

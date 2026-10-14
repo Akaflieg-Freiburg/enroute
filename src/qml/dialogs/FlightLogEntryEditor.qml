@@ -287,7 +287,7 @@ CenteringDialog {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 placeholderText: "1"
-                inputMethodHints: Qt.ImhDigitsOnly
+                inputMethodHints: Global.digitsInputHint
                 validator: IntValidator { bottom: 0; top: 99 }
             }
 

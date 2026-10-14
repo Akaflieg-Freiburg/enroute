@@ -107,8 +107,6 @@ CenteringDialog {
                 focus: true
 
                 wrapMode: TextEdit.WordWrap
-
-                Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(wpNotesField)
             }
 
 

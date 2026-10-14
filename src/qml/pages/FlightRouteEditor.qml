@@ -890,7 +890,7 @@ Page {
                         bottom: 0
                         top: 360
                     }
-                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputMethodHints: Global.digitsInputHint
                     property angle myAngle; // Dummy. I do not know how to create an angle otherwise
                     onEditingFinished: {                        
                         Navigator.wind.directionFrom = text === "" ? myAngle.fromDEG(NaN) : myAngle.fromDEG(text)
@@ -944,7 +944,7 @@ Page {
                         }
                         notation: DoubleValidator.StandardNotation
                     }
-                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputMethodHints: Global.digitsInputHint
                     onEditingFinished: {
                         switch(Navigator.aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:

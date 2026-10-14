@@ -220,6 +220,11 @@ Item {
                    .replace(/<\/a>/g, "</font></a>")
     }
 
+    // Input method hint for number fields. On iOS, ImhDigitsOnly gives the
+    // number pad, which iPad shows as a small floating pad; ImhPreferNumbers
+    // gives the regular keyboard on its number layer instead.
+    readonly property int digitsInputHint: (Qt.platform.os === "ios") ? Qt.ImhPreferNumbers : Qt.ImhDigitsOnly
+
 
     //
     // Permissions

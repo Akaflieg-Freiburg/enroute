@@ -185,7 +185,6 @@ platform :mac do
 
     UI.message('Configuring CMake build...')
     qt6_macos_dir = ENV['Qt6_DIR_MACOS']
-    # Removed to avoid problems  '-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64',
     sh("#{qt6_macos_dir}/bin/qt-cmake",
       '-G Ninja',
       '-DCMAKE_BUILD_TYPE:STRING=Release',
@@ -222,7 +221,7 @@ platform :mac do
   lane :deployTestFlight do
     # Fetch the latest build number from TestFlight
     latest_build = latest_testflight_build_number(
-      username: "stefan.kebekus@gmail.com",
+      username: ENV['FASTLANE_USER'],
       app_identifier: "de.akafliegfreiburg.enroute",
       platform: "osx"
     )
@@ -244,16 +243,15 @@ platform :mac do
     # Sign the app and specify entitlements
     sh("codesign --deep --force --verify --options runtime --entitlements ../src/macos/enroute.entitlements --sign \"Apple Distribution: Akademische Fliegergruppe Freiburg i. Br. e. V. (9DX97T4PBT)\" ../build/enroute.app")
     # Create the pkg installer for upload (Note: this installer cannot be used to actually install the app)
-    sh("xcrun productbuild --sign \"Akademische Fliegergruppe Freiburg i. Br. e. V.\" --component ../build/enroute.app /Applications ../build/enroute.pkg")
+    installer_identity = ENV['MAC_INSTALLER_SIGNING_IDENTITY'].to_s
+    UI.user_error!("Please set MAC_INSTALLER_SIGNING_IDENTITY to the name of the installer certificate in your keychain") if installer_identity.empty?
+    sh("xcrun", "productbuild", "--sign", installer_identity, "--component", "../build/enroute.app", "/Applications", "../build/enroute.pkg")
     # Remove the app, which is signed with a key that makes it unusable outside our precise use case
     FileUtils.rm_rf('../build/enroute.app')
     ## Validate the package for upload to the App Store
     upload_to_testflight(
-      username: "stefan.kebekus@gmail.com",
       app_identifier: "de.akafliegfreiburg.enroute",
-      pkg: "build/enroute.pkg",
-      groups: ["Akaflieg"],
-      notify_external_testers: false
+      pkg: "build/enroute.pkg"
     )
   end
 end

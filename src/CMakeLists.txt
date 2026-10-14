@@ -657,6 +657,8 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/RenameVACDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
+    qml/items/AirspaceDelegate.qml
+    qml/items/AirspaceTooltip.qml
     qml/items/AppWindow.qml
     qml/items/AutoSizingMenu.qml
     qml/items/DecoratedListView.qml
@@ -680,6 +682,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/NotificationButton.qml
     qml/items/PageHeader.qml
     qml/items/RemainingRouteBar.qml
+    qml/items/RouteMenu.qml
     qml/items/SafeInsets.qml
     qml/items/Sideview.qml
     qml/items/StandardHeader.qml

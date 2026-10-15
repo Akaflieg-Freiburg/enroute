@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.6.0] - Unreleased
+
+### Fixed
+
+- Fixed an issue where the moving map kept showing outdated aviation data
+  after a map update until the app was restarted.
+
+
 ## [3.5.4] - 2026-10-08
 
 ### Fixed

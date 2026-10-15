@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QDBusInterface>
+#include <QSocketNotifier>
 
 #include "PlatformAdaptor_Abstract.h"
 

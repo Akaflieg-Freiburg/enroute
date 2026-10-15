@@ -20,6 +20,7 @@
 
 #include <QBuffer>
 #include <QGuiApplication>
+#include <QHttpHeaders>
 #include <QHttpServerRequest>
 #include <QHttpServerResponder>
 #include <QImage>
@@ -139,7 +140,15 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QHttp
     //
     if (path.endsWith(u"aviationData.geojson"_s))
     {
-        responder.write(GlobalObject::geoMapProvider()->geoJSON(), "application/json");
+        // The data behind this URL changes with every aviation map update, while
+        // the URL stays the same for the lifetime of the app. MapLibre keeps
+        // replies in a persistent cache and, without a must-revalidate directive,
+        // renders the stale copy on the next map reload and never replaces it
+        // with the fresh one. Tell it to revalidate instead.
+        QHttpHeaders headers;
+        headers.append(QHttpHeaders::WellKnownHeader::ContentType, u"application/json"_s);
+        headers.append(QHttpHeaders::WellKnownHeader::CacheControl, u"no-cache, must-revalidate"_s);
+        responder.write(GlobalObject::geoMapProvider()->geoJSON(), headers);
         return true;
     }
 

@@ -24,18 +24,26 @@ Store](https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176).
 - Users who wish to try the latest, experimental versions of the app are welcome
 to join our public beta-testing program.  Please have a look at the [Google
 beta-test program](https://support.google.com/googleplay/answer/7003180?hl=en)
-and [Apple TestFlight](https://testflight.apple.com/join/jqPSdGNX).
+and [Apple TestFlight](https://testflight.apple.com/join/jqPSdGNX).  Apple's
+beta-test program covers iPhone, iPad and Mac.
 
 
-<figure style="width: 130px" class="align-right">
-  <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+<figure style="width: 150px" class="align-right">
+  <a href='https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176'><img alt='Download on the App Store' src='{{ site.url }}{{ site.baseurl }}/assets/images/download-on-the-app-store.svg'/></a>
 </figure>
 
 
 ### Mac Desktop
 
-**Enroute Flight Navigation** is available for Mac computers with Apple silicon on the Apple [App
-Store](https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176). 
+**Enroute Flight Navigation** is available for free download on the Apple [App
+Store](https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176).
+The app runs natively on Macs with Apple silicon and on Intel-based Macs, and
+requires macOS 14 (Sonoma) or later.
+
+
+<figure style="width: 130px" class="align-right">
+  <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+</figure>
 
 
 ### Linux Desktop

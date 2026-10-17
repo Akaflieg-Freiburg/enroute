@@ -15,6 +15,8 @@ header:
       url: "https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute"
     - label: "Download on the App Store"
       url: "https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176"
+    - label: "Get it on Flathub"
+      url: "https://flathub.org/apps/details/de.akaflieg_freiburg.enroute"
 feature_row:
   - image_path: /assets/images/maps.jpg
     alt: "Free maps"
@@ -30,7 +32,7 @@ feature_row:
 ---
 
 **Enroute Flight Navigation** is an award-winning flight navigation app for
-Android and other devices. Designed to be simple, functional and elegant, it
+Android, iPhone and iPad, Mac and Linux. Designed to be simple, functional and elegant, it
 takes the stress out of your next flight. The program is free.  It has been
 written by flight enthusiasts, as a project of [Akaflieg
 Freiburg](https://akaflieg-freiburg.de), a flight club based in Freiburg,

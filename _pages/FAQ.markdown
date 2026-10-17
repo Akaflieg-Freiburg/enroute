@@ -36,3 +36,9 @@ data.
 At present **Enroute Flight Navigation** requires Android 9.0 or later.  We ask
 for your understanding that we cannot support older devices, as this would
 require manpower that we simply do not have.
+
+
+## Which Macs are supported?
+
+**Enroute Flight Navigation** runs natively on Macs with Apple silicon and on
+Intel-based Macs.  It requires macOS 14 (Sonoma) or later.

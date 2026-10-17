@@ -335,6 +335,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += u"<p>"_s
+                  + tr("Enroute Flight Navigation is now also available for Mac computers. Download it for free from the <a href='https://apps.apple.com/app/enroute-flight-navigation/id6448892176'>App Store</a>.")
+                  + u"</p>"_s;
+        result += u"<p>"_s
                   + tr("The maps for France now come with Visual approach charts for the maps; the charts charts will be available for free once you install or update the maps for France. "
                        "We thank the <a href='https://www.sia.aviation-civile.gouv.fr/'>SIA</a> for publishing the data under a free license, and Quentin Bossard and Michael Paus for the georeferencing work and long-term maintenance!")
                   + u"</p>"_s;

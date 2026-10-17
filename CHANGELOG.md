@@ -1,6 +1,12 @@
 # Changelog
 
-## [3.6.0] - Unreleased
+## [3.5.5] - 2026-10-17
+
+### Added
+
+- Enroute Flight Navigation is now available for Mac computers on the App
+  Store. The app runs natively on Apple silicon and Intel-based Macs and
+  requires macOS 14 or later.
 
 ### Fixed
 

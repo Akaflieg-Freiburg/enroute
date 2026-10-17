@@ -23,10 +23,12 @@
 #include <QInputMethod>
 #include <QJniEnvironment>
 #include <QJniObject>
+#include <QKeyEvent>
 #include <QPermissions>
 #include <QProcess>
 #include <QScreen>
 #include <QTimer>
+#include <QWindow>
 #include <chrono>
 
 #include "platform/PlatformAdaptor_Android.h"
@@ -330,6 +332,40 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onLangua
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
     GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->wifiConnected(); });
+}
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onBackInvoked(JNIEnv* /*unused*/, jclass /*unused*/)
+{
+    // Called on the Android UI thread for the Back gesture or key, see
+    // MobileAdaptor.forwardBackToQt(). Deliver the key on the Qt thread and
+    // return at once. Waiting for the Qt thread here, as Qt 6.12's own handler
+    // does, deadlocks when the Qt thread is itself waiting for the UI thread to
+    // create the window surface.
+    GlobalObject::runOnMainThread([]() {
+        auto* window = QGuiApplication::focusWindow();
+        if (window == nullptr)
+        {
+            return;
+        }
+        QKeyEvent press(QEvent::KeyPress, Qt::Key_Back, Qt::NoModifier);
+        QCoreApplication::sendEvent(window, &press);
+        QKeyEvent release(QEvent::KeyRelease, Qt::Key_Back, Qt::NoModifier);
+        QCoreApplication::sendEvent(window, &release);
+        if (press.isAccepted() || release.isAccepted())
+        {
+            return;
+        }
+        // Nobody handled Back. Send the task to the background, which is what
+        // Qt 6.12 does in this case.
+        QNativeInterface::QAndroidApplication::runOnAndroidMainThread([]() {
+            auto activity = QNativeInterface::QAndroidApplication::context();
+            if (activity.isValid() && QNativeInterface::QAndroidApplication::isActivityContext())
+            {
+                activity.callMethod<jboolean>("moveTaskToBack", true);
+            }
+            return QVariant();
+        });
+    });
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* env, jobject /*unused*/, jstring deviceName)

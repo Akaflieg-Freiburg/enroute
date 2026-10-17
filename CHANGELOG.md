@@ -6,6 +6,8 @@
 
 - Fixed an issue where the moving map kept showing outdated aviation data
   after a map update until the app was restarted.
+- Fixed a hang on Android ("Enroute Flight Navigation isn't responding") when
+  the Back button or gesture was used while the app was still starting up.
 
 
 ## [3.5.4] - 2026-10-08

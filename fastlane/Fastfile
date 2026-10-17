@@ -185,10 +185,11 @@ platform :mac do
 
     UI.message('Configuring CMake build...')
     qt6_macos_dir = ENV['Qt6_DIR_MACOS']
-    # Removed to avoid problems  '-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64',
     sh("#{qt6_macos_dir}/bin/qt-cmake",
       '-G Ninja',
       '-DCMAKE_BUILD_TYPE:STRING=Release',
+      # Requires universal builds of all dependencies (libzip, QMapLibre) in the Qt prefix
+      '-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64',
       '-DCMAKE_C_COMPILER_LAUNCHER=ccache',
       '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache',
       '-DCMAKE_INSTALL_PREFIX=../build/',
@@ -220,7 +221,7 @@ platform :mac do
   lane :deployTestFlight do
     # Fetch the latest build number from TestFlight
     latest_build = latest_testflight_build_number(
-      username: "stefan.kebekus@gmail.com",
+      username: ENV['FASTLANE_USER'],
       app_identifier: "de.akafliegfreiburg.enroute",
       platform: "osx"
     )
@@ -242,16 +243,15 @@ platform :mac do
     # Sign the app and specify entitlements
     sh("codesign --deep --force --verify --options runtime --entitlements ../src/macos/enroute.entitlements --sign \"Apple Distribution: Akademische Fliegergruppe Freiburg i. Br. e. V. (9DX97T4PBT)\" ../build/enroute.app")
     # Create the pkg installer for upload (Note: this installer cannot be used to actually install the app)
-    sh("xcrun productbuild --sign \"Akademische Fliegergruppe Freiburg i. Br. e. V.\" --component ../build/enroute.app /Applications ../build/enroute.pkg")
+    installer_identity = ENV['MAC_INSTALLER_SIGNING_IDENTITY'].to_s
+    UI.user_error!("Please set MAC_INSTALLER_SIGNING_IDENTITY to the name of the installer certificate in your keychain") if installer_identity.empty?
+    sh("xcrun", "productbuild", "--sign", installer_identity, "--component", "../build/enroute.app", "/Applications", "../build/enroute.pkg")
     # Remove the app, which is signed with a key that makes it unusable outside our precise use case
     FileUtils.rm_rf('../build/enroute.app')
     ## Validate the package for upload to the App Store
     upload_to_testflight(
-      username: "stefan.kebekus@gmail.com",
       app_identifier: "de.akafliegfreiburg.enroute",
-      pkg: "build/enroute.pkg",
-      groups: ["Akaflieg"],
-      notify_external_testers: false
+      pkg: "build/enroute.pkg"
     )
   end
 end
@@ -300,6 +300,27 @@ lane :flathubRelease do
   # so the lane runs on macOS as well as on Linux, against whichever desktop
   # Qt kit is available. The configure tree is kept separate from the trees
   # used by the binary-building lanes.
+
+  # Get current git commit hash
+  commit_hash = sh("git rev-parse --short HEAD").strip
+  flathub_repo = "flathub/de.akaflieg_freiburg.enroute"
+  branch_name = "update-#{commit_hash}"
+
+  # The manifest pins the source commit, which Flathub fetches from GitHub, so
+  # the commit must be pushed before the lane runs. A run with a commit that is
+  # not on GitHub opens a pull request whose Flathub build cannot succeed.
+  sh("git fetch --quiet origin")
+  unless system("git merge-base --is-ancestor HEAD origin/main")
+    UI.user_error!("#{commit_hash} is not on origin/main; push it before running flathubRelease")
+  end
+
+  # An earlier run for the same commit has already pushed its branch and opened
+  # a pull request. Pushing again would be rejected, because the new manifest
+  # commit differs from the one on the branch.
+  unless sh("git ls-remote --heads git@github.com:#{flathub_repo}.git #{branch_name}").strip.empty?
+    UI.user_error!("#{flathub_repo} already has branch #{branch_name}; a pull request for #{commit_hash} was opened by an earlier run")
+  end
+
   build_dir = '../build/build-flathub'
   FileUtils.rm_rf(build_dir)
   
@@ -337,11 +358,7 @@ lane :flathubRelease do
   UI.message('Publishing Flathub screenshots as GitHub release assets...')
   sh("python3 ../packaging/flatpak/publish_screenshots.py --appdata #{appdata_path} --work #{build_dir}/screenshots")
 
-  # Get current git commit hash
-  commit_hash = sh("git rev-parse --short HEAD").strip
-  
   # Clone Flathub repository
-  flathub_repo = "flathub/de.akaflieg_freiburg.enroute"
   clone_folder = "../flathub-repo"
   
   # Remove existing clone if present
@@ -351,14 +368,14 @@ lane :flathubRelease do
   sh("git clone git@github.com:#{flathub_repo}.git #{clone_folder}")
 
   # Choose the org.kde.Platform runtime branch and the matching qthttpserver
-  # tag. The flatpak uses Qt private API and aborts when the runtime's Qt patch
-  # version differs from the one it was built against, so the manifest must
-  # follow the runtime that flathub actually ships. The policy (see
-  # packaging/flatpak/runtime_policy.py) uses a supported branch whose Qt
-  # series is finished and hops to a newer one only once that branch carries
-  # its final Qt patch release; if no such branch exists, the script and thus
-  # this lane fail. The manifest deployed on flathub serves as reference so a
-  # release never moves back to an older runtime.
+  # tag and commit. The flatpak uses Qt private API and aborts when the
+  # runtime's Qt patch version differs from the one it was built against, so
+  # the manifest must follow the runtime that flathub actually ships. The
+  # policy (see packaging/flatpak/runtime_policy.py) uses a supported branch
+  # whose Qt series is finished and hops to a newer one only once that branch
+  # carries its final Qt patch release; if no such branch exists, the script
+  # and thus this lane fail. The manifest deployed on flathub serves as
+  # reference so a release never moves back to an older runtime.
   UI.message('Selecting the org.kde.Platform runtime for this release...')
   decision_path = "#{build_dir}/flatpak-runtime-decision.json"
   sh([
@@ -376,8 +393,6 @@ lane :flathubRelease do
   end
   
   # Create a new branch
-  branch_name = "update-#{commit_hash}"
-  
   Dir.chdir(clone_folder) do
     sh("git checkout -b #{branch_name}")
   

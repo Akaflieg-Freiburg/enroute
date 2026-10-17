@@ -39,6 +39,10 @@ AppWindow {
         Global.appWindow = this
         Application.styleHints.colorScheme = Qt.ColorScheme.Dark
         view.applyStatusBarIcons()
+        if (!view.isMobile) {
+            view.restoreGeometry()
+            geometrySaver.enabled = true
+        }
     }
 
     // Android only: the moving map draws under the status bar whenever the
@@ -114,11 +118,37 @@ AppWindow {
     visible: true
     title: "Enroute Flight Navigation"
 
+    readonly property bool isMobile: (Qt.platform.os === "android") || (Qt.platform.os === "ios")
+    width: 1000
+    height: 800
+    minimumWidth: isMobile ? 0 : 400
+    minimumHeight: isMobile ? 0 : 500
+
+    // Window geometry is restored on desktop only. Mobile windows are always
+    // maximized, and on iOS, setting the geometry during start-up breaks the
+    // layout after a landscape launch (QTBUG-138685). Aliases cannot be used
+    // here, as Settings would then also write the geometry on mobile.
     Settings {
-        property alias x: view.x
-        property alias y: view.y
-        property alias width: view.width
-        property alias height: view.height
+        id: geometrySettings
+    }
+
+    function restoreGeometry() {
+        view.x = Number(geometrySettings.value("x", view.x))
+        view.y = Number(geometrySettings.value("y", view.y))
+        view.width = Number(geometrySettings.value("width", view.width))
+        view.height = Number(geometrySettings.value("height", view.height))
+    }
+
+    Connections {
+        id: geometrySaver
+
+        target: view
+        enabled: false
+
+        function onXChanged() { geometrySettings.setValue("x", view.x) }
+        function onYChanged() { geometrySettings.setValue("y", view.y) }
+        function onWidthChanged() { geometrySettings.setValue("width", view.width) }
+        function onHeightChanged() { geometrySettings.setValue("height", view.height) }
     }
 
     Drawer {

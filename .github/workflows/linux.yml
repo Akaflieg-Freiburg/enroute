@@ -6,6 +6,7 @@ on:
     paths-ignore: &paths-ignore
       - ".gitignore"
       - "README.md"
+      - "fastlane/metadata/**"
       # ignore CI for other platforms
       - ".github/workflows/android.yml"
       - ".github/workflows/api.yml"
@@ -14,25 +15,36 @@ on:
   pull_request:
     branches: [ main, develop ]
     paths-ignore: *paths-ignore
+  workflow_dispatch:
+
+permissions:
+  contents: write  # gh release upload to developerBuilds
+
+# A newer push supersedes the builds of an older one
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: Checkout Enroute
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         path: enroute
         submodules: recursive
         fetch-depth: 0
     - name: Checkout Enroute Dependencies
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         path: enrouteDependencies
         repository: Akaflieg-Freiburg/enrouteDependencies
         submodules: recursive
+    - name: Read Qt version
+      run: echo "QT_VERSION=$(cat enroute/.github/qt-version)" >> "$GITHUB_ENV"
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
@@ -40,16 +52,21 @@ jobs:
         arch: linux_gcc_64
         cache: 'true'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
-        version: '6.11.2'
+        version: ${{ env.QT_VERSION }}
     - name: Install LinuxDeploy
-      uses: miurahr/install-linuxdeploy-action@v1
-      with:
-        plugins: appimage
+      run: |
+        mkdir -p "$RUNNER_TEMP/linuxdeploy"
+        cd "$RUNNER_TEMP/linuxdeploy"
+        wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+        wget -q https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage
+        chmod +x *.AppImage
+        echo "$RUNNER_TEMP/linuxdeploy" >> "$GITHUB_PATH"
     - name: Install Additional Software
       run: |
-        sudo apt install appstream extra-cmake-modules fuse libudev-dev libxcb-cursor0 libzip-dev ninja-build patchelf spirv-tools zipcmp zipmerge ziptool
+        sudo apt-get update
+        sudo apt-get install -y appstream extra-cmake-modules fuse libgl1-mesa-dri libudev-dev libxcb-cursor0 libzip-dev ninja-build patchelf spirv-tools xvfb zipcmp zipmerge ziptool
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.24
       with:
         key: linux
     - name: Compile and Install maplibre-native-qt
@@ -82,6 +99,15 @@ jobs:
     - name: Lint QML
       run: |
         cmake --build build-enroute --target all_qmllint
+    # Opens every page and dialog and fails on QML errors (DemoRunner::runSmokeTest).
+    # The app forces OpenGL, which the headless 'offscreen' platform cannot
+    # provide on Linux, so run under Xvfb with Mesa's software renderer.
+    - name: Smoke test
+      run: |
+        timeout 600 xvfb-run -a build-enroute/src/enroute --smoke-test
+      env:
+        LIBGL_ALWAYS_SOFTWARE: 1
+        QT_QPA_PLATFORM: xcb
     # The AppImage below is assembled from app/, which the install step above
     # populated with the default build. This step only keeps the FLIGHTLOG=ON
     # configuration compiling and lint-clean while the flight log is hidden.

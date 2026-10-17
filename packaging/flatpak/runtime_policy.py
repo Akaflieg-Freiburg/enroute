@@ -15,7 +15,8 @@ final patch release of its Qt series. A manifest is never moved to an older
 branch than the one it already uses. If no frozen branch exists at or above
 the manifest's current branch, the script fails and writes nothing. The
 qthttpserver module is pinned to the git tag matching the runtime's Qt
-version.
+version, together with the commit that tag points to (flathub's linter wants
+a commit next to every tag).
 
 A branch is frozen when
   * io.qt.qtwebengine.BaseApp exists for it on flathub,
@@ -36,10 +37,13 @@ Usage:
   runtime_policy.py facts  [--output FILE]
 
   --manifest   manifest to inspect or rewrite (runtime-version, base-version,
-               qthttpserver tag)
+               qthttpserver tag and commit)
   --reference  another manifest whose runtime-version also counts as the
                current branch (e.g. the manifest deployed on flathub)
   --template   second file to rewrite the same way (the .json.in template)
+  --skip-tag-check
+               do not look up the qthttpserver tag on GitHub; the commit pin
+               is then dropped from the manifest
 
 Only the Python standard library is used and no flatpak installation is
 required, so this also runs on macOS. Flathub is read as the plain OSTree
@@ -132,6 +136,7 @@ class Decision:
     branch: str
     qt: str
     reason: str
+    commit: str = None          # commit behind the qthttpserver tag v<qt>; None leaves it unpinned
 
 
 # ---------------------------------------------------------------------------
@@ -242,11 +247,18 @@ def manifest_fields(doc):
     return doc.get('runtime-version'), doc.get('base-version'), qthttpserver_source(doc).get('tag')
 
 
-def set_fields(doc, branch, qt):
+def set_fields(doc, branch, qt, commit=None):
     doc['runtime-version'] = branch
     if 'base-version' in doc:
         doc['base-version'] = branch
-    qthttpserver_source(doc)['tag'] = 'v' + qt
+    source = qthttpserver_source(doc)
+    source['tag'] = 'v' + qt
+    # flatpak-builder refuses a source whose commit does not match its tag, so
+    # a commit left over from an earlier tag must never survive a rewrite.
+    if commit:
+        source['commit'] = commit
+    else:
+        source.pop('commit', None)
 
 
 def current_branch(doc):
@@ -262,7 +274,7 @@ def rewrite(path, decision, dry_run):
     if file_branch and branch_key(file_branch) > branch_key(decision.branch):
         print(f'{path}: already on {file_branch}, newer than {decision.branch}; left unchanged')
         return False
-    set_fields(doc, decision.branch, decision.qt)
+    set_fields(doc, decision.branch, decision.qt, decision.commit)
     new = render(doc)
     if new == old:
         print(f'{path}: already up to date')
@@ -471,13 +483,32 @@ def fetch_cycles():
     return cycles
 
 
-def tag_exists(qt):
+def tag_commit(qt):
+    """Commit that the qthttpserver tag v<qt> points to, or None if there is no such tag."""
     ref = f'refs/tags/v{qt}'
-    result = subprocess.run(['git', 'ls-remote', '--tags', QTHTTPSERVER_URL, ref],
+    # Qt tags are annotated: ls-remote lists the tag object under `ref` and, only
+    # when asked for the peeled form, the commit it points to. A lightweight tag
+    # has no peeled form, it is the commit itself.
+    result = subprocess.run(['git', 'ls-remote', '--tags', QTHTTPSERVER_URL, ref, ref + '^{}'],
                             capture_output=True, text=True)
     if result.returncode != 0:
         raise PolicyError(f'git ls-remote {QTHTTPSERVER_URL} failed: {result.stderr.strip()}')
-    return any(line.split('\t')[-1] == ref for line in result.stdout.splitlines())
+    found = {}
+    for line in result.stdout.splitlines():
+        checksum, _, name = line.partition('\t')
+        found[name] = checksum
+    return found.get(ref + '^{}') or found.get(ref)
+
+
+def pin_qthttpserver(decision, skip_tag_check=False):
+    """Resolve the qthttpserver tag of `decision` to its commit, in place."""
+    if skip_tag_check:
+        print(f'qthttpserver: tag v{decision.qt} not looked up, commit left unpinned')
+        return
+    decision.commit = tag_commit(decision.qt)
+    if decision.commit is None:
+        raise PolicyError(f'{QTHTTPSERVER_URL} has no tag v{decision.qt}; cannot pin qthttpserver')
+    print(f'qthttpserver: tag v{decision.qt} is commit {decision.commit}')
 
 
 def gather_facts(current=None, flathub=None):
@@ -521,18 +552,18 @@ def run_policy(args):
 
 def cmd_select(args):
     _, _, decision = run_policy(args)
+    pin_qthttpserver(decision)
     rewrite(args.manifest, decision, dry_run=True)
 
 
 def cmd_apply(args):
     current, _, decision = run_policy(args)
-    if not args.skip_tag_check and not tag_exists(decision.qt):
-        raise PolicyError(f'{QTHTTPSERVER_URL} has no tag v{decision.qt}; cannot pin qthttpserver')
+    pin_qthttpserver(decision, args.skip_tag_check)
     changed = [path for path in [args.manifest, args.template]
                if path and rewrite(path, decision, args.dry_run)]
     if args.json_out:
         with open(args.json_out, 'w', encoding='utf-8') as handle:
-            json.dump({'branch': decision.branch, 'qt': decision.qt,
+            json.dump({'branch': decision.branch, 'qt': decision.qt, 'commit': decision.commit,
                        'reason': decision.reason, 'previous': current, 'changed': changed},
                       handle, indent=2)
             handle.write('\n')
@@ -567,7 +598,8 @@ def main(argv=None):
     add_policy_args(apply_)
     apply_.add_argument('--template')
     apply_.add_argument('--dry-run', action='store_true')
-    apply_.add_argument('--skip-tag-check', action='store_true')
+    apply_.add_argument('--skip-tag-check', action='store_true',
+                        help='do not look up the qthttpserver tag on GitHub; drops the commit pin')
     apply_.add_argument('--json-out')
     apply_.set_defaults(func=cmd_apply)
 

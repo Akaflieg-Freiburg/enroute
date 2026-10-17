@@ -29,7 +29,8 @@
         {
           "type": "git",
           "url": "https://github.com/festvox/flite.git",
-          "tag": "v2.2"
+          "tag": "v2.2",
+          "commit": "e9e2e37c329dbe98bfeb27a1828ef9a71fa84f88"
         }
       ],
       "buildsystem": "simple",
@@ -73,7 +74,8 @@
         {
           "type": "git",
           "url": "https://github.com/qt/qthttpserver.git",
-          "tag": "v6.10.3"
+          "tag": "v6.10.3",
+          "commit": "129a09556627de4c8712a86ab6f61715f3e07f85"
         }
       ],
       "buildsystem": "cmake-ninja"

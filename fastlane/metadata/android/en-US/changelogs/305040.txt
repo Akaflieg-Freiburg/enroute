@@ -1,0 +1,3 @@
+### Fixed
+
+- Fixes an issue with the split-screen mode on Android 10. (#686)

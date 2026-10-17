@@ -1,25 +1,43 @@
 # Changelog
 
-## [Unreleased]
+## [3.5.5] - 2026-10-17
 
-### Changed
+### Added
 
-- On Android, the moving map now extends under the status bar whenever the
-  route bar at the top of the map is empty. The status-bar icons switch between
-  dark and light so that they remain readable over the map.
+- Enroute Flight Navigation is now available for Mac computers on the App
+  Store. The app runs natively on Apple silicon and Intel-based Macs and
+  requires macOS 14 or later.
 
 ### Fixed
 
-- Fixed a crash that occurred when a map download failed while the first-run
-  dialog was open.
-- Fixed a crash that could occur when Enroute reconnected to an OGN server or
-  to a traffic receiver over TCP/IP.
-- Fixed crashes on Android that could occur when a USB device was plugged in
-  or unplugged, or when a file was opened with Enroute, while Enroute was
-  starting up.
-- Fixed a crash on Android that could occur when a USB device was plugged in
-  or unplugged while Enroute was not running. Unplugging a USB device no
-  longer starts Enroute.
+- Fixed an issue where the moving map kept showing outdated aviation data
+  after a map update until the app was restarted.
+- Fixed a hang on Android ("Enroute Flight Navigation isn't responding") when
+  the Back button or gesture was used while the app was still starting up.
+
+
+## [3.5.4] - 2026-10-08
+
+### Fixed
+
+- Fixes an issue with the split-screen mode on Android 10. (#686)
+
+
+## [3.5.3] - 2026-10-05
+
+### Changed
+
+- On Android, the moving map now extends under the status bar when the route
+  bar is empty.
+
+### Fixed
+
+- Fixed crashes after failed map downloads during first-run setup, and when
+  reconnecting to OGN or TCP/IP traffic receivers.
+- Fixed crashes on Android involving USB devices or opened files. Unplugging a
+  USB device no longer starts Enroute.
+- Fixed waypoint list on the route page jumping or freezing after waypoints
+  were edited or dragged.
 
 ## [3.5.2] - 2026-09-18
 

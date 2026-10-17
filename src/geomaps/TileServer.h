@@ -42,7 +42,10 @@ namespace GeoMaps {
  *    unchanged, the PNG files are recolored for use over the dark map style.
  *  - If path equals "aviationData.geojson", the server returns a GeoJSON
  *    document that contains the full aviation data, as provided by
- *    GlobalObject::geoMapProvider()->geoJSON().
+ *    GlobalObject::geoMapProvider()->geoJSON(). The reply carries a
+ *    "Cache-Control: no-cache, must-revalidate" header, because the document
+ *    changes with every aviation map update while its URL stays the same, and
+ *    the map renderer would otherwise keep rendering a cached copy.
  *  - If path equals the base name of an MBTilesFileSet, then the server returns
  *    a JSON document describing the MBTiles.
  *  - If path equals "baseName/z/x/y.XXX", then the server returns an individual

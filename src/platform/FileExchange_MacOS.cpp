@@ -20,13 +20,13 @@
 
 #include <QDesktopServices>
 #include <QDir>
+#include <QFile>
 #include <QFileDialog>
 #include <QMimeDatabase>
 #include <QTemporaryFile>
 
 #include "macos/ObjCAdapterMac.h"
 #include "platform/FileExchange_MacOS.h"
-#include "fileFormats/DataFileAbstract.h"
 
 
 
@@ -65,12 +65,17 @@ QString Platform::FileExchange::shareContent(const QByteArray& content, const QS
     {
         return QStringLiteral("abort");
     }
-    // Write atomically, so that a failed write does not leave a truncated
-    // file at the user's chosen location.
-    QString error;
-    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileNameX, content, &error))
+    // Write directly instead of through QSaveFile: the macOS sandbox grants access
+    // to the user-selected file only, so no temporary file can be created next to it.
+    QFile file(fileNameX);
+    if (!file.open(QIODevice::WriteOnly) || (file.write(content) != content.size()))
     {
-        return tr("Unable to write to file <strong>%1</strong>: %2").arg(fileNameX, error);
+        return tr("Unable to write to file <strong>%1</strong>: %2").arg(fileNameX, file.errorString());
+    }
+    file.close();
+    if (file.error() != QFileDevice::NoError)
+    {
+        return tr("Unable to write to file <strong>%1</strong>: %2").arg(fileNameX, file.errorString());
     }
     return {};
 }

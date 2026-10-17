@@ -23,10 +23,12 @@
 #include <QInputMethod>
 #include <QJniEnvironment>
 #include <QJniObject>
+#include <QKeyEvent>
 #include <QPermissions>
 #include <QProcess>
 #include <QScreen>
 #include <QTimer>
+#include <QWindow>
 #include <chrono>
 
 #include "platform/PlatformAdaptor_Android.h"
@@ -39,28 +41,44 @@ using namespace std::chrono_literals;
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : Platform::PlatformAdaptor_Abstract(parent)
 {
-    // Keep the property safeInsets up-to-date. The window insets settle only
-    // after animations (keyboard, split-screen changes) have finished, so in
-    // addition to the immediate updates, re-check after one second. This
-    // follows the pattern of the former SafeInsets implementation.
-    auto* inputMethod = QGuiApplication::inputMethod();
-    connect(inputMethod, &QInputMethod::visibleChanged, this, &PlatformAdaptor::updateSafeInsets);
-    connect(inputMethod, &QInputMethod::keyboardRectangleChanged, this, &PlatformAdaptor::updateSafeInsets);
-
+    // Keep the property safeInsets and the window geometry up-to-date. The
+    // window insets settle only after animations (keyboard, split-screen
+    // changes) have finished, so in addition to the immediate updates,
+    // re-check after one second. This follows the pattern of the former
+    // SafeInsets implementation.
     auto* timer = new QTimer(this);
     timer->setInterval(1s);
     timer->setSingleShot(true);
-    connect(inputMethod, &QInputMethod::visibleChanged, timer, qOverload<>(&QTimer::start));
-    connect(inputMethod, &QInputMethod::keyboardRectangleChanged, timer, qOverload<>(&QTimer::start));
     connect(timer, &QTimer::timeout, this, &PlatformAdaptor::updateSafeInsets);
 
+    auto* inputMethod = QGuiApplication::inputMethod();
+    connect(inputMethod, &QInputMethod::visibleChanged, this, &PlatformAdaptor::updateSafeInsets);
+    connect(inputMethod, &QInputMethod::keyboardRectangleChanged, this, &PlatformAdaptor::updateSafeInsets);
+    connect(inputMethod, &QInputMethod::visibleChanged, timer, qOverload<>(&QTimer::start));
+    connect(inputMethod, &QInputMethod::keyboardRectangleChanged, timer, qOverload<>(&QTimer::start));
+
+    // The application window is hidden while the app is suspended and shown
+    // again on resume (see main.cpp); the geometry check below must run
+    // after every such re-show.
+    if (qGuiApp != nullptr)
+    {
+        connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, &PlatformAdaptor::updateSafeInsets);
+        connect(qGuiApp, &QGuiApplication::applicationStateChanged, timer, qOverload<>(&QTimer::start));
+        connect(qGuiApp, &QGuiApplication::focusWindowChanged, this, &PlatformAdaptor::updateSafeInsets);
+        connect(qGuiApp, &QGuiApplication::focusWindowChanged, timer, qOverload<>(&QTimer::start));
+    }
+
     // The primary screen does not exist while QGuiApplication is still being
-    // constructed. Never dereference it unconditionally.
+    // constructed. Never dereference it unconditionally. The available
+    // geometry of the screen changes whenever Android resizes the app, for
+    // instance when it enters or leaves split-screen mode.
     auto* screen = QGuiApplication::primaryScreen();
     if (screen != nullptr)
     {
         connect(screen, &QScreen::orientationChanged, this, &PlatformAdaptor::updateSafeInsets);
         connect(screen, &QScreen::orientationChanged, timer, qOverload<>(&QTimer::start));
+        connect(screen, &QScreen::availableGeometryChanged, this, &PlatformAdaptor::updateSafeInsets);
+        connect(screen, &QScreen::availableGeometryChanged, timer, qOverload<>(&QTimer::start));
     }
 
     updateSafeInsets();
@@ -80,7 +98,7 @@ void Platform::PlatformAdaptor::updateSafeInsets()
         return;
     }
 
-    auto inset = [devicePixelRatio](const char* methodName) {
+    auto nativeValue = [devicePixelRatio](const char* methodName) {
         auto value = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", methodName));
         if (!qIsFinite(value) || (value < 0.0))
         {
@@ -89,16 +107,16 @@ void Platform::PlatformAdaptor::updateSafeInsets()
         return value/devicePixelRatio;
     };
 
-    QMarginsF const newInsets(inset("safeInsetLeft"),
-                              inset("safeInsetTop"),
-                              inset("safeInsetRight"),
-                              inset("safeInsetBottom"));
+    QMarginsF const newInsets(nativeValue("safeInsetLeft"),
+                              nativeValue("safeInsetTop"),
+                              nativeValue("safeInsetRight"),
+                              nativeValue("safeInsetBottom"));
 
     // The signals connected in the constructor do not cover all changes:
-    // entering or leaving split-screen mode, or dragging the split-screen
-    // divider, resize the window and change Qt's safe-area margins without
-    // any keyboard or orientation signal. Watch the application window and
-    // re-check on those changes, too.
+    // dragging the split-screen divider, for instance, resizes the window
+    // and changes Qt's safe-area margins without any keyboard, orientation
+    // or screen signal. Watch the application window and re-check on those
+    // changes, too.
     QWindow* window = QGuiApplication::focusWindow();
     if ((window == nullptr) && !QGuiApplication::topLevelWindows().isEmpty())
     {
@@ -113,7 +131,32 @@ void Platform::PlatformAdaptor::updateSafeInsets()
         connect(window, &QWindow::safeAreaMarginsChanged, this, &PlatformAdaptor::updateSafeInsets);
         connect(window, &QWindow::widthChanged, this, &PlatformAdaptor::updateSafeInsets);
         connect(window, &QWindow::heightChanged, this, &PlatformAdaptor::updateSafeInsets);
+        connect(window, &QWindow::visibleChanged, this, &PlatformAdaptor::updateSafeInsets);
         m_watchedWindow = window;
+    }
+
+    // Work around a Qt bug on Android 10 and below. Qt sizes a window with
+    // the flag Qt::ExpandedClientAreaHint (set in main.qml) to the screen,
+    // whenever the window is shown. On these Android versions, Qt takes the
+    // screen size from Display.getRealMetrics(), which is the size of the
+    // physical display regardless of split-screen mode. Qt on Android 11 and
+    // above uses WindowManager.getCurrentWindowMetrics() instead, which is
+    // the size of the window's split-screen pane. The result on Android 10
+    // and below is a window that extends beyond its pane, so that the lower
+    // or right part of the user interface is hidden behind the other app.
+    // Correct this here: whenever the Qt window and the Android window
+    // differ in size, resize the Qt window. Outside of split-screen mode,
+    // the sizes agree, and nothing happens. Issue #686.
+    if ((window != nullptr) && window->isTopLevel() && window->isVisible()
+        && (QNativeInterface::QAndroidApplication::sdkVersion() < 30))
+    {
+        QSize const androidSize(qRound(nativeValue("windowWidth")), qRound(nativeValue("windowHeight")));
+        QSize const qtSize = window->size();
+        if (!androidSize.isEmpty()
+            && ((qAbs(androidSize.width() - qtSize.width()) > 1) || (qAbs(androidSize.height() - qtSize.height()) > 1)))
+        {
+            window->setGeometry(QRect(QPoint(0, 0), androidSize));
+        }
     }
 
     if (newInsets != m_safeInsets)
@@ -289,6 +332,40 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onLangua
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
     GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->wifiConnected(); });
+}
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onBackInvoked(JNIEnv* /*unused*/, jclass /*unused*/)
+{
+    // Called on the Android UI thread for the Back gesture or key, see
+    // MobileAdaptor.forwardBackToQt(). Deliver the key on the Qt thread and
+    // return at once. Waiting for the Qt thread here, as Qt 6.12's own handler
+    // does, deadlocks when the Qt thread is itself waiting for the UI thread to
+    // create the window surface.
+    GlobalObject::runOnMainThread([]() {
+        auto* window = QGuiApplication::focusWindow();
+        if (window == nullptr)
+        {
+            return;
+        }
+        QKeyEvent press(QEvent::KeyPress, Qt::Key_Back, Qt::NoModifier);
+        QCoreApplication::sendEvent(window, &press);
+        QKeyEvent release(QEvent::KeyRelease, Qt::Key_Back, Qt::NoModifier);
+        QCoreApplication::sendEvent(window, &release);
+        if (press.isAccepted() || release.isAccepted())
+        {
+            return;
+        }
+        // Nobody handled Back. Send the task to the background, which is what
+        // Qt 6.12 does in this case.
+        QNativeInterface::QAndroidApplication::runOnAndroidMainThread([]() {
+            auto activity = QNativeInterface::QAndroidApplication::context();
+            if (activity.isValid() && QNativeInterface::QAndroidApplication::isActivityContext())
+            {
+                activity.callMethod<jboolean>("moveTaskToBack", true);
+            }
+            return QVariant();
+        });
+    });
 }
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* env, jobject /*unused*/, jstring deviceName)

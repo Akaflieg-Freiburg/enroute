@@ -22,6 +22,8 @@ import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
+
 
 // Set currentIndex to 0 for "feet" and 1 for "meter"
 
@@ -57,7 +59,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            inputMethodHints: Qt.ImhDigitsOnly
+            inputMethodHints: Global.digitsInputHint
             validator: IntValidator {
                 bottom: -3000
                 top: 24000

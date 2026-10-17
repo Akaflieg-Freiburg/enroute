@@ -6,6 +6,7 @@ on:
     paths-ignore: &paths-ignore
       - ".gitignore"
       - "README.md"
+      - "fastlane/metadata/**"
       # ignore CI for other platforms
       - ".github/workflows/android.yml"
       - ".github/workflows/api.yml"
@@ -14,6 +15,15 @@ on:
   pull_request:
     branches: [ main, develop ]
     paths-ignore: *paths-ignore
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push supersedes the builds of an older one
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -22,21 +32,19 @@ jobs:
     
     steps:
     - name: Checkout Enroute
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         path: enroute
         submodules: recursive
         fetch-depth: 0
     - name: Checkout Enroute Dependencies
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         path: enrouteDependencies
         repository: Akaflieg-Freiburg/enrouteDependencies
         submodules: recursive
-    - name: Set up macOS
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.8'
+    - name: Read Qt version
+      run: echo "QT_VERSION=$(cat enroute/.github/qt-version)" >> "$GITHUB_ENV"
     - name: Install Ninja
       run: brew install ninja
     - name: Install Qt for Desktop
@@ -44,7 +52,7 @@ jobs:
       with:
         cache: 'true'
         cache-key-prefix: 'install-qt-action-macOS-host'
-        version: '6.11.2'
+        version: ${{ env.QT_VERSION }}
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
     - name: Set QT_HOST_PATH
       run: |
@@ -55,12 +63,12 @@ jobs:
         cache: 'true'
         cache-key-prefix: 'install-qt-action-iOS'
         target: 'ios'
-        version: '6.11.2'
+        version: ${{ env.QT_VERSION }}
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtsensors qtspeech qtwebsockets qtwebview'
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.24
       with:
-        key: macos
+        key: ios
     - name: Compile and Install bzip2
       run: |
         $QT_ROOT_DIR/bin/qt-cmake \
@@ -127,16 +135,3 @@ jobs:
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_INSTALL_PREFIX=.
         cmake --build build-enroute -- -sdk iphonesimulator
-    - name: Package
-      run: |
-        echo "Skip packaging build because of size reasons..."
-        #brew install create-dmg
-        #create-dmg enroute-iphonesimulator.dmg build-enroute/src/Debug-iphonesimulator
-    - name: Upload to developerBuilds
-      if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-      run: |
-        echo "Skip uploading developer build because of size reasons..."
-        #gh release upload --clobber developerBuilds ../enroute-iphonesimulator.dmg
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      working-directory: enroute

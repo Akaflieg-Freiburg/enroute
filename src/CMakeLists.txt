@@ -12,6 +12,7 @@
 #
 
 if(FLIGHTLOG)
+    message("Enable FLIGHTLOG")
     set(FLIGHTLOG_ANDROID_PERMISSIONS [[  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>]])
     set(FLIGHTLOG_ANDROID_SERVICE [[<service
@@ -494,6 +495,15 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         MACOSX_BUNDLE_ICON_FILE enroute.icns
         MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"
     )
+
+    # Localized Info.plist strings; Ninja copies bundle resources file by file, not as directories
+    foreach(lang cs de en es fr it pl)
+        target_sources(${PROJECT_NAME} PRIVATE macos/${lang}.lproj/InfoPlist.strings)
+        set_source_files_properties(macos/${lang}.lproj/InfoPlist.strings PROPERTIES
+            MACOSX_PACKAGE_LOCATION "Resources/${lang}.lproj"
+        )
+    endforeach()
+
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         "-framework IOKit"
@@ -531,7 +541,14 @@ if (IOS)
     # Add executable and libraries
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
     set(CMAKE_MACOSX_RPATH OFF)
-    qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
+    # The FFmpeg xcframeworks in Qt 6.12's ios_simulator_arm64 kit have no arm64 simulator
+    # slice (only arm64 device and x86_64 simulator), so the FFmpeg media plugin cannot be
+    # linked there. Leave it out; the Darwin media plugin remains.
+    if(CMAKE_OSX_SYSROOT MATCHES "iphonesimulator" AND CMAKE_OSX_ARCHITECTURES STREQUAL "arm64")
+        qt_import_plugins(${PROJECT_NAME} EXCLUDE Qt::QFFmpegMediaPlugin)
+    else()
+        qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
+    endif()
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ${ENROUTE_COMMON_LIBRARIES}
@@ -640,6 +657,8 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/RenameVACDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
+    qml/items/AirspaceDelegate.qml
+    qml/items/AirspaceTooltip.qml
     qml/items/AppWindow.qml
     qml/items/AutoSizingMenu.qml
     qml/items/DecoratedListView.qml
@@ -663,6 +682,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/NotificationButton.qml
     qml/items/PageHeader.qml
     qml/items/RemainingRouteBar.qml
+    qml/items/RouteMenu.qml
     qml/items/SafeInsets.qml
     qml/items/Sideview.qml
     qml/items/StandardHeader.qml
@@ -782,7 +802,7 @@ if ( QTDEPLOY )
         NO_UNSUPPORTED_PLATFORM_ERROR
         MACOS_BUNDLE_POST_BUILD
         DEPLOY_TOOL_OPTIONS
-        "-sign-for-notarization=Stefan Kebekus"
+        "-sign-for-notarization=DEEDB93E3C9BC425A307D401366E336E732AFA7B"
     )
 
     # Call the deployment script on "cmake --install".

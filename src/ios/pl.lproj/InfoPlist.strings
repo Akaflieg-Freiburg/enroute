@@ -5,6 +5,6 @@
   Created by Simon Schneider on 22.06.23.
 
 */
-"NSLocationAlwaysAndWhenInUseUsageDescription" = "Udostępnianie lokalizacji jest wymagane do nawigacji";
-"NSLocationWhenInUseUsageDescription" = "Udostępnianie lokalizacji jest wymagane do nawigacji";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Enroute wykorzystuje Twoją lokalizację, aby wyświetlać pozycję Twojego statku powietrznego na mapie oraz do nawigacji.";
+"NSLocationWhenInUseUsageDescription" = "Enroute wykorzystuje Twoją lokalizację, aby wyświetlać pozycję Twojego statku powietrznego na mapie oraz do nawigacji.";
 "NSMotionUsageDescription" = "Enroute potrzebuje tego uprawnienia, aby mierzyć bieżące ciśnienie";

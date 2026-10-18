@@ -21,9 +21,26 @@
 #pragma once
 
 #include "PlatformAdaptor_Abstract.h"
+#include "qcoreevent.h"
+#include "qevent.h"
+#include "qquickitem.h"
 
 namespace Platform {
 
+class ImFixer : public QObject {
+    Q_OBJECT
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override {
+        if (event->type() == QEvent::InputMethodQuery) {
+            auto* imEvt = static_cast<QInputMethodQueryEvent *>(event);
+            if (imEvt->queries() == Qt::InputMethodQuery::ImCursorRectangle) {
+                imEvt->setValue(Qt::InputMethodQuery::ImCursorRectangle, QRectF());
+                return true;
+            }
+        }
+        return QObject::eventFilter(obj, event);
+    }
+};
 
 /*! \brief Template implementation of PlatformAdaptor */
 
@@ -64,6 +81,16 @@ public:
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void disableScreenSaver() override;
+
+    /*! \brief Implements virtual method from PlatformAdaptor_Abstract,
+     *  workaround for QTBUG-80790
+     *
+     *  @param item QQuickItem where the event filter is to be intalled.
+     */
+    void setupInputMethodEventFilter(QQuickItem *item) override {
+        static thread_local ImFixer imf;
+        item->installEventFilter(&imf);
+    }
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void vibrateBrief() override;

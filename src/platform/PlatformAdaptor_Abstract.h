@@ -23,6 +23,7 @@
 #include <QGeoCoordinate>
 #include <QMarginsF>
 #include <QQmlEngine>
+#include <QQuickItem>
 
 #include "GlobalObject.h"
 #include "traffic/ConnectionInfo.h"
@@ -164,6 +165,21 @@ public:
      * @param coordinate Location whose sat view should be shown.
      */
     Q_INVOKABLE virtual void openSatView(const QGeoCoordinate& coordinate);
+
+    /*! \brief Workaround for QTBUG-80790
+     *
+     *  This method is empty except on iOS, where it installs a special event
+     *  filter for a QQuickItem. The event filter avoids problematic behavior
+     *  where the virtual keyboard pushes up the whole qml page. Details for
+     *  this problem and the present workaround are described here.
+     *
+     *  https://stackoverflow.com/questions/34716462/ios-sometimes-keyboard-pushes-up-the-whole-qml-page
+     *
+     *  https://bugreports.qt.io/browse/QTBUG-80790
+     *
+     *  @param item QQuickItem where the event filter is to be intalled.
+     */
+    Q_INVOKABLE virtual void setupInputMethodEventFilter(QQuickItem* item) { Q_UNUSED(item) }
 
     /*! \brief Returns the application version and adds git commit hash, if it's not the main branch
      *

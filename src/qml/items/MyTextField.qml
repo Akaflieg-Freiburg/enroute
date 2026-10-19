@@ -25,7 +25,16 @@ import QtQuick.Controls.Material
 import akaflieg_freiburg.enroute
 
 // This is a variant of TextField with a clear button (except on iOS).
-
+// implementation are the following.
+//
+// - Instances of this class call PlatformAdaptor.setupImEventFilter() on
+//   completion. On iOS this avoids problematic behavior where the virtual
+//   keyboard pushes up the whole qml page. Details for this problem are
+//   described here
+//
+//   https://stackoverflow.com/questions/34716462/ios-sometimes-keyboard-pushes-up-the-whole-qml-page
+//
+//   https://bugreports.qt.io/browse/QTBUG-80790
 
 TextField {
     id: textField
@@ -37,6 +46,9 @@ TextField {
     }
     rightPadding: hasClearButton ? toolButton.width : undefined
     implicitWidth: 100 // set arbitrary value to avoid binding loop
+
+    // Fix problem on iOS
+    Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)
 
     RoundButton {
         id: toolButton

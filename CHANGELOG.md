@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.5.7] - 2026-10-19
+
+### Fixed
+
+- Fixed an issue on Android where the moving map stayed blank when the device
+  had no network connection, for instance on phones without a SIM card that are
+  used only for navigation, or when the system settings deny the app the use of
+  mobile data. (#440)
+
+
+## [3.5.6] - 2026-10-18
+
+### Fixed
+
+- Fixed an issue on iOS where the virtual keyboard pushed the whole page up
+  when a text field was edited.
+
+
 ## [3.5.5] - 2026-10-17
 
 ### Added

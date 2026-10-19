@@ -137,8 +137,12 @@ Item {
         }
         return mapCenter
     }
+    // Preferred height of the sideview below the moving map. The SplitView
+    // clamps it, so any value is safe.
+    property real sideViewHeight: 0
     Settings {
         category: "MovingMap"
+        property alias sideViewHeight: global.sideViewHeight
         property alias mapBearingPolicy: global.mapBearingPolicy
         property alias mapBearingRevertPolicy: global.mapBearingRevertPolicy
         property alias mapFollowGPSPolicy: global.followGPS

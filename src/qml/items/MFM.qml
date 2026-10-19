@@ -55,9 +55,9 @@ Item {
 
         function onRequestShowSideView(show) {
             if (show)
-                cl.SplitView.preferredHeight = root.height/3
+                Global.sideViewHeight = root.height/3
             else
-                cl.SplitView.preferredHeight = 0
+                Global.sideViewHeight = 0
         }
         function onRequestZoomLevel(lvl) {
             flightMap.zoomLevel = lvl
@@ -850,7 +850,7 @@ Item {
                             id: showSideView
 
                             icon.source: "/icons/material/ic_keyboard_arrow_up.svg"
-                            visible: cl.SplitView.preferredHeight < root.sideViewMinUsableHeight
+                            visible: Global.sideViewHeight < root.sideViewMinUsableHeight
                             autoRepeat: true
 
                             onClicked: {
@@ -860,8 +860,8 @@ Item {
 
                             NumberAnimation {
                                 id: openSideViewAnimation
-                                target: cl
-                                property: "SplitView.preferredHeight"
+                                target: Global
+                                property: "sideViewHeight"
                                 to: 200
                                 duration: 200
                             }
@@ -876,19 +876,24 @@ Item {
 
                 SplitView.minimumHeight: navBar.implicitHeight
 
+                // Kept in Global, because MapPage reloads this item when settings change.
+                // The SplitView handle sets preferredHeight directly, hence the write-back.
+                SplitView.preferredHeight: Global.sideViewHeight
+                SplitView.onPreferredHeightChanged: Global.sideViewHeight = SplitView.preferredHeight
+
                 DragHandler {
                     target: null
 
                     // Work around https://bugreports.qt.io/browse/QTBUG-87815
                     enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as T.Popup).opened)
 
-                    onActiveTranslationChanged: (delta) => cl.SplitView.preferredHeight -= delta.y
+                    onActiveTranslationChanged: (delta) => Global.sideViewHeight -= delta.y
 
                     // Auto-close the sideview when the user drags it below the
                     // usable threshold and releases, so it cannot be left in a
                     // tiny, unusable state that still consumes CPU cycles.
                     onActiveChanged: {
-                        if (!active && cl.SplitView.preferredHeight < root.sideViewMinUsableHeight) {
+                        if (!active && Global.sideViewHeight < root.sideViewMinUsableHeight) {
                             closeSideViewAnimation.running = true
                         }
                     }
@@ -916,7 +921,7 @@ Item {
                         icon.width: northButton.icon.width
 
                         icon.source: "/icons/material/ic_keyboard_arrow_down.svg"
-                        visible: cl.SplitView.preferredHeight >= root.sideViewMinUsableHeight
+                        visible: Global.sideViewHeight >= root.sideViewMinUsableHeight
 
                         onClicked: {
                             PlatformAdaptor.vibrateBrief()
@@ -925,8 +930,8 @@ Item {
 
                         NumberAnimation {
                             id: closeSideViewAnimation
-                            target: cl
-                            property: "SplitView.preferredHeight"
+                            target: Global
+                            property: "sideViewHeight"
                             to: cl.SplitView.minimumHeight
                             duration: 200
                         }

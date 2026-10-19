@@ -19,12 +19,13 @@
  ***************************************************************************/
 
 #include <QBuffer>
+#include <QDebug>
 #include <QGuiApplication>
 #include <QHttpHeaders>
 #include <QHttpServerRequest>
 #include <QHttpServerResponder>
 #include <QImage>
-#include <QTcpServer>
+#include <QLocalServer>
 
 #include "TileServer.h"
 #include "geomaps/GeoMapProvider.h"
@@ -73,12 +74,28 @@ static QByteArray nightVersionOf(const QString& fileName)
 GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
-    // Listen on the loopback interface only. The server hands out map tiles,
-    // aviation data and Qt resources to the map renderer in this process and
-    // must not be reachable from the local network.
-    auto* localServer = new QTcpServer();
-    localServer->listen(QHostAddress::LocalHost);
-    bind(localServer);
+    // Serve over a local socket (Unix domain socket, named pipe on Windows)
+    // rather than over TCP on the loopback interface. The server hands out map
+    // tiles, aviation data and Qt resources to the map renderer in this
+    // process only. Android's per-app firewall (restricted networking mode,
+    // battery saver, the vendor "mobile data"/"Wi-Fi" toggles) drops loopback
+    // TCP traffic together with everything else once it decides that the app
+    // may not use the network, which left the map blank on phones without a
+    // network connection (issue #440). Local sockets are not subject to that
+    // firewall. QNetworkAccessManager, and thus MapLibre, reaches the server
+    // through URLs of the form unix+http://<socket name>/path.
+    auto* localServer = new QLocalServer();
+    QLocalServer::removeServer(m_socketName);
+    localServer->setSocketOptions(QLocalServer::UserAccessOption);
+    if (localServer->listen(m_socketName))
+    {
+        bind(localServer);
+    }
+    else
+    {
+        qWarning() << "TileServer: cannot listen on local socket" << m_socketName << localServer->errorString();
+        delete localServer;
+    }
 
 #if defined(Q_OS_IOS)
     connect(qGuiApp,
@@ -111,12 +128,14 @@ void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVect
 
 QString GeoMaps::TileServer::serverUrl()
 {
-    auto ports = serverPorts();
-    if (ports.isEmpty())
+    for (auto* localServer : localServers())
     {
-        return {};
+        if ((localServer != nullptr) && localServer->isListening())
+        {
+            return u"unix+http://"_s + localServer->serverName();
+        }
     }
-    return QStringLiteral("http://127.0.0.1:%1").arg(QString::number(ports[0]));
+    return {};
 }
 
 
@@ -223,37 +242,20 @@ void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QHtt
 
 void GeoMaps::TileServer::restart()
 {
-    bool serverPortChanged = false;
-    foreach (auto _server, servers())
+    // The socket name, and with it the server URL, never changes. Re-opening
+    // the listening socket under the same name is all that is needed.
+    for (auto* localServer : localServers())
     {
-        if (_server == nullptr)
+        if (localServer == nullptr)
         {
             continue;
         }
-        auto port = _server->serverPort();
-        _server->close();
-        auto success = _server->listen(QHostAddress(QStringLiteral("127.0.0.1")), port);
-        if (!success)
+        localServer->close();
+        QLocalServer::removeServer(m_socketName);
+        if (!localServer->listen(m_socketName))
         {
-            _server->listen(QHostAddress(QStringLiteral("127.0.0.1")));
-            serverPortChanged = true;
+            qWarning() << "TileServer: cannot re-open local socket" << m_socketName << localServer->errorString();
         }
-    }
-
-    if (serverPortChanged)
-    {
-        // The TileJSON documents served by the tile handlers contain the
-        // server URL. Bring them up to date.
-        auto URL = serverUrl();
-        for (auto iter = m_tileHandlers.cbegin(); iter != m_tileHandlers.cend(); ++iter)
-        {
-            if (iter.value().isNull())
-            {
-                continue;
-            }
-            iter.value()->setBaseURL(URL + "/" + iter.key());
-        }
-        emit serverUrlChanged();
     }
 }
 

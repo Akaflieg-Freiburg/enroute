@@ -128,6 +128,8 @@ void&#160;</td><td class="memItemRight"><b>onGUISetupCompleted</b> () override</
 <tr class="memitem:aa576dfcc599121d187d40999654a67a3" id="r_aa576dfcc599121d187d40999654a67a3"><td class="memItemLeft"><a id="aa576dfcc599121d187d40999654a67a3" name="aa576dfcc599121d187d40999654a67a3"></a>
 void&#160;</td><td class="memItemRight"><b>disableScreenSaver</b> () override</td></tr>
 <tr class="memdesc:aa576dfcc599121d187d40999654a67a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>. <br /></td></tr>
+<tr class="memitem:a052242cc2a7e044f0666f33423f43054" id="r_a052242cc2a7e044f0666f33423f43054"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a052242cc2a7e044f0666f33423f43054">setupInputMethodEventFilter</a> (QQuickItem *item) override</td></tr>
+<tr class="memdesc:a052242cc2a7e044f0666f33423f43054"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>, workaround for QTBUG-80790.  <br /></td></tr>
 <tr class="memitem:aee82844ae442df23bdd2ab407c1887f6" id="r_aee82844ae442df23bdd2ab407c1887f6"><td class="memItemLeft"><a id="aee82844ae442df23bdd2ab407c1887f6" name="aee82844ae442df23bdd2ab407c1887f6"></a>
 void&#160;</td><td class="memItemRight"><b>vibrateBrief</b> () override</td></tr>
 <tr class="memdesc:aee82844ae442df23bdd2ab407c1887f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>. <br /></td></tr>
@@ -968,6 +970,43 @@ void&#160;</td><td class="memItemRight"><b>safeInsetsChanged</b> ()</td></tr>
 </dl>
 
 <p>Reimplemented from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a197af4e02e83c91232ffb7ea0e41d155">Platform::PlatformAdaptor_Abstract</a>.</p>
+
+</div>
+</div>
+<a id="a052242cc2a7e044f0666f33423f43054" name="a052242cc2a7e044f0666f33423f43054"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a052242cc2a7e044f0666f33423f43054">&#9670;&#160;</a></span>setupInputMethodEventFilter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Platform::PlatformAdaptor::setupInputMethodEventFilter </td>
+          <td>(</td>
+          <td class="paramtype">QQuickItem *</td>          <td class="paramname"><span class="paramname"><em>item</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>, workaround for QTBUG-80790. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>QQuickItem where the event filter is to be intalled. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a81fcd1a14c37093d15157b15daa50a96">Platform::PlatformAdaptor_Abstract</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="PlatformAdaptor__iOS_8h_source.html#l00090">90</a> of file <a class="el" href="PlatformAdaptor__iOS_8h_source.html">PlatformAdaptor_iOS.h</a>.</p>
 
 </div>
 </div>

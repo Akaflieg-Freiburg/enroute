@@ -33,7 +33,7 @@ namespace GeoMaps {
 /*! \brief HTTP server for mapbox' MBTiles files
  *
  *  This class features a simple HTTP server that serves the following files
- *  to unix+http://<socket name>/path. The server listens on a local socket
+ *  to unix+http://\<socket name\>/path. The server listens on a local socket
  *  rather than on a TCP port, see the constructor for the reason; the client
  *  side is QNetworkAccessManager, which handles the unix+http scheme.
  *

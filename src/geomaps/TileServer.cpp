@@ -26,6 +26,7 @@
 #include <QHttpServerResponder>
 #include <QImage>
 #include <QLocalServer>
+#include <QTcpServer>
 
 #include "TileServer.h"
 #include "geomaps/GeoMapProvider.h"
@@ -84,6 +85,15 @@ GeoMaps::TileServer::TileServer(QObject* parent)
     // network connection (issue #440). Local sockets are not subject to that
     // firewall. QNetworkAccessManager, and thus MapLibre, reaches the server
     // through URLs of the form unix+http://<socket name>/path.
+    //
+    // iOS keeps loopback TCP: the socket path in the app container's temporary
+    // directory exceeds the 103 characters that sun_path allows on Apple
+    // platforms, and iOS has no firewall that blocks loopback traffic.
+#if defined(Q_OS_IOS)
+    auto* tcpServer = new QTcpServer();
+    tcpServer->listen(QHostAddress::LocalHost);
+    bind(tcpServer);
+#else
     auto* localServer = new QLocalServer();
     QLocalServer::removeServer(m_socketName);
     localServer->setSocketOptions(QLocalServer::UserAccessOption);
@@ -96,6 +106,7 @@ GeoMaps::TileServer::TileServer(QObject* parent)
         qWarning() << "TileServer: cannot listen on local socket" << m_socketName << localServer->errorString();
         delete localServer;
     }
+#endif
 
 #if defined(Q_OS_IOS)
     connect(qGuiApp,
@@ -134,6 +145,11 @@ QString GeoMaps::TileServer::serverUrl()
         {
             return u"unix+http://"_s + localServer->serverName();
         }
+    }
+    auto ports = serverPorts();
+    if (!ports.isEmpty())
+    {
+        return QStringLiteral("http://127.0.0.1:%1").arg(QString::number(ports[0]));
     }
     return {};
 }
@@ -242,20 +258,38 @@ void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QHtt
 
 void GeoMaps::TileServer::restart()
 {
-    // The socket name, and with it the server URL, never changes. Re-opening
-    // the listening socket under the same name is all that is needed.
-    for (auto* localServer : localServers())
+    // iOS silently closes the TCP connections of sleeping apps. Try to
+    // re-open the same port; if it is gone, take a new one.
+    bool serverPortChanged = false;
+    for (auto* tcpServer : servers())
     {
-        if (localServer == nullptr)
+        if (tcpServer == nullptr)
         {
             continue;
         }
-        localServer->close();
-        QLocalServer::removeServer(m_socketName);
-        if (!localServer->listen(m_socketName))
+        auto port = tcpServer->serverPort();
+        tcpServer->close();
+        if (!tcpServer->listen(QHostAddress::LocalHost, port))
         {
-            qWarning() << "TileServer: cannot re-open local socket" << m_socketName << localServer->errorString();
+            tcpServer->listen(QHostAddress::LocalHost);
+            serverPortChanged = true;
         }
+    }
+
+    if (serverPortChanged)
+    {
+        // The TileJSON documents served by the tile handlers contain the
+        // server URL. Bring them up to date.
+        auto URL = serverUrl();
+        for (auto iter = m_tileHandlers.cbegin(); iter != m_tileHandlers.cend(); ++iter)
+        {
+            if (iter.value().isNull())
+            {
+                continue;
+            }
+            iter.value()->setBaseURL(URL + "/" + iter.key());
+        }
+        emit serverUrlChanged();
     }
 }
 

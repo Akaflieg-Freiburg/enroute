@@ -35,7 +35,8 @@ namespace GeoMaps {
  *  This class features a simple HTTP server that serves the following files
  *  to unix+http://<socket name>/path. The server listens on a local socket
  *  rather than on a TCP port, see the constructor for the reason; the client
- *  side is QNetworkAccessManager, which handles the unix+http scheme.
+ *  side is QNetworkAccessManager, which handles the unix+http scheme. On iOS,
+ *  the server listens on http://127.0.0.1:port instead.
  *
  *  - If path is a file name, the server checks if the file is available in the
  *    resource system of the app and serves that file.
@@ -72,8 +73,9 @@ class TileServer : public QAbstractHttpServer
 public:
     /*! \brief Create a new tile server
      *
-     *  The tile server listens on a local socket. The method serverUrl()
-     *  returns the precise Url where the server will be available.
+     *  The tile server listens on a local socket, or on a free port of
+     *  127.0.0.1 on iOS. The method serverUrl() returns the precise Url where
+     *  the server will be available.
      *
      *  @param parent The standard QObject parent
      */
@@ -92,8 +94,9 @@ public:
      *
      *  The property holds the Url where the server is listening to incoming
      *  connections. This is a string of the form
-     *  "unix+http://enroute-tiles-12345". If the server is not listening to
-     *  incoming connections, the string is empty.
+     *  "unix+http://enroute-tiles-12345", or "http://127.0.0.1:3470" on iOS.
+     *  If the server is not listening to incoming connections, the string is
+     *  empty.
      */
     Q_PROPERTY(QString serverUrl READ serverUrl NOTIFY serverUrlChanged)
 
@@ -161,16 +164,18 @@ private:
 
     /*! \brief Restarts the server
      *
-     *  This method restarts the server by closing the listening socket and
-     *  re-opening it under the same name.
+     *  This method restarts the TCP server used on iOS, by closing all TCP
+     *  connections and then trying to re-open connections at the same ports.
+     *  If the ports are no longer available, new ports are chosen and the
+     *  property serverUrl changes.
      *
-     *  This method is called on iOS once the application returns from sleep,
-     *  as a precaution: iOS silently closes TCP connections of sleeping apps,
-     *  and the server used to listen on TCP.
+     *  This method is called on iOS once the application returns from sleep.
+     *  That is necessary because iOS silently closes all TCP connection when
+     *  the app is in sleeping mode.
      */
     void restart();
 
-    // Name of the local socket. QLocalServer places simple names in the
+    // Name of the local socket (not used on iOS). QLocalServer places simple names in the
     // temporary directory; the PID keeps parallel instances apart. Lowercase
     // letters, digits and hyphens only, because the name doubles as the host
     // part of the server URL.

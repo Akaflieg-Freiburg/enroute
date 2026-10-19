@@ -21,3 +21,4 @@ NOTAMs
 NOTAM
 ownship
 AY
+METARs

@@ -25,7 +25,11 @@
 #include <QHttpServerRequest>
 #include <QHttpServerResponder>
 #include <QImage>
+#if defined(Q_OS_ANDROID)
 #include <QLocalServer>
+#else
+#include <QTcpServer>
+#endif
 
 #include "TileServer.h"
 #include "geomaps/GeoMapProvider.h"
@@ -74,16 +78,18 @@ static QByteArray nightVersionOf(const QString& fileName)
 GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
-    // Serve over a local socket (Unix domain socket, named pipe on Windows)
-    // rather than over TCP on the loopback interface. The server hands out map
-    // tiles, aviation data and Qt resources to the map renderer in this
-    // process only. Android's per-app firewall (restricted networking mode,
-    // battery saver, the vendor "mobile data"/"Wi-Fi" toggles) drops loopback
-    // TCP traffic together with everything else once it decides that the app
-    // may not use the network, which left the map blank on phones without a
-    // network connection (issue #440). Local sockets are not subject to that
-    // firewall. QNetworkAccessManager, and thus MapLibre, reaches the server
-    // through URLs of the form unix+http://<socket name>/path.
+    // The server hands out map tiles, aviation data and Qt resources to the map
+    // renderer in this process only and must not be reachable from the local
+    // network.
+#if defined(Q_OS_ANDROID)
+    // Serve over a local socket (Unix domain socket) rather than over TCP on
+    // the loopback interface. Android's per-app firewall (restricted networking
+    // mode, battery saver, the vendor "mobile data"/"Wi-Fi" toggles) drops
+    // loopback TCP traffic together with everything else once it decides that
+    // the app may not use the network, which left the map blank on phones
+    // without a network connection (issue #440). Local sockets are not subject
+    // to that firewall. QNetworkAccessManager, and thus MapLibre, reaches the
+    // server through URLs of the form unix+http://<socket name>/path.
     auto* localServer = new QLocalServer();
     QLocalServer::removeServer(m_socketName);
     localServer->setSocketOptions(QLocalServer::UserAccessOption);
@@ -96,6 +102,17 @@ GeoMaps::TileServer::TileServer(QObject* parent)
         qWarning() << "TileServer: cannot listen on local socket" << m_socketName << localServer->errorString();
         delete localServer;
     }
+#else
+    // Listen on the loopback interface. A local socket is not an option here:
+    // QLocalServer places the socket file in the temporary directory, and
+    // inside an iOS app container that path exceeds the 104-byte limit for
+    // Unix socket paths, so listen() fails and the map stays blank. None of
+    // the other platforms has a per-app firewall that drops loopback traffic,
+    // so they keep the TCP server as well.
+    auto* tcpServer = new QTcpServer();
+    tcpServer->listen(QHostAddress::LocalHost);
+    bind(tcpServer);
+#endif
 
 #if defined(Q_OS_IOS)
     connect(qGuiApp,
@@ -128,6 +145,7 @@ void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVect
 
 QString GeoMaps::TileServer::serverUrl()
 {
+#if defined(Q_OS_ANDROID)
     for (auto* localServer : localServers())
     {
         if ((localServer != nullptr) && localServer->isListening())
@@ -136,6 +154,14 @@ QString GeoMaps::TileServer::serverUrl()
         }
     }
     return {};
+#else
+    auto ports = serverPorts();
+    if (ports.isEmpty())
+    {
+        return {};
+    }
+    return QStringLiteral("http://127.0.0.1:%1").arg(QString::number(ports[0]));
+#endif
 }
 
 
@@ -240,22 +266,41 @@ void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QHtt
 }
 
 
+#if defined(Q_OS_IOS)
 void GeoMaps::TileServer::restart()
 {
-    // The socket name, and with it the server URL, never changes. Re-opening
-    // the listening socket under the same name is all that is needed.
-    for (auto* localServer : localServers())
+    bool serverPortChanged = false;
+    foreach (auto _server, servers())
     {
-        if (localServer == nullptr)
+        if (_server == nullptr)
         {
             continue;
         }
-        localServer->close();
-        QLocalServer::removeServer(m_socketName);
-        if (!localServer->listen(m_socketName))
+        auto port = _server->serverPort();
+        _server->close();
+        auto success = _server->listen(QHostAddress(QStringLiteral("127.0.0.1")), port);
+        if (!success)
         {
-            qWarning() << "TileServer: cannot re-open local socket" << m_socketName << localServer->errorString();
+            _server->listen(QHostAddress(QStringLiteral("127.0.0.1")));
+            serverPortChanged = true;
         }
     }
+
+    if (serverPortChanged)
+    {
+        // The TileJSON documents served by the tile handlers contain the
+        // server URL. Bring them up to date.
+        auto URL = serverUrl();
+        for (auto iter = m_tileHandlers.cbegin(); iter != m_tileHandlers.cend(); ++iter)
+        {
+            if (iter.value().isNull())
+            {
+                continue;
+            }
+            iter.value()->setBaseURL(URL + "/" + iter.key());
+        }
+        emit serverUrlChanged();
+    }
 }
+#endif
 

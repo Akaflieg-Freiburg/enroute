@@ -413,26 +413,60 @@ bool Librarian::contains(const QObject* obj)
         return false;
     }
 
+    // Coordinates of the route. Empty if the route is empty or contains an
+    // invalid waypoint; such a route is never reported as being in the library.
+    const auto routePath = route->geoPath();
+    if (routePath.isEmpty())
+    {
+        return false;
+    }
 
     const QDir dir(directory(Library::Routes));
-
-    // Check if directory exists
     if (!dir.exists())
     {
         return false;
     }
 
-    // Get all files in the directory (no subdirectories)
+    // Compare against the waypoints as stored in the files, without matching
+    // them against the aviation data. That matching (FlightRoute::load) costs
+    // one scan over all map waypoints per waypoint and file, which froze the
+    // UI for tens of seconds with larger route libraries. The tolerance only
+    // absorbs rounding; it is kept tight because a false positive lets the
+    // "Clear" action erase the route without confirmation.
+    constexpr double toleranceM = 10.0;
     const QFileInfoList fileList = dir.entryInfoList(QDir::Files);
-    Navigation::FlightRoute test;
     for (const QFileInfo& fileInfo : fileList)
     {
-        auto res = test.load(fileInfo.absoluteFilePath());
-        if (!res.isEmpty())
+        QVector<GeoMaps::Waypoint> fileWaypoints;
+        if (!Navigation::FlightRoute::readWaypoints(fileInfo.absoluteFilePath(), fileWaypoints).isEmpty())
         {
             continue;
         }
-        if (test == *route)
+
+        QList<QGeoCoordinate> filePath;
+        filePath.reserve(fileWaypoints.size());
+        for (const auto& waypoint : fileWaypoints)
+        {
+            if (waypoint.isValid())
+            {
+                filePath.append(waypoint.coordinate());
+            }
+        }
+        if (filePath.size() != routePath.size())
+        {
+            continue;
+        }
+
+        bool equal = true;
+        for (qsizetype i = 0; i < routePath.size(); ++i)
+        {
+            if (routePath[i].distanceTo(filePath[i]) > toleranceM)
+            {
+                equal = false;
+                break;
+            }
+        }
+        if (equal)
         {
             return true;
         }

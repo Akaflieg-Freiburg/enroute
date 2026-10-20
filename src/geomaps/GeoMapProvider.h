@@ -29,6 +29,8 @@
 #include <QStandardPaths>
 #include <QTemporaryFile>
 #include <QTimer>
+#include <optional>
+#include <utility>
 
 #include "Airspace.h"
 #include "GlobalObject.h"
@@ -299,6 +301,16 @@ public:
      */
     [[nodiscard]] QList<Waypoint> waypoints();
 
+    /*! \brief Search keys of the waypoints
+     *
+     *  @returns A list parallel to waypoints(): for every waypoint the string
+     *  Librarian::simplify(name) + " " + Librarian::simplify(ICAO code),
+     *  precomputed on the worker thread. Item models use these keys with
+     *  Ui::NameFilterProxyModel::filterRoleIsSimplified, so that filtering
+     *  does not simplify tens of thousands of names on every keystroke.
+     */
+    [[nodiscard]] QStringList waypointSearchKeys() const { return m_waypointIndex.searchKeys; }
+
 
 
     //
@@ -444,16 +456,38 @@ private:
     // Interal function that does most of the work for aviationMapsChanged()
     // emits geoJSONChanged() when done. This function is meant to be run in a
     // separate thread.
+    // Lookup structures over _waypoints_, built together with the waypoint
+    // list on the worker thread and replaced together with it. Rows are
+    // indices into _waypoints_.
+    struct WaypointIndex {
+        // First row (in name order) for every non-empty ICAO code
+        QHash<QString, int> rowByICAOCode;
+        // Per row: simplify(name) + ' ' + simplify(ICAO code)
+        QStringList searchKeys;
+        // (cell, row) pairs sorted by cell; see cellOf()
+        QList<std::pair<qint32, int>> cells;
+    };
     struct aviationDataCacheResult {
         QList<Waypoint> waypoints;
+        WaypointIndex index;
         QList<Airspace> airspaces;
         QByteArray combinedGeoJSON;
     };
     aviationDataCacheResult fillAviationDataCache(QStringList JSONFileNames, bool hideGlidingSectors);
 
-    // Caches used to speed up the method simplifySpecialChars
-    QRegularExpression specialChars{QStringLiteral("[^a-zA-Z0-9]")};
-    QHash<QString, QString> simplifySpecialChars_cache;
+    // Builds the index for a waypoint list. Static and side-effect free, so
+    // that it can run on the worker thread.
+    static WaypointIndex buildWaypointIndex(const QList<Waypoint>& waypoints);
+
+    // Spatial grid cell of a coordinate: 0.1° x 0.1° cells, numbered
+    // latCell*3600 + lonCell with latCell in 0..1799 and lonCell in 0..3599.
+    static qint32 cellOf(const QGeoCoordinate& coordinate);
+
+    // Rows of all map waypoints that may lie within radiusM of position. The
+    // result is a superset of the waypoints within that distance. Returns
+    // nullopt if the position is invalid or the area is so large that the
+    // caller should scan all rows instead.
+    [[nodiscard]] std::optional<QList<int>> rowsNear(const QGeoCoordinate& position, double radiusM) const;
 
     // This is the path under which map tiles are available on the m_tileServer.
     // This is set to a random number that changes every time the set of MBTile
@@ -489,6 +523,7 @@ private:
 
     Q_OBJECT_BINDABLE_PROPERTY(GeoMaps::GeoMapProvider, QByteArray, m_combinedGeoJSON, &GeoMaps::GeoMapProvider::geoJSONChanged)
     QList<Waypoint> _waypoints_; // Cache: Waypoints
+    WaypointIndex m_waypointIndex; // Lookup structures over _waypoints_
     QProperty<QList<Airspace>> m_airspaces; // Cache: Airspaces
 
     // Aviation maps whose file size exceeds maxAviationMapFileSize are ignored

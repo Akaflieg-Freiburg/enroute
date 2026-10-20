@@ -119,7 +119,7 @@ public:
      *
      * @returns Property waypoint
      */
-    [[nodiscard]] QBindable<QString> bindableWaypoint() {return &m_waypoint;}
+    [[nodiscard]] QBindable<GeoMaps::Waypoint> bindableWaypoint() {return &m_waypoint;}
 
 
     //

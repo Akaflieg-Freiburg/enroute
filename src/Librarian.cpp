@@ -608,12 +608,47 @@ auto Librarian::matches(const QString& text, const QString& filter) -> bool
 {
     // Split before simplifying: simplifySpecialChars() removes whitespace, so
     // "EDDF EDDM" would otherwise collapse into one word that never matches.
-    auto const words = filter.split(u' ', Qt::SkipEmptyParts);
-    auto const simplifiedText = simplifySpecialChars(text);
+    return matchesWords(simplifySpecialChars(text), filterWords(filter));
+}
 
-    return std::ranges::all_of(words, [this, &simplifiedText](const QString& word) {
-        return simplifiedText.contains(simplifySpecialChars(word), Qt::CaseInsensitive);
+
+auto Librarian::matchesWords(const QString& simplifiedText, const QStringList& words) -> bool
+{
+    return std::ranges::all_of(words, [&simplifiedText](const QString& word) {
+        return simplifiedText.contains(word, Qt::CaseInsensitive);
     });
+}
+
+
+auto Librarian::filterWords(const QString& filter) -> QStringList
+{
+    QStringList words;
+    for (auto const& word : filter.split(u' ', Qt::SkipEmptyParts))
+    {
+        auto simplified = simplify(word);
+        if (!simplified.isEmpty())
+        {
+            words.append(std::move(simplified));
+        }
+    }
+    return words;
+}
+
+
+auto Librarian::simplify(const QString& string) -> QString
+{
+    auto const normalized = string.normalized(QString::NormalizationForm_KD);
+    QString simplified;
+    simplified.reserve(normalized.size());
+    for (auto const ch : normalized)
+    {
+        auto const c = ch.unicode();
+        if (((c >= u'a') && (c <= u'z')) || ((c >= u'A') && (c <= u'Z')) || ((c >= u'0') && (c <= u'9')))
+        {
+            simplified.append(ch);
+        }
+    }
+    return simplified;
 }
 
 
@@ -625,8 +660,7 @@ auto Librarian::simplifySpecialChars(const QString &string) -> QString
         return *it;
     }
 
-    QString simplified = string.normalized(QString::NormalizationForm_KD);
-    simplified.remove(specialChars);
+    auto simplified = simplify(string);
 
     // Bound the cache: every prefix that a user ever types into a filter field
     // becomes a key here.

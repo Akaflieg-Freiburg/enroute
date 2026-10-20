@@ -43,6 +43,7 @@ void Ui::NameFilterProxyModel::setFilter(const QString& newFilter)
 
     beginFilterChange();
     m_filter = newFilter;
+    m_filterWords = Librarian::filterWords(m_filter);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
     endFilterChange(QSortFilterProxyModel::Direction::Rows);
 #else
@@ -71,6 +72,24 @@ void Ui::NameFilterProxyModel::setFilterRoleName(const QString& newFilterRoleNam
 }
 
 
+void Ui::NameFilterProxyModel::setFilterRoleIsSimplified(bool newValue)
+{
+    if (m_filterRoleIsSimplified == newValue)
+    {
+        return;
+    }
+
+    beginFilterChange();
+    m_filterRoleIsSimplified = newValue;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+    endFilterChange(QSortFilterProxyModel::Direction::Rows);
+#else
+    invalidateRowsFilter();
+#endif
+    emit filterRoleIsSimplifiedChanged();
+}
+
+
 //
 // Methods
 //
@@ -84,7 +103,7 @@ void Ui::NameFilterProxyModel::setSourceModel(QAbstractItemModel* newSourceModel
 
 bool Ui::NameFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
-    if (m_filter.isEmpty() || (m_filterRole < 0))
+    if (m_filterWords.isEmpty() || (m_filterRole < 0))
     {
         return true;
     }
@@ -95,8 +114,12 @@ bool Ui::NameFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex
         return true;
     }
 
-    auto const text = source->index(sourceRow, 0, sourceParent).data(m_filterRole).toString();
-    return GlobalObject::librarian()->matches(text, m_filter);
+    auto text = source->index(sourceRow, 0, sourceParent).data(m_filterRole).toString();
+    if (!m_filterRoleIsSimplified)
+    {
+        text = GlobalObject::librarian()->simplifySpecialChars(text);
+    }
+    return Librarian::matchesWords(text, m_filterWords);
 }
 
 

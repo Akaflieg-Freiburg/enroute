@@ -92,6 +92,9 @@ void&#160;</td><td class="memItemRight"><b>filterChanged</b> ()</td></tr>
 <tr class="memitem:ab23a92407b83ab5f87450453a8ab3811" id="r_ab23a92407b83ab5f87450453a8ab3811"><td class="memItemLeft"><a id="ab23a92407b83ab5f87450453a8ab3811" name="ab23a92407b83ab5f87450453a8ab3811"></a>
 void&#160;</td><td class="memItemRight"><b>filterRoleNameChanged</b> ()</td></tr>
 <tr class="memdesc:ab23a92407b83ab5f87450453a8ab3811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notification signal for property with the same name. <br /></td></tr>
+<tr class="memitem:ad81ff9b27610ae62fb6b457407958a94" id="r_ad81ff9b27610ae62fb6b457407958a94"><td class="memItemLeft"><a id="ad81ff9b27610ae62fb6b457407958a94" name="ad81ff9b27610ae62fb6b457407958a94"></a>
+void&#160;</td><td class="memItemRight"><b>filterRoleIsSimplifiedChanged</b> ()</td></tr>
+<tr class="memdesc:ad81ff9b27610ae62fb6b457407958a94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -101,10 +104,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a52eb77705610598236b5f67149f83246"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a049bbb1a24e2a8ec90fdde2cd75b4921" id="r_a049bbb1a24e2a8ec90fdde2cd75b4921"><td class="memItemLeft">QString&#160;</td><td class="memItemRight"><a class="el" href="#a049bbb1a24e2a8ec90fdde2cd75b4921">filterRoleName</a> () const</td></tr>
 <tr class="memdesc:a049bbb1a24e2a8ec90fdde2cd75b4921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:ac7a42543b7f6f225676b645bebe32a17" id="r_ac7a42543b7f6f225676b645bebe32a17"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ac7a42543b7f6f225676b645bebe32a17">filterRoleIsSimplified</a> () const</td></tr>
+<tr class="memdesc:ac7a42543b7f6f225676b645bebe32a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a0b298b5445086a8545dc9998063a0eae" id="r_a0b298b5445086a8545dc9998063a0eae"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0b298b5445086a8545dc9998063a0eae">setFilter</a> (const QString &amp;newFilter)</td></tr>
 <tr class="memdesc:a0b298b5445086a8545dc9998063a0eae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a7c14d74c74c1a11a920bb5705534f94e" id="r_a7c14d74c74c1a11a920bb5705534f94e"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7c14d74c74c1a11a920bb5705534f94e">setFilterRoleName</a> (const QString &amp;newFilterRoleName)</td></tr>
 <tr class="memdesc:a7c14d74c74c1a11a920bb5705534f94e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <br /></td></tr>
+<tr class="memitem:af429160b6c8d33aa205732fcb353e4df" id="r_af429160b6c8d33aa205732fcb353e4df"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af429160b6c8d33aa205732fcb353e4df">setFilterRoleIsSimplified</a> (bool newValue)</td></tr>
+<tr class="memdesc:af429160b6c8d33aa205732fcb353e4df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <br /></td></tr>
 <tr class="memitem:a933fc3c22952f56c3550856203e6ca61" id="r_a933fc3c22952f56c3550856203e6ca61"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a933fc3c22952f56c3550856203e6ca61">setSourceModel</a> (QAbstractItemModel *newSourceModel) override</td></tr>
 <tr class="memdesc:a933fc3c22952f56c3550856203e6ca61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implemented from QAbstractProxyModel.  <br /></td></tr>
 </table><table class="memberdecls">
@@ -121,6 +128,8 @@ Properties</h2></td></tr>
 <tr class="memdesc:a2a5f8dcd9a99f48f0d4d622047630ad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter string.  <br /></td></tr>
 <tr class="memitem:a57d67c161a10105154fd862e5c43d4e7" id="r_a57d67c161a10105154fd862e5c43d4e7"><td class="memItemLeft">QString&#160;</td><td class="memItemRight"><a class="el" href="#a57d67c161a10105154fd862e5c43d4e7">filterRoleName</a></td></tr>
 <tr class="memdesc:a57d67c161a10105154fd862e5c43d4e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the source model role that the filter is matched against.  <br /></td></tr>
+<tr class="memitem:ac080a51011afe2262242e098d3923271" id="r_ac080a51011afe2262242e098d3923271"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ac080a51011afe2262242e098d3923271">filterRoleIsSimplified</a></td></tr>
+<tr class="memdesc:ac080a51011afe2262242e098d3923271"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the filter role holds text already simplified with <a class="el" href="classLibrarian.html#a3b1f738f386a787f4d620c56be1732ab" title="Simplifies a string without caching.">Librarian::simplify()</a>.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Filters a list model by a fuzzy name match. </p>
@@ -196,7 +205,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property filter </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="NameFilterProxyModel_8h_source.html#l00103">103</a> of file <a class="el" href="NameFilterProxyModel_8h_source.html">NameFilterProxyModel.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NameFilterProxyModel_8h_source.html#l00111">111</a> of file <a class="el" href="NameFilterProxyModel_8h_source.html">NameFilterProxyModel.h</a>.</p>
 
 </div>
 </div>
@@ -239,6 +248,36 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="ac7a42543b7f6f225676b645bebe32a17" name="ac7a42543b7f6f225676b645bebe32a17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7a42543b7f6f225676b645bebe32a17">&#9670;&#160;</a></span>filterRoleIsSimplified()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Ui::NameFilterProxyModel::filterRoleIsSimplified </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property filterRoleIsSimplified </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="NameFilterProxyModel_8h_source.html#l00123">123</a> of file <a class="el" href="NameFilterProxyModel_8h_source.html">NameFilterProxyModel.h</a>.</p>
+
+</div>
+</div>
 <a id="a049bbb1a24e2a8ec90fdde2cd75b4921" name="a049bbb1a24e2a8ec90fdde2cd75b4921"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a049bbb1a24e2a8ec90fdde2cd75b4921">&#9670;&#160;</a></span>filterRoleName()</h2>
 
@@ -265,7 +304,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property filterRoleName </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="NameFilterProxyModel_8h_source.html#l00109">109</a> of file <a class="el" href="NameFilterProxyModel_8h_source.html">NameFilterProxyModel.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NameFilterProxyModel_8h_source.html#l00117">117</a> of file <a class="el" href="NameFilterProxyModel_8h_source.html">NameFilterProxyModel.h</a>.</p>
 
 </div>
 </div>
@@ -322,6 +361,31 @@ Properties</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newFilter</td><td>Property filter </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af429160b6c8d33aa205732fcb353e4df" name="af429160b6c8d33aa205732fcb353e4df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af429160b6c8d33aa205732fcb353e4df">&#9670;&#160;</a></span>setFilterRoleIsSimplified()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Ui::NameFilterProxyModel::setFilterRoleIsSimplified </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>newValue</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setter function for the property with the same name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newValue</td><td>Property filterRoleIsSimplified </td></tr>
   </table>
   </dd>
 </dl>
@@ -411,6 +475,33 @@ Properties</h2></td></tr>
 <p>Rows are accepted if <a class="el" href="classLibrarian.html#a2b33e49300ec5e4e2841ff4dd62843cd" title="Checks if a text matches a filter string, in a fuzzy way.">Librarian::matches()</a> holds for the filter and the text of the role 'filterRoleName'. The empty string accepts all rows. </p>
 
 <p class="definition">Definition at line <a class="el" href="NameFilterProxyModel_8h_source.html#l00085">85</a> of file <a class="el" href="NameFilterProxyModel_8h_source.html">NameFilterProxyModel.h</a>.</p>
+
+</div>
+</div>
+<a id="ac080a51011afe2262242e098d3923271" name="ac080a51011afe2262242e098d3923271"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac080a51011afe2262242e098d3923271">&#9670;&#160;</a></span>filterRoleIsSimplified</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Ui::NameFilterProxyModel::filterRoleIsSimplified</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel read">read</span><span class="mlabel write">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the filter role holds text already simplified with <a class="el" href="classLibrarian.html#a3b1f738f386a787f4d620c56be1732ab" title="Simplifies a string without caching.">Librarian::simplify()</a>. </p>
+<p>Set this to true for models that precompute their search keys, so that filtering does not simplify the text of every row on every keystroke. Defaults to false. </p>
+
+<p class="definition">Definition at line <a class="el" href="NameFilterProxyModel_8h_source.html#l00100">100</a> of file <a class="el" href="NameFilterProxyModel_8h_source.html">NameFilterProxyModel.h</a>.</p>
 
 </div>
 </div>

@@ -104,7 +104,7 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>HTTP server for mapbox' MBTiles files. </p>
-<p>This class features a simple HTTP server that serves the following files to unix+http://&lt;socket name&gt;/path. The server listens on a local socket rather than on a TCP port, see the constructor for the reason; the client side is QNetworkAccessManager, which handles the unix+http scheme.</p>
+<p>This class features a simple HTTP server that serves the following files to <a class="el" href="#a874565006efe32728090fe0ff8ac2b47" title="URL under which this server is presently reachable.">serverUrl()</a>/path. On Android the server listens on a local socket and the URL has the form unix+http://&lt;socket name&gt;; everywhere else it listens on a TCP port on the loopback interface and the URL has the form <a href="http://127.0.0.1:">http://127.0.0.1:</a>&lt;port&gt;. See the constructor for the reason. The client side is QNetworkAccessManager, which handles both schemes.</p>
 <ul>
 <li>If path is a file name, the server checks if the file is available in the resource system of the app and serves that file.</li>
 <li>If path is of the form "flightMap/sprites-night/xyz", the server serves a night-mode version of the flight map sprite sheet found in the resource system under "flightMap/sprites/xyz". The JSON files are served unchanged, the PNG files are recolored for use over the dark map style.</li>
@@ -114,7 +114,7 @@ Properties</h2></td></tr>
 </ul>
 <p>This server is able to handle several sets of MBTiles files. Each set is available under a single URL, and the MBTile files in each set are expected to contain identical metadata. To serve a tile request, the server goes through the MBTiles files in random order and serves the first tile it can find. Tiles contained in more than one file need thus to be identical. A typical use case would be a server that contains to sets of files, one set with vector tiles containing openstreetmap data and one set with raster data used for hillshading. Each set contains two MBTiles files, one for Africa and one for Europe. </p>
 
-<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00068">68</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00070">70</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3d555e9c8b5dae1bdbd66be76e4c8942" name="a3d555e9c8b5dae1bdbd66be76e4c8942"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3d555e9c8b5dae1bdbd66be76e4c8942">&#9670;&#160;</a></span>TileServer()</h2>
@@ -140,7 +140,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Create a new tile server. </p>
-<p>The tile server listens on a local socket. The method <a class="el" href="#a874565006efe32728090fe0ff8ac2b47" title="URL under which this server is presently reachable.">serverUrl()</a> returns the precise Url where the server will be available.</p>
+<p>The tile server listens on a local socket (Android) or finds a free port and listens to 127.0.0.1:port (all other platforms). The method <a class="el" href="#a874565006efe32728090fe0ff8ac2b47" title="URL under which this server is presently reachable.">serverUrl()</a> returns the precise Url where the server will be available.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>The standard QObject parent </td></tr>
@@ -179,7 +179,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Add a new set of tile files. </p>
-<p>This method adds a new set of tile files, that will be available under <a class="el" href="#a874565006efe32728090fe0ff8ac2b47" title="URL under which this server is presently reachable.">serverUrl()</a>+"/baseName" (typically, this is a URL of the form 'unix+http://enroute-tiles-12345/basename').</p>
+<p>This method adds a new set of tile files, that will be available under <a class="el" href="#a874565006efe32728090fe0ff8ac2b47" title="URL under which this server is presently reachable.">serverUrl()</a>+"/baseName" (typically, this is a URL of the form 'unix+http://enroute-tiles-12345/basename' or '<a href="http://127.0.0.1:3470/basename'">http://127.0.0.1:3470/basename'</a>).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">baseName</td><td>The path under which the tiles will be available.</td></tr>
@@ -221,7 +221,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00139">139</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00144">144</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
 
 </div>
 </div>
@@ -256,7 +256,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00145">145</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00150">150</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
 
 </div>
 </div>
@@ -310,9 +310,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>URL under which this server is presently reachable. </p>
-<p>The property holds the Url where the server is listening to incoming connections. This is a string of the form "unix+http://enroute-tiles-12345". If the server is not listening to incoming connections, the string is empty. </p>
+<p>The property holds the Url where the server is listening to incoming connections. This is a string of the form "unix+http://enroute-tiles-12345" on Android and "http://127.0.0.1:3470" elsewhere. If the server is not listening to incoming connections, the string is empty. </p>
 
-<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00098">98</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TileServer_8h_source.html#l00102">102</a> of file <a class="el" href="TileServer_8h_source.html">TileServer.h</a>.</p>
 
 </div>
 </div>

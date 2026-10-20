@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', codefold.init);
   <div class="summary">
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classNavigation_1_1FlightRoute-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Navigation::FlightRoute Class Reference</div></div>
@@ -157,6 +158,11 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight"><b>reverse</b> ()</td></tr>
 <tr class="memdesc:a9d47d3bae6d9795c95581925e79968b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports to route to VFR Flight Plan Format.  <br /></td></tr>
 <tr class="memitem:a379303853fa1ba20f0ec8741179a58d8" id="r_a379303853fa1ba20f0ec8741179a58d8"><td class="memItemLeft">Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#a379303853fa1ba20f0ec8741179a58d8">operator==</a> (const <a class="el" href="classNavigation_1_1FlightRoute.html">Navigation::FlightRoute</a> &amp;other) const</td></tr>
 <tr class="memdesc:a379303853fa1ba20f0ec8741179a58d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for equality.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af0a42d4fc97c19528b3df7cecf0c4096" id="r_af0a42d4fc97c19528b3df7cecf0c4096"><td class="memItemLeft">static QString&#160;</td><td class="memItemRight"><a class="el" href="#af0a42d4fc97c19528b3df7cecf0c4096">readWaypoints</a> (const QString &amp;fileName, QVector&lt; <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &gt; &amp;waypoints)</td></tr>
+<tr class="memdesc:af0a42d4fc97c19528b3df7cecf0c4096"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the waypoints of a route file.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -816,7 +822,47 @@ qsizetype&#160;</td><td class="memItemRight"><b>size</b></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True on equality </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00431">431</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00450">450</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+
+</div>
+</div>
+<a id="af0a42d4fc97c19528b3df7cecf0c4096" name="af0a42d4fc97c19528b3df7cecf0c4096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0a42d4fc97c19528b3df7cecf0c4096">&#9670;&#160;</a></span>readWaypoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Navigation::FlightRoute::readWaypoints </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>fileName</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QVector&lt; <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>waypoints</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads the waypoints of a route file. </p>
+<p>Parses a GeoJSON, GPX, PLN or FPL file and returns its waypoints as they appear in the file. Unlike <a class="el" href="#a0125257af233daa8991e1ae0bed78c15" title="Loads the route from a GeoJSON or GPX document.">load()</a>, the waypoints are not matched against the aviation data, which makes this method cheap even for large installations.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileName</td><td>File name, needs to include path and extension. URLs of the form "file://path" are accepted.</td></tr>
+    <tr><td class="paramname">waypoints</td><td>Set to the waypoints found in the file on success, left untouched otherwise.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Empty string in case of success, human-readable, translated error message otherwise. Files with more than 100 waypoints are rejected. </dd></dl>
 
 </div>
 </div>

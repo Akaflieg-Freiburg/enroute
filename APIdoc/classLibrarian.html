@@ -119,6 +119,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a96efe7349bbe47e5d3d56f1fdba7b9d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an entry from a library.  <br /></td></tr>
 <tr class="memitem:a6fbd6fae7ea18c086f5b5bf28182d3d6" id="r_a6fbd6fae7ea18c086f5b5bf28182d3d6"><td class="memItemLeft">static Q_INVOKABLE void&#160;</td><td class="memItemRight"><a class="el" href="#a6fbd6fae7ea18c086f5b5bf28182d3d6">rename</a> (<a class="el" href="#aade57a59b2c1aaccee483f968aae4694">Librarian::Library</a> library, const QString &amp;oldName, const QString &amp;newName)</td></tr>
 <tr class="memdesc:a6fbd6fae7ea18c086f5b5bf28182d3d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renames an entry in a library.  <br /></td></tr>
+<tr class="memitem:a3b1f738f386a787f4d620c56be1732ab" id="r_a3b1f738f386a787f4d620c56be1732ab"><td class="memItemLeft">static QString&#160;</td><td class="memItemRight"><a class="el" href="#a3b1f738f386a787f4d620c56be1732ab">simplify</a> (const QString &amp;string)</td></tr>
+<tr class="memdesc:a3b1f738f386a787f4d620c56be1732ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simplifies a string without caching.  <br /></td></tr>
+<tr class="memitem:a07fff5453a5bffa4e3315dc537228b6a" id="r_a07fff5453a5bffa4e3315dc537228b6a"><td class="memItemLeft">static QStringList&#160;</td><td class="memItemRight"><a class="el" href="#a07fff5453a5bffa4e3315dc537228b6a">filterWords</a> (const QString &amp;filter)</td></tr>
+<tr class="memdesc:a07fff5453a5bffa4e3315dc537228b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits a filter into simplified words.  <br /></td></tr>
+<tr class="memitem:a469dd234dd2cefb3662b738678de15d3" id="r_a469dd234dd2cefb3662b738678de15d3"><td class="memItemLeft">static bool&#160;</td><td class="memItemRight"><a class="el" href="#a469dd234dd2cefb3662b738678de15d3">matchesWords</a> (const QString &amp;simplifiedText, const QStringList &amp;words)</td></tr>
+<tr class="memdesc:a469dd234dd2cefb3662b738678de15d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks a simplified text against simplified filter words.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -136,7 +142,7 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
 <div class="textblock"><p>Manage libraries and text assets. </p>
 <p>This class manages libraries of aircrafts and routes, as well as text assets, and exposes these objects to QML. </p>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00041">41</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00040">40</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 </div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Member Enumeration Documentation</h2>
 <a id="aade57a59b2c1aaccee483f968aae4694" name="aade57a59b2c1aaccee483f968aae4694"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aade57a59b2c1aaccee483f968aae4694">&#9670;&#160;</a></span>Library</h2>
@@ -158,7 +164,7 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00077">77</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00076">76</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 
 </div>
 </div>
@@ -223,7 +229,7 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property aircraftModel </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00091">91</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00090">90</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 
 </div>
 </div>
@@ -366,6 +372,41 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the file exists </dd></dl>
+
+</div>
+</div>
+<a id="a07fff5453a5bffa4e3315dc537228b6a" name="a07fff5453a5bffa4e3315dc537228b6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07fff5453a5bffa4e3315dc537228b6a">&#9670;&#160;</a></span>filterWords()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QStringList Librarian::filterWords </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Splits a filter into simplified words. </p>
+<p>Splits the filter at whitespace and simplifies every word with <a class="el" href="#a3b1f738f386a787f4d620c56be1732ab" title="Simplifies a string without caching.">simplify()</a>. Words that are empty after simplification are dropped.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filter</td><td>Filter text as typed by the user</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Simplified, non-empty words. Empty if the filter contains no searchable characters. </dd></dl>
 
 </div>
 </div>
@@ -625,6 +666,45 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
 
 </div>
 </div>
+<a id="a469dd234dd2cefb3662b738678de15d3" name="a469dd234dd2cefb3662b738678de15d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a469dd234dd2cefb3662b738678de15d3">&#9670;&#160;</a></span>matchesWords()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Librarian::matchesWords </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>simplifiedText</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QStringList &amp;</td>          <td class="paramname"><span class="paramname"><em>words</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks a simplified text against simplified filter words. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplifiedText</td><td>Text, already simplified with <a class="el" href="#a3b1f738f386a787f4d620c56be1732ab" title="Simplifies a string without caching.">simplify()</a></td></tr>
+    <tr><td class="paramname">words</td><td>Filter words, as returned by <a class="el" href="#a07fff5453a5bffa4e3315dc537228b6a" title="Splits a filter into simplified words.">filterWords()</a></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the text contains every word, ignoring case. An empty word list matches every text. </dd></dl>
+
+</div>
+</div>
 <a id="af571d804996e429ee38ee568f8d0dd1d" name="af571d804996e429ee38ee568f8d0dd1d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af571d804996e429ee38ee568f8d0dd1d">&#9670;&#160;</a></span>model()</h2>
 
@@ -768,7 +848,42 @@ QML_SINGLETONQString&#160;</td><td class="memItemRight"><b>manualLocation</b></t
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property routesModel </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00097">97</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00096">96</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+
+</div>
+</div>
+<a id="a3b1f738f386a787f4d620c56be1732ab" name="a3b1f738f386a787f4d620c56be1732ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b1f738f386a787f4d620c56be1732ab">&#9670;&#160;</a></span>simplify()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Librarian::simplify </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>string</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Simplifies a string without caching. </p>
+<p>Transforms the string to QString::NormalizationForm_KD and removes every character outside a-z, A-Z and 0-9. This is the stateless core of <a class="el" href="#a1c41138e3775e3a2b0c8235f193e9889" title="Simplifies string by transforming and removing special characters.">simplifySpecialChars()</a>. It has no side effects and is safe to call from worker threads, for instance to precompute search keys for item models.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">string</td><td>Input string</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Simplified string </dd></dl>
 
 </div>
 </div>

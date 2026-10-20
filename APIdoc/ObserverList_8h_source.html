@@ -133,14 +133,19 @@ document.addEventListener('DOMContentLoaded', codefold.init);
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="comment">// needed and stores them in m_observersByID.</span></div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    QProperty&lt;QList&lt;Weather::Observer*&gt;&gt; m_unsortedObservers;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment">// Currently active observers, sorted by distance. This list is updated by a</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">// binding that watches m_unsortedObservers and the current position.</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    QProperty&lt;QList&lt;Weather::Observer*&gt;&gt; m_observers;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>};</div>
-</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment">// Incremented whenever the aviation data changes. Read by the binding of</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">// m_unsortedObservers, so that stations resolved through</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment">// GeoMapProvider::findByID() appear once the maps have been loaded.</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    QProperty&lt;int&gt; m_mapRevision {0};</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>} <span class="comment">// namespace Weather</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="comment">// Currently active observers, sorted by distance. This list is updated by a</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// binding that watches m_unsortedObservers and the current position.</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    QProperty&lt;QList&lt;Weather::Observer*&gt;&gt; m_observers;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>};</div>
+</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>} <span class="comment">// namespace Weather</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
 <div class="ttc" id="aclassWeather_1_1ObserverList_html"><div class="ttname"><a href="classWeather_1_1ObserverList.html">Weather::ObserverList</a></div><div class="ttdoc">Up-to-date list of all METAR/TAF stations.</div><div class="ttdef"><b>Definition</b> <a href="#l00036">ObserverList.h:36</a></div></div>
 <div class="ttc" id="aclassWeather_1_1ObserverList_html_a1d0809e74b3d9cab54086cde3ad0f384"><div class="ttname"><a href="classWeather_1_1ObserverList.html#a1d0809e74b3d9cab54086cde3ad0f384">Weather::ObserverList::observers</a></div><div class="ttdeci">QList&lt; Weather::Observer * &gt; observers()</div><div class="ttdoc">Getter method for property of the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00075">ObserverList.h:75</a></div></div>
 <div class="ttc" id="aclassWeather_1_1ObserverList_html_a2cb91972bbc63a79fb83d2fb49ea7474"><div class="ttname"><a href="classWeather_1_1ObserverList.html#a2cb91972bbc63a79fb83d2fb49ea7474">Weather::ObserverList::observers</a></div><div class="ttdeci">QList&lt; Weather::Observer * &gt; observers</div><div class="ttdoc">List of METAR/TAF stations.</div><div class="ttdef"><b>Definition</b> <a href="#l00064">ObserverList.h:64</a></div></div>

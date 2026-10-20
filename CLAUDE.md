@@ -1,7 +1,4 @@
 # Project: enroute
-Qt 6.9+, C++20, CMake + Ninja. UI in QML, backend in C++.
-QML modules are declared with qt_add_qml_module; C++ types reach QML via QML_ELEMENT.
-QML module URI: akaflieg_freiburg.enroute
 
 ## Build & lint
 # The system Qt under /usr/lib64 is incomplete; build against the Qt online-installer
@@ -18,11 +15,6 @@ cmake --build build/claude --target all_qmllint   # lint all QML (resolves proje
 # The flight log (src/flightlog, FlightLogPage.qml) is work in progress and hidden in
 # default builds. Add -DFLIGHTLOG=ON to the configure line to work on it. The option is
 # cached in build/claude, so pass -DFLIGHTLOG=OFF/ON explicitly when the state matters.
-
-## Layout
-src/        C++ (QObject-derived types marked QML_ELEMENT, module URI "akaflieg_freiburg.enroute")
-qml/        QML UI files, listed under QML_FILES in qt_add_qml_module
-CMakeLists.txt uses qt_add_executable + qt_add_qml_module; AUTOMOC is on.
 
 ## Conventions & rules
 - Always build into build/claude (pass -B build/claude). Never configure into the repo

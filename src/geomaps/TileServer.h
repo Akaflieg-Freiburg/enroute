@@ -34,9 +34,9 @@ namespace GeoMaps {
  *
  *  This class features a simple HTTP server that serves the following files
  *  to serverUrl()/path. On Android the server listens on a local socket and
- *  the URL has the form unix+http://<socket name>; everywhere else it listens
+ *  the URL has the form unix+http://\<socket name\>; everywhere else it listens
  *  on a TCP port on the loopback interface and the URL has the form
- *  http://127.0.0.1:<port>. See the constructor for the reason. The client
+ *  http://127.0.0.1:\<port\>. See the constructor for the reason. The client
  *  side is QNetworkAccessManager, which handles both schemes.
  *
  *  - If path is a file name, the server checks if the file is available in the

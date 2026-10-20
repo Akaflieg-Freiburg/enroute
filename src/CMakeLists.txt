@@ -722,6 +722,8 @@ qt_add_qml_module(${PROJECT_NAME}
     ui/DistanceSortProxyModel.cpp
     ui/NameFilterProxyModel.h
     ui/NameFilterProxyModel.cpp
+    ui/WaypointSearchModel.h
+    ui/WaypointSearchModel.cpp
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
     ui/SideviewQuickItem.h

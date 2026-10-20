@@ -183,11 +183,13 @@ Page {
                 // (overrides DecoratedListView's default focus:true).
                 focus: false
 
-                delegate: waypointDelegate
+                delegate: WaypointDelegate {}
 
-                Binding on model {
-                    value: GeoMapProvider.filteredWaypoints(textInput.filter)
-                    delayed: true
+                model: NameFilterProxyModel {
+                    sourceModel: WaypointSearchModel {}
+                    filterRoleName: "searchKey"
+                    filterRoleIsSimplified: true
+                    filter: textInput.filter
                 }
 
                 Label {

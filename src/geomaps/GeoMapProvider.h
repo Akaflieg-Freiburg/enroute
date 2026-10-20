@@ -380,16 +380,6 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE static QByteArray emptyGeoJSON();
 
-    /*! \brief Waypoints containing a given substring
-     *
-     * @param filter List of words
-     *
-     * @returns all those waypoints whose fullName or codeName contains each of
-     * the words in filter. The list contains both waypoints from the map, and
-     * waypoints from the library and is sorted alphabetically.
-     */
-    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString& filter);
-
     /*! Find a waypoint by its ICAO code
      *
      * @param icaoID ICAO code of the waypoint, such as "EDDF" for Frankfurt

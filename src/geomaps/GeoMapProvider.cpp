@@ -517,65 +517,6 @@ QByteArray GeoMaps::GeoMapProvider::emptyGeoJSON()
     return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 }
 
-QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::filteredWaypoints(const QString& filter)
-{
-
-    QStringList filterWords;
-    foreach(auto word, filter.simplified().split(' ', Qt::SkipEmptyParts)) {
-        QString const simplifiedWord = GlobalObject::librarian()->simplifySpecialChars(word);
-        if (simplifiedWord.isEmpty()) {
-            continue;
-        }
-        filterWords.append(simplifiedWord);
-    }
-
-    QVector<GeoMaps::Waypoint> result;
-
-    const auto wps = waypoints();
-    for(const auto& waypoint : wps) {
-        if (!waypoint.isValid()) {
-            continue;
-        }
-        bool allWordsFound = true;
-        foreach(auto word, filterWords) {
-            QString const fullName = GlobalObject::librarian()->simplifySpecialChars(waypoint.name());
-            if (!fullName.contains(word, Qt::CaseInsensitive) && !waypoint.ICAOCode().contains(word, Qt::CaseInsensitive)) {
-                allWordsFound = false;
-                break;
-            }
-        }
-        if (allWordsFound) {
-            result.append( waypoint );
-        }
-    }
-
-    const auto wpsLib = GlobalObject::waypointLibrary()->waypoints();
-    for(const auto& waypoint : wpsLib)
-    {
-        if (!waypoint.isValid())
-        {
-            continue;
-        }
-        bool allWordsFound = true;
-        for(auto& word : filterWords)
-        {
-            QString const fullName = GlobalObject::librarian()->simplifySpecialChars(waypoint.name());
-            if (!fullName.contains(word, Qt::CaseInsensitive) && !waypoint.ICAOCode().contains(word, Qt::CaseInsensitive))
-            {
-                allWordsFound = false;
-                break;
-            }
-        }
-        if (allWordsFound) {
-            result.append( waypoint );
-        }
-    }
-
-    std::sort(result.begin(), result.end(), [](const Waypoint& first, const Waypoint& second) {return first.name() < second.name(); });
-
-    return result;
-}
-
 GeoMaps::Waypoint GeoMaps::GeoMapProvider::findByID(const QString& icaoID)
 {
     const auto row = m_waypointIndex.rowByICAOCode.value(icaoID, -1);

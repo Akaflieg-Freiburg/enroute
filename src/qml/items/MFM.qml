@@ -269,7 +269,17 @@ Item {
                                     panCommitTimer.start()
                                 return
                             }
-                            flightMap.pan(-delta.x, -delta.y)
+                            // Do not use Map.pan(): it takes integer arguments and computes the
+                            // viewport center with integer division. On a viewport of odd height
+                            // that reference point is half a pixel off, so every pan event (even a
+                            // purely horizontal one) shifts the map by half a pixel vertically, and
+                            // fractional deltas are truncated. Move the center through the map's own
+                            // projection instead; this is exact and keeps the point under the
+                            // finger/mouse fixed (issue #397).
+                            const centerPx = flightMap.fromCoordinate(flightMap.center, false)
+                            const newCenter = flightMap.toCoordinate(Qt.point(centerPx.x - delta.x, centerPx.y - delta.y), false)
+                            if (newCenter.isValid)
+                                flightMap.center = newCenter
                         }
 
                         onActiveChanged: {

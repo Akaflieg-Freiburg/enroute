@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.9] - Unreleased
+
+### Fixed
+
+- Fixed the moving map slowly drifting vertically while it is panned sideways,
+  so that the point under the finger or mouse pointer now stays in place. (#397)
+
+
 ## [3.5.8] - 2026-10-21
 
 ### Changed

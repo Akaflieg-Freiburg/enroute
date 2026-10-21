@@ -378,7 +378,7 @@ auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) con
     return -1;
 }
 
-auto Navigation::FlightRoute::load(const QString& fileName) -> QString
+auto Navigation::FlightRoute::readWaypoints(const QString& fileName, QVector<GeoMaps::Waypoint>& waypoints) -> QString
 {
     QString myFileName = fileName;
     if (fileName.startsWith(u"file://"_s))
@@ -417,6 +417,19 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
     if (result.length() > 100)
     {
         return tr("The file '%1' contains too many waypoints. Flight routes with more than 100 waypoints are not supported.").arg(myFileName);
+    }
+
+    waypoints = result;
+    return {};
+}
+
+auto Navigation::FlightRoute::load(const QString& fileName) -> QString
+{
+    QVector<GeoMaps::Waypoint> result;
+    auto error = readWaypoints(fileName, result);
+    if (!error.isEmpty())
+    {
+        return error;
     }
 
     QVector<GeoMaps::Waypoint> newWaypoints;

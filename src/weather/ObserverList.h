@@ -92,6 +92,11 @@ private:
     // needed and stores them in m_observersByID.
     QProperty<QList<Weather::Observer*>> m_unsortedObservers;
 
+    // Incremented whenever the aviation data changes. Read by the binding of
+    // m_unsortedObservers, so that stations resolved through
+    // GeoMapProvider::findByID() appear once the maps have been loaded.
+    QProperty<int> m_mapRevision {0};
+
     // Currently active observers, sorted by distance. This list is updated by a
     // binding that watches m_unsortedObservers and the current position.
     QProperty<QList<Weather::Observer*>> m_observers;

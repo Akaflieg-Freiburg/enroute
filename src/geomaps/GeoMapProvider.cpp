@@ -27,6 +27,10 @@
 #include <QQmlEngine>
 #include <QRandomGenerator>
 #include <QtConcurrent/QtConcurrentRun>
+#include <QtMath>
+#include <algorithm>
+#include <cmath>
+#include <tuple>
 
 #include "GlobalSettings.h"
 #include "Librarian.h"
@@ -268,61 +272,154 @@ QVariantList GeoMaps::GeoMapProvider::airspacesAtPosition(const QGeoCoordinate& 
 GeoMaps::Waypoint GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition)
 {
     position.setAltitude(qQNaN());
+    if (!position.isValid())
+    {
+        return {position};
+    }
+    const double maxDistance = position.distanceTo(distPosition);
 
     Waypoint result;
-    const auto wayppoints = waypoints();
-    for(const auto& waypoint : wayppoints)
+    bool haveResult = false;
+    double resultDistance = 0.0;
+    auto consider = [&](const Waypoint& candidate) {
+        const double distance = position.distanceTo(candidate.coordinate());
+        if (!haveResult || (distance < resultDistance))
+        {
+            result = candidate;
+            resultDistance = distance;
+            haveResult = true;
+        }
+    };
+
+    // Map waypoints are valid by construction, so no isValid() check here.
+    // Only the grid cells around the position need to be visited: any
+    // waypoint farther away than maxDistance leads to the fallback below
+    // anyway. Rows are visited in ascending order so that ties resolve to
+    // name order, as they did with a full scan.
+    const auto rows = rowsNear(position, maxDistance);
+    if (rows.has_value())
     {
-        if (!waypoint.isValid())
+        auto sortedRows = *rows;
+        std::sort(sortedRows.begin(), sortedRows.end());
+        for (const int row : std::as_const(sortedRows))
         {
-            continue;
+            consider(_waypoints_.at(row));
         }
-        if (!result.isValid())
+    }
+    else
+    {
+        for (const auto& waypoint : std::as_const(_waypoints_))
         {
-            result = waypoint;
-        }
-        if (position.distanceTo(waypoint.coordinate()) < position.distanceTo(result.coordinate()))
-        {
-            result = waypoint;
+            consider(waypoint);
         }
     }
 
     const auto wpLibrary = GlobalObject::waypointLibrary()->waypoints();
-    for(const auto& wayppoint : wpLibrary)
+    for (const auto& waypoint : wpLibrary)
     {
-        if (!wayppoint.isValid())
+        if (waypoint.isValid())
         {
-            continue;
-        }
-        if (!result.isValid())
-        {
-            result = wayppoint;
-        }
-        if (position.distanceTo(wayppoint.coordinate()) < position.distanceTo(result.coordinate()))
-        {
-            result = wayppoint;
+            consider(waypoint);
         }
     }
 
-    for(auto& waypoint : GlobalObject::navigator()->flightRoute()->midFieldWaypoints() )
+    for (const auto& waypoint : GlobalObject::navigator()->flightRoute()->midFieldWaypoints())
     {
-        if (!waypoint.isValid())
+        if (waypoint.isValid())
         {
-            continue;
-        }
-        if (position.distanceTo(waypoint.coordinate()) < position.distanceTo(result.coordinate()))
-        {
-            result = waypoint;
+            consider(waypoint);
         }
     }
 
-    if (!result.isValid() || (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)))
+    if (!haveResult || (resultDistance > maxDistance))
     {
         position.setAltitude( terrainElevationAMSL(position).toM() );
         return {position};
     }
     return result;
 }
+
+
+qint32 GeoMaps::GeoMapProvider::cellOf(const QGeoCoordinate& coordinate)
+{
+    auto latCell = static_cast<qint32>(std::floor((coordinate.latitude() + 90.0) * 10.0));
+    latCell = std::clamp(latCell, 0, 1799);
+    auto lonCell = static_cast<qint32>(std::floor((coordinate.longitude() + 180.0) * 10.0));
+    lonCell = ((lonCell % 3600) + 3600) % 3600;
+    return latCell * 3600 + lonCell;
+}
+
+
+std::optional<QList<int>> GeoMaps::GeoMapProvider::rowsNear(const QGeoCoordinate& position, double radiusM) const
+{
+    if (!position.isValid() || !qIsFinite(radiusM) || (radiusM < 0.0))
+    {
+        return std::nullopt;
+    }
+
+    // Conservative bounding box: 110 km per degree is slightly less than the
+    // true value, and the longitude extent uses the latitude circle at the
+    // pole-ward edge of the box, which is the smallest one in the box.
+    constexpr double metersPerDegree = 110000.0;
+    const double dLat = radiusM / metersPerDegree;
+    const double maxAbsLat = std::min(std::abs(position.latitude()) + dLat, 89.9);
+    const double dLon = radiusM / (metersPerDegree * std::cos(qDegreesToRadians(maxAbsLat)));
+    if (dLon >= 180.0)
+    {
+        return std::nullopt;
+    }
+
+    const auto latLo = std::clamp(static_cast<qint32>(std::floor((position.latitude() - dLat + 90.0) * 10.0)), 0, 1799);
+    const auto latHi = std::clamp(static_cast<qint32>(std::floor((position.latitude() + dLat + 90.0) * 10.0)), 0, 1799);
+    const auto lonLo = static_cast<qint32>(std::floor((position.longitude() - dLon + 180.0) * 10.0));
+    const auto lonHi = static_cast<qint32>(std::floor((position.longitude() + dLon + 180.0) * 10.0));
+    const qint64 numCells = static_cast<qint64>(latHi - latLo + 1) * static_cast<qint64>(lonHi - lonLo + 1);
+    if (numCells > 2500)
+    {
+        return std::nullopt;
+    }
+
+    const auto& cells = m_waypointIndex.cells;
+    auto const byCell = [](const std::pair<qint32, int>& a, const std::pair<qint32, int>& b) { return a.first < b.first; };
+    QList<int> rows;
+    for (qint32 latCell = latLo; latCell <= latHi; ++latCell)
+    {
+        for (qint32 lon = lonLo; lon <= lonHi; ++lon)
+        {
+            const qint32 lonCell = ((lon % 3600) + 3600) % 3600;
+            const std::pair<qint32, int> key {latCell * 3600 + lonCell, 0};
+            auto const range = std::equal_range(cells.cbegin(), cells.cend(), key, byCell);
+            for (auto it = range.first; it != range.second; ++it)
+            {
+                rows.append(it->second);
+            }
+        }
+    }
+    return rows;
+}
+
+
+GeoMaps::GeoMapProvider::WaypointIndex GeoMaps::GeoMapProvider::buildWaypointIndex(const QList<Waypoint>& waypoints)
+{
+    WaypointIndex index;
+    index.searchKeys.reserve(waypoints.size());
+    index.cells.reserve(waypoints.size());
+    for (qsizetype i = 0; i < waypoints.size(); ++i)
+    {
+        const auto row = static_cast<int>(i);
+        const auto& waypoint = waypoints.at(i);
+        const auto code = waypoint.ICAOCode();
+        if (!code.isEmpty() && !index.rowByICAOCode.contains(code))
+        {
+            index.rowByICAOCode.insert(code, row);
+        }
+        index.searchKeys.append(Librarian::simplify(waypoint.name()) + u' ' + Librarian::simplify(code));
+        index.cells.append({cellOf(waypoint.coordinate()), row});
+    }
+    std::sort(index.cells.begin(), index.cells.end());
+    return index;
+}
+
 
 Units::Distance decodeImageData(const QImage* image, double intraTileX, double intraTileY)
 {
@@ -420,117 +517,92 @@ QByteArray GeoMaps::GeoMapProvider::emptyGeoJSON()
     return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 }
 
-QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::filteredWaypoints(const QString& filter)
-{
-
-    QStringList filterWords;
-    foreach(auto word, filter.simplified().split(' ', Qt::SkipEmptyParts)) {
-        QString const simplifiedWord = GlobalObject::librarian()->simplifySpecialChars(word);
-        if (simplifiedWord.isEmpty()) {
-            continue;
-        }
-        filterWords.append(simplifiedWord);
-    }
-
-    QVector<GeoMaps::Waypoint> result;
-
-    const auto wps = waypoints();
-    for(const auto& waypoint : wps) {
-        if (!waypoint.isValid()) {
-            continue;
-        }
-        bool allWordsFound = true;
-        foreach(auto word, filterWords) {
-            QString const fullName = GlobalObject::librarian()->simplifySpecialChars(waypoint.name());
-            if (!fullName.contains(word, Qt::CaseInsensitive) && !waypoint.ICAOCode().contains(word, Qt::CaseInsensitive)) {
-                allWordsFound = false;
-                break;
-            }
-        }
-        if (allWordsFound) {
-            result.append( waypoint );
-        }
-    }
-
-    const auto wpsLib = GlobalObject::waypointLibrary()->waypoints();
-    for(const auto& waypoint : wpsLib)
-    {
-        if (!waypoint.isValid())
-        {
-            continue;
-        }
-        bool allWordsFound = true;
-        for(auto& word : filterWords)
-        {
-            QString const fullName = GlobalObject::librarian()->simplifySpecialChars(waypoint.name());
-            if (!fullName.contains(word, Qt::CaseInsensitive) && !waypoint.ICAOCode().contains(word, Qt::CaseInsensitive))
-            {
-                allWordsFound = false;
-                break;
-            }
-        }
-        if (allWordsFound) {
-            result.append( waypoint );
-        }
-    }
-
-    std::sort(result.begin(), result.end(), [](const Waypoint& first, const Waypoint& second) {return first.name() < second.name(); });
-
-    return result;
-}
-
 GeoMaps::Waypoint GeoMaps::GeoMapProvider::findByID(const QString& icaoID)
 {
-    auto wps = waypoints();
-
-    for(auto wayppoint : std::as_const(wps))
+    const auto row = m_waypointIndex.rowByICAOCode.value(icaoID, -1);
+    if ((row < 0) || (row >= _waypoints_.size()))
     {
-        if (!wayppoint.isValid())
-        {
-            continue;
-        }
-        if (wayppoint.ICAOCode() == icaoID) {
-            return wayppoint;
-        }
+        return {};
     }
-    return {};
+    return _waypoints_.at(row);
 }
 
 QList<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type)
 {
-    QVector<Waypoint> tWps;
+    static constexpr qsizetype maxResults = 20;
+    // Distance, tie-break order, waypoint
+    using Candidate = std::tuple<double, qsizetype, Waypoint>;
 
-    auto wps = waypoints();
-    for(auto& waypoint : wps)
+    QList<Candidate> libraryCandidates;
     {
-        if (!waypoint.isValid())
+        const auto wpsLib = GlobalObject::waypointLibrary()->waypoints();
+        for (qsizetype i = 0; i < wpsLib.size(); ++i)
         {
-            continue;
+            const auto& waypoint = wpsLib.at(i);
+            if (!waypoint.isValid() || (waypoint.type() != type))
+            {
+                continue;
+            }
+            libraryCandidates.append({position.distanceTo(waypoint.coordinate()), _waypoints_.size() + i, waypoint});
         }
+    }
+
+    auto const closest = [](QList<Candidate>& candidates) {
+        const auto n = std::min(maxResults, candidates.size());
+        std::partial_sort(candidates.begin(), candidates.begin() + n, candidates.end(), [](const Candidate& a, const Candidate& b) {
+            return std::tie(std::get<0>(a), std::get<1>(a)) < std::tie(std::get<0>(b), std::get<1>(b));
+        });
+        QList<Waypoint> result;
+        result.reserve(n);
+        for (qsizetype i = 0; i < n; ++i)
+        {
+            result.append(std::get<2>(candidates.at(i)));
+        }
+        return result;
+    };
+
+    // Grow the search radius until at least maxResults candidates lie within
+    // it. rowsNear() visits every waypoint within the radius, so the closest
+    // maxResults candidates are then the closest overall.
+    if (position.isValid())
+    {
+        for (const double radius : {20.0e3, 80.0e3, 320.0e3, 1280.0e3})
+        {
+            const auto rows = rowsNear(position, radius);
+            if (!rows.has_value())
+            {
+                break;
+            }
+            QList<Candidate> candidates = libraryCandidates;
+            for (const int row : *rows)
+            {
+                const auto& waypoint = _waypoints_.at(row);
+                if (waypoint.type() != type)
+                {
+                    continue;
+                }
+                candidates.append({position.distanceTo(waypoint.coordinate()), row, waypoint});
+            }
+            const auto within = std::count_if(candidates.cbegin(), candidates.cend(), [radius](const Candidate& c) { return std::get<0>(c) <= radius; });
+            if (within >= maxResults)
+            {
+                return closest(candidates);
+            }
+        }
+    }
+
+    // Sparse region or invalid position: consider all waypoints of the type
+    QList<Candidate> candidates = libraryCandidates;
+    for (qsizetype row = 0; row < _waypoints_.size(); ++row)
+    {
+        const auto& waypoint = _waypoints_.at(row);
         if (waypoint.type() != type)
         {
             continue;
         }
-        tWps.append(waypoint);
+        candidates.append({position.distanceTo(waypoint.coordinate()), row, waypoint});
     }
-
-    auto wpsLib = GlobalObject::waypointLibrary()->waypoints();
-    for(const auto& waypoint : std::as_const(wpsLib))
-    {
-        if (!waypoint.isValid())
-        {
-            continue;
-        }
-        if (waypoint.type() != type)
-        {
-            continue;
-        }
-        tWps.append(waypoint);
-    }
-
-    std::sort(tWps.begin(), tWps.end(), [position](const Waypoint& first, const Waypoint& second) {return position.distanceTo(first.coordinate()) < position.distanceTo(second.coordinate()); });
-
-    return tWps.mid(0,20);
+    return closest(candidates);
 }
 
 QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::waypoints()
@@ -644,6 +716,7 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
         if (_waypoints_ != result.waypoints)
         {
             _waypoints_ = result.waypoints;
+            m_waypointIndex = result.index;
             emit waypointsChanged();
         }
         m_combinedGeoJSON = result.combinedGeoJSON;
@@ -856,5 +929,5 @@ GeoMaps::GeoMapProvider::aviationDataCacheResult GeoMaps::GeoMapProvider::fillAv
     // Sort waypoints by name
     std::sort(newWaypoints.begin(), newWaypoints.end(), [](const Waypoint& first, const Waypoint& second) {return first.name() < second.name(); });
 
-    return {newWaypoints, newAirspaces, newGeoJSON};
+    return {newWaypoints, buildWaypointIndex(newWaypoints), newAirspaces, newGeoJSON};
 }

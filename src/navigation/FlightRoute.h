@@ -278,6 +278,25 @@ namespace Navigation
          */
         [[nodiscard]] Q_INVOKABLE qsizetype lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
 
+        /*! \brief Reads the waypoints of a route file
+         *
+         *  Parses a GeoJSON, GPX, PLN or FPL file and returns its waypoints as
+         *  they appear in the file. Unlike load(), the waypoints are not matched
+         *  against the aviation data, which makes this method cheap even for
+         *  large installations.
+         *
+         *  @param fileName File name, needs to include path and extension.
+         *  URLs of the form "file://path" are accepted.
+         *
+         *  @param waypoints Set to the waypoints found in the file on success,
+         *  left untouched otherwise.
+         *
+         *  @returns Empty string in case of success, human-readable, translated
+         *  error message otherwise. Files with more than 100 waypoints are
+         *  rejected.
+         */
+        [[nodiscard]] static QString readWaypoints(const QString& fileName, QVector<GeoMaps::Waypoint>& waypoints);
+
         /*! \brief Loads the route from a GeoJSON or GPX document
          *
          * This method loads the flight route from a GeoJSON or GPX file. The

@@ -1,12 +1,11 @@
 # Changelog
 
-## [3.5.8] - Unreleased
+## [3.5.8] - 2026-10-21
 
 ### Changed
 
 - Searching for waypoints on the Nearby page and when adding waypoints to a
-  route is much faster. Your own waypoints from the library are now listed
-  first, followed by the waypoints from the aviation maps.
+  route is much faster. 
 - Opening and importing routes, opening the Nearby page and updating weather
   data are now much faster.
 
@@ -16,7 +15,6 @@
   from the library, which occurred with large route libraries.
 - Fixed weather stations missing from the weather page after app start until
   the next weather update.
-- Fixed an issue on iOS where the moving map stayed blank.
 
 
 ## [3.5.7] - 2026-10-19

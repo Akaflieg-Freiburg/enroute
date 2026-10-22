@@ -129,8 +129,16 @@ public class FlightLogService extends Service {
         // needs location access. With this flag, the app is treated as
         // "in the foreground" and does NOT need ACCESS_BACKGROUND_LOCATION —
         // ACCESS_FINE_LOCATION is sufficient.
-        startForeground(NOTIFICATION_ID, notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
+        // The three-argument overload with a service type exists only on
+        // Android 10 (API 29) and later. Calling it on Android 9 throws
+        // NoSuchMethodError and kills the app. Android 9 has no foreground
+        // service types, so the two-argument overload is all it needs.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(NOTIFICATION_ID, notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
+        } else {
+            startForeground(NOTIFICATION_ID, notification);
+        }
 
         // Keep the CPU awake so Qt's event loop processes GPS callbacks
         // even when the screen is locked.

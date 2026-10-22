@@ -14,6 +14,12 @@
   was lost. The old chart is now kept until the new one has been written.
 - Fixed import of GeoTIFF charts whose image dimensions are stored as 32-bit
   integers. These files were rejected with a misleading error message.
+- Flight log (work in progress): changes to the flight list are now saved to
+  the database before they are shown, and GPS track files are only deleted
+  once the database has been updated. Previously, a failed save could cause
+  deleted flights to reappear or edits to be lost at the next start.
+- Flight log (work in progress): fixed a crash on Android 9. With automatic
+  flight detection enabled, the app crashed on every start.
 
 
 ## [3.5.9] - 2026-10-22

@@ -26,7 +26,9 @@ Executed checks:
 
 ## Findings
 
-### 1. P1 — Flight recording calls an unavailable API on Android 9
+### 1. P1 — Flight recording calls an unavailable API on Android 9 — DONE
+
+**Status:** Done (2026-10-22, uncommitted). `onStartCommand()` now calls the three-argument `startForeground()` only on API 29+ and the two-argument overload below. The `NoSuchMethodError` crash was reproduced with the unfixed code on an API 28 emulator (crash loop on every start with automatic detection persisted). With the fix, the service runs in the foreground without crashing on API 28 and API 29 emulators.
 
 **Location:** `src/android/src/de/akaflieg_freiburg/enroute/FlightLogService.java:127–133`; supported minimum in `src/CMakeLists.txt:399–400`.
 

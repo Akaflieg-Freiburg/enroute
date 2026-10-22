@@ -215,6 +215,13 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         }
     }
 
+    // Unescaping can shrink the message. The CRC code below needs at least two
+    // bytes of checksum plus one byte of message ID.
+    if (message.size() < 3)
+    {
+        return;
+    }
+
 
     //
     // CRC Checksum verification

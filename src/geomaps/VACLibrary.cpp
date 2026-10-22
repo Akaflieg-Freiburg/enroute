@@ -255,11 +255,11 @@ QString GeoMaps::VACLibrary::importVAC(GeoMaps::VAC vac)
         return {};
     }
 
-    // Delete all existing VACs with the new name
-    remove(vac.name);
-
     // Write the file into the VAC directory atomically, so that a failed
-    // write cannot leave a truncated chart behind.
+    // write cannot leave a truncated chart behind. The previously installed
+    // chart with the same name is removed only after the replacement has been
+    // written successfully, so that a failed import (e.g. disk full) does not
+    // destroy the old, usable chart.
     QDir const dir;
     dir.mkpath(m_vacDirectory);
     QByteArray imageData;
@@ -287,9 +287,18 @@ QString GeoMaps::VACLibrary::importVAC(GeoMaps::VAC vac)
         return tr("Error: Unable to write the VAC file <strong>%1</strong>: %2").arg(newFileName, error);
     }
 
-    // Set new file name and add to library
+    // Replace all existing VACs with the new name. Delete their image files,
+    // unless the new chart has just been written to that very location.
     vac.fileName = newFileName;
     auto vacs = m_vacs;
+    foreach (auto oldVac, vacs)
+    {
+        if ((oldVac.name == vac.name) && (oldVac.fileName != newFileName))
+        {
+            QFile::remove(oldVac.fileName);
+        }
+    }
+    vacs.removeIf([&vac](const GeoMaps::VAC& other) { return other.name == vac.name; });
     vacs.append(vac);
     setManualVacs(vacs);
 

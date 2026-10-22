@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.5.10] - unreleased
+
+### Fixed
+
+- Fixed a possible crash when a malformed GDL90 message is received over UDP.
+- Fixed traffic receivers connected via UDP: recurring identical data packets
+  (for instance position reports from a stationary source) were wrongly
+  discarded as duplicates, so that position and connection status could expire
+  although data was still arriving.
+- Fixed replacing an approach chart (VAC) in the library: if the import of the
+  new chart failed, for instance because the storage was full, the old chart
+  was lost. The old chart is now kept until the new one has been written.
+- Fixed import of GeoTIFF charts whose image dimensions are stored as 32-bit
+  integers. These files were rejected with a misleading error message.
+
+
 ## [3.5.9] - 2026-10-22
 
 ### Fixed

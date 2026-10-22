@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.5.9] - Unreleased
+## [3.5.9] - 2026-10-22
 
 ### Fixed
 

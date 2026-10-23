@@ -107,7 +107,11 @@ auto main(int argc, char *argv[]) -> int
     QCoreApplication::setOrganizationDomain(QStringLiteral("akaflieg_freiburg.de"));
     QCoreApplication::setApplicationName(QStringLiteral("enroute flight navigation"));
     QCoreApplication::setApplicationVersion(QStringLiteral(ENROUTE_VERSION_STRING));
+#if !defined(Q_OS_MACOS)
+    // On macOS, this would replace the bundle icon in the Dock with an image
+    // that lacks the margins of Apple's icon grid
     QGuiApplication::setWindowIcon(QIcon(u":/icons/appIcon.png"_s));
+#endif
 
     // Install translators
     auto preferredLanguage = GlobalObject::platformAdaptor()->language();

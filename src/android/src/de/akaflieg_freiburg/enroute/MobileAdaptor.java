@@ -15,13 +15,13 @@ package de.akaflieg_freiburg.enroute;
 import org.qtproject.qt.android.QtNative;
 
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.NetworkInfo;
@@ -48,10 +48,6 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
@@ -566,6 +562,11 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
       mimeType = m_instance.getContentResolver().getType(uri);
     }
 
+    // Remove parameters such as "charset=UTF-8". Intent resolution compares the
+    // complete type string, so "text/plain;charset=UTF-8" would not reach apps
+    // whose intent filters list "text/plain".
+    mimeType = Intent.normalizeMimeType(mimeType);
+
     if (action == Intent.ACTION_SEND) {
       intent.putExtra(Intent.EXTRA_STREAM, uri);
       intent.setType(mimeType);
@@ -683,11 +684,15 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   }
 
   /**
-   * create a custom chooser and start activity.
+   * create a chooser and start activity.
    *
-   * The custom chooser takes care of not sharing with or sending to the own app. This is done by
-   * first finding matching apps which can handle the intent and then blacklisting the own app by
-   * Intent.EXTRA_EXCLUDE_COMPONENTS.
+   * The chooser takes care of not sharing with or sending to the own app. This is done by
+   * excluding the own activity via Intent.EXTRA_EXCLUDE_COMPONENTS.
+   *
+   * The PackageManager is deliberately not asked beforehand whether there are apps that can handle
+   * the intent. Since Android 11, package visibility filtering hides most installed apps from such
+   * queries, so that the check would reject intents that installed apps can handle. The system
+   * chooser is not subject to this filtering and lists all suitable apps.
    *
    * The chooser intent is then started with startActivity() which will return immediately and not
    * wait for the chooser result. This way, both enroute and the receiving app can run concurrently
@@ -699,65 +704,22 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
    */
   private static boolean customStartActivity(Intent theIntent) {
 
-    final Context context = m_instance;
-    final PackageManager packageManager = context.getPackageManager();
-
-    // MATCH_DEFAULT_ONLY: Resolution and querying flag. if set, only filters
-    // that support the CATEGORY_DEFAULT will be considered for matching. Check
-    // if there is a default app for this type of content.
-    ResolveInfo defaultAppInfo =
-        packageManager.resolveActivity(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
-    if (defaultAppInfo == null) {
-      Log.d(TAG, "PackageManager cannot resolve Activity");
-      return false;
-    }
-
-    // Retrieve all apps for our intent. Check if there are any apps returned
-    List<ResolveInfo> appInfoList =
-        packageManager.queryIntentActivities(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
-    if (appInfoList.isEmpty()) {
-      Log.d(TAG, "appInfoList.isEmpty");
-      return false;
-    }
-    // Log.d(TAG, "appInfoList: " + appInfoList.size());
-
-    // Sort in alphabetical order
-    Collections.sort(appInfoList, new Comparator<ResolveInfo>() {
-      @Override
-      public int compare(ResolveInfo first, ResolveInfo second) {
-        String firstName = first.loadLabel(packageManager).toString();
-        String secondName = second.loadLabel(packageManager).toString();
-        return firstName.compareToIgnoreCase(secondName);
-      }
-    });
-
-    // find own package and blacklist it
-    //
-    List<ComponentName> blacklistedComponents = new ArrayList<ComponentName>();
-    for (ResolveInfo info : appInfoList) {
-
-      String pkgName = info.activityInfo.packageName;
-      String clsName = info.activityInfo.name;
-      // we don't want to share with our own app so blacklist it
-      //
-      if (pkgName.equals(context.getPackageName())) {
-        blacklistedComponents.add(new ComponentName(pkgName, clsName));
-      }
-    }
-
+    // We don't want to share with our own app, so exclude it. MobileAdaptor is
+    // the only activity of enroute that accepts SEND and VIEW intents.
     Intent chooserIntent = Intent.createChooser(theIntent, null /* title */);
     chooserIntent.putExtra(Intent.EXTRA_EXCLUDE_COMPONENTS,
-        blacklistedComponents.toArray(new Parcelable[] {}));
+        new Parcelable[] {new ComponentName(m_instance, MobileAdaptor.class)});
     chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-    // Verify that the intent will resolve to an activity
     // do NOT use startActivityForResult as it will block
     // enroute until the receiving app terminates.
-    if (chooserIntent.resolveActivity(m_instance.getPackageManager()) != null) {
+    try {
       m_instance.startActivity(chooserIntent);
-      return true;
+    } catch (ActivityNotFoundException e) {
+      Log.d(TAG, "Cannot start chooser: " + e.getMessage());
+      return false;
     }
-    return false;
+    return true;
   }
 
   //

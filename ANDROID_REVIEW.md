@@ -56,7 +56,9 @@ The C++ side additionally sets `m_foregroundServiceRunning = true` immediately a
 
 **Fix:** make permission and foreground eligibility explicit prerequisites, wait for their results, handle service-start/promotion failures in Java, and report actual success/failure back to C++. Keep the native running state consistent with service lifecycle. Test denied, revoked, and newly granted permission states.
 
-### 3. P2 — Package-visibility checks can reject installed sharing/viewing apps
+### 3. P2 — Package-visibility checks can reject installed sharing/viewing apps — DONE
+
+**Status:** Done (2026-10-23, uncommitted). `customStartActivity()` no longer queries the PackageManager; it starts the system chooser directly, excludes Enroute's own `MobileAdaptor` component via `EXTRA_EXCLUDE_COMPONENTS`, and catches `ActivityNotFoundException`. `sendOrViewFile()` now also normalizes the MIME type (`Intent.normalizeMimeType()`), so the system-information share (`text/plain;charset=UTF-8`) reaches apps that filter for `text/plain`; previously only `*/*` handlers (Drive, Gmail, Quick Share) matched. Confirmed before the fix on an API 36 emulator: queried from Enroute's UID, VIEW `application/xml` and `application/geo+json` resolved to nothing although a third-party handler was installed; SEND passed only because Quick Share (Google Play services, force-queryable) is visible. Verified with the fix on API 36 and API 28 using a test handler app: viewing and sharing FPL, GeoJSON and GPX reach the handler, which reads the content; Enroute does not appear in its own chooser; system information arrives as `text/plain`. Without any handler, the system chooser shows "No apps can perform this action" instead of Enroute's own error dialog.
 
 **Location:** `src/android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java:656–677`; `src/AndroidManifest.xml.in`.
 

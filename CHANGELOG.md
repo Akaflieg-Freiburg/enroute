@@ -10,6 +10,12 @@
   library.
 - Fixed import of GeoTIFF charts whose image dimensions are stored as 32-bit
   integers. These files were rejected with a misleading error message.
+- Fixed an issue on Android 11 and later where routes and waypoints could not
+  be opened in other apps in GeoJSON, Garmin FPL or MSFS PLN format. The app
+  claimed that no suitable app was installed. On devices without Google Play
+  services, sharing in these formats failed in the same way.
+- On Android, sharing the system information now offers all apps that accept
+  text, not only a few.
 
 
 ## [3.5.9] - 2026-10-22

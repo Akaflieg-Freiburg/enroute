@@ -301,7 +301,10 @@ auto main(int argc, char *argv[]) -> int
     auto result = QGuiApplication::exec();
 
 #if defined(Q_OS_IOS)
-    exit(result);
+    // iOS terminates the app here, without time for an orderly teardown. Do not
+    // use exit(): its static destructors close all SQLite connections while
+    // MapLibre's cache thread may still be writing to one, which crashes.
+    std::_Exit(result);
 #endif
 
     // Ensure that the engine does not hold objects that will interfere when we close down.

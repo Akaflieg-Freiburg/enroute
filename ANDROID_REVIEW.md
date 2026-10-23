@@ -94,7 +94,9 @@ The source is created for a specific `QBluetoothDeviceInfo`, but its discovery c
 
 **Fix:** match the selected device's identity (Android address; platform-appropriate UUID where needed). If changing/randomized identities require rediscovery, make that an explicit resolution policy rather than silently matching only the display name. Test same-name/different-address devices.
 
-### 6. P2 — Java strings are decoded using the wrong UTF-8 variant
+### 6. P2 — Java strings are decoded using the wrong UTF-8 variant — NOT REPRODUCIBLE ON ANDROID, TIDIED UP
+
+**Status:** Not a bug on Android; code tidied up anyway (2026-10-23, uncommitted). The validation below used OpenJDK, which emits true modified UTF-8. ART does not: a JNI probe running under `app_process` on API 28 and API 36 emulators, linked against Qt 6.12's Android `libQt6Core`, showed that `GetStringUTFChars()` encodes `😀` as standard 4-byte UTF-8 (`F0 9F 98 80`), and `QString::fromUtf8()` reproduced `Chart-✈-😀.png` exactly. Only an embedded U+0000 (`C0 80`) became two U+FFFD, which cannot occur in file names, URIs or USB product names. The tidy-up replaces all `GetStringUTFChars()`/`QString::fromUtf8()` conversions in `FileExchange_Android.cpp` and `PlatformAdaptor_Android.cpp` with `QJniObject(jString).toString()`, which copies the UTF-16 data and handles null; this also adds the missing null check in the USB attach callback. Verified on the API 36 emulator: text shared to Enroute containing `✈ 😀 Äü 𝄞 日本` arrives intact.
 
 **Locations:** `src/platform/FileExchange_Android.cpp:250–263` and `src/platform/PlatformAdaptor_Android.cpp:374–377`.
 
@@ -106,7 +108,9 @@ The source is created for a specific `QBluetoothDeviceInfo`, but its discovery c
 
 **Fix:** use `QJniObject(jString).toString()` or `GetStringChars()`/`GetStringLength()` with `QString::fromUtf16()`. Retain the null checks. Do not use `fromLocalRef()` to consume a borrowed callback argument.
 
-### 7. P3 — USB enumeration leaks JNI local references
+### 7. P3 — USB enumeration leaks JNI local references — DONE
+
+**Status:** Done (2026-10-23, uncommitted). The leak was real but harmless in practice: one local reference per attached USB serial adapter and scan, scans only on user or USB events, and the Qt main thread never returns to Java (`main()` runs inside the native `startQtNativeApplication()`), so references accumulate for the session against a limit of 8,388,608 (measured on API 28; above 9,000,000 on API 36). The loop now wraps the element with `QJniObject::fromLocalRef()`. Verified with a probe that runs the loop of `serialPortConnectionInfos()` under ART on an API 28 emulator, linked against Qt 6.12's Android `libQt6Core`: over 9,000,000 elements in one native frame, the old code aborts with "local reference table overflow (max=8388608)" (table full of the device-name strings), and the fixed code completes. The app itself could not exercise the loop, because the emulator has no USB serial devices.
 
 **Location:** `src/platform/PlatformAdaptor_Android.cpp:254–263`, specifically line 258.
 

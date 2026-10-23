@@ -255,7 +255,10 @@ QVector<Traffic::ConnectionInfo> Platform::PlatformAdaptor::serialPortConnection
         auto length = env->GetArrayLength(deviceListJNI.object<jobjectArray>());
         for (jsize i = 0; i < length; ++i)
         {
-            const QJniObject jString = env->GetObjectArrayElement(deviceListJNI.object<jobjectArray>(), i);
+            // fromLocalRef() deletes the local reference that GetObjectArrayElement()
+            // creates. This thread does not return to Java while the app runs, so
+            // local references would otherwise accumulate.
+            const QJniObject jString = QJniObject::fromLocalRef(env->GetObjectArrayElement(deviceListJNI.object<jobjectArray>(), i));
             if (jString.isValid())
             {
                 result += Traffic::ConnectionInfo(jString.toString());
@@ -373,13 +376,13 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onBackIn
     });
 }
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* env, jobject /*unused*/, jstring deviceName)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* /*unused*/, jobject /*unused*/, jstring deviceName)
 {
 
     // Copy the device name here: the JNIEnv is only valid on this thread.
-    const char* fname = env->GetStringUTFChars(deviceName, nullptr);
-    const QString name = QString::fromUtf8(fname);
-    env->ReleaseStringUTFChars(deviceName, fname);
+    // QJniObject::toString() copies the UTF-16 data and handles null, unlike
+    // GetStringUTFChars(), which returns JNI's modified UTF-8.
+    const QString name = QJniObject(deviceName).toString();
 
     GlobalObject::runOnMainThread([name]() {
         GlobalObject::trafficDataProvider()->addDataSource(Traffic::ConnectionInfo(name));

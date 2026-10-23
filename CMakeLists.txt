@@ -57,7 +57,7 @@ include(GNUInstallDirs)
 # private-module warning that Qt would otherwise print on every configure.
 set(QT_NO_PRIVATE_MODULE_WARNING ON)
 
-find_package(Qt6 6.9 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location LocationPrivate Positioning Quick QuickControls2 Sql Svg TextToSpeech REQUIRED)
+find_package(Qt6 6.9 COMPONENTS Bluetooth Concurrent Core Gui HttpServer LinguistTools Location LocationPrivate Positioning Quick QuickControls2 Sql Svg TextToSpeech REQUIRED)
 set(QT_VERSION ${Qt6Core_VERSION})
 
 # main.cpp uses QApplication on the desktop platforms and QGuiApplication on

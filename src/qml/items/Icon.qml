@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Controls.Material
+import QtQuick.Effects
 
 Item {
 
@@ -39,11 +39,14 @@ Item {
         source: parent.source
     }
 
-    ColorOverlay {
+    MultiEffect {
         id: colorOverlay
         anchors.fill: parent
         source: wpLblImg
-        color: Material.foreground
+        // Full brightness first, so that dark icons take the color as well
+        brightness: 1.0
+        colorization: 1.0
+        colorizationColor: Material.foreground
     }
 
 }

@@ -51,7 +51,7 @@ jobs:
         aqtversion: ==3.3.*
         arch: linux_gcc_64
         cache: 'true'
-        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
+        modules: 'qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
         version: ${{ env.QT_VERSION }}
     - name: Install LinuxDeploy
       run: |

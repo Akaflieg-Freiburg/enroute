@@ -1,32 +1,15 @@
 # Changelog
 
-## [3.5.10] - unreleased
+## [3.5.10] - 2026-10-23
 
 ### Fixed
 
 - Fixed a possible crash when a malformed GDL90 message is received over UDP.
-- Fixed traffic receivers connected via UDP: recurring identical data packets
-  (for instance position reports from a stationary source) were wrongly
-  discarded as duplicates, so that position and connection status could expire
-  although data was still arriving.
-- Fixed replacing an approach chart (VAC) in the library: if the import of the
-  new chart failed, for instance because the storage was full, the old chart
-  was lost. The old chart is now kept until the new one has been written.
+- Fixed potential data loss with traffic receivers connected via UDP.
+- Fixed potential data loss when replacing an approach chart (VAC) in the
+  library.
 - Fixed import of GeoTIFF charts whose image dimensions are stored as 32-bit
   integers. These files were rejected with a misleading error message.
-- Flight log (work in progress): changes to the flight list are now saved to
-  the database before they are shown, and GPS track files are only deleted
-  once the database has been updated. Previously, a failed save could cause
-  deleted flights to reappear or edits to be lost at the next start.
-- Flight log (work in progress): fixed a crash on Android 9. With automatic
-  flight detection enabled, the app crashed on every start.
-- Flight log (work in progress): fixed a crash on Android 14 and later when
-  location access was not granted. With automatic flight detection enabled,
-  the app crashed on every start. Switching detection on now asks for location
-  access, and explains if it is declined.
-- Flight log (work in progress): fixed the answer to the notification
-  permission request being mistaken for the answer to the location permission
-  request on Android 13 and later.
 
 
 ## [3.5.9] - 2026-10-22
@@ -390,7 +373,7 @@
   usb-serial-for-android and AndroidX libraries shipped in the Android app.
 
 - Fixed the Android app listing, which was hidden from tablets without GPS or
-  Bluetooth hardware although the app supports them; the app also no longer
+  Bluetooth hardware, although the app supports them; the app also no longer
   requests the Bluetooth advertising permission, which it never used.
 
 - Fixed the list of third-party licenses so that it covers every Qt module the

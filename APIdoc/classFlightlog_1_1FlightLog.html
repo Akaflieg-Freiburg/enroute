@@ -321,7 +321,7 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
 </div><div class="memdoc">
 
 <p>Emitted when background location access is missing or insufficient. </p>
-<p>Automatic flight detection may not continue reliably while the app is in the background until the user grants "Always" location access.</p>
+<p>Automatic flight detection may not continue reliably while the app is in the background. On iOS, the user needs to grant "Always" location access. On Android, the user switched detection on but did not grant location access, so Android does not allow the foreground service that keeps detection running in the background.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">message</td><td>Human-readable description, suitable for display </td></tr>

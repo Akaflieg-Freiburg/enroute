@@ -107,6 +107,8 @@ void&#160;</td><td class="memItemRight"><b>safeInsetsChanged</b> ()</td></tr>
 <tr class="memdesc:aeb6a8a24a09bad0e3a8571e66c78488a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when the OS requests a language change.  <br /></td></tr>
 <tr class="memitem:a5ad6095ebd2bfbbe00c70f8a887d6a20" id="r_a5ad6095ebd2bfbbe00c70f8a887d6a20"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a5ad6095ebd2bfbbe00c70f8a887d6a20">wifiConnected</a> ()</td></tr>
 <tr class="memdesc:a5ad6095ebd2bfbbe00c70f8a887d6a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a new WiFi connections becomes available.  <br /></td></tr>
+<tr class="memitem:ac1d23e9d4ccdd576c4feaf9e608baa17" id="r_ac1d23e9d4ccdd576c4feaf9e608baa17"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ac1d23e9d4ccdd576c4feaf9e608baa17">windowFocusGained</a> ()</td></tr>
+<tr class="memdesc:ac1d23e9d4ccdd576c4feaf9e608baa17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when the app window regains focus from the OS.  <br /></td></tr>
 <tr class="memitem:a4be91c6f61af307ce667f5cd0661838c" id="r_a4be91c6f61af307ce667f5cd0661838c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a4be91c6f61af307ce667f5cd0661838c">serialPortsChanged</a> ()</td></tr>
 <tr class="memdesc:a4be91c6f61af307ce667f5cd0661838c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a serial port configuration changes.  <br /></td></tr>
 </table><table class="memberdecls">
@@ -938,6 +940,35 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Emitted when a new WiFi connections becomes available. </p>
 <p>This signal is emitted when a new WiFi connection becomes available. </p>
+
+</div>
+</div>
+<a id="ac1d23e9d4ccdd576c4feaf9e608baa17" name="ac1d23e9d4ccdd576c4feaf9e608baa17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1d23e9d4ccdd576c4feaf9e608baa17">&#9670;&#160;</a></span>windowFocusGained</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Platform::PlatformAdaptor_Abstract::windowFocusGained </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel signal">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted when the app window regains focus from the OS. </p>
+<p>This signal is emitted when the app window regains input focus, for instance after a system dialog such as a permission request closed, or when the user returns from the system settings. Unlike QGuiApplication::applicationStateChanged(), it is also emitted in multi-window mode, where Qt keeps the app active throughout.</p>
+<p>Currently emitted on Android only. </p>
 
 </div>
 </div>

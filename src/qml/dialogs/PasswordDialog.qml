@@ -44,7 +44,7 @@ CenteringDialog {
             wrapMode: Text.Wrap
         }
 
-        MyTextField {
+        TextInputField {
             id: pwField
             Layout.fillWidth: true
             onAccepted: dlg.accept()

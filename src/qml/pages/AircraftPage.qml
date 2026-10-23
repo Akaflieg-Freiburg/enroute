@@ -153,7 +153,7 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.topMargin: font.pixelSize/2
             }
-            MyTextField {
+            TextInputField {
                 id: name
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
@@ -183,7 +183,7 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.topMargin: font.pixelSize/2
             }
-            MyTextField {
+            TextInputField {
                 id: transponderCode
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
@@ -346,7 +346,7 @@ Page {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            MyTextField {
+            TextInputField {
                 id: cruiseSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -425,7 +425,7 @@ Page {
                 text: qsTr("Descent")
                 Layout.alignment: Qt.AlignBaseline
             }
-            MyTextField {
+            TextInputField {
                 id: descentSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -504,7 +504,7 @@ Page {
                 text: qsTr("Minimum")
                 Layout.alignment: Qt.AlignBaseline
             }
-            MyTextField {
+            TextInputField {
                 id: minimumSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -591,7 +591,7 @@ Page {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            MyTextField {
+            TextInputField {
                 id: fuelConsumption
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline

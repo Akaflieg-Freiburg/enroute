@@ -146,7 +146,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Date")
             }
-            MyTextField {
+            TextInputField {
                 id: dateField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -158,7 +158,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Departure (ICAO)")
             }
-            MyTextField {
+            TextInputField {
                 id: depField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -173,7 +173,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Arrival (ICAO)")
             }
-            MyTextField {
+            TextInputField {
                 id: arrField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -192,7 +192,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Off-Block (UTC)")
             }
-            MyTextField {
+            TextInputField {
                 id: offBlockField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -205,7 +205,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Start (UTC)")
             }
-            MyTextField {
+            TextInputField {
                 id: startField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -218,7 +218,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Landing (UTC)")
             }
-            MyTextField {
+            TextInputField {
                 id: landingField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -231,7 +231,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("On-Block (UTC)")
             }
-            MyTextField {
+            TextInputField {
                 id: onBlockField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -249,7 +249,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Pilot")
             }
-            MyTextField {
+            TextInputField {
                 id: pilotField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -260,7 +260,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Aircraft")
             }
-            MyTextField {
+            TextInputField {
                 id: callsignField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -271,7 +271,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Comments")
             }
-            MyTextField {
+            TextInputField {
                 id: commentsField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -282,7 +282,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Landings")
             }
-            MyTextField {
+            TextInputField {
                 id: landingsField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline

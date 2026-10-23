@@ -675,7 +675,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/MapButton.qml
     qml/items/MapSet.qml
     qml/items/MFM.qml
-    qml/items/MyTextField.qml
     qml/items/NavBar.qml
     qml/items/NotificationArea.qml
     qml/items/NotificationButton.qml
@@ -686,6 +685,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/Sideview.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml
+    qml/items/TextInputField.qml
     qml/items/Toast.qml
     qml/items/Traffic.qml
     qml/items/TrafficLabel.qml

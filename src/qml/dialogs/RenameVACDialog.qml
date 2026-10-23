@@ -45,7 +45,7 @@ CenteringDialog {
             textFormat: Text.StyledText
         }
 
-        MyTextField {
+        TextInputField {
             id: newName
 
             focus: true

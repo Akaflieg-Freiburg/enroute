@@ -25,16 +25,11 @@ import QtQuick.Controls.Material
 import akaflieg_freiburg.enroute
 
 // This is a variant of TextField with a clear button (except on iOS).
-// implementation are the following.
 //
-// - Instances of this class call PlatformAdaptor.setupImEventFilter() on
-//   completion. On iOS this avoids problematic behavior where the virtual
-//   keyboard pushes up the whole qml page. Details for this problem are
-//   described here
-//
-//   https://stackoverflow.com/questions/34716462/ios-sometimes-keyboard-pushes-up-the-whole-qml-page
-//
-//   https://bugreports.qt.io/browse/QTBUG-80790
+// On iOS, Qt scrolls the whole window, including the header, to keep the
+// cursor above the virtual keyboard. Qt offers no way to disable this, so
+// PlatformAdaptor.setupInputMethodEventFilter() hides the cursor rectangle
+// from Qt. Do not remove this, see QTBUG-80790.
 
 TextField {
     id: textField

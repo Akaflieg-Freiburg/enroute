@@ -881,7 +881,7 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     text: qsTr("Direction from")
                 }
-                MyTextField {
+                TextInputField {
                     id: windDirection
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
@@ -914,7 +914,7 @@ Page {
                     text: qsTr("Speed")
                     Layout.alignment: Qt.AlignBaseline
                 }
-                MyTextField {
+                TextInputField {
                     id: windSpeed
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline

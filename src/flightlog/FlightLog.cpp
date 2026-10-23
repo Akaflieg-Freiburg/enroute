@@ -26,6 +26,8 @@
 #ifdef Q_OS_ANDROID
 #include <QJniObject>
 #include <QCoreApplication>
+#include <QPermissions>
+#include "platform/PlatformAdaptor.h"
 #endif
 
 #ifdef Q_OS_IOS
@@ -78,6 +80,29 @@ void cancelAndroidNotification(jint id)
         id);
 }
 
+// Returns true if the service runs or is starting, false if Android does not
+// allow it (no location permission on Android 14+, or app in the background).
+bool startFlightLogService()
+{
+    QJniObject context = QNativeInterface::QAndroidApplication::context();
+    auto started = QJniObject::callStaticMethod<jboolean>(
+        "de/akaflieg_freiburg/enroute/FlightLogService",
+        "start",
+        "(Landroid/content/Context;)Z",
+        context.object());
+    return started != 0U;
+}
+
+void stopFlightLogService()
+{
+    QJniObject context = QNativeInterface::QAndroidApplication::context();
+    QJniObject::callStaticMethod<void>(
+        "de/akaflieg_freiburg/enroute/FlightLogService",
+        "stop",
+        "(Landroid/content/Context;)V",
+        context.object());
+}
+
 } // namespace
 #endif
 
@@ -117,7 +142,7 @@ void Flightlog::FlightLog::deferredInitialization()
             this, &Flightlog::FlightLog::onPositionUpdated);
 
     connect(GlobalObject::globalSettings(), &GlobalSettings::autoFlightDetectionChanged,
-            this, &Flightlog::FlightLog::onAutoFlightDetectionChanged);
+            this, [this]() { onAutoFlightDetectionChanged(true); });
 
     // Forward GlobalSettings NOTIFY signals so FlightLog property bindings
     // stay consistent regardless of who writes the underlying setting.
@@ -158,11 +183,25 @@ void Flightlog::FlightLog::deferredInitialization()
 
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged,
             this, &Flightlog::FlightLog::onReceivingPositionInfoChanged);
+
+    // Retry starting the foreground service whenever the window regains focus:
+    // the user may have granted location access in the meantime, in the
+    // startup permission dialog, in our own dialog, or in the system settings.
+    // The window focus also covers multi-window mode, where Qt's application
+    // state does not change around a dialog.
+    connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::windowFocusGained,
+            this, [this]() {
+                if (GlobalObject::globalSettings()->autoFlightDetection()) {
+                    updateForegroundService(false);
+                }
+            });
 #endif
 
-    // If auto-detection was already enabled (persisted setting), start the service now
+    // If auto-detection was already enabled (persisted setting), start the service now.
+    // Do not show a permission dialog here: main.qml requests location access at
+    // startup, and Android ignores a second concurrent request.
     if (GlobalObject::globalSettings()->autoFlightDetection()) {
-        onAutoFlightDetectionChanged();
+        onAutoFlightDetectionChanged(false);
     }
 }
 
@@ -924,7 +963,8 @@ void Flightlog::FlightLog::onPositionUpdated()
 }
 
 
-void Flightlog::FlightLog::onAutoFlightDetectionChanged()
+// userInitiated is only used on Android, see updateForegroundService().
+void Flightlog::FlightLog::onAutoFlightDetectionChanged([[maybe_unused]] bool userInitiated)
 {
 #ifdef Q_OS_IOS
     // Request local notification permission when the user first enables
@@ -973,23 +1013,7 @@ void Flightlog::FlightLog::onAutoFlightDetectionChanged()
 #ifdef Q_OS_ANDROID
     bool enabled = GlobalObject::globalSettings()->autoFlightDetection();
 
-    if (enabled && !m_foregroundServiceRunning) {
-        QJniObject context = QNativeInterface::QAndroidApplication::context();
-        QJniObject::callStaticMethod<void>(
-            "de/akaflieg_freiburg/enroute/FlightLogService",
-            "start",
-            "(Landroid/content/Context;)V",
-            context.object());
-        m_foregroundServiceRunning = true;
-    } else if (!enabled && m_foregroundServiceRunning) {
-        QJniObject context = QNativeInterface::QAndroidApplication::context();
-        QJniObject::callStaticMethod<void>(
-            "de/akaflieg_freiburg/enroute/FlightLogService",
-            "stop",
-            "(Landroid/content/Context;)V",
-            context.object());
-        m_foregroundServiceRunning = false;
-    }
+    updateForegroundService(userInitiated);
 
     // Manage the "no GPS" warning notification.
     if (enabled && !GlobalObject::positionProvider()->receivingPositionInfo()) {
@@ -1007,6 +1031,56 @@ void Flightlog::FlightLog::onAutoFlightDetectionChanged()
 
 
 #ifdef Q_OS_ANDROID
+void Flightlog::FlightLog::updateForegroundService(bool userInitiated)
+{
+    if (!GlobalObject::globalSettings()->autoFlightDetection()) {
+        if (m_foregroundServiceRunning) {
+            stopFlightLogService();
+            m_foregroundServiceRunning = false;
+        }
+        return;
+    }
+
+    // FlightLogService.start() decides whether Android allows the service.
+    // It returns at once if the service already runs.
+    m_foregroundServiceRunning = startFlightLogService();
+    if (m_foregroundServiceRunning) {
+        // Location access may have been granted just now, outside the QML
+        // LocationPermission object, whose status change would otherwise
+        // restart satellite positioning. startUpdates() is idempotent.
+        GlobalObject::positionProvider()->startUpdates();
+        return;
+    }
+
+    // Startup and focus changes stay silent; see deferredInitialization().
+    if (!userInitiated) {
+        return;
+    }
+
+    // The user just switched detection on, but Android does not allow the
+    // service, typically because location permission is missing. Ask for it.
+    // Use the same settings as the QML LocationPermission in Global.qml.
+    // Decide by the outcome of start(), not by the status Qt reports: Qt
+    // reports "approximate only" as denied for a precise request, but
+    // approximate location suffices for the service.
+    QLocationPermission permission;
+    permission.setAccuracy(QLocationPermission::Precise);
+    permission.setAvailability(QLocationPermission::WhenInUse);
+    qApp->requestPermission(permission, this, [this]() {
+        if (!GlobalObject::globalSettings()->autoFlightDetection()) {
+            return;
+        }
+        updateForegroundService(false);
+        if (!m_foregroundServiceRunning) {
+            emit backgroundLocationUnavailable(
+                tr("Automatic flight detection needs access to the device location "
+                   "to keep running while the app is in the background. Please grant "
+                   "location access to this app in the system settings."));
+        }
+    });
+}
+
+
 void Flightlog::FlightLog::onReceivingPositionInfoChanged(bool receiving)
 {
     if (receiving) {

@@ -334,6 +334,11 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->wifiConnected(); });
 }
 
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWindowFocusGained(JNIEnv* /*unused*/, jclass /*unused*/)
+{
+    GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->windowFocusGained(); });
+}
+
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onBackInvoked(JNIEnv* /*unused*/, jclass /*unused*/)
 {
     // Called on the Android UI thread for the Back gesture or key, see

@@ -20,6 +20,13 @@
   deleted flights to reappear or edits to be lost at the next start.
 - Flight log (work in progress): fixed a crash on Android 9. With automatic
   flight detection enabled, the app crashed on every start.
+- Flight log (work in progress): fixed a crash on Android 14 and later when
+  location access was not granted. With automatic flight detection enabled,
+  the app crashed on every start. Switching detection on now asks for location
+  access, and explains if it is declined.
+- Flight log (work in progress): fixed the answer to the notification
+  permission request being mistaken for the answer to the location permission
+  request on Android 13 and later.
 
 
 ## [3.5.9] - 2026-10-22

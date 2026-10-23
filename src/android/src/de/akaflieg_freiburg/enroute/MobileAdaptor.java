@@ -58,6 +58,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   public static native void onLanguageChanged();
   public static native void onWifiConnected();
   public static native void onBackInvoked();
+  public static native void onWindowFocusGained();
 
   private static MobileAdaptor m_instance;
   private static Vibrator m_vibrator;
@@ -75,6 +76,14 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   private static final int PICK_FILE_REQUEST = 1;
   private static final int CREATE_FILE_REQUEST = 2;
 
+  // Request code for requestNotificationPermission(). Qt numbers its own
+  // permission requests counting up from 0, and QtActivityBase forwards every
+  // permission result to Qt. A request code of 0 would therefore deliver our
+  // result to Qt's first pending request (for instance the location request
+  // made at startup). Use a value Qt never reaches, and keep the result away
+  // from Qt, see onRequestPermissionsResult().
+  private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 0x7E000001;
+
   /**
    * Request POST_NOTIFICATIONS permission on Android 13+.
    * Safe to call from any context — uses m_instance which IS the Activity.
@@ -85,7 +94,42 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         && m_instance.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
                != PackageManager.PERMISSION_GRANTED) {
       m_instance.requestPermissions(
-          new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 0);
+          new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+          NOTIFICATION_PERMISSION_REQUEST_CODE);
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+  {
+    // The result of our own notification request needs no handling:
+    // notifications simply work or not. Do not forward it to Qt, which
+    // would look for a pending request of its own with this code.
+    if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE)
+    {
+      return;
+    }
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+  }
+
+  // Tell C++ whenever the window regains focus from the OS, for instance after
+  // a permission dialog closed or the user returned from the system settings.
+  // Qt's application state cannot be used for this: in multi-window mode,
+  // QtActivityBase.onPause() keeps the app "active", so Qt reports no change.
+  @Override
+  public void onWindowFocusChanged(boolean hasFocus)
+  {
+    super.onWindowFocusChanged(hasFocus);
+    if (hasFocus)
+    {
+      try
+      {
+        onWindowFocusGained();
+      }
+      catch (UnsatisfiedLinkError e)
+      {
+        // The native library is not loaded yet, the app is still starting.
+      }
     }
   }
 

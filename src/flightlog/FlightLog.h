@@ -354,7 +354,10 @@ signals:
     /*! \brief Emitted when background location access is missing or insufficient
      *
      *  Automatic flight detection may not continue reliably while the app
-     *  is in the background until the user grants "Always" location access.
+     *  is in the background. On iOS, the user needs to grant "Always"
+     *  location access. On Android, the user switched detection on but did
+     *  not grant location access, so Android does not allow the foreground
+     *  service that keeps detection running in the background.
      *
      *  @param message Human-readable description, suitable for display
      */
@@ -367,13 +370,22 @@ private slots:
     // Handle detection state change — forwards signal
     void onDetectionStateChanged();
 
-    // Handle auto-detection setting change — manages Android foreground service
-    void onAutoFlightDetectionChanged();
+    // Handle auto-detection setting change — manages Android foreground service.
+    // userInitiated is true when the user changed the setting, and false for
+    // the persisted setting at startup. Only a user-initiated change may show
+    // a permission dialog.
+    void onAutoFlightDetectionChanged(bool userInitiated);
 
 #ifdef Q_OS_ANDROID
     // Posted after a grace period when auto-detection is on but no position
     // data is arriving. Cancelled when GPS resumes or detection is disabled.
     void onReceivingPositionInfoChanged(bool receiving);
+
+    // Start or stop the Android foreground service to match the setting.
+    // Starting fails without location permission (Android 14+). Then, if
+    // userInitiated, request the permission and explain if it is declined;
+    // otherwise stay silent and retry when the window regains focus.
+    void updateForegroundService(bool userInitiated);
 #endif
 
     // Handle takeoff detected by the FlightDetector
@@ -431,7 +443,9 @@ private:
     std::unique_ptr<FlightLogStorage> m_storage;
 
 #ifdef Q_OS_ANDROID
-    // Tracks whether the Android foreground service is running
+    // True if the last start of the Android foreground service was accepted
+    // and stop() has not been called since. Java (FlightLogService.start())
+    // owns the actual running state; this flag only decides whether to stop.
     bool m_foregroundServiceRunning {false};
 
     // Fires after a grace period to post the "no GPS" notification. Started

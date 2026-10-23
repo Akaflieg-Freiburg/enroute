@@ -40,7 +40,9 @@ Executed checks:
 
 **Fix:** use `ServiceCompat.startForeground()` or call the two-argument overload below API 29. Verify service startup on API 28 and a current Android version.
 
-### 2. P1 — Location-service startup is not gated on location permission
+### 2. P1 — Location-service startup is not gated on location permission — DONE
+
+**Status:** Done (2026-10-23, uncommitted). `FlightLogService.start()` now returns a boolean and calls `startForegroundService()` only if Android allows a location foreground service (API 34+: coarse or fine location granted); it catches start exceptions and owns the running state (`s_running`). `onStartCommand()` catches promotion failures, and a START_STICKY restart (Qt not running) now posts the restart notification and stops instead of promoting. In C++, `FlightLog::updateForegroundService()` starts/stops the service; only a user-initiated switch-on requests location permission, and a declined request shows the "Background location access" dialog. The service start is retried whenever the window regains focus (new `PlatformAdaptor::windowFocusGained()` from `MobileAdaptor.onWindowFocusChanged()`), which also covers multi-window mode where Qt keeps the app active. Related: the notification permission request now uses its own request code and its result is no longer forwarded to Qt. Verified on emulators: crash reproduced with the unfixed code on API 36 (launch and sticky restart); with the fix on API 36 no crash with location denied, revoked while running, or permanently denied; service starts after a grant in the startup dialog, the toggle dialog (precise and approximate), or system settings, in full-screen and multi-window mode; regression on API 28 and 29 without findings.
 
 **Locations:** `FlightLogService.java:253–265` and `127–133`; `src/flightlog/FlightLog.cpp:901–908, 933–943`; `src/qml/pages/FlightLogPage.qml:145–148`.
 

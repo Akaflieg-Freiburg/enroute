@@ -350,7 +350,6 @@ Page {
             }
             TextInputField {
                 id: cruiseSpeed
-                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -379,7 +378,7 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Global.digitsInputHint
+                inputMethodHints: Global.digitsInputHint | Qt.ImhNoPredictiveText
                 onEditingFinished: {
                     switch(Navigator.aircraft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
@@ -430,7 +429,6 @@ Page {
             }
             TextInputField {
                 id: descentSpeed
-                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -460,7 +458,7 @@ Page {
                     notation: DoubleValidator.StandardNotation
 
                 }
-                inputMethodHints: Global.digitsInputHint
+                inputMethodHints: Global.digitsInputHint | Qt.ImhNoPredictiveText
                 onEditingFinished: {
                     switch(Navigator.aircraft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
@@ -510,7 +508,6 @@ Page {
             }
             TextInputField {
                 id: minimumSpeed
-                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -539,7 +536,7 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Global.digitsInputHint
+                inputMethodHints: Global.digitsInputHint | Qt.ImhNoPredictiveText
                 onEditingFinished: {
                     switch(Navigator.aircraft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
@@ -598,7 +595,6 @@ Page {
             }
             TextInputField {
                 id: fuelConsumption
-                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -624,7 +620,7 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Qt.ImhFormattedNumbersOnly
+                inputMethodHints: Global.digitsInputHint | Qt.ImhNoPredictiveText
                 onEditingFinished: {
                     switch(Navigator.aircraft.fuelConsumptionUnit) {
                     case Aircraft.LiterPerHour:

@@ -1113,6 +1113,8 @@ Page {
 
                 focus: true
 
+                inputMethodHints: Qt.ImhNoPredictiveText
+
                 // Return adds the top hit: activateFirstItem() clicks the first
                 // delegate, which appends the waypoint and closes the dialog.
                 listView: wpList

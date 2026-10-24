@@ -155,6 +155,7 @@ Page {
             }
             TextInputField {
                 id: name
+                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -185,6 +186,7 @@ Page {
             }
             TextInputField {
                 id: transponderCode
+                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.topMargin: font.pixelSize/2
@@ -348,6 +350,7 @@ Page {
             }
             TextInputField {
                 id: cruiseSpeed
+                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -427,6 +430,7 @@ Page {
             }
             TextInputField {
                 id: descentSpeed
+                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -506,6 +510,7 @@ Page {
             }
             TextInputField {
                 id: minimumSpeed
+                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -593,6 +598,7 @@ Page {
             }
             TextInputField {
                 id: fuelConsumption
+                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5

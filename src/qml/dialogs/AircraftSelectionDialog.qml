@@ -85,8 +85,14 @@ CenteringDialog {
         }
     }
 
+    // Explicit Cancel button: combining standardButtons with a custom
+    // button may drop the standard button
     footer: DialogButtonBox {
-        standardButtons: DialogButtonBox.Cancel
+        Button {
+            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            flat: true
+            text: qsTr("Cancel")
+        }
 
         Button {
             flat: true

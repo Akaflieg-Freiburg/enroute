@@ -140,20 +140,9 @@ Page {
                 cascade: true
 
                 MenuItem {
-                    text: qsTr("Automatic flight detection")
-                    checkable: true
-                    checked: GlobalSettings.autoFlightDetection
-                    onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        GlobalSettings.autoFlightDetection = checked
-                    }
-                }
-
-                MenuItem {
                     text: qsTr("Record GPS track")
                     checkable: true
-                    enabled: GlobalSettings.autoFlightDetection
-                    checked: GlobalSettings.autoFlightDetection && FlightLog.trackRecording
+                    checked: FlightLog.trackRecording
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         FlightLog.trackRecording = checked
@@ -163,8 +152,8 @@ Page {
                 MenuItem {
                     text: qsTr("Show live flight trace on map")
                     checkable: true
-                    enabled: GlobalSettings.autoFlightDetection && FlightLog.trackRecording
-                    checked: GlobalSettings.autoFlightDetection && FlightLog.trackRecording && FlightLog.showCurrentFlightTrace
+                    enabled: FlightLog.trackRecording
+                    checked: FlightLog.trackRecording && FlightLog.showCurrentFlightTrace
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         FlightLog.showCurrentFlightTrace = checked
@@ -325,6 +314,22 @@ Page {
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
 
+        Button {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: font.pixelSize / 2.0
+
+            text: GlobalSettings.autoFlightDetection ? qsTr("Stop Flight Recording") : qsTr("Start Flight Recording")
+            icon.source: "/icons/material/ic_flight_takeoff.svg"
+            highlighted: !GlobalSettings.autoFlightDetection
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource("../dialogs/FlightRecordingDialog.qml", {})
+                Global.dialogLoader.active = true
+            }
+        }
+
         // Detection status indicator
         Label {
             id: detectionStatusLabel
@@ -418,7 +423,7 @@ Page {
             textFormat: Text.RichText
             wrapMode: Text.Wrap
             text: (flightFilter.filter === "")
-                  ? qsTr("<h3>No flights recorded</h3><p>Flights will be automatically recorded when takeoff and landing are detected near airfields. You can also add flights manually using the button below.</p>")
+                  ? qsTr("<h3>No flights recorded</h3><p>Tap on 'Start Flight Recording' and flights will be recorded automatically when takeoff and landing are detected. You can also add flights manually using the button below.</p>")
                   : qsTr("<h3>Sorry!</h3><p>No flights match your filter.</p>")
         }
     }

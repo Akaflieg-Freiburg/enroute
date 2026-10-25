@@ -781,6 +781,7 @@ void DemoRunner::runSmokeTest()
         {u"ConnectionInfoDialog.qml"_s, {{u"connection"_s, QVariant::fromValue<QObject*>(trafficSimulator)}}},
         {u"ErrorDialog.qml"_s, {}},
         {u"FlightRouteSaveDialog.qml"_s, {}},
+        {u"FlightRecordingDialog.qml"_s, {}},
         {u"LongTextDialog.qml"_s, {{u"title"_s, u"Smoke test"_s}, {u"text"_s, u"<p>Smoke test</p>"_s}}},
         {u"LongTextDialogMD.qml"_s, {{u"title"_s, u"Smoke test"_s}, {u"text"_s, u"# Smoke test"_s}}},
         {u"MetarTafDialog.qml"_s, {{u"weatherStation"_s, QVariant::fromValue(weatherStation)}}},

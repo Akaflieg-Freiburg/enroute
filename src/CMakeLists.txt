@@ -645,6 +645,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/ConnectionInfoDialog.qml
     qml/dialogs/LongTextDialog.qml
     qml/dialogs/AircraftSelectionDialog.qml
+    qml/dialogs/FlightRecordingDialog.qml
     qml/dialogs/FlightLogEntryEditor.qml
     qml/dialogs/ErrorDialog.qml
     qml/dialogs/FirstRunDialog.qml

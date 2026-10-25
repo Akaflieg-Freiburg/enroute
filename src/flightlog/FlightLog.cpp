@@ -124,6 +124,19 @@ Flightlog::FlightLog::FlightLog(QObject *parent)
     m_detector = new AirplaneFlightDetector(this);
     connectDetector(m_detector);
 
+    m_currentFlightStartTime.setBinding([this]() -> QDateTime {
+        auto const uuid = m_currentFlightUuid.value();
+        if (uuid.isNull()) {
+            return {};
+        }
+        for (const auto& flight : m_flights.value()) {
+            if (flight.uuid() == uuid) {
+                return flight.startTime();
+            }
+        }
+        return {};
+    });
+
     // Forward live track updates to the map when no saved track is selected
     connect(m_recorder.get(), &FlightRecorder::trackGeoPathChanged, this, [this]() {
         if (m_displayedTrackFile.isEmpty()) {
@@ -133,7 +146,11 @@ Flightlog::FlightLog::FlightLog(QObject *parent)
 }
 
 
-Flightlog::FlightLog::~FlightLog() = default;
+Flightlog::FlightLog::~FlightLog()
+{
+    // Break the binding before the properties it reads are destroyed
+    m_currentFlightStartTime.takeBinding();
+}
 
 
 void Flightlog::FlightLog::deferredInitialization()
@@ -322,8 +339,8 @@ void Flightlog::FlightLog::removeFlight(const QString& uuid)
     }
 
     // If the in-progress flight is being removed, reset tracking
-    if (flight.uuid() == m_currentFlightUuid) {
-        m_currentFlightUuid = {};
+    if (flight.uuid() == m_currentFlightUuid.value()) {
+        m_currentFlightUuid = QUuid();
         if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
             m_detector->resetDetection();
         }
@@ -374,8 +391,8 @@ void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
         if (!m_displayedTrackFile.isEmpty() && it->trackFile() == m_displayedTrackFile) {
             hideTrack();
         }
-        if (it->uuid() == m_currentFlightUuid) {
-            m_currentFlightUuid = {};
+        if (it->uuid() == m_currentFlightUuid.value()) {
+            m_currentFlightUuid = QUuid();
             if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
                 m_detector->resetDetection();
             }
@@ -402,8 +419,8 @@ void Flightlog::FlightLog::clearFlights()
     if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
         m_detector->resetDetection();
     }
-    if (!m_currentFlightUuid.isNull()) {
-        m_currentFlightUuid = {};
+    if (!m_currentFlightUuid.value().isNull()) {
+        m_currentFlightUuid = QUuid();
         m_recorder->clearTrack();
     }
     for (auto& flight : flights) {
@@ -873,7 +890,7 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
     // Complete the in-progress flight by UUID lookup
     auto flights = m_flights.value();
     auto it = std::ranges::find_if(flights, [this](const Flight& f) {
-        return f.uuid() == m_currentFlightUuid;
+        return f.uuid() == m_currentFlightUuid.value();
     });
     if (it != flights.end()) {
         auto& flight = *it;
@@ -906,7 +923,7 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
     }
 
     // Flight recording is complete
-    m_currentFlightUuid = {};
+    m_currentFlightUuid = QUuid();
 
     emit landingDetected(timeStr);
 
@@ -1000,9 +1017,9 @@ void Flightlog::FlightLog::onAutoFlightDetectionChanged([[maybe_unused]] bool us
         // it doesn't appear frozen on the map or bleed into the next flight.
         // The flight entry itself (with its start time) is kept in the log —
         // the pilot can edit it manually.
-        if (!m_currentFlightUuid.isNull()) {
+        if (!m_currentFlightUuid.value().isNull()) {
             m_recorder->clearTrack();
-            m_currentFlightUuid = {};
+            m_currentFlightUuid = QUuid();
             if (m_displayedTrackFile.isEmpty()) {
                 // Was showing the live trace — tell the map it's gone
                 emit displayedTrackPathChanged();

@@ -98,6 +98,14 @@ public:
     Q_PROPERTY(Flightlog::FlightDetector::DetectionState detectionState READ detectionState NOTIFY detectionStateChanged)
     [[nodiscard]] auto detectionState() const -> FlightDetector::DetectionState;
 
+    /*! \brief Takeoff time of the flight in progress
+     *
+     *  Invalid while no flight is in progress.
+     */
+    Q_PROPERTY(QDateTime currentFlightStartTime READ currentFlightStartTime BINDABLE bindableCurrentFlightStartTime)
+    [[nodiscard]] auto currentFlightStartTime() const -> QDateTime { return m_currentFlightStartTime.value(); }
+    [[nodiscard]] auto bindableCurrentFlightStartTime() const -> QBindable<QDateTime> { return &m_currentFlightStartTime; }
+
     /*! \brief Number of recorded flights */
     Q_PROPERTY(int count READ count NOTIFY flightsChanged)
     [[nodiscard]] auto count() const -> int { return static_cast<int>(m_flights.value().size()); }
@@ -425,7 +433,11 @@ private:
     Q_OBJECT_BINDABLE_PROPERTY(FlightLog, QList<Flightlog::Flight>, m_flights, &FlightLog::flightsChanged)
 
     // UUID of the flight currently being recorded, or null if none
-    QUuid m_currentFlightUuid;
+    QProperty<QUuid> m_currentFlightUuid;
+
+    // Bound to the start time of the flight m_currentFlightUuid, so that it
+    // also follows edits of that flight
+    QProperty<QDateTime> m_currentFlightStartTime;
 
     // Filename of the flight whose saved track is displayed, or empty
     QString m_displayedTrackFile;

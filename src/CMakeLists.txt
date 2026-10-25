@@ -25,6 +25,7 @@ if(FLIGHTLOG)
         <string>location</string>
     </array>]])
 else()
+    message("Disable FLIGHTLOG")
     set(FLIGHTLOG_ANDROID_PERMISSIONS "")
     set(FLIGHTLOG_ANDROID_SERVICE "")
     set(FLIGHTLOG_ANDROID_BACKGROUND_RUNNING false)
@@ -643,7 +644,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/CenteringDialog.qml
     qml/dialogs/ConnectionInfoDialog.qml
     qml/dialogs/LongTextDialog.qml
-    qml/dialogs/AircraftSaveDialog.qml
+    qml/dialogs/AircraftSelectionDialog.qml
     qml/dialogs/FlightLogEntryEditor.qml
     qml/dialogs/ErrorDialog.qml
     qml/dialogs/FirstRunDialog.qml
@@ -696,7 +697,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
     qml/pages/VAC.qml
-    qml/pages/AircraftPage.qml
+    qml/pages/AircraftEditor.qml
     qml/pages/AircraftLibrary.qml
     qml/pages/BugReportPage.qml
     qml/pages/ConnectionManager.qml

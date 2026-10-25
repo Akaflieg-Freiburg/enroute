@@ -40,11 +40,10 @@
 
 
 # Data
-* Aircraft
-    * Edit aircraft
-    * Load aircraft
-    * Save aircraft
-    * Switch units
+* Aircraft (main menu)
+    * Menu entry shows the active aircraft, or "Select Aircraft…"
+    * Select an aircraft from the library
+    * "Library…" opens the aircraft library
 
 * Route and Wind
     * All menu items
@@ -78,11 +77,14 @@
 
 
 * Aircraft Library
-    * List aircraft
-    * Rename aircraft
-    * Delete aircraft
-    * Overwrite current aircraft
+    * List aircraft, active aircraft highlighted
+    * Tap to make aircraft active
+    * Add aircraft (first aircraft becomes active)
+    * Edit aircraft, including units; changes to the active aircraft apply immediately
+    * Rename aircraft (active aircraft stays active)
+    * Delete aircraft (deleting the active aircraft leaves none active)
     * Search
+* Upgrade from a version with a separate current aircraft: it is imported into the library and active
 
 * Flight Route Library
     * List

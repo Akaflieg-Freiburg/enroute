@@ -136,7 +136,7 @@ signals:
      */
     void requestMapBearingPolicy(int bearing);
 
-    /*! \brief Emitted to indicate that the GUI should open the "Aircraft" page */
+    /*! \brief Emitted to indicate that the GUI should open the editor for the active aircraft */
     void requestOpenAircraftPage();
 
     /*! \brief Emitted to indicate that the GUI should open the "Add Waypoint" dialog */

@@ -23,8 +23,8 @@
 
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
+#include "Librarian.h"
 #include "dataManagement/DataManager.h"
-#include "fileFormats/DataFileAbstract.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 
@@ -40,32 +40,27 @@ Navigation::Navigator::~Navigator()
 }
 
 
+namespace {
+const auto activeAircraftKey = u"Aircraft/activeName"_s;
+} // namespace
+
+
 Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 {
-    m_aircraftFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/aircraft.json"_s;
-
     // Restore wind
     QSettings const settings;
     m_wind.setSpeed(Units::Speed::fromKN(settings.value(QStringLiteral("Wind/windSpeedInKT"), qQNaN()).toDouble()));
     m_wind.setDirectionFrom( Units::Angle::fromDEG(settings.value(QStringLiteral("Wind/windDirectionInDEG"), qQNaN()).toDouble()) );
 
-    // Restore aircraft
-    QFile file(m_aircraftFileName);
+    // Restore aircraft. An entry that can no longer be read leaves no aircraft active.
+    migrateLegacyAircraft();
+    auto const name = QSettings().value(activeAircraftKey).toString();
     Navigation::Aircraft newAircraft;
-    if (file.open(QIODevice::ReadOnly))
+    if (!name.isEmpty() && newAircraft.loadFromJSON(Librarian::fullPath(Librarian::Aircraft, name)).isEmpty())
     {
-        (void)newAircraft.loadFromJSON(file.readAll());
+        m_aircraftName = name;
+        m_aircraft = newAircraft;
     }
-    else
-    {
-        auto cruiseSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/cruiseSpeedInKTS"), 0.0).toDouble());
-        auto descentSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/descentSpeedInKTS"), 0.0).toDouble());
-        auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value(QStringLiteral("Aircraft/fuelConsumptionInLPH"), 0.0).toDouble());
-        newAircraft.setCruiseSpeed(cruiseSpeed);
-        newAircraft.setDescentSpeed(descentSpeed);
-        newAircraft.setFuelConsumption(fuelConsumption);
-    }
-    m_aircraft = newAircraft;
 }
 
 
@@ -76,6 +71,29 @@ void Navigation::Navigator::deferredInitialization()
 
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
     connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(); });
+
+    // Follow changes to the library entry of the active aircraft
+    auto* librarian = GlobalObject::librarian();
+    connect(librarian, &Librarian::entrySaved, this, [this](Librarian::Library library, const QString& baseName) {
+        if ((library == Librarian::Aircraft) && !m_aircraftName.isEmpty() && (baseName == m_aircraftName))
+        {
+            (void)selectAircraft(baseName);
+        }
+    });
+    connect(librarian, &Librarian::entryRemoved, this, [this](Librarian::Library library, const QString& baseName) {
+        if ((library == Librarian::Aircraft) && !m_aircraftName.isEmpty() && (baseName == m_aircraftName))
+        {
+            (void)selectAircraft({});
+        }
+    });
+    connect(librarian, &Librarian::entryRenamed, this, [this](Librarian::Library library, const QString& oldName, const QString& newName) {
+        if ((library == Librarian::Aircraft) && !m_aircraftName.isEmpty() && (oldName == m_aircraftName))
+        {
+            m_aircraftName = newName;
+            QSettings().setValue(activeAircraftKey, newName);
+            emit aircraftChanged();
+        }
+    });
     connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(); });
 
@@ -106,19 +124,60 @@ Navigation::FlightRoute* Navigation::Navigator::flightRoute()
 // Setter Methods
 //
 
-void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
+QString Navigation::Navigator::selectAircraft(const QString& baseName)
 {
-    if (newAircraft == m_aircraft)
+    Navigation::Aircraft newAircraft;
+    if (!baseName.isEmpty())
+    {
+        auto errorMsg = newAircraft.loadFromJSON(Librarian::fullPath(Librarian::Aircraft, baseName));
+        if (!errorMsg.isEmpty())
+        {
+            return errorMsg;
+        }
+    }
+
+    if ((baseName == m_aircraftName) && (newAircraft == m_aircraft.value()))
+    {
+        return {};
+    }
+    QSettings().setValue(activeAircraftKey, baseName);
+    m_aircraftName = baseName;
+    m_aircraft = newAircraft;
+    emit aircraftChanged();
+    return {};
+}
+
+
+void Navigation::Navigator::migrateLegacyAircraft()
+{
+    auto const legacyFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/aircraft.json"_s;
+    QFile file(legacyFileName);
+    if (!file.open(QIODevice::ReadOnly))
     {
         return;
     }
+    Navigation::Aircraft acft;
+    auto const errorMsg = acft.loadFromJSON(file.readAll());
+    file.close();
 
-    // Save aircraft atomically; the helper logs failures.
-    (void)FileFormats::DataFileAbstract::saveFileAtomically(m_aircraftFileName, newAircraft.toJSON());
-
-    // Set new aircraft
-    m_aircraft = newAircraft;
-    emit aircraftChanged();
+    // An unreadable or never-edited aircraft is not worth a library entry
+    if (errorMsg.isEmpty() && (acft != Navigation::Aircraft()))
+    {
+        auto name = Librarian::find(acft);
+        if (name.isEmpty())
+        {
+            name = Librarian::uniqueName(Librarian::Aircraft, acft.name().isEmpty() ? tr("My Aircraft") : acft.name());
+            auto const saveError = acft.save(Librarian::fullPath(Librarian::Aircraft, name));
+            if (!saveError.isEmpty())
+            {
+                // Keep the legacy file, so that the next start tries again
+                qWarning() << "Navigator: cannot migrate aircraft:" << saveError;
+                return;
+            }
+        }
+        QSettings().setValue(activeAircraftKey, name);
+    }
+    QFile::remove(legacyFileName);
 }
 
 

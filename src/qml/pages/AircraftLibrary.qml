@@ -61,7 +61,7 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        bottomPadding: SafeInsets.bottom
+        bottomPadding: 0
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
         topPadding: font.pixelSize
@@ -88,15 +88,14 @@ Page {
                     Layout.fillWidth: true
 
                     text: entryRow.name
-                    icon.source: "/icons/material/ic_airplanemode_active.svg"
+                    // The filled icon marks the active aircraft
+                    highlighted: entryRow.name === Navigator.aircraftName
+                    icon.source: highlighted ? "/icons/material/ic_airplanemode_active.svg"
+                                             : "/icons/material/ic_airplanemode_outline.svg"
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        page.finalFileName = entryRow.name
-                        if (!Librarian.contains(Navigator.aircraft))
-                            overwriteDialog.open()
-                        else
-                            page.openFromLibrary()
+                        page.selectAircraft(entryRow.name)
                     }
 
                     swipe.onCompleted: {
@@ -121,6 +120,15 @@ Page {
 
                     AutoSizingMenu {
                         id: cptMenu
+
+                        Action {
+                            id: editAction
+                            text: qsTr("Edit…")
+                            onTriggered: {
+                                PlatformAdaptor.vibrateBrief()
+                                Global.stackView.push("AircraftEditor.qml", {entryName: entryRow.name})
+                            }
+                        } // editAction
 
                         Action {
                             id: renameAction
@@ -175,26 +183,46 @@ Page {
             textFormat: Text.StyledText
             wrapMode: Text.Wrap
             text: (textInput.filter === "")
-                  ? qsTr("<h3>Sorry!</h3><p>No aircraft available. To add a route here, choose 'Aircraft' from the main menu, and save the current aircraft to the library.</p>") //TODO: Fix text (route)
+                  ? qsTr("<h3>Sorry!</h3><p>No aircraft available. To add an aircraft, tap on 'Add Aircraft' below.</p>")
                   : qsTr("<h3>Sorry!</h3><p>No aircraft match your filter criteria.</p>")
         }
 
     }
 
-    // This is the name of the file that page.openFromLibrary will open
+    footer: Footer {
+        ColumnLayout {
+            width: parent.width
+
+            Button {
+                flat: true
+
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Add Aircraft")
+                icon.source: "/icons/material/ic_add_circle.svg"
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    newName.text = Librarian.uniqueName(Librarian.Aircraft, qsTr("New Aircraft"))
+                    newDialog.open()
+                }
+            }
+        }
+    }
+
+    // Name of the library entry that the remove and rename dialogs act on
     property string finalFileName;
 
-    function openFromLibrary() {
-        var acft = Navigator.aircraft.clone() // Get a copy of the current aircraft that we can modify and write back
-        var errorString = acft.loadFromJSON(Librarian.fullPath(Librarian.Aircraft, finalFileName))
+    // Default values for new aircraft
+    property aircraft defaultAircraft
+
+    function selectAircraft(name) {
+        var errorString = Navigator.selectAircraft(name)
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
             return
         }
-        Navigator.aircraft = acft
-        Global.toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
-        Global.stackView.pop()
+        Global.toast.doToast(qsTr("Aircraft <strong>%1</strong> is active").arg(name))
     }
 
     CenteringDialog {
@@ -227,22 +255,6 @@ Page {
     }
 
     LongTextDialog {
-        id: overwriteDialog
-
-        title: qsTr("Overwrite Current Aircraft?")
-        standardButtons: Dialog.No | Dialog.Yes
-
-        text: qsTr("Loading the aircraft <strong>%1</strong> will overwrite the current aircraft. Once overwritten, the current aircraft cannot be restored.").arg(page.finalFileName)
-
-        onAccepted: {
-            page.openFromLibrary()
-        }
-        onRejected: {
-            overwriteDialog.close()
-        }
-    }
-
-    LongTextDialog {
         id: removeDialog
 
         title: qsTr("Remove from Device?")
@@ -269,7 +281,7 @@ Page {
             width: renameDialog.availableWidth
 
             Label {
-                Layout.preferredWidth: overwriteDialog.availableWidth
+                Layout.preferredWidth: renameDialog.availableWidth
 
                 text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(page.finalFileName)
                 Layout.fillWidth: true
@@ -314,6 +326,67 @@ Page {
         onRejected: {
             renameDialog.close()
         }
+    }
+
+    CenteringDialog {
+        id: newDialog
+
+        title: qsTr("Add Aircraft")
+        standardButtons: Dialog.Cancel
+        modal: true
+
+        ColumnLayout {
+            width: newDialog.availableWidth
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Enter a name for the new aircraft.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+            MyTextField {
+                id: newName
+
+                Layout.fillWidth: true
+                focus: true
+
+                onAccepted: {
+                    PlatformAdaptor.vibrateBrief()
+                    newDialog.doCreate()
+                }
+            }
+        }
+
+        footer: DialogButtonBox {
+            Button {
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+                enabled: (newName.text !== "") && !(Librarian.exists(Librarian.Aircraft, newName.text))
+                flat: true
+                text: qsTr("Add")
+            }
+        }
+
+        // Also called from the text field when Return is pressed.
+        function doCreate() {
+            if ((newName.text === "") || Librarian.exists(Librarian.Aircraft, newName.text))
+                return
+            var name = newName.text
+            var errorString = Librarian.saveAircraft(name, page.defaultAircraft)
+            newDialog.close()
+            if (errorString !== "") {
+                lbl.text = errorString
+                fileError.open()
+                return
+            }
+            // A first aircraft becomes active right away
+            if (Navigator.aircraftName === "")
+                Navigator.selectAircraft(name)
+            Global.stackView.push("AircraftEditor.qml", {entryName: name})
+        }
+        onAccepted: doCreate()
+        onRejected: newDialog.close()
     }
 
 } // Page

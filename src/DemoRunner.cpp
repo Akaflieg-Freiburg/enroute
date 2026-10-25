@@ -179,7 +179,8 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
     acft.setDescentSpeed(Units::Speed::fromKN(120));
     acft.setMinimumSpeed(Units::Speed::fromKN(65));
     acft.setFuelConsumption(Units::VolumeFlow::fromLPH(18));
-    GlobalObject::navigator()->setAircraft(acft);
+    (void)Librarian::saveAircraft(acft.name(), acft);
+    (void)GlobalObject::navigator()->selectAircraft(acft.name());
 
     // Set up wind
     Weather::Wind wind;
@@ -415,7 +416,8 @@ void DemoRunner::generateManualScreenshots()
     acft.setDescentSpeed(Units::Speed::fromKN(120));
     acft.setMinimumSpeed(Units::Speed::fromKN(65));
     acft.setFuelConsumption(Units::VolumeFlow::fromLPH(18));
-    GlobalObject::navigator()->setAircraft(acft);
+    (void)Librarian::saveAircraft(acft.name(), acft);
+    (void)GlobalObject::navigator()->selectAircraft(acft.name());
 
     // Set up wind
     Weather::Wind wind;
@@ -722,7 +724,8 @@ void DemoRunner::runSmokeTest()
     GlobalObject::navigator()->flightRoute()->append(waypointA);
     GlobalObject::navigator()->flightRoute()->append(waypointB);
     (void)GlobalObject::navigator()->flightRoute()->save(Librarian::fullPath(Librarian::Routes, u"Smoke Test"_s));
-    (void)GlobalObject::navigator()->aircraft().save(Librarian::fullPath(Librarian::Aircraft, u"Smoke Test"_s));
+    (void)Librarian::saveAircraft(u"Smoke Test"_s, GlobalObject::navigator()->aircraft());
+    (void)GlobalObject::navigator()->selectAircraft(u"Smoke Test"_s);
     auto* weatherStation = new Weather::Observer(this);
     weatherStation->setWaypoint(waypointA);
     delay(2s);
@@ -736,7 +739,6 @@ void DemoRunner::runSmokeTest()
     // case on Linux unless Qt WebEngine is installed, so the page is visited
     // only where the app actually uses it.
     const QStringList pages = {u"AircraftLibrary.qml"_s,
-                               u"AircraftPage.qml"_s,
                                u"BugReportPage.qml"_s,
                                u"ConnectionManager.qml"_s,
                                u"DataManagerPage.qml"_s,
@@ -763,6 +765,10 @@ void DemoRunner::runSmokeTest()
         emit requestOpenPage(u"pages/%1"_s.arg(page));
         delay(1s);
     }
+    // The aircraft editor requires a library entry, which main.qml supplies
+    qInfo().noquote() << u"Smoke test: opening page AircraftEditor.qml"_s;
+    emit requestOpenAircraftPage();
+    delay(1s);
     emit requestClosePages();
     delay(500ms);
 
@@ -771,7 +777,7 @@ void DemoRunner::runSmokeTest()
     // skipped while the flight log is under development.
     const QList<std::pair<QString, QVariantMap>> dialogs = {
         {u"AddBTDeviceDialog.qml"_s, {}},
-        {u"AircraftSaveDialog.qml"_s, {}},
+        {u"AircraftSelectionDialog.qml"_s, {}},
         {u"ConnectionInfoDialog.qml"_s, {{u"connection"_s, QVariant::fromValue<QObject*>(trafficSimulator)}}},
         {u"ErrorDialog.qml"_s, {}},
         {u"FlightRouteSaveDialog.qml"_s, {}},

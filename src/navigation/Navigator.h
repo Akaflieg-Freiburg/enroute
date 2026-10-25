@@ -87,15 +87,33 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Current aircraft
+    /*! \brief Active aircraft
      *
-     *  The aircraft returned here is owned by this class and must not be deleted.
-     *  QML ownership has been set to QQmlEngine::CppOwnership.
+     *  This is a copy of the aircraft library entry aircraftName, or a
+     *  default-constructed aircraft if no aircraft is active. It follows
+     *  changes made to the library entry through Librarian.
      */
-    Q_PROPERTY(Navigation::Aircraft aircraft READ aircraft BINDABLE bindableAircraft WRITE setAircraft NOTIFY aircraftChanged)
+    Q_PROPERTY(Navigation::Aircraft aircraft READ aircraft BINDABLE bindableAircraft NOTIFY aircraftChanged)
     [[nodiscard]] Navigation::Aircraft aircraft() const { return m_aircraft.value(); }
     [[nodiscard]] QBindable<Navigation::Aircraft> bindableAircraft() { return &m_aircraft; }
-    void setAircraft(const Navigation::Aircraft& newAircraft);
+
+    /*! \brief Name of the aircraft library entry that is active
+     *
+     *  Empty if no aircraft is active.
+     */
+    Q_PROPERTY(QString aircraftName READ aircraftName NOTIFY aircraftChanged)
+    [[nodiscard]] QString aircraftName() const { return m_aircraftName; }
+
+    /*! \brief Activate an aircraft from the library
+     *
+     *  @param baseName Name of the aircraft library entry, or an empty string
+     *  to deactivate the current aircraft
+     *
+     *  @returns An empty string in case of success, or else a human-readable,
+     *  translated error message. In case of error, the active aircraft
+     *  remains unchanged.
+     */
+    Q_INVOKABLE QString selectAircraft(const QString& baseName);
 
     /*! \brief Indicates whether an aviation map is installed for the current location
      *
@@ -183,14 +201,17 @@ private:
 
     FlightStatus m_flightStatus {Unknown};
 
+    // Moves the aircraft that older versions stored outside of the library
+    // into the library, and activates it
+    static void migrateLegacyAircraft();
+
     QProperty<Aircraft> m_aircraft {};
+    QString m_aircraftName;
 
     QPointer<FlightRoute> m_flightRoute {nullptr};
     const QString m_flightRouteFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + u"/flight route.geojson"_s};
 
     Weather::Wind m_wind {};
-
-    QString m_aircraftFileName;
 
     QProperty<RemainingRouteInfo> m_remainingRouteInfo;
 };

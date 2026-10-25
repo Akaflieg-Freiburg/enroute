@@ -245,14 +245,16 @@ AppWindow {
                     leftPadding: 16+SafeInsets.left
 
                     id: menuItemAircraft
-                    text: qsTr("Aircraft")
+                    text: (Navigator.aircraftName === "") ? qsTr("Select Aircraft…")
+                                                          : qsTr("Aircraft: %1").arg(Navigator.aircraftName)
                     icon.source: "/icons/material/ic_airplanemode_active.svg"
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        stackView.pop()
-                        stackView.push("pages/AircraftPage.qml")
                         drawer.close()
+                        Global.dialogLoader.active = false
+                        Global.dialogLoader.setSource("dialogs/AircraftSelectionDialog.qml", {})
+                        Global.dialogLoader.active = true
                     }
                 }
 
@@ -903,7 +905,7 @@ AppWindow {
 
             function onRequestOpenAircraftPage() {
                 stackView.pop()
-                stackView.push("pages/AircraftPage.qml")
+                stackView.push("pages/AircraftEditor.qml", {entryName: Navigator.aircraftName})
             }
 
             function onRequestOpenNearbyPage() {

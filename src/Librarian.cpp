@@ -375,33 +375,21 @@ Units::ByteSize Librarian::getStringHashFromRessource(const QString &name)
 }
 
 
-bool Librarian::contains(const Navigation::Aircraft& acft)
+QString Librarian::find(const Navigation::Aircraft& acft)
 {
     const QDir dir(directory(Library::Aircraft));
 
-    // Check if directory exists
-    if (!dir.exists())
-    {
-        return false;
-    }
-
     // Get all files in the directory (no subdirectories)
-    const QFileInfoList fileList = dir.entryInfoList(QDir::Files);
-    Navigation::Aircraft test;
+    const QFileInfoList fileList = dir.entryInfoList({u"*.json"_s}, QDir::Files);
     for (const QFileInfo& fileInfo : fileList)
     {
-        auto res = test.loadFromJSON(fileInfo.absoluteFilePath());
-        if (!res.isEmpty())
+        Navigation::Aircraft test;
+        if (test.loadFromJSON(fileInfo.absoluteFilePath()).isEmpty() && (test == acft))
         {
-            continue;
-        }
-        if (test == acft)
-        {
-            return true;
+            return fileInfo.completeBaseName();
         }
     }
-
-    return false;
+    return {};
 }
 
 
@@ -547,21 +535,7 @@ QString Librarian::import(Librarian::Library library, const QString& fileName)
         return errorMsg;
     }
 
-    auto baseName = QFileInfo(myFileName).baseName();
-    auto savePath = fullPath(library, baseName);
-    if (QFile::exists(savePath))
-    {
-        for(int i=1; ; i++)
-        {
-            auto newBaseName = u"%1 (%2)"_s.arg(baseName).arg(i);
-            savePath = fullPath(library, newBaseName);
-            if (!QFile::exists(savePath))
-            {
-                break;
-            }
-        }
-    }
-
+    auto savePath = fullPath(library, uniqueName(library, QFileInfo(myFileName).baseName()));
     errorMsg = route.save(savePath);
     if (!errorMsg.isEmpty())
     {
@@ -573,17 +547,56 @@ QString Librarian::import(Librarian::Library library, const QString& fileName)
 }
 
 
+QString Librarian::saveAircraft(const QString& baseName, const Navigation::Aircraft& acft)
+{
+    auto errorMsg = acft.save(fullPath(Aircraft, baseName));
+    if (!errorMsg.isEmpty())
+    {
+        return errorMsg;
+    }
+    auto* librarian = GlobalObject::librarian();
+    librarian->m_aircraftModel->refresh();
+    emit librarian->entrySaved(Aircraft, baseName);
+    return {};
+}
+
+
+QString Librarian::uniqueName(Librarian::Library library, const QString& baseName)
+{
+    if (!exists(library, baseName))
+    {
+        return baseName;
+    }
+    for (int i = 1; ; i++)
+    {
+        auto newBaseName = u"%1 (%2)"_s.arg(baseName).arg(i);
+        if (!exists(library, newBaseName))
+        {
+            return newBaseName;
+        }
+    }
+}
+
+
 void Librarian::remove(Librarian::Library library, const QString& baseName) 
 {
-    QFile::remove(fullPath(library, baseName));
-    GlobalObject::librarian()->model(library)->refresh();
+    auto* librarian = GlobalObject::librarian();
+    if (QFile::remove(fullPath(library, baseName)))
+    {
+        librarian->model(library)->refresh();
+        emit librarian->entryRemoved(library, baseName);
+    }
 }
 
 
 void Librarian::rename(Librarian::Library library, const QString &oldName, const QString &newName) 
 {
-    QFile::rename(fullPath(library, oldName), fullPath(library, newName));
-    GlobalObject::librarian()->model(library)->refresh();
+    auto* librarian = GlobalObject::librarian();
+    if (QFile::rename(fullPath(library, oldName), fullPath(library, newName)))
+    {
+        librarian->model(library)->refresh();
+        emit librarian->entryRenamed(library, oldName, newName);
+    }
 }
 
 

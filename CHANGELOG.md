@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Aircraft are now managed only in the aircraft library, where they can be
+  added, edited, renamed and removed. The active aircraft is chosen from the
+  library or from the main menu, and the separate aircraft page is gone. The
+  aircraft that was configured before the update is added to the library and
+  stays active.
+
+
 ## [3.5.10] - 2026-10-23
 
 ### Fixed

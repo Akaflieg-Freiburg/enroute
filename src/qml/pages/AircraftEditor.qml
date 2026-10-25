@@ -21,7 +21,6 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls.Material
-import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -30,88 +29,23 @@ import "../items"
 
 Page {
     id: aircraftPage
-    title: qsTr("Aircraft")
+    title: entryName
 
-    // Required Properties
+    // Name of the aircraft library entry that is edited. Every change is
+    // written to the library right away.
+    required property string entryName
+
+    // Copy of the library entry
+    property aircraft acft
+
+    // Set once the library entry is loaded, so that loading does not write it back
+    property bool loaded: false
 
     // Static objects, used to call static functions
     property speed staticSpeed
     property volumeFlow staticVolumeFlow
 
-    header: PageHeader {
-
-        height: 60 + SafeInsets.top
-        leftPadding: SafeInsets.left
-        rightPadding: SafeInsets.right
-        topPadding: SafeInsets.top
-
-        ToolButton {
-                id: backButton
-
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-
-                icon.source: "/icons/material/ic_arrow_back.svg"
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    Global.stackView.pop()
-                }
-            }
-
-        Label {
-                id: lbl
-
-                anchors.verticalCenter: parent.verticalCenter
-
-                anchors.left: parent.left
-                anchors.leftMargin: 72
-                anchors.right: headerMenuToolButton.left
-
-                text: (Global.stackView.currentItem as T.Page).title
-                elide: Label.ElideRight
-                font.pixelSize: 20
-                verticalAlignment: Qt.AlignVCenter
-            }
-
-        ToolButton {
-                id: headerMenuToolButton
-
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-
-                icon.source: "/icons/material/ic_more_vert.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    headerMenuX.open()
-                }
-
-                AutoSizingMenu {
-                    id: headerMenuX
-                    cascade: true
-
-                    MenuItem {
-                        text: qsTr("View Library…")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            highlighted = false
-                            Global.stackView.push("AircraftLibrary.qml")
-                        }
-                    }
-
-                    MenuItem {
-                        text: qsTr("Save to library…")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            highlighted = false
-                            dlgLoader.active = false
-                            dlgLoader.source = "../dialogs/AircraftSaveDialog.qml"
-                            dlgLoader.active = true
-                        }
-                    }
-                }
-        }
-    }
+    header: StandardHeader {}
 
     DecoratedScrollView {
         id: acftTab
@@ -163,8 +97,8 @@ Page {
                 KeyNavigation.tab: transponderCode
                 placeholderText: qsTr("Callsign")
 
-                onEditingFinished: Navigator.aircraft.name = text
-                text: Navigator.aircraft.name
+                onEditingFinished: aircraftPage.acft.name = text
+                text: aircraftPage.acft.name
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
@@ -193,8 +127,8 @@ Page {
                 KeyNavigation.tab: cruiseSpeed
                 placeholderText: qsTr("Transponder/FLARM ID")
 
-                onEditingFinished: Navigator.aircraft.transponderCode = text.toUpperCase()
-                text: Navigator.aircraft.transponderCode
+                onEditingFinished: aircraftPage.acft.transponderCode = text.toUpperCase()
+                text: aircraftPage.acft.transponderCode
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
@@ -222,9 +156,9 @@ Page {
                     if (checked)
                         pressureWarning.open()
                     else
-                        Navigator.aircraft.cabinPressureEqualsStaticPressure = false
+                        aircraftPage.acft.cabinPressureEqualsStaticPressure = false
                 }
-                checked: Navigator.aircraft.cabinPressureEqualsStaticPressure
+                checked: aircraftPage.acft.cabinPressureEqualsStaticPressure
                 text: qsTr("Use cabin pressure instead of static pressure for pressure altitude calculation.")
                 Component.onCompleted: contentItem.wrapMode = Text.WordWrap
             }
@@ -263,17 +197,17 @@ Page {
                 KeyNavigation.tab: verticalUOM
 
                 currentIndex: {
-                    if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
+                    if (aircraftPage.acft.horizontalDistanceUnit === Aircraft.Kilometer) {
                         return 1
                     }
-                    if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
+                    if (aircraftPage.acft.horizontalDistanceUnit === Aircraft.StatuteMile) {
                         return 2
                     }
                     return 0
                 }
                 onActivated: {
                     PlatformAdaptor.vibrateBrief()
-                    Navigator.aircraft.horizontalDistanceUnit = currentIndex
+                    aircraftPage.acft.horizontalDistanceUnit = currentIndex
                 }
 
                 model: [ qsTr("Nautical Miles"), qsTr("Kilometers"), qsTr("Statute Miles") ]
@@ -292,14 +226,14 @@ Page {
                 KeyNavigation.tab: volumeUOM
 
                 currentIndex: {
-                    if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters) {
+                    if (aircraftPage.acft.verticalDistanceUnit === Aircraft.Meters) {
                         return 1
                     }
                     return 0
                 }
                 onActivated: {
                     PlatformAdaptor.vibrateBrief()
-                    Navigator.aircraft.verticalDistanceUnit = currentIndex
+                    aircraftPage.acft.verticalDistanceUnit = currentIndex
                 }
 
                 model: [ qsTr("Feet"), qsTr("Meters") ]
@@ -318,14 +252,14 @@ Page {
                 KeyNavigation.tab: cruiseSpeed
 
                 currentIndex: {
-                    if (Navigator.aircraft.fuelConsumptionUnit === Aircraft.GallonPerHour) {
+                    if (aircraftPage.acft.fuelConsumptionUnit === Aircraft.GallonPerHour) {
                         return 1
                     }
                     return 0
                 }
                 onActivated: {
                     PlatformAdaptor.vibrateBrief()
-                    Navigator.aircraft.fuelConsumptionUnit = currentIndex
+                    aircraftPage.acft.fuelConsumptionUnit = currentIndex
                 }
 
                 model: [ qsTr("Liters"), qsTr("U.S. Gallons") ]
@@ -355,53 +289,53 @@ Page {
 
                 validator: DoubleValidator {
                     bottom: {
-                        switch(Navigator.aircraft.horizontalDistanceUnit) {
+                        switch(aircraftPage.acft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            return Navigator.aircraft.minValidSpeed.toKN()
+                            return aircraftPage.acft.minValidSpeed.toKN()
                         case Aircraft.Kilometer:
-                            return Navigator.aircraft.minValidSpeed.toKMH()
+                            return aircraftPage.acft.minValidSpeed.toKMH()
                         case Aircraft.StatuteMile :
-                            return Navigator.aircraft.minValidSpeed.toMPH()
+                            return aircraftPage.acft.minValidSpeed.toMPH()
                         }
                     }
                     top: {
-                        switch(Navigator.aircraft.horizontalDistanceUnit) {
+                        switch(aircraftPage.acft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            return Navigator.aircraft.maxValidSpeed.toKN()
+                            return aircraftPage.acft.maxValidSpeed.toKN()
                         case Aircraft.Kilometer:
-                            return Navigator.aircraft.maxValidSpeed.toKMH()
+                            return aircraftPage.acft.maxValidSpeed.toKMH()
                         case Aircraft.StatuteMile :
-                            return Navigator.aircraft.maxValidSpeed.toMPH()
+                            return aircraftPage.acft.maxValidSpeed.toMPH()
                         }
                     }
                     notation: DoubleValidator.StandardNotation
                 }
                 inputMethodHints: Global.digitsInputHint
                 onEditingFinished: {
-                    switch(Navigator.aircraft.horizontalDistanceUnit) {
+                    switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
-                        Navigator.aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKN(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.cruiseSpeed = aircraftPage.staticSpeed.fromKN(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.Kilometer:
-                        Navigator.aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.cruiseSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.StatuteMile :
-                        Navigator.aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromMPH(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.cruiseSpeed = aircraftPage.staticSpeed.fromMPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
                 color: (acceptableInput ? colorGlean.color : "red")
                 text: {
-                    if (!Navigator.aircraft.cruiseSpeed.isFinite()) {
+                    if (!aircraftPage.acft.cruiseSpeed.isFinite()) {
                         return ""
                     }
-                    switch(Navigator.aircraft.horizontalDistanceUnit) {
+                    switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
-                        return Math.round(Navigator.aircraft.cruiseSpeed.toKN()).toString()
+                        return Math.round(aircraftPage.acft.cruiseSpeed.toKN()).toString()
                     case Aircraft.Kilometer:
-                        return Math.round(Navigator.aircraft.cruiseSpeed.toKMH()).toString()
+                        return Math.round(aircraftPage.acft.cruiseSpeed.toKMH()).toString()
                     case Aircraft.StatuteMile :
-                        return Math.round(Navigator.aircraft.cruiseSpeed.toMPH()).toString()
+                        return Math.round(aircraftPage.acft.cruiseSpeed.toMPH()).toString()
                     }
 
                 }
@@ -409,7 +343,7 @@ Page {
             Label {
                 Layout.alignment: Qt.AlignBaseline
                 text: {
-                    switch(Navigator.aircraft.horizontalDistanceUnit) {
+                    switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
                         return "kn";
                     case Aircraft.Kilometer:
@@ -434,23 +368,23 @@ Page {
 
                 validator: DoubleValidator {
                     bottom: {
-                        switch(Navigator.aircraft.horizontalDistanceUnit) {
+                        switch(aircraftPage.acft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            return Navigator.aircraft.minValidSpeed.toKN()
+                            return aircraftPage.acft.minValidSpeed.toKN()
                         case Aircraft.Kilometer:
-                            return Navigator.aircraft.minValidSpeed.toKMH()
+                            return aircraftPage.acft.minValidSpeed.toKMH()
                         case Aircraft.StatuteMile :
-                            return Navigator.aircraft.minValidSpeed.toMPH()
+                            return aircraftPage.acft.minValidSpeed.toMPH()
                         }
                     }
                     top: {
-                        switch(Navigator.aircraft.horizontalDistanceUnit) {
+                        switch(aircraftPage.acft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            return Navigator.aircraft.maxValidSpeed.toKN()
+                            return aircraftPage.acft.maxValidSpeed.toKN()
                         case Aircraft.Kilometer:
-                            return Navigator.aircraft.maxValidSpeed.toKMH()
+                            return aircraftPage.acft.maxValidSpeed.toKMH()
                         case Aircraft.StatuteMile :
-                            return Navigator.aircraft.maxValidSpeed.toMPH()
+                            return aircraftPage.acft.maxValidSpeed.toMPH()
                         }
                     }
                     notation: DoubleValidator.StandardNotation
@@ -458,37 +392,37 @@ Page {
                 }
                 inputMethodHints: Global.digitsInputHint
                 onEditingFinished: {
-                    switch(Navigator.aircraft.horizontalDistanceUnit) {
+                    switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
-                        Navigator.aircraft.descentSpeed = aircraftPage.staticSpeed.fromKN(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.descentSpeed = aircraftPage.staticSpeed.fromKN(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.Kilometer:
-                        Navigator.aircraft.descentSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.descentSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.StatuteMile :
-                        Navigator.aircraft.descentSpeed = aircraftPage.staticSpeed.fromMPH(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.descentSpeed = aircraftPage.staticSpeed.fromMPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
                 color: (acceptableInput ? colorGlean.color : "red")
                 text: {
-                    if (!Navigator.aircraft.descentSpeed.isFinite()) {
+                    if (!aircraftPage.acft.descentSpeed.isFinite()) {
                         return ""
                     }
-                    switch(Navigator.aircraft.horizontalDistanceUnit) {
+                    switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
-                        return Math.round(Navigator.aircraft.descentSpeed.toKN()).toString()
+                        return Math.round(aircraftPage.acft.descentSpeed.toKN()).toString()
                     case Aircraft.Kilometer:
-                        return Math.round(Navigator.aircraft.descentSpeed.toKMH()).toString()
+                        return Math.round(aircraftPage.acft.descentSpeed.toKMH()).toString()
                     case Aircraft.StatuteMile :
-                        return Math.round(Navigator.aircraft.descentSpeed.toMPH()).toString()
+                        return Math.round(aircraftPage.acft.descentSpeed.toMPH()).toString()
                     }
                 }
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
                 text: {
-                    switch(Navigator.aircraft.horizontalDistanceUnit) {
+                    switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
                         return "kn";
                     case Aircraft.Kilometer:
@@ -513,60 +447,60 @@ Page {
 
                 validator: DoubleValidator {
                     bottom: {
-                        switch(Navigator.aircraft.horizontalDistanceUnit) {
+                        switch(aircraftPage.acft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            return Navigator.aircraft.minValidSpeed.toKN()
+                            return aircraftPage.acft.minValidSpeed.toKN()
                         case Aircraft.Kilometer:
-                            return Navigator.aircraft.minValidSpeed.toKMH()
+                            return aircraftPage.acft.minValidSpeed.toKMH()
                         case Aircraft.StatuteMile :
-                            return Navigator.aircraft.minValidSpeed.toMPH()
+                            return aircraftPage.acft.minValidSpeed.toMPH()
                         }
                     }
                     top: {
-                        switch(Navigator.aircraft.horizontalDistanceUnit) {
+                        switch(aircraftPage.acft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            return Navigator.aircraft.maxValidSpeed.toKN()
+                            return aircraftPage.acft.maxValidSpeed.toKN()
                         case Aircraft.Kilometer:
-                            return Navigator.aircraft.maxValidSpeed.toKMH()
+                            return aircraftPage.acft.maxValidSpeed.toKMH()
                         case Aircraft.StatuteMile :
-                            return Navigator.aircraft.maxValidSpeed.toMPH()
+                            return aircraftPage.acft.maxValidSpeed.toMPH()
                         }
                     }
                     notation: DoubleValidator.StandardNotation
                 }
                 inputMethodHints: Global.digitsInputHint
                 onEditingFinished: {
-                    switch(Navigator.aircraft.horizontalDistanceUnit) {
+                    switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
-                        Navigator.aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKN(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.minimumSpeed = aircraftPage.staticSpeed.fromKN(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.Kilometer:
-                        Navigator.aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.minimumSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.StatuteMile :
-                        Navigator.aircraft.minimumSpeed = aircraftPage.staticSpeed.fromMPH(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.minimumSpeed = aircraftPage.staticSpeed.fromMPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
                 color: (acceptableInput ? colorGlean.color : "red")
                 text: {
-                    if (!Navigator.aircraft.minimumSpeed.isFinite()) {
+                    if (!aircraftPage.acft.minimumSpeed.isFinite()) {
                         return ""
                     }
-                    switch(Navigator.aircraft.horizontalDistanceUnit) {
+                    switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
-                        return Math.round(Navigator.aircraft.minimumSpeed.toKN()).toString()
+                        return Math.round(aircraftPage.acft.minimumSpeed.toKN()).toString()
                     case Aircraft.Kilometer:
-                        return Math.round(Navigator.aircraft.minimumSpeed.toKMH()).toString()
+                        return Math.round(aircraftPage.acft.minimumSpeed.toKMH()).toString()
                     case Aircraft.StatuteMile :
-                        return Math.round(Navigator.aircraft.minimumSpeed.toMPH()).toString()
+                        return Math.round(aircraftPage.acft.minimumSpeed.toMPH()).toString()
                     }
                 }
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
                 text: {
-                    switch(Navigator.aircraft.horizontalDistanceUnit) {
+                    switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
                         return "kn";
                     case Aircraft.Kilometer:
@@ -601,51 +535,51 @@ Page {
 
                 validator: DoubleValidator {
                     bottom: {
-                        switch(Navigator.aircraft.fuelConsumptionUnit) {
+                        switch(aircraftPage.acft.fuelConsumptionUnit) {
                         case Aircraft.LiterPerHour:
-                            return Navigator.aircraft.minValidFuelConsumption.toLPH()
+                            return aircraftPage.acft.minValidFuelConsumption.toLPH()
                         case Aircraft.GallonPerHour:
-                            return Navigator.aircraft.minValidFuelConsumption.toGPH()
+                            return aircraftPage.acft.minValidFuelConsumption.toGPH()
                         }
                     }
                     top: {
-                        switch(Navigator.aircraft.fuelConsumptionUnit) {
+                        switch(aircraftPage.acft.fuelConsumptionUnit) {
                         case Aircraft.LiterPerHour:
-                            return Navigator.aircraft.maxValidFuelConsumption.toLPH()
+                            return aircraftPage.acft.maxValidFuelConsumption.toLPH()
                         case Aircraft.GallonPerHour:
-                            return Navigator.aircraft.maxValidFuelConsumption.toGPH()
+                            return aircraftPage.acft.maxValidFuelConsumption.toGPH()
                         }
                     }
                     notation: DoubleValidator.StandardNotation
                 }
                 inputMethodHints: Qt.ImhFormattedNumbersOnly
                 onEditingFinished: {
-                    switch(Navigator.aircraft.fuelConsumptionUnit) {
+                    switch(aircraftPage.acft.fuelConsumptionUnit) {
                     case Aircraft.LiterPerHour:
-                        Navigator.aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.GallonPerHour:
-                        Navigator.aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromGPH(Number.fromLocaleString(Qt.locale(), text))
+                        aircraftPage.acft.fuelConsumption = aircraftPage.staticVolumeFlow.fromGPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
                 color: (acceptableInput ? colorGlean.color : "red")
                 text: {
-                    if (!Navigator.aircraft.fuelConsumption.isFinite()) {
+                    if (!aircraftPage.acft.fuelConsumption.isFinite()) {
                         return ""
                     }
-                    switch(Navigator.aircraft.fuelConsumptionUnit) {
+                    switch(aircraftPage.acft.fuelConsumptionUnit) {
                     case Aircraft.LiterPerHour:
-                        return Navigator.aircraft.fuelConsumption.toLPH().toLocaleString(Qt.locale(), 'f', 1)
+                        return aircraftPage.acft.fuelConsumption.toLPH().toLocaleString(Qt.locale(), 'f', 1)
                     case Aircraft.GallonPerHour:
-                        return Navigator.aircraft.fuelConsumption.toGPH().toLocaleString(Qt.locale(), 'f', 1)
+                        return aircraftPage.acft.fuelConsumption.toGPH().toLocaleString(Qt.locale(), 'f', 1)
                     }
                 }
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
                 text: {
-                    switch(Navigator.aircraft.fuelConsumptionUnit) {
+                    switch(aircraftPage.acft.fuelConsumptionUnit) {
                     case Aircraft.LiterPerHour:
                         return "l/h";
                     case Aircraft.GallonPerHour:
@@ -663,15 +597,34 @@ Page {
 
     }
 
-    Loader {
-        id: dlgLoader
-        anchors.fill: parent
-
-        onLoaded: {
-            var dialog = item as T.Popup
-            dialog.modal = true
-            dialog.open()
+    Component.onCompleted: {
+        var newAcft = acft.clone()
+        var errorString = newAcft.loadFromJSON(Librarian.fullPath(Librarian.Aircraft, entryName))
+        if (errorString !== "") {
+            errorDialog.text = errorString
+            errorDialog.open()
+            return
         }
+        acft = newAcft
+        loaded = true
+    }
+
+    onAcftChanged: {
+        if (!loaded)
+            return
+        var errorString = Librarian.saveAircraft(entryName, acft)
+        if (errorString !== "") {
+            errorDialog.text = errorString
+            errorDialog.open()
+        }
+    }
+
+    LongTextDialog {
+        id: errorDialog
+
+        modal: true
+        title: qsTr("An Error Occurred…")
+        standardButtons: Dialog.Ok
     }
 
     LongTextDialog {
@@ -699,7 +652,7 @@ Page {
         standardButtons: Dialog.Ok | Dialog.Cancel
 
         onAccepted: {
-            Navigator.aircraft.cabinPressureEqualsStaticPressure = true
+            aircraftPage.acft.cabinPressureEqualsStaticPressure = true
         }
 
         onRejected: {

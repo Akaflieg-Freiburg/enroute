@@ -107,13 +107,14 @@ public:
     [[nodiscard]] FileLibraryModel* model(Librarian::Library library) const;
 
 
-    /*! \brief Check if an object exists in the library
+    /*! \brief Find an aircraft in the library
      *
      *  @param acft Aircraft object
      *
-     *  @returns True if the aircraft exists in the library.
+     *  @returns Name of a library entry that equals acft, or an empty string
+     *  if there is none
      */
-    [[nodiscard]] Q_INVOKABLE static bool contains(const Navigation::Aircraft& acft);
+    [[nodiscard]] static QString find(const Navigation::Aircraft& acft);
 
     /*! \brief Check if a flight route exists in the library
      *
@@ -225,6 +226,31 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE static QString import(Librarian::Library library, const QString& fileName) ;
 
+    /*! \brief Saves an aircraft to the library
+     *
+     *  Writes the aircraft to the library entry, overwriting an existing entry
+     *  of the same name, and emits entrySaved().
+     *
+     *  @param baseName Name of the entry, without path and without extension
+     *
+     *  @param acft Aircraft
+     *
+     *  @returns An empty string in case of success, or else a human-readable,
+     *  translated error message.
+     */
+    [[nodiscard]] Q_INVOKABLE static QString saveAircraft(const QString& baseName, const Navigation::Aircraft& acft);
+
+    /*! \brief Name for a new library entry
+     *
+     *  @param library The library that is accessed
+     *
+     *  @param baseName Desired name, without path and without extension
+     *
+     *  @returns baseName if no entry of that name exists, or else
+     *  "baseName (n)" with the smallest n that is not taken
+     */
+    [[nodiscard]] Q_INVOKABLE static QString uniqueName(Librarian::Library library, const QString& baseName);
+
     /*! \brief Removes an entry from a library
      *
      *  @param library The library that is accessed
@@ -313,6 +339,33 @@ public:
      * word list matches every text.
      */
     [[nodiscard]] static bool matchesWords(const QString& simplifiedText, const QStringList& words);
+
+signals:
+    /*! \brief Emitted when saveAircraft() has written a library entry
+     *
+     *  @param library The library that was accessed
+     *
+     *  @param baseName Name of the entry
+     */
+    void entrySaved(Librarian::Library library, const QString& baseName);
+
+    /*! \brief Emitted when remove() has removed a library entry
+     *
+     *  @param library The library that was accessed
+     *
+     *  @param baseName Name of the entry
+     */
+    void entryRemoved(Librarian::Library library, const QString& baseName);
+
+    /*! \brief Emitted when rename() has renamed a library entry
+     *
+     *  @param library The library that was accessed
+     *
+     *  @param oldName Previous name of the entry
+     *
+     *  @param newName New name of the entry
+     */
+    void entryRenamed(Librarian::Library library, const QString& oldName, const QString& newName);
 
 private:
     Q_DISABLE_COPY_MOVE(Librarian)

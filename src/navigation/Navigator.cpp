@@ -160,7 +160,7 @@ void Navigation::Navigator::migrateLegacyAircraft()
     auto const errorMsg = acft.loadFromJSON(file.readAll());
     file.close();
 
-    // An unreadable or never-edited aircraft is not worth a library entry
+    // TODO: This needs to be refined
     if (errorMsg.isEmpty() && (acft != Navigation::Aircraft()))
     {
         auto name = Librarian::find(acft);
@@ -171,6 +171,7 @@ void Navigation::Navigator::migrateLegacyAircraft()
             if (!saveError.isEmpty())
             {
                 // Keep the legacy file, so that the next start tries again
+                // TODO: think about migration to a Database?
                 qWarning() << "Navigator: cannot migrate aircraft:" << saveError;
                 return;
             }

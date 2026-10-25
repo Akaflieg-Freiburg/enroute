@@ -990,10 +990,10 @@ void Flightlog::FlightLog::onAutoFlightDetectionChanged([[maybe_unused]] bool us
     if (GlobalObject::globalSettings()->autoFlightDetection()) {
         ObjCAdapter::requestNotificationPermission();
     }
+#endif
     GlobalObject::positionProvider()->setBackgroundUpdates(
         u"flightlog"_s,
         GlobalObject::globalSettings()->autoFlightDetection());
-#endif
 
     // Ensure the satellite GPS source is running whenever auto-detection is
     // enabled. QML calls startUpdates() on Component.onCompleted, but if the

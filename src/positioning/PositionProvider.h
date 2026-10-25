@@ -330,14 +330,14 @@ public:
      *  from the standard operating system data source (typically SatNav or
      *  WiFi) if permissions were granted.
      */
-    Q_INVOKABLE void startUpdates() { satelliteSource.startUpdates(); }
+    Q_INVOKABLE void startUpdates();
 
-    /*! \brief Request or release background location updates (iOS only)
+    /*! \brief Request or release background location updates
      *
      *  Multiple components can independently request background location.
-     *  Background GPS activates when at least one caller is registered,
-     *  and deactivates when all callers have released it.
-     *  On non-iOS platforms this is a no-op.
+     *  While the app is in the background, satellite positioning keeps
+     *  running only if at least one caller is registered. On iOS, this also
+     *  keeps the app alive in the background.
      *
      *  @param caller  Unique identifier of the requesting component, e.g. "flightlog"
      *  @param enable  true = request background updates, false = release them
@@ -380,10 +380,16 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(PositionProvider)
 
-#ifdef Q_OS_IOS
     QSet<QString> m_backgroundUpdateCallers;
     void updateBackgroundLocation();
-#endif
+
+    // Starts or stops satellite positioning. Without background callers, it
+    // stops while the app is suspended, so that the operating system does
+    // not report background location access.
+    void updateSatelliteUpdates();
+
+    // True once startUpdates() was called
+    bool m_updatesRequested {false};
 
     // Computation method for property with the same name
     QString computeStatusString();

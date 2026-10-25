@@ -20,6 +20,7 @@
 
 #include <QCoreApplication>
 #include <QFile>
+#include <QGuiApplication>
 #include <QHash>
 #include <QSettings>
 
@@ -139,6 +140,9 @@ void Positioning::PositionProvider::deferredInitialization()
     m_pressureAltitudeNotifier = m_pressureAltitude.addNotifier([this]() {updatePressureAltitudeImplausible();});
     connect(this, &Positioning::PositionProvider::positionInfoChanged,
             this, &Positioning::PositionProvider::updatePressureAltitudeImplausible);
+
+    connect(qGuiApp, &QGuiApplication::applicationStateChanged,
+            this, &Positioning::PositionProvider::updateSatelliteUpdates);
 
     onIncomingPositionInfoUpdated();
 }
@@ -339,28 +343,46 @@ void Positioning::PositionProvider::updatePressureAltitudeImplausible()
 }
 
 
+void Positioning::PositionProvider::startUpdates()
+{
+    m_updatesRequested = true;
+    updateSatelliteUpdates();
+}
+
+
 void Positioning::PositionProvider::setBackgroundUpdates(const QString& caller, bool enable)
 {
-#ifdef Q_OS_IOS
     if (enable) {
         m_backgroundUpdateCallers.insert(caller);
     } else {
         m_backgroundUpdateCallers.remove(caller);
     }
     updateBackgroundLocation();
-#else
-    Q_UNUSED(caller)
-    Q_UNUSED(enable)
-#endif
+    updateSatelliteUpdates();
 }
 
-#ifdef Q_OS_IOS
+
 void Positioning::PositionProvider::updateBackgroundLocation()
 {
+#ifdef Q_OS_IOS
     if (m_backgroundUpdateCallers.isEmpty()) {
         ObjCAdapter::disableBackgroundLocation();
     } else if (!ObjCAdapter::enableBackgroundLocation()) {
         emit backgroundLocationUnavailable();
     }
-}
 #endif
+}
+
+
+void Positioning::PositionProvider::updateSatelliteUpdates()
+{
+    if (!m_updatesRequested) {
+        return;
+    }
+    // Inactive (Control Center, incoming call) keeps positioning running
+    if ((QGuiApplication::applicationState() == Qt::ApplicationSuspended) && m_backgroundUpdateCallers.isEmpty()) {
+        satelliteSource.stopUpdates();
+    } else {
+        satelliteSource.startUpdates();
+    }
+}

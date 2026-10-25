@@ -58,6 +58,12 @@ public:
      */
     void startUpdates();
 
+    /*! \brief stopUpdates
+     *
+     *  Stops providing data until startUpdates() is called again.
+     */
+    void stopUpdates();
+
 private slots:
     void onPositionUpdated(const QGeoPositionInfo &info);
 

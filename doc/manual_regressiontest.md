@@ -20,6 +20,10 @@
             * VAC
             * Waypoints
     * Display stays on and does not go to standby
+    * Background location (FLIGHTLOG builds)
+        * Flight recording off: put the app into the background, the system
+          location indicator disappears; position resumes when back
+        * Flight recording on: location stays active in the background
 
 * MapView
     * Base data, Terrain and Airspaces

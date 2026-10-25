@@ -58,6 +58,16 @@ void Positioning::PositionInfoSource_Satellite::startUpdates()
 }
 
 
+void Positioning::PositionInfoSource_Satellite::stopUpdates()
+{
+    if (source == nullptr)
+    {
+        return;
+    }
+    source->stopUpdates();
+}
+
+
 void Positioning::PositionInfoSource_Satellite::updateStatusString()
 {
     if (source == nullptr)

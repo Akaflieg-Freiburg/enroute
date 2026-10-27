@@ -1,0 +1,13 @@
+### Changed
+
+- Searching for waypoints on the Nearby page and when adding waypoints to a
+  route is much faster. 
+- Opening and importing routes, opening the Nearby page and updating weather
+  data are now much faster.
+
+### Fixed
+
+- Fixed a freeze of several seconds when clearing a route or opening a route
+  from the library, which occurred with large route libraries.
+- Fixed weather stations missing from the weather page after app start until
+  the next weather update.

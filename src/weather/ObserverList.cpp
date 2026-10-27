@@ -35,7 +35,12 @@ Weather::ObserverList::~ObserverList()
 Weather::ObserverList::ObserverList(QObject* parent)
     : QObject(parent)
 {
+    connect(GlobalObject::geoMapProvider(), &GeoMaps::GeoMapProvider::waypointsChanged, this, [this]() { m_mapRevision = m_mapRevision.value() + 1; });
+
     m_unsortedObservers.setBinding([this]() {
+        // Registers the aviation data as a dependency of this binding
+        (void)m_mapRevision.value();
+
         QSet<QString> ids;
         QList<Weather::Observer*> result;
 

@@ -24,7 +24,7 @@ import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
-// This is a variant of TextField. The main differences to the standard
+// This is a variant of TextField with a clear button (except on iOS).
 // implementation are the following.
 //
 // - Instances of this class call PlatformAdaptor.setupImEventFilter() on
@@ -36,7 +36,6 @@ import akaflieg_freiburg.enroute
 //
 //   https://bugreports.qt.io/browse/QTBUG-80790
 
-
 TextField {
     id: textField
 
@@ -47,7 +46,6 @@ TextField {
     }
     rightPadding: hasClearButton ? toolButton.width : undefined
     implicitWidth: 100 // set arbitrary value to avoid binding loop
-
 
     // Fix problem on iOS
     Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)

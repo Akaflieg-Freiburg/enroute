@@ -19,11 +19,17 @@
  ***************************************************************************/
 
 #include <QBuffer>
+#include <QDebug>
 #include <QGuiApplication>
+#include <QHttpHeaders>
 #include <QHttpServerRequest>
 #include <QHttpServerResponder>
 #include <QImage>
+#if defined(Q_OS_ANDROID)
+#include <QLocalServer>
+#else
 #include <QTcpServer>
+#endif
 
 #include "TileServer.h"
 #include "geomaps/GeoMapProvider.h"
@@ -72,12 +78,41 @@ static QByteArray nightVersionOf(const QString& fileName)
 GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
-    // Listen on the loopback interface only. The server hands out map tiles,
-    // aviation data and Qt resources to the map renderer in this process and
-    // must not be reachable from the local network.
-    auto* localServer = new QTcpServer();
-    localServer->listen(QHostAddress::LocalHost);
-    bind(localServer);
+    // The server hands out map tiles, aviation data and Qt resources to the map
+    // renderer in this process only and must not be reachable from the local
+    // network.
+#if defined(Q_OS_ANDROID)
+    // Serve over a local socket (Unix domain socket) rather than over TCP on
+    // the loopback interface. Android's per-app firewall (restricted networking
+    // mode, battery saver, the vendor "mobile data"/"Wi-Fi" toggles) drops
+    // loopback TCP traffic together with everything else once it decides that
+    // the app may not use the network, which left the map blank on phones
+    // without a network connection (issue #440). Local sockets are not subject
+    // to that firewall. QNetworkAccessManager, and thus MapLibre, reaches the
+    // server through URLs of the form unix+http://<socket name>/path.
+    auto* localServer = new QLocalServer();
+    QLocalServer::removeServer(m_socketName);
+    localServer->setSocketOptions(QLocalServer::UserAccessOption);
+    if (localServer->listen(m_socketName))
+    {
+        bind(localServer);
+    }
+    else
+    {
+        qWarning() << "TileServer: cannot listen on local socket" << m_socketName << localServer->errorString();
+        delete localServer;
+    }
+#else
+    // Listen on the loopback interface. A local socket is not an option here:
+    // QLocalServer places the socket file in the temporary directory, and
+    // inside an iOS app container that path exceeds the 104-byte limit for
+    // Unix socket paths, so listen() fails and the map stays blank. None of
+    // the other platforms has a per-app firewall that drops loopback traffic,
+    // so they keep the TCP server as well.
+    auto* tcpServer = new QTcpServer();
+    tcpServer->listen(QHostAddress::LocalHost);
+    bind(tcpServer);
+#endif
 
 #if defined(Q_OS_IOS)
     connect(qGuiApp,
@@ -110,12 +145,23 @@ void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVect
 
 QString GeoMaps::TileServer::serverUrl()
 {
+#if defined(Q_OS_ANDROID)
+    for (auto* localServer : localServers())
+    {
+        if ((localServer != nullptr) && localServer->isListening())
+        {
+            return u"unix+http://"_s + localServer->serverName();
+        }
+    }
+    return {};
+#else
     auto ports = serverPorts();
     if (ports.isEmpty())
     {
         return {};
     }
     return QStringLiteral("http://127.0.0.1:%1").arg(QString::number(ports[0]));
+#endif
 }
 
 
@@ -139,7 +185,15 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QHttp
     //
     if (path.endsWith(u"aviationData.geojson"_s))
     {
-        responder.write(GlobalObject::geoMapProvider()->geoJSON(), "application/json");
+        // The data behind this URL changes with every aviation map update, while
+        // the URL stays the same for the lifetime of the app. MapLibre keeps
+        // replies in a persistent cache and, without a must-revalidate directive,
+        // renders the stale copy on the next map reload and never replaces it
+        // with the fresh one. Tell it to revalidate instead.
+        QHttpHeaders headers;
+        headers.append(QHttpHeaders::WellKnownHeader::ContentType, u"application/json"_s);
+        headers.append(QHttpHeaders::WellKnownHeader::CacheControl, u"no-cache, must-revalidate"_s);
+        responder.write(GlobalObject::geoMapProvider()->geoJSON(), headers);
         return true;
     }
 
@@ -212,6 +266,7 @@ void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QHtt
 }
 
 
+#if defined(Q_OS_IOS)
 void GeoMaps::TileServer::restart()
 {
     bool serverPortChanged = false;
@@ -247,4 +302,5 @@ void GeoMaps::TileServer::restart()
         emit serverUrlChanged();
     }
 }
+#endif
 

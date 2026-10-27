@@ -27,7 +27,6 @@
 
 namespace Platform {
 
-
 class ImFixer : public QObject {
     Q_OBJECT
 protected:

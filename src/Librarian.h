@@ -22,7 +22,6 @@
 
 #include <QDir>
 #include <QQmlEngine>
-#include <QRegularExpression>
 #include <QSettings>
 
 #include "FileLibraryModel.h"
@@ -279,14 +278,49 @@ public:
      */
     QString simplifySpecialChars(const QString& string);
 
+    /*! \brief Simplifies a string without caching
+     *
+     * Transforms the string to QString::NormalizationForm_KD and removes every
+     * character outside a-z, A-Z and 0-9. This is the stateless core of
+     * simplifySpecialChars(). It has no side effects and is safe to call from
+     * worker threads, for instance to precompute search keys for item models.
+     *
+     * @param string Input string
+     *
+     * @return Simplified string
+     */
+    [[nodiscard]] static QString simplify(const QString& string);
+
+    /*! \brief Splits a filter into simplified words
+     *
+     * Splits the filter at whitespace and simplifies every word with
+     * simplify(). Words that are empty after simplification are dropped.
+     *
+     * @param filter Filter text as typed by the user
+     *
+     * @returns Simplified, non-empty words. Empty if the filter contains no
+     * searchable characters.
+     */
+    [[nodiscard]] static QStringList filterWords(const QString& filter);
+
+    /*! \brief Checks a simplified text against simplified filter words
+     *
+     * @param simplifiedText Text, already simplified with simplify()
+     *
+     * @param words Filter words, as returned by filterWords()
+     *
+     * @returns True if the text contains every word, ignoring case. An empty
+     * word list matches every text.
+     */
+    [[nodiscard]] static bool matchesWords(const QString& simplifiedText, const QStringList& words);
+
 private:
     Q_DISABLE_COPY_MOVE(Librarian)
 
     FileLibraryModel* m_aircraftModel {nullptr};
     FileLibraryModel* m_routesModel {nullptr};
 
-    // Caches used to speed up the method simplifySpecialChars
-    QRegularExpression specialChars {QStringLiteral("[^a-zA-Z0-9]")};
+    // Cache used to speed up the method simplifySpecialChars
     QHash<QString, QString> simplifySpecialChars_cache;
 
 };

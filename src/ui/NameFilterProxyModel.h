@@ -91,6 +91,14 @@ public:
      */
     Q_PROPERTY(QString filterRoleName READ filterRoleName WRITE setFilterRoleName NOTIFY filterRoleNameChanged)
 
+    /*! \brief Whether the filter role holds text already simplified with Librarian::simplify()
+     *
+     *  Set this to true for models that precompute their search keys, so that
+     *  filtering does not simplify the text of every row on every keystroke.
+     *  Defaults to false.
+     */
+    Q_PROPERTY(bool filterRoleIsSimplified READ filterRoleIsSimplified WRITE setFilterRoleIsSimplified NOTIFY filterRoleIsSimplifiedChanged)
+
 
     //
     // Getter Methods
@@ -107,6 +115,12 @@ public:
      *  @returns Property filterRoleName
      */
     [[nodiscard]] QString filterRoleName() const { return m_filterRoleName; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property filterRoleIsSimplified
+     */
+    [[nodiscard]] bool filterRoleIsSimplified() const { return m_filterRoleIsSimplified; }
 
 
     //
@@ -125,6 +139,12 @@ public:
      */
     void setFilterRoleName(const QString& newFilterRoleName);
 
+    /*! \brief Setter function for the property with the same name
+     *
+     *  @param newValue Property filterRoleIsSimplified
+     */
+    void setFilterRoleIsSimplified(bool newValue);
+
 
     //
     // Methods
@@ -142,6 +162,9 @@ signals:
 
     /*! \brief Notification signal for property with the same name */
     void filterRoleNameChanged();
+
+    /*! \brief Notifier signal */
+    void filterRoleIsSimplifiedChanged();
 
 protected:
     /*! \brief Re-implemented from QSortFilterProxyModel
@@ -171,6 +194,11 @@ private:
 
     // Role matching m_filterRoleName in the current source model, or -1
     int m_filterRole {-1};
+
+    bool m_filterRoleIsSimplified {false};
+
+    // Librarian::filterWords(m_filter), recomputed in setFilter()
+    QStringList m_filterWords;
 };
 
 } // namespace Ui

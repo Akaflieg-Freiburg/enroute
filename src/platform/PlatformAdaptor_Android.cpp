@@ -23,10 +23,12 @@
 #include <QInputMethod>
 #include <QJniEnvironment>
 #include <QJniObject>
+#include <QKeyEvent>
 #include <QPermissions>
 #include <QProcess>
 #include <QScreen>
 #include <QTimer>
+#include <QWindow>
 #include <chrono>
 
 #include "platform/PlatformAdaptor_Android.h"
@@ -253,7 +255,10 @@ QVector<Traffic::ConnectionInfo> Platform::PlatformAdaptor::serialPortConnection
         auto length = env->GetArrayLength(deviceListJNI.object<jobjectArray>());
         for (jsize i = 0; i < length; ++i)
         {
-            const QJniObject jString = env->GetObjectArrayElement(deviceListJNI.object<jobjectArray>(), i);
+            // fromLocalRef() deletes the local reference that GetObjectArrayElement()
+            // creates. This thread does not return to Java while the app runs, so
+            // local references would otherwise accumulate.
+            const QJniObject jString = QJniObject::fromLocalRef(env->GetObjectArrayElement(deviceListJNI.object<jobjectArray>(), i));
             if (jString.isValid())
             {
                 result += Traffic::ConnectionInfo(jString.toString());
@@ -332,13 +337,52 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->wifiConnected(); });
 }
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* env, jobject /*unused*/, jstring deviceName)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWindowFocusGained(JNIEnv* /*unused*/, jclass /*unused*/)
+{
+    GlobalObject::runOnMainThread([]() { emit GlobalObject::platformAdaptor()->windowFocusGained(); });
+}
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onBackInvoked(JNIEnv* /*unused*/, jclass /*unused*/)
+{
+    // Called on the Android UI thread for the Back gesture or key, see
+    // MobileAdaptor.forwardBackToQt(). Deliver the key on the Qt thread and
+    // return at once. Waiting for the Qt thread here, as Qt 6.12's own handler
+    // does, deadlocks when the Qt thread is itself waiting for the UI thread to
+    // create the window surface.
+    GlobalObject::runOnMainThread([]() {
+        auto* window = QGuiApplication::focusWindow();
+        if (window == nullptr)
+        {
+            return;
+        }
+        QKeyEvent press(QEvent::KeyPress, Qt::Key_Back, Qt::NoModifier);
+        QCoreApplication::sendEvent(window, &press);
+        QKeyEvent release(QEvent::KeyRelease, Qt::Key_Back, Qt::NoModifier);
+        QCoreApplication::sendEvent(window, &release);
+        if (press.isAccepted() || release.isAccepted())
+        {
+            return;
+        }
+        // Nobody handled Back. Send the task to the background, which is what
+        // Qt 6.12 does in this case.
+        QNativeInterface::QAndroidApplication::runOnAndroidMainThread([]() {
+            auto activity = QNativeInterface::QAndroidApplication::context();
+            if (activity.isValid() && QNativeInterface::QAndroidApplication::isActivityContext())
+            {
+                activity.callMethod<jboolean>("moveTaskToBack", true);
+            }
+            return QVariant();
+        });
+    });
+}
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_onOpenUSBRequestReceived(JNIEnv* /*unused*/, jobject /*unused*/, jstring deviceName)
 {
 
     // Copy the device name here: the JNIEnv is only valid on this thread.
-    const char* fname = env->GetStringUTFChars(deviceName, nullptr);
-    const QString name = QString::fromUtf8(fname);
-    env->ReleaseStringUTFChars(deviceName, fname);
+    // QJniObject::toString() copies the UTF-16 data and handles null, unlike
+    // GetStringUTFChars(), which returns JNI's modified UTF-8.
+    const QString name = QJniObject(deviceName).toString();
 
     GlobalObject::runOnMainThread([name]() {
         GlobalObject::trafficDataProvider()->addDataSource(Traffic::ConnectionInfo(name));

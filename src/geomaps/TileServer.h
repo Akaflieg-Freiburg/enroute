@@ -24,6 +24,7 @@
 #include "geomaps/TileHandler.h"
 
 #include <QAbstractHttpServer>
+#include <QCoreApplication>
 #include <QSharedPointer>
 
 
@@ -31,8 +32,12 @@ namespace GeoMaps {
 
 /*! \brief HTTP server for mapbox' MBTiles files
  *
- *  This class features a simple HTTP server that serve the following files to
- *  http://127.0.0.1:xxxx/path.
+ *  This class features a simple HTTP server that serves the following files
+ *  to serverUrl()/path. On Android the server listens on a local socket and
+ *  the URL has the form unix+http://\<socket name\>; everywhere else it listens
+ *  on a TCP port on the loopback interface and the URL has the form
+ *  http://127.0.0.1:\<port\>. See the constructor for the reason. The client
+ *  side is QNetworkAccessManager, which handles both schemes.
  *
  *  - If path is a file name, the server checks if the file is available in the
  *    resource system of the app and serves that file.
@@ -42,7 +47,10 @@ namespace GeoMaps {
  *    unchanged, the PNG files are recolored for use over the dark map style.
  *  - If path equals "aviationData.geojson", the server returns a GeoJSON
  *    document that contains the full aviation data, as provided by
- *    GlobalObject::geoMapProvider()->geoJSON().
+ *    GlobalObject::geoMapProvider()->geoJSON(). The reply carries a
+ *    "Cache-Control: no-cache, must-revalidate" header, because the document
+ *    changes with every aviation map update while its URL stays the same, and
+ *    the map renderer would otherwise keep rendering a cached copy.
  *  - If path equals the base name of an MBTilesFileSet, then the server returns
  *    a JSON document describing the MBTiles.
  *  - If path equals "baseName/z/x/y.XXX", then the server returns an individual
@@ -66,9 +74,9 @@ class TileServer : public QAbstractHttpServer
 public:
     /*! \brief Create a new tile server
      *
-     *  The tile server will find a free port and listen to 127.0.0.1:port.  The
-     *  method serverUrl() returns the precise Url where the server will be
-     *  available.
+     *  The tile server listens on a local socket (Android) or finds a free
+     *  port and listens to 127.0.0.1:port (all other platforms). The method
+     *  serverUrl() returns the precise Url where the server will be available.
      *
      *  @param parent The standard QObject parent
      */
@@ -85,9 +93,11 @@ public:
 
     /*! \brief URL under which this server is presently reachable
      *
-     *  The property holds returns the Url where the server is listening to incoming
-     *  connections. This is typically string of the form "http://127.0.0.1:3470".
-     *  If the server is not listening to incoming connections, the string is empty.
+     *  The property holds the Url where the server is listening to incoming
+     *  connections. This is a string of the form
+     *  "unix+http://enroute-tiles-12345" on Android and "http://127.0.0.1:3470"
+     *  elsewhere. If the server is not listening to incoming connections, the
+     *  string is empty.
      */
     Q_PROPERTY(QString serverUrl READ serverUrl NOTIFY serverUrlChanged)
 
@@ -109,7 +119,8 @@ public slots:
      *
      *  This method adds a new set of tile files, that will be available under
      *  serverUrl()+"/baseName" (typically, this is a URL of the form
-     *  'http://localhost:8080/basename').
+     *  'unix+http://enroute-tiles-12345/basename' or
+     *  'http://127.0.0.1:3470/basename').
      *
      *  @param baseName The path under which the tiles will be available.
      *
@@ -153,16 +164,28 @@ private:
     // Implemented pure virtual method from QAbstractHttpServer
     void missingHandler(const QHttpServerRequest& request, QHttpServerResponder& responder) override;
 
+#if defined(Q_OS_IOS)
     /*! \brief Restarts the server
      *
-     *  This method restarts the server, by closing all TCP connections and then trying
-     *  to re-open connections at the same ports. If the ports are no longer available,
-     *  new ports are chosen and the property serverUrl changes.
+     *  This method restarts the server, by closing all TCP connections and then
+     *  trying to re-open connections at the same ports. If the ports are no
+     *  longer available, new ports are chosen and the property serverUrl
+     *  changes.
      *
-     *  This method is called on iOS once the application returns from sleep. That is necessary
-     *  because iOS silently closes all TCP connection when the app is in sleeping mode.
+     *  This method is called on iOS once the application returns from sleep.
+     *  That is necessary because iOS silently closes all TCP connection when
+     *  the app is in sleeping mode.
      */
     void restart();
+#endif
+
+#if defined(Q_OS_ANDROID)
+    // Name of the local socket. QLocalServer places simple names in the
+    // temporary directory; the PID keeps parallel instances apart. Lowercase
+    // letters, digits and hyphens only, because the name doubles as the host
+    // part of the server URL.
+    const QString m_socketName {QStringLiteral("enroute-tiles-%1").arg(QCoreApplication::applicationPid())};
+#endif
 
     // List of tile handlers
     QMap<QString, QSharedPointer<GeoMaps::TileHandler>> m_tileHandlers;

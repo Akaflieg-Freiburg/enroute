@@ -269,7 +269,17 @@ Item {
                                     panCommitTimer.start()
                                 return
                             }
-                            flightMap.pan(-delta.x, -delta.y)
+                            // Do not use Map.pan(): it takes integer arguments and computes the
+                            // viewport center with integer division. On a viewport of odd height
+                            // that reference point is half a pixel off, so every pan event (even a
+                            // purely horizontal one) shifts the map by half a pixel vertically, and
+                            // fractional deltas are truncated. Move the center through the map's own
+                            // projection instead; this is exact and keeps the point under the
+                            // finger/mouse fixed (issue #397).
+                            const centerPx = flightMap.fromCoordinate(flightMap.center, false)
+                            const newCenter = flightMap.toCoordinate(Qt.point(centerPx.x - delta.x, centerPx.y - delta.y), false)
+                            if (newCenter.isValid)
+                                flightMap.center = newCenter
                         }
 
                         onActiveChanged: {
@@ -332,6 +342,30 @@ Item {
 
                             waypointDescription.waypoint = wp
                             waypointDescription.open()
+                        }
+                    }
+
+                    TapHandler {
+                        // Touch has no buttons, so acceptedButtons alone would let any tap through
+                        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                        acceptedButtons: Qt.RightButton
+
+                        onTapped: {
+                            if (!gridView.contains(point.position))
+                                return
+
+                            const pos = point.position
+                            const posTr = Qt.point(pos.x+25,pos.y)
+
+                            const wp = GeoMapProvider.closestWaypoint(
+                                        flightMap.toCoordinate(pos),
+                                        flightMap.toCoordinate(posTr)
+                            )
+                            if (!wp.isValid)
+                                return
+
+                            routeMenu.waypoint = wp
+                            routeMenu.popup()
                         }
                     }
 
@@ -414,6 +448,8 @@ Item {
                     //
 
                     onZoomLevelChanged: {
+                        // The airspaces under the cursor are for the old view
+                        airspaceTooltip.visible = false
                         if (defaultValuesSet)
                             Global.mapZoomLevel = flightMap.zoomLevel
                     }
@@ -484,6 +520,66 @@ Item {
                             Global.stackView.push("../pages/DataManagerPage.qml")
                         }
                     }
+                }
+
+                // The map has no hover signal of its own. Show the airspaces once the
+                // mouse rests; any movement hides them again. The handler sits here and
+                // not in flightMap, because gridView covers the map and takes its hover.
+                HoverHandler {
+                    id: hover
+
+                    // Desktop only: on iPad, Apple Pencil input is turned into mouse events
+                    // that occasionally trigger the tooltip after the Pencil is lifted
+                    enabled: (Qt.platform.os !== "ios") && (Qt.platform.os !== "android")
+                    acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+
+                    onPointChanged: {
+                        // Showing the tooltip re-triggers hover delivery, which reports the
+                        // unchanged position again. Only actual movement hides the tooltip.
+                        if (airspaceTooltip.visible) {
+                            if (Math.hypot(point.position.x - airspaceTooltip.cursor.x, point.position.y - airspaceTooltip.cursor.y) < 2)
+                                return
+                        }
+                        airspaceTooltip.visible = false
+                        if (hovered)
+                            hoverTimer.restart()
+                    }
+                    onHoveredChanged: {
+                        if (hovered)
+                            return
+                        hoverTimer.stop()
+                        airspaceTooltip.visible = false
+                    }
+                }
+
+                Timer {
+                    id: hoverTimer
+
+                    interval: 750
+
+                    onTriggered: {
+                        if (drag.active || pinch.active || routeMenu.opened || waypointDescription.visible || Global.drawer.opened)
+                            return
+                        const pos = hover.point.position
+
+                        // Not over the buttons and panels of gridView
+                        let item = gridView
+                        let p = gridView.mapFromItem(flightMap, pos)
+                        for (let child = item.childAt(p.x, p.y); child; child = item.childAt(p.x, p.y)) {
+                            if (child instanceof T.Control)
+                                return
+                            p = child.mapFromItem(item, p)
+                            item = child
+                        }
+
+                        airspaceTooltip.showAt(pos, GeoMapProvider.airspacesAtPosition(flightMap.toCoordinate(pos)))
+                    }
+                }
+
+                AirspaceTooltip {
+                    id: airspaceTooltip
+
+                    z: 1
                 }
 
                 GridLayout {
@@ -859,5 +955,9 @@ Item {
     WaypointDescription {
         id: waypointDescription
         objectName: "waypointDescription"
+    }
+
+    RouteMenu {
+        id: routeMenu
     }
 }

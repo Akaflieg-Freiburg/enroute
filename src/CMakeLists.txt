@@ -657,6 +657,8 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/RenameVACDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
+    qml/items/AirspaceDelegate.qml
+    qml/items/AirspaceTooltip.qml
     qml/items/AppWindow.qml
     qml/items/AutoSizingMenu.qml
     qml/items/DecoratedListView.qml
@@ -682,6 +684,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/ProfileShape.qml
     qml/items/RemainingRouteBar.qml
     qml/items/RouteProfile.qml
+    qml/items/RouteMenu.qml
     qml/items/SafeInsets.qml
     qml/items/Sideview.qml
     qml/items/StandardHeader.qml
@@ -725,6 +728,8 @@ qt_add_qml_module(${PROJECT_NAME}
     ui/ProfileSampling.cpp
     ui/RouteProfileQuickItem.h
     ui/RouteProfileQuickItem.cpp
+    ui/WaypointSearchModel.h
+    ui/WaypointSearchModel.cpp
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
     ui/SideviewQuickItem.h

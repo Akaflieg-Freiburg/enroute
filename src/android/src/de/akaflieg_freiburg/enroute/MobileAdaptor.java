@@ -15,13 +15,13 @@ package de.akaflieg_freiburg.enroute;
 import org.qtproject.qt.android.QtNative;
 
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.NetworkInfo;
@@ -34,7 +34,6 @@ import android.net.wifi.WifiManager.WifiLock;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.provider.Settings.System;
@@ -49,15 +48,13 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
   public static native void onLanguageChanged();
   public static native void onWifiConnected();
+  public static native void onBackInvoked();
+  public static native void onWindowFocusGained();
 
   private static MobileAdaptor m_instance;
   private static Vibrator m_vibrator;
@@ -75,6 +72,14 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   private static final int PICK_FILE_REQUEST = 1;
   private static final int CREATE_FILE_REQUEST = 2;
 
+  // Request code for requestNotificationPermission(). Qt numbers its own
+  // permission requests counting up from 0, and QtActivityBase forwards every
+  // permission result to Qt. A request code of 0 would therefore deliver our
+  // result to Qt's first pending request (for instance the location request
+  // made at startup). Use a value Qt never reaches, and keep the result away
+  // from Qt, see onRequestPermissionsResult().
+  private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 0x7E000001;
+
   /**
    * Request POST_NOTIFICATIONS permission on Android 13+.
    * Safe to call from any context — uses m_instance which IS the Activity.
@@ -85,7 +90,42 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         && m_instance.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
                != PackageManager.PERMISSION_GRANTED) {
       m_instance.requestPermissions(
-          new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 0);
+          new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+          NOTIFICATION_PERMISSION_REQUEST_CODE);
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+  {
+    // The result of our own notification request needs no handling:
+    // notifications simply work or not. Do not forward it to Qt, which
+    // would look for a pending request of its own with this code.
+    if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE)
+    {
+      return;
+    }
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+  }
+
+  // Tell C++ whenever the window regains focus from the OS, for instance after
+  // a permission dialog closed or the user returned from the system settings.
+  // Qt's application state cannot be used for this: in multi-window mode,
+  // QtActivityBase.onPause() keeps the app "active", so Qt reports no change.
+  @Override
+  public void onWindowFocusChanged(boolean hasFocus)
+  {
+    super.onWindowFocusChanged(hasFocus);
+    if (hasFocus)
+    {
+      try
+      {
+        onWindowFocusGained();
+      }
+      catch (UnsatisfiedLinkError e)
+      {
+        // The native library is not loaded yet, the app is still starting.
+      }
     }
   }
 
@@ -116,26 +156,91 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
       registerReceiver(m_localeChangedReceiver, filter);
     }
 
-    // Since the app targets API 36, Android 16+ enables predictive back by
-    // default. In that mode the system no longer dispatches KEYCODE_BACK to
-    // the activity; it invokes an OnBackInvokedCallback instead, and without
-    // one it simply finishes the activity. Qt only listens for the key event,
-    // so register a callback that synthesizes the key press. The events reach
-    // Qt through the usual dispatchKeyEvent -> onKeyDown/onKeyUp path, and
-    // the existing QML handlers (page pop, dialog close, exit confirmation)
-    // keep working unchanged.
+    // Back handling, see forwardBackToQt() below. The predictive-back callback
+    // is registered in onResume(), the legacy key is intercepted in
+    // onKeyDown()/onKeyUp().
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
     {
       m_backInvokedCallback = new OnBackInvokedCallback() {
         @Override
         public void onBackInvoked() {
-          long now = SystemClock.uptimeMillis();
-          dispatchKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK, 0));
-          dispatchKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK, 0));
+          forwardBackToQt();
         }
       };
+    }
+  }
+
+  @Override
+  public void onResume()
+  {
+    super.onResume();
+
+    // Since the app targets API 36, Android 16+ enables predictive back by
+    // default: the system no longer dispatches KEYCODE_BACK but invokes an
+    // OnBackInvokedCallback. Qt's QtActivityBase.onResume() registers its own
+    // callback at PRIORITY_DEFAULT. The dispatcher invokes the most recently
+    // registered callback of the highest priority, so ours must be registered
+    // here, after super.onResume(), to take precedence over Qt's. (Registered
+    // in onCreate() it is never invoked.) Qt unregisters in onPause(); we do
+    // the same.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && m_backInvokedCallback != null)
+    {
       getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
           OnBackInvokedDispatcher.PRIORITY_DEFAULT, m_backInvokedCallback);
+    }
+  }
+
+  @Override
+  public void onPause()
+  {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && m_backInvokedCallback != null)
+    {
+      getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(m_backInvokedCallback);
+    }
+    super.onPause();
+  }
+
+  // Legacy Back key (Android < 13, or predictive back disabled). Qt's
+  // QtActivityBase.onKeyDown()/onKeyUp() would forward it synchronously, see
+  // forwardBackToQt().
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event)
+  {
+    if (keyCode == KeyEvent.KEYCODE_BACK)
+    {
+      return true; // handled in onKeyUp()
+    }
+    return super.onKeyDown(keyCode, event);
+  }
+
+  @Override
+  public boolean onKeyUp(int keyCode, KeyEvent event)
+  {
+    if (keyCode == KeyEvent.KEYCODE_BACK)
+    {
+      forwardBackToQt();
+      return true;
+    }
+    return super.onKeyUp(keyCode, event);
+  }
+
+  // Qt 6.12 delivers the Back key to the Qt thread synchronously:
+  // QtInputDelegate.keyDown() blocks the Android UI thread in
+  // QWindowSystemInterface::flushWindowSystemEvents() until the Qt thread has
+  // processed the key. The Qt thread, however, waits for the UI thread whenever
+  // it creates the window surface, which happens on the first expose at
+  // startup. A Back press while the splash screen is shown therefore
+  // deadlocks both threads and ends in an ANR (Google Play reports for 3.5.4).
+  // We bypass Qt's handler and hand the key to the Qt thread asynchronously.
+  private void forwardBackToQt()
+  {
+    try
+    {
+      onBackInvoked();
+    }
+    catch (UnsatisfiedLinkError e)
+    {
+      // The native library is not loaded yet, the app is still starting.
     }
   }
 
@@ -457,6 +562,11 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
       mimeType = m_instance.getContentResolver().getType(uri);
     }
 
+    // Remove parameters such as "charset=UTF-8". Intent resolution compares the
+    // complete type string, so "text/plain;charset=UTF-8" would not reach apps
+    // whose intent filters list "text/plain".
+    mimeType = Intent.normalizeMimeType(mimeType);
+
     if (action == Intent.ACTION_SEND) {
       intent.putExtra(Intent.EXTRA_STREAM, uri);
       intent.setType(mimeType);
@@ -574,11 +684,15 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
   }
 
   /**
-   * create a custom chooser and start activity.
+   * create a chooser and start activity.
    *
-   * The custom chooser takes care of not sharing with or sending to the own app. This is done by
-   * first finding matching apps which can handle the intent and then blacklisting the own app by
-   * Intent.EXTRA_EXCLUDE_COMPONENTS.
+   * The chooser takes care of not sharing with or sending to the own app. This is done by
+   * excluding the own activity via Intent.EXTRA_EXCLUDE_COMPONENTS.
+   *
+   * The PackageManager is deliberately not asked beforehand whether there are apps that can handle
+   * the intent. Since Android 11, package visibility filtering hides most installed apps from such
+   * queries, so that the check would reject intents that installed apps can handle. The system
+   * chooser is not subject to this filtering and lists all suitable apps.
    *
    * The chooser intent is then started with startActivity() which will return immediately and not
    * wait for the chooser result. This way, both enroute and the receiving app can run concurrently
@@ -590,65 +704,22 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
    */
   private static boolean customStartActivity(Intent theIntent) {
 
-    final Context context = m_instance;
-    final PackageManager packageManager = context.getPackageManager();
-
-    // MATCH_DEFAULT_ONLY: Resolution and querying flag. if set, only filters
-    // that support the CATEGORY_DEFAULT will be considered for matching. Check
-    // if there is a default app for this type of content.
-    ResolveInfo defaultAppInfo =
-        packageManager.resolveActivity(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
-    if (defaultAppInfo == null) {
-      Log.d(TAG, "PackageManager cannot resolve Activity");
-      return false;
-    }
-
-    // Retrieve all apps for our intent. Check if there are any apps returned
-    List<ResolveInfo> appInfoList =
-        packageManager.queryIntentActivities(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
-    if (appInfoList.isEmpty()) {
-      Log.d(TAG, "appInfoList.isEmpty");
-      return false;
-    }
-    // Log.d(TAG, "appInfoList: " + appInfoList.size());
-
-    // Sort in alphabetical order
-    Collections.sort(appInfoList, new Comparator<ResolveInfo>() {
-      @Override
-      public int compare(ResolveInfo first, ResolveInfo second) {
-        String firstName = first.loadLabel(packageManager).toString();
-        String secondName = second.loadLabel(packageManager).toString();
-        return firstName.compareToIgnoreCase(secondName);
-      }
-    });
-
-    // find own package and blacklist it
-    //
-    List<ComponentName> blacklistedComponents = new ArrayList<ComponentName>();
-    for (ResolveInfo info : appInfoList) {
-
-      String pkgName = info.activityInfo.packageName;
-      String clsName = info.activityInfo.name;
-      // we don't want to share with our own app so blacklist it
-      //
-      if (pkgName.equals(context.getPackageName())) {
-        blacklistedComponents.add(new ComponentName(pkgName, clsName));
-      }
-    }
-
+    // We don't want to share with our own app, so exclude it. MobileAdaptor is
+    // the only activity of enroute that accepts SEND and VIEW intents.
     Intent chooserIntent = Intent.createChooser(theIntent, null /* title */);
     chooserIntent.putExtra(Intent.EXTRA_EXCLUDE_COMPONENTS,
-        blacklistedComponents.toArray(new Parcelable[] {}));
+        new Parcelable[] {new ComponentName(m_instance, MobileAdaptor.class)});
     chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-    // Verify that the intent will resolve to an activity
     // do NOT use startActivityForResult as it will block
     // enroute until the receiving app terminates.
-    if (chooserIntent.resolveActivity(m_instance.getPackageManager()) != null) {
+    try {
       m_instance.startActivity(chooserIntent);
-      return true;
+    } catch (ActivityNotFoundException e) {
+      Log.d(TAG, "Cannot start chooser: " + e.getMessage());
+      return false;
     }
-    return false;
+    return true;
   }
 
   //

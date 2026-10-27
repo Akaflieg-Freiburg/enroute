@@ -385,7 +385,7 @@ Page {
                 focus: true
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                inputMethodHints: Qt.ImhDigitsOnly
+                inputMethodHints: Global.digitsInputHint
                 validator: IntValidator {
                     bottom: 0
                     top: 65535
@@ -457,7 +457,7 @@ Page {
                 focus: true
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                inputMethodHints: Qt.ImhDigitsOnly
+                inputMethodHints: Global.digitsInputHint
                 validator: IntValidator {
                     bottom: 0
                     top: 65535

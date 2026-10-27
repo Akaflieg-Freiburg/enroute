@@ -1,5 +1,77 @@
 # Changelog
 
+## [3.5.10] - 2026-10-23
+
+### Fixed
+
+- Fixed a possible crash on malformed GDL90 messages received over UDP.
+- Fixed potential data loss with traffic receivers connected via UDP.
+- Fixed potential data loss when replacing an approach chart (VAC).
+- Fixed import of GeoTIFF charts with 32-bit image dimensions.
+- On Android 11 and later, routes and waypoints can now be opened in other
+  apps.
+- On Android, sharing system information now offers all apps that accept text.
+
+
+## [3.5.9] - 2026-10-22
+
+### Fixed
+
+- Fixed the moving map slowly drifting vertically while it is panned sideways,
+  so that the point under the finger or mouse pointer now stays in place. (#397)
+
+
+## [3.5.8] - 2026-10-21
+
+### Changed
+
+- Searching for waypoints on the Nearby page and when adding waypoints to a
+  route is much faster. 
+- Opening and importing routes, opening the Nearby page and updating weather
+  data are now much faster.
+
+### Fixed
+
+- Fixed a freeze of several seconds when clearing a route or opening a route
+  from the library, which occurred with large route libraries.
+- Fixed weather stations missing from the weather page after app start until
+  the next weather update.
+
+
+## [3.5.7] - 2026-10-19
+
+### Fixed
+
+- Fixed an issue on Android where the moving map stayed blank when the device
+  had no network connection, for instance on phones without a SIM card that are
+  used only for navigation, or when the system settings deny the app the use of
+  mobile data. (#440)
+
+
+## [3.5.6] - 2026-10-18
+
+### Fixed
+
+- Fixed an issue on iOS where the virtual keyboard pushed the whole page up
+  when a text field was edited.
+
+
+## [3.5.5] - 2026-10-17
+
+### Added
+
+- Enroute Flight Navigation is now available for Mac computers on the App
+  Store. The app runs natively on Apple silicon and Intel-based Macs and
+  requires macOS 14 or later.
+
+### Fixed
+
+- Fixed an issue where the moving map kept showing outdated aviation data
+  after a map update until the app was restarted.
+- Fixed a hang on Android ("Enroute Flight Navigation isn't responding") when
+  the Back button or gesture was used while the app was still starting up.
+
+
 ## [3.5.4] - 2026-10-08
 
 ### Fixed
@@ -302,7 +374,7 @@
   usb-serial-for-android and AndroidX libraries shipped in the Android app.
 
 - Fixed the Android app listing, which was hidden from tablets without GPS or
-  Bluetooth hardware although the app supports them; the app also no longer
+  Bluetooth hardware, although the app supports them; the app also no longer
   requests the Bluetooth advertising permission, which it never used.
 
 - Fixed the list of third-party licenses so that it covers every Qt module the

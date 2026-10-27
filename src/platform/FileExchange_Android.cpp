@@ -243,28 +243,6 @@ bool Platform::FileExchange::outgoingIntent(const QString& methodName, const QSt
 // C Methods
 //
 
-namespace {
-
-// Calling GetStringUTFChars on a null jstring is undefined behavior and
-// crashes the app, so null must be checked before conversion.
-QString toQString(JNIEnv* env, jstring jString)
-{
-    if (jString == nullptr)
-    {
-        return {};
-    }
-    const char* chars = env->GetStringUTFChars(jString, nullptr);
-    if (chars == nullptr)
-    {
-        return {};
-    }
-    QString result = QString::fromUtf8(chars);
-    env->ReleaseStringUTFChars(jString, chars);
-    return result;
-}
-
-} // namespace
-
 extern "C" {
 
 // The JNI callbacks below run on the Android UI thread, possibly while main()
@@ -275,36 +253,40 @@ extern "C" {
 // abort when connecting to it. Convert the Java strings on this thread (the
 // JNIEnv is only valid here) and defer everything else to the main thread;
 // see GlobalObject::runOnMainThread().
+//
+// QJniObject::toString() copies the UTF-16 data of the Java string and handles
+// null. Avoid GetStringUTFChars(): it returns JNI's modified UTF-8, which is not
+// the standard UTF-8 that QString::fromUtf8() expects.
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname, jstring junmingled)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_setFileReceived(JNIEnv* /*unused*/, jobject /*unused*/, jstring jfname, jstring junmingled)
 {
-    const QString fname = toQString(env, jfname);
-    const QString unmingled = toQString(env, junmingled);
+    const QString fname = QJniObject(jfname).toString();
+    const QString unmingled = QJniObject(junmingled).toString();
     GlobalObject::runOnMainThread([fname, unmingled]() {
         GlobalObject::fileExchange()->processFileOpenRequest(fname, unmingled);
     });
 }
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onCreateFileResult(JNIEnv* env, jobject /*unused*/, jstring juri)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onCreateFileResult(JNIEnv* /*unused*/, jobject /*unused*/, jstring juri)
 {
-    const QString uri = toQString(env, juri);
+    const QString uri = QJniObject(juri).toString();
     GlobalObject::runOnMainThread([uri]() {
         GlobalObject::fileExchange()->onCreateFileResult(uri);
     });
 }
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname, jstring junmingled)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* /*unused*/, jobject /*unused*/, jstring jfname, jstring junmingled)
 {
-    const QString fname = toQString(env, jfname);
-    const QString unmingled = toQString(env, junmingled);
+    const QString fname = QJniObject(jfname).toString();
+    const QString unmingled = QJniObject(junmingled).toString();
     GlobalObject::runOnMainThread([fname, unmingled]() {
         GlobalObject::fileExchange()->processFileOpenRequest(fname, unmingled);
     });
 }
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setTextReceived(JNIEnv* env, jobject /*unused*/, jstring jtext)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setTextReceived(JNIEnv* /*unused*/, jobject /*unused*/, jstring jtext)
 {
-    const QString text = toQString(env, jtext);
+    const QString text = QJniObject(jtext).toString();
     GlobalObject::runOnMainThread([text]() {
         GlobalObject::fileExchange()->processText(text);
     });

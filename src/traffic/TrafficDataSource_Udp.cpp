@@ -29,6 +29,7 @@ Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(bool isCanonical, quint16 
 {
     // ConnectionInfo
     m_connectionInfo = Traffic::ConnectionInfo(m_port, canonical());
+    m_arrivalClock.start();
 
     //
     // Initialize properties
@@ -55,6 +56,11 @@ void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
     {
         delete m_socket;
     }
+
+    // Forget datagrams seen during a previous connection
+    receivedDatagrams.fill(std::nullopt);
+    nextHashIndex = 0;
+    m_arrivalClock.start();
 
     // Create socket
     m_socket = new QUdpSocket(this);
@@ -98,15 +104,27 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
         QByteArray const data = m_socket->receiveDatagram().data();
 
         // The same datagram is often delivered on several interfaces. Skip a
-        // duplicate, but continue with the remaining pending datagrams rather than
-        // returning (which would drop the rest of this batch).
-        auto currentDatagramHash = qHash(data);
-        if (receivedDatagramHashes.contains(currentDatagramHash))
+        // duplicate that arrived within the duplicate window, but continue with
+        // the remaining pending datagrams rather than returning (which would
+        // drop the rest of this batch). Older identical datagrams are legitimate
+        // recurring reports and must be processed.
+        auto const currentDatagramHash = qHash(data);
+        auto const nowMs = m_arrivalClock.elapsed();
+        bool isDuplicate = false;
+        for (auto const& record : std::as_const(receivedDatagrams))
+        {
+            if (record.has_value() && (record->hash == currentDatagramHash) && (nowMs - record->arrivalMs <= duplicateWindowMs))
+            {
+                isDuplicate = true;
+                break;
+            }
+        }
+        if (isDuplicate)
         {
             continue;
         }
-        receivedDatagramHashes[nextHashIndex] = currentDatagramHash;
-        nextHashIndex = (nextHashIndex+1) % receivedDatagramHashes.size();
+        receivedDatagrams[nextHashIndex] = DatagramRecord{currentDatagramHash, nowMs};
+        nextHashIndex = (nextHashIndex+1) % receivedDatagrams.size();
 
         // Process datagrams, depending on content type
         if (data.startsWith("XGPS") || data.startsWith("XTRA"))

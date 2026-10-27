@@ -1,0 +1,6 @@
+### Fixed
+
+- Fixed an issue on Android where the moving map stayed blank when the device
+  had no network connection, for instance on phones without a SIM card that are
+  used only for navigation, or when the system settings deny the app the use of
+  mobile data. (#440)

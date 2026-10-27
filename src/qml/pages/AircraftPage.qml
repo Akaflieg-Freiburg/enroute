@@ -376,7 +376,7 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Qt.ImhDigitsOnly
+                inputMethodHints: Global.digitsInputHint
                 onEditingFinished: {
                     switch(Navigator.aircraft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
@@ -456,7 +456,7 @@ Page {
                     notation: DoubleValidator.StandardNotation
 
                 }
-                inputMethodHints: Qt.ImhDigitsOnly
+                inputMethodHints: Global.digitsInputHint
                 onEditingFinished: {
                     switch(Navigator.aircraft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
@@ -534,7 +534,7 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Qt.ImhDigitsOnly
+                inputMethodHints: Global.digitsInputHint
                 onEditingFinished: {
                     switch(Navigator.aircraft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:

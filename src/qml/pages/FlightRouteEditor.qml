@@ -891,7 +891,7 @@ Page {
                         bottom: 0
                         top: 360
                     }
-                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputMethodHints: Global.digitsInputHint
                     property angle myAngle; // Dummy. I do not know how to create an angle otherwise
                     onEditingFinished: {                        
                         Navigator.wind.directionFrom = text === "" ? myAngle.fromDEG(NaN) : myAngle.fromDEG(text)
@@ -945,7 +945,7 @@ Page {
                         }
                         notation: DoubleValidator.StandardNotation
                     }
-                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputMethodHints: Global.digitsInputHint
                     onEditingFinished: {
                         switch(Navigator.aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
@@ -1071,15 +1071,18 @@ Page {
             id: waypointDelegate
 
             WordWrappingItemDelegate {
-                required property var model
-                text: model.modelData.twoLineTitle
-                icon.source: model.modelData.icon
+                id: wpRow
+
+                required property waypoint waypoint
+
+                text: wpRow.waypoint.twoLineTitle
+                icon.source: wpRow.waypoint.icon
 
                 width: wpList.width
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    Navigator.flightRoute.append(model.modelData)
+                    Navigator.flightRoute.append(wpRow.waypoint)
                     flightRouteAddWPDialog.close()
                 }
             }
@@ -1115,28 +1118,9 @@ Page {
 
                 focus: true
 
-                // Deliberately replaces FilterField's default Return handler:
-                // here Return must add the waypoint and close the dialog, not
-                // open the waypoint description that a click would bring up.
-                onAccepted: {
-                    if (wpList.model.length > 0) {
-                        PlatformAdaptor.vibrateBrief()
-                        Navigator.flightRoute.append(wpList.model[0])
-                        flightRouteAddWPDialog.close()
-                    }
-                }
-            }
-
-            Label {
-                Layout.fillWidth: true
-                Layout.topMargin: font.pixelSize
-
-                text: qsTr("<h3>Sorry!</h3><p>No waypoints match your filter.</p>")
-                wrapMode: Text.Wrap
-                textFormat: Text.StyledText
-                horizontalAlignment: Text.AlignHCenter
-
-                visible: wpList.model.length === 0
+                // Return adds the top hit: activateFirstItem() clicks the first
+                // delegate, which appends the waypoint and closes the dialog.
+                listView: wpList
             }
 
             DecoratedListView {
@@ -1148,7 +1132,12 @@ Page {
 
                 clip: true
 
-                model: GeoMapProvider.filteredWaypoints(textInput.filter)
+                model: NameFilterProxyModel {
+                    sourceModel: WaypointSearchModel {}
+                    filterRoleName: "searchKey"
+                    filterRoleIsSimplified: true
+                    filter: textInput.filter
+                }
                 delegate: waypointDelegate
 
                 Label {

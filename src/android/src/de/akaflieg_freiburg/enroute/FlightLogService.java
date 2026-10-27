@@ -20,6 +20,7 @@
 
 package de.akaflieg_freiburg.enroute;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -27,6 +28,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
@@ -36,6 +38,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
 
 /**
  * Foreground service that keeps the app alive while recording a flight.
@@ -45,6 +48,18 @@ import android.os.PowerManager;
  * prevents that, allowing automatic flight detection to continue working.
  */
 public class FlightLogService extends Service {
+
+    private static final String TAG = "FlightLogService";
+
+    // True while the service runs as a foreground service. Set once
+    // startForeground() succeeded, cleared in onDestroy(). This is the
+    // authoritative running state; C++ asks for it through start().
+    private static volatile boolean s_running = false;
+
+    // The notification permission is requested at most once per process.
+    // Every permission request pauses and resumes the activity, and the
+    // resume re-checks the service; an unconditional request would loop.
+    private static boolean s_notificationPermissionRequested = false;
 
     // Identifier for the notification channel, used to group notifications
     // in system settings under "Flight Recording".
@@ -94,8 +109,17 @@ public class FlightLogService extends Service {
         // is NOT running — only this Java service is alive. GPS processing and
         // flight detection are inactive. Alert the user so they know to reopen
         // the app and resume recording.
+        //
+        // Do not promote the service in that state: there is nothing to keep
+        // alive, and on Android 14+ promotion would throw if the user revoked
+        // location access (revoking kills the process and triggers exactly
+        // this restart). Show the notification and stop. stopSelf() is safe
+        // here: a sticky restart is not a startForegroundService() call, so
+        // Android does not require startForeground().
         if (intent == null) {
             notifyRestart();
+            stopSelf();
+            return START_NOT_STICKY;
         }
 
         // Build an intent that brings the user back to the app when they
@@ -129,8 +153,28 @@ public class FlightLogService extends Service {
         // needs location access. With this flag, the app is treated as
         // "in the foreground" and does NOT need ACCESS_BACKGROUND_LOCATION —
         // ACCESS_FINE_LOCATION is sufficient.
-        startForeground(NOTIFICATION_ID, notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
+        // The three-argument overload with a service type exists only on
+        // Android 10 (API 29) and later. Calling it on Android 9 throws
+        // NoSuchMethodError and kills the app. Android 9 has no foreground
+        // service types, so the two-argument overload is all it needs.
+        //
+        // start() checks the location permission before starting the service,
+        // so promotion should not fail. Catch anyway (for instance, a
+        // permission revoked in the instant between start() and this call):
+        // an uncaught exception here crashes the app.
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startForeground(NOTIFICATION_ID, notification,
+                        ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
+            } else {
+                startForeground(NOTIFICATION_ID, notification);
+            }
+        } catch (RuntimeException e) {
+            Log.w(TAG, "Cannot promote the flight log service to a foreground service", e);
+            stopSelf();
+            return START_NOT_STICKY;
+        }
+        s_running = true;
 
         // Keep the CPU awake so Qt's event loop processes GPS callbacks
         // even when the screen is locked.
@@ -177,6 +221,8 @@ public class FlightLogService extends Service {
 
     @Override
     public void onDestroy() {
+        s_running = false;
+
         // Release the wake lock so the CPU can sleep again.
         if (m_wakeLock != null && m_wakeLock.isHeld()) {
             m_wakeLock.release();
@@ -239,30 +285,71 @@ public class FlightLogService extends Service {
     }
 
     /**
-     * Start the foreground service.
+     * Check whether Android allows this app to run a location foreground service.
      *
-     * Called from C++ via JNI (QJniObject::callStaticMethod) when the user
-     * enables the "Automatic flight detection" setting.
-     * Uses startForegroundService() which is required on Android 8+ (API 26)
-     * for services that will call startForeground().
-     *
-     * On Android 13+ (API 33), requests the POST_NOTIFICATIONS runtime
-     * permission first. Without it, the foreground service notification
-     * (and takeoff/landing alerts) would be silently suppressed.
+     * Since Android 14 (API 34), startForeground() with the location service
+     * type throws SecurityException unless the app holds coarse or fine
+     * location permission. Older versions do not have this requirement.
      */
-    public static void start(Context context) {
-        // On Android 13+, POST_NOTIFICATIONS is a runtime permission that
-        // defaults to denied. Request it via MobileAdaptor which holds the
-        // Activity reference, since the context passed from C++ via JNI is
-        // only an application context and cannot call requestPermissions().
-        MobileAdaptor.requestNotificationPermission();
+    static boolean canStartLocationService(Context context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            return true;
+        }
+        return context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+            || context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * Start the foreground service, if Android allows it.
+     *
+     * Called from C++ via JNI (QJniObject::callStaticMethod) whenever automatic
+     * flight detection is enabled, and again whenever the app window regains
+     * focus. Calling it while the service runs is cheap and does nothing.
+     *
+     * Once startForegroundService() has been called, the service must reach
+     * startForeground() or Android crashes the app. The location permission is
+     * therefore checked here, before starting, and not only in the service.
+     *
+     * On Android 13+ (API 33), also requests the POST_NOTIFICATIONS runtime
+     * permission, once per process. Without it, the foreground service
+     * notification (and takeoff/landing alerts) would be silently suppressed.
+     *
+     * @return true if the service runs or is starting; false if Android does
+     *         not allow it, typically because location permission is missing.
+     */
+    public static boolean start(Context context) {
+        if (s_running) {
+            return true;
+        }
+        if (!canStartLocationService(context)) {
+            return false;
+        }
+
+        // startForegroundService() throws ForegroundServiceStartNotAllowedException,
+        // an IllegalStateException, if the app is in the background (Android 12+).
+        Intent intent = new Intent(context, FlightLogService.class);
+        try {
+            context.startForegroundService(intent);
+        } catch (IllegalStateException | SecurityException e) {
+            Log.w(TAG, "Cannot start the flight log service", e);
+            return false;
+        }
 
         // Qt is now running again — dismiss the "app was killed" warning if
         // it is still visible.
         cancelNotification(context, NOTIFICATION_ID_RESTART);
 
-        Intent intent = new Intent(context, FlightLogService.class);
-        context.startForegroundService(intent);
+        // On Android 13+, POST_NOTIFICATIONS is a runtime permission that
+        // defaults to denied. Request it via MobileAdaptor which holds the
+        // Activity reference, since the context passed from C++ via JNI is
+        // only an application context and cannot call requestPermissions().
+        if (!s_notificationPermissionRequested) {
+            s_notificationPermissionRequested = true;
+            MobileAdaptor.requestNotificationPermission();
+        }
+        return true;
     }
 
     /**

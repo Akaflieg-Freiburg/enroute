@@ -335,6 +335,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     {
         QString result;
         result += u"<p>"_s
+                  + tr("Enroute Flight Navigation is now also available for Mac computers. Download it for free from the <a href='https://apps.apple.com/app/enroute-flight-navigation/id6448892176'>App Store</a>.")
+                  + u"</p>"_s;
+        result += u"<p>"_s
                   + tr("The maps for France now come with Visual approach charts for the maps; the charts charts will be available for free once you install or update the maps for France. "
                        "We thank the <a href='https://www.sia.aviation-civile.gouv.fr/'>SIA</a> for publishing the data under a free license, and Quentin Bossard and Michael Paus for the georeferencing work and long-term maintenance!")
                   + u"</p>"_s;
@@ -410,26 +413,60 @@ bool Librarian::contains(const QObject* obj)
         return false;
     }
 
+    // Coordinates of the route. Empty if the route is empty or contains an
+    // invalid waypoint; such a route is never reported as being in the library.
+    const auto routePath = route->geoPath();
+    if (routePath.isEmpty())
+    {
+        return false;
+    }
 
     const QDir dir(directory(Library::Routes));
-
-    // Check if directory exists
     if (!dir.exists())
     {
         return false;
     }
 
-    // Get all files in the directory (no subdirectories)
+    // Compare against the waypoints as stored in the files, without matching
+    // them against the aviation data. That matching (FlightRoute::load) costs
+    // one scan over all map waypoints per waypoint and file, which froze the
+    // UI for tens of seconds with larger route libraries. The tolerance only
+    // absorbs rounding; it is kept tight because a false positive lets the
+    // "Clear" action erase the route without confirmation.
+    constexpr double toleranceM = 10.0;
     const QFileInfoList fileList = dir.entryInfoList(QDir::Files);
-    Navigation::FlightRoute test;
     for (const QFileInfo& fileInfo : fileList)
     {
-        auto res = test.load(fileInfo.absoluteFilePath());
-        if (!res.isEmpty())
+        QVector<GeoMaps::Waypoint> fileWaypoints;
+        if (!Navigation::FlightRoute::readWaypoints(fileInfo.absoluteFilePath(), fileWaypoints).isEmpty())
         {
             continue;
         }
-        if (test == *route)
+
+        QList<QGeoCoordinate> filePath;
+        filePath.reserve(fileWaypoints.size());
+        for (const auto& waypoint : fileWaypoints)
+        {
+            if (waypoint.isValid())
+            {
+                filePath.append(waypoint.coordinate());
+            }
+        }
+        if (filePath.size() != routePath.size())
+        {
+            continue;
+        }
+
+        bool equal = true;
+        for (qsizetype i = 0; i < routePath.size(); ++i)
+        {
+            if (routePath[i].distanceTo(filePath[i]) > toleranceM)
+            {
+                equal = false;
+                break;
+            }
+        }
+        if (equal)
         {
             return true;
         }
@@ -571,12 +608,47 @@ auto Librarian::matches(const QString& text, const QString& filter) -> bool
 {
     // Split before simplifying: simplifySpecialChars() removes whitespace, so
     // "EDDF EDDM" would otherwise collapse into one word that never matches.
-    auto const words = filter.split(u' ', Qt::SkipEmptyParts);
-    auto const simplifiedText = simplifySpecialChars(text);
+    return matchesWords(simplifySpecialChars(text), filterWords(filter));
+}
 
-    return std::ranges::all_of(words, [this, &simplifiedText](const QString& word) {
-        return simplifiedText.contains(simplifySpecialChars(word), Qt::CaseInsensitive);
+
+auto Librarian::matchesWords(const QString& simplifiedText, const QStringList& words) -> bool
+{
+    return std::ranges::all_of(words, [&simplifiedText](const QString& word) {
+        return simplifiedText.contains(word, Qt::CaseInsensitive);
     });
+}
+
+
+auto Librarian::filterWords(const QString& filter) -> QStringList
+{
+    QStringList words;
+    for (auto const& word : filter.split(u' ', Qt::SkipEmptyParts))
+    {
+        auto simplified = simplify(word);
+        if (!simplified.isEmpty())
+        {
+            words.append(std::move(simplified));
+        }
+    }
+    return words;
+}
+
+
+auto Librarian::simplify(const QString& string) -> QString
+{
+    auto const normalized = string.normalized(QString::NormalizationForm_KD);
+    QString simplified;
+    simplified.reserve(normalized.size());
+    for (auto const ch : normalized)
+    {
+        auto const c = ch.unicode();
+        if (((c >= u'a') && (c <= u'z')) || ((c >= u'A') && (c <= u'Z')) || ((c >= u'0') && (c <= u'9')))
+        {
+            simplified.append(ch);
+        }
+    }
+    return simplified;
 }
 
 
@@ -588,8 +660,7 @@ auto Librarian::simplifySpecialChars(const QString &string) -> QString
         return *it;
     }
 
-    QString simplified = string.normalized(QString::NormalizationForm_KD);
-    simplified.remove(specialChars);
+    auto simplified = simplify(string);
 
     // Bound the cache: every prefix that a user ever types into a filter field
     // becomes a key here.

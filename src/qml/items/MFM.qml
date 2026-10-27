@@ -155,6 +155,7 @@ Item {
                                 return
                             }
 
+                            drag.afterPinch = true
                             if (flightMap.bearing === 0.0)
                             {
                                 Global.mapBearingPolicy = MFM.NUp
@@ -247,7 +248,23 @@ Item {
                         // Work around https://bugreports.qt.io/browse/QTBUG-87815
                         enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && (Global.dialogLoader.item as T.Popup).opened)
 
+                        // When one finger of a pinch is lifted, the drag takes over the remaining
+                        // finger. Qt measures its translation from where that finger first touched
+                        // down, so the first step contains its entire travel during the pinch and
+                        // would make the map jump.
+                        property bool afterPinch: false
+
                         onActiveTranslationChanged: function(delta) {
+                            // The first step after activation equals the whole translation
+                            const firstStep = (delta.x === drag.activeTranslation.x) && (delta.y === drag.activeTranslation.y)
+                            if (firstStep) {
+                                // A genuine pan starts with about one drag threshold of travel
+                                const skip = drag.afterPinch && (Math.hypot(delta.x, delta.y) > 2*drag.dragThreshold)
+                                drag.afterPinch = false
+                                if (skip)
+                                    return
+                            }
+
                             // Switching "Follow GPS" off is deliberately NOT done in onActiveChanged:
                             // the first finger of a two-finger pinch can be mistaken for a one-finger
                             // pan for a few milliseconds before the second finger is registered.

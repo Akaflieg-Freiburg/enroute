@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed a crash when panning the map while the OGN traffic server cannot be
+  reached, for example in airplane mode.
+- Fixed the moving map jumping when one finger is lifted during a two-finger
+  zoom while the other finger keeps moving.
+
+
 ## [3.5.10] - 2026-10-23
 
 ### Fixed

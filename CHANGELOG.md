@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.5.10] - 2026-10-23
+
+### Fixed
+
+- Fixed a possible crash on malformed GDL90 messages received over UDP.
+- Fixed potential data loss with traffic receivers connected via UDP.
+- Fixed potential data loss when replacing an approach chart (VAC).
+- Fixed import of GeoTIFF charts with 32-bit image dimensions.
+- On Android 11 and later, routes and waypoints can now be opened in other
+  apps.
+- On Android, sharing system information now offers all apps that accept text.
+
+
 ## [3.5.9] - 2026-10-22
 
 ### Fixed
@@ -361,7 +374,7 @@
   usb-serial-for-android and AndroidX libraries shipped in the Android app.
 
 - Fixed the Android app listing, which was hidden from tablets without GPS or
-  Bluetooth hardware although the app supports them; the app also no longer
+  Bluetooth hardware, although the app supports them; the app also no longer
   requests the Bluetooth advertising permission, which it never used.
 
 - Fixed the list of third-party licenses so that it covers every Qt module the

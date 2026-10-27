@@ -133,14 +133,20 @@ platform :android do
     # Update Changelog files. Note that supply reads release notes exclusively
     # from the "changelogs" subdirectory of the respective language directory.
     latest_version, changelog_text = latest_changelog_entry
+    # Google Play rejects release notes longer than 500 characters, but only
+    # after the app bundle has been built and uploaded.
+    if changelog_text.length > 500
+      UI.user_error!("The release notes for #{latest_version} in CHANGELOG.md are #{changelog_text.length} " \
+                     "characters long, but Google Play allows at most 500.")
+    end
     version_code = version_code_for(latest_version)
     File.write("metadata/android/en-US/changelogs/#{version_code}.txt", changelog_text)
   end
 
   desc "Validate a new version with Google Play"
   lane :validate do
-    build
     metadata
+    build
     upload_to_play_store(
       aab: 'build/enroute.aab',
       track: 'beta',
@@ -152,8 +158,8 @@ platform :android do
 
   desc "Deploy a new version to Google Play - Beta"
   lane :deployBeta do
-    build
     metadata
+    build
     upload_to_play_store(
       aab: 'build/enroute.aab',
       track: 'beta',

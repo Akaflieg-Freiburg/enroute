@@ -20,6 +20,7 @@
 
 #include <QFile>
 #include <exception>
+#include <limits>
 
 #include "TIFF.h"
 #include "fileFormats/DataFileAbstract.h"
@@ -277,6 +278,15 @@ void FileFormats::TIFF::readTIFFField(QIODevice& device, QDataStream& dataStream
             values.append(tmpInt);
         }
         break;
+    case DT_Long:
+        for (quint32 i = 0; i < count; ++i)
+        {
+            quint32 tmpInt = 0;
+            dataStream >> tmpInt;
+            checkForError(dataStream);
+            values.append(tmpInt);
+        }
+        break;
     case DT_Double:
         for (quint32 i = 0; i < count; ++i)
         {
@@ -303,7 +313,7 @@ void FileFormats::TIFF::readTIFFField(QIODevice& device, QDataStream& dataStream
 void FileFormats::TIFF::readRasterSize()
 {
     // Handle Tag 256, compute width
-    quint16 width = 0;
+    quint32 width = 0;
     {
         if (m_TIFFFields.contains(256))
         {
@@ -326,7 +336,7 @@ void FileFormats::TIFF::readRasterSize()
     }
 
     // Handle Tag 257, compute height
-    quint16 height = 0;
+    quint32 height = 0;
     {
         if (m_TIFFFields.contains(257))
         {
@@ -348,5 +358,10 @@ void FileFormats::TIFF::readRasterSize()
         }
     }
 
-    m_rasterSize = QSize(width, height);
+    // QSize stores int, so reject dimensions that do not fit.
+    if ((width > static_cast<quint32>(std::numeric_limits<int>::max())) || (height > static_cast<quint32>(std::numeric_limits<int>::max())))
+    {
+        throw QObject::tr("Raster size is too large.", "FileFormats::TIFF");
+    }
+    m_rasterSize = QSize(static_cast<int>(width), static_cast<int>(height));
 }

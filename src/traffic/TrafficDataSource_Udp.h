@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QElapsedTimer>
 #include <QPointer>
 #include <QUdpSocket>
 
@@ -135,15 +136,24 @@ private:
     QPointer<QUdpSocket> m_socket;
     quint16 m_port;
 
-    // We use this vector to store the last 512 datagram hashes in a circular
-    // array. This is used to sort out doubly sent datagrams. The nextHashIndex
-    // points to the next vector entry that will be re-written. Empty slots hold
-    // std::nullopt, which can never equal a real hash — so a datagram that
-    // legitimately hashes to 0 is not mistaken for an as-yet-unwritten slot.
-    // Note: use parenthesis-initialization here — brace-init would select the
-    // std::initializer_list constructor and create a two-element vector.
-    QVector<std::optional<size_t>> receivedDatagramHashes = QVector<std::optional<size_t>>(512, std::nullopt);
+    // The same datagram is often delivered on several network interfaces. To
+    // sort out these duplicates, we store the hashes of recently received
+    // datagrams together with their arrival time in a circular array. A
+    // datagram counts as a duplicate only if an identical one arrived within
+    // the last duplicateWindowMs milliseconds. Without the time limit,
+    // legitimately recurring datagrams (e.g. XGPS reports from a stationary
+    // source, which carry no timestamp) would be suppressed forever.
+    // The cache is cleared on every (re)connect. The nextHashIndex points to
+    // the next array entry that will be re-written.
+    struct DatagramRecord
+    {
+        size_t hash = 0;
+        qint64 arrivalMs = 0;
+    };
+    static constexpr qint64 duplicateWindowMs = 500;
+    QVector<std::optional<DatagramRecord>> receivedDatagrams = QVector<std::optional<DatagramRecord>>(512, std::nullopt);
     qsizetype nextHashIndex = 0;
+    QElapsedTimer m_arrivalClock;
 
 };
 

@@ -22,3 +22,7 @@ NOTAM
 ownship
 AY
 METARs
+usb-serial-for-android
+QHttpEngine
+BlueZ
+NavBar

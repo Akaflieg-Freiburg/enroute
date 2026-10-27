@@ -1,0 +1,9 @@
+### Fixed
+
+- Fixed a possible crash on malformed GDL90 messages received over UDP.
+- Fixed potential data loss with traffic receivers connected via UDP.
+- Fixed potential data loss when replacing an approach chart (VAC).
+- Fixed import of GeoTIFF charts with 32-bit image dimensions.
+- On Android 11 and later, routes and waypoints can now be opened in other
+  apps.
+- On Android, sharing system information now offers all apps that accept text.

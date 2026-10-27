@@ -269,6 +269,18 @@ signals:
      */
     void wifiConnected();
 
+    /*! \brief Emitted when the app window regains focus from the OS
+     *
+     *  This signal is emitted when the app window regains input focus, for
+     *  instance after a system dialog such as a permission request closed, or
+     *  when the user returns from the system settings. Unlike
+     *  QGuiApplication::applicationStateChanged(), it is also emitted in
+     *  multi-window mode, where Qt keeps the app active throughout.
+     *
+     *  Currently emitted on Android only.
+     */
+    void windowFocusGained();
+
     /*! \brief Emitted when a serial port configuration changes
      *
      *  This signal is emitted when serial ports become (un)available. This typically happens when the user

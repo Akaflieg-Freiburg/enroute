@@ -380,7 +380,7 @@ Page {
             Label {
                 text: qsTr("Port")
             }
-            MyTextField {
+            TextInputField {
                 id: mtf
                 focus: true
                 Layout.fillWidth: true
@@ -442,7 +442,7 @@ Page {
             Label {
                 text: qsTr("Host")
             }
-            MyTextField {
+            TextInputField {
                 id: host
                 focus: true
                 Layout.fillWidth: true
@@ -452,7 +452,7 @@ Page {
             Label {
                 text: qsTr("Port")
             }
-            MyTextField {
+            TextInputField {
                 id: port
                 focus: true
                 Layout.fillWidth: true

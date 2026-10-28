@@ -80,7 +80,7 @@ CenteringDialog {
                 text: qsTr("Name")
             }
 
-            MyTextField {
+            TextInputField {
                 id: wpNameField
 
                 Layout.fillWidth: true

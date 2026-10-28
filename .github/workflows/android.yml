@@ -55,7 +55,7 @@ jobs:
         # install-qt-action >= 4.4.0 queries 'aqt list-qt <host> android' before
         # installing, and that query only finds 6.8+ under 'all_os'.
         host: 'all_os'
-        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtsensors qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
+        modules: 'qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtsensors qtserialport qtshadertools qtspeech qttasktree qtwebsockets qtwebview'
         target: 'android'
         version: ${{ env.QT_VERSION }}
         arch: 'android_arm64_v8a'

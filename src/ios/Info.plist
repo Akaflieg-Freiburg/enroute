@@ -53,9 +53,6 @@
     <key>UIStatusBarStyle</key>
     <string>UIStatusBarStyleLightContent</string>
 
-    <key>UIViewControllerBasedStatusBarAppearance</key>
-    <false/>
-
     <!-- Only necessary for screenshot generation -->
     <!--
     <key>NSPhotoLibraryAddUsageDescription</key>

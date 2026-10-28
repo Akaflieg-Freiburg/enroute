@@ -107,7 +107,11 @@ auto main(int argc, char *argv[]) -> int
     QCoreApplication::setOrganizationDomain(QStringLiteral("akaflieg_freiburg.de"));
     QCoreApplication::setApplicationName(QStringLiteral("enroute flight navigation"));
     QCoreApplication::setApplicationVersion(QStringLiteral(ENROUTE_VERSION_STRING));
+#if !defined(Q_OS_MACOS)
+    // On macOS, this would replace the bundle icon in the Dock with an image
+    // that lacks the margins of Apple's icon grid
     QGuiApplication::setWindowIcon(QIcon(u":/icons/appIcon.png"_s));
+#endif
 
     // Install translators
     auto preferredLanguage = GlobalObject::platformAdaptor()->language();
@@ -297,7 +301,10 @@ auto main(int argc, char *argv[]) -> int
     auto result = QGuiApplication::exec();
 
 #if defined(Q_OS_IOS)
-    exit(result);
+    // iOS terminates the app here, without time for an orderly teardown. Do not
+    // use exit(): its static destructors close all SQLite connections while
+    // MapLibre's cache thread may still be writing to one, which crashes.
+    std::_Exit(result);
 #endif
 
     // Ensure that the engine does not hold objects that will interfere when we close down.

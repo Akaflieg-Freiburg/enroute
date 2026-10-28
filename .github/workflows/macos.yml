@@ -52,7 +52,7 @@ jobs:
       with:
         cache: 'true'
         version: ${{ env.QT_VERSION }}
-        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
+        modules: 'qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2.24
       with:

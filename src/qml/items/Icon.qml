@@ -43,7 +43,9 @@ Item {
         id: colorOverlay
         anchors.fill: parent
         source: wpLblImg
-        // Full brightness first, so that dark icons take the color as well
+        // Full brightness first, so that dark icons take the color as well.
+        // Matches the former ColorOverlay only for black source icons (all
+        // Material SVGs); white or colored sources overshoot and look bold.
         brightness: 1.0
         colorization: 1.0
         colorizationColor: Material.foreground

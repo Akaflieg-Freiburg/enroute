@@ -620,7 +620,9 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Global.digitsInputHint | Qt.ImhNoPredictiveText
+                // Not Global.digitsInputHint: on Android, ImhDigitsOnly gives a
+                // keypad without decimal separator, but values like 7.5 are common
+                inputMethodHints: ((Qt.platform.os === "ios") ? Qt.ImhPreferNumbers : Qt.ImhFormattedNumbersOnly) | Qt.ImhNoPredictiveText
                 onEditingFinished: {
                     switch(Navigator.aircraft.fuelConsumptionUnit) {
                     case Aircraft.LiterPerHour:

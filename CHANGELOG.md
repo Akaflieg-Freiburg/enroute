@@ -12,6 +12,8 @@
   the app was sent to the background while it was still starting up and then
   closed by the system, for instance after it had been started by plugging in
   a USB device.
+- Faster app start when many maps and approach charts are installed. On iOS,
+  this prevents the system from closing the app during startup.
 
 
 ## [3.5.10] - 2026-10-23

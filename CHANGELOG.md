@@ -8,6 +8,10 @@
   reached, for example in airplane mode.
 - Fixed the moving map jumping when one finger is lifted during a two-finger
   zoom while the other finger keeps moving.
+- Fixed a hang on Android ("Enroute Flight Navigation isn't responding") when
+  the app was sent to the background while it was still starting up and then
+  closed by the system, for instance after it had been started by plugging in
+  a USB device.
 
 
 ## [3.5.10] - 2026-10-23

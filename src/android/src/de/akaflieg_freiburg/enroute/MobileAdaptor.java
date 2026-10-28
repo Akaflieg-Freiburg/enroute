@@ -277,8 +277,52 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
       Log.d("enroute flight navigation", "onDestroy: m_wifiStateChangeReceiver == null");
     }
 
+    // QtActivityBase.onDestroy() asks the Qt thread to quit, blocks the UI
+    // thread until main() has returned and then calls System.exit(0). The Qt
+    // thread cannot quit while it is itself waiting for the UI thread. That is
+    // the case when the activity is destroyed before the first frame has been
+    // rendered: the Qt thread waits in QAndroidPlatformOpenGLWindow::eglSurface()
+    // for a window surface that the UI thread no longer creates once the
+    // activity has been stopped. Both threads then wait for each other,
+    // broadcasts can no longer be delivered, and Android reports "isn't
+    // responding" after 10 s (Google Play ANR reports for 3.5.5: the app was
+    // started by a USB device being plugged in and sent to the background
+    // right away). A quit() that reaches the Qt thread before it enters
+    // QGuiApplication::exec() is lost as well, with the same result.
+    //
+    // Nothing needs saving in these situations, so give up on an orderly
+    // shutdown after a few seconds and end the process, which is what
+    // QtActivityBase does at the end of the orderly path anyway. An orderly
+    // shutdown is much faster than the timeout (measured from the destroy
+    // request to the end of the process: 0.4 s on a Pixel 7 emulator, 1.4 s on
+    // a Galaxy S22+), so the watchdog only fires when the threads are
+    // deadlocked.
+    Thread watchdog = new Thread(() -> {
+      try
+      {
+        Thread.sleep(DESTROY_TIMEOUT_MS);
+      }
+      catch (InterruptedException e)
+      {
+        return;
+      }
+      Log.w("enroute flight navigation",
+          "onDestroy: Qt did not shut down within " + DESTROY_TIMEOUT_MS + " ms, ending the process");
+      android.os.Process.killProcess(android.os.Process.myPid());
+    }, "enroute destroy watchdog");
+    watchdog.setDaemon(true);
+    watchdog.start();
+
     super.onDestroy();
+
+    // Only reached when Qt keeps the application alive across a configuration
+    // change (onRetainNonConfigurationInstance); otherwise super.onDestroy()
+    // has ended the process.
+    watchdog.interrupt();
   }
+
+  // See onDestroy(). Android reports an unresponsive app after 10 s.
+  private static final long DESTROY_TIMEOUT_MS = 6000;
 
   //
   // Static Methods

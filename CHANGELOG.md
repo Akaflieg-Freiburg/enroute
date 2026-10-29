@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- The text fields on the aircraft page and the waypoint search field in the
+  route editor no longer offer predictive text or autocomplete suggestions.
+
+### Fixed
+
+- Fixed an issue on iOS 27 where the virtual keyboard stayed hidden after the
+  system had terminated the app while the keyboard was open.
+- Fixed a possible crash when iOS terminates the app.
+- Fixed the app icon appearing too large in the macOS Dock.
+
+
 ## [3.5.11] - 2026-10-28
 
 ### Fixed

@@ -159,20 +159,20 @@ AppWindow {
     // quickly, e.g. via a notification: the focused field keeps the keyboard.
     // Clearing the focus makes Qt release the keyboard right away.
     Connections {
-        target: Qt.application
+        target: Application
         enabled: Qt.platform.os === "ios"
 
         Component.onCompleted: {
             if (enabled)
-                Qt.inputMethod.hide()
+                Qt.inputMethod.hide() // qmllint disable missing-property
         }
 
         function onStateChanged() {
-            if (Qt.application.state === Qt.ApplicationActive)
+            if (Application.state === Qt.ApplicationActive)
                 return
             if (view.activeFocusItem)
                 view.activeFocusItem.focus = false
-            Qt.inputMethod.hide()
+            Qt.inputMethod.hide() // qmllint disable missing-property
         }
     }
 

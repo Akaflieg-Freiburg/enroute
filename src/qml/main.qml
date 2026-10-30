@@ -177,29 +177,40 @@ AppWindow {
     }
 
     // macOS only: a native menu bar. Without one, Qt never translates the
-    // application menu and keeps its "About" item hidden. The menu bar lives
-    // outside of the window and takes no space in it. Other platforms keep
-    // the drawer and do not show this item at all.
+    // application menu and keeps its "About" and "Preferences" items hidden.
+    // The menu bar lives outside of the window and takes no space in it. Other
+    // platforms keep the drawer and do not show this item at all.
     MenuBar {
         visible: Qt.platform.os === "osx"
 
         // AppKit adds its search field to the menu titled "Help", provided that
         // the title matches its own translation of that word. The menu itself
-        // is hidden as long as it holds nothing but the "About" item.
+        // is hidden as long as it holds nothing but the items below, which all
+        // move into the application menu.
         Menu {
             title: qsTr("Help")
 
+            // On macOS these items are moved into the application menu, where Qt
+            // substitutes its own localized "About <app>" and "Preferences…"
+            // for the texts below, and adds the standard ⌘, shortcut to the
+            // latter. Qt recognizes the items by their wording, and only the
+            // untranslated English one is matched in every locale - so the
+            // texts are deliberately not translated.
             Action {
-                // On macOS this item is moved into the application menu, where
-                // Qt substitutes its own localized "About <app>" for the text
-                // below. Qt recognizes the item by its wording, and only the
-                // untranslated English one is matched in every locale - so the
-                // text is deliberately not translated.
                 text: "About"
                 onTriggered: {
                     drawer.close()
                     stackView.pop()
                     stackView.push("pages/InfoPage.qml")
+                }
+            }
+
+            Action {
+                text: "Settings"
+                onTriggered: {
+                    drawer.close()
+                    stackView.pop()
+                    stackView.push("pages/SettingsPage.qml")
                 }
             }
         }

@@ -266,23 +266,8 @@ AppWindow {
                     color: "teal"
                 }
 
-                ItemDelegate { // Aircraft
+                FlightCard {
                     Layout.fillWidth: true
-
-                    leftPadding: 16+SafeInsets.left
-
-                    id: menuItemAircraft
-                    text: (Navigator.aircraftName === "") ? qsTr("Select Aircraft…")
-                                                          : qsTr("Aircraft: %1").arg(Navigator.aircraftName)
-                    icon.source: "/icons/material/ic_airplanemode_active.svg"
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        drawer.close()
-                        Global.dialogLoader.active = false
-                        Global.dialogLoader.setSource("dialogs/AircraftSelectionDialog.qml", {})
-                        Global.dialogLoader.active = true
-                    }
                 }
 
                 ItemDelegate {

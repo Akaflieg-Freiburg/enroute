@@ -668,6 +668,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/DialogLoader.qml
     qml/items/ElevationInput.qml
     qml/items/FilterField.qml
+    qml/items/FlightCard.qml
     qml/items/FlightMap.qml
     qml/items/FlightVector.qml
     qml/items/Footer.qml

@@ -613,8 +613,6 @@ Item {
 
                     // Column 1: Main Menu / Vertical Scale / ...
                     ColumnLayout {
-                        id: leftColumn
-
                         Layout.fillHeight: true
                         Layout.leftMargin: SafeInsets.left
 
@@ -896,51 +894,6 @@ Item {
                             }
 
                         }
-                    }
-                }
-
-                MapButton {
-                    id: flightRecordingButton
-
-                    // Floats right of the menu button, outside gridView, so that its
-                    // changing width does not move the other map controls. A white
-                    // "Record" pill while stopped; while flight recording is running, a
-                    // green pill that shows the time since takeoff, or "Ready" on the
-                    // ground.
-                    readonly property bool recording: GlobalSettings.autoFlightDetection
-
-                    x: gridView.x + leftColumn.x + menuButton.x + menuButton.width
-                    y: gridView.y + leftColumn.y + menuButton.y
-
-                    function elapsed(startTime, now) {
-                        const minutes = Math.max(0, Math.floor((now - startTime) / 60000))
-                        return Math.floor(minutes / 60) + ":" + String(minutes % 60).padStart(2, "0")
-                    }
-
-                    width: Math.max(4*font.pixelSize, implicitContentWidth + leftPadding + rightPadding)
-                    leftPadding: font.pixelSize
-                    rightPadding: 1.5*font.pixelSize
-
-                    Material.background: recording ? "#4CAF50" : (GlobalSettings.nightMode ? undefined : "white")
-                    Material.foreground: recording ? "white" : undefined
-                    font.bold: true
-                    icon.source: recording ? "/icons/material/ic_flight_takeoff.svg" : "/icons/material/ic_fiber_manual_record.svg"
-                    icon.color: recording ? "white" : "red"
-                    display: AbstractButton.TextBesideIcon
-                    text: {
-                        if (!recording)
-                            return qsTr("Record")
-                        if (isNaN(FlightLog.currentFlightStartTime))
-                            return qsTr("Ready")
-                        return elapsed(FlightLog.currentFlightStartTime, Clock.time)
-                    }
-                    visible: GlobalSettings.flightLogEnabled && !Global.currentVAC.isValid
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        Global.dialogLoader.active = false
-                        Global.dialogLoader.setSource("../dialogs/FlightRecordingDialog.qml", {})
-                        Global.dialogLoader.active = true
                     }
                 }
             }

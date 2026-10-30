@@ -123,10 +123,10 @@ that could not be run is marked `n/a` with the reason.
 
 * **G-09 Flight detection idle** — 4.0.0 feature
     * Setup: Flight Log page menu: "Record GPS track" and "Show live flight
-      trace on map" on. Tap the "Record" button next to the menu button
-      on the map, confirm the aircraft in the dialog and start recording.
-    * Expected: the map button turns into a green "Ready" pill, status idle, no "Takeoff
-      detected" while parked.
+      trace on map" on. Open the main menu, tap "Start" in the card at
+      the top, confirm the aircraft in the dialog and start recording.
+    * Expected: the menu card shows "Recording · on ground", status idle,
+      no "Takeoff detected" while parked.
     * Result: `[ ] pass  [ ] fail`  Notes: ________
 
 * **G-10 FLARM replay smoke test (optional, desk or ramp)**
@@ -149,8 +149,9 @@ conduct of the flight. Tests F-04 and F-05 need the second aircraft.
 * **F-02 Takeoff detection** — 4.0.0 feature
     * Expected: "Takeoff detected — confirming altitude…" on the takeoff roll,
       then "In flight — recording…" within 60 s / 200 ft above the field. The
-      live trace is drawn on the map; the map button shows the time since
-      takeoff (h:mm), counting up once per minute.
+      live trace is drawn on the map; the menu card shows "Recording · in
+      flight" with the time since takeoff (h:mm), counting up once per
+      minute.
     * Result: `[ ] pass  [ ] fail`  Time of takeoff (UTC): ________
 
 * **F-03 Leg following** — covers "Fix dead branch and NaN in point-to-leg
@@ -203,8 +204,9 @@ conduct of the flight. Tests F-04 and F-05 need the second aircraft.
 
 
 * **F-10 Stop recording** — 4.0.0 feature
-    * Steps: after the last landing, tap the map button and stop recording.
-    * Expected: the map button shows "Record" again; the flight entry is
+    * Steps: after the last landing, tap "Stop" in the main menu card and
+      stop recording.
+    * Expected: the menu card shows "Flight recording off"; the flight entry is
       complete. Stopping during a flight ends the flight at the current UTC
       time and keeps its track.
     * Result: `[ ] pass  [ ] fail`  Notes: ________
@@ -222,7 +224,7 @@ conduct of the flight. Tests F-04 and F-05 need the second aircraft.
 * **L-02 Flight log after restart** — 4.0.0 feature
     * Steps: kill and relaunch the app.
     * Expected: the flight is still listed; no "End Flight" button while idle;
-      flight recording is still running (green "Ready" map button).
+      flight recording is still running (menu card shows "Recording").
     * Result: `[ ] pass  [ ] fail`  Notes: ________
 
 * **L-03 VAC library housekeeping** — covers "Save VAC library atomically and

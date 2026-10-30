@@ -87,8 +87,9 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.topMargin: font.pixelSize/2
             }
-            MyTextField {
+            TextInputField {
                 id: name
+                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -117,8 +118,9 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.topMargin: font.pixelSize/2
             }
-            MyTextField {
+            TextInputField {
                 id: transponderCode
+                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.topMargin: font.pixelSize/2
@@ -280,7 +282,7 @@ Page {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            MyTextField {
+            TextInputField {
                 id: cruiseSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -310,7 +312,7 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Global.digitsInputHint
+                inputMethodHints: Global.digitsInputHint | Qt.ImhNoPredictiveText
                 onEditingFinished: {
                     switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
@@ -359,7 +361,7 @@ Page {
                 text: qsTr("Descent")
                 Layout.alignment: Qt.AlignBaseline
             }
-            MyTextField {
+            TextInputField {
                 id: descentSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -390,7 +392,7 @@ Page {
                     notation: DoubleValidator.StandardNotation
 
                 }
-                inputMethodHints: Global.digitsInputHint
+                inputMethodHints: Global.digitsInputHint | Qt.ImhNoPredictiveText
                 onEditingFinished: {
                     switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
@@ -438,7 +440,7 @@ Page {
                 text: qsTr("Minimum")
                 Layout.alignment: Qt.AlignBaseline
             }
-            MyTextField {
+            TextInputField {
                 id: minimumSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -468,7 +470,7 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Global.digitsInputHint
+                inputMethodHints: Global.digitsInputHint | Qt.ImhNoPredictiveText
                 onEditingFinished: {
                     switch(aircraftPage.acft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
@@ -525,7 +527,7 @@ Page {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            MyTextField {
+            TextInputField {
                 id: fuelConsumption
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -552,7 +554,9 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Qt.ImhFormattedNumbersOnly
+                // Not Global.digitsInputHint: on Android, ImhDigitsOnly gives a
+                // keypad without decimal separator, but values like 7.5 are common
+                inputMethodHints: ((Qt.platform.os === "ios") ? Qt.ImhPreferNumbers : Qt.ImhFormattedNumbersOnly) | Qt.ImhNoPredictiveText
                 onEditingFinished: {
                     switch(aircraftPage.acft.fuelConsumptionUnit) {
                     case Aircraft.LiterPerHour:

@@ -289,7 +289,7 @@ Page {
                 textFormat: Text.StyledText
             }
 
-            MyTextField {
+            TextInputField {
                 id: renameName
 
                 Layout.fillWidth: true
@@ -346,7 +346,7 @@ Page {
                 textFormat: Text.StyledText
             }
 
-            MyTextField {
+            TextInputField {
                 id: newName
 
                 Layout.fillWidth: true

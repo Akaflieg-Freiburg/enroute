@@ -39,7 +39,7 @@ DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(DataManagement::D
 {
     setContentType(MapSet);
 
-    connect(this, &DataManagement::Downloadable_MultiFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+    connect(this, &DataManagement::Downloadable_MultiFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::scheduleUpdateSizeEvaluation);
 
     m_hasFile.setBinding([this]() {return computeHasFile();});
 }
@@ -150,7 +150,7 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Ab
         evaluateDownloading();
         evaluateFiles();
         evaluateRemoteFileSize();
-        evaluateUpdateSize();
+        scheduleUpdateSizeEvaluation();
 
         emit downloadablesChanged();
         emit fileContentChanged();
@@ -171,7 +171,7 @@ void DataManagement::Downloadable_MultiFile::add(const QVector<DataManagement::D
         evaluateDownloading();
         evaluateFiles();
         evaluateRemoteFileSize();
-        evaluateUpdateSize();
+        scheduleUpdateSizeEvaluation();
 
         emit downloadablesChanged();
         emit fileContentChanged();
@@ -198,7 +198,7 @@ void DataManagement::Downloadable_MultiFile::clear()
     evaluateDownloading();
     evaluateFiles();
     evaluateRemoteFileSize();
-    evaluateUpdateSize();
+    scheduleUpdateSizeEvaluation();
 }
 
 
@@ -381,7 +381,7 @@ void DataManagement::Downloadable_MultiFile::remove(DataManagement::Downloadable
     evaluateDownloading();
     evaluateFiles();
     evaluateRemoteFileSize();
-    evaluateUpdateSize();
+    scheduleUpdateSizeEvaluation();
 }
 
 
@@ -476,8 +476,21 @@ void DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize()
 }
 
 
+void DataManagement::Downloadable_MultiFile::scheduleUpdateSizeEvaluation()
+{
+    if (m_updateSizeEvaluationScheduled)
+    {
+        return;
+    }
+    m_updateSizeEvaluationScheduled = true;
+    QMetaObject::invokeMethod(this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+}
+
+
 void DataManagement::Downloadable_MultiFile::evaluateUpdateSize()
 {
+    m_updateSizeEvaluationScheduled = false;
+
     qint64 newUpdateSize = 0;
     if (!downloading() && hasFile())
     {
@@ -534,9 +547,9 @@ bool DataManagement::Downloadable_MultiFile::rawAdd(DataManagement::Downloadable
     connect(map, &DataManagement::Downloadable_Abstract::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::evaluateDownloading, Qt::QueuedConnection);
     connect(map, &DataManagement::Downloadable_Abstract::filesChanged, this, &DataManagement::Downloadable_MultiFile::evaluateFiles, Qt::QueuedConnection);
     connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize, Qt::QueuedConnection);
-    connect(map, &DataManagement::Downloadable_Abstract::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
-    connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
-    connect(map, &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+    connect(map, &DataManagement::Downloadable_Abstract::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::scheduleUpdateSizeEvaluation);
+    connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::scheduleUpdateSizeEvaluation);
+    connect(map, &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::scheduleUpdateSizeEvaluation);
 
     // Wire up: when the new member gets destroyed, we need to change all properties.
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::descriptionChanged);
@@ -545,7 +558,7 @@ bool DataManagement::Downloadable_MultiFile::rawAdd(DataManagement::Downloadable
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateDownloading);
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateFiles);
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize);
-    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::scheduleUpdateSizeEvaluation);
 
     // Wire up: directly forward error messages and file content changed signals
     connect(map, &DataManagement::Downloadable_Abstract::aboutToChangeFile, this, &DataManagement::Downloadable_MultiFile::aboutToChangeFile);

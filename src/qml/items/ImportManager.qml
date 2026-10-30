@@ -224,7 +224,7 @@ Item {
                 textFormat: Text.StyledText
             }
 
-            MyTextField {
+            TextInputField {
                 id: mapNameOpenAir
 
                 Layout.fillWidth: true
@@ -291,7 +291,7 @@ Item {
                 wrapMode: Text.Wrap
             }
 
-            MyTextField {
+            TextInputField {
                 id: mapNameVAC
 
                 Layout.fillWidth: true
@@ -339,7 +339,7 @@ Item {
                 textFormat: Text.StyledText
             }
 
-            MyTextField {
+            TextInputField {
                 id: mapNameRaster
 
                 Layout.fillWidth: true
@@ -389,7 +389,7 @@ Item {
                 textFormat: Text.StyledText
             }
 
-            MyTextField {
+            TextInputField {
                 id: mapNameVector
 
                 Layout.fillWidth: true

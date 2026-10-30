@@ -104,7 +104,7 @@ StackLayout {
             stackLayout.value = dVal
         }
 
-        MyTextField {
+        TextInputField {
             id: d_d
 
             Layout.fillWidth: true
@@ -144,7 +144,7 @@ StackLayout {
 
         }
 
-        MyTextField {
+        TextInputField {
             id: dm_d
 
             Layout.fillWidth: true
@@ -164,7 +164,7 @@ StackLayout {
         }
         Label { text: "°" }
 
-        MyTextField {
+        TextInputField {
             id: dm_m
 
             Layout.fillWidth: true
@@ -204,7 +204,7 @@ StackLayout {
 
         }
 
-        MyTextField {
+        TextInputField {
             id: dms_d
 
             Layout.fillWidth: true
@@ -223,7 +223,7 @@ StackLayout {
         }
         Label { text: "°" }
 
-        MyTextField {
+        TextInputField {
             id: dms_m
 
             Layout.fillWidth: true
@@ -242,7 +242,7 @@ StackLayout {
         }
         Label { text: "min" }
 
-        MyTextField {
+        TextInputField {
             id: dms_s
 
             Layout.fillWidth: true

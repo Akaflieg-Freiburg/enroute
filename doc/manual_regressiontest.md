@@ -31,6 +31,8 @@
     * Traffic pattern (when available)
     * Notams
     * Gestures for Zoom and Rotation
+        * Lift one finger while zooming and keep moving the other: the map
+          continues panning smoothly, without a jump
     * Waypoints
         * Open Waypoint with long and double tap
         * Show airspaces, elevation and NOTAM

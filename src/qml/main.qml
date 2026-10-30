@@ -151,6 +151,31 @@ AppWindow {
         function onHeightChanged() { geometrySettings.setValue("height", view.height) }
     }
 
+    // If iOS kills the app while the keyboard is open, the system keeps
+    // treating the keyboard as visible and refuses to show it after the next
+    // launch. Close it whenever the app leaves the foreground; the app switcher
+    // makes the app inactive before it can be killed. A crash skips this, hence
+    // the attempt at start-up. Hiding alone is not enough when the app leaves
+    // quickly, e.g. via a notification: the focused field keeps the keyboard.
+    // Clearing the focus makes Qt release the keyboard right away.
+    Connections {
+        target: Application
+        enabled: Qt.platform.os === "ios"
+
+        Component.onCompleted: {
+            if (enabled)
+                Qt.inputMethod.hide() // qmllint disable missing-property
+        }
+
+        function onStateChanged() {
+            if (Application.state === Qt.ApplicationActive)
+                return
+            if (view.activeFocusItem)
+                view.activeFocusItem.focus = false
+            Qt.inputMethod.hide() // qmllint disable missing-property
+        }
+    }
+
     Drawer {
         id: drawer
 
@@ -162,6 +187,8 @@ AppWindow {
         width: col.implicitWidth
         Material.roundedScale: Material.NotRounded
         topPadding: 0
+        leftPadding: 0
+        rightPadding: 0
 
         // When the drawer closes it restores active focus to the page that was
         // showing when it opened — which, after navigating to a new page, steals

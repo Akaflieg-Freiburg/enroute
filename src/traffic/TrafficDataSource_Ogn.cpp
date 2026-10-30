@@ -606,11 +606,18 @@ void Traffic::TrafficDataSource_Ogn::setFilter(const QGeoCoordinate& coordinate)
         }
     }
 
-    // Update filter
+    // Without a connection there is nothing to update: the login string sent
+    // on the next connect carries the then-current position.
+    if (m_socket.state() != QAbstractSocket::ConnectedState)
+    {
+        return;
+    }
+
+    // Update filter. Write to the socket directly, never through
+    // m_textStream; see the login code above.
     QString const filterCmd = QString::fromStdString(Ogn::OgnParser::formatFilterCommand(
         coordinate.latitude(), coordinate.longitude(), qRound(m_receiveRadius.toKM())));
-    m_textStream << filterCmd;
-    m_textStream.flush();
+    m_socket.write(filterCmd.toLatin1());
 
     // Update throttling state - only after successfully sending
     m_lastFilterPosition = coordinate;

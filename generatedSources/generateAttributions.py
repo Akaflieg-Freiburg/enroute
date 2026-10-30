@@ -27,8 +27,8 @@ scanner = next(qtbaseDir+"/"+kit+"/libexec/qtattributionsscanner"
 
 # Include data from all the Qt modules that we use. Keep this list in sync
 # with the find_package(Qt6 ...) calls in CMakeLists.txt.
-qtModules = ["qt5compat", "qtbase", "qtconnectivity", "qtdeclarative",
-             "qthttpserver", "qtimageformats", "qtlocation", "qtpositioning",
+qtModules = ["qtbase", "qtconnectivity", "qtdeclarative", "qthttpserver",
+             "qtimageformats", "qtlocation", "qtpositioning",
              "qtsensors", "qtserialport", "qtspeech", "qtsvg", "qttranslations",
              "qtwebview"]
 for module in qtModules:

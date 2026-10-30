@@ -881,7 +881,7 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     text: qsTr("Direction from")
                 }
-                MyTextField {
+                TextInputField {
                     id: windDirection
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
@@ -914,7 +914,7 @@ Page {
                     text: qsTr("Speed")
                     Layout.alignment: Qt.AlignBaseline
                 }
-                MyTextField {
+                TextInputField {
                     id: windSpeed
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
@@ -1112,6 +1112,8 @@ Page {
                 Layout.fillWidth: true
 
                 focus: true
+
+                inputMethodHints: Qt.ImhNoPredictiveText
 
                 // Return adds the top hit: activateFirstItem() clicks the first
                 // delegate, which appends the waypoint and closes the dialog.

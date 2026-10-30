@@ -54,7 +54,7 @@ StackLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
-        MyTextField {
+        TextInputField {
             id: ft_d
 
             Layout.fillWidth: true
@@ -84,7 +84,7 @@ StackLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
-        MyTextField {
+        TextInputField {
             id: m_d
 
             Layout.fillWidth: true

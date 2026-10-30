@@ -22,14 +22,14 @@ import QtQuick
 import QtQuick.Layouts
 
 // This is the text field that goes on top of a filterable list. It is a
-// MyTextField, and therefore inherits the clear button and the iOS input method
+// TextInputField, and therefore inherits the clear button and the iOS input method
 // workaround.
 //
 // Bind list models to the property 'filter', never to 'displayText'. On iOS 17,
 // displayText bounces many times per keystroke, and re-evaluating a filter over
 // hundreds of list rows on every bounce makes the GUI stutter.
 
-MyTextField {
+TextInputField {
     id: filterField
 
     placeholderText: qsTr("Filter by Name")

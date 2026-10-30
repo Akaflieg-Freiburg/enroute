@@ -9,6 +9,12 @@
   route editor no longer offer predictive text or autocomplete suggestions.
 - The aircraft library now explains how to add an aircraft, instead of
   referring to routes, when it is empty.
+- Faster app start when many maps and approach charts are installed. On iOS,
+  this prevents the system from closing the app during startup.
+- Fixed a crash on iOS when the app is closed.
+- On iOS 27, the keyboard no longer stays hidden after the app was closed
+  while the keyboard was open.
+- On macOS, the app icon in the Dock now has the correct size.
 
 ## [3.5.11] - 2026-10-28
 
@@ -22,12 +28,8 @@
   the app was sent to the background while it was still starting up and then
   closed by the system, for instance after it had been started by plugging in
   a USB device.
-- Faster app start when many maps and approach charts are installed. On iOS,
-  this prevents the system from closing the app during startup.
-- Fixed a crash on iOS when the app is closed.
-- On iOS 27, the keyboard no longer stays hidden after the app was closed
-  while the keyboard was open.
-- On macOS, the app icon in the Dock now has the correct size.
+- The side view below the moving map no longer closes when the settings are
+  changed. (#690)
 
 
 ## [3.5.10] - 2026-10-23

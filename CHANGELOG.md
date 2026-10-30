@@ -1,7 +1,6 @@
 # Changelog
 
-## [3.5.12]
-
+## [3.5.12] - 2026-10-30
 
 ### Fixed
 
@@ -15,6 +14,7 @@
 - On iOS 27, the keyboard no longer stays hidden after the app was closed
   while the keyboard was open.
 - On macOS, the app icon in the Dock now has the correct size.
+
 
 ## [3.5.11] - 2026-10-28
 

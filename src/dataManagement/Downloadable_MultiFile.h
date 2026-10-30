@@ -196,6 +196,12 @@ private:
     void evaluateRemoteFileSize();
     void evaluateUpdateSize();
 
+    // Evaluating the update size queries the file system for every member, and
+    // members often change in bulk (e.g. at startup). Coalesce all requests into
+    // a single evaluateUpdateSize() in the next event loop pass.
+    void scheduleUpdateSizeEvaluation();
+    bool m_updateSizeEvaluationScheduled {false};
+
     // Similar to 'add', but does not emit any notifier signals
     // Returns 'true' if item has actually been added.
     bool rawAdd(DataManagement::Downloadable_Abstract* map);

@@ -259,12 +259,11 @@ auto DataManagement::Downloadable_SingleFile::updateSize() -> Units::ByteSize
     {
         return 0;
     }
-    if (!QFile::exists(m_fileName))
+    QFileInfo const info(m_fileName);
+    if (!info.exists())
     {
         return 0;
     }
-
-    QFileInfo const info(m_fileName);
     if (m_remoteFileDate.isValid() && (info.lastModified() < m_remoteFileDate))
     {
         return m_remoteFileSize;

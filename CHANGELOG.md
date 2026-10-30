@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased]
+## [3.5.11]
+
+### Changed
+
+- Text fields for aircraft names, transponder codes, speeds and fuel
+  consumption, and the waypoint search in the route editor no longer suggest
+  or autocorrect words.
 
 ### Changed
 
@@ -27,6 +33,12 @@
   the app was sent to the background while it was still starting up and then
   closed by the system, for instance after it had been started by plugging in
   a USB device.
+- Faster app start when many maps and approach charts are installed. On iOS,
+  this prevents the system from closing the app during startup.
+- Fixed a crash on iOS when the app is closed.
+- On iOS 27, the keyboard no longer stays hidden after the app was closed
+  while the keyboard was open.
+- On macOS, the app icon in the Dock now has the correct size.
 
 
 ## [3.5.10] - 2026-10-23

@@ -1,25 +1,14 @@
 # Changelog
 
-## [3.5.11]
+## [3.5.12]
 
-### Changed
-
-- Text fields for aircraft names, transponder codes, speeds and fuel
-  consumption, and the waypoint search in the route editor no longer suggest
-  or autocorrect words.
-
-### Changed
-
-- The text fields on the aircraft page and the waypoint search field in the
-  route editor no longer offer predictive text or autocomplete suggestions.
 
 ### Fixed
 
-- Fixed an issue on iOS 27 where the virtual keyboard stayed hidden after the
-  system had terminated the app while the keyboard was open.
-- Fixed a possible crash when iOS terminates the app.
-- Fixed the app icon appearing too large in the macOS Dock.
-
+- The text fields on the aircraft page and the waypoint search field in the
+  route editor no longer offer predictive text or autocomplete suggestions.
+- The aircraft library now explains how to add an aircraft, instead of
+  referring to routes, when it is empty.
 
 ## [3.5.11] - 2026-10-28
 

@@ -30,6 +30,7 @@ MapQuickItem {
 
     property TrafficFactor_WithPosition trafficInfo
     property double bearing
+    property double pixelPer10km
 
     // Cache the per-update C++ values so the heading bindings below don't re-cross the
     // QML/C++ boundary repeatedly (positionInfo/trueTrack() are Q_INVOKABLE metacalls).
@@ -49,7 +50,7 @@ MapQuickItem {
             direction: RotationAnimation.Shortest
             duration: 1000
         }
-        enabled: trafficLabel.trafficInfo.animate
+        enabled: trafficLabel.trafficInfo.animate && trafficLabel.visible
     }
 
     property real t: trafficLabel.trafficTrueTrackValid ?
@@ -81,17 +82,25 @@ MapQuickItem {
              : Math.min(halfW/s, halfH/c)
     }
 
-    coordinate: trafficInfo.extrapolatedCoordinate
+    PixelFilteredCoordinate {
+        id: filteredCoordinate
+        source: trafficLabel.trafficInfo.extrapolatedCoordinate
+        pixelPer10km: trafficLabel.pixelPer10km
+        active: trafficLabel.trafficInfo.valid && trafficLabel.trafficInfo.relevant
+    }
+
+    coordinate: filteredCoordinate.coordinate
     // Smoothly glide between the extrapolated positions that
     // TrafficFactor_WithPosition publishes once per second, so that motion looks
     // continuous even though the C++ side only updates at 1 Hz. Gated by
     // "animate" so that newly-appearing or teleporting traffic snaps into place
-    // instead of sliding across the map.
+    // instead of sliding across the map. Hidden labels are not animated, see
+    // Traffic.qml.
     Behavior on coordinate {
         CoordinateAnimation {
             duration: 1000
         }
-        enabled: trafficLabel.trafficInfo.animate
+        enabled: trafficLabel.trafficInfo.animate && trafficLabel.visible && !filteredCoordinate.snapping
     }
 
     visible: trafficInfo.valid && trafficInfo.relevant && lbl.text !== ""
@@ -120,7 +129,7 @@ MapQuickItem {
 
             Behavior on color {
                 ColorAnimation { duration: 400 }
-                enabled: trafficLabel.trafficInfo.animate
+                enabled: trafficLabel.trafficInfo.animate && trafficLabel.visible
             }
             radius: 4
         }

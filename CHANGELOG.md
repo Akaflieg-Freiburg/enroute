@@ -4,16 +4,15 @@
 
 ### Fixed
 
-- The text fields on the aircraft page and the waypoint search field in the
-  route editor no longer offer predictive text or autocomplete suggestions.
-- The aircraft library now explains how to add an aircraft, instead of
-  referring to routes, when it is empty.
-- Faster app start when many maps and approach charts are installed. On iOS,
-  this prevents the system from closing the app during startup.
-- Fixed a crash on iOS when the app is closed.
+- Text fields on the aircraft page and the route editor's waypoint search no
+  longer offer predictive text.
+- When empty, the aircraft library now explains how to add an aircraft.
+- Faster app start with many maps and approach charts installed. This
+  prevents iOS from closing the app during startup.
+- Fixed a crash on iOS when closing the app.
 - On iOS 27, the keyboard no longer stays hidden after the app was closed
-  while the keyboard was open.
-- On macOS, the app icon in the Dock now has the correct size.
+  with it open.
+- On macOS, the Dock icon has the correct size.
 
 
 ## [3.5.11] - 2026-10-28

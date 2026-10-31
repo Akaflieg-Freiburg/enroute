@@ -106,7 +106,11 @@ find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
 
 if(IOS)
-    set(QT_USE_RISKY_DSYM_ARCHIVING_WORKAROUND ON)
+    # The workaround moves the app bundle to build/<config>-iphoneos, where Qt Creator does not
+    # find it. Archives are device-only, so keep the default layout for simulator builds.
+    if(NOT CMAKE_OSX_SYSROOT MATCHES "simulator")
+        set(QT_USE_RISKY_DSYM_ARCHIVING_WORKAROUND ON)
+    endif()
     set(XCODE_ATTRIBUTE_DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT "YES")
     set(PRODUCT_BUNDLE_IDENTIFIER de.akafliegfreiburg.enroute)
     set(CMAKE_XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon)

@@ -1090,22 +1090,22 @@ QString Weather::Decoder::pressureTendencyTrendToString(metaf::PressureTendencyG
     switch(trend)
     {
     case metaf::PressureTendencyGroup::Trend::NOT_REPORTED:
-        return tr("not reported");
+        return tr("It is not reported whether the pressure is now higher or lower than 3 hours ago.");
 
     case metaf::PressureTendencyGroup::Trend::HIGHER:
-        return tr("higher than");
+        return tr("The pressure is now higher than 3 hours ago.");
 
     case metaf::PressureTendencyGroup::Trend::HIGHER_OR_SAME:
-        return tr("higher or the same as");
+        return tr("The pressure is now higher than or the same as 3 hours ago.");
 
     case metaf::PressureTendencyGroup::Trend::SAME:
-        return tr("same as");
+        return tr("The pressure is now the same as 3 hours ago.");
 
     case metaf::PressureTendencyGroup::Trend::LOWER_OR_SAME:
-        return tr("lower or the same as");
+        return tr("The pressure is now lower than or the same as 3 hours ago.");
 
     case metaf::PressureTendencyGroup::Trend::LOWER:
-        return tr("lower than");
+        return tr("The pressure is now lower than 3 hours ago.");
     }
     return {};
 }
@@ -2756,12 +2756,12 @@ QString Weather::Decoder::visitPressureTendencyGroup(const PressureTendencyGroup
 
     case metaf::PressureTendencyGroup::Type::RISING_RAPIDLY:
     case metaf::PressureTendencyGroup::Type::FALLING_RAPIDLY:
-        return tr("Atmospheric pressure is %1")
+        return tr("Atmospheric pressure is %1.")
             .arg(pressureTendencyTypeToString(group.type()));
 
     default:
-        //: Note: the string %2 will be replaced by a text such as "less than"
-        return tr("During last 3 hours the atmospheric pressure was %1. Now the atmospheric pressure is %2 3h ago. Absolute pressure change is %3")
+        //: Note: %1 will be replaced by a text such as "increasing more slowly". %2 will be replaced by a complete sentence such as "The pressure is now higher than 3 hours ago." %3 will be replaced by a pressure value such as "1.2 hPa".
+        return tr("During the last 3 hours, the atmospheric pressure was %1. %2 The absolute pressure change is %3.")
             .arg(pressureTendencyTypeToString(group.type()),
                  pressureTendencyTrendToString(metaf::PressureTendencyGroup::trend(group.type())),explainPressure(group.difference()));
     }

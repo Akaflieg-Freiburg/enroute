@@ -50,7 +50,11 @@ FileFormats::FPL::FPL(const QString& fileName)
 
     int waypointTableCounter = 0;
     int routeCounter = 0;
-    QMap<QString, QGeoCoordinate> waypointTable;
+    // Some programs write FPL files where several waypoints share the same
+    // identifier. We keep all of them, in the order of the file, and resolve
+    // the n-th reference to an identifier to the n-th waypoint of that name.
+    QMap<QString, QList<QGeoCoordinate>> waypointTable;
+    QMap<QString, qsizetype> referenceCount;
     while(xmlReader.readNextStartElement())
     {
         if(xmlReader.name().compare("waypoint-table", Qt::CaseInsensitive) == 0)
@@ -139,7 +143,7 @@ FileFormats::FPL::FPL(const QString& fileName)
                         setError(QObject::tr("Waypoint %1 does not have valid coordinates.", "FileFormats::FPL").arg(count3));
                         return;
                     }
-                    waypointTable[m_name] = m_coordinate;
+                    waypointTable[m_name].append(m_coordinate);
                 }
             }
             if (count3 == 0)
@@ -183,7 +187,9 @@ FileFormats::FPL::FPL(const QString& fileName)
 
                     if (waypointTable.contains(id))
                     {
-                        m_waypoints.append(GeoMaps::Waypoint(waypointTable[id], id));
+                        const auto& candidates = waypointTable[id];
+                        auto index = qMin(referenceCount[id]++, candidates.size()-1);
+                        m_waypoints.append(GeoMaps::Waypoint(candidates[index], id));
                     }
                     else
                     {

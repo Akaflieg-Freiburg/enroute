@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.5.13] - 2026-11-01
+
+### Fixed
+
+- Garmin FPL flight routes that use the same name for several waypoints are
+  now imported correctly. Before, all waypoints of that name were placed at
+  the position of the last one.
+
+
 ## [3.5.12] - 2026-10-30
 
 ### Fixed

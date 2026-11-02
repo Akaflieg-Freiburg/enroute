@@ -110,11 +110,27 @@ Map {
         "text-halo-color": flightMap.overlayHaloColor
     })
 
-    property geoCoordinate animatedCoordinate: PositionProvider.lastValidCoordinate
-    Behavior on animatedCoordinate { CoordinateAnimation { duration: 1000 } }
+    // Ownship position without sub-pixel GPS jitter, so that a resting aircraft
+    // does not start animations once per second
+    PixelFilteredCoordinate {
+        id: ownshipCoordinate
+        source: PositionProvider.lastValidCoordinate
+        pixelPer10km: flightMap.pixelPer10km
+    }
+
+    // Not animated while the map is hidden: Qt renders at full frame rate while
+    // any animation runs, even an invisible one.
+    property geoCoordinate animatedCoordinate: ownshipCoordinate.coordinate
+    Behavior on animatedCoordinate {
+        enabled: flightMap.visible
+        CoordinateAnimation { duration: 1000 }
+    }
 
     property real animatedTT: PositionProvider.lastValidTT.toDEG()
-    Behavior on animatedTT { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
+    Behavior on animatedTT {
+        enabled: flightMap.visible
+        RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest }
+    }
 
     // MapLibre declares the style parameters as QJsonObject, which QML fills from
     // object literals at run time; qmllint cannot see that, nor the plugin's
@@ -772,22 +788,24 @@ Map {
     //
 
     MapCircle { // Circle for nondirectional traffic warning
+        id: trafficCircle
+
         center: TrafficDataProvider.trafficObjectWithoutPosition.coordinate
         Behavior on center {
             CoordinateAnimation { duration: 1000 }
-            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
+            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate && trafficCircle.visible
         }
 
         radius: Math.max(500, TrafficDataProvider.trafficObjectWithoutPosition.range.toM())
         Behavior on radius {
             NumberAnimation { duration: 1000 }
-            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
+            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate && trafficCircle.visible
         }
 
         color: TrafficDataProvider.trafficObjectWithoutPosition.color
         Behavior on color {
             ColorAnimation { duration: 400 }
-            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
+            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate && trafficCircle.visible
         }
         opacity: 0.1
         visible: TrafficDataProvider.trafficObjectWithoutPosition.relevant
@@ -798,10 +816,10 @@ Map {
 
         property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
 
-        coordinate: PositionProvider.lastValidCoordinate
+        coordinate: ownshipCoordinate.coordinate
         Behavior on coordinate {
             CoordinateAnimation { duration: 1000 }
-            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
+            enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate && mapCircleLabel.visible
         }
 
         visible: TrafficDataProvider.trafficObjectWithoutPosition.relevant
@@ -840,7 +858,7 @@ Map {
 
                 Behavior on color {
                     ColorAnimation { duration: 400 }
-                    enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
+                    enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate && mapCircleLabel.visible
                 }
                 radius: 4
             }
@@ -853,6 +871,7 @@ Map {
             TrafficLabel {
                 required property var modelData
                 bearing: flightMap.bearing
+                pixelPer10km: flightMap.pixelPer10km
                 trafficInfo: modelData
             }
         }
@@ -898,8 +917,11 @@ Map {
     MapQuickItem {
         id: ownPosition
 
-        coordinate: PositionProvider.lastValidCoordinate
-        Behavior on coordinate { CoordinateAnimation { duration: 1000 } }
+        coordinate: ownshipCoordinate.coordinate
+        Behavior on coordinate {
+            enabled: ownPosition.visible
+            CoordinateAnimation { duration: 1000 }
+        }
 
         Connections {
             // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem

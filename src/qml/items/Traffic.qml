@@ -40,19 +40,27 @@ MapQuickItem {
     readonly property bool trafficTrueTrackValid: trafficTrueTrack.isFinite()
     readonly property double trafficUncertaintyM: trafficInfo.uncertaintyRadius.toM()
 
-    coordinate: trafficInfo.extrapolatedCoordinate
+    PixelFilteredCoordinate {
+        id: filteredCoordinate
+        source: traffic1MapItem.trafficInfo.extrapolatedCoordinate
+        pixelPer10km: traffic1MapItem.pixelPer10km
+        active: traffic1MapItem.trafficInfo.relevant
+    }
+
+    coordinate: filteredCoordinate.coordinate
     visible: trafficInfo.relevant
 
     // Smoothly glide between the extrapolated positions that
     // TrafficFactor_WithPosition publishes once per second, so that motion looks
     // continuous even though the C++ side only updates at 1 Hz. Gated by
     // "animate" so that newly-appearing or teleporting traffic snaps into place
-    // instead of sliding across the map.
+    // instead of sliding across the map. Hidden traffic is not animated: Qt
+    // renders at full frame rate while any animation runs, even an invisible one.
     Behavior on coordinate {
         CoordinateAnimation {
             duration: 1000
         }
-        enabled: traffic1MapItem.trafficInfo.animate
+        enabled: traffic1MapItem.trafficInfo.animate && traffic1MapItem.visible && !filteredCoordinate.snapping
     }
 
     sourceItem: Item {
@@ -74,7 +82,7 @@ MapQuickItem {
                 direction: RotationAnimation.Shortest
                 duration: 1000
             }
-            enabled: traffic1MapItem.trafficInfo.animate
+            enabled: traffic1MapItem.trafficInfo.animate && traffic1MapItem.visible
         }
 
         // Screen rotation. The map bearing is applied here, live and un-animated,
@@ -95,7 +103,7 @@ MapQuickItem {
         FlightVector {
             width: 3
             opacity: traffic1MapItem.trafficUncertaintyM > 0 ? 0.7 : 0.8
-            animate: traffic1MapItem.trafficInfo.animate
+            animate: traffic1MapItem.trafficInfo.animate && traffic1MapItem.visible
             pixelPerTenKM: traffic1MapItem.pixelPer10km
             groundSpeedInMetersPerSecond: traffic1MapItem.trafficPositionInfo.groundSpeed().toMPS()
             // Gate on hasHeading, not only on a valid track: the parent item is

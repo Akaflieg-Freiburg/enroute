@@ -37,7 +37,8 @@ Rectangle {
 
     Behavior on groundSpeedInMetersPerSecond {
         NumberAnimation {duration: 400}
-        enabled: flightVector.animate
+        // While hidden (ownship at rest), speed jitter would keep animations running
+        enabled: flightVector.animate && flightVector.visible
     }
 
     x: -width/2.0

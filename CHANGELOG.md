@@ -4,8 +4,8 @@
 
 ### Fixed
 
-- iOS: Files shared to enroute from other apps open the import dialog again.
-  Since version 3.5.6, enroute opened but ignored the file.
+- iOS: Files shared to Enroute open the import dialog again.
+- Improved battery life when using OGN as traffic source.
 
 
 ## [3.5.13] - 2026-11-01

@@ -124,13 +124,17 @@ endif()
 #
 
 if (EXISTS ${CMAKE_SOURCE_DIR}/.git)
-    # Get the current working branch
-    execute_process(
-        COMMAND git rev-parse --abbrev-ref HEAD
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE GIT_BRANCH
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
+    # Get the current working branch, unless it is given on the command line.
+    # The Flathub build checks out a commit, leaving HEAD detached, so its
+    # manifest passes -DGIT_BRANCH=main.
+    if (NOT DEFINED GIT_BRANCH)
+        execute_process(
+            COMMAND git rev-parse --abbrev-ref HEAD
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            OUTPUT_VARIABLE GIT_BRANCH
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            )
+    endif()
     message("Currently working with git branch ${GIT_BRANCH}")
 
     # Get the latest abbreviated commit hash of the working branch

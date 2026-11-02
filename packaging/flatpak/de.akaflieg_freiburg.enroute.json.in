@@ -91,7 +91,8 @@
       "name": "enroute",
       "buildsystem": "cmake-ninja",
       "config-opts": [
-        "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+        "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+        "-DGIT_BRANCH=main"
       ],
       "sources": [
         {

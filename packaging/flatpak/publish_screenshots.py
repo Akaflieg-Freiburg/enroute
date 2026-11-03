@@ -61,7 +61,8 @@ XML_LANG = '{http://www.w3.org/XML/1998/namespace}lang'
 
 # AppStream language tag expected on the <image> element of each locale.
 # None means the untranslated (default) image.
-LOCALE_LANG = {'en-US': None, 'de-DE': 'de', 'fr-FR': 'fr', 'it-IT': 'it', 'pl-PL': 'pl'}
+LOCALE_LANG = {'en-US': None, 'cs-CZ': 'cs', 'de-DE': 'de', 'es-ES': 'es', 'fr-FR': 'fr', 'it-IT': 'it',
+               'pl-PL': 'pl'}
 
 RELEASE_TITLE = 'Flathub screenshots'
 RELEASE_NOTES = ('Decorated screenshots for the Flathub listing, uploaded by the fastlane '

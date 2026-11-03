@@ -29,7 +29,7 @@ endif()
 # Project data
 #
 
-project(enroute VERSION 3.5.12)
+project(enroute VERSION 3.5.13)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
@@ -106,11 +106,15 @@ find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
 
 if(IOS)
-    set(QT_USE_RISKY_DSYM_ARCHIVING_WORKAROUND ON)
+    # The workaround moves the app bundle to build/<config>-iphoneos, where Qt Creator does not
+    # find it. Archives are device-only, so keep the default layout for simulator builds.
+    if(NOT CMAKE_OSX_SYSROOT MATCHES "simulator")
+        set(QT_USE_RISKY_DSYM_ARCHIVING_WORKAROUND ON)
+    endif()
     set(XCODE_ATTRIBUTE_DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT "YES")
     set(PRODUCT_BUNDLE_IDENTIFIER de.akafliegfreiburg.enroute)
     set(CMAKE_XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon)
-    set(QT_QML_DEBUG OFF)
+    set(QT_ENABLE_QML_DEBUG OFF)
     include(CMakeLists_ios.txt OPTIONAL)
 endif()
 

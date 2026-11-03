@@ -1,3 +1,14 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    // Android Java/Gradle sources are Qt templates that only build through
+    // androiddeployqt; don't let the Java extensions try to import them.
+    "gradle.autoDetect": "off",
+    "java.import.gradle.enabled": false,
+    "java.import.maven.enabled": false,
+    "java.import.exclusions": [
+        "**/build/**",
+        "**/node_modules/**",
+        "**/.metadata/**"
+    ],
+    "java.server.launchMode": "LightWeight",
+    "java.configuration.updateBuildConfiguration": "disabled"
 }

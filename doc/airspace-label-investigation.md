@@ -113,11 +113,9 @@ so the D 5500 label of 4583 can never appear anywhere on the map.
 4. **`text-allow-overlap: true`** restores every label but overprints wherever
    several sectors share one side; on the top line three labels would stack.
    Not usable on its own.
-5. **Patch MapLibre** to shift the collision circles by the text offset. Correct in
-   principle, but QMapLibre 3.0.0 comes prebuilt from the Qt online installer
-   (`~/Software/buildsystems/Qt/6.12.0/gcc_64`), so not practical short term.
-   Filing an upstream issue against maplibre-native referencing 4798 is still
-   worthwhile.
+5. **Patch MapLibre** to shift the collision circles by the text offset. The
+   QMapLibre used here is home-compiled from `../enrouteDependencies`, so a local
+   patch is feasible; see "Upstream status" below for size and shape.
 
 ## Suggested confirmation experiment
 
@@ -133,3 +131,44 @@ of it. This has not been run yet.
   polygons.
 - Pixel profiles across a line: sample RGB along the normal of a line at a given
   screen x to tell band and label sides apart (eyeballing the crops was unreliable).
+
+## Upstream status (checked 2026-11-03)
+
+Which MapLibre is actually in use: `enrouteDependencies/maplibre-native-qt-flat`
+(maplibre-native-qt v3.0.0-13-g45ab7f6, 2025-06-08) with vendored maplibre-native
+commit b50faeb9 (2025-05-01, "node-v5.2.0-104"). The copy under
+`~/Software/buildsystems/Qt/6.12.0/gcc_64` is what CMake finds, but it is installed
+from that build, not from the Qt installer.
+
+**MapLibre GL JS: fixed since 3.0.0 (pre.5, March 2023).** PR
+maplibre/maplibre-gl-js#2260 "Improve line labels using text-offset" closed issues
+#2170 (gaps/bunching at vertices) and #2171 (collision boxes ignore the offset, so
+two labels on opposite sides of one line collide). GL JS now offsets the line
+geometry itself (`transformToOffsetNormal`, `findOffsetIntersectionPoint` in
+`src/symbol/projection.ts`) and generates its collision circles dynamically along
+the path returned by `placeFirstAndLastGlyph`, so the circles follow the text.
+Render tests `text-offset/line-collision`, `line-concave`, `line-convex`,
+`line-sharp-*` were added with the PR. Size: projection.ts +231/-47, util.ts +33,
+collision_index.ts one line.
+
+**MapLibre Native: not fixed in any version, including main as of today.** Both
+the vendored commit and upstream main (`src/mln/text/collision_feature.cpp`,
+`collision_index.cpp`) still precompute the circles on the line in
+`bboxifyLabel` and project `circle.anchor` in `placeLineFeature`; the first/last
+glyph positions (which do carry the offset) are only used to decide which circles
+are active. The last functional change to these files was 2022-07-05; since then
+only renames and clang-tidy. The parity tracking issue maplibre-native#2445 lists
+all `text-offset/line-*` render tests as failing, so the gap is known but nobody
+has ported it. Updating QMapLibre or maplibre-native therefore does not help.
+
+**Shape of a local patch** (not written yet): `SymbolInstance` already stores
+`textOffset` (`src/mbgl/layout/symbol_instance.hpp`) and builds
+`textCollisionFeature` in its initializer list. Pass the y offset into
+`CollisionFeature` → `initialize` → `bboxifyLabel`, convert it to tile units with
+`boxScale`, and shift each `boxAnchor` by the unit normal of its segment
+(`perp(p1 - p0)`), with the same sign as `placeGlyphAlongLine` uses
+(`perp(lineDir) * lineOffsetY`). Roughly 15 lines plus the vendored-copy rebuild in
+enrouteDependencies for every platform. Limits: ignores overscaling (as the
+existing circle size does) and does not fix the vertex gaps of #2170; a full port
+of the GL JS approach would also need dynamic circle generation along the
+projected path, which native lacks entirely.

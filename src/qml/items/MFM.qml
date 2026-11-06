@@ -550,13 +550,16 @@ Item {
                     enabled: (Qt.platform.os !== "ios") && (Qt.platform.os !== "android")
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
 
+                    // Position of the last actual mouse movement
+                    property point lastPosition: Qt.point(-1000, -1000)
+
                     onPointChanged: {
-                        // Showing the tooltip re-triggers hover delivery, which reports the
-                        // unchanged position again. Only actual movement hides the tooltip.
-                        if (airspaceTooltip.visible) {
-                            if (Math.hypot(point.position.x - airspaceTooltip.cursor.x, point.position.y - airspaceTooltip.cursor.y) < 2)
-                                return
-                        }
+                        // While the scene animates, Qt re-delivers hover events every 100 ms
+                        // with the unchanged position; so does showing the tooltip. Only
+                        // actual movement may restart the timer or hide the tooltip.
+                        if (Math.hypot(point.position.x - lastPosition.x, point.position.y - lastPosition.y) < 2)
+                            return
+                        lastPosition = point.position
                         airspaceTooltip.visible = false
                         if (hovered)
                             hoverTimer.restart()
@@ -564,6 +567,7 @@ Item {
                     onHoveredChanged: {
                         if (hovered)
                             return
+                        lastPosition = Qt.point(-1000, -1000)
                         hoverTimer.stop()
                         airspaceTooltip.visible = false
                     }

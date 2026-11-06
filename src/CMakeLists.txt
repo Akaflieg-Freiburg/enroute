@@ -680,6 +680,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/MFM.qml
     qml/items/NavBar.qml
     qml/items/NotificationArea.qml
+    qml/items/PixelFilteredCoordinate.qml
     qml/items/NotificationButton.qml
     qml/items/PageHeader.qml
     qml/items/RemainingRouteBar.qml

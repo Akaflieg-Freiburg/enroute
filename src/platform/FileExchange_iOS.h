@@ -97,6 +97,9 @@ protected:
     /*! \brief Implements virtual method from GlobalObject */
     void deferredInitialization() override {};
 
+    // Since Qt 6.11, opened files arrive as QFileOpenEvent
+    bool eventFilter(QObject* watched, QEvent* event) override;
+
 private:
     Q_DISABLE_COPY_MOVE(FileExchange);
 };

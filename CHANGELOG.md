@@ -9,6 +9,11 @@
   library or from the main menu, and the separate aircraft page is gone. The
   aircraft that was configured before the update is added to the library and
   stays active.
+### Fixed
+
+- iOS: Files shared to Enroute open the import dialog again.
+- Improved battery life when using OGN as traffic source.
+
 
 ## [3.5.13] - 2026-11-01
 

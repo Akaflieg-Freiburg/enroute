@@ -26,6 +26,8 @@
 #include "qmimedatabase.h"
 
 #include <QDesktopServices>
+#include <QFileOpenEvent>
+#include <QGuiApplication>
 
 
 Platform::FileExchange::FileExchange(QObject *parent)
@@ -33,8 +35,9 @@ Platform::FileExchange::FileExchange(QObject *parent)
 {
     // Standard constructor. Recall that the constructor must not call virtual functions.
     // If you need virtual functions, use the methode deferredInitialization below.
-
+    // Only needed for builds with Qt < 6.11, newer versions send QFileOpenEvent
     QDesktopServices::setUrlHandler("file", this, "handleFileUrlReceived");
+    qApp->installEventFilter(this);
 }
 
 
@@ -78,6 +81,16 @@ auto Platform::FileExchange::viewContent(const QByteArray & /*content*/,
     // View file content
 #warning not implemented
     return {};
+}
+
+bool Platform::FileExchange::eventFilter(QObject* watched, QEvent* event)
+{
+    if (event->type() == QEvent::FileOpen)
+    {
+        handleFileUrlReceived(static_cast<QFileOpenEvent*>(event)->url());
+        return true;
+    }
+    return FileExchange_Abstract::eventFilter(watched, event);
 }
 
 void Platform::FileExchange::handleFileUrlReceived(const QUrl &url)

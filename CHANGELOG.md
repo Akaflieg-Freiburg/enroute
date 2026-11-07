@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- The app's Flathub listing for Linux is now also available in Czech and
+  Spanish, with translated screenshots.
+
+### Fixed
+
+- On Linux, the version installed from Flathub no longer calls itself a beta
+  version in the main menu.
+
+
 ## [3.5.13] - 2026-11-01
 
 ### Fixed

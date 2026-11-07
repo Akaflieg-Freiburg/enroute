@@ -88,18 +88,51 @@ GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
         return;
     }
     m_lowerBound = properties[QStringLiteral("BOT")].toString();
+
+    // Optional secondary limits. BMN is a minimum for the lower limit, TMX a
+    // maximum for the upper limit.
+    m_lowerBoundMin = properties[QStringLiteral("BMN")].toString();
+    m_upperBoundMax = properties[QStringLiteral("TMX")].toString();
 }
 
 
 Units::Distance GeoMaps::Airspace::estimatedLowerBoundMSL(Units::Distance terrainElevation, Units::Pressure QNH, Units::Distance ownshipGeometricAltitude, Units::Distance ownshipBarometricAltitude) const
 {
-    return estimateBoundMSL(m_lowerBound, terrainElevation, QNH, ownshipGeometricAltitude, ownshipBarometricAltitude);
+    auto result = estimateBoundMSL(m_lowerBound, terrainElevation, QNH, ownshipGeometricAltitude, ownshipBarometricAltitude);
+    if (m_lowerBoundMin.isEmpty())
+    {
+        return result;
+    }
+    auto minimum = estimateBoundMSL(m_lowerBoundMin, terrainElevation, QNH, ownshipGeometricAltitude, ownshipBarometricAltitude);
+    if (!minimum.isFinite())
+    {
+        return result;
+    }
+    if (!result.isFinite())
+    {
+        return minimum;
+    }
+    return qMax(result, minimum);
 }
 
 
 Units::Distance GeoMaps::Airspace::estimatedUpperBoundMSL(Units::Distance terrainElevation, Units::Pressure QNH, Units::Distance ownshipGeometricAltitude, Units::Distance ownshipBarometricAltitude) const
 {
-    return estimateBoundMSL(m_upperBound, terrainElevation, QNH, ownshipGeometricAltitude, ownshipBarometricAltitude);
+    auto result = estimateBoundMSL(m_upperBound, terrainElevation, QNH, ownshipGeometricAltitude, ownshipBarometricAltitude);
+    if (m_upperBoundMax.isEmpty())
+    {
+        return result;
+    }
+    auto maximum = estimateBoundMSL(m_upperBoundMax, terrainElevation, QNH, ownshipGeometricAltitude, ownshipBarometricAltitude);
+    if (!maximum.isFinite())
+    {
+        return result;
+    }
+    if (!result.isFinite())
+    {
+        return maximum;
+    }
+    return qMin(result, maximum);
 }
 
 
@@ -186,7 +219,9 @@ bool GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
     return ((A.m_name == B.m_name) &&
             (A.m_CAT == B.m_CAT) &&
             (A.m_upperBound == B.m_upperBound) &&
+            (A.m_upperBoundMax == B.m_upperBoundMax) &&
             (A.m_lowerBound == B.m_lowerBound) &&
+            (A.m_lowerBoundMin == B.m_lowerBoundMin) &&
             (A.m_polygon == B.m_polygon) );
 }
 
@@ -196,7 +231,9 @@ size_t GeoMaps::qHash(const GeoMaps::Airspace& A)
     auto result = qHash(A.name());
     result += qHash(A.CAT());
     result += qHash(A.upperBound());
+    result += qHash(A.upperBoundMax());
     result += qHash(A.lowerBound());
+    result += qHash(A.lowerBoundMin());
     result += qHash(A.polygon());
     return result;
 }

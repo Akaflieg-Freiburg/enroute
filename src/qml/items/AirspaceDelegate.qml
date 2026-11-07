@@ -44,6 +44,14 @@ GridLayout {
     readonly property color asGreen:  Global.airspaceGreen
     readonly property color asYellow: Global.airspaceYellow
 
+    // Joins a primary vertical limit with an optional secondary limit, e.g.
+    // "FL 115" and "3000 AGL" become "FL 115 / 3000 AGL".
+    function joinLimits(primary: string, secondary: string): string {
+        if (secondary === undefined || secondary === "")
+            return primary
+        return primary + " / " + secondary
+    }
+
 
     Item {
         id: box
@@ -190,12 +198,14 @@ GridLayout {
     Label {
         id: colorGlean
         Layout.alignment: Qt.AlignHCenter|Qt.AlignBottom
+        // Secondary limit (a maximum for the upper limit), if present, is
+        // appended with a slash, matching the labels on the moving map.
         text: {
             switch(Navigator.aircraft.verticalDistanceUnit) {
             case Aircraft.Feet:
-                return gridLYO.airspace.upperBound
+                return gridLYO.joinLimits(gridLYO.airspace.upperBound, gridLYO.airspace.upperBoundMax)
             case Aircraft.Meters:
-                return gridLYO.airspace.upperBoundMetric
+                return gridLYO.joinLimits(gridLYO.airspace.upperBoundMetric, gridLYO.airspace.upperBoundMaxMetric)
             }
         }
         wrapMode: Text.WordWrap
@@ -210,12 +220,14 @@ GridLayout {
 
     Label {
         Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
+        // Secondary limit (a minimum for the lower limit), if present, is
+        // appended with a slash, matching the labels on the moving map.
         text: {
             switch(Navigator.aircraft.verticalDistanceUnit) {
             case Aircraft.Feet:
-                return gridLYO.airspace.lowerBound
+                return gridLYO.joinLimits(gridLYO.airspace.lowerBound, gridLYO.airspace.lowerBoundMin)
             case Aircraft.Meters:
-                return gridLYO.airspace.lowerBoundMetric
+                return gridLYO.joinLimits(gridLYO.airspace.lowerBoundMetric, gridLYO.airspace.lowerBoundMinMetric)
             }
         }
         wrapMode: Text.WordWrap

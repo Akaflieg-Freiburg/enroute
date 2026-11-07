@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+
+- Airspaces with secondary vertical limits, such as "FL 115, but at least
+  3000 ft AGL", are now fully supported. The airspace description shows both
+  limits, and the side view draws the effective boundary following the
+  terrain where appropriate.
+
 ### Changed
 
 - The app's Flathub listing for Linux is now also available in Czech and

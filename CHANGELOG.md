@@ -5,21 +5,18 @@
 ### Added
 
 - Airspaces with secondary vertical limits, such as "FL 115, but at least
-  3000 ft AGL", are now fully supported. The airspace description shows both
-  limits, and the side view draws the effective boundary following the
-  terrain where appropriate.
+  3000 ft AGL", are now supported. The airspace description shows both
+  limits, and the side view draws the effective boundary.
 
 ### Fixed
 
 - iOS: Files shared to Enroute open the import dialog again.
-- Improved battery life when using OGN as traffic source.
-- On Linux, the version installed from Flathub no longer calls itself a beta
-  version in the main menu.
+- Improved battery life with OGN as traffic source.
+- Linux: The Flathub version no longer calls itself a beta version.
 
 ### Changed
 
-- The app's Flathub listing for Linux is now also available in Czech and
-  Spanish, with translated screenshots.
+- The Flathub listing for Linux is now also available in Czech and Spanish.
 
 
 ## [3.5.13] - 2026-11-01

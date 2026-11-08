@@ -54,7 +54,9 @@ public:
      * altitude above MSL
      *
      * This method estimates the lower limit of the airspace at a given point,
-     * as a geometric altitude above MSL. Since many airspace boundaries are
+     * as a geometric altitude above MSL. If the airspace has a secondary lower
+     * limit (see lowerBoundMin), the estimate is the higher of the two
+     * limits. Since many airspace boundaries are
      * defined as barometric altitudes (above standard or QNH pressure level),
      * the method needs to know QNH and the ownship geometric and barometric
      * altitude in order to provide an estimate that is good enough to judge
@@ -92,7 +94,9 @@ public:
      * altitude above MSL
      *
      * This method estimates the upper limit of the airspace at a given point,
-     * as a geometric altitude above MSL. Since many airspace boundaries are
+     * as a geometric altitude above MSL. If the airspace has a secondary upper
+     * limit (see upperBoundMax), the estimate is the lower of the two
+     * limits. Since many airspace boundaries are
      * defined as barometric altitudes (above standard or QNH pressure level),
      * the method needs to know QNH and the ownship geometric and barometric
      * altitude in order to provide an estimate that is good enough to judge
@@ -161,6 +165,39 @@ public:
      */
     [[nodiscard]] auto lowerBoundMetric() const -> QString { return makeMetric(m_lowerBound); }
 
+    /*! \brief Secondary lower limit of the airspace
+     *
+     * Some airspaces carry a secondary lower limit that acts as a minimum for
+     * the primary lower limit, as in "FL 115, but at least 3000 ft AGL". The
+     * effective lower limit is then the higher of lowerBound and
+     * lowerBoundMin. The string uses the same format as lowerBound. It is
+     * empty if the airspace has no secondary lower limit.
+     *
+     * @see lowerBound
+     */
+    Q_PROPERTY(QString lowerBoundMin READ lowerBoundMin CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property lowerBoundMin
+     */
+    [[nodiscard]] auto lowerBoundMin() const -> QString { return m_lowerBoundMin; }
+
+    /*! \brief Secondary lower limit of the airspace
+     *
+     * A string that describes the secondary lower limit of the airspace in
+     * metric terms. Empty if the airspace has no secondary lower limit.
+     *
+     * @see lowerBoundMin
+     */
+    Q_PROPERTY(QString lowerBoundMinMetric READ lowerBoundMinMetric CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property lowerBoundMinMetric
+     */
+    [[nodiscard]] auto lowerBoundMinMetric() const -> QString { return makeMetric(m_lowerBoundMin); }
+
     /* \brief Name of the airspace, such as "ED-R 31" */
     Q_PROPERTY(QString name READ name CONSTANT)
 
@@ -217,6 +254,38 @@ public:
      */
     [[nodiscard]] auto upperBoundMetric() const -> QString { return makeMetric(m_upperBound); }
 
+    /*! \brief Secondary upper limit of the airspace
+     *
+     * Some airspaces carry a secondary upper limit that acts as a maximum for
+     * the primary upper limit. The effective upper limit is then the lower of
+     * upperBound and upperBoundMax. The string uses the same format as
+     * upperBound. It is empty if the airspace has no secondary upper limit.
+     *
+     * @see upperBound
+     */
+    Q_PROPERTY(QString upperBoundMax READ upperBoundMax CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property upperBoundMax
+     */
+    [[nodiscard]] auto upperBoundMax() const -> QString { return m_upperBoundMax; }
+
+    /*! \brief Secondary upper limit of the airspace
+     *
+     * A string that describes the secondary upper limit of the airspace in
+     * metric terms. Empty if the airspace has no secondary upper limit.
+     *
+     * @see upperBoundMax
+     */
+    Q_PROPERTY(QString upperBoundMaxMetric READ upperBoundMaxMetric CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property upperBoundMaxMetric
+     */
+    [[nodiscard]] auto upperBoundMaxMetric() const -> QString { return makeMetric(m_upperBoundMax); }
+
 private:
     // Transforms a height string such as "4500", "1500 GND" or "FL 130" into a
     // string that describes the height in meters. If the height string cannot
@@ -229,7 +298,9 @@ private:
     QString m_name;
     QString m_CAT;
     QString m_upperBound;
+    QString m_upperBoundMax;
     QString m_lowerBound;
+    QString m_lowerBoundMin;
     QGeoPolygon m_polygon;
 };
 

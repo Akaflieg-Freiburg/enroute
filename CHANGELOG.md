@@ -1,6 +1,13 @@
 # Changelog
 
-## [Unreleased]
+## [3.5.14] - 2026-11-08
+
+### Added
+
+- Airspaces with secondary vertical limits, such as "FL 115, but at least
+  3000 ft AGL", are now fully supported. The airspace description shows both
+  limits, and the side view draws the effective boundary following the
+  terrain where appropriate.
 
 ### Fixed
 

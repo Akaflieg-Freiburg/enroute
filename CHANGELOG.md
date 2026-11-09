@@ -7,6 +7,9 @@
 - Fixed a crash on Android devices that use an HTTP proxy, as set in the
   Wi-Fi settings of some company or school networks. On these devices, the
   app closed a few seconds after it was started.
+- Fixed a rare crash on the weather page. The app could close when the list
+  of weather stations was pulled down at the very moment new weather data
+  arrived.
 
 
 ## [3.5.14] - 2026-11-08

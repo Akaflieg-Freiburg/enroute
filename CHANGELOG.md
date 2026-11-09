@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed a crash on Android devices that use an HTTP proxy, as set in the
+  Wi-Fi settings of some company or school networks. On these devices, the
+  app closed a few seconds after it was started.
+
+
 ## [3.5.14] - 2026-11-08
 
 ### Added

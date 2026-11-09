@@ -85,6 +85,13 @@ jobs:
       with:
         key: android
         max-size: "500M"  # Limit cache size (default is 2G)
+    - name: Cache Gradle distribution
+      # The Gradle wrapper downloads its distribution from services.gradle.org,
+      # which occasionally fails (HTTP 504)
+      uses: actions/cache@v6
+      with:
+        path: ~/.gradle/wrapper/dists
+        key: gradle-wrapper-${{ hashFiles('enroute/src/android/gradle/wrapper/gradle-wrapper.properties') }}
     - name: Compile and Install libzip
       run: |
         export QT_HOST_PATH="$(readlink -f "$QT_ROOT_DIR/../gcc_64")"

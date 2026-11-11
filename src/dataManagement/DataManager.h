@@ -59,7 +59,7 @@ namespace DataManagement {
  *  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). The
  *  format of the file is described at this URL:
  *
- *  https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/The-file-maps.json
+ *  https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/maps-json.md
  *
  *  Locally installed items are saved in the directory "aviation_maps" in
  *  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), or into a

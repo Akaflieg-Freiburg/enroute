@@ -44,7 +44,7 @@ public:
      *
      * This method constructs an Airpace from a GeoJSON description. The GeoJSON
      * file specification is found
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
      *
      * @param geoJSONObject GeoJSON Object that describes the airspace.
      */
@@ -220,7 +220,7 @@ public:
      *
      * A string with the category of the airspace, as described in the GeoJSON
      * file specification
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
      */
     Q_PROPERTY(QString CAT READ CAT CONSTANT)
 

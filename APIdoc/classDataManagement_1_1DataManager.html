@@ -220,7 +220,7 @@ Additional Inherited Members</h2></td></tr>
 </ul>
 <p>The class retrieves the list of available items from a remote server on a regular basis, updates the list automatically once a week, and maintains a list of Downloadable objects that corresponds to the remotely available and locally installed items.</p>
 <p>The address of the remote server is hardcoded into the binary. The list is downloaded to a file "maps.json" in QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). The format of the file is described at this URL:</p>
-<p><a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/The-file-maps.json">https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/The-file-maps.json</a></p>
+<p><a href="https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/maps-json.md">https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/maps-json.md</a></p>
 <p>Locally installed items are saved in the directory "aviation_maps" in QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), or into a suitable subdirectory of this.</p>
 <p>The implementation assumes that no other program interferes with the file "maps.json" and with the directory "aviation_maps". </p>
 

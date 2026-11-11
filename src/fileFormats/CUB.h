@@ -58,7 +58,7 @@ public:
      *  @param warningList Reference to a QStringList where warnings will be appended.
      *
      *  @return If no error messages were appended, returns a QJsonDocument with GeoJSON as specified
-     *  in https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation.
+     *  in https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md.
      *  If error messages were appended, returns an empty QJsonDocument
      */
     static QJsonDocument parse(const QString& fileName, QStringList& errorList, QStringList& warningList);

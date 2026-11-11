@@ -36,7 +36,7 @@ namespace GeoMaps {
  * This class represents a waypoint.  The properties stored in this class
  * correspond to the feature of the GeoJSON files that are used in Enroute, as
  * described
- * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+ * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
  */
 
 class Waypoint
@@ -75,7 +75,7 @@ public:
      *
      * This method constructs a Waypoint from a GeoJSON description.  The
      * GeoJSON file specification is found
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
      *
      * @param geoJSONObject GeoJSON Object that describes the waypoint
      */
@@ -90,7 +90,7 @@ public:
      *
      *  This property holds the category of  the waypoint.  For a list of
      *  possible values and explanations, see the GeoJSON file specification
-     *  [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     *  [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
      */
     Q_PROPERTY(QString category READ category CONSTANT)
 
@@ -126,7 +126,7 @@ public:
      *
      * This property is set to true if the waypoint has a valid coordinate and
      * if the properties satisfy the specifications outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
      */
     Q_PROPERTY(bool isValid READ isValid)
 
@@ -173,7 +173,7 @@ public:
      *
      *  This property holds the type of the waypoint.  For a list of possible
      *  values and explanations, see the GeoJSON file specification
-     *  [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     *  [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
      */
     Q_PROPERTY(QString type READ type CONSTANT)
 
@@ -367,7 +367,7 @@ public:
      *
      * This method serialises the waypoint as a GeoJSON object. The object
      * conforms to the specification outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
      * The waypoint can be restored with the obvious constructor
      *
      * @returns QJsonObject describing the waypoint

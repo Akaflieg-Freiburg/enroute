@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.16]
+
+### Fixed
+
+- iOS: The keyboard now appears when Enroute was opened while another app's
+  keyboard was showing, for example from the Spotlight search.
+
+
 ## [3.5.15] - 2026-11-10
 
 ### Fixed

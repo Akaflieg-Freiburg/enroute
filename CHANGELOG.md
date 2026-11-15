@@ -9,6 +9,9 @@
 - Where two adjacent airspaces share a boundary, the moving map now shows
   a label on each side of the boundary. Before, only one of the two
   airspaces was labeled there.
+- On first start, maps are now downloaded only once the device's position
+  is known. Before, users in other countries could get the maps for
+  Germany and France.
 
 
 ## [3.5.15] - 2026-11-10

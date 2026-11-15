@@ -21,16 +21,23 @@ end
 #
 # Every caller publishes something under this version number, so the version is
 # also checked against CMakeLists.txt. A mismatch typically means that the
-# "## [Unreleased]" heading has not yet been renamed for the new release.
+# heading of the new release ("## [Unreleased]" or "## [3.5.16]") has not yet
+# been given its release date.
 def latest_changelog_entry
-  match = File.read("../CHANGELOG.md").match(/^##\s+\[?(\d+\.\d+\.\d+)\]?\s*-[^\n]*\n(.*?)(?=^##\s|\z)/m)
-  UI.user_error!("Could not find version information in CHANGELOG.md") if match.nil?
-  changelog_version = match[1]
+  changelog = File.read("../CHANGELOG.md")
+  match = changelog.match(/^##\s+\[?(\d+\.\d+\.\d+)\]?\s*-[^\n]*\n(.*?)(?=^##\s|\z)/m)
+  changelog_version = match && match[1]
   project_version = cmake_project_version
   if changelog_version != project_version
-    UI.user_error!("Version mismatch: CHANGELOG.md lists #{changelog_version} as the latest release, " \
-                   "but CMakeLists.txt declares version #{project_version}. " \
-                   "Rename the '## [Unreleased]' heading in CHANGELOG.md to '## [#{project_version}] - YYYY-MM-DD'.")
+    # Explain the mismatch in terms of the first section heading, which is the
+    # one that has to be fixed.
+    first_heading = changelog[/^##\s[^\n]*/].to_s.strip
+    wanted = "## [#{project_version}] - #{Time.now.strftime('%Y-%m-%d')}"
+    found = changelog_version ? "the latest dated release in CHANGELOG.md is #{changelog_version}" :
+                                "CHANGELOG.md contains no dated release heading"
+    UI.user_error!("No release notes for version #{project_version} (declared in CMakeLists.txt): " \
+                   "#{found}. Release headings need a date. " \
+                   "Change the heading '#{first_heading}' in CHANGELOG.md to '#{wanted}'.")
   end
   [changelog_version, match[2].strip]
 end

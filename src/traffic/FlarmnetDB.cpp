@@ -197,7 +197,7 @@ auto Traffic::FlarmnetDB::registrationFromFile(const QString& key) -> QString
 
 void Traffic::FlarmnetDB::writePlaceholderFile(const QString& fileName)
 {
-    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileName, tr("Placeholder file.").toLatin1()))
+    if (!FileFormats::DataFileAbstract::saveFileAtomically(fileName, tr("Placeholder file.").toUtf8()))
     {
         return;
     }

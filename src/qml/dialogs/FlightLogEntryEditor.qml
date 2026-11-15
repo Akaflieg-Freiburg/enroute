@@ -28,7 +28,8 @@ import "../items"
 /* Flight log entry editor dialog
  *
  * Usage: set property editFlight and flightUuid, then open().
- * On accepted, call resultFlight() to get the edited Flight value.
+ * On accepted, call resultFlight() to get the edited Flight value. This is
+ * editFlight with the user's changes applied, see FlightLog.applyEdits().
  */
 
 CenteringDialog {
@@ -38,8 +39,8 @@ CenteringDialog {
     property flight editFlight
 
     // Output values read by the caller
-    readonly property string newDepartureICAO: depField.text.toUpperCase()
-    readonly property string newArrivalICAO: arrField.text.toUpperCase()
+    readonly property string newDepartureICAO: codeOrName(depField.text)
+    readonly property string newArrivalICAO: codeOrName(arrField.text)
     readonly property string newDate: dateField.text
     readonly property string newOffBlockTime: offBlockField.text
     readonly property string newStartTime: startField.text
@@ -49,8 +50,37 @@ CenteringDialog {
     readonly property string newAircraftCallsign: callsignField.text
     readonly property string newComments: commentsField.text
 
+    // True if the input can be saved. Date and start time are mandatory. The
+    // other times may be left empty but must be valid otherwise: a time that
+    // FlightLog cannot interpret would be dropped from the saved flight.
+    readonly property bool acceptableInput: depField.displayText !== ""
+                                            && FlightLog.isValidDate(dateField.text)
+                                            && FlightLog.isValidTime(startField.text)
+                                            && isValidOrEmptyTime(offBlockField.text)
+                                            && isValidOrEmptyTime(landingField.text)
+                                            && isValidOrEmptyTime(onBlockField.text)
+                                            && (landingsField.text === "" || landingsField.acceptableInput)
+
+    // Give keyboard focus to the departure field when the dialog opens
+    defaultFocusItem: depField
+
     modal: true
     title: qsTr("Edit Flight")
+
+    // The airfield fields hold an ICAO code or, for an airfield without one,
+    // its name: flight detection and the "Add Flight" button fill in
+    // Waypoint.shortName. Codes are stored in upper case, so that they are
+    // found in the maps. Anything longer than a code is a name and is kept as
+    // entered.
+    function codeOrName(text) {
+        var trimmed = text.trim()
+        return trimmed.length <= 4 ? trimmed.toUpperCase() : trimmed
+    }
+
+    // Check the text of a time field that may be left empty
+    function isValidOrEmptyTime(text) {
+        return text.trim() === "" || FlightLog.isValidTime(text)
+    }
 
     // Auto-format a bare 4-digit time like "1800" → "18:00"
     function formatTimeInput(field) {
@@ -69,12 +99,15 @@ CenteringDialog {
     // Format a QDateTime as UTC date string "yyyy-MM-dd"
     function utcDate(dt) {
         return dt.getUTCFullYear().toString()
-             + "-" + (dt.getUTCMonth() + 1).toString().padStart(2, '0')
+             + "-" + String(dt.getUTCMonth() + 1).padStart(2, '0')
              + "-" + dt.getUTCDate().toString().padStart(2, '0')
     }
 
+    // The flight as it will be saved: editFlight with the content of the
+    // fields applied. The summary at the bottom of the dialog shows this
+    // flight, too.
     function resultFlight() {
-        var f = FlightLog.createFlight(
+        var edited = FlightLog.createFlight(
             newDepartureICAO,
             newArrivalICAO,
             newDate,
@@ -86,8 +119,9 @@ CenteringDialog {
             newAircraftCallsign,
             newComments
         )
-        f.landingCount = parseInt(landingsField.text) || 1
-        return f
+        // A flight has at least one landing. An empty field means one.
+        edited.landingCount = Math.max(1, parseInt(landingsField.text) || 1)
+        return FlightLog.applyEdits(editFlight, edited)
     }
 
     onAboutToShow: {
@@ -123,7 +157,6 @@ CenteringDialog {
         callsignField.text = editFlight.aircraftCallsign
         commentsField.text = editFlight.comments
         landingsField.text = editFlight.landingCount > 0 ? editFlight.landingCount.toString() : "1"
-        depField.focus = true
     }
 
     DecoratedScrollView {
@@ -132,17 +165,34 @@ CenteringDialog {
 
         clip: true
 
+        // If the virtual keyboard comes up, make sure that the focused field
+        // is visible. Scroll no further than necessary: the departure field
+        // has focus when the dialog opens, and the date above it should stay
+        // in view. The fields are children of the grid, so their y is a
+        // position in the scrolled content. This handler runs before the
+        // contentItem is resized, hence availableHeight rather than the
+        // height of the contentItem.
         onHeightChanged: {
-            if (activeFocusControl != null) {
-                contentItem.contentY = activeFocusControl.y
-            }
+            const control = ApplicationWindow.activeFocusControl
+            const flickable = contentItem as Flickable
+            if (control === null || flickable === null || control.parent !== grid)
+                return
+            let y = flickable.contentY
+            if (control.y + control.height > y + availableHeight)
+                y = control.y + control.height - availableHeight
+            if (control.y < y)
+                y = control.y
+            flickable.contentY = Math.max(0, Math.min(y, contentHeight - availableHeight))
         }
 
         GridLayout {
-            width: availableWidth
+            id: grid
+
+            width: flightEditorDialog.availableWidth
             columns: 2
 
             Label {
+                id: dateLabel
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Date")
             }
@@ -152,6 +202,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 placeholderText: "yyyy-MM-dd"
                 inputMethodHints: Qt.ImhDate
+                color: FlightLog.isValidDate(text) ? dateLabel.color : "red"
             }
 
             Label {
@@ -165,7 +216,6 @@ CenteringDialog {
                 Layout.minimumWidth: font.pixelSize * 5
                 placeholderText: qsTr("e.g. EDTF")
                 inputMethodHints: Qt.ImhUppercaseOnly | Qt.ImhNoPredictiveText
-                maximumLength: 4
                 focus: true
             }
 
@@ -180,7 +230,6 @@ CenteringDialog {
                 Layout.minimumWidth: font.pixelSize * 5
                 placeholderText: qsTr("e.g. EDFE")
                 inputMethodHints: Qt.ImhUppercaseOnly | Qt.ImhNoPredictiveText
-                maximumLength: 4
             }
 
             // Separator
@@ -198,7 +247,8 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 placeholderText: qsTr("HH:mm (optional)")
                 inputMethodHints: Qt.ImhTime
-                onTextEdited: formatTimeInput(offBlockField)
+                color: flightEditorDialog.isValidOrEmptyTime(text) ? dateLabel.color : "red"
+                onTextEdited: flightEditorDialog.formatTimeInput(offBlockField)
             }
 
             Label {
@@ -211,7 +261,8 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 placeholderText: "HH:mm"
                 inputMethodHints: Qt.ImhTime
-                onTextEdited: formatTimeInput(startField)
+                color: flightEditorDialog.isValidOrEmptyTime(text) ? dateLabel.color : "red"
+                onTextEdited: flightEditorDialog.formatTimeInput(startField)
             }
 
             Label {
@@ -224,7 +275,8 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 placeholderText: "HH:mm"
                 inputMethodHints: Qt.ImhTime
-                onTextEdited: formatTimeInput(landingField)
+                color: flightEditorDialog.isValidOrEmptyTime(text) ? dateLabel.color : "red"
+                onTextEdited: flightEditorDialog.formatTimeInput(landingField)
             }
 
             Label {
@@ -237,7 +289,8 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 placeholderText: qsTr("HH:mm (optional)")
                 inputMethodHints: Qt.ImhTime
-                onTextEdited: formatTimeInput(onBlockField)
+                color: flightEditorDialog.isValidOrEmptyTime(text) ? dateLabel.color : "red"
+                onTextEdited: flightEditorDialog.formatTimeInput(onBlockField)
             }
 
             // Separator
@@ -288,7 +341,8 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignBaseline
                 placeholderText: "1"
                 inputMethodHints: Global.digitsInputHint
-                validator: IntValidator { bottom: 0; top: 99 }
+                validator: IntValidator { bottom: 1; top: 99 }
+                color: text === "" || acceptableInput ? dateLabel.color : "red"
             }
 
             // Separator
@@ -313,8 +367,8 @@ CenteringDialog {
                     if (bt !== "")
                         parts.push(qsTr("Block: %1").arg(bt))
                     var dist = f.distance()
-                    if (dist.isFinite())
-                        parts.push(qsTr("Distance: %1 NM").arg(dist.toNM().toFixed(1)))
+                    if (dist.isFinite() && dist.toNM() >= 0.1)
+                        parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
                     if (parts.length === 0)
                         return qsTr("Enter times and ICAO codes to see calculated values")
                     return parts.join("  |  ")
@@ -335,8 +389,7 @@ CenteringDialog {
             text: qsTr("OK")
             flat: true
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            enabled: depField.displayText !== ""
-                     && dateField.displayText !== "" && startField.displayText !== ""
+            enabled: flightEditorDialog.acceptableInput
         }
     }
 

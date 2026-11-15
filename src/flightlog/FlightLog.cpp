@@ -21,7 +21,9 @@
 #include <QDateTime>
 #include <QFile>
 #include <QGeoPath>
+#include <QRegularExpression>
 #include <QSet>
+#include <QTimeZone>
 
 #ifdef Q_OS_ANDROID
 #include <QJniObject>
@@ -425,36 +427,7 @@ void Flightlog::FlightLog::updateFlight(const QString& uuid, const Flightlog::Fl
         return;
     }
 
-    // Start from the existing entry so that read-only fields (trackFile,
-    // coordinates) are preserved by default.
-    auto f = *it;
-    const auto& old = *it;
-
-    // Only clear a coordinate when its ICAO code actually changes, so
-    // resolveCoordinates() below re-derives it from the new code. If the
-    // code is unchanged, the coordinate is left exactly as it was — this is
-    // what protects a real GPS-derived coordinate (from automatic detection
-    // or the "End Flight" button) from being replaced by an ICAO-based
-    // approximation just because some other field was edited.
-    if (flight.departureICAO() != old.departureICAO()) {
-        f.setDepartureCoordinate({});
-    }
-    if (flight.arrivalICAO() != old.arrivalICAO()) {
-        f.setArrivalCoordinate({});
-    }
-
-    f.setDepartureICAO(flight.departureICAO());
-    f.setArrivalICAO(flight.arrivalICAO());
-    f.setOffBlockTime(flight.offBlockTime());
-    f.setStartTime(flight.startTime());
-    f.setLandingTime(flight.landingTime());
-    f.setOnBlockTime(flight.onBlockTime());
-    f.setPilotName(flight.pilotName());
-    f.setAircraftCallsign(flight.aircraftCallsign());
-    f.setComments(flight.comments());
-    f.setLandingCount(flight.landingCount());
-
-    resolveCoordinates(f);
+    const auto f = applyEdits(*it, flight);
 
     // Persist first; see addFlight() for the rationale.
     if (!m_storage->upsert(f)) {
@@ -463,6 +436,81 @@ void Flightlog::FlightLog::updateFlight(const QString& uuid, const Flightlog::Fl
     *it = f;
     sortFlights(flights);
     m_flights.setValue(std::move(flights));
+}
+
+
+// Parse a date entered by the user. Returns an invalid QDate unless the text
+// is a valid calendar date in yyyy-MM-dd format.
+static auto parseDate(const QString& text) -> QDate
+{
+    static const QRegularExpression pattern(u"^(\\d{4})-(\\d{2})-(\\d{2})$"_s);
+    const auto match = pattern.match(text.trimmed());
+    if (!match.hasMatch()) {
+        return {};
+    }
+    return QDate(match.captured(1).toInt(), match.captured(2).toInt(), match.captured(3).toInt());
+}
+
+
+// Parse a time entered by the user. Returns an invalid QTime unless the text
+// is a valid time of day in HH:mm or H:mm format.
+static auto parseTime(const QString& text) -> QTime
+{
+    static const QRegularExpression pattern(u"^(\\d{1,2}):(\\d{2})$"_s);
+    const auto match = pattern.match(text.trimmed());
+    if (!match.hasMatch()) {
+        return {};
+    }
+    return QTime(match.captured(1).toInt(), match.captured(2).toInt());
+}
+
+
+// Editors show and deliver times with a resolution of one minute. If the
+// edited time is the original time cut to the full minute, then the user did
+// not change it, and the original time is kept, seconds included.
+static auto keepSeconds(const QDateTime& original, const QDateTime& edited) -> QDateTime
+{
+    if (!original.isValid() || !edited.isValid()) {
+        return edited;
+    }
+    auto fullMinute = original.toUTC();
+    fullMinute.setTime(QTime(fullMinute.time().hour(), fullMinute.time().minute()));
+    return (fullMinute == edited) ? original : edited;
+}
+
+
+auto Flightlog::FlightLog::applyEdits(const Flightlog::Flight& original, const Flightlog::Flight& edited) -> Flightlog::Flight
+{
+    // Start from the original, so that the fields that cannot be edited
+    // (identity, track file, coordinates) are kept by default.
+    auto f = original;
+
+    // Only clear a coordinate when its ICAO code actually changes, so
+    // resolveCoordinates() below re-derives it from the new code. If the
+    // code is unchanged, the coordinate is left exactly as it was — this is
+    // what protects a real GPS-derived coordinate (from automatic detection
+    // or the "End Flight" button) from being replaced by an ICAO-based
+    // approximation just because some other field was edited.
+    if (edited.departureICAO() != original.departureICAO()) {
+        f.setDepartureCoordinate({});
+    }
+    if (edited.arrivalICAO() != original.arrivalICAO()) {
+        f.setArrivalCoordinate({});
+    }
+
+    f.setDepartureICAO(edited.departureICAO());
+    f.setArrivalICAO(edited.arrivalICAO());
+    f.setOffBlockTime(keepSeconds(original.offBlockTime(), edited.offBlockTime()));
+    f.setStartTime(keepSeconds(original.startTime(), edited.startTime()));
+    f.setLandingTime(keepSeconds(original.landingTime(), edited.landingTime()));
+    f.setOnBlockTime(keepSeconds(original.onBlockTime(), edited.onBlockTime()));
+    f.setPilotName(edited.pilotName());
+    f.setAircraftCallsign(edited.aircraftCallsign());
+    f.setComments(edited.comments());
+    f.setLandingCount(edited.landingCount());
+
+    resolveCoordinates(f);
+    return f;
 }
 
 
@@ -481,15 +529,48 @@ auto Flightlog::FlightLog::createFlight(
     Flight f;
     f.setDepartureICAO(departureICAO);
     f.setArrivalICAO(arrivalICAO);
-    f.setOffBlockTime(parseDateTime(date, offBlockTimeStr));
-    f.setStartTime(parseDateTime(date, startTimeStr));
-    f.setLandingTime(parseDateTime(date, landingTimeStr));
-    f.setOnBlockTime(parseDateTime(date, onBlockTimeStr));
+
+    // The date is the date of the start time. Place the other times around
+    // the start time, so that a flight can pass midnight UTC.
+    const auto startTime = parseDateTime(date, startTimeStr);
+    auto offBlockTime = parseDateTime(date, offBlockTimeStr);
+    auto landingTime = parseDateTime(date, landingTimeStr);
+    auto onBlockTime = parseDateTime(date, onBlockTimeStr);
+    if (startTime.isValid()) {
+        if (offBlockTime.isValid() && (offBlockTime > startTime)) {
+            offBlockTime = offBlockTime.addDays(-1);
+        }
+        if (landingTime.isValid() && (landingTime < startTime)) {
+            landingTime = landingTime.addDays(1);
+        }
+        // The landing time is less than a day after the start time, so that
+        // this loop runs twice at most.
+        const auto& arrivalTime = landingTime.isValid() ? landingTime : startTime;
+        while (onBlockTime.isValid() && (onBlockTime < arrivalTime)) {
+            onBlockTime = onBlockTime.addDays(1);
+        }
+    }
+    f.setOffBlockTime(offBlockTime);
+    f.setStartTime(startTime);
+    f.setLandingTime(landingTime);
+    f.setOnBlockTime(onBlockTime);
     f.setPilotName(pilotName);
     f.setAircraftCallsign(aircraftCallsign);
     f.setComments(comments);
     f.setLandingCount(1);
     return f;
+}
+
+
+auto Flightlog::FlightLog::isValidDate(const QString& date) -> bool
+{
+    return parseDate(date).isValid();
+}
+
+
+auto Flightlog::FlightLog::isValidTime(const QString& time) -> bool
+{
+    return parseTime(time).isValid();
 }
 
 
@@ -784,10 +865,12 @@ void Flightlog::FlightLog::load()
 
 auto Flightlog::FlightLog::parseDateTime(const QString& date, const QString& timeStr) -> QDateTime
 {
-    if (date.isEmpty() || timeStr.isEmpty()) {
+    const auto parsedDate = parseDate(date);
+    const auto parsedTime = parseTime(timeStr);
+    if (!parsedDate.isValid() || !parsedTime.isValid()) {
         return {};
     }
-    return QDateTime::fromString(date + u"T"_s + timeStr + u":00Z"_s, Qt::ISODate);
+    return QDateTime(parsedDate, parsedTime, QTimeZone::UTC);
 }
 
 

@@ -115,13 +115,32 @@ so the D 5500 label of 4583 can never appear anywhere on the map.
    Not usable on its own.
 5. **Patch MapLibre** to shift the collision circles by the text offset. The
    QMapLibre used here is home-compiled from `../enrouteDependencies`, so a local
-   patch is feasible; see "Upstream status" below for size and shape.
+   patch is feasible. Done on 2026-11-14, see "Local patch" below.
 
-## Suggested confirmation experiment
+## Confirmation experiment (run 2026-11-14, macOS, Qt 6.12.0)
 
-Temporarily set `text-allow-overlap: true` on the `AirspaceLabels` layer and look at
-the top line: E, C and D 5500 should appear stacked north of the line, D 4500 south
-of it. This has not been run yet.
+`text-allow-overlap` on the `AirspaceLabels` layer was switched from `false` to
+`true` at run time, with the airspace limit at 9000 ft and the map at zoom 11 and
+12 over Reutlingen. The window was grabbed before and after the switch in the same
+session. The harness was temporary and is not in the tree.
+
+- Top line: the baseline shows only "E • 1000 AGL - 2500 AGL", north of the line.
+  With overlap allowed, "D • 4500 - FL 100" appears south of the line, clean and
+  legible. North of the line several labels are drawn on top of each other at the
+  same anchors and are unreadable, as expected for E, C 3500 and D 5500.
+- Middle line: the baseline shows only "D • 4500 - FL 100", north of the line. With
+  overlap allowed, "D • FL 75 - FL 100" appears south of it, clean and legible.
+- FIR boundary east of Laichingen: the baseline shows only "EDGG • GND - FL 245".
+  With overlap allowed, "EDMM • GND - FL 245" appears on the other side.
+
+Conclusions:
+
+- Every label exists and is suppressed by collision only. The root cause stands.
+- Labels on opposite sides of a shared edge do not touch on screen. Shifting the
+  collision circles by the text offset (remedy 5) would restore all of them.
+- Sectors on the same side of an edge share anchors and offset, so their labels
+  coincide exactly. Remedy 5 does not separate them; one label still wins. This
+  covers E / C 3500 / D 5500 north of the top line.
 
 ## Helper scripts used (in /tmp/claude-asp, not kept)
 
@@ -161,14 +180,43 @@ only renames and clang-tidy. The parity tracking issue maplibre-native#2445 list
 all `text-offset/line-*` render tests as failing, so the gap is known but nobody
 has ported it. Updating QMapLibre or maplibre-native therefore does not help.
 
-**Shape of a local patch** (not written yet): `SymbolInstance` already stores
-`textOffset` (`src/mbgl/layout/symbol_instance.hpp`) and builds
-`textCollisionFeature` in its initializer list. Pass the y offset into
-`CollisionFeature` → `initialize` → `bboxifyLabel`, convert it to tile units with
-`boxScale`, and shift each `boxAnchor` by the unit normal of its segment
-(`perp(p1 - p0)`), with the same sign as `placeGlyphAlongLine` uses
-(`perp(lineDir) * lineOffsetY`). Roughly 15 lines plus the vendored-copy rebuild in
-enrouteDependencies for every platform. Limits: ignores overscaling (as the
-existing circle size does) and does not fix the vertex gaps of #2170; a full port
-of the GL JS approach would also need dynamic circle generation along the
-projected path, which native lacks entirely.
+## Local patch (implemented 2026-11-14, uncommitted in enrouteDependencies)
+
+Three hunks in `maplibre-native-qt-flat/vendor/maplibre-native/src/mbgl/text/`,
+8 lines added and 1 changed:
+
+- `collision_feature.hpp`: `CollisionBox` gets a member `lineNormal`.
+- `collision_feature.cpp`, `bboxifyLabel`: stores with each circle the unit normal
+  of its line segment, `perp(p1 - p0) / segmentLength`. This is the direction in
+  which `placeGlyphAlongLine` moves the glyphs.
+- `collision_index.cpp`, `placeLineFeature`: projects
+  `circle.anchor + circle.lineNormal * circleOffset` instead of `circle.anchor`,
+  with `circleOffset = symbol.lineOffset[1] * fontScale * pixelsToTileUnits`.
+
+The shift happens at placement time, not in `bboxifyLabel` as first sketched. The
+circle centres are in tile units and spread with fractional zoom, while the glyph
+offset is constant in pixels; a shift at layout time would be up to twice too
+large just below the next tile zoom level. The existing `lineOffsetY` in
+`placeLineFeature` is scaled by `fontSize` instead of `fontSize / 24` and must not
+be reused.
+
+Verified on macOS with the Qt 6.12.0 kit. The universal build from
+`build-maplibre-native-qt-macOS` was installed into the kit with
+`cmake --install build-maplibre-native-qt-macOS --prefix <kit>`. Window grabs with
+the unchanged style, same cameras as the experiment, plus zoom 11.95 and a view
+rotated by 70° at zoom 11.5:
+
+- Top line: "E • 1000 AGL - 2500 AGL" north, "D • 4500 - FL 100" south.
+- Middle line: "D • 4500 - FL 100" north, "D • FL 75 - FL 100" south.
+- FIR boundary: "EDGG • GND - FL 245" and "EDMM • GND - FL 245".
+- As predicted, C 3500 and D 5500 are still missing north of the top line.
+
+Side effect: labels now reserve space where the text is drawn. Near Bad
+Ditzenbach the new "D • FL 75 - FL 100" label displaces the town names Deggingen
+and Bad Ditzenbach. One of the two PJE labels there disappears as well, apparently
+because its text touches the airfield name; that cause was not checked.
+
+Limits: the x component of `text-offset` is not handled, and the vertex gaps of
+#2170 remain. Only the macOS kit carries the patch; the other platforms need the
+enrouteDependencies builds. A full port of the GL JS approach would also need
+dynamic circle generation along the projected path, which native lacks entirely.

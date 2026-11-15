@@ -6,6 +6,9 @@
 
 - iOS: The keyboard now appears when Enroute was opened while another app's
   keyboard was showing, for example from the Spotlight search.
+- Where two adjacent airspaces share a boundary, the moving map now shows
+  a label on each side of the boundary. Before, only one of the two
+  airspaces was labeled there.
 
 
 ## [3.5.15] - 2026-11-10

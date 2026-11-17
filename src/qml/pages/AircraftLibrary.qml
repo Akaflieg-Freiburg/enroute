@@ -69,90 +69,117 @@ Page {
         Component {
             id: entryDelegate
 
-            RowLayout {
+            Item {
                 id: entryRow
                 required property string name
+                required property int index
                 // Size from the list, not from parent: the delegate is created
                 // and destroyed while it has no parent.
                 width: wpList.width
-                Layout.fillWidth: true
                 height: iDel.height
+
+                readonly property bool active: entryRow.name === Navigator.aircraftName
+
+                // Keep keyboard focus on the active aircraft. Deferred on creation,
+                // because the view resets currentIndex to 0 after creating delegates.
+                function focusIfActive() {
+                    if (entryRow.active)
+                        wpList.currentIndex = entryRow.index
+                }
+                onActiveChanged: focusIfActive()
+                Component.onCompleted: Qt.callLater(focusIfActive)
 
                 // Return/Enter on the highlighted row triggers its primary action
                 // (the trailing menu button stays mouse-only).
                 signal clicked()
                 onClicked: iDel.clicked()
 
-                SwipeToDeleteDelegate {
-                    id: iDel
-                    Layout.fillWidth: true
+                // Rounded, so it also frames the buttons
+                Rectangle {
+                    anchors.fill: parent
 
-                    text: entryRow.name
-                    // The filled icon marks the active aircraft
-                    highlighted: entryRow.name === Navigator.aircraftName
-                    icon.source: highlighted ? "/icons/material/ic_airplanemode_active.svg"
-                                             : "/icons/material/ic_airplanemode_outline.svg"
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        page.selectAircraft(entryRow.name)
-                    }
-
-                    swipe.onCompleted: {
-                        PlatformAdaptor.vibrateBrief()
-                        page.finalFileName = entryRow.name
-                        removeDialog.open()
-                        // The row is removed from the model if the user confirms.
-                        // Otherwise it stays, so return it to its normal position.
-                        iDel.swipe.close()
-                    }
+                    visible: entryRow.active
+                    radius: 8
+                    color: entryRow.Material.listHighlightColor
+                    border.width: 1
+                    border.color: entryRow.Material.hintTextColor
                 }
 
-                ToolButton {
-                    id: cptMenuButton
+                RowLayout {
+                    anchors.fill: parent
 
-                    icon.source: "/icons/material/ic_more_horiz.svg"
+                    SwipeToDeleteDelegate {
+                        id: iDel
+                        Layout.fillWidth: true
 
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        cptMenu.open()
+                        // Opaque by default, which would hide the frame
+                        Material.background: "transparent"
+
+                        text: entryRow.name
+                        font.weight: entryRow.active ? Font.Bold : Font.Normal
+                        icon.source: entryRow.active ? "/icons/material/ic_airplanemode_active.svg"
+                                                     : "/icons/material/ic_airplanemode_outline.svg"
+
+                        onClicked: {
+                            PlatformAdaptor.vibrateBrief()
+                            page.selectAircraft(entryRow.name)
+                        }
+
+                        swipe.onCompleted: {
+                            PlatformAdaptor.vibrateBrief()
+                            page.finalFileName = entryRow.name
+                            removeDialog.open()
+                            // The row is removed from the model if the user confirms.
+                            // Otherwise it stays, so return it to its normal position.
+                            iDel.swipe.close()
+                        }
                     }
 
-                    AutoSizingMenu {
-                        id: cptMenu
+                    ToolButton {
+                        icon.source: "/icons/material/ic_mode_edit.svg"
+                        onClicked: {
+                            PlatformAdaptor.vibrateBrief()
+                            Global.stackView.push("AircraftEditor.qml", {entryName: entryRow.name})
+                        }
+                    }
 
-                        Action {
-                            id: editAction
-                            text: qsTr("Edit…")
-                            onTriggered: {
-                                PlatformAdaptor.vibrateBrief()
-                                Global.stackView.push("AircraftEditor.qml", {entryName: entryRow.name})
-                            }
-                        } // editAction
+                    ToolButton {
+                        id: cptMenuButton
 
-                        Action {
-                            id: renameAction
-                            text: qsTr("Rename…")
-                            onTriggered: {
-                                PlatformAdaptor.vibrateBrief()
-                                page.finalFileName = entryRow.name
-                                renameName.text = entryRow.name
-                                renameDialog.open()
-                            }
+                        icon.source: "/icons/material/ic_more_horiz.svg"
 
-                        } // renameAction
+                        onClicked: {
+                            PlatformAdaptor.vibrateBrief()
+                            cptMenu.open()
+                        }
 
-                        Action {
-                            id: removeAction
-                            text: qsTr("Remove…")
-                            onTriggered: {
-                                PlatformAdaptor.vibrateBrief()
-                                page.finalFileName = entryRow.name
-                                removeDialog.open()
-                            }
-                        } // removeAction
-                    } // AutoSizingMenu
+                        AutoSizingMenu {
+                            id: cptMenu
 
+                            Action {
+                                id: renameAction
+                                text: qsTr("Rename…")
+                                onTriggered: {
+                                    PlatformAdaptor.vibrateBrief()
+                                    page.finalFileName = entryRow.name
+                                    renameName.text = entryRow.name
+                                    renameDialog.open()
+                                }
+
+                            } // renameAction
+
+                            Action {
+                                id: removeAction
+                                text: qsTr("Remove…")
+                                onTriggered: {
+                                    PlatformAdaptor.vibrateBrief()
+                                    page.finalFileName = entryRow.name
+                                    removeDialog.open()
+                                }
+                            } // removeAction
+                        } // AutoSizingMenu
+
+                    }
                 }
             }
         }

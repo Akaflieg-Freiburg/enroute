@@ -52,25 +52,61 @@ CenteringDialog {
                 sourceModel: Librarian.aircraftModel
             }
 
-            delegate: ItemDelegate {
-                id: idel
+            delegate: Item {
+                id: entryRow
 
                 required property string name
 
                 // The delegate is created before the view parents it
                 width: lView.width
+                implicitHeight: row.implicitHeight
 
-                text: idel.name
-                highlighted: idel.name === Navigator.aircraftName
-                icon.source: highlighted ? "/icons/material/ic_airplanemode_active.svg"
-                                         : "/icons/material/ic_airplanemode_outline.svg"
+                readonly property bool active: entryRow.name === Navigator.aircraftName
 
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    var errorString = Navigator.selectAircraft(idel.name)
-                    if (errorString !== "")
-                        Global.toast.doToast(qsTr("Error: %1").arg(errorString))
-                    dlg.close()
+                // Rounded, so it also frames the edit button
+                Rectangle {
+                    anchors.fill: parent
+
+                    visible: entryRow.active
+                    radius: 8
+                    color: entryRow.Material.listHighlightColor
+                    border.width: 1
+                    border.color: entryRow.Material.hintTextColor
+                }
+
+                RowLayout {
+                    id: row
+
+                    anchors.fill: parent
+
+                    ItemDelegate {
+                        Layout.fillWidth: true
+
+                        text: entryRow.name
+                        font.weight: entryRow.active ? Font.Bold : Font.Normal
+                        icon.source: entryRow.active ? "/icons/material/ic_airplanemode_active.svg"
+                                                     : "/icons/material/ic_airplanemode_outline.svg"
+
+                        onClicked: {
+                            PlatformAdaptor.vibrateBrief()
+                            var errorString = Navigator.selectAircraft(entryRow.name)
+                            if (errorString !== "")
+                                Global.toast.doToast(qsTr("Error: %1").arg(errorString))
+                            else
+                                Global.toast.doToast(qsTr("Aircraft <strong>%1</strong> is active").arg(entryRow.name))
+                            dlg.close()
+                        }
+                    }
+
+                    ToolButton {
+                        icon.source: "/icons/material/ic_mode_edit.svg"
+
+                        onClicked: {
+                            PlatformAdaptor.vibrateBrief()
+                            dlg.close()
+                            Global.stackView.push("../pages/AircraftEditor.qml", {entryName: entryRow.name})
+                        }
+                    }
                 }
             }
         }
@@ -97,7 +133,7 @@ CenteringDialog {
         Button {
             flat: true
             DialogButtonBox.buttonRole: DialogButtonBox.ActionRole
-            text: qsTr("Library…")
+            text: qsTr("View Library")
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()

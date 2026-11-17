@@ -41,7 +41,7 @@ CenteringDialog {
     // Output values read by the caller
     readonly property string newDepartureICAO: codeOrName(depField.text)
     readonly property string newArrivalICAO: codeOrName(arrField.text)
-    readonly property string newDate: dateField.text
+    readonly property string newDate: dateField.date
     readonly property string newOffBlockTime: offBlockField.text
     readonly property string newStartTime: startField.text
     readonly property string newLandingTime: landingField.text
@@ -54,7 +54,7 @@ CenteringDialog {
     // other times may be left empty but must be valid otherwise: a time that
     // FlightLog cannot interpret would be dropped from the saved flight.
     readonly property bool acceptableInput: depField.displayText !== ""
-                                            && FlightLog.isValidDate(dateField.text)
+                                            && FlightLog.isValidDate(dateField.date)
                                             && FlightLog.isValidTime(startField.text)
                                             && isValidOrEmptyTime(offBlockField.text)
                                             && isValidOrEmptyTime(landingField.text)
@@ -126,10 +126,10 @@ CenteringDialog {
 
     onAboutToShow: {
         if (editFlight.startTime.getTime && !isNaN(editFlight.startTime.getTime())) {
-            dateField.text = utcDate(editFlight.startTime)
+            dateField.date = utcDate(editFlight.startTime)
             startField.text = utcTime(editFlight.startTime)
         } else {
-            dateField.text = utcDate(new Date())
+            dateField.date = utcDate(new Date())
             startField.text = ""
         }
 
@@ -191,18 +191,23 @@ CenteringDialog {
             width: flightEditorDialog.availableWidth
             columns: 2
 
+            // The placeholder text of a Material text field moves onto the
+            // upper border of the field once the field has focus or content,
+            // and sticks out above the field by half its height. Leave enough
+            // room that it stays clear of the field above.
+            rowSpacing: 0.85 * flightEditorDialog.font.pixelSize
+
             Label {
                 id: dateLabel
                 Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Date")
+                text: qsTr("Date (UTC)")
             }
-            TextInputField {
+            DateInput {
                 id: dateField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                placeholderText: "yyyy-MM-dd"
-                inputMethodHints: Qt.ImhDate
-                color: FlightLog.isValidDate(text) ? dateLabel.color : "red"
+                utc: true
+                color: FlightLog.isValidDate(date) ? dateLabel.color : "red"
             }
 
             Label {
@@ -232,8 +237,9 @@ CenteringDialog {
                 inputMethodHints: Qt.ImhUppercaseOnly | Qt.ImhNoPredictiveText
             }
 
-            // Separator
-            Label {
+            // Separator: an empty row, so that the groups are two row
+            // spacings apart
+            Item {
                 Layout.columnSpan: 2
             }
 
@@ -293,8 +299,9 @@ CenteringDialog {
                 onTextEdited: flightEditorDialog.formatTimeInput(onBlockField)
             }
 
-            // Separator
-            Label {
+            // Separator: an empty row, so that the groups are two row
+            // spacings apart
+            Item {
                 Layout.columnSpan: 2
             }
 
@@ -345,8 +352,9 @@ CenteringDialog {
                 color: text === "" || acceptableInput ? dateLabel.color : "red"
             }
 
-            // Separator
-            Label {
+            // Separator: an empty row, so that the groups are two row
+            // spacings apart
+            Item {
                 Layout.columnSpan: 2
             }
 

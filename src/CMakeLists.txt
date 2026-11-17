@@ -662,6 +662,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/AutoSizingMenu.qml
     qml/items/DecoratedListView.qml
     qml/items/DecoratedScrollView.qml
+    qml/items/DateInput.qml
     qml/items/DegreeInput.qml
     qml/items/DialogLoader.qml
     qml/items/ElevationInput.qml

@@ -121,10 +121,15 @@ CenteringDialog {
 
             property string title: qsTr("Download Maps")
 
-            // All map sets covering the current position. Accessing
+            // All map sets covering the current position. The list stays empty
+            // until a position fix arrives: before that, lastValidCoordinate
+            // holds a stored or built-in default position, and maps for that
+            // position must not be downloaded. Accessing
             // DataManager.mapSets.downloadables makes this binding re-evaluate
             // when the list of available maps arrives after the position fix.
             readonly property var mapSets4Location: {
+                if (!PositionProvider.receivingPositionInfo)
+                    return []
                 if (DataManager.mapSets.downloadables.length === 0) // qmllint disable unresolved-type
                     return []
                 return DataManager.mapSets.downloadables4Location(PositionProvider.lastValidCoordinate)
@@ -144,8 +149,11 @@ CenteringDialog {
             property bool autoDownloadStarted: false
 
             // Map sets are assembled file by file while maps.json is parsed, and
-            // recommendedMapSets changes on every step. Defer the download until
-            // control returns to the event loop, when all sets are complete.
+            // recommendedMapSets changes on every step. Likewise, on the first
+            // position fix, receivingPositionInfo changes before
+            // lastValidCoordinate does. Defer the download until control returns
+            // to the event loop, when all sets are complete and the position is
+            // current.
             onRecommendedMapSetsChanged: Qt.callLater(sv.startAutoDownload)
 
             function hasAviationMap(mapSet) : bool {

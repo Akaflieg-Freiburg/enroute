@@ -1,6 +1,38 @@
 # Changelog
 
-## [Unreleased]
+## [3.5.16] - 2026-11-15
+
+### Fixed
+
+- iOS: The keyboard now appears when Enroute was opened while another app's
+  keyboard was showing, for example from the Spotlight search.
+- Where two adjacent airspaces share a boundary, the moving map now shows
+  a label on each side of the boundary. Before, only one of the two
+  airspaces was labeled there.
+- On first start, maps are now downloaded only once the device's position
+  is known. Before, users in other countries could get the maps for
+  Germany and France.
+
+
+## [3.5.15] - 2026-11-10
+
+### Fixed
+
+- Fixed a crash on Android devices that use an HTTP proxy, as set in the
+  Wi-Fi settings of some company or school networks. On these devices, the
+  app closed a few seconds after it was started.
+- Fixed a rare crash on the weather page. The app could close when the list
+  of weather stations was pulled down at the very moment new weather data
+  arrived.
+
+
+## [3.5.14] - 2026-11-08
+
+### Added
+
+- Airspaces with secondary vertical limits, such as "FL 115, but at least
+  3000 ft AGL", are now supported. The airspace description shows both
+  limits, and the side view draws the effective boundary.
 
 ### Changed
 
@@ -12,7 +44,12 @@
 ### Fixed
 
 - iOS: Files shared to Enroute open the import dialog again.
-- Improved battery life when using OGN as traffic source.
+- Improved battery life with OGN as traffic source.
+- Linux: The Flathub version no longer calls itself a beta version.
+
+### Changed
+
+- The Flathub listing for Linux is now also available in Czech and Spanish.
 
 
 ## [3.5.13] - 2026-11-01

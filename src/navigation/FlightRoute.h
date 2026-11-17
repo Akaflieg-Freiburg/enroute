@@ -364,7 +364,7 @@ namespace Navigation
          *
          * This method saves the flight route as a GeoJSON file.  The file
          * conforms to the specification outlined
-         * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+         * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
          *
          * @param fileName File name, needs to include path and extension
          *
@@ -387,7 +387,7 @@ namespace Navigation
          *
          * This method serialises the current flight route as a GeoJSON
          * document. The document conforms to the specification outlined
-         * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+         * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md).
          *
          * @returns QByteArray describing the flight route
          */

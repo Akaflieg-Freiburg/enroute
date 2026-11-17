@@ -100,7 +100,7 @@ GeoMaps::Waypoint::Waypoint(const QJsonObject &geoJSONObject)
 
     // If the file was not created by Enroute, then the property array will not
     // conform to the specification here:
-    // https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation
+    // https://github.com/Akaflieg-Freiburg/enrouteServer/blob/main/docs/formats/geojson.md
     // We create a fake entry instead.
     if (!m_properties.contains(QStringLiteral("TYP")))
     {

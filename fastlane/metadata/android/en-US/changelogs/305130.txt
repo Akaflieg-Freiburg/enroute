@@ -1,0 +1,5 @@
+### Fixed
+
+- Garmin FPL flight routes that use the same name for several waypoints are
+  now imported correctly. Before, all waypoints of that name were placed at
+  the position of the last one.

@@ -22,6 +22,7 @@
 #include <QDebug>
 #include <QLockFile>
 #include <QNetworkReply>
+#include <utility>
 
 #include "sunset.h"
 
@@ -132,12 +133,38 @@ void Weather::WeatherDataProvider::downloadFinished()
         return;
     }
 
+    // Take the finished replies out of m_networkReplies and cut their
+    // connections to this object before anything else happens. Setting the
+    // bindable properties m_METARs and m_TAFs below runs bindings and QML
+    // handlers synchronously, and these call back into this class. Example:
+    // new weather stations rebuild the station list of the weather page. If
+    // the user is pulling that list down at this moment, the flick ends and
+    // its handler calls requestUpdate(), which appends new replies to
+    // m_networkReplies. This method must therefore neither iterate over
+    // m_networkReplies while it does its work, nor delete replies that it has
+    // not read.
+    const auto finishedReplies = std::exchange(m_networkReplies, {});
+    for(const auto& networkReply : finishedReplies)
+    {
+        if (!networkReply.isNull())
+        {
+            networkReply->disconnect(this);
+            networkReply->deleteLater();
+        }
+    }
+
     // Update flag
     emit downloadingChanged();
 
-    // Read all replies and store the data in respective maps
+    // Read all replies. Nothing in this loop runs foreign code. The results
+    // are stored only after the last access to the replies.
     bool hasError = false;
-    for(const auto& networkReply : std::as_const(m_networkReplies))
+    bool hasData = false;
+    QStringList errorMessages;
+    QList<Weather::METAR> newMETARs;
+    QList<Weather::TAF> newTAFs;
+    QList<updateLogEntry> newUpdateLogEntries;
+    for(const auto& networkReply : finishedReplies)
     {
         // Paranoid safety checks
         if (networkReply.isNull())
@@ -147,14 +174,12 @@ void Weather::WeatherDataProvider::downloadFinished()
         if (networkReply->error() != QNetworkReply::NoError)
         {
             hasError = true;
-            emit error(networkReply->errorString());
+            errorMessages << networkReply->errorString();
             continue;
         }
 
         // Decode XML
         QXmlStreamReader xml(networkReply);
-        QList<Weather::METAR> newMETARs;
-        QList<Weather::TAF> newTAFs;
         while (!xml.atEnd() && !xml.hasError())
         {
             xml.readNext();
@@ -184,7 +209,20 @@ void Weather::WeatherDataProvider::downloadFinished()
                 }
             }
         }
+        hasData = true;
 
+        const updateLogEntry le = {QDateTime::currentDateTimeUtc(), networkReply->property("bBox").value<QGeoRectangle>()};
+        if (le.m_bBox.isValid() && le.m_time.isValid())
+        {
+            newUpdateLogEntries << le;
+        }
+    }
+
+    // Store the results. The update log comes first, so that a call to
+    // requestUpdate() from a binding or QML handler finds the region covered.
+    updateLog << newUpdateLogEntries;
+    if (hasData)
+    {
         auto tmpMETARs = m_METARs.value();
         for(const auto& newMETAR : std::as_const(newMETARs))
         {
@@ -199,24 +237,12 @@ void Weather::WeatherDataProvider::downloadFinished()
         }
         m_TAFs = tmpTAFs;
 
-        const updateLogEntry le = {QDateTime::currentDateTimeUtc(), networkReply->property("bBox").value<QGeoRectangle>()};
-        if (le.m_bBox.isValid() && le.m_time.isValid())
-        {
-            updateLog << le;
-        }
         m_updateTimer.setInterval(updateIntervalNormal_ms);
     }
-
-    // Clear replies container
-    foreach(auto networkReply, m_networkReplies)
+    for(const auto& errorMessage : std::as_const(errorMessages))
     {
-        // Paranoid safety checks
-        if (!networkReply.isNull())
-        {
-            networkReply->deleteLater();
-        }
+        emit error(errorMessage);
     }
-    m_networkReplies.clear();
 
     // Update flag and signals
     emit QNHInfoChanged();

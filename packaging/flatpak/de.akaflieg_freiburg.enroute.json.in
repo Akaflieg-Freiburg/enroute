@@ -47,7 +47,7 @@
         {
           "type": "archive",
           "url": "https://github.com/Akaflieg-Freiburg/enrouteDependencies/releases/download/developerBuilds/maplibre-native-qt.tar.xz",
-          "sha256": "ea647e5260d538fc25b24853f375fff49ef84f9fddd715cdff9848dee99b3813"
+          "sha256": "abfbc2c4e8726b958e9b928563940721f9e3fa80dc56981cd2f018ec1c9a616e"
         }
       ],
       "buildsystem": "cmake-ninja",
@@ -91,7 +91,8 @@
       "name": "enroute",
       "buildsystem": "cmake-ninja",
       "config-opts": [
-        "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+        "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+        "-DGIT_BRANCH=main"
       ],
       "sources": [
         {

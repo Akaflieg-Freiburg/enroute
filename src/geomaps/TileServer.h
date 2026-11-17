@@ -182,9 +182,20 @@ private:
 #if defined(Q_OS_ANDROID)
     // Name of the local socket. QLocalServer places simple names in the
     // temporary directory; the PID keeps parallel instances apart. Lowercase
-    // letters, digits and hyphens only, because the name doubles as the host
-    // part of the server URL.
-    const QString m_socketName {QStringLiteral("enroute-tiles-%1").arg(QCoreApplication::applicationPid())};
+    // letters, digits, hyphens and dots only, because the name doubles as the
+    // host part of the server URL.
+    //
+    // The name must start with "localhost.". QNetworkAccessManager asks for a
+    // proxy for every URL, including unix+http URLs, and Qt's HTTP code (Qt
+    // 6.12: QHttpNetworkConnectionChannel::ensureConnection) dereferences a
+    // null pointer when a proxy is set for a connection that runs over a local
+    // socket. With any other name, the app crashes on devices with an HTTP
+    // proxy in the Android network settings as soon as the map requests its
+    // first tile. Qt never looks for a proxy if the host is "localhost" or
+    // starts with "localhost.". An application proxy factory is not an
+    // alternative: MapLibre calls QNetworkProxyFactory::setUseSystemConfiguration(),
+    // which removes it.
+    const QString m_socketName {QStringLiteral("localhost.enroute-tiles-%1").arg(QCoreApplication::applicationPid())};
 #endif
 
     // List of tile handlers

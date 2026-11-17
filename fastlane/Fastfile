@@ -327,6 +327,17 @@ lane :flathubRelease do
     UI.user_error!("#{commit_hash} is not on origin/main; push it before running flathubRelease")
   end
 
+  # Flathub also clones every submodule at the commit the source commit pins,
+  # and GitHub serves only commits reachable from a branch. A submodule commit
+  # that was not pushed yet fails the Flathub build with "not our ref".
+  unpushed = sh("git submodule foreach --recursive --quiet " \
+                "'git fetch --quiet origin && " \
+                "[ -n \"$(git for-each-ref --contains $sha1 refs/remotes/origin)\" ] || " \
+                "echo \"$displaypath ($sha1)\"'", log: false).strip
+  unless unpushed.empty?
+    UI.user_error!("Submodule commits not on GitHub; push them before running flathubRelease:\n#{unpushed}")
+  end
+
   # An earlier run for the same commit has already pushed its branch and opened
   # a pull request. Pushing again would be rejected, because the new manifest
   # commit differs from the one on the branch.

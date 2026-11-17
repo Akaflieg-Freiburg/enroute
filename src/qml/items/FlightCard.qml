@@ -79,7 +79,8 @@ Pane {
                 Icon {
                     anchors.centerIn: parent
                     Material.foreground: "white"
-                    source: "/icons/material/ic_airplanemode_active.svg"
+                    source: (Navigator.aircraftName === "") ? "/icons/material/ic_airplanemode_outline.svg"
+                                                            : "/icons/material/ic_airplanemode_active.svg"
                 }
             }
 
@@ -105,7 +106,7 @@ Pane {
                     font.pixelSize: card.font.pixelSize*0.9
                     text: {
                         if (!GlobalSettings.flightLogEnabled)
-                            return qsTr("Active aircraft")
+                            return (Navigator.aircraftName === "") ? qsTr("Tap to choose an aircraft") : qsTr("Active aircraft")
                         if (!card.recording)
                             return qsTr("Flight recording off")
                         const dot = "<font color='red'>●</font> "

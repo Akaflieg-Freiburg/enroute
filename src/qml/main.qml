@@ -391,7 +391,7 @@ AppWindow {
                     id: menuItemFlightLog
 
                     text: qsTr("Flight Log")
-                    icon.source: "/icons/material/ic_flight_takeoff.svg"
+                    icon.source: "/icons/material/ic_flight_log.svg"
                     visible: GlobalSettings.flightLogEnabled
 
                     onClicked: {

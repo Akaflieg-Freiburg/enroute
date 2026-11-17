@@ -6,6 +6,7 @@
 
 	<!-- Google Material Icons -->
     <file alias="icons/material/ic_flight.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/ic_flight.svg</file>
+    <file alias="icons/material/ic_flight_log.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/ic_flight_log.svg</file>
     <file alias="icons/material/ic_speed.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/ic_speed.svg</file>
 	
     <file alias="icons/material/ic_add.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_add_24px.svg</file>

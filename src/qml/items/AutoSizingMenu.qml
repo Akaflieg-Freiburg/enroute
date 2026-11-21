@@ -41,8 +41,8 @@ Menu {
     width: {
         var result = 0;
 
-        for (var i = 0; i < count; ++i) {
-            var item = itemAt(i);
+        for (let i = 0; i < count; ++i) {
+            const item = itemAt(i);
             if (item.implicitWidth !== undefined) {
                 result = Math.max(item.implicitWidth, result);
             }

@@ -261,7 +261,6 @@ Page {
                                     cptMenu.close()
                                     PlatformAdaptor.vibrateBrief()
                                     highlighted = false
-                                    parent.highlighted = false
 
                                     var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, entryRow.name).toGeoJSON(), "application/geo+json", "geojson", Librarian.get(Librarian.Routes, entryRow.name).suggestedFilename())
                                     if (errorString === "abort") {
@@ -286,7 +285,6 @@ Page {
                                     cptMenu.close()
                                     PlatformAdaptor.vibrateBrief()
                                     highlighted = false
-                                    parent.highlighted = false
 
                                     var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, entryRow.name).toGpx(), "application/gpx+xml", "gpx", Librarian.get(Librarian.Routes, entryRow.name).suggestedFilename())
                                     if (errorString === "abort") {
@@ -316,7 +314,6 @@ Page {
                                     cptMenu.close()
                                     PlatformAdaptor.vibrateBrief()
                                     highlighted = false
-                                    parent.highlighted = false
 
                                     FileExchange.saveContent(Librarian.get(Librarian.Routes, entryRow.name).toGeoJSON(), "application/geo+json", "geojson", Librarian.get(Librarian.Routes, entryRow.name).suggestedFilename())
                                 }
@@ -328,7 +325,6 @@ Page {
                                     cptMenu.close()
                                     PlatformAdaptor.vibrateBrief()
                                     highlighted = false
-                                    parent.highlighted = false
 
                                     FileExchange.saveContent(Librarian.get(Librarian.Routes, entryRow.name).toGpx(), "application/gpx+xml", "gpx", Librarian.get(Librarian.Routes, entryRow.name).suggestedFilename())
                                 }
@@ -345,7 +341,6 @@ Page {
                                 onTriggered: {
                                     PlatformAdaptor.vibrateBrief()
                                     highlighted = false
-                                    parent.highlighted = false
 
                                     var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, entryRow.name).toGeoJSON(), "application/geo+json", "geojson", "FlightRoute-%1.geojson")
                                     if (errorString !== "") {
@@ -362,7 +357,6 @@ Page {
                                 onTriggered: {
                                     PlatformAdaptor.vibrateBrief()
                                     highlighted = false
-                                    parent.highlighted = false
 
                                     var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, entryRow.name).toGpx(), "application/gpx+xml", "gpx", "FlightRoute-%1.gpx")
                                     if (errorString !== "") {
@@ -452,7 +446,7 @@ Page {
         Global.stackView.pop()
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: fileError
 
         title: qsTr("An Error Occurred…")

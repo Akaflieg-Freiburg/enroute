@@ -10,5 +10,22 @@
         "**/.metadata/**"
     ],
     "java.server.launchMode": "LightWeight",
-    "java.configuration.updateBuildConfiguration": "disabled"
+    "java.configuration.updateBuildConfiguration": "disabled",
+
+    // CMake Tools would configure into build/ with a plain compiler kit and no
+    // Qt prefix, which fails: Qt comes from ~/Software/buildsystems/Qt and the
+    // version changes over time (see CLAUDE.md). Configure from the command
+    // line or Qt Creator instead.
+    "cmake.configureOnOpen": false,
+    "cmake.configureOnEdit": false,
+
+    // QML language server: run qmlls from the newest Qt installation. The
+    // standalone qmlls that the Qt extension downloads has no Qt import path
+    // and cannot even resolve QtQuick.
+    "qt-qml.qmlls.customExePath": "${workspaceFolder}/.vscode/qmlls.sh",
+    // Non-empty customArgs replace the extension's default arguments, which
+    // include "-b<CMake Tools build dir>" and would override src/.qmlls.ini.
+    // That file is written by CMake (QT_QML_GENERATE_QMLLS_INI) and points at
+    // the most recently configured build. "-E" is a harmless placeholder.
+    "qt-qml.qmlls.customArgs": ["-E"]
 }

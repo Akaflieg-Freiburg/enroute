@@ -84,7 +84,7 @@ AppWindow {
         if (Qt.platform.os === "ios") {
             if (!Qt.inputMethod.visible) // qmllint disable missing-property
                 return 0
-            var kr = Qt.inputMethod.keyboardRectangle // qmllint disable missing-property
+            const kr = Qt.inputMethod.keyboardRectangle // qmllint disable missing-property
             if (kr.height <= 0) // Empty rectangle, not trustworthy
                 return 0
             return Math.max(0, view.height - kr.y)
@@ -1091,7 +1091,7 @@ AppWindow {
         function onAirspaceAltitudeLimitAdjusted() {
             var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
             if (airspaceAltitudeLimit.isFinite()) {
-                var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                const airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                 toast.doToast(qsTr("Now showing airspaces up to %1.").arg(airspaceAltitudeLimitString))
             } else {
                 toast.doToast(qsTr("Now showing all airspaces."))

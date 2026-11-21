@@ -477,7 +477,7 @@ Page {
                             qsTr("This section shows the pressure altitude reported by the traffic data receiver.") +
                             "</p><p>" +
                             qsTr("Pressure altitude is the altitude in the standard atmosphere at which the pressure is equal to the current atmospheric pressure.") + " " +
-                            qsTr("This is the altitude displayed on the aircraft's altimeter when set to the standard pressure of 1013.2 hPa. This is also the altitude shown on the transponder.")
+                            qsTr("This is the altitude displayed on the aircraft's altimeter when set to the standard pressure of 1013.2 hPa. This is also the altitude shown on the transponder.") +
                             "</p>"
                     helpDialog.open()
                 }

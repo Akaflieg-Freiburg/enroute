@@ -126,7 +126,7 @@ Page {
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
             if (ApplicationWindow.activeFocusControl != null) {
-                contentItem.contentY = ApplicationWindow.activeFocusControl.y - font.pixelSize
+                (contentItem as Flickable).contentY = ApplicationWindow.activeFocusControl.y - font.pixelSize
             }
         }
 
@@ -228,7 +228,7 @@ Page {
                 }
                 checked: Navigator.aircraft.cabinPressureEqualsStaticPressure
                 text: qsTr("Use cabin pressure instead of static pressure for pressure altitude calculation.")
-                Component.onCompleted: contentItem.wrapMode = Text.WordWrap
+                Component.onCompleted: (contentItem as Text).wrapMode = Text.WordWrap
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"

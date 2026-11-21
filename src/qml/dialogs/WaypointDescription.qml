@@ -63,7 +63,7 @@ CenteringDialog {
 
         // Create waypoint description items
         var pro = waypoint.tabularDescription
-        for (var j in pro)
+        for (const j in pro)
             waypointPropertyDelegate.createObject(co, {text: pro[j]});
 
         // Create airspace description items

@@ -130,7 +130,7 @@ CenteringDialog {
             readonly property var mapSets4Location: {
                 if (!PositionProvider.receivingPositionInfo)
                     return []
-                if (DataManager.mapSets.downloadables.length === 0) // qmllint disable unresolved-type
+                if (DataManager.mapSets.downloadables.length === 0) // qmllint disable unresolved-type missing-property
                     return []
                 return DataManager.mapSets.downloadables4Location(PositionProvider.lastValidCoordinate)
             }

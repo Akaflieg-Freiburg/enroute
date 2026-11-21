@@ -162,6 +162,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:ade7a3b1a2665c855d8caaa65714250f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check a date string, as entered by the user.  <br /></td></tr>
 <tr class="memitem:a89d3e4fc23b5fc3d4eec5b1eae46c0da" id="r_a89d3e4fc23b5fc3d4eec5b1eae46c0da"><td class="memItemLeft">static Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da">isValidTime</a> (const QString &amp;time)</td></tr>
 <tr class="memdesc:a89d3e4fc23b5fc3d4eec5b1eae46c0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check a time string, as entered by the user.  <br /></td></tr>
+<tr class="memitem:ade3f1892c540526b024c1c4d699bd6a7" id="r_ade3f1892c540526b024c1c4d699bd6a7"><td class="memItemLeft">static Q_INVOKABLE QString&#160;</td><td class="memItemRight"><a class="el" href="#ade3f1892c540526b024c1c4d699bd6a7">normalizedTime</a> (const QString &amp;time)</td></tr>
+<tr class="memdesc:ade3f1892c540526b024c1c4d699bd6a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bring a time string into the format HH:mm.  <br /></td></tr>
 <tr class="memitem:af5466d14eff57466bae2354f393d996b" id="r_af5466d14eff57466bae2354f393d996b"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a>&#160;</td><td class="memItemRight"><a class="el" href="#af5466d14eff57466bae2354f393d996b">applyEdits</a> (const <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a> &amp;original, const <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a> &amp;edited)</td></tr>
 <tr class="memdesc:af5466d14eff57466bae2354f393d996b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the result of editing to a flight.  <br /></td></tr>
 <tr class="memitem:a66f3ea4814c97a09cd21cd0ec85536df" id="r_a66f3ea4814c97a09cd21cd0ec85536df"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&#160;</td><td class="memItemRight"><a class="el" href="#a66f3ea4814c97a09cd21cd0ec85536df">nearestAirfield</a> (const QGeoCoordinate &amp;position={}, double proximityM=5000.0)</td></tr>
@@ -479,10 +481,10 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
     <tr><td class="paramname">departureICAO</td><td>ICAO code of departure airport </td></tr>
     <tr><td class="paramname">arrivalICAO</td><td>ICAO code of arrival airport </td></tr>
     <tr><td class="paramname">date</td><td>Date of the start time, in yyyy-MM-dd format </td></tr>
-    <tr><td class="paramname">offBlockTimeStr</td><td>Off-block time string in HH:mm or H:mm format, or empty </td></tr>
-    <tr><td class="paramname">startTimeStr</td><td>Start time string in HH:mm or H:mm format </td></tr>
-    <tr><td class="paramname">landingTimeStr</td><td>Landing time string in HH:mm or H:mm format </td></tr>
-    <tr><td class="paramname">onBlockTimeStr</td><td>On-block time string in HH:mm or H:mm format, or empty </td></tr>
+    <tr><td class="paramname">offBlockTimeStr</td><td>Off-block time string in a format that <a class="el" href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da" title="Check a time string, as entered by the user.">isValidTime()</a> accepts, or empty </td></tr>
+    <tr><td class="paramname">startTimeStr</td><td>Start time string, see <a class="el" href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da" title="Check a time string, as entered by the user.">isValidTime()</a> </td></tr>
+    <tr><td class="paramname">landingTimeStr</td><td>Landing time string, see <a class="el" href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da" title="Check a time string, as entered by the user.">isValidTime()</a>, or empty </td></tr>
+    <tr><td class="paramname">onBlockTimeStr</td><td>On-block time string, see <a class="el" href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da" title="Check a time string, as entered by the user.">isValidTime()</a>, or empty </td></tr>
     <tr><td class="paramname">pilotName</td><td>Pilot name, or empty </td></tr>
     <tr><td class="paramname">aircraftCallsign</td><td>Aircraft callsign (e.g. D-KEBE), or empty </td></tr>
     <tr><td class="paramname">comments</td><td>Free-text comments, or empty </td></tr>
@@ -749,7 +751,7 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the string is a valid time of day in HH:mm or H:mm format, so that <a class="el" href="#ac4b77b90436fab2e527c1ac6d4d7099a" title="Create a Flight value from individual field strings.">createFlight()</a> can interpret it </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the string is a valid time of day in HH:mm, H:mm, HHmm or Hmm format, so that <a class="el" href="#ac4b77b90436fab2e527c1ac6d4d7099a" title="Create a Flight value from individual field strings.">createFlight()</a> can interpret it </dd></dl>
 
 </div>
 </div>
@@ -841,7 +843,7 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
 </div><div class="memdoc">
 
 <p>Find the nearest airfield within 5 km. </p>
-<p>Returns the closest airfield (type "AD") to the given position, provided it is within <code class="param">proximityM</code> metres. Returns an invalid Waypoint if none found. If no position is given (or an invalid one), the last valid coordinate from PositionProvider is used.</p>
+<p>Returns the closest airfield (type "AD") to the given position, provided it is within <code class="param">proximityM</code> metres. Returns an invalid Waypoint if none found. If no position is given (or an invalid one), the current position from PositionProvider::positionInfo is used. If there is no current position, an invalid Waypoint is returned: the last valid coordinate may be old and is not used.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">position</td><td>The geographic position to search near (default: current GPS position) </td></tr>
@@ -850,6 +852,41 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The nearest airfield, or an invalid Waypoint </dd></dl>
+
+</div>
+</div>
+<a id="ade3f1892c540526b024c1c4d699bd6a7" name="ade3f1892c540526b024c1c4d699bd6a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade3f1892c540526b024c1c4d699bd6a7">&#9670;&#160;</a></span>normalizedTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString Flightlog::FlightLog::normalizedTime </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>time</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Bring a time string into the format HH:mm. </p>
+<p>Editors accept the time formats of <a class="el" href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da" title="Check a time string, as entered by the user.">isValidTime()</a> while the user types, and show the time in one format once the input is finished.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td>Time string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The time in HH:mm format if <a class="el" href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da" title="Check a time string, as entered by the user.">isValidTime()</a> accepts <code class="param">time</code>, and <code class="param">time</code> unchanged otherwise </dd></dl>
 
 </div>
 </div>

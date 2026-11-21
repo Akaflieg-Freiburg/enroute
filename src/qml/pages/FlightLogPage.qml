@@ -532,13 +532,13 @@ Page {
                                 parts.push(modelData.pilotName)
                             if (modelData.comments !== "")
                                 parts.push(modelData.comments)
-                            // Join fields with " | " as separator. 
-                            // We want to line break at the separator if possible. 
-                            // Spaces within each field are replaced
-                            // with non-breaking spaces (\u00A0) so the text engine cannot break inside
-                            // a field. A zero-width space (\u200B) after each "|" is the only permitted
-                            // line-break opportunity, so wrapping happens exclusively at the separators.
-                            return parts.map(function(p) { return p.replace(/ /g, "\u00A0") }).join("\u00A0\u00A0|\u200B\u00A0")
+                            // Join fields with " \u2022 " as separator, as elsewhere in the app.
+                            // We want to line break at the separator only. Spaces within each
+                            // field are replaced with non-breaking spaces (\u00A0) so the text
+                            // engine cannot break inside a field. The ordinary space after each
+                            // "\u2022" is then the only permitted line-break opportunity, so wrapping
+                            // happens exclusively at the separators.
+                            return parts.map(function(p) { return p.replace(/ /g, "\u00A0") }).join("\u00A0\u2022 ")
                         }
                         wrapMode: Text.Wrap
                         font.pixelSize: iDel.font.pixelSize * 0.85

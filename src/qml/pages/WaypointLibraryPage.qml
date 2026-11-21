@@ -160,7 +160,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             var errorString = FileExchange.shareContent(WaypointLibrary.GeoJSON, "application/geo+json", "geojson", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 Global.toast.doToast(qsTr("Aborted"))
@@ -184,7 +183,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             var errorString = FileExchange.shareContent(WaypointLibrary.toGpx(), "application/gpx+xml", "gpx", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 Global.toast.doToast(qsTr("Aborted"))
@@ -214,7 +212,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             FileExchange.saveContent(WaypointLibrary.GeoJSON, "application/geo+json", "geojson", qsTr("Waypoint Library"))
                         }
                     }
@@ -225,7 +222,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             FileExchange.saveContent(WaypointLibrary.toGpx(), "application/gpx+xml", "gpx", qsTr("Waypoint Library"))
                         }
                     }
@@ -241,7 +237,6 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
 
                             var errorString = FileExchange.viewContent(WaypointLibrary.GeoJSON, "application/geo+json", "geojson", "WaypointLibrary-%1.geojson")
                             if (errorString !== "") {
@@ -258,7 +253,6 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
 
                             var errorString = FileExchange.viewContent(WaypointLibrary.toGpx(), "application/gpx+xml", "gpx", "WaypointLibrary-%1.gpx")
                             if (errorString !== "") {

@@ -42,6 +42,11 @@ TextField {
     rightPadding: hasClearButton ? toolButton.width : undefined
     implicitWidth: 100 // set arbitrary value to avoid binding loop
 
+    // Space at the right edge that the clear button takes, or the normal
+    // padding if there is no clear button. Derived components can place
+    // decorations to the left of it.
+    readonly property real clearButtonSpace: hasClearButton ? toolButton.width : Material.textFieldHorizontalPadding
+
     // Fix problem on iOS
     Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)
 
@@ -53,6 +58,11 @@ TextField {
 
         enabled: textField.hasClearButton && (textField.displayText !== "")
         visible: textField.hasClearButton
+
+        // Never take the focus: Tab moves on to the next input field rather
+        // than to this button, which has no visible focus indicator, and a
+        // tap leaves the focus (and the virtual keyboard) in the text field
+        focusPolicy: Qt.NoFocus
 
         background: Item {}
 

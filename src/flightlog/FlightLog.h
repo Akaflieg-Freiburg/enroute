@@ -186,11 +186,9 @@ public:
 
     /*! \brief Update an existing flight in the log
      *
-     *  A coordinate is only re-derived from its ICAO code when that code
-     *  actually changes. This means edits to unrelated fields never replace
-     *  a coordinate that came from a real GPS fix (automatic flight
-     *  detection or the "End Flight" button) with an ICAO-based
-     *  approximation.
+     *  The flight that is stored is applyEdits() of the flight in the log
+     *  and @p flight. See there for the rules, in particular for times and
+     *  coordinates.
      *
      *  @param uuid UUID of the flight to update (with or without braces)
      *  @param flight The updated flight data
@@ -202,13 +200,29 @@ public:
      *  This factory method is intended for QML use, where constructing
      *  a Q_GADGET value type with all properties is cumbersome.
      *
+     *  The date and time strings are interpreted as UTC. A time that
+     *  isValidTime() rejects, or any time combined with a date that
+     *  isValidDate() rejects, yields an invalid QDateTime in the Flight.
+     *  User interfaces should therefore check their input with these two
+     *  methods before calling this one.
+     *
+     *  The date is the date of the start time. The other times are placed
+     *  around the start time, so that a flight can pass midnight UTC: an
+     *  off-block time later in the day than the start time belongs to the
+     *  previous day, a landing time earlier in the day than the start time
+     *  belongs to the next day, and the on-block time is the first such time
+     *  that is not before the landing time (or the start time, if there is
+     *  no landing time). Without a valid start time, all times are on the
+     *  given date.
+     *
      *  @param departureICAO ICAO code of departure airport
      *  @param arrivalICAO ICAO code of arrival airport
-     *  @param date Date string in yyyy-MM-dd format
-     *  @param offBlockTimeStr Off-block time string in HH:mm format, or empty
-     *  @param startTimeStr Start time string in HH:mm format
-     *  @param landingTimeStr Landing time string in HH:mm format
-     *  @param onBlockTimeStr On-block time string in HH:mm format, or empty
+     *  @param date Date of the start time, in yyyy-MM-dd format
+     *  @param offBlockTimeStr Off-block time string in a format that
+     *  isValidTime() accepts, or empty
+     *  @param startTimeStr Start time string, see isValidTime()
+     *  @param landingTimeStr Landing time string, see isValidTime(), or empty
+     *  @param onBlockTimeStr On-block time string, see isValidTime(), or empty
      *  @param pilotName Pilot name, or empty
      *  @param aircraftCallsign Aircraft callsign (e.g. D-KEBE), or empty
      *  @param comments Free-text comments, or empty
@@ -225,6 +239,68 @@ public:
         const QString& pilotName,
         const QString& aircraftCallsign,
         const QString& comments);
+
+    /*! \brief Check a date string, as entered by the user
+     *
+     *  Leading and trailing whitespace is ignored.
+     *
+     *  @param date Date string
+     *  @returns True if the string is a valid calendar date in yyyy-MM-dd
+     *  format, so that createFlight() can interpret it
+     */
+    [[nodiscard]] Q_INVOKABLE static bool isValidDate(const QString& date);
+
+    /*! \brief Check a time string, as entered by the user
+     *
+     *  Leading and trailing whitespace is ignored.
+     *
+     *  @param time Time string
+     *  @returns True if the string is a valid time of day in HH:mm, H:mm,
+     *  HHmm or Hmm format, so that createFlight() can interpret it
+     */
+    [[nodiscard]] Q_INVOKABLE static bool isValidTime(const QString& time);
+
+    /*! \brief Bring a time string into the format HH:mm
+     *
+     *  Editors accept the time formats of isValidTime() while the user types,
+     *  and show the time in one format once the input is finished.
+     *
+     *  @param time Time string
+     *  @returns The time in HH:mm format if isValidTime() accepts @p time,
+     *  and @p time unchanged otherwise
+     */
+    [[nodiscard]] Q_INVOKABLE static QString normalizedTime(const QString& time);
+
+    /*! \brief Apply the result of editing to a flight
+     *
+     *  Computes the flight that results when the user edits @p original and
+     *  the editor delivers @p edited. This is what updateFlight() stores, so
+     *  that an editor can show the user the flight exactly as it will be
+     *  saved.
+     *
+     *  The fields that the user can edit are taken from @p edited: airfield
+     *  codes, the four times, pilot name, aircraft callsign, comments and
+     *  landing count. Everything else is taken from @p original, with these
+     *  rules.
+     *
+     *  - Editors work with a resolution of one minute. A time in @p edited
+     *    that equals the time in @p original, cut to the full minute, counts
+     *    as unchanged: the original time is kept, seconds included.
+     *
+     *  - A coordinate is kept as long as the code of its airfield is
+     *    unchanged. Edits to unrelated fields therefore never replace a
+     *    coordinate that came from a real GPS fix (automatic flight detection
+     *    or the "End Flight" button) with the charted position of the
+     *    airfield. If the code changes, the coordinate is discarded.
+     *
+     *  - A coordinate that is missing in the end is looked up in the maps by
+     *    the code of its airfield, if possible.
+     *
+     *  @param original The flight before editing
+     *  @param edited Flight that holds the edited fields
+     *  @returns The flight after editing, with the identity of @p original
+     */
+    [[nodiscard]] Q_INVOKABLE static Flightlog::Flight applyEdits(const Flightlog::Flight& original, const Flightlog::Flight& edited);
 
     /*! \brief Manually end the current in-flight recording
      *
@@ -249,8 +325,10 @@ public:
      *
      *  Returns the closest airfield (type "AD") to the given position,
      *  provided it is within @p proximityM metres. Returns an invalid Waypoint if none found.
-     *  If no position is given (or an invalid one), the last valid coordinate
-     *  from PositionProvider is used.
+     *  If no position is given (or an invalid one), the current position from
+     *  PositionProvider::positionInfo is used. If there is no current
+     *  position, an invalid Waypoint is returned: the last valid coordinate
+     *  may be old and is not used.
      *
      *  @param position The geographic position to search near (default: current GPS position)
      *  @param proximityM Maximum search radius in metres (default: 5000)
@@ -419,7 +497,7 @@ private:
 
     // Fill in a coordinate from its ICAO code via the GeoMapProvider, but
     // only if the coordinate isn't already set (e.g. from a real GPS fix)
-    void resolveCoordinates(Flight& flight);
+    static void resolveCoordinates(Flight& flight);
 
     // Sort flights by startTime descending
     void sortFlights(QList<Flight>& flights);
@@ -427,7 +505,8 @@ private:
     // Collect the flights matching the given UUID strings; returns all flights if the list is empty
     [[nodiscard]] auto flightsForUuids(const QStringList& uuids) const -> QList<Flight>;
 
-    // Helper to parse a date+time string to QDateTime
+    // Helper to parse a date+time string to a QDateTime in UTC. Returns an
+    // invalid QDateTime unless isValidDate(date) and isValidTime(timeStr).
     static auto parseDateTime(const QString& date, const QString& timeStr) -> QDateTime;
 
     Q_OBJECT_BINDABLE_PROPERTY(FlightLog, QList<Flightlog::Flight>, m_flights, &FlightLog::flightsChanged)

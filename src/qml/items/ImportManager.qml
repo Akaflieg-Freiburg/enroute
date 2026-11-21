@@ -39,7 +39,10 @@ Item {
     }
 
     Connections {
-        target: FileExchange
+        // False positive of the QML linter: FileExchange derives from QObject, but in
+        // full-module runs the check fails because this file is seen both as a module
+        // type and through relative 'import "../items"' directory imports.
+        target: FileExchange // qmllint disable incompatible-type
 
         function onImportError(text) {
             errLbl.text = text

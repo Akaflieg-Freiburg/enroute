@@ -206,10 +206,10 @@ Item {
                     }
 
                     WheelHandler {
-                        id: wheel
+                        id: wheelHandler
                         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
                         onWheel: function(event) {
-                            const loc = flightMap.toCoordinate(wheel.point.position)
+                            const loc = flightMap.toCoordinate(wheelHandler.point.position)
                             // Like the pinch gesture, wheel zoom/rotate does not move the map center,
                             // so it does not switch off "Follow GPS".
                             if (event.modifiers === Qt.NoModifier)
@@ -236,7 +236,7 @@ Item {
                             // Anchor to the cursor only when not following; otherwise keep the
                             // aircraft centered (see the PinchHandler above).
                             if (!Global.followGPS) {
-                                flightMap.alignCoordinateToPoint(loc, wheel.point.position)
+                                flightMap.alignCoordinateToPoint(loc, wheelHandler.point.position)
                             }
                         }
                     }
@@ -503,7 +503,8 @@ Item {
                     }
 
                     Connections {
-                        target: FileExchange
+                        // False positive of the QML linter, see ImportManager.qml
+                        target: FileExchange // qmllint disable incompatible-type
 
                         function onOpenWaypointRequest(waypoint) {
                             Global.followGPS = false
@@ -646,7 +647,7 @@ Item {
                                 }
 
                                 opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-                                visible: (!Global.currentVAC.isValid) && !scale.visible
+                                visible: (!Global.currentVAC.isValid) && !horizontalScale.visible
 
                                 contentItem: Scale {
                                     anchors.fill: parent
@@ -761,7 +762,7 @@ Item {
                         }
 
                         Pane {
-                            id: scale
+                            id: horizontalScale
 
                             Material.elevation: 1
                             Layout.bottomMargin: 14

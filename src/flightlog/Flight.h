@@ -44,6 +44,14 @@ class Flight
     /*! \brief Unique identity of this flight entry (stable across sorting and edits) */
     Q_PROPERTY(QUuid uuid READ uuid)
 
+    /*! \brief Identity of this flight entry, as a string without braces
+     *
+     *  QML code identifies a flight by this string. It cannot use the property
+     *  uuid for that: QML converts a QUuid to a string with braces, which
+     *  differs from the format of FlightLog::displayedTrackUuid.
+     */
+    Q_PROPERTY(QString uuidString READ uuidString)
+
     /*! \brief ICAO code of the departure airport */
     Q_PROPERTY(QString departureICAO READ departureICAO WRITE setDepartureICAO)
 
@@ -100,6 +108,12 @@ public:
     //
 
     [[nodiscard]] auto uuid() const -> QUuid { return m_id; }
+
+    /*! \brief Getter function for property of the same name
+     *
+     *  @returns Property uuidString
+     */
+    [[nodiscard]] auto uuidString() const -> QString { return m_id.toString(QUuid::WithoutBraces); }
 
     /*! \brief Getter function for property of the same name
      *

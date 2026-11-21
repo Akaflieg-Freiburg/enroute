@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
@@ -75,7 +77,7 @@ Page {
         if (page.selectedUuids.length === 0) {
             return
         }
-        var visible = page.visibleFlights().map((flight) => flight.uuid.toString())
+        var visible = page.visibleFlights().map((flight) => flight.uuidString)
         page.selectedUuids = page.selectedUuids.filter((uuid) => visible.indexOf(uuid) >= 0)
     }
 
@@ -99,7 +101,7 @@ Page {
                 if (page.selectionMode) {
                     page.exitSelectionMode()
                 } else {
-                    stackView.pop()
+                    Global.stackView.pop()
                 }
             }
         }
@@ -117,7 +119,7 @@ Page {
                   ? (page.selectedUuids.length === 0
                      ? qsTr("Select flights")
                      : qsTr("%1 selected").arg(page.selectedUuids.length))
-                  : stackView.currentItem.title
+                  : page.title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -181,11 +183,11 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         var data = FlightLog.exportToForeFlight(page.selectedUuids)
-                        if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
                         var errorString = FileExchange.shareContent(data, "text/*", "csv", qsTr("FlightLog"))
-                        if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                        if (errorString === "abort") { Global.toast.doToast(qsTr("Aborted")); return }
                         if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
-                        toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
+                        Global.toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
                         page.exitSelectionMode()
                     }
                 }
@@ -198,11 +200,11 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         var data = FlightLog.exportToJSON(page.selectedUuids)
-                        if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
                         var errorString = FileExchange.shareContent(data, "text/*", "json", qsTr("FlightLog"))
-                        if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                        if (errorString === "abort") { Global.toast.doToast(qsTr("Aborted")); return }
                         if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
-                        toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
+                        Global.toast.doToast(page.isAndroidOrIos ? qsTr("Flight log shared") : qsTr("Flight log exported"))
                         page.exitSelectionMode()
                     }
                 }
@@ -217,7 +219,7 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         var data = FlightLog.exportToForeFlight(page.selectedUuids)
-                        if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
                         FileExchange.saveContent(data, "text/*", "csv", qsTr("FlightLog"))
                         page.exitSelectionMode()
                     }
@@ -233,7 +235,7 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         var data = FlightLog.exportToJSON(page.selectedUuids)
-                        if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
                         FileExchange.saveContent(data, "text/*", "json", qsTr("FlightLog"))
                         page.exitSelectionMode()
                     }
@@ -281,7 +283,7 @@ Page {
                                 return
                             }
                             var imported = FlightLog.count - countBefore
-                            toast.doToast(imported > 0
+                            Global.toast.doToast(imported > 0
                                           ? qsTr("%1 flight(s) imported").arg(imported)
                                           : qsTr("No new flights to import — already in the log"))
                         }
@@ -427,16 +429,20 @@ Page {
         id: flightDelegate
 
         RowLayout {
+            id: flightRow
+
+            required property flight modelData
+
             width: flightList.width
             height: iDel.height
 
             // Checkbox visible in selection mode
             CheckBox {
                 visible: page.selectionMode
-                checked: page.selectedUuids.indexOf(modelData.uuid.toString()) >= 0
+                checked: page.selectedUuids.indexOf(flightRow.modelData.uuidString) >= 0
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    page.toggleSelection(modelData.uuid.toString())
+                    page.toggleSelection(flightRow.modelData.uuidString)
                 }
             }
 
@@ -461,8 +467,8 @@ Page {
                         Label {
                             Layout.fillWidth: true
                             text: {
-                                var dep = modelData.departureICAO !== "" ? modelData.departureICAO : "?"
-                                var arr = modelData.arrivalICAO !== "" ? modelData.arrivalICAO : "?"
+                                var dep = flightRow.modelData.departureICAO !== "" ? flightRow.modelData.departureICAO : "?"
+                                var arr = flightRow.modelData.arrivalICAO !== "" ? flightRow.modelData.arrivalICAO : "?"
                                 return dep + "  \u2192  " + arr
                             }
                             font.bold: true
@@ -471,7 +477,7 @@ Page {
                         }
 
                         Image {
-                            visible: modelData.hasTrack
+                            visible: flightRow.modelData.hasTrack
                             source: "/icons/material/ic_timeline.svg"
                             sourceSize.width: iDel.font.pixelSize * 1.1
                             sourceSize.height: iDel.font.pixelSize * 1.1
@@ -482,13 +488,13 @@ Page {
                     Label {
                         Layout.fillWidth: true
                         text: {
-                            if (!modelData.startTime.getTime || isNaN(modelData.startTime.getTime()))
+                            if (!flightRow.modelData.startTime.getTime || isNaN(flightRow.modelData.startTime.getTime()))
                                 return qsTr("No time data")
                             function pad2(n) { return n.toString().padStart(2, '0') }
-                            var st = modelData.startTime
+                            var st = flightRow.modelData.startTime
                             var dateStr = st.getUTCFullYear() + "-" + pad2(st.getUTCMonth()+1) + "-" + pad2(st.getUTCDate())
                             var startStr = pad2(st.getUTCHours()) + ":" + pad2(st.getUTCMinutes())
-                            var lt = modelData.landingTime
+                            var lt = flightRow.modelData.landingTime
                             var landStr = (lt.getTime && !isNaN(lt.getTime()))
                                 ? pad2(lt.getUTCHours()) + ":" + pad2(lt.getUTCMinutes()) : "--:--"
                             // Mark a landing on a later UTC day than the
@@ -515,23 +521,23 @@ Page {
                         visible: text !== ""
                         text: {
                             var parts = []
-                            var ft = modelData.flightTime()
-                            if (modelData.aircraftCallsign !== "")
-                                parts.push(modelData.aircraftCallsign)
+                            var ft = flightRow.modelData.flightTime()
+                            if (flightRow.modelData.aircraftCallsign !== "")
+                                parts.push(flightRow.modelData.aircraftCallsign)
                             if (ft !== "")
                                 parts.push(qsTr("Duration: %1").arg(ft))
-                            var bt = modelData.blockTime()
+                            var bt = flightRow.modelData.blockTime()
                             if (bt !== "")
                                 parts.push(qsTr("Block: %1").arg(bt))
-                            var dist = modelData.distance()
-                            if (modelData.landingCount > 1)
-                                parts.push(qsTr("Landings: %1").arg(modelData.landingCount))
+                            var dist = flightRow.modelData.distance()
+                            if (flightRow.modelData.landingCount > 1)
+                                parts.push(qsTr("Landings: %1").arg(flightRow.modelData.landingCount))
                             if (dist.isFinite() && dist.toNM() >= 0.1)
                                 parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
-                            if (modelData.pilotName !== "")
-                                parts.push(modelData.pilotName)
-                            if (modelData.comments !== "")
-                                parts.push(modelData.comments)
+                            if (flightRow.modelData.pilotName !== "")
+                                parts.push(flightRow.modelData.pilotName)
+                            if (flightRow.modelData.comments !== "")
+                                parts.push(flightRow.modelData.comments)
                             // Join fields with " \u2022 " as separator, as elsewhere in the app.
                             // We want to line break at the separator only. Spaces within each
                             // field are replaced with non-breaking spaces (\u00A0) so the text
@@ -549,7 +555,7 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     if (page.selectionMode) {
-                        page.toggleSelection(modelData.uuid.toString())
+                        page.toggleSelection(flightRow.modelData.uuidString)
                     }
                 }
 
@@ -560,13 +566,13 @@ Page {
                         if (!page.selectionMode) {
                             page.selectionMode = true
                         }
-                        page.toggleSelection(modelData.uuid.toString())
+                        page.toggleSelection(flightRow.modelData.uuidString)
                     }
                 }
 
                 swipe.onCompleted: {
                     PlatformAdaptor.vibrateBrief()
-                    removeDialog.flightUuid = modelData.uuid.toString()
+                    removeDialog.flightUuid = flightRow.modelData.uuidString
                     removeDialog.open()
                 }
             }
@@ -578,8 +584,8 @@ Page {
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    flightEditor.flightUuid = modelData.uuid.toString()
-                    flightEditor.editFlight = modelData
+                    flightEditor.flightUuid = flightRow.modelData.uuidString
+                    flightEditor.editFlight = flightRow.modelData
                     flightEditor.open()
                 }
             }
@@ -598,15 +604,15 @@ Page {
                     id: cptMenu
 
                     Action {
-                        text: FlightLog.displayedTrackUuid === modelData.uuid.toString() ? qsTr("Hide from Map") : qsTr("Show on Map")
-                        enabled: modelData.hasTrack
+                        text: FlightLog.displayedTrackUuid === flightRow.modelData.uuidString ? qsTr("Hide from Map") : qsTr("Show on Map")
+                        enabled: flightRow.modelData.hasTrack
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            if (FlightLog.displayedTrackUuid === modelData.uuid.toString()) {
+                            if (FlightLog.displayedTrackUuid === flightRow.modelData.uuidString) {
                                 FlightLog.hideTrack()
                             } else {
-                                FlightLog.showTrack(modelData.uuid.toString())
+                                FlightLog.showTrack(flightRow.modelData.uuidString)
                             }
                         }
                     }
@@ -616,12 +622,12 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var data = FlightLog.exportToForeFlight([modelData.uuid.toString()])
-                            if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                            var data = FlightLog.exportToForeFlight([flightRow.modelData.uuidString])
+                            if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
                             var errorString = FileExchange.shareContent(data, "text/*", "csv", qsTr("FlightLog"))
-                            if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                            if (errorString === "abort") { Global.toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
-                            toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
+                            Global.toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
                         }
                     }
 
@@ -630,27 +636,27 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var data = FlightLog.exportToJSON([modelData.uuid.toString()])
-                            if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                            var data = FlightLog.exportToJSON([flightRow.modelData.uuidString])
+                            if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
                             var errorString = FileExchange.shareContent(data, "text/*", "json", qsTr("FlightLog"))
-                            if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                            if (errorString === "abort") { Global.toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
-                            toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
+                            Global.toast.doToast(page.isAndroidOrIos ? qsTr("Flight shared") : qsTr("Flight exported"))
                         }
                     }
 
                     Action {
                         text: page.isAndroidOrIos ? qsTr("Share to IGC…") : qsTr("Export to IGC…")
-                        enabled: modelData.hasTrack
+                        enabled: flightRow.modelData.hasTrack
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var data = FlightLog.exportToIGC(modelData.uuid.toString())
-                            if (data.length === 0) { shareErrorDialog.text = qsTr("Track data could not be read."); shareErrorDialog.open(); return }
+                            var data = FlightLog.exportToIGC(flightRow.modelData.uuidString)
+                            if (data.byteLength === 0) { shareErrorDialog.text = qsTr("Track data could not be read."); shareErrorDialog.open(); return }
                             var errorString = FileExchange.shareContent(data, "text/*", "igc", qsTr("FlightLog"))
-                            if (errorString === "abort") { toast.doToast(qsTr("Aborted")); return }
+                            if (errorString === "abort") { Global.toast.doToast(qsTr("Aborted")); return }
                             if (errorString !== "") { shareErrorDialog.text = errorString; shareErrorDialog.open(); return }
-                            toast.doToast(page.isAndroidOrIos ? qsTr("Track shared") : qsTr("Track exported"))
+                            Global.toast.doToast(page.isAndroidOrIos ? qsTr("Track shared") : qsTr("Track exported"))
                         }
                     }
 
@@ -661,8 +667,8 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var data = FlightLog.exportToForeFlight([modelData.uuid.toString()])
-                            if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                            var data = FlightLog.exportToForeFlight([flightRow.modelData.uuidString])
+                            if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
                             FileExchange.saveContent(data, "text/*", "csv", qsTr("FlightLog"))
                         }
                     }
@@ -674,8 +680,8 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var data = FlightLog.exportToJSON([modelData.uuid.toString()])
-                            if (data.length === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                            var data = FlightLog.exportToJSON([flightRow.modelData.uuidString])
+                            if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
                             FileExchange.saveContent(data, "text/*", "json", qsTr("FlightLog"))
                         }
                     }
@@ -684,23 +690,23 @@ Page {
                         text: qsTr("Save to IGC…")
                         visible: page.isAndroid
                         height: visible ? implicitHeight : 0
-                        enabled: modelData.hasTrack
+                        enabled: flightRow.modelData.hasTrack
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            var data = FlightLog.exportToIGC(modelData.uuid.toString())
-                            if (data.length === 0) { shareErrorDialog.text = qsTr("Track data could not be read."); shareErrorDialog.open(); return }
+                            var data = FlightLog.exportToIGC(flightRow.modelData.uuidString)
+                            if (data.byteLength === 0) { shareErrorDialog.text = qsTr("Track data could not be read."); shareErrorDialog.open(); return }
                             FileExchange.saveContent(data, "text/*", "igc", qsTr("FlightLog"))
                         }
                     }
 
                     Action {
                         text: qsTr("Delete IGC Track…")
-                        enabled: modelData.hasTrack
+                        enabled: flightRow.modelData.hasTrack
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            removeTrackDialog.flightUuid = modelData.uuid.toString()
+                            removeTrackDialog.flightUuid = flightRow.modelData.uuidString
                             removeTrackDialog.open()
                         }
                     }
@@ -710,7 +716,7 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            removeDialog.flightUuid = modelData.uuid.toString()
+                            removeDialog.flightUuid = flightRow.modelData.uuidString
                             removeDialog.open()
                         }
                     }
@@ -740,7 +746,7 @@ Page {
                     // flight is probably logged right after landing there
                     var nearestAD = ""
                     if (FlightLog.detectionState === FlightDetector.Idle) {
-                        var wp = FlightLog.nearestAirfield()
+                        const wp = FlightLog.nearestAirfield()
                         if (wp.isValid)
                             nearestAD = wp.shortName
                     }
@@ -782,7 +788,7 @@ Page {
 
         onAccepted: {
             FlightLog.removeTrack(removeTrackDialog.flightUuid)
-            toast.doToast(qsTr("Track deleted"))
+            Global.toast.doToast(qsTr("Track deleted"))
         }
         onRejected: {
         }
@@ -799,7 +805,7 @@ Page {
 
         onAccepted: {
             FlightLog.removeFlight(removeDialog.flightUuid)
-            toast.doToast(qsTr("Flight removed"))
+            Global.toast.doToast(qsTr("Flight removed"))
         }
         onRejected: {
         }
@@ -814,7 +820,7 @@ Page {
 
         onAccepted: {
             FlightLog.clearFlights()
-            toast.doToast(qsTr("Flight log cleared"))
+            Global.toast.doToast(qsTr("Flight log cleared"))
         }
     }
 
@@ -827,7 +833,7 @@ Page {
 
         onAccepted: {
             FlightLog.removeFlights(page.selectedUuids)
-            toast.doToast(qsTr("Flights removed"))
+            Global.toast.doToast(qsTr("Flights removed"))
             page.exitSelectionMode()
         }
         onRejected: {
@@ -855,7 +861,7 @@ Page {
 
         onAccepted: {
             FlightLog.updateFlight(flightEditor.flightUuid, flightEditor.resultFlight())
-            toast.doToast(qsTr("Flight updated"))
+            Global.toast.doToast(qsTr("Flight updated"))
         }
     }
 
@@ -866,7 +872,7 @@ Page {
 
         onAccepted: {
             FlightLog.addFlight(addFlightEditor.resultFlight())
-            toast.doToast(qsTr("Flight added"))
+            Global.toast.doToast(qsTr("Flight added"))
         }
     }
 

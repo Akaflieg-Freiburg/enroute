@@ -5,17 +5,15 @@ Scope: [src/qml/dialogs/FlightLogEntryEditor.qml](src/qml/dialogs/FlightLogEntry
 Method: deterministic lint, qmllint (Qt 6.12, project import paths), and six parallel deep-analysis passes (bindings, layout, lifecycle and C++ boundary, delegates, structure, performance). Findings were deduplicated and checked against the source.
 Verification: by reading the app sources and the Qt 6.12 sources. Nothing was built or run, and the app was not launched. Where a finding has a "To reproduce" line, that recipe has not been tried yet.
 
-Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 8 resolved and removed since, 11 listed below (4 lint groups, 6 deep analysis, 1 investigation target), of which D-001 and I-002 are marked resolved
+Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 10 resolved and removed since, 9 listed below (4 lint groups, 4 deep analysis, 1 investigation target), of which I-002 is marked resolved
 qmllint: no warnings on this file
 
-**TL;DR** — The dialog is structurally sound: no binding loops, correct types at the C++ boundary, correct UTC and midnight handling. There are two ways it can lose flight data:
+**TL;DR** — The dialog is structurally sound: no binding loops, correct types at the C++ boundary, correct UTC and midnight handling. Two findings that could lose flight data have been fixed and removed from this report:
 
-1. Adding several similar flights in a row can save the new flight under the previous flight's UUID and overwrite it (D-001).
-2. Pressing OK after a landing was detected while the editor was open erases the detected landing (D-002).
+1. D-001: adding several similar flights in a row could save the new flight under the previous flight's UUID and overwrite it.
+2. D-002: pressing OK after a landing was detected while the editor was open erased the detected landing. The flight list no longer offers editing while a flight is being recorded.
 
 The remaining findings are a usability issue (required/optional marking) and cleanup.
-
-**If you only fix two things**: D-001, D-002. D-001 comes first, because it loses flights in ordinary use (back-filling a log, or several local flights in a row).
 
 ---
 
@@ -36,60 +34,15 @@ These findings need a design decision before they can be fixed:
 
 | Finding | Question |
 |---------|----------|
-| D-001 | Fix in `Flight::operator==`, in `FlightLog::addFlight()`, in the dialog, or in more than one place? |
-| D-002 | Merge only the fields the user changed, follow the live entry while the dialog is open, or do not offer editing for the flight being recorded? |
 | D-006 | How are optional fields marked: which fields, and with which wording? (The departure is optional now.) |
 | D-007 | `flightUuid` can go, but only after D-001 is fixed (it protects the edit path today). |
-| Side note | Lift the qmllint exclusion for this file in [src/CMakeLists.txt:630](src/CMakeLists.txt#L630)? |
+| S-001 | Once the flight list is an item model: does `narrowSelection()` get the visible flights from the proxy model, or does the selection move into C++? |
 
 Fix status: [ ] = open. Mark items as you resolve them.
 
 ---
 
 ## Deep analysis findings
-
-### [x] [D-001] Consecutive "Add Flight" can reuse the previous flight's UUID and overwrite it
-- **Status**: Resolved: `Flight::operator==` compares the UUID, so QML stores every new template, and `FlightLog::addFlight()` ignores a flight whose UUID is already in the log. Tested end to end on 2026-11-21 in the app (offscreen, fresh data directory, position fix at EDTF), by clicking "Add Flight" and accepting the editor for four flights. Before the fix, the first three flights were saved under one UUID and only the last of them was left after a restart. With the fix, all four flights have their own UUID and are in the database after a restart.
-- **File**: [FlightLogEntryEditor.qml:124](src/qml/dialogs/FlightLogEntryEditor.qml#L124) (`resultFlight`), [:39](src/qml/dialogs/FlightLogEntryEditor.qml#L39) (`property flight editFlight`)
-- **Category**: Component Loading & Lifecycle — **Confidence**: 85/100
-- **Finding**: The flight saved by the Add path takes its identity from `editFlight`. Under the conditions below, `editFlight` still holds the template of the previous "Add Flight", so the new flight is saved under the previous flight's UUID. The database row of the previous flight is overwritten. Both flights show in the list until the app restarts; after that the earlier one is gone.
-- **Mechanism**:
-  1. Each "Add Flight" builds a new template with a new UUID and assigns it to `addFlightEditor.editFlight` ([FlightLogPage.qml:737](src/qml/pages/FlightLogPage.qml#L737)).
-  2. QML does not store an assignment to a value-type property when the new value compares equal to the stored one (Qt 6.12, `qtdeclarative/src/qml/qml/qqmlvmemetaobject.cpp`, around line 1080: the value is replaced only if `!propType.equals(...)`).
-  3. Equality is `Flight::operator==`, which compares every member except the UUID ([Flight.cpp:71-86](src/flightlog/Flight.cpp#L71-L86)). A template with the same content as the previous one is therefore dropped, and the dialog keeps the previous template and its UUID.
-  4. `applyEdits()` starts from the original and keeps its UUID ([FlightLog.cpp:486](src/flightlog/FlightLog.cpp#L486)).
-  5. `addFlight()` prepends to the list without a duplicate check ([FlightLog.cpp:244-257](src/flightlog/FlightLog.cpp#L244-L257)), and the storage upserts on `uuid` ([FlightLogStorage.cpp:102](src/flightlog/FlightLogStorage.cpp#L102)).
-- **When it triggers**: The template consists of last arrival, nearest airfield and aircraft name. It repeats when the same aircraft is selected, the device has not moved, and the flight added before did not change the last arrival. That is the case when the previous flight
-  - arrived where the one before it arrived (local flights, A→A),
-  - is older than the newest flight in the log (back-filling), or
-  - has an empty arrival.
-
-  On an empty log, the third such flight is the first to be affected.
-- **The Edit path is safe today**: `updateFlight()` looks the entry up by `flightUuid` and re-applies the edits onto the stored entry ([FlightLog.cpp:419-430](src/flightlog/FlightLog.cpp#L419-L430)), so the identity of `editFlight` does not matter there.
-- **Mitigation**: Include the UUID in `Flight::operator==`, so that a flight with another identity is a different value to QML. In addition, have `addFlight()` reject or re-key a UUID that is already in the log. Alternatively, do not let the Add path take its identity from `editFlight` at all.
-- **To reproduce**: In a `FLIGHTLOG=ON` build with at least one earlier flight arriving at EDTF, add EDTF→EDTF 10:00-11:00, then add EDTF→EDTF 14:00-15:00 for the same aircraft. Restart the app and count the entries.
-
-### [ ] [D-002] A landing detected while the editor is open is erased on OK
-- **File**: [FlightLogEntryEditor.qml:109-125](src/qml/dialogs/FlightLogEntryEditor.qml#L109-L125) (`resultFlight`), [:127-160](src/qml/dialogs/FlightLogEntryEditor.qml#L127-L160) (`onAboutToShow`)
-- **Category**: Component Loading & Lifecycle — **Confidence**: 85/100
-- **Finding**: The dialog copies `editFlight` into its fields once and hands back every editable field on accept, touched or not. If the flight being recorded is open in the editor when the detector completes it, pressing OK writes the stale fields over the detected values:
-  - the arrival code becomes empty,
-  - the landing time becomes invalid,
-  - the landing count goes back to 1,
-  - the GPS-derived arrival coordinate is discarded.
-
-  Nothing repairs the entry afterwards, because the detector has already finished with it. The track file survives.
-- **Trace**:
-  - The in-progress flight is in the list and has an edit button ([FlightLogPage.qml:562-572](src/qml/pages/FlightLogPage.qml#L562-L572)).
-  - `onLandingDetected` writes arrival, coordinate, landing time and landing count into the stored entry ([FlightLog.cpp:950-992](src/flightlog/FlightLog.cpp#L950-L992)). A modal dialog does not stop this.
-  - On OK, `updateFlight()` applies the dialog's result onto the stored entry ([FlightLog.cpp:419-438](src/flightlog/FlightLog.cpp#L419-L438)). In `applyEdits()` the empty arrival differs from the detected one, so the coordinate is cleared; `keepSeconds()` returns the invalid edited time; the landing count is overwritten ([FlightLog.cpp:471-510](src/flightlog/FlightLog.cpp#L471-L510)).
-  - OK stays enabled, because an empty landing time and arrival are acceptable input (lines 56-62).
-- **When it triggers**: The landing is confirmed when ground speed drops below the minimum speed, or 60 s after entering the landing phase ([AirplaneFlightDetector.cpp:174-196](src/flightlog/AirplaneFlightDetector.cpp#L174-L196)). The editor has to be open across that moment, for example when the pilot opens it during the landing roll to add a comment.
-- **Mitigation**: One of these:
-  - Apply only what the user changed: pass the snapshot along and take a field from the edit only where it differs from the snapshot (a three-way merge).
-  - Follow the live entry: while open, react to `FlightLog.flightsChanged`, refresh the fields the user has not touched, or close with a notice.
-  - Do not offer editing for the flight that is being recorded.
-- **To reproduce**: With flight detection enabled and a simulated position source, open the editor on the in-progress entry, trigger a landing, and press OK without touching Landing or Arrival.
 
 ### [ ] [D-006] Required and optional fields are not communicated consistently
 - **Status**: Partly addressed in the date/time redesign: one translatable placeholder for all four times, and a status line that lists errors (which block saving) or else warnings, separated by " • ". Arrival, Aircraft and the remaining "(optional)" placeholders are unchanged.
@@ -184,7 +137,7 @@ The linter reported 51 raw hits in five groups. The `var` group (L-002) has been
 
 - **Binding loops**: none. The handlers that write (`onAboutToShow`, `onTextEdited`, `onHeightChanged`) do not feed back.
 - **C++ boundary**: `createFlight()` gets ten strings, `applyEdits()` two `flight` values, the validators strings. The write `edited.landingCount = …` on line 123 is effective: a value type returned from an invokable is a copy of its own, and `landingCount` is writable.
-- **`applyEdits()` against the header comment**: they agree. `updateFlight()` applies it a second time, which is idempotent as long as the stored entry has not changed (see D-002).
+- **`applyEdits()` against the header comment**: they agree. `updateFlight()` applies it a second time, which is idempotent as long as the stored entry has not changed. Only the flight detector changes an entry while the editor is open, and only the entry of the flight being recorded. The flight list therefore hides the edit button unless `FlightLog.detectionState` is `Idle`.
 - **UTC and midnight**: `getUTC*` works on the epoch value. `createFlight()` places the other times around the start time, so overnight flights survive a round trip, seconds included.
 - **Input-method pre-edit text**: it is committed when the OK button takes focus, so testing `displayText` and saving `text` does not lose input.
 - **Layout**: only `anchors.fill: parent`; the implicit-height chain from grid to scroll view to dialog is loop-free; the empty separator rows and `Qt.AlignBaseline` behave as the comments say (DateInput is a TextField and has a baseline); the scroll handler uses the right coordinate system and clamp.
@@ -200,11 +153,11 @@ The linter reported 51 raw hits in five groups. The `var` group (L-002) has been
 |----------|------|------|-------------|-------|
 | Bindings & Properties | 1 | 1 | 0 | 2 |
 | Layout & Anchoring | 0 | 0 | 0 | 0 |
-| Component Loading & Lifecycle | 0 | 2 | 1 | 3 |
+| Component Loading & Lifecycle | 0 | 0 | 1 | 1 |
 | ListView & Delegates | 0 | 0 | 0 | 0 |
 | States & Structure | 2 | 2 | 0 | 4 |
 | Performance & Quality | 1 | 1 | 0 | 2 |
-| **Total** | **4** | **6** | **1** | **11** |
+| **Total** | **4** | **4** | **1** | **9** |
 
 Findings below confidence 60 are suppressed.
 
@@ -212,5 +165,19 @@ Findings below confidence 60 are suppressed.
 
 ## Side notes outside the file
 
-- **qmllint exclusion**: [src/CMakeLists.txt:627-630](src/CMakeLists.txt#L627-L630) sets `QT_QML_SKIP_QMLLINT` for this file and for `FlightLogPage.qml` "until they are clean". This file is clean when qmllint is run on it directly, so the exclusion can be lifted for it. `FlightLogPage.qml` still produces about 166 messages and has to stay excluded.
-- **FlightLogPage.qml**: its list delegates use `modelData` (for example line 569), which goes against the CLAUDE.md convention of typed `required property` roles. The page was not reviewed here.
+### [ ] [S-001] FlightLogPage.qml: feed the flight list from an item model
+- **Status**: Open. Recommended as a change of its own, before `FLIGHTLOG` is enabled by default. Noted on 2026-11-21, after commit `b1b95be49` made `FlightLogPage.qml` clean under qmllint and removed the lint exclusion in `src/CMakeLists.txt`. Line numbers in this note refer to that commit, not to the commit named at the top.
+- **File**: [FlightLogPage.qml:64](src/qml/pages/FlightLogPage.qml#L64) (`visibleFlights`), [:401](src/qml/pages/FlightLogPage.qml#L401) (`Binding on model`), [:434](src/qml/pages/FlightLogPage.qml#L434) (delegate), [FlightLog.h:94](src/flightlog/FlightLog.h#L94) (`flights`)
+- **Finding**: The model of the flight list is a JavaScript array. `visibleFlights()` copies `FlightLog.flights` into an array and filters it with `Librarian.matches`; a delayed `Binding` assigns the result to the list view. [Librarian.h:255](src/Librarian.h#L255) names this as the pattern for ad-hoc lists. The flight log is library data: it is stored, the user edits it, and it grows over the years. For such data, CLAUDE.md asks for a list that binds once to an item model, and for delegates with a typed role (`required property flight flight`). The delegate has been typed since 2026-11-21, but its role is still called `modelData`, because an array offers no other role name.
+- **Consequences**:
+  - Every `flightsChanged` gives the list view a new model. This should rebuild all delegates and move the list back to the top after each edit, removal or detected landing. That is what `ListView` does with a new model; it has not been observed in the app.
+  - Every keystroke in the filter field calls `Librarian.matches` from JavaScript, once per flight.
+- **Scope**: `FlightLog.flights` is read in one place, `visibleFlights()`. Nine functions in [FlightLog.cpp](src/flightlog/FlightLog.cpp) change the list: `addFlight`, `removeFlight`, `removeFlights`, `clearFlights`, `updateFlight`, `importFromJSON`, `removeTrack`, `load` and `onLandingDetected`. Each of them copies the list, changes the copy and stores it with `m_flights.setValue()`.
+- **Mitigation**:
+  1. Add a `QAbstractListModel` that `FlightLog` owns and exposes as `FlightLog.flightsModel`, as `Librarian` does with `aircraftModel` ([Librarian.h:50](src/Librarian.h#L50)). `FlightLog` cannot be the model itself, because it derives from `GlobalObject`.
+  2. Give the model two roles: `flight`, and `name` with the text that the filter searches (departure, arrival, pilot name, callsign). `NameFilterProxyModel` filters on the role `name` by default and works unchanged.
+  3. In the page, set `model: NameFilterProxyModel { sourceModel: FlightLog.flightsModel; filter: flightFilter.filter }` and declare `required property flight flight` in the delegate. `visibleFlights()` and the `Binding` go away.
+  4. Emit row-granular signals from the nine functions. `addFlight`, `updateFlight` and `importFromJSON` sort the list after the change, so the row of a flight is known only after sorting. `load` and `clearFlights` replace the whole list and are resets.
+- **Decision needed**: `narrowSelection()` ([FlightLogPage.qml:76](src/qml/pages/FlightLogPage.qml#L76)) deselects the flights that the filter hides, and takes the visible UUIDs from `visibleFlights()`. It needs another source. Either the proxy model reports which UUIDs are visible, or the selection moves into the C++ model.
+- **Why a change of its own**: It changes the data path that the flight detector writes to during a flight. It needs its own review and a test in the app.
+- **To verify**: In a `FLIGHTLOG=ON` build with more flights than fit on the screen, scroll down, then edit one flight and remove another: the list must stay where it is. Select several flights, then type in the filter field: the count in the header must equal the number of selected flights that are still visible.

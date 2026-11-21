@@ -210,10 +210,11 @@ public:
      *  @param departureICAO ICAO code of departure airport
      *  @param arrivalICAO ICAO code of arrival airport
      *  @param date Date of the start time, in yyyy-MM-dd format
-     *  @param offBlockTimeStr Off-block time string in HH:mm or H:mm format, or empty
-     *  @param startTimeStr Start time string in HH:mm or H:mm format
-     *  @param landingTimeStr Landing time string in HH:mm or H:mm format
-     *  @param onBlockTimeStr On-block time string in HH:mm or H:mm format, or empty
+     *  @param offBlockTimeStr Off-block time string in a format that
+     *  isValidTime() accepts, or empty
+     *  @param startTimeStr Start time string, see isValidTime()
+     *  @param landingTimeStr Landing time string, see isValidTime(), or empty
+     *  @param onBlockTimeStr On-block time string, see isValidTime(), or empty
      *  @param pilotName Pilot name, or empty
      *  @param aircraftCallsign Aircraft callsign (e.g. D-KEBE), or empty
      *  @param comments Free-text comments, or empty
@@ -246,10 +247,21 @@ public:
      *  Leading and trailing whitespace is ignored.
      *
      *  @param time Time string
-     *  @returns True if the string is a valid time of day in HH:mm or H:mm
-     *  format, so that createFlight() can interpret it
+     *  @returns True if the string is a valid time of day in HH:mm, H:mm,
+     *  HHmm or Hmm format, so that createFlight() can interpret it
      */
     [[nodiscard]] Q_INVOKABLE static bool isValidTime(const QString& time);
+
+    /*! \brief Bring a time string into the format HH:mm
+     *
+     *  Editors accept the time formats of isValidTime() while the user types,
+     *  and show the time in one format once the input is finished.
+     *
+     *  @param time Time string
+     *  @returns The time in HH:mm format if isValidTime() accepts @p time,
+     *  and @p time unchanged otherwise
+     */
+    [[nodiscard]] Q_INVOKABLE static QString normalizedTime(const QString& time);
 
     /*! \brief Apply the result of editing to a flight
      *

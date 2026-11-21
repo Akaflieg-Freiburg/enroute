@@ -453,10 +453,10 @@ static auto parseDate(const QString& text) -> QDate
 
 
 // Parse a time entered by the user. Returns an invalid QTime unless the text
-// is a valid time of day in HH:mm or H:mm format.
+// is a valid time of day in HH:mm, H:mm, HHmm or Hmm format.
 static auto parseTime(const QString& text) -> QTime
 {
-    static const QRegularExpression pattern(u"^(\\d{1,2}):(\\d{2})$"_s);
+    static const QRegularExpression pattern(u"^(\\d{1,2}):?(\\d{2})$"_s);
     const auto match = pattern.match(text.trimmed());
     if (!match.hasMatch()) {
         return {};
@@ -571,6 +571,16 @@ auto Flightlog::FlightLog::isValidDate(const QString& date) -> bool
 auto Flightlog::FlightLog::isValidTime(const QString& time) -> bool
 {
     return parseTime(time).isValid();
+}
+
+
+auto Flightlog::FlightLog::normalizedTime(const QString& time) -> QString
+{
+    const auto parsed = parseTime(time);
+    if (!parsed.isValid()) {
+        return time;
+    }
+    return parsed.toString(u"HH:mm"_s);
 }
 
 

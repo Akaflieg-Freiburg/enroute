@@ -92,14 +92,16 @@ Fix status: [ ] = open. Mark items as you resolve them.
   - Do not offer editing for the flight that is being recorded.
 - **To reproduce**: With flight detection enabled and a simulated position source, open the editor on the in-progress entry, trigger a landing, and press OK without touching Landing or Arrival.
 
-### [ ] [D-003] Whitespace-only departure passes validation
+### [x] [D-003] Whitespace-only departure passes validation
+- **Status**: Resolved in the date/time redesign: `acceptableInput` tests the trimmed departure.
 - **File**: [FlightLogEntryEditor.qml:56](src/qml/dialogs/FlightLogEntryEditor.qml#L56)
 - **Category**: Bindings & Properties — **Confidence**: 90/100
 - **Finding**: `acceptableInput` tests `depField.displayText !== ""`, which is untrimmed. The saved value is `codeOrName(depField.text)`, which trims (lines 42, 75-78). A departure of a single space enables OK and is stored as an empty departure. On an existing entry this also drops the departure coordinate, because the code has changed ([FlightLog.cpp:494-496](src/flightlog/FlightLog.cpp#L494-L496)). The time fields trim in both the check and the save. Separately, the comment at lines 53-55 names only date and start time as mandatory.
 - **Trace**: Line 56 against lines 42 and 75-78. `createFlight()` stores the string as given and does not validate it.
 - **Mitigation**: Decide whether a departure is mandatory. If it is, test the trimmed text (keep `displayText`, so that the button still reacts during input-method composition) and say so in the comment. If it is not, drop the condition.
 
-### [ ] [D-004] Focused field can sit outside the viewport
+### [x] [D-004] Focused field can sit outside the viewport
+- **Status**: Resolved in the date/time redesign: `ensureFocusVisible()` runs on height and focus changes, with a margin of one `font.pixelSize`; `onAboutToShow` resets the scroll offset. Not yet tried in the running app.
 - **File**: [FlightLogEntryEditor.qml:175-186](src/qml/dialogs/FlightLogEntryEditor.qml#L175-L186) (scroll handler), [:127-160](src/qml/dialogs/FlightLogEntryEditor.qml#L127-L160) (no scroll reset)
 - **Category**: Layout & Anchoring — **Confidence**: 85/100
 - **Finding**: The only code that scrolls to the focused field is `onHeightChanged`, which runs when the virtual keyboard resizes the dialog. Three consequences:
@@ -110,7 +112,8 @@ Fix status: [ ] = open. Mark items as you resolve them.
 - **Mitigation**: Move the handler body into a function and call it also when the focused control changes. Add a margin of about one `font.pixelSize`, as [AircraftPage.qml:129](src/qml/pages/AircraftPage.qml#L129) does. Reset the scroll offset to the top in `onAboutToShow`.
 - **To reproduce**: In a small window, open the editor, scroll to the bottom, cancel, and open it for another flight. Then tab through the fields.
 
-### [ ] [D-005] `formatTimeInput()` rewrites the text under the user
+### [x] [D-005] `formatTimeInput()` rewrites the text under the user
+- **Status**: Resolved in the date/time redesign: `parseTime` accepts `HHmm` and `Hmm`; the field is normalised with `FlightLog.normalizedTime()` in `onEditingFinished` only.
 - **File**: [FlightLogEntryEditor.qml:86-91](src/qml/dialogs/FlightLogEntryEditor.qml#L86-L91), called from lines 257, 271, 285, 299
 - **Category**: Performance & Quality — **Confidence**: 85/100
 - **Finding**: The function assigns `field.text` from inside `onTextEdited`. Consequences, all minor:
@@ -123,6 +126,7 @@ Fix status: [ ] = open. Mark items as you resolve them.
 - **Mitigation**: Accept bare "HHmm" and "Hmm" in `FlightLog::parseTime` and normalise the text in `onEditingFinished`. This also covers the three-digit case and avoids changing text under the input method. Alternatively, restore the cursor position after the rewrite.
 
 ### [ ] [D-006] Required and optional fields are not communicated consistently
+- **Status**: Partly addressed in the date/time redesign: one translatable placeholder for all four times, and a status line that names the missing mandatory field (departure, takeoff time). Arrival, Aircraft and the remaining "(optional)" placeholders are unchanged.
 - **File**: [FlightLogEntryEditor.qml:254-296](src/qml/dialogs/FlightLogEntryEditor.qml#L254-L296) (time fields), also lines 222, 236, 316, 327, 338
 - **Category**: States & Structure — **Confidence**: 92/100
 - **Finding**: `acceptableInput` requires Departure, Date, Start, and a valid-or-empty Landings count; everything else may be empty.
@@ -152,6 +156,7 @@ Fix status: [ ] = open. Mark items as you resolve them.
 - **Mitigation**: Refresh the summary from a `Connections` handler on `GeoMapProvider.waypointsChanged` with an imperative assignment. Do not read the waypoint list inside the binding; that would convert the whole list to JavaScript.
 
 ### [ ] [D-009] Duplicated logic and dead guards
+- **Status**: Partly addressed in the date/time redesign: one `TimeField` component replaces the four copies, the dead `getTime &&` guards are gone in the editor, and `utcDate()` is replaced by `DateInput.isoDate()` / `todayIsoDate()`. The summary still duplicates the list delegate, and code normalisation still lives in `codeOrName()`.
 - **File**: [FlightLogEntryEditor.qml:128-152](src/qml/dialogs/FlightLogEntryEditor.qml#L128-L152), also lines 94-104, 132, 250-300, 368-383
 - **Category**: Performance & Quality — **Confidence**: 90/100
 - **Finding**:
@@ -162,21 +167,24 @@ Fix status: [ ] = open. Mark items as you resolve them.
   - The rule "codes are stored in upper case, so that they are found in the maps" exists only in `codeOrName()`. C++ stores what it is given, so a lower-case code from another path (JSON import) stays unresolved until the entry is saved from this dialog.
 - **Mitigation**: One reusable time field with a "required" flag that drives colour and validity. One helper that returns "" for an invalid time. `dateField.todayIsoDate()` for the default date. Code normalisation in `createFlight()` / `applyEdits()`.
 
-### [ ] [D-010] Bare `acceptableInput` collides with the root property of the same name
+### [x] [D-010] Bare `acceptableInput` collides with the root property of the same name
+- **Status**: Resolved in the date/time redesign: `landingsField.acceptableInput`.
 - **File**: [FlightLogEntryEditor.qml:352](src/qml/dialogs/FlightLogEntryEditor.qml#L352)
 - **Category**: Bindings & Properties — **Confidence**: 90/100
 - **Finding**: Inside `landingsField`, the bare name resolves to the text field's own `acceptableInput` (the validator result), which is the intended one. The dialog declares a property with the same name and a different meaning at line 56 ("the whole form can be saved"). The behaviour is correct, but a later refactoring can easily pick the wrong one; the field would then turn red whenever any other field is invalid.
 - **Trace**: Lookup order is ids, scope object, component root. Line 62 already uses the qualified form.
 - **Mitigation**: Write `landingsField.acceptableInput`.
 
-### [ ] [D-011] Dead `focus: true`
+### [x] [D-011] Dead `focus: true`
+- **Status**: Resolved in the date/time redesign: `focus: true` removed; `defaultFocusItem` is set in `onAboutToShow`.
 - **File**: [FlightLogEntryEditor.qml:224](src/qml/dialogs/FlightLogEntryEditor.qml#L224)
 - **Category**: States & Structure — **Confidence**: 90/100
 - **Finding**: Initial focus is set by `defaultFocusItem: depField` (line 65). `focus: true` on `depField` cannot give it active focus, because the field sits inside a scroll view, which is a focus scope. A reader cannot tell which mechanism counts.
 - **Trace**: [CenteringDialog.qml:36](src/qml/dialogs/CenteringDialog.qml#L36) calls `forceActiveFocus()` on `defaultFocusItem` in `onOpened`.
 - **Mitigation**: Remove line 224.
 
-### [ ] [D-012] Untyped helper functions are not compiled ahead of time
+### [x] [D-012] Untyped helper functions are not compiled ahead of time
+- **Status**: Resolved in the date/time redesign: the helpers have type annotations. The remaining AOT messages are about calls to JavaScript built-ins and singleton lookups.
 - **File**: [FlightLogEntryEditor.qml:75-109](src/qml/dialogs/FlightLogEntryEditor.qml#L75-L109) (six function signatures)
 - **Category**: Performance & Quality — **Confidence**: 90/100
 - **Finding**: None of the six functions has parameter or return type annotations. qmlcachegen therefore compiles only the trivial bindings of this file. The functions, all handlers, and the bindings at lines 42, 43, 56, 210, 256, 270, 284, 298, 352, 368 and 400 run interpreted. The runtime effect at keystroke frequency is negligible; this is a consistency point, since `DateInput.qml` annotates its functions.
@@ -187,7 +195,8 @@ Fix status: [ ] = open. Mark items as you resolve them.
 
 ## Investigation targets (human verification needed)
 
-### [ ] [I-001] Date field too narrow on portrait phones
+### [x] [I-001] Date field too narrow on portrait phones
+- **Status**: Resolved in the date/time redesign: `DateInput.displayFormat`, the editor uses `qsTr("ddd, d MMM yyyy")`. Not yet checked on a phone.
 - **File**: [FlightLogEntryEditor.qml:205-211](src/qml/dialogs/FlightLogEntryEditor.qml#L205-L211); the text format is in [DateInput.qml:116](src/qml/items/DateInput.qml#L116)
 - **Category**: Layout & Anchoring — **Confidence**: 75/100
 - **Finding**: On a 360 dp wide phone the date field has about 113 px for text, while a long-format date needs about 125-210 px. The field is read-only and covered by a MouseArea, so the user would see only the tail of the date (for example "7. November 2026" for the 17th) and could not scroll it.

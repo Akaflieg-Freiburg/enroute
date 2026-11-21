@@ -32,14 +32,19 @@ import akaflieg_freiburg.enroute
 // The property "date" holds the date as an ISO string "yyyy-MM-dd", or an
 // empty string. It is a calendar day without time zone; the caller decides
 // what it means (the flight log uses UTC days). The field shows the date in
-// the format of the current locale. Tapping the field, or pressing Return or
-// Space while it has focus, opens the calendar. The signal dateEdited() is
-// emitted when the user picks a date, but not when "date" is set from outside.
+// the long format of the current locale, or in displayFormat if set. Tapping
+// the field, or pressing Return or Space while it has focus, opens the
+// calendar. The signal dateEdited() is emitted when the user picks a date,
+// but not when "date" is set from outside.
 
 TextField {
     id: dateInput
 
     property string date: ""
+
+    // Format of the date shown in the field, as for Qt.formatDate(). If
+    // empty, the long date format of the current locale is used.
+    property string displayFormat: ""
 
     // If true, "today" is the current day in UTC rather than in local time.
     // This affects the "Today" button and the marker in the calendar.
@@ -113,7 +118,10 @@ TextField {
         const parts = dateParts(date)
         if (parts === null)
             return date
-        return new Date(parts.year, parts.month, parts.day).toLocaleDateString(Qt.locale(), Locale.LongFormat)
+        const day = new Date(parts.year, parts.month, parts.day)
+        if (displayFormat === "")
+            return day.toLocaleDateString(Qt.locale(), Locale.LongFormat)
+        return day.toLocaleDateString(Qt.locale(), displayFormat)
     }
 
     Keys.onReturnPressed: openCalendar()

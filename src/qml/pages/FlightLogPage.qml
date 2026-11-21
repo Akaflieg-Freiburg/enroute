@@ -491,6 +491,18 @@ Page {
                             var lt = modelData.landingTime
                             var landStr = (lt.getTime && !isNaN(lt.getTime()))
                                 ? pad2(lt.getUTCHours()) + ":" + pad2(lt.getUTCMinutes()) : "--:--"
+                            // Mark a landing on a later UTC day than the
+                            // takeoff with a superscript day count, as in
+                            // "23:30 – 00:30⁺¹", as the flight editor does
+                            if (landStr !== "--:--") {
+                                const days = Math.round((Date.UTC(lt.getUTCFullYear(), lt.getUTCMonth(), lt.getUTCDate())
+                                                       - Date.UTC(st.getUTCFullYear(), st.getUTCMonth(), st.getUTCDate()))
+                                                      / (24 * 60 * 60 * 1000))
+                                if (days > 0) {
+                                    const superscripts = "⁰¹²³⁴⁵⁶⁷⁸⁹"
+                                    landStr += "⁺" + days.toString().split("").map(function(d) { return superscripts[Number(d)] }).join("")
+                                }
+                            }
                             return dateStr + "   " + startStr + " – " + landStr + " UTC"
                         }
                         font.pixelSize: iDel.font.pixelSize * 0.9

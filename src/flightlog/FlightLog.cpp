@@ -607,11 +607,18 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position, doubl
 {
     auto coord = position;
     if (!coord.isValid()) {
+        // Use the current position only. The last valid coordinate is stored
+        // across restarts and defaults to EDTF, so it can be far away from
+        // where the user is now.
         auto* positionProvider = GlobalObject::positionProvider();
         if (positionProvider == nullptr) {
             return {};
         }
-        coord = positionProvider->lastValidCoordinate();
+        const auto info = positionProvider->positionInfo();
+        if (!info.isValid()) {
+            return {};
+        }
+        coord = info.coordinate();
         if (!coord.isValid()) {
             return {};
         }

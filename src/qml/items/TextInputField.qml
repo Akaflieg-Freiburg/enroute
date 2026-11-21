@@ -54,6 +54,11 @@ TextField {
         enabled: textField.hasClearButton && (textField.displayText !== "")
         visible: textField.hasClearButton
 
+        // Never take the focus: Tab moves on to the next input field rather
+        // than to this button, which has no visible focus indicator, and a
+        // tap leaves the focus (and the virtual keyboard) in the text field
+        focusPolicy: Qt.NoFocus
+
         background: Item {}
 
         icon.source: "/icons/material/ic_clear.svg"

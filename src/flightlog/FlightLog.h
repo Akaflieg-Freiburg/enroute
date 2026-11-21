@@ -317,8 +317,10 @@ public:
      *
      *  Returns the closest airfield (type "AD") to the given position,
      *  provided it is within @p proximityM metres. Returns an invalid Waypoint if none found.
-     *  If no position is given (or an invalid one), the last valid coordinate
-     *  from PositionProvider is used.
+     *  If no position is given (or an invalid one), the current position from
+     *  PositionProvider::positionInfo is used. If there is no current
+     *  position, an invalid Waypoint is returned: the last valid coordinate
+     *  may be old and is not used.
      *
      *  @param position The geographic position to search near (default: current GPS position)
      *  @param proximityM Maximum search radius in metres (default: 5000)

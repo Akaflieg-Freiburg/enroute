@@ -735,10 +735,9 @@ Page {
                     // Prefill aircraft callsign from current aircraft
                     var acName = Navigator.aircraft.name
 
-                    // Prefill departure with last arrival of this aircraft
-                    var lastArr = FlightLog.lastArrivalICAO(acName)
-
-                    // Prefill arrival with currently nearest airfield (if not in flight and GPS available)
+                    // Prefill arrival with the airfield where the device is
+                    // now, if not in flight and with a current GPS fix: the
+                    // flight is probably logged right after landing there
                     var nearestAD = ""
                     if (FlightLog.detectionState === FlightDetector.Idle) {
                         var wp = FlightLog.nearestAirfield()
@@ -746,7 +745,14 @@ Page {
                             nearestAD = wp.shortName
                     }
 
-                    addFlightEditor.editFlight = FlightLog.createFlight(lastArr, nearestAD, "", "", "", "", "", "", acName, "")
+                    // Prefill departure with last arrival of this aircraft.
+                    // Without one, assume a local flight from the airfield
+                    // where the device is now.
+                    var departure = FlightLog.lastArrivalICAO(acName)
+                    if (departure === "")
+                        departure = nearestAD
+
+                    addFlightEditor.editFlight = FlightLog.createFlight(departure, nearestAD, "", "", "", "", "", "", acName, "")
                     addFlightEditor.open()
                 }
             }

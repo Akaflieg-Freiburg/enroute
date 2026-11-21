@@ -187,7 +187,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "geojson", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 Global.toast.doToast(qsTr("Aborted"))
@@ -200,7 +199,7 @@ Page {
                             }
                             if (flightRoutePage.isAndroid)
                                 Global.toast.doToast(qsTr("Flight route shared"))
-                            else (!flightRoutePage.isIos)
+                            else if (!flightRoutePage.isIos)
                                 Global.toast.doToast(qsTr("Flight route exported"))
                         }
                     }
@@ -211,7 +210,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 Global.toast.doToast(qsTr("Aborted"))
@@ -235,7 +233,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 Global.toast.doToast(qsTr("Aborted"))
@@ -259,7 +256,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             var errorString = FileExchange.shareContent(Navigator.flightRoute.toPln(), "application/xml", "pln", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 Global.toast.doToast(qsTr("Aborted"))
@@ -289,7 +285,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             FileExchange.saveContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "geojson", Navigator.flightRoute.suggestedFilename())
                         }
                     }
@@ -300,7 +295,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             FileExchange.saveContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", Navigator.flightRoute.suggestedFilename())
                         }
                     }
@@ -311,7 +305,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             FileExchange.saveContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", Navigator.flightRoute.suggestedFilename())
                         }
                     }
@@ -322,7 +315,6 @@ Page {
                             headerMenuX.close()
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
                             FileExchange.saveContent(Navigator.flightRoute.toPln(), "application/xml", "pln", Navigator.flightRoute.suggestedFilename())
                         }
                     }
@@ -338,7 +330,6 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
 
                             var errorString = FileExchange.viewContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "geojson", "FlightRoute")
                             if (errorString !== "") {
@@ -355,7 +346,6 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
 
                             var errorString = FileExchange.viewContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "gpx", "FlightRoute")
                             if (errorString !== "") {
@@ -372,7 +362,6 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
 
                             var errorString = FileExchange.viewContent(Navigator.flightRoute.toFpl(), "application/xml", "fpl", "FlightRoute")
                             if (errorString !== "") {
@@ -389,7 +378,6 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            parent.highlighted = false
 
                             var errorString = FileExchange.viewContent(Navigator.flightRoute.toPln(), "application/xml", "pln", "FlightRoute")
                             if (errorString !== "") {
@@ -412,7 +400,7 @@ Page {
 
                         var flightPlanText = Navigator.flightRoute.toVfrFlightPlan()
                         if (flightPlanText !== "") {
-                            var success = PlatformAdaptor.setClipboardText(flightPlanText)
+                            const success = PlatformAdaptor.setClipboardText(flightPlanText)
                             if (success) {
                                 Global.toast.doToast(qsTr("Flight plan copied to clipboard"))
                             } else {
@@ -896,6 +884,13 @@ Page {
                         Navigator.wind.directionFrom = text === "" ? myAngle.fromDEG(NaN) : myAngle.fromDEG(text)
                         windSpeed.focus = true
                     }
+                    // Qt emits editingFinished only for acceptable input, which
+                    // an empty field never is. Delete the direction as soon as
+                    // the field is cleared, by the clear button or the keyboard.
+                    onTextChanged: {
+                        if (text === "" && Navigator.wind.directionFrom.isFinite())
+                            Navigator.wind.directionFrom = myAngle.fromDEG(NaN)
+                    }
                     color: (acceptableInput ? colorGlean.color : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
@@ -958,6 +953,12 @@ Page {
                             break;
                         }
                         focus = false
+                    }
+                    // See windDirection: delete the speed as soon as the field
+                    // is cleared.
+                    onTextChanged: {
+                        if (text === "" && Navigator.wind.speed.isFinite())
+                            Navigator.wind.speed = flightRoutePage.staticSpeed.fromKN(NaN)
                     }
                     color: (acceptableInput ? colorGlean.color : "red")
                     text: {

@@ -253,280 +253,294 @@ CenteringDialog {
         }
     }
 
-    DecoratedScrollView {
-        id: scrollView
+    ColumnLayout {
+        anchors.fill: parent
+        spacing: 0.5 * flightEditorDialog.font.pixelSize
 
-        // Scroll no further than necessary to show the focused field, with a
-        // margin, so that the field stays clear of the "more" indicators. The
-        // fields are children of the grid, so their y is a position in the
-        // scrolled content. The height handler runs before the contentItem is
-        // resized, hence availableHeight rather than the height of the
-        // contentItem.
-        function ensureFocusVisible() {
-            const control = ApplicationWindow.activeFocusControl
-            const flickable = contentItem as Flickable
-            if (control === null || flickable === null || control.parent !== grid)
-                return
-            const margin = font.pixelSize
-            let y = flickable.contentY
-            if (control.y + control.height + margin > y + availableHeight)
-                y = control.y + control.height + margin - availableHeight
-            if (control.y - margin < y)
-                y = control.y - margin
-            flickable.contentY = Math.max(0, Math.min(y, contentHeight - availableHeight))
+        DecoratedScrollView {
+            id: scrollView
+
+            // Scroll no further than necessary to show the focused field, with
+            // a margin, so that the field stays clear of the "more"
+            // indicators. The fields are children of the grid, so their y is a
+            // position in the scrolled content. The height handler runs before
+            // the contentItem is resized, hence availableHeight rather than
+            // the height of the contentItem.
+            function ensureFocusVisible() {
+                const control = ApplicationWindow.activeFocusControl
+                const flickable = contentItem as Flickable
+                if (control === null || flickable === null || control.parent !== grid)
+                    return
+                const margin = font.pixelSize
+                let y = flickable.contentY
+                if (control.y + control.height + margin > y + availableHeight)
+                    y = control.y + control.height + margin - availableHeight
+                if (control.y - margin < y)
+                    y = control.y - margin
+                flickable.contentY = Math.max(0, Math.min(y, contentHeight - availableHeight))
+            }
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            contentWidth: availableWidth
+
+            clip: true
+
+            // The virtual keyboard came up, the status lines below changed
+            // size, or the focus moved to another field (by auto-advance or
+            // the Next key)
+            onHeightChanged: ensureFocusVisible()
+            ApplicationWindow.onActiveFocusControlChanged: ensureFocusVisible()
+
+            GridLayout {
+                id: grid
+
+                width: flightEditorDialog.availableWidth
+                columns: 3
+
+                // The placeholder text of a Material text field moves onto the
+                // upper border of the field once the field has focus or content,
+                // and sticks out above the field by half its height. Leave enough
+                // room that it stays clear of the field above.
+                rowSpacing: 0.85 * flightEditorDialog.font.pixelSize
+
+                Label {
+                    Layout.columnSpan: 3
+                    Layout.fillWidth: true
+                    text: qsTr("Location")
+                    font.pixelSize: 1.2 * flightEditorDialog.font.pixelSize
+                    font.bold: true
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Departure")
+                }
+                TextInputField {
+                    id: depField
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+                    Layout.minimumWidth: font.pixelSize * 5
+                    placeholderText: qsTr("e.g. EDTF")
+                    inputMethodHints: Qt.ImhUppercaseOnly | Qt.ImhNoPredictiveText
+                    EnterKey.type: Qt.EnterKeyNext
+                    Keys.onReturnPressed: arrField.forceActiveFocus()
+                    Keys.onEnterPressed: arrField.forceActiveFocus()
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Arrival")
+                }
+                TextInputField {
+                    id: arrField
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+                    Layout.minimumWidth: font.pixelSize * 5
+                    placeholderText: qsTr("e.g. EDFE")
+                    inputMethodHints: Qt.ImhUppercaseOnly | Qt.ImhNoPredictiveText
+                    // Skip the date: it is read-only, and the keyboard would go
+                    // away
+                    EnterKey.type: Qt.EnterKeyNext
+                    Keys.onReturnPressed: offBlockField.forceActiveFocus()
+                    Keys.onEnterPressed: offBlockField.forceActiveFocus()
+                }
+
+                Label {
+                    Layout.columnSpan: 3
+                    Layout.fillWidth: true
+                    Layout.topMargin: font.pixelSize / 2
+                    text: qsTr("Date and Time (UTC)")
+                    font.pixelSize: 1.2 * flightEditorDialog.font.pixelSize
+                    font.bold: true
+                }
+
+                Label {
+                    id: dateLabel
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Takeoff date")
+                }
+                DateInput {
+                    id: dateField
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+                    utc: true
+                    //: Format of the takeoff date in the flight editor. See
+                    //: QDate::toString() for the format characters.
+                    displayFormat: qsTr("ddd, d MMM yyyy")
+                    color: FlightLog.isValidDate(date) ? dateLabel.color : "red"
+                    onDateEdited: flightEditorDialog.autoDate = false
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Off-Block")
+                }
+                TimeField {
+                    id: offBlockField
+                    nextField: startField
+                }
+                DayMarker {
+                    font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
+                    time: flightEditorDialog.preview.offBlockTime
+                    takeoff: flightEditorDialog.preview.startTime
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Takeoff")
+                }
+                TimeField {
+                    id: startField
+                    nextField: landingField
+                    onTextChanged: flightEditorDialog.followTakeoff()
+                }
+                // The takeoff is on the takeoff date, so there is no marker
+                Item {
+                    Layout.fillWidth: true
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Landing")
+                }
+                TimeField {
+                    id: landingField
+                    nextField: onBlockField
+                }
+                DayMarker {
+                    font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
+                    time: flightEditorDialog.preview.landingTime
+                    takeoff: flightEditorDialog.preview.startTime
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("On-Block")
+                }
+                TimeField {
+                    id: onBlockField
+                }
+                DayMarker {
+                    font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
+                    time: flightEditorDialog.preview.onBlockTime
+                    takeoff: flightEditorDialog.preview.startTime
+                }
+
+                Label {
+                    Layout.columnSpan: 3
+                    Layout.fillWidth: true
+                    Layout.topMargin: font.pixelSize / 2
+                    text: qsTr("Details")
+                    font.pixelSize: 1.2 * flightEditorDialog.font.pixelSize
+                    font.bold: true
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Pilot")
+                }
+                TextInputField {
+                    id: pilotField
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+                    placeholderText: qsTr("Pilot name (optional)")
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Aircraft")
+                }
+                TextInputField {
+                    id: callsignField
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+                    placeholderText: qsTr("Callsign")
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Comments")
+                }
+                TextInputField {
+                    id: commentsField
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+                    placeholderText: qsTr("Optional comments")
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Landings")
+                }
+                TextInputField {
+                    id: landingsField
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+                    placeholderText: "1"
+                    inputMethodHints: Global.digitsInputHint
+                    validator: IntValidator { bottom: 1; top: 99 }
+                    color: text === "" || landingsField.acceptableInput ? dateLabel.color : "red"
+                }
+            }
         }
 
-        anchors.fill: parent
-        contentWidth: availableWidth
+        // The two status lines are not part of the scrolled content: they
+        // stay in view next to the OK button, and the "more" indicator of the
+        // scroll view never covers them. If the dialog is too short, only the
+        // scroll view shrinks.
 
-        clip: true
+        // Entries that cannot be saved, or a takeoff that has not happened
+        // yet. The takeoff is only a warning: the flight can still be saved.
+        Label {
+            Layout.fillWidth: true
+            Layout.minimumHeight: implicitHeight
+            visible: text !== ""
+            color: "red"
+            wrapMode: Text.Wrap
+            text: {
+                if (flightEditorDialog.hasInvalidEntries)
+                    return qsTr("Correct the entries marked in red.")
+                if (flightEditorDialog.preview.startTime.getTime() > Clock.time.getTime())
+                    return qsTr("The takeoff time is in the future.")
+                return ""
+            }
+        }
 
-        // The virtual keyboard came up, or the focus moved to another field
-        // (by auto-advance or the Next key)
-        onHeightChanged: ensureFocusVisible()
-        ApplicationWindow.onActiveFocusControlChanged: ensureFocusVisible()
-
-        GridLayout {
-            id: grid
-
-            width: flightEditorDialog.availableWidth
-            columns: 3
-
-            // The placeholder text of a Material text field moves onto the
-            // upper border of the field once the field has focus or content,
-            // and sticks out above the field by half its height. Leave enough
-            // room that it stays clear of the field above.
-            rowSpacing: 0.85 * flightEditorDialog.font.pixelSize
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Departure")
-            }
-            TextInputField {
-                id: depField
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: font.pixelSize * 5
-                placeholderText: qsTr("e.g. EDTF")
-                inputMethodHints: Qt.ImhUppercaseOnly | Qt.ImhNoPredictiveText
-                EnterKey.type: Qt.EnterKeyNext
-                Keys.onReturnPressed: arrField.forceActiveFocus()
-                Keys.onEnterPressed: arrField.forceActiveFocus()
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Arrival")
-            }
-            TextInputField {
-                id: arrField
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: font.pixelSize * 5
-                placeholderText: qsTr("e.g. EDFE")
-                inputMethodHints: Qt.ImhUppercaseOnly | Qt.ImhNoPredictiveText
-                // Skip the date: it is read-only, and the keyboard would go
-                // away
-                EnterKey.type: Qt.EnterKeyNext
-                Keys.onReturnPressed: offBlockField.forceActiveFocus()
-                Keys.onEnterPressed: offBlockField.forceActiveFocus()
-            }
-
-            // Section caption. It also keeps the groups two row spacings
-            // apart.
-            Label {
-                Layout.columnSpan: 3
-                Layout.fillWidth: true
-                font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
-                opacity: 0.7
-                wrapMode: Text.Wrap
-                text: qsTr("Date and times in UTC")
-            }
-
-            Label {
-                id: dateLabel
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Takeoff date")
-            }
-            DateInput {
-                id: dateField
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBaseline
-                utc: true
-                //: Format of the takeoff date in the flight editor. See
-                //: QDate::toString() for the format characters.
-                displayFormat: qsTr("ddd, d MMM yyyy")
-                color: FlightLog.isValidDate(date) ? dateLabel.color : "red"
-                onDateEdited: flightEditorDialog.autoDate = false
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Off-Block")
-            }
-            TimeField {
-                id: offBlockField
-                nextField: startField
-            }
-            DayMarker {
-                font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
-                time: flightEditorDialog.preview.offBlockTime
-                takeoff: flightEditorDialog.preview.startTime
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Takeoff")
-            }
-            TimeField {
-                id: startField
-                nextField: landingField
-                onTextChanged: flightEditorDialog.followTakeoff()
-            }
-            // The takeoff is on the takeoff date, so there is no marker
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Landing")
-            }
-            TimeField {
-                id: landingField
-                nextField: onBlockField
-            }
-            DayMarker {
-                font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
-                time: flightEditorDialog.preview.landingTime
-                takeoff: flightEditorDialog.preview.startTime
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("On-Block")
-            }
-            TimeField {
-                id: onBlockField
-            }
-            DayMarker {
-                font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
-                time: flightEditorDialog.preview.onBlockTime
-                takeoff: flightEditorDialog.preview.startTime
-            }
-
-            // Separator: an empty row, so that the groups are two row
-            // spacings apart
-            Item {
-                Layout.columnSpan: 3
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Pilot")
-            }
-            TextInputField {
-                id: pilotField
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBaseline
-                placeholderText: qsTr("Pilot name (optional)")
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Aircraft")
-            }
-            TextInputField {
-                id: callsignField
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBaseline
-                placeholderText: qsTr("Callsign")
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Comments")
-            }
-            TextInputField {
-                id: commentsField
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBaseline
-                placeholderText: qsTr("Optional comments")
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Landings")
-            }
-            TextInputField {
-                id: landingsField
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBaseline
-                placeholderText: "1"
-                inputMethodHints: Global.digitsInputHint
-                validator: IntValidator { bottom: 1; top: 99 }
-                color: text === "" || landingsField.acceptableInput ? dateLabel.color : "red"
-            }
-
-            // Separator: an empty row, so that the groups are two row
-            // spacings apart
-            Item {
-                Layout.columnSpan: 3
-            }
-
-            // Entries that cannot be saved, or a takeoff that has not
-            // happened yet. The takeoff is only a warning: the flight can
-            // still be saved.
-            Label {
-                Layout.columnSpan: 3
-                Layout.fillWidth: true
-                visible: text !== ""
-                color: "red"
-                wrapMode: Text.Wrap
-                text: {
-                    if (flightEditorDialog.hasInvalidEntries)
-                        return qsTr("Correct the entries marked in red.")
-                    if (flightEditorDialog.preview.startTime.getTime() > Clock.time.getTime())
-                        return qsTr("The takeoff time is in the future.")
-                    return ""
-                }
-            }
-
-            // What is missing before the flight can be saved, or the
-            // calculated values (read-only)
-            Label {
-                Layout.columnSpan: 3
-                Layout.fillWidth: true
-                font.italic: true
-                opacity: 0.7
-                wrapMode: Text.Wrap
-                text: {
-                    if (depField.displayText.trim() === "")
-                        return qsTr("Enter the departure airfield.")
-                    if (startField.text.trim() === "")
-                        return qsTr("Enter the takeoff time.")
-                    const f = flightEditorDialog.preview
-                    let parts = []
-                    const ft = f.flightTime()
-                    if (ft !== "")
-                        parts.push(qsTr("Duration: %1").arg(ft))
-                    const bt = f.blockTime()
-                    if (bt !== "")
-                        parts.push(qsTr("Block: %1").arg(bt))
-                    const dist = f.distance()
-                    if (dist.isFinite() && dist.toNM() >= 0.1)
-                        parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
-                    if (parts.length === 0)
-                        return qsTr("Enter times and ICAO codes to see calculated values")
-                    return parts.join("  |  ")
-                }
+        // What is missing before the flight can be saved, or the calculated
+        // values (read-only)
+        Label {
+            Layout.fillWidth: true
+            Layout.minimumHeight: implicitHeight
+            font.italic: true
+            opacity: 0.7
+            wrapMode: Text.Wrap
+            text: {
+                if (depField.displayText.trim() === "")
+                    return qsTr("Enter the departure airfield.")
+                if (startField.text.trim() === "")
+                    return qsTr("Enter the takeoff time.")
+                const f = flightEditorDialog.preview
+                let parts = []
+                const ft = f.flightTime()
+                if (ft !== "")
+                    parts.push(qsTr("Duration: %1").arg(ft))
+                const bt = f.blockTime()
+                if (bt !== "")
+                    parts.push(qsTr("Block: %1").arg(bt))
+                const dist = f.distance()
+                if (dist.isFinite() && dist.toNM() >= 0.1)
+                    parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
+                if (parts.length === 0)
+                    return qsTr("Enter times and ICAO codes to see calculated values")
+                return parts.join("  |  ")
             }
         }
     }

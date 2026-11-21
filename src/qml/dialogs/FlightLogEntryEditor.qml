@@ -59,22 +59,68 @@ CenteringDialog {
     // bottom of the dialog show this flight.
     readonly property flight preview: resultFlight()
 
-    // True if a field holds text that cannot be saved. Mandatory fields that
-    // are empty do not count here.
-    readonly property bool hasInvalidEntries: !offBlockField.acceptableTime
-                                              || !startField.acceptableTime
-                                              || !landingField.acceptableTime
-                                              || !onBlockField.acceptableTime
-                                              || (landingsField.text !== "" && !landingsField.acceptableInput)
+    // Problems that keep the flight from being saved, in the order of the
+    // fields. Date and takeoff time are mandatory. The other times may be
+    // left empty but must be valid otherwise: a time that FlightLog cannot
+    // interpret would be dropped from the saved flight.
+    readonly property list<string> errors: {
+        const result = []
+        if (!FlightLog.isValidDate(dateField.date))
+            result.push(qsTr("Invalid takeoff date"))
+        if (!offBlockField.acceptableTime)
+            result.push(qsTr("Invalid off-block time"))
+        if (startField.text.trim() === "")
+            result.push(qsTr("No takeoff time"))
+        else if (!startField.acceptableTime)
+            result.push(qsTr("Invalid takeoff time"))
+        if (!landingField.acceptableTime)
+            result.push(qsTr("Invalid landing time"))
+        if (!onBlockField.acceptableTime)
+            result.push(qsTr("Invalid on-block time"))
+        // FlightLog.createFlight() orders the times: if one is in the future,
+        // all later ones are as well. Name the first one only; the fields
+        // show all of them in red.
+        if (offBlockField.inFuture)
+            result.push(qsTr("Off-block time in the future"))
+        else if (startField.inFuture)
+            result.push(qsTr("Takeoff time in the future"))
+        else if (landingField.inFuture)
+            result.push(qsTr("Landing time in the future"))
+        else if (onBlockField.inFuture)
+            result.push(qsTr("On-block time in the future"))
+        if (landingsField.text !== "" && !landingsField.acceptableInput)
+            result.push(qsTr("Invalid number of landings"))
+        return result
+    }
 
-    // True if the input can be saved. Departure, date and takeoff time are
-    // mandatory. The other times may be left empty but must be valid
-    // otherwise: a time that FlightLog cannot interpret would be dropped from
-    // the saved flight.
-    readonly property bool acceptableInput: depField.displayText.trim() !== ""
-                                            && FlightLog.isValidDate(dateField.date)
-                                            && startField.text.trim() !== ""
-                                            && !hasInvalidEntries
+    // Entries that can be saved, but are probably incomplete or mistyped.
+    // A landing time that is mistakenly earlier than the takeoff time is
+    // placed on the next day by FlightLog.createFlight(), and caught by the
+    // flight time.
+    readonly property list<string> warnings: {
+        const result = []
+        const hour = 60 * 60 * 1000
+        const offBlock = preview.offBlockTime.getTime()
+        const takeoff = preview.startTime.getTime()
+        const landing = preview.landingTime.getTime()
+        const onBlock = preview.onBlockTime.getTime()
+        if (depField.displayText.trim() === "")
+            result.push(qsTr("No departure location"))
+        // A flight without landing time may still be in progress
+        if (arrField.displayText.trim() === "" && !isNaN(landing))
+            result.push(qsTr("No arrival location"))
+        if (takeoff - offBlock > hour)
+            result.push(qsTr("More than 1 h between off-block and takeoff"))
+        if (landing - takeoff > 12 * hour)
+            result.push(qsTr("Flight time more than 12 h"))
+        if (onBlock - landing > hour)
+            result.push(qsTr("More than 1 h between landing and on-block"))
+        return result
+    }
+
+    // True if the input can be saved. The OK button is disabled exactly when
+    // the dialog shows an error.
+    readonly property bool acceptableInput: errors.length === 0
 
     // If true, the date follows the takeoff time, see followTakeoff(). This
     // is the case when the dialog opens for a flight without a takeoff time
@@ -174,13 +220,38 @@ CenteringDialog {
 
     // Field for a time of day. Accepts the formats of FlightLog.isValidTime()
     // and shows the time as "HH:mm" once the input is finished. Typing a
-    // complete time, or pressing Return, moves the focus to nextField.
+    // complete time, or pressing Return, moves the focus to nextField. The
+    // text is red if it is not a valid time, or if the time lies in the
+    // future. If the time is not on the day of the takeoff, a marker such as
+    // "+1 Sat 22 Nov" appears at the right end of the field, left of the
+    // clear button.
     component TimeField: TextInputField {
+        id: timeField
+
+        // The time as it will be saved, with its date
+        required property date time
+
+        // The takeoff as it will be saved, for the day marker
+        required property date takeoff
+
         // Field that gets the focus next, or null
         property Item nextField: null
 
         // True if the text is empty or a valid time
         readonly property bool acceptableTime: text.trim() === "" || FlightLog.isValidTime(text)
+
+        // True if the time lies in the future
+        readonly property bool inFuture: time.getTime() > Clock.time.getTime()
+
+        // Difference in UTC calendar days from takeoff to time. Zero if one
+        // of the two is invalid.
+        readonly property int dayOffset: {
+            if (isNaN(time.getTime()) || isNaN(takeoff.getTime()))
+                return 0
+            const day = Date.UTC(time.getUTCFullYear(), time.getUTCMonth(), time.getUTCDate())
+            const takeoffDay = Date.UTC(takeoff.getUTCFullYear(), takeoff.getUTCMonth(), takeoff.getUTCDate())
+            return Math.round((day - takeoffDay) / (24 * 60 * 60 * 1000))
+        }
 
         function advance(): bool {
             if (nextField === null)
@@ -189,14 +260,16 @@ CenteringDialog {
             return true
         }
 
-        Layout.preferredWidth: 5 * font.pixelSize
+        Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
-        hasClearButton: false
+        // Leave room for the day marker
+        rightPadding: clearButtonSpace + (dayMarker.text === "" ? 0 : dayMarker.implicitWidth + 0.5 * font.pixelSize)
+
         placeholderText: qsTr("hh:mm")
         inputMethodHints: Qt.ImhTime
         EnterKey.type: nextField === null ? Qt.EnterKeyDefault : Qt.EnterKeyNext
-        color: acceptableTime ? Material.foreground : "red"
+        color: acceptableTime && !inFuture ? Material.foreground : "red"
 
         // Advance only if the user typed at the end of the text, so that
         // editing in the middle of a time never moves the focus away
@@ -213,43 +286,55 @@ CenteringDialog {
         }
         Keys.onReturnPressed: event => event.accepted = advance()
         Keys.onEnterPressed: event => event.accepted = advance()
-    }
 
-    // Shows the UTC day of a time, for example "+1 Sat 22 Nov", if it is not
-    // the day of the takeoff. Empty otherwise.
-    component DayMarker: Label {
-        required property date time
-        required property date takeoff
-
-        // Difference in UTC calendar days from takeoff to time. Zero if one
-        // of the two is invalid.
-        readonly property int offset: {
-            if (isNaN(time.getTime()) || isNaN(takeoff.getTime()))
-                return 0
-            const day = Date.UTC(time.getUTCFullYear(), time.getUTCMonth(), time.getUTCDate())
-            const takeoffDay = Date.UTC(takeoff.getUTCFullYear(), takeoff.getUTCMonth(), takeoff.getUTCDate())
-            return Math.round((day - takeoffDay) / (24 * 60 * 60 * 1000))
+        // Width of a time, to decide whether the long day marker fits
+        TextMetrics {
+            id: timeMetrics
+            font: timeField.font
+            text: "00:00"
         }
 
-        Layout.fillWidth: true
-        Layout.alignment: Qt.AlignBaseline
+        // The day marker: "+1 Sat 22 Nov" if that leaves room for the time,
+        // otherwise only "+1". Empty if the time is on the day of the
+        // takeoff.
+        Label {
+            id: dayMarker
 
-        color: Material.accentColor
-        elide: Text.ElideRight
-        text: {
-            if (offset === 0)
-                return ""
             // U+2212 is the minus sign
-            const days = offset > 0 ? "+" + offset : "−" + (-offset)
-            // The UTC day, as a local date object for formatting
-            const day = new Date(time.getUTCFullYear(), time.getUTCMonth(), time.getUTCDate())
-            //: Format of the date in the marker next to a time that falls on
-            //: another day than the takeoff, as in "+1 Sat 22 Nov". See
-            //: QDate::toString() for the format characters.
-            const dayString = day.toLocaleDateString(Qt.locale(), qsTr("ddd d MMM"))
-            //: Marker next to a time that falls on another day than the
-            //: takeoff. %1 is the difference in days ("+1"), %2 the date.
-            return qsTr("%1 %2").arg(days).arg(dayString)
+            readonly property string days: timeField.dayOffset > 0 ? "+" + timeField.dayOffset
+                                                                   : "\u2212" + (-timeField.dayOffset)
+            readonly property string longText: {
+                // The UTC day, as a local date object for formatting
+                const time = timeField.time
+                const day = new Date(time.getUTCFullYear(), time.getUTCMonth(), time.getUTCDate())
+                //: Format of the date in the marker next to a time that falls
+                //: on another day than the takeoff, as in "+1 Sat 22 Nov".
+                //: See QDate::toString() for the format characters.
+                const dayString = day.toLocaleDateString(Qt.locale(), qsTr("ddd d MMM"))
+                //: Marker next to a time that falls on another day than the
+                //: takeoff. %1 is the difference in days ("+1"), %2 the date.
+                return qsTr("%1 %2").arg(days).arg(dayString)
+            }
+
+            anchors.right: parent.right
+            anchors.rightMargin: timeField.clearButtonSpace
+            anchors.baseline: parent.baseline
+
+            color: Material.accentColor
+            font.pixelSize: 0.9 * timeField.font.pixelSize
+            text: {
+                if (timeField.dayOffset === 0)
+                    return ""
+                const room = timeField.width - timeField.leftPadding - timeField.clearButtonSpace
+                           - 0.5 * timeField.font.pixelSize - timeMetrics.advanceWidth
+                return longMetrics.advanceWidth <= room ? longText : days
+            }
+
+            TextMetrics {
+                id: longMetrics
+                font: dayMarker.font
+                text: dayMarker.longText
+            }
         }
     }
 
@@ -296,7 +381,7 @@ CenteringDialog {
                 id: grid
 
                 width: flightEditorDialog.availableWidth
-                columns: 3
+                columns: 2
 
                 // The placeholder text of a Material text field moves onto the
                 // upper border of the field once the field has focus or content,
@@ -305,7 +390,7 @@ CenteringDialog {
                 rowSpacing: 0.85 * flightEditorDialog.font.pixelSize
 
                 Label {
-                    Layout.columnSpan: 3
+                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     text: qsTr("Location")
                     font.pixelSize: 1.2 * flightEditorDialog.font.pixelSize
@@ -318,7 +403,6 @@ CenteringDialog {
                 }
                 TextInputField {
                     id: depField
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: font.pixelSize * 5
@@ -335,7 +419,6 @@ CenteringDialog {
                 }
                 TextInputField {
                     id: arrField
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: font.pixelSize * 5
@@ -349,7 +432,7 @@ CenteringDialog {
                 }
 
                 Label {
-                    Layout.columnSpan: 3
+                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.topMargin: font.pixelSize / 2
                     text: qsTr("Date and Time (UTC)")
@@ -364,7 +447,6 @@ CenteringDialog {
                 }
                 DateInput {
                     id: dateField
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
                     utc: true
@@ -381,12 +463,9 @@ CenteringDialog {
                 }
                 TimeField {
                     id: offBlockField
-                    nextField: startField
-                }
-                DayMarker {
-                    font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
                     time: flightEditorDialog.preview.offBlockTime
                     takeoff: flightEditorDialog.preview.startTime
+                    nextField: startField
                 }
 
                 Label {
@@ -395,12 +474,10 @@ CenteringDialog {
                 }
                 TimeField {
                     id: startField
+                    time: flightEditorDialog.preview.startTime
+                    takeoff: flightEditorDialog.preview.startTime
                     nextField: landingField
                     onTextChanged: flightEditorDialog.followTakeoff()
-                }
-                // The takeoff is on the takeoff date, so there is no marker
-                Item {
-                    Layout.fillWidth: true
                 }
 
                 Label {
@@ -409,12 +486,9 @@ CenteringDialog {
                 }
                 TimeField {
                     id: landingField
-                    nextField: onBlockField
-                }
-                DayMarker {
-                    font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
                     time: flightEditorDialog.preview.landingTime
                     takeoff: flightEditorDialog.preview.startTime
+                    nextField: onBlockField
                 }
 
                 Label {
@@ -423,15 +497,12 @@ CenteringDialog {
                 }
                 TimeField {
                     id: onBlockField
-                }
-                DayMarker {
-                    font.pixelSize: 0.9 * flightEditorDialog.font.pixelSize
                     time: flightEditorDialog.preview.onBlockTime
                     takeoff: flightEditorDialog.preview.startTime
                 }
 
                 Label {
-                    Layout.columnSpan: 3
+                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.topMargin: font.pixelSize / 2
                     text: qsTr("Details")
@@ -445,7 +516,6 @@ CenteringDialog {
                 }
                 TextInputField {
                     id: pilotField
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
                     placeholderText: qsTr("Pilot name (optional)")
@@ -457,7 +527,6 @@ CenteringDialog {
                 }
                 TextInputField {
                     id: callsignField
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
                     placeholderText: qsTr("Callsign")
@@ -469,7 +538,6 @@ CenteringDialog {
                 }
                 TextInputField {
                     id: commentsField
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
                     placeholderText: qsTr("Optional comments")
@@ -481,7 +549,6 @@ CenteringDialog {
                 }
                 TextInputField {
                     id: landingsField
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
                     placeholderText: "1"
@@ -497,8 +564,7 @@ CenteringDialog {
         // scroll view never covers them. If the dialog is too short, only the
         // scroll view shrinks.
 
-        // Entries that cannot be saved, or a takeoff that has not happened
-        // yet. The takeoff is only a warning: the flight can still be saved.
+        // Errors, or else warnings
         Label {
             Layout.fillWidth: true
             Layout.minimumHeight: implicitHeight
@@ -506,27 +572,32 @@ CenteringDialog {
             color: "red"
             wrapMode: Text.Wrap
             text: {
-                if (flightEditorDialog.hasInvalidEntries)
-                    return qsTr("Correct the entries marked in red.")
-                if (flightEditorDialog.preview.startTime.getTime() > Clock.time.getTime())
-                    return qsTr("The takeoff time is in the future.")
+                const errors = flightEditorDialog.errors
+                const warnings = flightEditorDialog.warnings
+                //: Prefix of the list of problems in the flight editor. The
+                //: list is a heading-like enumeration, so only singular and
+                //: plural are distinguished.
+                if (errors.length === 1)
+                    return qsTr("Error: %1").arg(errors[0])
+                if (errors.length > 1)
+                    return qsTr("Errors: %1").arg(errors.join(" • "))
+                if (warnings.length === 1)
+                    return qsTr("Warning: %1").arg(warnings[0])
+                if (warnings.length > 1)
+                    return qsTr("Warnings: %1").arg(warnings.join(" • "))
                 return ""
             }
         }
 
-        // What is missing before the flight can be saved, or the calculated
-        // values (read-only)
+        // Calculated values (read-only), once the flight can be saved
         Label {
             Layout.fillWidth: true
             Layout.minimumHeight: implicitHeight
-            font.italic: true
-            opacity: 0.7
+            visible: text !== ""
             wrapMode: Text.Wrap
             text: {
-                if (depField.displayText.trim() === "")
-                    return qsTr("Enter the departure airfield.")
-                if (startField.text.trim() === "")
-                    return qsTr("Enter the takeoff time.")
+                if (flightEditorDialog.errors.length > 0)
+                    return ""
                 const f = flightEditorDialog.preview
                 let parts = []
                 const ft = f.flightTime()
@@ -538,9 +609,10 @@ CenteringDialog {
                 const dist = f.distance()
                 if (dist.isFinite() && dist.toNM() >= 0.1)
                     parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
-                if (parts.length === 0)
-                    return qsTr("Enter times and ICAO codes to see calculated values")
-                return parts.join("  |  ")
+                // Separated by " • " as elsewhere in the app. As in the list
+                // of flights, the space after the "•" is the only place for a
+                // line break.
+                return parts.map(part => part.replace(/ /g, " ")).join(" • ")
             }
         }
     }

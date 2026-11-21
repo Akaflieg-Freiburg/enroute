@@ -93,7 +93,7 @@ Fix status: [ ] = open. Mark items as you resolve them.
 - **To reproduce**: With flight detection enabled and a simulated position source, open the editor on the in-progress entry, trigger a landing, and press OK without touching Landing or Arrival.
 
 ### [x] [D-003] Whitespace-only departure passes validation
-- **Status**: Resolved in the date/time redesign: `acceptableInput` tests the trimmed departure.
+- **Status**: Resolved: the departure is optional now. An empty or blank departure is saved as empty and shows the warning "No departure location".
 - **File**: [FlightLogEntryEditor.qml:56](src/qml/dialogs/FlightLogEntryEditor.qml#L56)
 - **Category**: Bindings & Properties — **Confidence**: 90/100
 - **Finding**: `acceptableInput` tests `depField.displayText !== ""`, which is untrimmed. The saved value is `codeOrName(depField.text)`, which trims (lines 42, 75-78). A departure of a single space enables OK and is stored as an empty departure. On an existing entry this also drops the departure coordinate, because the code has changed ([FlightLog.cpp:494-496](src/flightlog/FlightLog.cpp#L494-L496)). The time fields trim in both the check and the save. Separately, the comment at lines 53-55 names only date and start time as mandatory.
@@ -126,7 +126,7 @@ Fix status: [ ] = open. Mark items as you resolve them.
 - **Mitigation**: Accept bare "HHmm" and "Hmm" in `FlightLog::parseTime` and normalise the text in `onEditingFinished`. This also covers the three-digit case and avoids changing text under the input method. Alternatively, restore the cursor position after the rewrite.
 
 ### [ ] [D-006] Required and optional fields are not communicated consistently
-- **Status**: Partly addressed in the date/time redesign: one translatable placeholder for all four times, and a status line that names the missing mandatory field (departure, takeoff time). Arrival, Aircraft and the remaining "(optional)" placeholders are unchanged.
+- **Status**: Partly addressed in the date/time redesign: one translatable placeholder for all four times, and a status line that lists errors (which block saving) or else warnings, separated by " • ". Arrival, Aircraft and the remaining "(optional)" placeholders are unchanged.
 - **File**: [FlightLogEntryEditor.qml:254-296](src/qml/dialogs/FlightLogEntryEditor.qml#L254-L296) (time fields), also lines 222, 236, 316, 327, 338
 - **Category**: States & Structure — **Confidence**: 92/100
 - **Finding**: `acceptableInput` requires Departure, Date, Start, and a valid-or-empty Landings count; everything else may be empty.

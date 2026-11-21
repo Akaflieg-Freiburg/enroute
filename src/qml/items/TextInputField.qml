@@ -42,6 +42,11 @@ TextField {
     rightPadding: hasClearButton ? toolButton.width : undefined
     implicitWidth: 100 // set arbitrary value to avoid binding loop
 
+    // Space at the right edge that the clear button takes, or the normal
+    // padding if there is no clear button. Derived components can place
+    // decorations to the left of it.
+    readonly property real clearButtonSpace: hasClearButton ? toolButton.width : Material.textFieldHorizontalPadding
+
     // Fix problem on iOS
     Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)
 

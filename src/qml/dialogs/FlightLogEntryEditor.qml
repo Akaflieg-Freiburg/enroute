@@ -268,6 +268,13 @@ CenteringDialog {
 
         placeholderText: qsTr("hh:mm")
         inputMethodHints: Qt.ImhTime
+
+        // Digits and colon only. This filters the input; whether the text is
+        // a time is decided by FlightLog.isValidTime(). Do not put the format
+        // of a time here: half-typed input would then not be acceptable, and
+        // editingFinished() would not be emitted for it.
+        validator: RegularExpressionValidator { regularExpression: /[0-9:]{0,5}/ }
+
         EnterKey.type: nextField === null ? Qt.EnterKeyDefault : Qt.EnterKeyNext
         color: acceptableTime && !inFuture ? Material.foreground : "red"
 

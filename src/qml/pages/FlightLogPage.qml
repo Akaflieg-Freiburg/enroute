@@ -580,7 +580,14 @@ Page {
             ToolButton {
                 id: editButton
 
-                visible: !page.selectionMode
+                // Not available while a flight is being recorded. This also
+                // keeps the editor from overwriting a landing that is
+                // detected while it is open: the editor writes back every
+                // field, also those that the user did not touch. Test the
+                // state of the flight detector, which writes the landing,
+                // and not Navigator.flightStatus, which can report "Ground"
+                // or "Unknown" before the landing is written.
+                visible: !page.selectionMode && FlightLog.detectionState === FlightDetector.Idle
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()

@@ -243,6 +243,18 @@ auto Flightlog::FlightLog::detectionState() const -> FlightDetector::DetectionSt
 
 void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
 {
+    // The UUID is the key of a flight, in the list and in the database:
+    // upsert() below would overwrite a stored flight with the same UUID, and
+    // the list would show two entries until the next start. Changes to a
+    // flight that is in the log go through updateFlight().
+    auto flights = m_flights.value();
+    const auto isInLog = std::ranges::any_of(flights, [&](const Flight& other) {
+        return other.uuid() == flight.uuid();
+    });
+    if (isInLog) {
+        return;
+    }
+
     auto f = flight;
     resolveCoordinates(f);
     // Persist first. upsert() emits saveError() on failure; do not publish a
@@ -250,7 +262,6 @@ void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
     if (!m_storage->upsert(f)) {
         return;
     }
-    auto flights = m_flights.value();
     flights.prepend(f);
     sortFlights(flights);
     m_flights.setValue(std::move(flights));

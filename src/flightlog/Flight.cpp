@@ -70,7 +70,8 @@ auto Flightlog::Flight::flightTime() const -> QString
 
 auto Flightlog::Flight::operator==(const Flightlog::Flight& other) const -> bool
 {
-    return m_departureICAO == other.m_departureICAO
+    return m_id == other.m_id
+        && m_departureICAO == other.m_departureICAO
         && m_arrivalICAO == other.m_arrivalICAO
         && m_offBlockTime == other.m_offBlockTime
         && m_startTime == other.m_startTime

@@ -312,6 +312,13 @@ public:
 
     /*! \brief Comparison operator
      *
+     *  Two flights are equal if they have the same identity and the same
+     *  content. The identity is compared on purpose: QML does not store an
+     *  assignment to a property of type flight if the new value equals the
+     *  old one. If the identity were ignored, the property would keep the old
+     *  flight, and with it the old identity, whenever a flight with the same
+     *  content is assigned.
+     *
      *  @param other Flight to compare with
      *  @returns True if both flights are equal
      */

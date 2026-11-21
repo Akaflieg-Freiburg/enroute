@@ -147,6 +147,10 @@ public:
      *  The flight is prepended (newest first). Coordinates are resolved
      *  from the ICAO codes if possible.
      *
+     *  The UUID identifies a flight in the log. If the log already contains
+     *  a flight with the UUID of the given flight, this method does nothing.
+     *  Use updateFlight() to change a flight that is in the log.
+     *
      *  @param flight The flight to add
      */
     Q_INVOKABLE void addFlight(const Flightlog::Flight& flight);

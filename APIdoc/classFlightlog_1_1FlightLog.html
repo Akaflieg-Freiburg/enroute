@@ -158,6 +158,12 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight"><b>hideTrack</b> ()</td></tr
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac4b77b90436fab2e527c1ac6d4d7099a" id="r_ac4b77b90436fab2e527c1ac6d4d7099a"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac4b77b90436fab2e527c1ac6d4d7099a">createFlight</a> (const QString &amp;departureICAO, const QString &amp;arrivalICAO, const QString &amp;date, const QString &amp;offBlockTimeStr, const QString &amp;startTimeStr, const QString &amp;landingTimeStr, const QString &amp;onBlockTimeStr, const QString &amp;pilotName, const QString &amp;aircraftCallsign, const QString &amp;comments)</td></tr>
 <tr class="memdesc:ac4b77b90436fab2e527c1ac6d4d7099a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="classFlightlog_1_1Flight.html" title="A single flight log entry.">Flight</a> value from individual field strings.  <br /></td></tr>
+<tr class="memitem:ade7a3b1a2665c855d8caaa65714250f3" id="r_ade7a3b1a2665c855d8caaa65714250f3"><td class="memItemLeft">static Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#ade7a3b1a2665c855d8caaa65714250f3">isValidDate</a> (const QString &amp;date)</td></tr>
+<tr class="memdesc:ade7a3b1a2665c855d8caaa65714250f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check a date string, as entered by the user.  <br /></td></tr>
+<tr class="memitem:a89d3e4fc23b5fc3d4eec5b1eae46c0da" id="r_a89d3e4fc23b5fc3d4eec5b1eae46c0da"><td class="memItemLeft">static Q_INVOKABLE bool&#160;</td><td class="memItemRight"><a class="el" href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da">isValidTime</a> (const QString &amp;time)</td></tr>
+<tr class="memdesc:a89d3e4fc23b5fc3d4eec5b1eae46c0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check a time string, as entered by the user.  <br /></td></tr>
+<tr class="memitem:af5466d14eff57466bae2354f393d996b" id="r_af5466d14eff57466bae2354f393d996b"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a>&#160;</td><td class="memItemRight"><a class="el" href="#af5466d14eff57466bae2354f393d996b">applyEdits</a> (const <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a> &amp;original, const <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a> &amp;edited)</td></tr>
+<tr class="memdesc:af5466d14eff57466bae2354f393d996b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the result of editing to a flight.  <br /></td></tr>
 <tr class="memitem:a66f3ea4814c97a09cd21cd0ec85536df" id="r_a66f3ea4814c97a09cd21cd0ec85536df"><td class="memItemLeft">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&#160;</td><td class="memItemRight"><a class="el" href="#a66f3ea4814c97a09cd21cd0ec85536df">nearestAirfield</a> (const QGeoCoordinate &amp;position={}, double proximityM=5000.0)</td></tr>
 <tr class="memdesc:a66f3ea4814c97a09cd21cd0ec85536df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the nearest airfield within 5 km.  <br /></td></tr>
 <tr class="inherit_header pub_static_methods_classGlobalObject"><td colspan="2">Static Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
@@ -297,6 +303,52 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
 
 </div>
 </div>
+<a id="af5466d14eff57466bae2354f393d996b" name="af5466d14eff57466bae2354f393d996b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5466d14eff57466bae2354f393d996b">&#9670;&#160;</a></span>applyEdits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a> Flightlog::FlightLog::applyEdits </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>original</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classFlightlog_1_1Flight.html">Flightlog::Flight</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>edited</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply the result of editing to a flight. </p>
+<p>Computes the flight that results when the user edits <code class="param">original</code> and the editor delivers <code class="param">edited</code>. This is what <a class="el" href="#ac942745b939e6dcc90e28a2588366a3c" title="Update an existing flight in the log.">updateFlight()</a> stores, so that an editor can show the user the flight exactly as it will be saved.</p>
+<p>The fields that the user can edit are taken from <code class="param">edited:</code> airfield codes, the four times, pilot name, aircraft callsign, comments and landing count. Everything else is taken from <code class="param">original</code>, with these rules.</p>
+<ul>
+<li>Editors work with a resolution of one minute. A time in <code class="param">edited</code> that equals the time in <code class="param">original</code>, cut to the full minute, counts as unchanged: the original time is kept, seconds included.</li>
+<li>A coordinate is kept as long as the code of its airfield is unchanged. Edits to unrelated fields therefore never replace a coordinate that came from a real GPS fix (automatic flight detection or the "End Flight" button) with the charted position of the airfield. If the code changes, the coordinate is discarded.</li>
+<li>A coordinate that is missing in the end is looked up in the maps by the code of its airfield, if possible.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">original</td><td>The flight before editing </td></tr>
+    <tr><td class="paramname">edited</td><td><a class="el" href="classFlightlog_1_1Flight.html" title="A single flight log entry.">Flight</a> that holds the edited fields </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The flight after editing, with the identity of <code class="param">original</code> </dd></dl>
+
+</div>
+</div>
 <a id="a856a37f22cef0f9b527d16d18d465e12" name="a856a37f22cef0f9b527d16d18d465e12"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a856a37f22cef0f9b527d16d18d465e12">&#9670;&#160;</a></span>backgroundLocationUnavailable</h2>
 
@@ -420,15 +472,17 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
 
 <p>Create a <a class="el" href="classFlightlog_1_1Flight.html" title="A single flight log entry.">Flight</a> value from individual field strings. </p>
 <p>This factory method is intended for QML use, where constructing a Q_GADGET value type with all properties is cumbersome.</p>
+<p>The date and time strings are interpreted as UTC. A time that <a class="el" href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da" title="Check a time string, as entered by the user.">isValidTime()</a> rejects, or any time combined with a date that <a class="el" href="#ade7a3b1a2665c855d8caaa65714250f3" title="Check a date string, as entered by the user.">isValidDate()</a> rejects, yields an invalid QDateTime in the <a class="el" href="classFlightlog_1_1Flight.html" title="A single flight log entry.">Flight</a>. User interfaces should therefore check their input with these two methods before calling this one.</p>
+<p>The date is the date of the start time. The other times are placed around the start time, so that a flight can pass midnight UTC: an off-block time later in the day than the start time belongs to the previous day, a landing time earlier in the day than the start time belongs to the next day, and the on-block time is the first such time that is not before the landing time (or the start time, if there is no landing time). Without a valid start time, all times are on the given date.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">departureICAO</td><td>ICAO code of departure airport </td></tr>
     <tr><td class="paramname">arrivalICAO</td><td>ICAO code of arrival airport </td></tr>
-    <tr><td class="paramname">date</td><td>Date string in yyyy-MM-dd format </td></tr>
-    <tr><td class="paramname">offBlockTimeStr</td><td>Off-block time string in HH:mm format, or empty </td></tr>
-    <tr><td class="paramname">startTimeStr</td><td>Start time string in HH:mm format </td></tr>
-    <tr><td class="paramname">landingTimeStr</td><td>Landing time string in HH:mm format </td></tr>
-    <tr><td class="paramname">onBlockTimeStr</td><td>On-block time string in HH:mm format, or empty </td></tr>
+    <tr><td class="paramname">date</td><td>Date of the start time, in yyyy-MM-dd format </td></tr>
+    <tr><td class="paramname">offBlockTimeStr</td><td>Off-block time string in HH:mm or H:mm format, or empty </td></tr>
+    <tr><td class="paramname">startTimeStr</td><td>Start time string in HH:mm or H:mm format </td></tr>
+    <tr><td class="paramname">landingTimeStr</td><td>Landing time string in HH:mm or H:mm format </td></tr>
+    <tr><td class="paramname">onBlockTimeStr</td><td>On-block time string in HH:mm or H:mm format, or empty </td></tr>
     <tr><td class="paramname">pilotName</td><td>Pilot name, or empty </td></tr>
     <tr><td class="paramname">aircraftCallsign</td><td>Aircraft callsign (e.g. D-KEBE), or empty </td></tr>
     <tr><td class="paramname">comments</td><td>Free-text comments, or empty </td></tr>
@@ -626,6 +680,76 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Empty string on success, a translated error message otherwise </dd></dl>
+
+</div>
+</div>
+<a id="ade7a3b1a2665c855d8caaa65714250f3" name="ade7a3b1a2665c855d8caaa65714250f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade7a3b1a2665c855d8caaa65714250f3">&#9670;&#160;</a></span>isValidDate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool Flightlog::FlightLog::isValidDate </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>date</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check a date string, as entered by the user. </p>
+<p>Leading and trailing whitespace is ignored.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">date</td><td>Date string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the string is a valid calendar date in yyyy-MM-dd format, so that <a class="el" href="#ac4b77b90436fab2e527c1ac6d4d7099a" title="Create a Flight value from individual field strings.">createFlight()</a> can interpret it </dd></dl>
+
+</div>
+</div>
+<a id="a89d3e4fc23b5fc3d4eec5b1eae46c0da" name="a89d3e4fc23b5fc3d4eec5b1eae46c0da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89d3e4fc23b5fc3d4eec5b1eae46c0da">&#9670;&#160;</a></span>isValidTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool Flightlog::FlightLog::isValidTime </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>time</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check a time string, as entered by the user. </p>
+<p>Leading and trailing whitespace is ignored.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td>Time string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the string is a valid time of day in HH:mm or H:mm format, so that <a class="el" href="#ac4b77b90436fab2e527c1ac6d4d7099a" title="Create a Flight value from individual field strings.">createFlight()</a> can interpret it </dd></dl>
 
 </div>
 </div>
@@ -920,7 +1044,7 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
 </div><div class="memdoc">
 
 <p>Update an existing flight in the log. </p>
-<p>A coordinate is only re-derived from its ICAO code when that code actually changes. This means edits to unrelated fields never replace a coordinate that came from a real GPS fix (automatic flight detection or the "End Flight" button) with an ICAO-based approximation.</p>
+<p>The flight that is stored is <a class="el" href="#af5466d14eff57466bae2354f393d996b" title="Apply the result of editing to a flight.">applyEdits()</a> of the flight in the log and <code class="param">flight</code>. See there for the rules, in particular for times and coordinates.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">uuid</td><td>UUID of the flight to update (with or without braces) </td></tr>

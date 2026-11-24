@@ -20,8 +20,10 @@
 
 #include <QCommandLineParser>
 #include <QFile>
+#include <QGeoCoordinate>
 #include <QGuiApplication>
 #include <QIcon>
+#include <QMetaType>
 #include <QQmlApplicationEngine>
 #include <QStandardPaths>
 #include <QQmlContext>
@@ -237,6 +239,18 @@ auto main(int argc, char *argv[]) -> int
      * Set up ApplicationEngine for QML
      */
     QQuickStyle::setStyle(u"Material"_s);
+
+    // Work around a bug in Qt 6.12.1. Before the QML engine uses the compiled
+    // code of a QML file, it checks that every C++ type the code refers to
+    // still looks as it did at compile time, and it finds the type by the name
+    // "<type>*" in the meta type system (qqml.cpp,
+    // AOTLookupValidation::Validator::metaObjectForType). For QGeoCoordinate,
+    // nobody registers that name. The check fails, and every QML file that
+    // reads a property of a coordinate (the moving map, among others) silently
+    // runs in the interpreter instead. Register the name here, before any QML
+    // is loaded. To see whether Qt rejects compiled code, run the app with the
+    // environment variable QV4_FAIL_ON_INVALID_AOT=1.
+    (void)QMetaType::fromType<QGeoCoordinate*>().id();
 
     auto* engine = new QQmlApplicationEngine();
     engine->addImportPath(u":/"_s);

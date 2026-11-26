@@ -296,6 +296,7 @@ int&#160;</td><td class="memItemRight"><b>count</b></td></tr>
 
 <p>Add a new flight to the log. </p>
 <p>The flight is prepended (newest first). Coordinates are resolved from the ICAO codes if possible.</p>
+<p>The UUID identifies a flight in the log. If the log already contains a flight with the UUID of the given flight, this method does nothing. Use <a class="el" href="#ac942745b939e6dcc90e28a2588366a3c" title="Update an existing flight in the log.">updateFlight()</a> to change a flight that is in the log.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">flight</td><td>The flight to add </td></tr>

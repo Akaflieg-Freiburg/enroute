@@ -69,7 +69,7 @@ CenteringDialog {
             result.push(qsTr("Invalid takeoff date"))
         if (!offBlockField.acceptableTime)
             result.push(qsTr("Invalid off-block time"))
-        if (startField.text.trim() === "")
+        if (startField.missing)
             result.push(qsTr("No takeoff time"))
         else if (!startField.acceptableTime)
             result.push(qsTr("Invalid takeoff time"))
@@ -237,6 +237,13 @@ CenteringDialog {
         // Field that gets the focus next, or null
         property Item nextField: null
 
+        // If true, the time must be given
+        property bool mandatory: false
+
+        // True if a mandatory time is not given. The placeholder is then
+        // red, like the text of a time that is not valid.
+        readonly property bool missing: mandatory && text.trim() === ""
+
         // True if the text is empty or a valid time
         readonly property bool acceptableTime: text.trim() === "" || FlightLog.isValidTime(text)
 
@@ -293,6 +300,12 @@ CenteringDialog {
         }
         Keys.onReturnPressed: event => event.accepted = advance()
         Keys.onEnterPressed: event => event.accepted = advance()
+
+        // Otherwise the colour of the style applies
+        Binding on placeholderTextColor {
+            when: timeField.missing
+            value: "red"
+        }
 
         // Width of a time, to decide whether the long day marker fits
         TextMetrics {
@@ -484,6 +497,7 @@ CenteringDialog {
                     time: flightEditorDialog.preview.startTime
                     takeoff: flightEditorDialog.preview.startTime
                     nextField: landingField
+                    mandatory: true
                     onTextChanged: flightEditorDialog.followTakeoff()
                 }
 
@@ -525,7 +539,7 @@ CenteringDialog {
                     id: pilotField
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
-                    placeholderText: qsTr("Pilot name (optional)")
+                    placeholderText: qsTr("Name")
                 }
 
                 Label {
@@ -547,7 +561,6 @@ CenteringDialog {
                     id: commentsField
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
-                    placeholderText: qsTr("Optional comments")
                 }
 
                 Label {

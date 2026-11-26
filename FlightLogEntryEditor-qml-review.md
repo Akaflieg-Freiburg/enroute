@@ -5,7 +5,7 @@ Scope: [src/qml/dialogs/FlightLogEntryEditor.qml](src/qml/dialogs/FlightLogEntry
 Method: deterministic lint, qmllint (Qt 6.12, project import paths), and six parallel deep-analysis passes (bindings, layout, lifecycle and C++ boundary, delegates, structure, performance). Findings were deduplicated and checked against the source.
 Verification: by reading the app sources and the Qt 6.12 sources. Nothing was built or run, and the app was not launched. Where a finding has a "To reproduce" line, that recipe has not been tried yet.
 
-Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 10 resolved and removed since, 9 listed below (4 lint groups, 4 deep analysis, 1 investigation target), of which I-002 is marked resolved
+Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 10 resolved and removed since, 9 listed below (4 lint groups, 4 deep analysis, 1 investigation target), of which I-002 and D-006 are marked resolved
 qmllint: no warnings on this file
 
 **TL;DR** — The dialog is structurally sound: no binding loops, correct types at the C++ boundary, correct UTC and midnight handling. Two findings that could lose flight data have been fixed and removed from this report:
@@ -13,7 +13,7 @@ qmllint: no warnings on this file
 1. D-001: adding several similar flights in a row could save the new flight under the previous flight's UUID and overwrite it.
 2. D-002: pressing OK after a landing was detected while the editor was open erased the detected landing. The flight list no longer offers editing while a flight is being recorded.
 
-The remaining findings are a usability issue (required/optional marking) and cleanup.
+The remaining findings are cleanup.
 
 ---
 
@@ -34,7 +34,6 @@ These findings need a design decision before they can be fixed:
 
 | Finding | Question |
 |---------|----------|
-| D-006 | How are optional fields marked: which fields, and with which wording? (The departure is optional now.) |
 | D-007 | `flightUuid` can go, but only after D-001 is fixed (it protects the edit path today). |
 | S-001 | Once the flight list is an item model: does `narrowSelection()` get the visible flights from the proxy model, or does the selection move into C++? |
 
@@ -44,8 +43,8 @@ Fix status: [ ] = open. Mark items as you resolve them.
 
 ## Deep analysis findings
 
-### [ ] [D-006] Required and optional fields are not communicated consistently
-- **Status**: Partly addressed in the date/time redesign: one translatable placeholder for all four times, and a status line that lists errors (which block saving) or else warnings, separated by " • ". Arrival, Aircraft and the remaining "(optional)" placeholders are unchanged.
+### [x] [D-006] Required and optional fields are not communicated consistently
+- **Status**: Resolved on 2026-11-26. The date/time redesign had already brought one translatable placeholder for all four times, and a status line that lists errors (which block saving) or else warnings, separated by " • ". Decision: no field is marked optional. Pilot and Comments lost their "(optional)" placeholders (Pilot now shows "Name", Comments none). The takeoff time is the only mandatory field that the user can leave empty; `TimeField` got a `mandatory` flag, and while a mandatory time is empty its placeholder is red. The error "No takeoff time" uses the same predicate (`missing`). Since 2026-11-21 the time fields also accept only digits and the colon. Checked by build, qmllint, and an offscreen Qt Quick test of the placeholder colour (red while empty, the style's colours otherwise); not looked at in the app.
 - **File**: [FlightLogEntryEditor.qml:254-296](src/qml/dialogs/FlightLogEntryEditor.qml#L254-L296) (time fields), also lines 222, 236, 316, 327, 338
 - **Category**: States & Structure — **Confidence**: 92/100
 - **Finding**: `acceptableInput` requires Departure, Date, Start, and a valid-or-empty Landings count; everything else may be empty.

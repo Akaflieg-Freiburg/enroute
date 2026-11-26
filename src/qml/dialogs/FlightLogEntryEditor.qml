@@ -44,8 +44,9 @@ CenteringDialog {
     property flight editFlight
 
     // The flight as it will be saved. The day markers and the lines at the
-    // bottom of the dialog show this flight.
-    readonly property flight preview: resultFlight()
+    // bottom of the dialog show this flight. Not readonly: the Connections
+    // below re-creates the binding when the maps change.
+    property flight preview: resultFlight()
 
     // Problems that keep the flight from being saved, in the order of the
     // fields. Date and takeoff time are mandatory. The other times may be
@@ -116,6 +117,18 @@ CenteringDialog {
     property bool autoDate: false
 
     modal: true
+
+    // FlightLog.applyEdits() looks up the coordinates of the airfields in the
+    // maps, which can finish loading or change while the dialog is open. The
+    // binding of preview cannot see that dependency. Re-create the binding,
+    // which evaluates it again.
+    Connections {
+        target: GeoMapProvider
+
+        function onWaypointsChanged() {
+            flightEditorDialog.preview = Qt.binding(function() { return flightEditorDialog.resultFlight() })
+        }
+    }
 
     // The airfield fields hold an ICAO code or, for an airfield without one,
     // its name: flight detection and the "Add Flight" button fill in

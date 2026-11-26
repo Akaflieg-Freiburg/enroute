@@ -5,7 +5,7 @@ Scope: [src/qml/dialogs/FlightLogEntryEditor.qml](src/qml/dialogs/FlightLogEntry
 Method: deterministic lint, qmllint (Qt 6.12, project import paths), and six parallel deep-analysis passes (bindings, layout, lifecycle and C++ boundary, delegates, structure, performance). Findings were deduplicated and checked against the source.
 Verification: by reading the app sources and the Qt 6.12 sources. Nothing was built or run, and the app was not launched. Where a finding has a "To reproduce" line, that recipe has not been tried yet.
 
-Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 11 resolved and removed since, 8 listed below (4 lint groups, 3 deep analysis, 1 investigation target), of which I-002 and D-007 are marked resolved
+Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 11 resolved and removed since, 8 listed below (4 lint groups, 3 deep analysis, 1 investigation target), of which I-002, D-007 and D-008 are marked resolved
 qmllint: no warnings on this file
 
 **TL;DR** — The dialog is structurally sound: no binding loops, correct types at the C++ boundary, correct UTC and midnight handling. Two findings that could lose flight data have been fixed and removed from this report:
@@ -54,7 +54,8 @@ Fix status: [ ] = open. Mark items as you resolve them.
 - **Trace**: A search over `src/` finds no reader of the `new*` properties or the helpers outside this file. Callers: [FlightLogPage.qml:569-571](src/qml/pages/FlightLogPage.qml#L569-L571), [:737-738](src/qml/pages/FlightLogPage.qml#L737-L738), [:836-852](src/qml/pages/FlightLogPage.qml#L836-L852).
 - **Mitigation**: Make `resultFlight()` the only output and move the rest into a private object. Fix the comments at lines 30 and 41 and remove the default title. Remove `flightUuid` only after D-001 is fixed: today it is what keeps the Edit path from the same UUID mix-up.
 
-### [ ] [D-008] Summary label has a dependency it does not capture
+### [x] [D-008] Summary label has a dependency it does not capture
+- **Status**: Resolved on 2026-11-26. A `Connections` handler on `GeoMapProvider.waypointsChanged` re-creates the binding of `preview` with `Qt.binding()`, which evaluates it again; `preview` is no longer `readonly`. Reproduced and verified end to end on the desktop (Qt 6.12.1, offscreen, copy of a real data directory, QML test driver loaded at start-up): the editor opened 22 ms after start with EDTF→EDFE, before the maps had loaded, and the maps arrived after about 0.6 s. Without the fix the distance stayed missing for 20 s, until a simulated keystroke; with the fix it appeared on the signal (120.7 NM). After two more emissions of the signal the binding still followed its inputs.
 - **File**: [FlightLogEntryEditor.qml:368-383](src/qml/dialogs/FlightLogEntryEditor.qml#L368-L383)
 - **Category**: Bindings & Properties — **Confidence**: 85/100
 - **Finding**: The "Distance" part of the summary comes from an airfield lookup inside `FlightLog.applyEdits()`. The binding does not depend on the map data, so if maps finish loading or are updated while the dialog is open, the label keeps the old value until the next keystroke. The saved flight is correct, because `resultFlight()` runs again on accept. This is the situation the CLAUDE.md rule "bindings must consume every dependency" describes. All other dependencies are consumed properly.

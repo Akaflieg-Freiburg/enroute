@@ -30,11 +30,7 @@ Inside the dialog, `onAboutToShow` copies `editFlight` into the fields once. `re
 
 ## Decisions to make
 
-These findings need a design decision before they can be fixed:
-
-| Finding | Question |
-|---------|----------|
-| S-001 | Once the flight list is an item model: does `narrowSelection()` get the visible flights from the proxy model, or does the selection move into C++? |
+None open. The decision for S-001 was taken on 2026-11-26: the selection stays in the page and follows the row signals of the proxy model.
 
 Fix status: [ ] = open. Mark items as you resolve them.
 
@@ -157,8 +153,16 @@ Findings below confidence 60 are suppressed.
 
 ## Side notes outside the file
 
-### [ ] [S-001] FlightLogPage.qml: feed the flight list from an item model
-- **Status**: Open. Recommended as a change of its own, before `FLIGHTLOG` is enabled by default. Noted on 2026-11-21, after commit `b1b95be49` made `FlightLogPage.qml` clean under qmllint and removed the lint exclusion in `src/CMakeLists.txt`. Line numbers in this note refer to that commit, not to the commit named at the top.
+### [x] [S-001] FlightLogPage.qml: feed the flight list from an item model
+- **Status**: Resolved on 2026-11-26. Noted on 2026-11-21, after commit `b1b95be49`; line numbers in this note refer to that commit, not to the commit named at the top.
+  - The new class `Flightlog::FlightLogModel` ([FlightLogModel.h](src/flightlog/FlightLogModel.h)) owns the flight list and is exposed as `FlightLog.flightsModel`. The property `FlightLog.flights` is gone. The nine functions announce their changes row by row; only `load` and `clearFlights` reset the model.
+  - The page binds once to a `NameFilterProxyModel`; the delegate declares `required property flight flight`.
+  - Decision: the selection stays in the page. A `Connections` handler on the proxy deselects the flights of the rows that are about to leave it, and clears the selection on a reset. This also covers a flight that is removed while selected; before, it stayed counted in "N selected".
+  - Three points differ from the mitigation below. (1) The filter role is `searchKey`, already simplified, as in `WaypointSearchModel`; a role `uuid` was added for the selection. (2) A flight whose start time changes is removed and inserted again, not moved: `QSortFilterProxyModel` forwards a row move as a layout change, and a QML view answers that with a reset (checked in the Qt 6.12.1 sources). (3) The search key separates its four fields, so a filter word no longer matches across two fields.
+  - Accepted limit: a selected flight whose start time is edited would be deselected. The edit button is hidden in selection mode, and no other path changes a start time.
+  - Verified on the desktop (Qt 6.12.1, offscreen, copy of a real data directory plus 200 generated flights, QML test driver, `QAbstractItemModelTester` in fatal mode on the model; both were temporary). Baseline before the change: after `updateFlight()` the list jumped from `contentY` 7600 to 0 with new delegates, and a removed flight stayed selected. After the change, 79 checks passed and the model tester did not fire: an edit keeps scroll position and delegate object (one `dataChanged`); a changed start time gives one remove and one insert; `addFlight`, `removeFlight`, `removeFlights`, `removeTrack` and `importFromJSON` emit exactly the expected row signals; takeoff and landing, called through the detector slots, give one insert and one `dataChanged`; six filter strings show the flights that `Librarian.matches` selects; the selection narrows from 4 to 2 under a filter, to 1 after a removal and to 0 after `clearFlights`.
+  - `--smoke-test` now opens the flight log page with two flights in builds with `FLIGHTLOG=ON`. Build and qmllint are clean with `FLIGHTLOG` on and off.
+  - Not tested: a real device, and a real recorded flight. The detector path was exercised through simulated slot calls only.
 - **File**: [FlightLogPage.qml:64](src/qml/pages/FlightLogPage.qml#L64) (`visibleFlights`), [:401](src/qml/pages/FlightLogPage.qml#L401) (`Binding on model`), [:434](src/qml/pages/FlightLogPage.qml#L434) (delegate), [FlightLog.h:94](src/flightlog/FlightLog.h#L94) (`flights`)
 - **Finding**: The model of the flight list is a JavaScript array. `visibleFlights()` copies `FlightLog.flights` into an array and filters it with `Librarian.matches`; a delayed `Binding` assigns the result to the list view. [Librarian.h:255](src/Librarian.h#L255) names this as the pattern for ad-hoc lists. The flight log is library data: it is stored, the user edits it, and it grows over the years. For such data, CLAUDE.md asks for a list that binds once to an item model, and for delegates with a typed role (`required property flight flight`). The delegate has been typed since 2026-11-21, but its role is still called `modelData`, because an array offers no other role name.
 - **Consequences**:
@@ -170,6 +174,6 @@ Findings below confidence 60 are suppressed.
   2. Give the model two roles: `flight`, and `name` with the text that the filter searches (departure, arrival, pilot name, callsign). `NameFilterProxyModel` filters on the role `name` by default and works unchanged.
   3. In the page, set `model: NameFilterProxyModel { sourceModel: FlightLog.flightsModel; filter: flightFilter.filter }` and declare `required property flight flight` in the delegate. `visibleFlights()` and the `Binding` go away.
   4. Emit row-granular signals from the nine functions. `addFlight`, `updateFlight` and `importFromJSON` sort the list after the change, so the row of a flight is known only after sorting. `load` and `clearFlights` replace the whole list and are resets.
-- **Decision needed**: `narrowSelection()` ([FlightLogPage.qml:76](src/qml/pages/FlightLogPage.qml#L76)) deselects the flights that the filter hides, and takes the visible UUIDs from `visibleFlights()`. It needs another source. Either the proxy model reports which UUIDs are visible, or the selection moves into the C++ model.
+- **Decision needed** (taken, see Status): `narrowSelection()` ([FlightLogPage.qml:76](src/qml/pages/FlightLogPage.qml#L76)) deselects the flights that the filter hides, and takes the visible UUIDs from `visibleFlights()`. It needs another source. Either the proxy model reports which UUIDs are visible, or the selection moves into the C++ model.
 - **Why a change of its own**: It changes the data path that the flight detector writes to during a flight. It needs its own review and a test in the app.
 - **To verify**: In a `FLIGHTLOG=ON` build with more flights than fit on the screen, scroll down, then edit one flight and remove another: the list must stay where it is. Select several flights, then type in the filter field: the count in the header must equal the number of selected flights that are still visible.

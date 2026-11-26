@@ -23,7 +23,6 @@
 #include <memory>
 
 #include <QGeoPath>
-#include <QObjectBindableProperty>
 #include <QQmlEngine>
 #include <QTimer>
 #include <QUuid>
@@ -32,6 +31,7 @@
 #include "GlobalObject.h"
 #include "flightlog/Flight.h"
 #include "flightlog/FlightDetector.h"
+#include "flightlog/FlightLogModel.h"
 #include "geomaps/Waypoint.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -90,9 +90,13 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief List of all recorded flights, newest first */
-    Q_PROPERTY(QList<Flightlog::Flight> flights READ flights NOTIFY flightsChanged)
-    [[nodiscard]] auto flights() const -> QList<Flight> { return m_flights; }
+    /*! \brief Model listing all recorded flights, newest first
+     *
+     *  Views bind to this model through a NameFilterProxyModel, see
+     *  FlightLogModel. The model is owned by this object.
+     */
+    Q_PROPERTY(Flightlog::FlightLogModel* flightsModel READ flightsModel CONSTANT)
+    [[nodiscard]] auto flightsModel() const -> FlightLogModel* { return m_model; }
 
     /*! \brief Current state of the automatic detection state machine */
     Q_PROPERTY(Flightlog::FlightDetector::DetectionState detectionState READ detectionState NOTIFY detectionStateChanged)
@@ -100,7 +104,7 @@ public:
 
     /*! \brief Number of recorded flights */
     Q_PROPERTY(int count READ count NOTIFY flightsChanged)
-    [[nodiscard]] auto count() const -> int { return static_cast<int>(m_flights.value().size()); }
+    [[nodiscard]] auto count() const -> int { return m_model->rowCount(); }
 
     /*! \brief Coordinates of the track currently displayed on the map
      *
@@ -165,9 +169,10 @@ public:
 
     /*! \brief Remove multiple flights from the log by UUID
      *
-     *  Removes all flights whose UUIDs appear in @p uuids. Saves and
-     *  emits flightsChanged() exactly once regardless of how many are removed.
-     *  Does nothing if none of the UUIDs match.
+     *  Removes all flights whose UUIDs appear in @p uuids. Saves exactly
+     *  once regardless of how many are removed; flightsModel announces every
+     *  removed flight as a row removal. Does nothing if none of the UUIDs
+     *  match.
      *
      *  @param uuids UUIDs of the flights to remove (with or without braces)
      */
@@ -175,8 +180,8 @@ public:
 
     /*! \brief Remove all flights from the log
      *
-     *  Deletes every flight entry and its associated track file, then
-     *  saves and emits flightsChanged() once.
+     *  Deletes every flight entry and its associated track file, saves, and
+     *  resets flightsModel.
      */
     Q_INVOKABLE void clearFlights();
 
@@ -397,7 +402,11 @@ public:
     Q_INVOKABLE void hideTrack();
 
 signals:
-    /*! \brief Notifier signal */
+    /*! \brief Notifier signal
+     *
+     *  Emitted whenever flightsModel changes: when flights are added, removed
+     *  or changed, and when the model is reset.
+     */
     void flightsChanged();
 
     /*! \brief Notifier signal */
@@ -495,9 +504,6 @@ private:
     // only if the coordinate isn't already set (e.g. from a real GPS fix)
     static void resolveCoordinates(Flight& flight);
 
-    // Sort flights by startTime descending
-    void sortFlights(QList<Flight>& flights);
-
     // Collect the flights matching the given UUID strings; returns all flights if the list is empty
     [[nodiscard]] auto flightsForUuids(const QStringList& uuids) const -> QList<Flight>;
 
@@ -505,7 +511,9 @@ private:
     // invalid QDateTime unless isValidDate(date) and isValidTime(timeStr).
     static auto parseDateTime(const QString& date, const QString& timeStr) -> QDateTime;
 
-    Q_OBJECT_BINDABLE_PROPERTY(FlightLog, QList<Flightlog::Flight>, m_flights, &FlightLog::flightsChanged)
+    // The flights of the log (owned by this object). Sole owner of the
+    // flight list; this class persists a change before it changes the model.
+    FlightLogModel* m_model {nullptr};
 
     // UUID of the flight currently being recorded, or null if none
     QUuid m_currentFlightUuid;

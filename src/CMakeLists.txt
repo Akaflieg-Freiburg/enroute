@@ -111,6 +111,7 @@ set(SOURCES
     flightlog/FlightLog.h
     flightlog/FlightLogExportForeFlight.h
     flightlog/FlightLogExportJSON.h
+    flightlog/FlightLogModel.h
     flightlog/FlightLogStorage.h
     flightlog/FlightRecorder.h
     flightlog/FlightTrack.h
@@ -224,6 +225,7 @@ set(SOURCES
     flightlog/FlightLog.cpp
     flightlog/FlightLogExportForeFlight.cpp
     flightlog/FlightLogExportJSON.cpp
+    flightlog/FlightLogModel.cpp
     flightlog/FlightLogStorage.cpp
     flightlog/FlightRecorder.cpp
     navigation/FlightRoute.cpp

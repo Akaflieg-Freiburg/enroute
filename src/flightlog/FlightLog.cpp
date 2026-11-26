@@ -115,10 +115,17 @@ void stopFlightLogService()
 
 Flightlog::FlightLog::FlightLog(QObject *parent)
     : GlobalObject(parent)
+    , m_model(new FlightLogModel(this))
     , m_recorder(std::make_unique<FlightRecorder>(this))
     , m_storage(std::make_unique<FlightLogStorage>(this))
 {
     connect(m_storage.get(), &FlightLogStorage::saveError, this, &FlightLog::saveError);
+
+    // Every change of the model is a change of the flight log
+    connect(m_model, &QAbstractItemModel::rowsInserted, this, &FlightLog::flightsChanged);
+    connect(m_model, &QAbstractItemModel::rowsRemoved, this, &FlightLog::flightsChanged);
+    connect(m_model, &QAbstractItemModel::dataChanged, this, &FlightLog::flightsChanged);
+    connect(m_model, &QAbstractItemModel::modelReset, this, &FlightLog::flightsChanged);
 
     load();
 
@@ -217,7 +224,7 @@ auto Flightlog::FlightLog::displayedTrackUuid() const -> QString
     if (m_displayedTrackFile.isEmpty()) {
         return {};
     }
-    const auto& flights = m_flights.value();
+    const auto& flights = m_model->flights();
     auto it = std::ranges::find_if(flights, [&](const Flight& f) {
         return f.trackFile() == m_displayedTrackFile;
     });
@@ -247,11 +254,7 @@ void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
     // upsert() below would overwrite a stored flight with the same UUID, and
     // the list would show two entries until the next start. Changes to a
     // flight that is in the log go through updateFlight().
-    auto flights = m_flights.value();
-    const auto isInLog = std::ranges::any_of(flights, [&](const Flight& other) {
-        return other.uuid() == flight.uuid();
-    });
-    if (isInLog) {
+    if (m_model->row(flight.uuid()) >= 0) {
         return;
     }
 
@@ -262,9 +265,7 @@ void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
     if (!m_storage->upsert(f)) {
         return;
     }
-    flights.prepend(f);
-    sortFlights(flights);
-    m_flights.setValue(std::move(flights));
+    m_model->add(f);
 }
 
 void Flightlog::FlightLog::setTrackRecording(bool enabled)
@@ -310,15 +311,13 @@ void Flightlog::FlightLog::removeFlight(const QString& uuid)
     if (id.isNull()) {
         return;
     }
-    auto flights = m_flights.value();
-    const auto it = std::ranges::find_if(flights, [&](const Flight& f) {
-        return f.uuid() == id;
-    });
-    if (it == flights.end()) {
+    const auto row = m_model->row(id);
+    if (row < 0) {
         return;
     }
 
-    auto& flight = *it;
+    // A copy: the side effects below must not change the model behind its back
+    auto flight = m_model->flights().at(row);
 
     // Persist first. If the database row cannot be removed, keep the flight
     // and its track file: a leftover file is harmless, but a database row
@@ -344,15 +343,12 @@ void Flightlog::FlightLog::removeFlight(const QString& uuid)
     }
 
     m_recorder->removeTrack(flight);
-    flights.erase(it);
-    m_flights.setValue(std::move(flights));
+    m_model->remove(row);
 }
 
 
 void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
 {
-    auto flights = m_flights.value();
-
     // Collect the flights that actually exist
     QList<QUuid> removedIds;
     for (const QString& uuid : uuids) {
@@ -360,10 +356,7 @@ void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
         if (id.isNull()) {
             continue;
         }
-        const bool exists = std::ranges::any_of(flights, [&](const Flight& f) {
-            return f.uuid() == id;
-        });
-        if (exists) {
+        if (m_model->row(id) >= 0) {
             removedIds.append(id);
         }
     }
@@ -378,32 +371,32 @@ void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
     }
 
     for (const auto& id : removedIds) {
-        auto it = std::ranges::find_if(flights, [&](const Flight& f) {
-            return f.uuid() == id;
-        });
-        if (it == flights.end()) {
+        // Look up the row again: it changes as flights are removed
+        const auto row = m_model->row(id);
+        if (row < 0) {
             continue;
         }
-        if (!m_displayedTrackFile.isEmpty() && it->trackFile() == m_displayedTrackFile) {
+        auto flight = m_model->flights().at(row);
+        if (!m_displayedTrackFile.isEmpty() && flight.trackFile() == m_displayedTrackFile) {
             hideTrack();
         }
-        if (it->uuid() == m_currentFlightUuid) {
+        if (flight.uuid() == m_currentFlightUuid) {
             m_currentFlightUuid = {};
             if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
                 m_detector->resetDetection();
             }
             m_recorder->clearTrack();
         }
-        m_recorder->removeTrack(*it);
-        flights.erase(it);
+        m_recorder->removeTrack(flight);
+        m_model->remove(row);
     }
-    m_flights.setValue(std::move(flights));
 }
 
 
 void Flightlog::FlightLog::clearFlights()
 {
-    auto flights = m_flights.value();
+    // A copy, to remove the track files once the log is cleared
+    auto flights = m_model->flights();
     if (flights.isEmpty()) {
         return;
     }
@@ -422,31 +415,25 @@ void Flightlog::FlightLog::clearFlights()
     for (auto& flight : flights) {
         m_recorder->removeTrack(flight);
     }
-    m_flights.setValue({});
+    m_model->reset({});
 }
 
 
 
 void Flightlog::FlightLog::updateFlight(const QString& uuid, const Flightlog::Flight& flight)
 {
-    auto targetUuid = QUuid::fromString(uuid);
-    auto flights = m_flights.value();
-    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
-        return f.uuid() == targetUuid;
-    });
-    if (it == flights.end()) {
+    const auto row = m_model->row(QUuid::fromString(uuid));
+    if (row < 0) {
         return;
     }
 
-    const auto f = applyEdits(*it, flight);
+    const auto f = applyEdits(m_model->flights().at(row), flight);
 
     // Persist first; see addFlight() for the rationale.
     if (!m_storage->upsert(f)) {
         return;
     }
-    *it = f;
-    sortFlights(flights);
-    m_flights.setValue(std::move(flights));
+    m_model->replace(row, f);
 }
 
 
@@ -605,7 +592,7 @@ void Flightlog::FlightLog::endFlight()
 
 auto Flightlog::FlightLog::lastArrivalICAO(const QString& aircraftCallsign) const -> QString
 {
-    for (const auto& flight : m_flights.value()) {
+    for (const auto& flight : m_model->flights()) {
         if (flight.aircraftCallsign().compare(aircraftCallsign, Qt::CaseInsensitive) == 0 && !flight.arrivalICAO().isEmpty()) {
             return flight.arrivalICAO();
         }
@@ -657,7 +644,7 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position, doubl
 auto Flightlog::FlightLog::exportToIGC(const QString& uuid) const -> QByteArray
 {
     auto targetUuid = QUuid::fromString(uuid);
-    const auto& flights = m_flights.value();
+    const auto& flights = m_model->flights();
     auto it = std::ranges::find_if(flights, [&](const Flight& f) {
         return f.uuid() == targetUuid;
     });
@@ -670,10 +657,10 @@ auto Flightlog::FlightLog::exportToIGC(const QString& uuid) const -> QByteArray
 
 auto Flightlog::FlightLog::flightsForUuids(const QStringList& uuids) const -> QList<Flight>
 {
+    const auto& allFlights = m_model->flights();
     if (uuids.isEmpty()) {
-        return m_flights.value();
+        return allFlights;
     }
-    const auto& allFlights = m_flights.value();
     QList<Flight> result;
     for (const QString& uuid : uuids) {
         const auto id = QUuid::fromString(uuid);
@@ -712,10 +699,10 @@ auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
         return tr("The file does not contain a valid flight log.");
     }
 
-    auto flights = m_flights.value();
+    const auto& flights = m_model->flights();
     QSet<QUuid> existingUuids;
     existingUuids.reserve(flights.size());
-    for (const auto& f : std::as_const(flights)) {
+    for (const auto& f : flights) {
         existingUuids.insert(f.uuid());
     }
 
@@ -730,7 +717,6 @@ auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
         // device's filesystem would not point to an existing file here.
         flight.setTrackFile({});
         resolveCoordinates(flight);
-        flights.append(flight);
         existingUuids.insert(flight.uuid());
         newFlights.append(flight);
     }
@@ -747,31 +733,29 @@ auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
         return tr("Failed to save the imported flights to storage. Nothing was imported.");
     }
 
-    sortFlights(flights);
-    m_flights.setValue(std::move(flights));
+    for (const auto& flight : std::as_const(newFlights)) {
+        m_model->add(flight);
+    }
     return {};
 }
 
 
 void Flightlog::FlightLog::removeTrack(const QString& uuid)
 {
-    auto targetUuid = QUuid::fromString(uuid);
-    auto flights = m_flights.value();
-    auto it = std::ranges::find_if(flights, [&](const Flight& f) {
-        return f.uuid() == targetUuid;
-    });
-    if (it == flights.end()) {
+    const auto row = m_model->row(QUuid::fromString(uuid));
+    if (row < 0) {
         return;
     }
 
-    if (it->trackFile().isEmpty()) {
+    auto flight = m_model->flights().at(row);
+    if (flight.trackFile().isEmpty()) {
         return;
     }
 
     // Persist the flight without its track reference first. Only then delete
     // the file, so a database failure cannot leave a row pointing to a
     // missing file. upsert() has already emitted saveError() on failure.
-    auto updatedFlight = *it;
+    auto updatedFlight = flight;
     updatedFlight.setTrackFile({});
     if (!m_storage->upsert(updatedFlight)) {
         return;
@@ -779,12 +763,13 @@ void Flightlog::FlightLog::removeTrack(const QString& uuid)
 
     // If this track is currently displayed, hide it first
     if (!m_displayedTrackFile.isEmpty()
-        && it->trackFile() == m_displayedTrackFile) {
+        && flight.trackFile() == m_displayedTrackFile) {
         hideTrack();
     }
 
-    m_recorder->removeTrack(*it);
-    m_flights.setValue(std::move(flights));
+    // Deletes the file and clears the track reference of the flight
+    m_recorder->removeTrack(flight);
+    m_model->replace(row, flight);
 }
 
 
@@ -808,7 +793,7 @@ auto Flightlog::FlightLog::displayedTrackPath() const -> QGeoPath
 void Flightlog::FlightLog::showTrack(const QString& uuid)
 {
     auto targetUuid = QUuid::fromString(uuid);
-    const auto& flights = m_flights.value();
+    const auto& flights = m_model->flights();
     auto it = std::ranges::find_if(flights, [&](const Flight& f) {
         return f.uuid() == targetUuid;
     });
@@ -870,24 +855,13 @@ void Flightlog::FlightLog::resolveCoordinates(Flight& flight)
 }
 
 
-void Flightlog::FlightLog::sortFlights(QList<Flight>& flights)
-{
-    std::sort(flights.begin(), flights.end(),
-              [](const Flight& a, const Flight& b) {
-                  return a.startTime() > b.startTime();
-              });
-}
-
-
 //
 // Persistence
 //
 
 void Flightlog::FlightLog::load()
 {
-    auto newFlights = m_storage->loadAll();
-    sortFlights(newFlights);
-    m_flights.setValue(std::move(newFlights));
+    m_model->reset(m_storage->loadAll());
 }
 
 
@@ -982,12 +956,9 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
 {
     auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
     // Complete the in-progress flight by UUID lookup
-    auto flights = m_flights.value();
-    auto it = std::ranges::find_if(flights, [this](const Flight& f) {
-        return f.uuid() == m_currentFlightUuid;
-    });
-    if (it != flights.end()) {
-        auto& flight = *it;
+    const auto row = m_model->row(m_currentFlightUuid);
+    if (row >= 0) {
+        auto flight = m_model->flights().at(row);
         if (!arrivalICAO.isEmpty()) {
             flight.setArrivalICAO(arrivalICAO);
         }
@@ -1010,9 +981,9 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
             }
         }
         m_recorder->clearTrack();
-        auto updatedFlight = flight;
-        m_flights.setValue(std::move(flights));
-        m_storage->upsert(updatedFlight);
+        // The start time is unchanged, so the flight keeps its row
+        m_model->replace(row, flight);
+        m_storage->upsert(flight);
         emit displayedTrackPathChanged();
     }
 

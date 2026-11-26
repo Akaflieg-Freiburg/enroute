@@ -27,9 +27,10 @@ import "../items"
 
 /* Flight log entry editor dialog
  *
- * Usage: set property editFlight and flightUuid, then open().
- * On accepted, call resultFlight() to get the edited Flight value. This is
- * editFlight with the user's changes applied, see FlightLog.applyEdits().
+ * Usage: set property editFlight, then open(). On accepted, call
+ * resultFlight() to get the edited flight: editFlight with the user's
+ * changes applied, see FlightLog.applyEdits(). It has the UUID of
+ * editFlight.
  *
  * All dates and times are UTC. The date is the date of the takeoff. The other
  * times are placed around the takeoff by FlightLog.createFlight(), and a
@@ -40,20 +41,7 @@ import "../items"
 CenteringDialog {
     id: flightEditorDialog
 
-    property string flightUuid: ""
     property flight editFlight
-
-    // Output values read by the caller
-    readonly property string newDepartureICAO: codeOrName(depField.text)
-    readonly property string newArrivalICAO: codeOrName(arrField.text)
-    readonly property string newDate: dateField.date
-    readonly property string newOffBlockTime: offBlockField.text
-    readonly property string newStartTime: startField.text
-    readonly property string newLandingTime: landingField.text
-    readonly property string newOnBlockTime: onBlockField.text
-    readonly property string newPilotName: pilotField.text
-    readonly property string newAircraftCallsign: callsignField.text
-    readonly property string newComments: commentsField.text
 
     // The flight as it will be saved. The day markers and the lines at the
     // bottom of the dialog show this flight.
@@ -128,7 +116,6 @@ CenteringDialog {
     property bool autoDate: false
 
     modal: true
-    title: qsTr("Edit Flight")
 
     // The airfield fields hold an ICAO code or, for an airfield without one,
     // its name: flight detection and the "Add Flight" button fill in
@@ -170,16 +157,16 @@ CenteringDialog {
     // fields applied
     function resultFlight(): flight {
         const edited = FlightLog.createFlight(
-            newDepartureICAO,
-            newArrivalICAO,
-            newDate,
-            newOffBlockTime,
-            newStartTime,
-            newLandingTime,
-            newOnBlockTime,
-            newPilotName,
-            newAircraftCallsign,
-            newComments
+            codeOrName(depField.text),
+            codeOrName(arrField.text),
+            dateField.date,
+            offBlockField.text,
+            startField.text,
+            landingField.text,
+            onBlockField.text,
+            pilotField.text,
+            callsignField.text,
+            commentsField.text
         )
         // A flight has at least one landing. An empty field means one.
         edited.landingCount = Math.max(1, parseInt(landingsField.text) || 1)

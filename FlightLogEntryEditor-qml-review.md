@@ -5,7 +5,7 @@ Scope: [src/qml/dialogs/FlightLogEntryEditor.qml](src/qml/dialogs/FlightLogEntry
 Method: deterministic lint, qmllint (Qt 6.12, project import paths), and six parallel deep-analysis passes (bindings, layout, lifecycle and C++ boundary, delegates, structure, performance). Findings were deduplicated and checked against the source.
 Verification: by reading the app sources and the Qt 6.12 sources. Nothing was built or run, and the app was not launched. Where a finding has a "To reproduce" line, that recipe has not been tried yet.
 
-Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 10 resolved and removed since, 9 listed below (4 lint groups, 4 deep analysis, 1 investigation target), of which I-002 and D-006 are marked resolved
+Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 11 resolved and removed since, 8 listed below (4 lint groups, 3 deep analysis, 1 investigation target), of which I-002 and D-007 are marked resolved
 qmllint: no warnings on this file
 
 **TL;DR** — The dialog is structurally sound: no binding loops, correct types at the C++ boundary, correct UTC and midnight handling. Two findings that could lose flight data have been fixed and removed from this report:
@@ -21,7 +21,7 @@ The remaining findings are cleanup.
 
 [FlightLogPage.qml](src/qml/pages/FlightLogPage.qml) holds two static instances of the dialog, both reused for every flight:
 
-- **Edit** (`flightEditor`, line 833). The edit button of a list entry sets `flightUuid` and `editFlight = modelData`, then calls `open()` (lines 567-572). On accept, the page calls `FlightLog.updateFlight(flightEditor.flightUuid, flightEditor.resultFlight())`.
+- **Edit** (`flightEditor`, line 833). The edit button of a list entry sets `editFlight = modelData`, then calls `open()` (lines 567-572). On accept, the page calls `FlightLog.updateFlight()` with the result of `flightEditor.resultFlight()` and its UUID.
 - **Add** (`addFlightEditor`, line 844). The "Add Flight" button builds a template with `FlightLog.createFlight(lastArrival, nearestAirfield, …, aircraftName, "")`, assigns it to `editFlight` and calls `open()` (line 737). On accept, the page calls `FlightLog.addFlight(addFlightEditor.resultFlight())`.
 
 Inside the dialog, `onAboutToShow` copies `editFlight` into the fields once. `resultFlight()` builds a flight from the field texts with `FlightLog.createFlight()` and returns `FlightLog.applyEdits(editFlight, thatFlight)`. `applyEdits()` starts from its first argument, so the result carries the UUID, track file and coordinates of `editFlight`.
@@ -34,7 +34,6 @@ These findings need a design decision before they can be fixed:
 
 | Finding | Question |
 |---------|----------|
-| D-007 | `flightUuid` can go, but only after D-001 is fixed (it protects the edit path today). |
 | S-001 | Once the flight list is an item model: does `narrowSelection()` get the visible flights from the proxy model, or does the selection move into C++? |
 
 Fix status: [ ] = open. Mark items as you resolve them.
@@ -43,19 +42,8 @@ Fix status: [ ] = open. Mark items as you resolve them.
 
 ## Deep analysis findings
 
-### [x] [D-006] Required and optional fields are not communicated consistently
-- **Status**: Resolved on 2026-11-26. The date/time redesign had already brought one translatable placeholder for all four times, and a status line that lists errors (which block saving) or else warnings, separated by " • ". Decision: no field is marked optional. Pilot and Comments lost their "(optional)" placeholders (Pilot now shows "Name", Comments none). The takeoff time is the only mandatory field that the user can leave empty; `TimeField` got a `mandatory` flag, and while a mandatory time is empty its placeholder is red. The error "No takeoff time" uses the same predicate (`missing`). Since 2026-11-21 the time fields also accept only digits and the colon. Checked by build, qmllint, and an offscreen Qt Quick test of the placeholder colour (red while empty, the style's colours otherwise); not looked at in the app.
-- **File**: [FlightLogEntryEditor.qml:254-296](src/qml/dialogs/FlightLogEntryEditor.qml#L254-L296) (time fields), also lines 222, 236, 316, 327, 338
-- **Category**: States & Structure — **Confidence**: 92/100
-- **Finding**: `acceptableInput` requires Departure, Date, Start, and a valid-or-empty Landings count; everything else may be empty.
-  - "(optional)" marks Off-Block, On-Block, Pilot and Comments, but not Arrival, Landing or Aircraft, which are optional too.
-  - Mandatory Start and optional Landing show the same placeholder "HH:mm".
-  - The Start field's colour uses `isValidOrEmptyTime` (line 270), while OK uses `isValidTime` (line 58). An empty mandatory field therefore never looks wrong, and "Add Flight" can open with OK disabled and no field marked.
-  - `"HH:mm"` is translated in Off-Block and On-Block (`qsTr("HH:mm (optional)")`) and hard-coded in Start and Landing. Polish already shows "GG:mm (opcja)" next to "HH:mm".
-- **Trace**: Placeholders compared against lines 56-62. Polish: `3rdParty/enrouteText/assets/enroute_pl.ts`, line 2582.
-- **Mitigation**: Pick one convention (mark every optional field, or mark the required ones) with one wording. Mark empty mandatory fields the same way as invalid ones. Treat the time format the same way in all four fields: either translatable everywhere or nowhere.
-
-### [ ] [D-007] Public API that nothing uses
+### [x] [D-007] Public API that nothing uses
+- **Status**: Resolved on 2026-11-26. `flightUuid`, the ten `new*` properties and the default title are gone; `resultFlight()` reads the fields directly, and the header comment describes the contract (`editFlight` in, `resultFlight()` out). The Edit path takes the UUID from the result: `FlightLog.updateFlight(edited.uuidString, edited)`. This is safe since D-001 was fixed by comparing the UUID in `Flight::operator==`: assigning another flight to `editFlight` now always replaces it. Not done: a private object for the helpers (`codeOrName`, `utcTime`, `followTakeoff`, `preview`, `errors`, `warnings`, `autoDate`). QML has no private members, and the prefix would touch about twenty lines for little gain. The toast "Flight updated" after a failed database write remains; that needs `updateFlight()` to report failure. Checked by build and qmllint; not run in the app.
 - **File**: [FlightLogEntryEditor.qml:38-51](src/qml/dialogs/FlightLogEntryEditor.qml#L38-L51), also lines 30, 68, 75-104
 - **Category**: States & Structure — **Confidence**: 95/100
 - **Finding**:
@@ -154,9 +142,9 @@ The linter reported 51 raw hits in five groups. The `var` group (L-002) has been
 | Layout & Anchoring | 0 | 0 | 0 | 0 |
 | Component Loading & Lifecycle | 0 | 0 | 1 | 1 |
 | ListView & Delegates | 0 | 0 | 0 | 0 |
-| States & Structure | 2 | 2 | 0 | 4 |
+| States & Structure | 2 | 1 | 0 | 3 |
 | Performance & Quality | 1 | 1 | 0 | 2 |
-| **Total** | **4** | **4** | **1** | **9** |
+| **Total** | **4** | **3** | **1** | **8** |
 
 Findings below confidence 60 are suppressed.
 

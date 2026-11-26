@@ -591,7 +591,6 @@ Page {
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    flightEditor.flightUuid = flightRow.modelData.uuidString
                     flightEditor.editFlight = flightRow.modelData
                     flightEditor.open()
                 }
@@ -867,7 +866,8 @@ Page {
         title: qsTr("Edit Flight")
 
         onAccepted: {
-            FlightLog.updateFlight(flightEditor.flightUuid, flightEditor.resultFlight())
+            const edited = flightEditor.resultFlight()
+            FlightLog.updateFlight(edited.uuidString, edited)
             Global.toast.doToast(qsTr("Flight updated"))
         }
     }

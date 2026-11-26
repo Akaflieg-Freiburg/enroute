@@ -130,16 +130,6 @@ CenteringDialog {
         }
     }
 
-    // The airfield fields hold an ICAO code or, for an airfield without one,
-    // its name: flight detection and the "Add Flight" button fill in
-    // Waypoint.shortName. Codes are stored in upper case, so that they are
-    // found in the maps. Anything longer than a code is a name and is kept as
-    // entered.
-    function codeOrName(text: string): string {
-        const trimmed = text.trim()
-        return trimmed.length <= 4 ? trimmed.toUpperCase() : trimmed
-    }
-
     // Format a QDateTime as UTC time string "HH:mm", or "" if it is invalid
     function utcTime(dt: date): string {
         if (isNaN(dt.getTime()))
@@ -167,11 +157,13 @@ CenteringDialog {
     }
 
     // The flight as it will be saved: editFlight with the content of the
-    // fields applied
+    // fields applied. The airfield fields hold an ICAO code or, for an
+    // airfield without one, its name; Flight normalizes them, see
+    // Flight::normalizedAirfield().
     function resultFlight(): flight {
         const edited = FlightLog.createFlight(
-            codeOrName(depField.text),
-            codeOrName(arrField.text),
+            depField.text,
+            arrField.text,
             dateField.date,
             offBlockField.text,
             startField.text,
@@ -618,17 +610,7 @@ CenteringDialog {
             text: {
                 if (flightEditorDialog.errors.length > 0)
                     return ""
-                const f = flightEditorDialog.preview
-                let parts = []
-                const ft = f.flightTime()
-                if (ft !== "")
-                    parts.push(qsTr("Duration: %1").arg(ft))
-                const bt = f.blockTime()
-                if (bt !== "")
-                    parts.push(qsTr("Block: %1").arg(bt))
-                const dist = f.distance()
-                if (dist.isFinite() && dist.toNM() >= 0.1)
-                    parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
+                const parts = flightEditorDialog.preview.calculatedValues(Navigator.aircraft)
                 // Separated by " • " as elsewhere in the app. As in the list
                 // of flights, the space after the "•" is the only place for a
                 // line break.

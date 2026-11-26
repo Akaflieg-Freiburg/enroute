@@ -488,14 +488,14 @@ Page {
                     Label {
                         Layout.fillWidth: true
                         text: {
-                            if (!flightRow.modelData.startTime.getTime || isNaN(flightRow.modelData.startTime.getTime()))
+                            if (isNaN(flightRow.modelData.startTime.getTime()))
                                 return qsTr("No time data")
                             function pad2(n) { return n.toString().padStart(2, '0') }
                             var st = flightRow.modelData.startTime
                             var dateStr = st.getUTCFullYear() + "-" + pad2(st.getUTCMonth()+1) + "-" + pad2(st.getUTCDate())
                             var startStr = pad2(st.getUTCHours()) + ":" + pad2(st.getUTCMinutes())
                             var lt = flightRow.modelData.landingTime
-                            var landStr = (lt.getTime && !isNaN(lt.getTime()))
+                            var landStr = !isNaN(lt.getTime())
                                 ? pad2(lt.getUTCHours()) + ":" + pad2(lt.getUTCMinutes()) : "--:--"
                             // Mark a landing on a later UTC day than the
                             // takeoff with a superscript day count, as in
@@ -521,19 +521,11 @@ Page {
                         visible: text !== ""
                         text: {
                             var parts = []
-                            var ft = flightRow.modelData.flightTime()
                             if (flightRow.modelData.aircraftCallsign !== "")
                                 parts.push(flightRow.modelData.aircraftCallsign)
-                            if (ft !== "")
-                                parts.push(qsTr("Duration: %1").arg(ft))
-                            var bt = flightRow.modelData.blockTime()
-                            if (bt !== "")
-                                parts.push(qsTr("Block: %1").arg(bt))
-                            var dist = flightRow.modelData.distance()
+                            parts.push(...flightRow.modelData.calculatedValues(Navigator.aircraft))
                             if (flightRow.modelData.landingCount > 1)
                                 parts.push(qsTr("Landings: %1").arg(flightRow.modelData.landingCount))
-                            if (dist.isFinite() && dist.toNM() >= 0.1)
-                                parts.push(qsTr("Distance: %1").arg(Navigator.aircraft.horizontalDistanceToString(dist)))
                             if (flightRow.modelData.pilotName !== "")
                                 parts.push(flightRow.modelData.pilotName)
                             if (flightRow.modelData.comments !== "")

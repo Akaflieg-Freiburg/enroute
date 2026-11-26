@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
+
 #include "flightlog/Flight.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -65,6 +67,32 @@ auto Flightlog::Flight::blockTime() const -> QString
 auto Flightlog::Flight::flightTime() const -> QString
 {
     return secsToHHMM(flightTimeSeconds());
+}
+
+
+auto Flightlog::Flight::calculatedValues(const Navigation::Aircraft& aircraft) const -> QStringList
+{
+    QStringList result;
+    const auto flight = flightTime();
+    if (!flight.isEmpty()) {
+        result << QCoreApplication::translate("Flightlog::Flight", "Duration: %1").arg(flight);
+    }
+    const auto block = blockTime();
+    if (!block.isEmpty()) {
+        result << QCoreApplication::translate("Flightlog::Flight", "Block: %1").arg(block);
+    }
+    const auto dist = distance();
+    if (dist.isFinite() && (dist.toNM() >= 0.1)) {
+        result << QCoreApplication::translate("Flightlog::Flight", "Distance: %1").arg(aircraft.horizontalDistanceToString(dist));
+    }
+    return result;
+}
+
+
+auto Flightlog::Flight::normalizedAirfield(const QString& text) -> QString
+{
+    const auto trimmed = text.trimmed();
+    return (trimmed.size() <= 4) ? trimmed.toUpper() : trimmed;
 }
 
 

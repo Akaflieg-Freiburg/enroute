@@ -5,7 +5,7 @@ Scope: [src/qml/dialogs/FlightLogEntryEditor.qml](src/qml/dialogs/FlightLogEntry
 Method: deterministic lint, qmllint (Qt 6.12, project import paths), and six parallel deep-analysis passes (bindings, layout, lifecycle and C++ boundary, delegates, structure, performance). Findings were deduplicated and checked against the source.
 Verification: by reading the app sources and the Qt 6.12 sources. Nothing was built or run, and the app was not launched. Where a finding has a "To reproduce" line, that recipe has not been tried yet.
 
-Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 11 resolved and removed since, 8 listed below (4 lint groups, 3 deep analysis, 1 investigation target), of which I-002, D-007 and D-008 are marked resolved
+Issues found: 19 (5 lint groups, 12 deep analysis, 2 investigation targets); 11 resolved and removed since, 8 listed below (4 lint groups, 3 deep analysis, 1 investigation target), of which I-002, D-007, D-008 and D-009 are marked resolved
 qmllint: no warnings on this file
 
 **TL;DR** — The dialog is structurally sound: no binding loops, correct types at the C++ boundary, correct UTC and midnight handling. Two findings that could lose flight data have been fixed and removed from this report:
@@ -62,8 +62,12 @@ Fix status: [ ] = open. Mark items as you resolve them.
 - **Trace**: `applyEdits()` → `resolveCoordinates()` ([FlightLog.cpp:817-842](src/flightlog/FlightLog.cpp#L817-L842)) → `GeoMapProvider::findByID()`.
 - **Mitigation**: Refresh the summary from a `Connections` handler on `GeoMapProvider.waypointsChanged` with an imperative assignment. Do not read the waypoint list inside the binding; that would convert the whole list to JavaScript.
 
-### [ ] [D-009] Duplicated logic and dead guards
-- **Status**: Partly addressed in the date/time redesign: one `TimeField` component replaces the four copies, the dead `getTime &&` guards are gone in the editor, and `utcDate()` is replaced by `DateInput.isoDate()` / `todayIsoDate()`. The summary still duplicates the list delegate, and code normalisation still lives in `codeOrName()`.
+### [x] [D-009] Duplicated logic and dead guards
+- **Status**: Resolved on 2026-11-26. The date/time redesign had brought one `TimeField`, removed the dead `getTime &&` guards in the editor and replaced `utcDate()`. The rest:
+  - Code normalisation moved into `Flight::setDepartureICAO()` / `setArrivalICAO()`, via the new `Flight::normalizedAirfield()` (trimmed; up to 4 characters upper case). It applies to every path: editor, "Add Flight" template, flight detection, JSON import and loading from the database. `codeOrName()` is gone.
+  - Duration / Block / Distance come from the new `Flight::calculatedValues(aircraft)`, translated in the context `Flightlog::Flight`; the editor summary and the list delegate both use it. In the list, "Landings" now follows the distance. The existing translations of the list were carried over to the new context in all six `.ts` files (subrepo, uncommitted).
+  - The two dead `getTime` guards in the list delegate are gone as well.
+  - Verified on the desktop (Qt 6.12.1, offscreen, German, copy of a real data directory, QML test driver): `createFlight(" edtf ")` gives "EDTF", names longer than 4 characters are kept; a JSON import with "edtf"→"edfe" gives upper-case codes and a distance of 121 NM. Control run without the setter change: the import kept "edtf"/"edfe" and had no distance. Screenshots of the list and the editor show the German values.
 - **File**: [FlightLogEntryEditor.qml:128-152](src/qml/dialogs/FlightLogEntryEditor.qml#L128-L152), also lines 94-104, 132, 250-300, 368-383
 - **Category**: Performance & Quality — **Confidence**: 90/100
 - **Finding**:

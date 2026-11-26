@@ -25,6 +25,7 @@
 #include <QQmlEngine>
 #include <QUuid>
 
+#include "navigation/Aircraft.h"
 #include "units/Distance.h"
 
 namespace Flightlog {
@@ -205,15 +206,19 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     *  The value is normalized, see normalizedAirfield().
+     *
      *  @param icao Property departureICAO
      */
-    void setDepartureICAO(const QString& icao) { m_departureICAO = icao; }
+    void setDepartureICAO(const QString& icao) { m_departureICAO = normalizedAirfield(icao); }
 
     /*! \brief Setter function for property of the same name
      *
+     *  The value is normalized, see normalizedAirfield().
+     *
      *  @param icao Property arrivalICAO
      */
-    void setArrivalICAO(const QString& icao) { m_arrivalICAO = icao; }
+    void setArrivalICAO(const QString& icao) { m_arrivalICAO = normalizedAirfield(icao); }
 
     /*! \brief Setter function for property of the same name
      *
@@ -323,6 +328,30 @@ public:
      *  @returns The duration in seconds, or -1 if times are invalid
      */
     [[nodiscard]] Q_INVOKABLE qint64 flightTimeSeconds() const;
+
+    /*! \brief Calculated values for display
+     *
+     *  @param aircraft Aircraft whose settings determine the unit of the
+     *  distance
+     *
+     *  @returns Translated strings "Duration: …", "Block: …" and
+     *  "Distance: …", each only if the value is known. The distance is
+     *  omitted below 0.1 NM, as for a local flight.
+     */
+    [[nodiscard]] Q_INVOKABLE QStringList calculatedValues(const Navigation::Aircraft& aircraft) const;
+
+    /*! \brief Normalized airfield code or name
+     *
+     *  An airfield is given by its ICAO code or, if it has none, by its
+     *  name. Codes are stored in upper case, so that they are found in the
+     *  maps. Anything longer than a code is a name and is kept as entered.
+     *  Leading and trailing white space is removed.
+     *
+     *  @param text Airfield code or name
+     *
+     *  @returns Normalized code or name
+     */
+    [[nodiscard]] static QString normalizedAirfield(const QString& text);
 
     /*! \brief Comparison operator
      *

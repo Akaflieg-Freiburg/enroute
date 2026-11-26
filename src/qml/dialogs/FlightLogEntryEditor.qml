@@ -558,7 +558,7 @@ CenteringDialog {
                     id: landingsField
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
-                    placeholderText: "1"
+                    placeholderText: qsTr("Number of landings")
                     inputMethodHints: Global.digitsInputHint
                     validator: IntValidator { bottom: 1; top: 99 }
                     color: text === "" || landingsField.acceptableInput ? dateLabel.color : "red"

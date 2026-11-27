@@ -554,15 +554,14 @@ Page {
                     }
                 }
 
-                TapHandler {
-                    longPressThreshold: 0.8
-                    onLongPressed: {
-                        PlatformAdaptor.vibrateBrief()
-                        if (!page.selectionMode) {
-                            page.selectionMode = true
-                        }
-                        page.toggleSelection(flightRow.flight.uuidString)
-                    }
+                // Use the delegate's own signal, not a TapHandler: only a
+                // connected pressAndHold makes the delegate suppress the click
+                // that would otherwise follow on release and toggle the
+                // selection back.
+                onPressAndHold: {
+                    PlatformAdaptor.vibrateBrief()
+                    page.selectionMode = true
+                    page.toggleSelection(flightRow.flight.uuidString)
                 }
 
                 swipe.onCompleted: {

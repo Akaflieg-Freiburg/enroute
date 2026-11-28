@@ -13,7 +13,7 @@ The page is clean at the type level: the project's `all_qmllint` target reports 
 | F-03 | Row stays swiped open after "No" in the remove dialog | High | Code read, sibling pages | Done |
 | F-04 | "Save as…" leaves selection mode before the save has a result | Medium | Code read | Done |
 | F-05 | System Back pops the page in selection mode | Medium | Code read | Done |
-| F-06 | Success toasts are unconditional although the operations can fail | Medium | Analysis trace | Open |
+| F-06 | Success toasts are unconditional although the operations can fail | Medium | Analysis trace | Done |
 | F-07 | "Show live flight trace" shows off while the map still draws the trace | Medium | Code read | Open |
 | F-08 | Detection is off by default, but the page behaves as if it were on | Medium | Code read | Open |
 | F-09 | Hard-coded colours ignore the theme | Medium | Code read | Open |
@@ -123,13 +123,27 @@ Four further points need a run to settle and are listed under [To verify](#to-ve
 - **Still open**: [Manual.qml:113](src/qml/pages/Manual.qml#L113) has the same focus problem for its WebView "go back" and could move to `handleBack()`.
 - **To discuss**: The `onClosing` fallback in `main.qml` bypasses page-level key handlers when the window rather than the StackView has focus. Is a page-level "can go back" hook worth adding for both paths?
 
-### F-06 Success toasts are unconditional although the operations can fail
+### F-06 Success toasts are unconditional although the operations can fail — done
 
 - **Where**: [790-793](src/qml/pages/FlightLogPage.qml#L790-L793), [807-810](src/qml/pages/FlightLogPage.qml#L807-L810), [822-825](src/qml/pages/FlightLogPage.qml#L822-L825), [835-839](src/qml/pages/FlightLogPage.qml#L835-L839), [863-867](src/qml/pages/FlightLogPage.qml#L863-L867), [875-878](src/qml/pages/FlightLogPage.qml#L875-L878)
 - **What happens**: When a storage write fails, the user sees "Flights removed" (or "Flight added", "Flight updated", "Track deleted", "Flight log cleared") together with the app-wide error dialog, while the list is unchanged. For the multi-remove the selection is discarded as well. "Show on Map" does nothing, with no feedback, when the track file is unreadable.
 - **Why**: The mutating invokables are `void` and return early on failure, e.g. [FlightLog.cpp:369-371](src/flightlog/FlightLog.cpp#L369-L371). `addFlight` also returns silently on a duplicate UUID.
-- **Proposed fix**: Return a status from the mutating invokables, as `importFromJSON` already does with its error string, and toast or exit selection mode only on success.
-- **To discuss**: This only shows on a storage failure. Is it worth changing the C++ interface now, or enough to note it?
+- **Status**: Done. Fixed on 2026-11-28.
+- **Fix**:
+  - `addFlight`, `removeFlight`, `removeFlights`, `clearFlights`, `updateFlight`, `removeTrack` and `showTrack` return `bool`: true if the change was made (for `showTrack`: the track is displayed). Storage failures still emit `saveError()`, so `main.qml` keeps showing the error dialog with the reason; a `bool` is enough for the page.
+  - The page toasts, and leaves selection mode after a multi-remove, only on true. On failure the selection is kept.
+  - "Show on Map" toasts "Track data could not be read." on false, the string the per-flight "Save to IGC…" already uses.
+  - Not `[[nodiscard]]`: `DemoRunner` and the flight detector call `addFlight()` and ignore the result.
+- **Tested** on the Android emulator (API 36, x86_64, Debug build with `-DFLIGHTLOG=ON`). Storage failures were provoked by making the app's `files` directory read-only (`chmod 555`), so that SQLite cannot create its journal:
+  - Swipe-remove, "Remove Selected Flights…", "Clear Flight Log", "Delete IGC Track…", editing a flight, "Add Flight": each shows the error dialog and no success toast; the list, the track file and (for the multi-remove) the selection are unchanged.
+  - Editing without changes succeeds and toasts "Flight updated" even with the directory read-only: SQLite does not write a page whose content is unchanged. The stored flight matches the list, so the toast is correct.
+  - Writable again: "Flight removed" and "Track deleted" are toasted, the track file is deleted.
+  - "Show on Map" with the track file unreadable (`chmod 000`): toast "Track data could not be read."; with it readable: the track is shown, no toast.
+  - No QML warnings in logcat.
+- **Side findings** (not fixed):
+  - The error dialog in [main.qml:1127](src/qml/main.qml#L1127) says "Recent changes will be lost when the app closes." Since the operations persist first, a failed change is not made at all; the text is misleading.
+  - The flight editor closes on OK even when the update or add fails, so the user's input is lost.
+  - If the flight detector's `addFlight()` fails at takeoff ([FlightLog.cpp:931](src/flightlog/FlightLog.cpp#L931)), `m_currentFlightUuid` points to a flight that is not in the log, and the landing is lost silently.
 
 ### F-07 "Show live flight trace" shows off while the map still draws the trace
 

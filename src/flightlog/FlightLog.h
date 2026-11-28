@@ -156,16 +156,24 @@ public:
      *  Use updateFlight() to change a flight that is in the log.
      *
      *  @param flight The flight to add
+     *
+     *  @returns True if the flight log was changed. False if there was nothing
+     *  to do, or if the change could not be stored; in the latter case
+     *  saveError() has been emitted.
      */
-    Q_INVOKABLE void addFlight(const Flightlog::Flight& flight);
+    Q_INVOKABLE bool addFlight(const Flightlog::Flight& flight);
 
     /*! \brief Remove a flight from the log by UUID
      *
      *  Does nothing if no flight with the given UUID exists.
      *
      *  @param uuid The UUID of the flight to remove (with or without braces)
+     *
+     *  @returns True if the flight log was changed. False if there was nothing
+     *  to do, or if the change could not be stored; in the latter case
+     *  saveError() has been emitted.
      */
-    Q_INVOKABLE void removeFlight(const QString& uuid);
+    Q_INVOKABLE bool removeFlight(const QString& uuid);
 
     /*! \brief Remove multiple flights from the log by UUID
      *
@@ -175,15 +183,23 @@ public:
      *  match.
      *
      *  @param uuids UUIDs of the flights to remove (with or without braces)
+     *
+     *  @returns True if the flight log was changed. False if there was nothing
+     *  to do, or if the change could not be stored; in the latter case
+     *  saveError() has been emitted.
      */
-    Q_INVOKABLE void removeFlights(const QStringList& uuids);
+    Q_INVOKABLE bool removeFlights(const QStringList& uuids);
 
     /*! \brief Remove all flights from the log
      *
      *  Deletes every flight entry and its associated track file, saves, and
      *  resets flightsModel.
+     *
+     *  @returns True if the flight log was changed. False if there was nothing
+     *  to do, or if the change could not be stored; in the latter case
+     *  saveError() has been emitted.
      */
-    Q_INVOKABLE void clearFlights();
+    Q_INVOKABLE bool clearFlights();
 
     /*! \brief Update an existing flight in the log
      *
@@ -193,8 +209,12 @@ public:
      *
      *  @param uuid UUID of the flight to update (with or without braces)
      *  @param flight The updated flight data
+     *
+     *  @returns True if the flight log was changed. False if there was nothing
+     *  to do, or if the change could not be stored; in the latter case
+     *  saveError() has been emitted.
      */
-    Q_INVOKABLE void updateFlight(const QString& uuid, const Flightlog::Flight& flight);
+    Q_INVOKABLE bool updateFlight(const QString& uuid, const Flightlog::Flight& flight);
 
     /*! \brief Create a Flight value from individual field strings
      *
@@ -386,8 +406,12 @@ public:
      *  property on the flight entry.
      *
      *  @param uuid UUID of the flight whose track to delete (with or without braces)
+     *
+     *  @returns True if the flight log was changed. False if there was nothing
+     *  to do, or if the change could not be stored; in the latter case
+     *  saveError() has been emitted.
      */
-    Q_INVOKABLE void removeTrack(const QString& uuid);
+    Q_INVOKABLE bool removeTrack(const QString& uuid);
 
     /*! \brief Show a flight's track on the map
      *
@@ -395,8 +419,11 @@ public:
      *  Only one track can be displayed at a time.
      *
      *  @param uuid UUID of the flight whose track to show (with or without braces)
+     *
+     *  @returns True if the track is now displayed. False if the flight is
+     *  unknown, has no track, or its track file cannot be read.
      */
-    Q_INVOKABLE void showTrack(const QString& uuid);
+    Q_INVOKABLE bool showTrack(const QString& uuid);
 
     /*! \brief Hide the currently displayed track from the map */
     Q_INVOKABLE void hideTrack();

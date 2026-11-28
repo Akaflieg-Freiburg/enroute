@@ -248,14 +248,14 @@ auto Flightlog::FlightLog::detectionState() const -> FlightDetector::DetectionSt
 // CRUD operations
 //
 
-void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
+bool Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
 {
     // The UUID is the key of a flight, in the list and in the database:
     // upsert() below would overwrite a stored flight with the same UUID, and
     // the list would show two entries until the next start. Changes to a
     // flight that is in the log go through updateFlight().
     if (m_model->row(flight.uuid()) >= 0) {
-        return;
+        return false;
     }
 
     auto f = flight;
@@ -263,9 +263,10 @@ void Flightlog::FlightLog::addFlight(const Flightlog::Flight& flight)
     // Persist first. upsert() emits saveError() on failure; do not publish a
     // flight that would silently vanish on the next start.
     if (!m_storage->upsert(f)) {
-        return;
+        return false;
     }
     m_model->add(f);
+    return true;
 }
 
 void Flightlog::FlightLog::setTrackRecording(bool enabled)
@@ -305,15 +306,15 @@ bool Flightlog::FlightLog::showCurrentFlightTrace() const
 }
 
 
-void Flightlog::FlightLog::removeFlight(const QString& uuid)
+bool Flightlog::FlightLog::removeFlight(const QString& uuid)
 {
     const auto id = QUuid::fromString(uuid);
     if (id.isNull()) {
-        return;
+        return false;
     }
     const auto row = m_model->row(id);
     if (row < 0) {
-        return;
+        return false;
     }
 
     // A copy: the side effects below must not change the model behind its back
@@ -324,7 +325,7 @@ void Flightlog::FlightLog::removeFlight(const QString& uuid)
     // pointing to a deleted file would resurrect a trackless flight on the
     // next start. remove() has already emitted saveError().
     if (!m_storage->remove(id)) {
-        return;
+        return false;
     }
 
     // If this flight's track is currently displayed, hide it first
@@ -344,10 +345,11 @@ void Flightlog::FlightLog::removeFlight(const QString& uuid)
 
     m_recorder->removeTrack(flight);
     m_model->remove(row);
+    return true;
 }
 
 
-void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
+bool Flightlog::FlightLog::removeFlights(const QStringList& uuids)
 {
     // Collect the flights that actually exist
     QList<QUuid> removedIds;
@@ -361,13 +363,13 @@ void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
         }
     }
     if (removedIds.isEmpty()) {
-        return;
+        return false;
     }
 
     // Persist first; see removeFlight() for the rationale. removeMany() is
     // transactional and has already emitted saveError() on failure.
     if (!m_storage->removeMany(removedIds)) {
-        return;
+        return false;
     }
 
     for (const auto& id : removedIds) {
@@ -390,19 +392,20 @@ void Flightlog::FlightLog::removeFlights(const QStringList& uuids)
         m_recorder->removeTrack(flight);
         m_model->remove(row);
     }
+    return true;
 }
 
 
-void Flightlog::FlightLog::clearFlights()
+bool Flightlog::FlightLog::clearFlights()
 {
     // A copy, to remove the track files once the log is cleared
     auto flights = m_model->flights();
     if (flights.isEmpty()) {
-        return;
+        return false;
     }
     // Persist first; see removeFlight() for the rationale.
     if (!m_storage->removeAll()) {
-        return;
+        return false;
     }
     hideTrack();
     if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
@@ -416,24 +419,26 @@ void Flightlog::FlightLog::clearFlights()
         m_recorder->removeTrack(flight);
     }
     m_model->reset({});
+    return true;
 }
 
 
 
-void Flightlog::FlightLog::updateFlight(const QString& uuid, const Flightlog::Flight& flight)
+bool Flightlog::FlightLog::updateFlight(const QString& uuid, const Flightlog::Flight& flight)
 {
     const auto row = m_model->row(QUuid::fromString(uuid));
     if (row < 0) {
-        return;
+        return false;
     }
 
     const auto f = applyEdits(m_model->flights().at(row), flight);
 
     // Persist first; see addFlight() for the rationale.
     if (!m_storage->upsert(f)) {
-        return;
+        return false;
     }
     m_model->replace(row, f);
+    return true;
 }
 
 
@@ -746,16 +751,16 @@ auto Flightlog::FlightLog::importFromJSON(const QString& fileName) -> QString
 }
 
 
-void Flightlog::FlightLog::removeTrack(const QString& uuid)
+bool Flightlog::FlightLog::removeTrack(const QString& uuid)
 {
     const auto row = m_model->row(QUuid::fromString(uuid));
     if (row < 0) {
-        return;
+        return false;
     }
 
     auto flight = m_model->flights().at(row);
     if (flight.trackFile().isEmpty()) {
-        return;
+        return false;
     }
 
     // Persist the flight without its track reference first. Only then delete
@@ -764,7 +769,7 @@ void Flightlog::FlightLog::removeTrack(const QString& uuid)
     auto updatedFlight = flight;
     updatedFlight.setTrackFile({});
     if (!m_storage->upsert(updatedFlight)) {
-        return;
+        return false;
     }
 
     // If this track is currently displayed, hide it first
@@ -776,6 +781,7 @@ void Flightlog::FlightLog::removeTrack(const QString& uuid)
     // Deletes the file and clears the track reference of the flight
     m_recorder->removeTrack(flight);
     m_model->replace(row, flight);
+    return true;
 }
 
 
@@ -796,7 +802,7 @@ auto Flightlog::FlightLog::displayedTrackPath() const -> QGeoPath
 }
 
 
-void Flightlog::FlightLog::showTrack(const QString& uuid)
+bool Flightlog::FlightLog::showTrack(const QString& uuid)
 {
     auto targetUuid = QUuid::fromString(uuid);
     const auto& flights = m_model->flights();
@@ -804,20 +810,21 @@ void Flightlog::FlightLog::showTrack(const QString& uuid)
         return f.uuid() == targetUuid;
     });
     if (it == flights.end()) {
-        return;
+        return false;
     }
     if (!it->hasTrack()) {
-        return;
+        return false;
     }
 
     // Load into a local first — only commit state if successful
     auto path = m_recorder->loadTrackPath(*it);
     if (path.isEmpty()) {
-        return;
+        return false;
     }
     m_displayedTrackPath = QGeoPath(path);
     m_displayedTrackFile = it->trackFile();
     emit displayedTrackPathChanged();
+    return true;
 }
 
 

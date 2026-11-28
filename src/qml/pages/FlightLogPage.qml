@@ -650,8 +650,8 @@ Page {
                             PlatformAdaptor.vibrateBrief()
                             if (FlightLog.displayedTrackUuid === flightRow.flight.uuidString) {
                                 FlightLog.hideTrack()
-                            } else {
-                                FlightLog.showTrack(flightRow.flight.uuidString)
+                            } else if (!FlightLog.showTrack(flightRow.flight.uuidString)) {
+                                Global.toast.doToast(qsTr("Track data could not be read."))
                             }
                         }
                     }
@@ -826,8 +826,9 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            FlightLog.removeTrack(removeTrackDialog.flightUuid)
-            Global.toast.doToast(qsTr("Track deleted"))
+            if (FlightLog.removeTrack(removeTrackDialog.flightUuid)) {
+                Global.toast.doToast(qsTr("Track deleted"))
+            }
         }
         onRejected: {
         }
@@ -843,8 +844,9 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            FlightLog.removeFlight(removeDialog.flightUuid)
-            Global.toast.doToast(qsTr("Flight removed"))
+            if (FlightLog.removeFlight(removeDialog.flightUuid)) {
+                Global.toast.doToast(qsTr("Flight removed"))
+            }
         }
         onRejected: {
         }
@@ -858,8 +860,9 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            FlightLog.clearFlights()
-            Global.toast.doToast(qsTr("Flight log cleared"))
+            if (FlightLog.clearFlights()) {
+                Global.toast.doToast(qsTr("Flight log cleared"))
+            }
         }
     }
 
@@ -871,9 +874,11 @@ Page {
         standardButtons: Dialog.No | Dialog.Yes
 
         onAccepted: {
-            FlightLog.removeFlights(page.selectedUuids)
-            Global.toast.doToast(qsTr("Flights removed"))
-            page.exitSelectionMode()
+            // On failure, keep the selection, so that the user can try again
+            if (FlightLog.removeFlights(page.selectedUuids)) {
+                Global.toast.doToast(qsTr("Flights removed"))
+                page.exitSelectionMode()
+            }
         }
         onRejected: {
         }
@@ -900,8 +905,9 @@ Page {
 
         onAccepted: {
             const edited = flightEditor.resultFlight()
-            FlightLog.updateFlight(edited.uuidString, edited)
-            Global.toast.doToast(qsTr("Flight updated"))
+            if (FlightLog.updateFlight(edited.uuidString, edited)) {
+                Global.toast.doToast(qsTr("Flight updated"))
+            }
         }
     }
 
@@ -911,8 +917,9 @@ Page {
         title: qsTr("Add Flight")
 
         onAccepted: {
-            FlightLog.addFlight(addFlightEditor.resultFlight())
-            Global.toast.doToast(qsTr("Flight added"))
+            if (FlightLog.addFlight(addFlightEditor.resultFlight())) {
+                Global.toast.doToast(qsTr("Flight added"))
+            }
         }
     }
 

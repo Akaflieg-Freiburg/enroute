@@ -15,8 +15,8 @@ The page is clean at the type level: the project's `all_qmllint` target reports 
 | F-05 | System Back pops the page in selection mode | Medium | Code read | Done |
 | F-06 | Success toasts are unconditional although the operations can fail | Medium | Analysis trace | Done |
 | F-06a | Side findings of F-06: error text, editor loses input, failed takeoff save | Medium | Found while fixing F-06 | Done |
-| F-07 | "Show live flight trace" shows off while the map still draws the trace | Medium | Code read | Open |
-| F-08 | Detection is off by default, but the page behaves as if it were on | Medium | Code read | Open |
+| F-07 | "Show live flight trace" shows off while the map still draws the trace | Medium | Code read | Done |
+| F-08 | Detection is off by default, but the page behaves as if it were on | Medium | Code read | Done |
 | F-09 | Hard-coded colours ignore the theme | Medium | Code read | Open |
 | F-10 | Counted strings without plural handling | Low | Analysis trace | Open |
 | F-11 | Long comments break mid-word; time line has loose ends | Low | Code read | Open |
@@ -167,14 +167,34 @@ Four further points need a run to settle and are listed under [To verify](#to-ve
   - Takeoff while writable, landing while read-only: the error dialog appears, the list entry and the database keep the takeoff data only, and the IGC file remains in `tracks/`.
   - No QML warnings in logcat.
 
-### F-07 "Show live flight trace" shows off while the map still draws the trace
+### F-07 "Show live flight trace" shows off while the map still draws the trace — done
 
 - **Where**: [FlightLogPage.qml:166-175](src/qml/pages/FlightLogPage.qml#L166-L175)
 - **What happens**: In flight with recording on and the trace shown, unticking "Record GPS track" turns the third item unchecked and disabled. The map keeps drawing the frozen partial trace until landing, and the user cannot hide it: the item is disabled, and "Hide Track from Map" only applies to saved tracks.
 - **Why**: The menu models a chain (detection → recording → live trace) through `enabled` and `checked`. C++ implements only the first link: `displayedTrackPath()` tests `showCurrentFlightTrace()` alone ([FlightLog.cpp:776-790](src/flightlog/FlightLog.cpp#L776-L790)), and `setTrackRecording` only writes the setting ([FlightLog.cpp:271-278](src/flightlog/FlightLog.cpp#L271-L278)).
 - **To discuss**: Which side should be authoritative? Either C++ honours the chain (no live path while recording is off, or the in-memory track is discarded when recording is switched off), or the menu item depends only on what C++ actually tests.
+- **Status**: Done. Fixed on 2026-11-28.
+- **Fix**: C++ follows the menu's chain.
+  - `displayedTrackPath()` returns the live track only if `trackRecording() && showCurrentFlightTrace()`. A saved track selected with "Show on Map" is not affected.
+  - The forwarded `trackRecordingChanged` also emits `displayedTrackPathChanged()`, so the map updates when recording is switched.
+  - The in-memory track is kept, not discarded: a mis-tap in flight is undone by ticking recording again. As before, the track is saved at landing only if recording is on then. If recording was off for part of the flight, the saved track jumps straight across that stretch; the IGC points carry timestamps.
+  - The detection link needed no change: switching detection off already clears the track.
+  - The menu in `FlightLogPage.qml` is unchanged; its `checked` and `enabled` states now match what C++ shows.
+- **Tested** on the Android emulator (API 36, x86_64, Debug build with `-DFLIGHTLOG=ON`), with flights simulated by `adb emu geo fix` from KGTU as for F-06a:
+  - In flight, unticking "Record GPS track": the menu shows recording off and the trace option disabled and unchecked; the trace disappears from the map and stays hidden while flying on.
+  - Ticking it again: the earlier part of the trace reappears, and the trace continues from the current position.
+  - Landing with recording on: the IGC file has the points before the pause and after it, none of the three positions flown while recording was off.
+  - Landing with recording off: the flight is saved without a track, and no IGC file is written.
+  - With recording off, "Show on Map" of a saved flight still draws its track.
+  - No QML warnings in logcat.
+- **Side finding** (fixed on 2026-11-28): closing the header ⋮ menu with the Android back gesture (`input swipe 2 y 500 y 250`) selects the flight row the gesture starts on and enters selection mode.
+  - **Sequence**, from temporary logging on the emulator: the gesture's touch press reaches the row through the open menu (the menu is not modal), and the row reports `pressed`. Android cancels the touch about 20–30 ms later, and Qt removes the row's grab (`qt.pointer.grab`: row → null). The Back key closes the menu, so the page stays. About 800 ms after the press, the row emits `pressAndHold`, and `onPressAndHold` selects it. The row never emits `canceled`.
+  - **Root cause: a Qt bug.** `QQuickSwipeDelegate::mouseUngrabEvent()` (qquickswipedelegate.cpp:1319 in Qt 6.12.1) overrides `QQuickControl::mouseUngrabEvent()`, which calls `handleUngrab()`. The override only calls `setPressed(false)`: it neither stops the press-and-hold timer nor emits `canceled()`. `QQuickAbstractButton::timerEvent()` then emits `pressAndHold()` without checking `pressed`. Every SwipeDelegate that loses its grab within the hold interval is affected; the touch cancel of the back gesture is one way to get there. No matching Qt bug report was found.
+  - **Why only with the menu**: without it, the same stale `pressAndHold` happens too, but the Back key pops the page, which is gone by then. In selection mode the checkbox column moves the row away from the screen edge, so the edge press lands on the checkbox; not reproduced there.
+  - **Fix**: `onPressAndHold` returns unless `iDel.pressed`, with a comment that names the Qt bug. A real long press is still pressed when the timer fires; the stale one is not, because the ungrab has called `setPressed(false)`.
+  - **Tested** on the Android emulator: the back gesture over the row with the ⋮ menu open, three times, closes the menu and selects nothing. A real long press (`input swipe x y x y 1200`) still enters selection mode with the row selected, and the row stays selected after release (F-01). Taps in selection mode toggle the row. The back gesture over the row without a menu closes the page as before. No QML warnings in logcat.
 
-### F-08 Detection is off by default, but the page behaves as if it were on
+### F-08 Detection is off by default, but the page behaves as if it were on — done
 
 - **Where**: [FlightLogPage.qml:425-427](src/qml/pages/FlightLogPage.qml#L425-L427), [745-753](src/qml/pages/FlightLogPage.qml#L745-L753)
 - **What happens**:
@@ -182,6 +202,16 @@ Four further points need a run to settle and are listed under [To verify](#to-ve
   - "Add Flight" prefills the arrival airfield "if not in flight", tested as `detectionState === Idle`. With detection off the detector is never fed and stays Idle, so adding a flight shortly after takeoff prefills the arrival with the departure field. The editor does not warn about it.
 - **Why**: `autoFlightDetection` defaults to `false` ([GlobalSettings.cpp:82](src/GlobalSettings.cpp#L82)), and the detector is skipped while it is off ([FlightLog.cpp:1021-1027](src/flightlog/FlightLog.cpp#L1021-L1027)).
 - **Proposed fix**: Make the empty-state text depend on the setting (say that detection can be switched on in the menu, or offer a button). For the prefill, also require `Navigator.flightStatus !== Navigator.Flight`; the reason given at the edit button for not using `flightStatus` does not apply to a prefill heuristic.
+- **Status**: Done. Fixed on 2026-11-28.
+- **Fix**:
+  - The empty-list text depends on `GlobalSettings.autoFlightDetection`. While detection is off, it says to add flights with the button below, and that automatic recording can be turned on with "Automatic flight detection" in the menu at the top right. While it is on, the text is unchanged. Text only, no button: turning detection on asks for permissions, which belongs with the setting.
+  - The proposed `Navigator.flightStatus` test does not work for the default setup: `flightStatus` is `Unknown` while the aircraft has no minimum speed ([Navigator.cpp:193-197](src/navigation/Navigator.cpp#L193-L197)), and none is configured by default. Instead, `FlightLog.currentAirfield()` (new) returns `nearestAirfield()` only if the detector is idle and the ground speed is unknown or below `AirplaneFlightDetector::takeoffSpeed()`: the aircraft's minimum speed, or 50 km/h. `takeoffSpeed()` is the former private `aircraftMinimumSpeed()`, now public and static. The "Add Flight" handler uses `currentAirfield()` for the arrival and, without a last arrival, for the departure.
+- **Tested** on the Android emulator (API 36, x86_64, Debug build with `-DFLIGHTLOG=ON`), with no aircraft configured (no minimum speed) and an empty flight log:
+  - Detection off: the new empty-list text. Turning detection on in the menu switches to the old text immediately.
+  - Detection off, on the ground at KGTU (`geo fix`, 0 kn): "Add Flight" prefills departure and arrival with KGTU, as before.
+  - Detection off, in the air near KGTU at 90 kn: departure and arrival stay empty (before: KGTU).
+  - Detection on, in flight after a detected takeoff: the arrival stays empty.
+  - No QML warnings in logcat.
 
 ### F-09 Hard-coded colours ignore the theme
 

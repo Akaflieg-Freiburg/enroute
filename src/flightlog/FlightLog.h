@@ -134,8 +134,9 @@ public:
 
     /*! \brief Whether the live trace of the current flight is shown on map
      *
-     *  When true, the current in-memory live track is exposed through
-     *  displayedTrackPath while no saved track is selected. Default is true.
+     *  When true and trackRecording is true, the current in-memory live
+     *  track is exposed through displayedTrackPath while no saved track is
+     *  selected. Default is true.
      */
     Q_PROPERTY(bool showCurrentFlightTrace READ showCurrentFlightTrace WRITE setShowCurrentFlightTrace NOTIFY showCurrentFlightTraceChanged)
     [[nodiscard]] auto showCurrentFlightTrace() const -> bool;
@@ -356,6 +357,18 @@ public:
      *  @returns The nearest airfield, or an invalid Waypoint
      */
     Q_INVOKABLE static GeoMaps::Waypoint nearestAirfield(const QGeoCoordinate& position = {}, double proximityM = 5000.0);
+
+    /*! \brief Airfield where the device is on the ground now
+     *
+     *  Returns nearestAirfield() for the current position, but only if the
+     *  device is not flying: the flight detector is idle, and the ground
+     *  speed is unknown or below AirplaneFlightDetector::takeoffSpeed().
+     *  The speed test also works while automatic flight detection is off,
+     *  and for an aircraft without a configured minimum speed.
+     *
+     *  @returns The airfield, or an invalid Waypoint
+     */
+    [[nodiscard]] Q_INVOKABLE GeoMaps::Waypoint currentAirfield() const;
 
     /*! \brief Get IGC track content for a flight
      *

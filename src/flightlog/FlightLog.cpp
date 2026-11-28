@@ -156,7 +156,10 @@ void Flightlog::FlightLog::deferredInitialization()
     // Forward GlobalSettings NOTIFY signals so FlightLog property bindings
     // stay consistent regardless of who writes the underlying setting.
     connect(GlobalObject::globalSettings(), &GlobalSettings::trackRecordingChanged,
-            this, &Flightlog::FlightLog::trackRecordingChanged);
+            this, [this]() {
+                emit trackRecordingChanged();
+                emit displayedTrackPathChanged();
+            });
     connect(GlobalObject::globalSettings(), &GlobalSettings::showCurrentFlightTraceChanged,
             this, [this]() {
                 emit showCurrentFlightTraceChanged();
@@ -646,6 +649,23 @@ auto Flightlog::FlightLog::nearestAirfield(const QGeoCoordinate& position, doubl
 }
 
 
+auto Flightlog::FlightLog::currentAirfield() const -> GeoMaps::Waypoint
+{
+    if (m_detector != nullptr && m_detector->detectionState() != FlightDetector::Idle) {
+        return {};
+    }
+    auto* positionProvider = GlobalObject::positionProvider();
+    if (positionProvider == nullptr) {
+        return {};
+    }
+    const auto groundSpeed = positionProvider->positionInfo().groundSpeed();
+    if (groundSpeed.isFinite() && groundSpeed >= AirplaneFlightDetector::takeoffSpeed()) {
+        return {};
+    }
+    return nearestAirfield();
+}
+
+
 auto Flightlog::FlightLog::exportToIGC(const QString& uuid) const -> QByteArray
 {
     auto targetUuid = QUuid::fromString(uuid);
@@ -792,8 +812,10 @@ auto Flightlog::FlightLog::displayedTrackPath() const -> QGeoPath
         return m_displayedTrackPath;
     }
 
-    // Otherwise return the live recording track when enabled
-    if (!showCurrentFlightTrace()) {
+    // Otherwise return the live recording track when enabled. While
+    // recording is off, the recorder keeps the track recorded so far, but it
+    // is not shown: it is saved at landing only if recording is on again.
+    if (!trackRecording() || !showCurrentFlightTrace()) {
         return {};
     }
 

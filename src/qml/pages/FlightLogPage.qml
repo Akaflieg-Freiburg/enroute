@@ -458,9 +458,13 @@ Page {
 
             textFormat: Text.RichText
             wrapMode: Text.Wrap
-            text: (flightFilter.filter === "")
-                  ? qsTr("<h3>No flights recorded</h3><p>Flights will be automatically recorded when takeoff and landing are detected near airfields. You can also add flights manually using the button below.</p>")
-                  : qsTr("<h3>Sorry!</h3><p>No flights match your filter.</p>")
+            text: {
+                if (flightFilter.filter !== "")
+                    return qsTr("<h3>Sorry!</h3><p>No flights match your filter.</p>")
+                if (GlobalSettings.autoFlightDetection)
+                    return qsTr("<h3>No flights recorded</h3><p>Flights will be automatically recorded when takeoff and landing are detected near airfields. You can also add flights manually using the button below.</p>")
+                return qsTr("<h3>No flights recorded</h3><p>Add flights using the button below.</p><p>The app can also record flights by itself, when it detects takeoff and landing near airfields. To use this, turn on \u201CAutomatic flight detection\u201D in the menu at the top right.</p>")
+            }
         }
     }
 
@@ -595,6 +599,13 @@ Page {
                 // that would otherwise follow on release and toggle the
                 // selection back.
                 onPressAndHold: {
+                    // Ignore a press that was cancelled, for instance by the
+                    // Android back gesture that starts on this row. Qt bug:
+                    // QQuickSwipeDelegate::mouseUngrabEvent() only resets
+                    // pressed, but does not stop the press-and-hold timer,
+                    // so pressAndHold still follows (seen in Qt 6.12.1).
+                    if (!iDel.pressed)
+                        return
                     PlatformAdaptor.vibrateBrief()
                     page.selectionMode = true
                     page.toggleSelection(flightRow.flight.uuidString)
@@ -781,14 +792,13 @@ Page {
                     var acName = Navigator.aircraft.name
 
                     // Prefill arrival with the airfield where the device is
-                    // now, if not in flight and with a current GPS fix: the
-                    // flight is probably logged right after landing there
+                    // on the ground now: the flight is probably logged right
+                    // after landing there. currentAirfield() is invalid in
+                    // flight, also while automatic flight detection is off.
                     var nearestAD = ""
-                    if (FlightLog.detectionState === FlightDetector.Idle) {
-                        const wp = FlightLog.nearestAirfield()
-                        if (wp.isValid)
-                            nearestAD = wp.shortName
-                    }
+                    const wp = FlightLog.currentAirfield()
+                    if (wp.isValid)
+                        nearestAD = wp.shortName
 
                     // Prefill departure with last arrival of this aircraft.
                     // Without one, assume a local flight from the airfield

@@ -903,9 +903,10 @@ Page {
 
         title: qsTr("Edit Flight")
 
-        onAccepted: {
+        onApplied: {
             const edited = flightEditor.resultFlight()
             if (FlightLog.updateFlight(edited.uuidString, edited)) {
+                flightEditor.accept()
                 Global.toast.doToast(qsTr("Flight updated"))
             }
         }
@@ -916,8 +917,9 @@ Page {
 
         title: qsTr("Add Flight")
 
-        onAccepted: {
+        onApplied: {
             if (FlightLog.addFlight(addFlightEditor.resultFlight())) {
+                addFlightEditor.accept()
                 Global.toast.doToast(qsTr("Flight added"))
             }
         }

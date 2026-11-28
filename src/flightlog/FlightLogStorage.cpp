@@ -143,7 +143,8 @@ void Flightlog::FlightLogStorage::openDatabase()
         auto db = QSqlDatabase::addDatabase(u"QSQLITE"_s, m_databaseConnectionName);
         db.setDatabaseName(m_dbFileName);
         if (!db.open()) {
-            reportError(db.lastError().text());
+            reportError(tr("The flight log could not be opened. Changes to the flight log cannot be saved. Reason: %1")
+                        .arg(db.lastError().text()));
             return;
         }
     }
@@ -151,7 +152,8 @@ void Flightlog::FlightLogStorage::openDatabase()
     auto db = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(db);
     if (!query.exec(createTableStatement())) {
-        reportError(query.lastError().text());
+        reportError(tr("The flight log could not be opened. Changes to the flight log cannot be saved. Reason: %1")
+                    .arg(query.lastError().text()));
     }
 }
 
@@ -177,6 +179,12 @@ void Flightlog::FlightLogStorage::reportError(const QString& message)
     QMetaObject::invokeMethod(this, [this, message]() {
         emit saveError(message);
     }, Qt::QueuedConnection);
+}
+
+
+void Flightlog::FlightLogStorage::reportWriteError(const QString& reason)
+{
+    reportError(tr("The change could not be saved, so the flight log was not changed. Reason: %1").arg(reason));
 }
 
 
@@ -217,13 +225,13 @@ auto Flightlog::FlightLogStorage::loadAll() -> QList<Flight>
 
     auto db = QSqlDatabase::database(m_databaseConnectionName);
     if (!db.isOpen()) {
-        reportError(tr("The flight log database is not open."));
+        reportError(tr("The flight log could not be read. Reason: %1").arg(tr("The flight log database is not open.")));
         return result;
     }
 
     QSqlQuery query(db);
     if (!query.exec(selectStatement())) {
-        reportError(query.lastError().text());
+        reportError(tr("The flight log could not be read. Reason: %1").arg(query.lastError().text()));
         return result;
     }
 
@@ -276,7 +284,7 @@ bool Flightlog::FlightLogStorage::upsert(const Flight& flight)
 {
     auto db = QSqlDatabase::database(m_databaseConnectionName);
     if (!db.isOpen()) {
-        reportError(tr("The flight log database is not open."));
+        reportWriteError(tr("The flight log database is not open."));
         return false;
     }
 
@@ -284,7 +292,7 @@ bool Flightlog::FlightLogStorage::upsert(const Flight& flight)
     query.prepare(upsertStatement());
     bindFlight(query, flight);
     if (!query.exec()) {
-        reportError(query.lastError().text());
+        reportWriteError(query.lastError().text());
         return false;
     }
     return true;
@@ -299,12 +307,12 @@ bool Flightlog::FlightLogStorage::upsertMany(const QList<Flight>& flights)
 
     auto db = QSqlDatabase::database(m_databaseConnectionName);
     if (!db.isOpen()) {
-        reportError(tr("The flight log database is not open."));
+        reportWriteError(tr("The flight log database is not open."));
         return false;
     }
 
     if (!db.transaction()) {
-        reportError(db.lastError().text());
+        reportWriteError(db.lastError().text());
         return false;
     }
 
@@ -314,14 +322,14 @@ bool Flightlog::FlightLogStorage::upsertMany(const QList<Flight>& flights)
         bindFlight(query, flight);
         if (!query.exec()) {
             db.rollback();
-            reportError(query.lastError().text());
+            reportWriteError(query.lastError().text());
             return false;
         }
     }
 
     if (!db.commit()) {
         db.rollback();
-        reportError(db.lastError().text());
+        reportWriteError(db.lastError().text());
         return false;
     }
     return true;
@@ -332,7 +340,7 @@ bool Flightlog::FlightLogStorage::remove(const QUuid& uuid)
 {
     auto db = QSqlDatabase::database(m_databaseConnectionName);
     if (!db.isOpen()) {
-        reportError(tr("The flight log database is not open."));
+        reportWriteError(tr("The flight log database is not open."));
         return false;
     }
 
@@ -340,7 +348,7 @@ bool Flightlog::FlightLogStorage::remove(const QUuid& uuid)
     query.prepare(u"DELETE FROM flights WHERE uuid = ?"_s);
     query.addBindValue(uuid.toString(QUuid::WithoutBraces));
     if (!query.exec()) {
-        reportError(query.lastError().text());
+        reportWriteError(query.lastError().text());
         return false;
     }
     return true;
@@ -355,12 +363,12 @@ bool Flightlog::FlightLogStorage::removeMany(const QList<QUuid>& uuids)
 
     auto db = QSqlDatabase::database(m_databaseConnectionName);
     if (!db.isOpen()) {
-        reportError(tr("The flight log database is not open."));
+        reportWriteError(tr("The flight log database is not open."));
         return false;
     }
 
     if (!db.transaction()) {
-        reportError(db.lastError().text());
+        reportWriteError(db.lastError().text());
         return false;
     }
 
@@ -370,14 +378,14 @@ bool Flightlog::FlightLogStorage::removeMany(const QList<QUuid>& uuids)
         query.addBindValue(uuid.toString(QUuid::WithoutBraces));
         if (!query.exec()) {
             db.rollback();
-            reportError(query.lastError().text());
+            reportWriteError(query.lastError().text());
             return false;
         }
     }
 
     if (!db.commit()) {
         db.rollback();
-        reportError(db.lastError().text());
+        reportWriteError(db.lastError().text());
         return false;
     }
     return true;
@@ -388,13 +396,13 @@ bool Flightlog::FlightLogStorage::removeAll()
 {
     auto db = QSqlDatabase::database(m_databaseConnectionName);
     if (!db.isOpen()) {
-        reportError(tr("The flight log database is not open."));
+        reportWriteError(tr("The flight log database is not open."));
         return false;
     }
 
     QSqlQuery query(db);
     if (!query.exec(u"DELETE FROM flights"_s)) {
-        reportError(query.lastError().text());
+        reportWriteError(query.lastError().text());
         return false;
     }
     return true;

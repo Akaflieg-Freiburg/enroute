@@ -1128,8 +1128,7 @@ AppWindow {
             Global.dialogLoader.active = false
             Global.dialogLoader.setSource("dialogs/LongTextDialog.qml", {
                                               title: qsTr("Flight log error"),
-                                              text: qsTr("The flight log could not be saved to storage. Recent changes will be lost when the app closes.")
-                                                    + "<br><br>" + qsTr("Reason: %1").arg(message),
+                                              text: message,
                                               standardButtons: Dialog.Close
                                           })
             Global.dialogLoader.active = true

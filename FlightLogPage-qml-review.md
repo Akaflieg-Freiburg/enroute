@@ -14,6 +14,7 @@ The page is clean at the type level: the project's `all_qmllint` target reports 
 | F-04 | "Save as…" leaves selection mode before the save has a result | Medium | Code read | Done |
 | F-05 | System Back pops the page in selection mode | Medium | Code read | Done |
 | F-06 | Success toasts are unconditional although the operations can fail | Medium | Analysis trace | Done |
+| F-06a | Side findings of F-06: error text, editor loses input, failed takeoff save | Medium | Found while fixing F-06 | Done |
 | F-07 | "Show live flight trace" shows off while the map still draws the trace | Medium | Code read | Open |
 | F-08 | Detection is off by default, but the page behaves as if it were on | Medium | Code read | Open |
 | F-09 | Hard-coded colours ignore the theme | Medium | Code read | Open |
@@ -140,10 +141,31 @@ Four further points need a run to settle and are listed under [To verify](#to-ve
   - Writable again: "Flight removed" and "Track deleted" are toasted, the track file is deleted.
   - "Show on Map" with the track file unreadable (`chmod 000`): toast "Track data could not be read."; with it readable: the track is shown, no toast.
   - No QML warnings in logcat.
-- **Side findings** (not fixed):
-  - The error dialog in [main.qml:1127](src/qml/main.qml#L1127) says "Recent changes will be lost when the app closes." Since the operations persist first, a failed change is not made at all; the text is misleading.
-  - The flight editor closes on OK even when the update or add fails, so the user's input is lost.
-  - If the flight detector's `addFlight()` fails at takeoff ([FlightLog.cpp:931](src/flightlog/FlightLog.cpp#L931)), `m_currentFlightUuid` points to a flight that is not in the log, and the landing is lost silently.
+- **Side findings**: all three fixed on 2026-11-28, see the next section.
+
+### F-06a Side findings of F-06 — done
+
+- **Status**: Done. Fixed on 2026-11-28.
+- **Error dialog text** ([main.qml:1127](src/qml/main.qml#L1127)). The dialog said "Recent changes will be lost when the app closes" for every flight log error, which was not true for any of them.
+  - The code that knows what happened now writes the whole message. The dialog keeps its title "Flight log error" and shows only the message.
+  - [FlightLogStorage.cpp](src/flightlog/FlightLogStorage.cpp): the write operations (`upsert`, `upsertMany`, `remove`, `removeMany`, `removeAll`) report through a new `reportWriteError()`: "The change could not be saved, so the flight log was not changed. Reason: …". When the database cannot be opened: "The flight log could not be opened. Changes to the flight log cannot be saved." When it cannot be read: "The flight log could not be read." The message on a reset of a damaged file is unchanged.
+  - [FlightLog.cpp](src/flightlog/FlightLog.cpp): the track error says "The GPS track of the flight from %1 could not be saved. The flight is in the log without a track."
+  - The docs of `saveError()` in both classes say that the message can be shown as it is.
+- **Editor closes on failure** ([FlightLogEntryEditor.qml](src/qml/dialogs/FlightLogEntryEditor.qml)).
+  - OK now has the apply role (`DialogButtonBox.ApplyRole`): it emits `applied()` and leaves the dialog open. The page's `onApplied` handlers save the flight and call `accept()` only on success. On failure the dialog stays open with the user's input, so the user can try again or cancel.
+  - A retry of "Add Flight" works because the failed add never entered the list, so the flight's UUID is still free.
+  - The haptic feedback of `CenteringDialog` now comes on a successful save, not on the tap.
+- **Takeoff that cannot be saved** ([FlightLog.cpp](src/flightlog/FlightLog.cpp), `onTakeoffDetected` / `onLandingDetected`).
+  - At takeoff, FlightLog also keeps a copy of the new flight (`m_takeoffFlight`). At landing, if the flight in progress is not in the list and the copy's UUID is `m_currentFlightUuid`, the landing completes the copy and tries `addFlight()` again. If storage works by then, the whole flight is saved.
+  - The landing now saves first and updates the list second, like the other operations. Before, it replaced the list entry first and ignored a failed save; this was the one case where the old dialog text was true.
+  - `m_recorder->clearTrack()` now runs for every flight in progress. Before, a flight missing from the list skipped it, and the recorded track was carried into the next flight.
+  - If the save at landing fails, the list entry keeps its takeoff data, the error dialog appears, and the landing notification still shows the time. The IGC file stays on disk without a reference.
+- **Tested** on the Android emulator (API 36, x86_64, Debug build with `-DFLIGHTLOG=ON`). Storage failures were provoked with `chmod 555` on the app's `files` directory, as for F-06. Takeoffs were simulated with `adb emu geo fix` at Georgetown Exec (KGTU, "USA South" map): first a fix on the ground at 70 kn, then fixes climbing more than 200 ft.
+  - Edit a flight, read-only, OK: the editor stays open with the input ("KEDC" as arrival), and the error dialog with the new text is on top. Writable again, OK: the editor closes, "Flight updated" is toasted, the change is stored.
+  - Add Flight, the same: the editor stays open on failure; after the retry, "Flight added", and the flight is in the database.
+  - Takeoff while read-only: the error dialog appears and the flight is not in the list. Writable again, "End Flight": the complete flight (departure, takeoff 09:16:57, landing, GPS track) is in the list and the database, and the IGC file exists.
+  - Takeoff while writable, landing while read-only: the error dialog appears, the list entry and the database keep the takeoff data only, and the IGC file remains in `tracks/`.
+  - No QML warnings in logcat.
 
 ### F-07 "Show live flight trace" shows off while the map still draws the trace
 

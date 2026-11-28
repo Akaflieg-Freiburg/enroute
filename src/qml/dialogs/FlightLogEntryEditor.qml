@@ -27,10 +27,12 @@ import "../items"
 
 /* Flight log entry editor dialog
  *
- * Usage: set property editFlight, then open(). On accepted, call
- * resultFlight() to get the edited flight: editFlight with the user's
- * changes applied, see FlightLog.applyEdits(). It has the UUID of
- * editFlight.
+ * Usage: set property editFlight, then open(). OK emits applied() and leaves
+ * the dialog open. The handler calls resultFlight() to get the edited flight:
+ * editFlight with the user's changes applied, see FlightLog.applyEdits(). It
+ * has the UUID of editFlight. The handler saves the flight and calls accept()
+ * if that succeeds. Otherwise the dialog stays open with the user's input, so
+ * that the user can try again or cancel.
  *
  * All dates and times are UTC. The date is the date of the takeoff. The other
  * times are placed around the takeoff by FlightLog.createFlight(), and a
@@ -630,7 +632,9 @@ CenteringDialog {
         Button {
             text: qsTr("OK")
             flat: true
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            // Not AcceptRole: that would close the dialog before the flight is
+            // saved, see the usage note at the top of this file
+            DialogButtonBox.buttonRole: DialogButtonBox.ApplyRole
             enabled: flightEditorDialog.acceptableInput
         }
     }

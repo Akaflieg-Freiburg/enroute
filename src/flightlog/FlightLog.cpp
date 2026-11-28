@@ -934,11 +934,14 @@ void Flightlog::FlightLog::onTakeoffDetected(const QString& departureICAO,
     flight.setStartTime(startTime);
     flight.setAircraftCallsign(aircraftCallsign);
 
-    // Add the preliminary flight entry so it appears in the list immediately
+    // Add the preliminary flight entry so it appears in the list immediately.
+    // If it cannot be saved, addFlight() has emitted saveError(). The flight
+    // is then kept in m_takeoffFlight, and onLandingDetected() tries again.
     addFlight(flight);
 
     // Track which flight is in progress by its stable UUID
     m_currentFlightUuid = flight.uuid();
+    m_takeoffFlight = flight;
 
 #ifdef Q_OS_ANDROID
     // Post a notification with sound so the pilot knows takeoff was detected,
@@ -968,10 +971,14 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
                                                 int landingCount)
 {
     auto timeStr = landingTime.toUTC().time().toString(u"HH:mm"_s);
-    // Complete the in-progress flight by UUID lookup
+    // Complete the in-progress flight by UUID lookup. It is not in the list
+    // if it could not be saved at takeoff; then complete the flight as
+    // created at takeoff, and try to add it now.
     const auto row = m_model->row(m_currentFlightUuid);
-    if (row >= 0) {
-        auto flight = m_model->flights().at(row);
+    const bool savedAtTakeoff = row >= 0;
+    if (savedAtTakeoff
+        || (!m_currentFlightUuid.isNull() && m_takeoffFlight.uuid() == m_currentFlightUuid)) {
+        auto flight = savedAtTakeoff ? m_model->flights().at(row) : m_takeoffFlight;
         if (!arrivalICAO.isEmpty()) {
             flight.setArrivalICAO(arrivalICAO);
         }
@@ -990,13 +997,20 @@ void Flightlog::FlightLog::onLandingDetected(const QString& arrivalICAO,
                 m_displayedTrackPath = m_recorder->trackGeoPath();
                 m_displayedTrackFile = m_displayedTrackPath.path().isEmpty() ? QString{} : flight.trackFile();
             } else {
-                emit saveError(tr("Failed to save GPS track for flight from %1.").arg(flight.departureICAO()));
+                emit saveError(tr("The GPS track of the flight from %1 could not be saved. The flight is in the log without a track.").arg(flight.departureICAO()));
             }
         }
         m_recorder->clearTrack();
-        // The start time is unchanged, so the flight keeps its row
-        m_model->replace(row, flight);
-        m_storage->upsert(flight);
+        // Persist first, see addFlight(). On failure, saveError() has been
+        // emitted, and the list is unchanged.
+        if (savedAtTakeoff) {
+            if (m_storage->upsert(flight)) {
+                // The start time is unchanged, so the flight keeps its row
+                m_model->replace(row, flight);
+            }
+        } else {
+            addFlight(flight);
+        }
         emit displayedTrackPathChanged();
     }
 

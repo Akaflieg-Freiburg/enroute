@@ -460,12 +460,13 @@ signals:
      */
     void landingDetected(const QString& time);
 
-    /*! \brief Emitted when saving the flight log database fails
+    /*! \brief Emitted when the flight log or a track cannot be read or saved
      *
-     *  The previously saved flight log data remains intact, but the
-     *  latest change could not be persisted.
+     *  A change that cannot be saved is not made: the list of flights
+     *  always matches what is stored.
      *
-     *  @param message Human-readable error description
+     *  @param message Human-readable error description. It says what
+     *  happened to the flight log and can be shown to the user as it is.
      */
     void saveError(const QString& message);
 
@@ -544,6 +545,11 @@ private:
 
     // UUID of the flight currently being recorded, or null if none
     QUuid m_currentFlightUuid;
+
+    // The flight as created at takeoff. Used at landing if it is not in the
+    // list because it could not be saved at takeoff, and only if its UUID is
+    // m_currentFlightUuid.
+    Flight m_takeoffFlight;
 
     // Filename of the flight whose saved track is displayed, or empty
     QString m_displayedTrackFile;

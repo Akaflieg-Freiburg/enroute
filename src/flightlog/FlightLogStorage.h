@@ -109,7 +109,8 @@ signals:
      *  Always delivered via a queued connection, so it is safe to emit
      *  from the constructor (before any signal connections exist yet).
      *
-     *  @param message Human-readable error description
+     *  @param message Human-readable error description. It says what
+     *  happened to the flight log and can be shown to the user as it is.
      */
     void saveError(const QString& message);
 
@@ -126,6 +127,11 @@ private:
     // Const so it can also be called from loadAll(); emitting a signal doesn't
     // change any observable state of this object.
     void reportError(const QString& message);
+
+    // Report a failed write. The message says that the flight log was not
+    // changed: the write operations change nothing on failure, and FlightLog
+    // changes its list only after a successful write.
+    void reportWriteError(const QString& reason);
 
     // Bind all fields of a flight to a prepared INSERT query, in column order
     static void bindFlight(QSqlQuery& query, const Flight& flight);

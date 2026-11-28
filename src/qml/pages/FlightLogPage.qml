@@ -82,6 +82,17 @@ Page {
         }
     }
 
+    // Called by main.qml for system Back (Android) and Escape (desktop) before
+    // it pops the page. In selection mode, Back leaves selection mode, like the
+    // arrow in the header. Returns true if the key was handled.
+    function handleBack(): bool {
+        if (page.selectionMode) {
+            page.exitSelectionMode()
+            return true
+        }
+        return false
+    }
+
     // The selection follows the list: a flight that leaves the list is
     // deselected, so that the count in the header and the flights that the
     // export and remove actions operate on in selection mode are always ones on

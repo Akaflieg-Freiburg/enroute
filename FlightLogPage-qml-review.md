@@ -12,7 +12,7 @@ The page is clean at the type level: the project's `all_qmllint` target reports 
 | F-02 | Empty selection in selection mode exports the whole log | High | Code read | Done |
 | F-03 | Row stays swiped open after "No" in the remove dialog | High | Code read, sibling pages | Done |
 | F-04 | "Save as…" leaves selection mode before the save has a result | Medium | Code read | Done |
-| F-05 | System Back pops the page in selection mode | Medium | Code read | Open |
+| F-05 | System Back pops the page in selection mode | Medium | Code read | Done |
 | F-06 | Success toasts are unconditional although the operations can fail | Medium | Analysis trace | Open |
 | F-07 | "Show live flight trace" shows off while the map still draws the trace | Medium | Code read | Open |
 | F-08 | Detection is off by default, but the page behaves as if it were on | Medium | Code read | Open |
@@ -100,12 +100,27 @@ Four further points need a run to settle and are listed under [To verify](#to-ve
   - No QML warnings in logcat.
   - Not tested: the synchronous error paths ("Another file save operation is already in progress", "Unable to open the system file dialog"); they cannot be triggered from the UI.
 
-### F-05 System Back pops the page in selection mode
+### F-05 System Back pops the page in selection mode — done
 
 - **Where**: [FlightLogPage.qml:100-107](src/qml/pages/FlightLogPage.qml#L100-L107)
 - **What happens**: The header arrow leaves selection mode. The Android back key or gesture closes the page instead and discards the selection. Escape on desktop does not leave selection mode either.
 - **Why**: [main.qml:917-930](src/qml/main.qml#L917-L930) pops the StackView unconditionally, and this page has no `Keys` handler.
-- **Proposed fix**: Handle `Key_Back` (and Escape) on the page when `selectionMode` is true, following [Manual.qml:113](src/qml/pages/Manual.qml#L113).
+- **Tried, does not work** (2026-11-28): a page-level `Keys.onReleased` that accepts Back and Escape in selection mode. On the Android emulator (API 36, back gesture), Back in selection mode still popped the page.
+  - **Cause**: the page never has active focus when it was opened from the drawer. `StackView` focuses the pushed page, but the drawer, closing right after, restores focus to the item that had it before it opened: the drawer button on the map page. Back then travels map page → StackView, and the handler in `main.qml` pops. Temporary logging showed `activeFocusItem` = `MapButton` and no call of the page handler.
+  - The same applies to every page opened from the drawer, including the WebView back handling in [Manual.qml:113](src/qml/pages/Manual.qml#L113).
+  - Side finding: `adb shell input keyevent 4` reaches `MobileAdaptor.onBackInvoked` twice on API 36 (pop, then quit at depth 1). The back gesture and the 3-button navigation bar deliver once. Test Back with those, not with `input keyevent`.
+- **Status**: Done. Fixed on 2026-11-28.
+- **Fix**: A page hook instead of a page key handler.
+  - `FlightLogPage` defines `function handleBack(): bool`. In selection mode it leaves selection mode and returns true; otherwise it returns false.
+  - `main.qml` asks the current page first, through `stackView.currentPageHandlesBack()`: in the StackView's `Keys.onReleased` for Back and Escape, and in the Android `onClosing` fallback. It pops only if the page did not handle the key. Escape never pops.
+  - This works wherever focus is, so it also answers the question below for this page.
+- **Tested** on the Android emulator (API 36, x86_64, Debug build with `-DFLIGHTLOG=ON`), with the back gesture:
+  - Selection mode, Back: selection mode ends, the page stays. Back again: back to the map, the app keeps running.
+  - Selection mode with the filter field focused and the keyboard open: the first Back closes the keyboard and keeps the selection; the second leaves selection mode.
+  - Settings page (no hook), Back: back to the map.
+  - No QML warnings in logcat.
+  - Not tested: Escape on the desktop.
+- **Still open**: [Manual.qml:113](src/qml/pages/Manual.qml#L113) has the same focus problem for its WebView "go back" and could move to `handleBack()`.
 - **To discuss**: The `onClosing` fallback in `main.qml` bypasses page-level key handlers when the window rather than the StackView has focus. Is a page-level "can go back" hook worth adding for both paths?
 
 ### F-06 Success toasts are unconditional although the operations can fail

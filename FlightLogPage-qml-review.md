@@ -10,8 +10,8 @@ The page is clean at the type level: the project's `all_qmllint` target reports 
 |----|---------|----------|-------------|--------|
 | F-01 | Long press selects the flight, release deselects it again | High | Reproduced in an offscreen test | **Done** |
 | F-02 | Empty selection in selection mode exports the whole log | High | Code read | Done |
-| F-03 | Row stays swiped open after "No" in the remove dialog | High | Code read, sibling pages | Open |
-| F-04 | "Save as…" leaves selection mode before the save has a result | Medium | Code read | Open |
+| F-03 | Row stays swiped open after "No" in the remove dialog | High | Code read, sibling pages | Done |
+| F-04 | "Save as…" leaves selection mode before the save has a result | Medium | Code read | Done |
 | F-05 | System Back pops the page in selection mode | Medium | Code read | Open |
 | F-06 | Success toasts are unconditional although the operations can fail | Medium | Analysis trace | Open |
 | F-07 | "Show live flight trace" shows off while the map still draws the trace | Medium | Code read | Open |
@@ -70,20 +70,35 @@ Four further points need a run to settle and are listed under [To verify](#to-ve
 - **Tested**: Build and `all_qmllint` with `-DFLIGHTLOG=ON`. Not run in the app.
 - **Still open**: Should "Export" outside selection mode follow the filter? It currently exports the whole log, and the comment documents that.
 
-### F-03 Row stays swiped open after "No" in the remove dialog
+### F-03 Row stays swiped open after "No" in the remove dialog — done
 
 - **Where**: [FlightLogPage.qml:568-572](src/qml/pages/FlightLogPage.qml#L568-L572), empty handler at [811-812](src/qml/pages/FlightLogPage.qml#L811-L812)
 - **What happens**: After a full swipe and "No", the row shows only the trash icon until the user swipes it back by hand. A tap on the stuck row does not emit `clicked`, so in selection mode it cannot be toggled.
 - **Why**: `swipe.onCompleted` opens the dialog but never closes the swipe. `SwipeToDeleteDelegate` has no auto-close.
 - **Evidence**: All three sibling pages call `iDel.swipe.close()` right after opening the dialog, e.g. [AircraftLibrary.qml:102-108](src/qml/pages/AircraftLibrary.qml#L102-L108) with the comment "Otherwise it stays, so return it to its normal position".
-- **Proposed fix**: Do the same here.
+- **Status**: Done. Fixed on 2026-11-28.
+- **Fix**: `swipe.onCompleted` calls `iDel.swipe.close()` right after opening the dialog, with the same comment as the sibling pages. Closing at once, rather than in `onRejected`, keeps the shared dialog free of a reference to a delegate that may be recycled while it is open.
+- **Tested** on the Android emulator (API 36, x86_64, Debug build with `-DFLIGHTLOG=ON`), with three flights:
+  - Full swipe, then "No": the row is back in its normal position while the dialog is still open, and stays there.
+  - In selection mode, full swipe, then "No", then a tap on the row: the row is selected.
+  - Full swipe, then "Yes": the flight is removed from the list and the database, the toast shows, and the row that moves up is not swiped.
+  - No QML warnings in logcat.
 
-### F-04 "Save as…" leaves selection mode before the save has a result
+### F-04 "Save as…" leaves selection mode before the save has a result — done
 
 - **Where**: [FlightLogPage.qml:224-225](src/qml/pages/FlightLogPage.qml#L224-L225), [240-241](src/qml/pages/FlightLogPage.qml#L240-L241)
 - **What happens**: On Android, cancelling the system file dialog or a write failure loses the selection, which then has to be rebuilt. The Share handlers on the same page keep the selection on abort and on error.
 - **Why**: `FileExchange.saveContent` returns `void` and is asynchronous on Android; the result arrives through `saveContentResult` ([FileExchange_Abstract.h:126-140](src/platform/FileExchange_Abstract.h#L126-L140)). The page calls `exitSelectionMode()` on the next line. The only consumer of the result is `ImportManager.qml`, which knows nothing about the page.
-- **Proposed fix**: Exit selection mode from a page-level `Connections` on `FileExchange.saveContentResult`, only for an empty result of a save that this page started.
+- **Status**: Done. Fixed on 2026-11-28.
+- **Fix**: The two header "Save as…" items set `page.savePending` and no longer call `exitSelectionMode()`. A page-level `Connections` on `FileExchange.saveContentResult` clears the flag and leaves selection mode only for an empty (success) result. Abort and errors keep the selection. `ImportManager.qml` still shows the toast or error dialog.
+  - The flag is set before `saveContent()`, because two errors are emitted synchronously from inside it.
+  - The flag keeps the page from reacting to saves started elsewhere in the app; the signal is shared.
+  - The per-flight "Save as…" items are unchanged: their menu is hidden in selection mode.
+- **Tested** on the Android emulator (API 36, x86_64, Debug build with `-DFLIGHTLOG=ON`), with two of three flights selected:
+  - "Save as Flightlog JSON…", then Back in the system file dialog: toast "Aborted", both flights still selected.
+  - "Save as ForeFlight CSV…", then Save: toast "File saved", selection mode ends. The file holds the two selected flights in log order, not in the order they were ticked (confirms the F-02 change).
+  - No QML warnings in logcat.
+  - Not tested: the synchronous error paths ("Another file save operation is already in progress", "Unable to open the system file dialog"); they cannot be triggered from the UI.
 
 ### F-05 System Back pops the page in selection mode
 

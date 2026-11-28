@@ -63,6 +63,25 @@ Page {
         page.selectedUuids = []
     }
 
+    // True from a header "Save as…" until its result arrives. On Android,
+    // FileExchange.saveContent() returns at once and reports the result later
+    // through saveContentResult(). ImportManager shows the toast or error.
+    property bool savePending: false
+
+    Connections {
+        target: FileExchange
+
+        function onSaveContentResult(result) {
+            if (!page.savePending) {
+                return
+            }
+            page.savePending = false
+            if (result === "") {
+                page.exitSelectionMode()
+            }
+        }
+    }
+
     // The selection follows the list: a flight that leaves the list is
     // deselected, so that the count in the header and the flights that the
     // export and remove actions operate on in selection mode are always ones on
@@ -227,8 +246,8 @@ Page {
                         highlighted = false
                         var data = FlightLog.exportToForeFlight(page.selectedUuids)
                         if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        page.savePending = true
                         FileExchange.saveContent(data, "text/*", "csv", qsTr("FlightLog"))
-                        page.exitSelectionMode()
                     }
                 }
 
@@ -243,8 +262,8 @@ Page {
                         highlighted = false
                         var data = FlightLog.exportToJSON(page.selectedUuids)
                         if (data.byteLength === 0) { shareErrorDialog.text = qsTr("No data to export."); shareErrorDialog.open(); return }
+                        page.savePending = true
                         FileExchange.saveContent(data, "text/*", "json", qsTr("FlightLog"))
-                        page.exitSelectionMode()
                     }
                 }
 
@@ -574,6 +593,9 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     removeDialog.flightUuid = flightRow.flight.uuidString
                     removeDialog.open()
+                    // The row is removed from the model if the user confirms.
+                    // Otherwise it stays, so return it to its normal position.
+                    iDel.swipe.close()
                 }
             }
 

@@ -75,6 +75,16 @@ public:
 
     void resetDetection() override;
 
+    /*! \brief Ground speed above which the aircraft is taken to be flying
+     *
+     *  This is the minimum speed of the current aircraft, or 50 km/h if
+     *  the aircraft has none configured. It is the takeoff threshold of
+     *  this detector.
+     *
+     *  @returns The speed threshold
+     */
+    [[nodiscard]] static auto takeoffSpeed() -> Units::Speed;
+
 private:
     Q_DISABLE_COPY_MOVE(AirplaneFlightDetector)
 
@@ -107,7 +117,6 @@ private:
     static constexpr qint64 landingConfirmTimeoutS = 60;        ///< Confirm landing (near an airfield, or the airfield-independent outlanding check) if speed stays low for this many seconds
 
     // Helpers
-    [[nodiscard]] auto aircraftMinimumSpeed() const -> Units::Speed;
     void clearPendingState();   ///< Reset all pending members to defaults; does not change state or emit signals
 };
 

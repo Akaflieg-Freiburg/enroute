@@ -52,7 +52,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning:
         }
 
         // Speed must exceed takeoff threshold
-        if (groundSpeed < aircraftMinimumSpeed()) {
+        if (groundSpeed < takeoffSpeed()) {
             return;
         }
 
@@ -84,7 +84,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning:
     case TakeoffPhase: {
         // Abort takeoff detection if speed drops significantly
         // or if more than 1 minute has elapsed without altitude confirmation
-        if ((groundSpeed.isFinite() && groundSpeed < takeoffAbortSpeedFactor * aircraftMinimumSpeed())
+        if ((groundSpeed.isFinite() && groundSpeed < takeoffAbortSpeedFactor * takeoffSpeed())
             || (m_pendingStartTime.isValid() && m_pendingStartTime.secsTo(info.timestamp()) > takeoffConfirmTimeoutS)) {
             resetDetection();
             return;
@@ -115,7 +115,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning:
         // headwind — so low speed is only trusted close to the ground.
         auto altAGL = info.trueAltitudeAGL();
         const bool nearGround = altAGL.isFinite() && altAGL < Units::Distance::fromFT(landingAltitudeAGLFT);
-        const bool lowSpeed = groundSpeed.isFinite() && groundSpeed < aircraftMinimumSpeed();
+        const bool lowSpeed = groundSpeed.isFinite() && groundSpeed < takeoffSpeed();
         if (nearGround && lowSpeed) {
             if (!m_lowSpeedEntryTime.isValid()) {
                 m_lowSpeedEntryTime = info.timestamp();
@@ -135,7 +135,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning:
         // above the minimum, so it won't be affected.
         if (m_pendingStartTime.isValid()
             && m_pendingStartTime.secsTo(info.timestamp()) > static_cast<qint64>(maxFlightDurationH * 3600)
-            && (!groundSpeed.isFinite() || groundSpeed < aircraftMinimumSpeed())) {
+            && (!groundSpeed.isFinite() || groundSpeed < takeoffSpeed())) {
             endFlight();
             return;
         }
@@ -173,7 +173,7 @@ void Flightlog::AirplaneFlightDetector::processPositionUpdate(const Positioning:
 
     case LandingPhase: {
         // Confirmed landing: speed drops below threshold or timeout
-        if ((groundSpeed.isFinite() && groundSpeed < aircraftMinimumSpeed())
+        if ((groundSpeed.isFinite() && groundSpeed < takeoffSpeed())
             || (m_landingPhaseEntryTime.isValid() && m_landingPhaseEntryTime.secsTo(info.timestamp()) > landingConfirmTimeoutS)) {
             // Use the time we first went low as the landing time
             auto landingTime = m_landingPhaseEntryTime.isValid() ? m_landingPhaseEntryTime : info.timestamp();
@@ -286,7 +286,7 @@ void Flightlog::AirplaneFlightDetector::clearPendingState()
 }
 
 
-auto Flightlog::AirplaneFlightDetector::aircraftMinimumSpeed() const -> Units::Speed
+auto Flightlog::AirplaneFlightDetector::takeoffSpeed() -> Units::Speed
 {
     auto minSpeed = GlobalObject::navigator()->aircraft().minimumSpeed();
     if (minSpeed.isFinite()) {

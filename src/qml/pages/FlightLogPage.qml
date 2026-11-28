@@ -42,6 +42,11 @@ Page {
     property bool selectionMode: false
     property var selectedUuids: []
 
+    // True if the export and remove actions have flights to operate on: the
+    // selection in selection mode, the whole flight log otherwise.
+    readonly property bool hasActionTarget: selectionMode ? selectedUuids.length > 0
+                                                          : FlightLog.count > 0
+
     function toggleSelection(uuid) {
         var arr = page.selectedUuids.slice()
         var pos = arr.indexOf(uuid)
@@ -59,10 +64,11 @@ Page {
     }
 
     // The selection follows the list: a flight that leaves the list is
-    // deselected, so that the count in the header, and the flights that the
-    // export and remove actions operate on, are always the ones on screen. A
-    // flight leaves the list when the filter hides it, or when it is removed
-    // from the flight log.
+    // deselected, so that the count in the header and the flights that the
+    // export and remove actions operate on in selection mode are always ones on
+    // screen. A flight leaves the list when the filter hides it, or when it is
+    // removed from the flight log. Outside selection mode, export and clear
+    // operate on the whole flight log, regardless of the filter.
     Connections {
         target: flightProxy
 
@@ -178,7 +184,7 @@ Page {
 
                 MenuItem {
                     text: page.isAndroidOrIos ? qsTr("Share as ForeFlight CSV…") : qsTr("Export as ForeFlight CSV…")
-                    enabled: FlightLog.count > 0
+                    enabled: page.hasActionTarget
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -195,7 +201,7 @@ Page {
 
                 MenuItem {
                     text: page.isAndroidOrIos ? qsTr("Share as Flightlog JSON…") : qsTr("Export as Flightlog JSON…")
-                    enabled: FlightLog.count > 0
+                    enabled: page.hasActionTarget
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -214,7 +220,7 @@ Page {
                     text: qsTr("Save as ForeFlight CSV…")
                     visible: page.isAndroid
                     height: visible ? implicitHeight : 0
-                    enabled: FlightLog.count > 0
+                    enabled: page.hasActionTarget
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -230,7 +236,7 @@ Page {
                     text: qsTr("Save as Flightlog JSON…")
                     visible: page.isAndroid
                     height: visible ? implicitHeight : 0
-                    enabled: FlightLog.count > 0
+                    enabled: page.hasActionTarget
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -307,7 +313,7 @@ Page {
 
                 MenuItem {
                     text: page.selectionMode ? qsTr("Remove Selected Flights…") : qsTr("Clear Flight Log")
-                    enabled: page.selectionMode ? page.selectedUuids.length > 0 : FlightLog.count > 0
+                    enabled: page.hasActionTarget
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()

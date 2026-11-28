@@ -661,12 +661,18 @@ auto Flightlog::FlightLog::flightsForUuids(const QStringList& uuids) const -> QL
     if (uuids.isEmpty()) {
         return allFlights;
     }
-    QList<Flight> result;
+    QSet<QUuid> ids;
+    ids.reserve(uuids.size());
     for (const QString& uuid : uuids) {
-        const auto id = QUuid::fromString(uuid);
-        const auto it = std::ranges::find_if(allFlights, [&](const Flight& f) { return f.uuid() == id; });
-        if (it != allFlights.end()) {
-            result.append(*it);
+        ids.insert(QUuid::fromString(uuid));
+    }
+
+    // Walk the log rather than the list, so that the result is in log order
+    // and not in the order in which the user selected the flights
+    QList<Flight> result;
+    for (const auto& flight : allFlights) {
+        if (ids.contains(flight.uuid())) {
+            result.append(flight);
         }
     }
     return result;

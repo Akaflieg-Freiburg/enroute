@@ -9,7 +9,7 @@ The page is clean at the type level: the project's `all_qmllint` target reports 
 | ID | Finding | Severity | Verified by | Status |
 |----|---------|----------|-------------|--------|
 | F-01 | Long press selects the flight, release deselects it again | High | Reproduced in an offscreen test | **Done** |
-| F-02 | Empty selection in selection mode exports the whole log | High | Code read | Open |
+| F-02 | Empty selection in selection mode exports the whole log | High | Code read | Done |
 | F-03 | Row stays swiped open after "No" in the remove dialog | High | Code read, sibling pages | Open |
 | F-04 | "Save as…" leaves selection mode before the save has a result | Medium | Code read | Open |
 | F-05 | System Back pops the page in selection mode | Medium | Code read | Open |
@@ -51,7 +51,7 @@ Four further points need a run to settle and are listed under [To verify](#to-ve
   - Slow swipe lasting longer than 800 ms: swipe completes, no long press, no click.
 - **Still open**: F-02 stays reachable by deselecting the last row or by filtering.
 
-### F-02 Empty selection in selection mode exports the whole log
+### F-02 Empty selection in selection mode exports the whole log — done
 
 - **Where**: [FlightLogPage.qml:181-238](src/qml/pages/FlightLogPage.qml#L181-L238); comment at [61-65](src/qml/pages/FlightLogPage.qml#L61-L65)
 - **What happens**: The four header export items ("Share/Export as ForeFlight CSV…", "… Flightlog JSON…", and the two Android "Save as…" items) pass `page.selectedUuids` and are enabled by `FlightLog.count > 0` only. With nothing selected they send every flight, including flights hidden by the filter, toast "Flight log shared" and leave selection mode.
@@ -62,8 +62,13 @@ Four further points need a run to settle and are listed under [To verify](#to-ve
 - **Why**: `flightsForUuids` returns all flights for an empty list ([FlightLog.cpp:658-662](src/flightlog/FlightLog.cpp#L658-L662)). The "Remove Selected Flights…" item at [310](src/qml/pages/FlightLogPage.qml#L310) guards this state correctly; the export items do not.
 - **Also**: The comment at 61-65 says the export and remove actions always operate on the flights on screen. That is not true for export, in or out of selection mode.
 - **Also**: A non-empty selection is exported in the order the flights were ticked, not in log order.
-- **Proposed fix**: In selection mode, enable the export items only with a non-empty selection.
-- **To discuss**: Outside selection mode with a filter active, should "Export" mean the whole log or the filtered list? Should C++ always export in log order?
+- **Status**: Done. Fixed on 2026-11-28.
+- **Fix**:
+  - A page property `hasActionTarget` (non-empty selection in selection mode, non-empty log otherwise) now enables the four export items and "Remove Selected Flights…" / "Clear Flight Log".
+  - The comment now says that export and clear operate on the whole log, regardless of the filter, outside selection mode.
+  - `flightsForUuids` walks the log and keeps the flights whose UUID is in the selection, so exports are in log order. This also replaces the quadratic lookup with a linear one.
+- **Tested**: Build and `all_qmllint` with `-DFLIGHTLOG=ON`. Not run in the app.
+- **Still open**: Should "Export" outside selection mode follow the filter? It currently exports the whole log, and the comment documents that.
 
 ### F-03 Row stays swiped open after "No" in the remove dialog
 

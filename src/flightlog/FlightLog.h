@@ -504,7 +504,7 @@ private:
     // only if the coordinate isn't already set (e.g. from a real GPS fix)
     static void resolveCoordinates(Flight& flight);
 
-    // Collect the flights matching the given UUID strings; returns all flights if the list is empty
+    // Collect the flights matching the given UUID strings, in log order; returns all flights if the list is empty
     [[nodiscard]] auto flightsForUuids(const QStringList& uuids) const -> QList<Flight>;
 
     // Helper to parse a date+time string to a QDateTime in UTC. Returns an

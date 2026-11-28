@@ -851,6 +851,15 @@ AppWindow {
         }
         onCurrentItemChanged: focusCurrentPage()
 
+        // Let the current page handle Back (and Escape) first, e.g. to leave a
+        // mode. Pages that want this define "function handleBack(): bool" and
+        // return true if they handled the key. A Keys handler on the page
+        // itself is not reliable: a page opened from the drawer does not have
+        // active focus, because the closing drawer restores focus to the map.
+        function currentPageHandlesBack() {
+            return (currentItem !== null) && (typeof currentItem.handleBack === "function") && currentItem.handleBack() // qmllint disable missing-property
+        }
+
         // Fill the window. This formerly used SafeInsets.wHeight/wWidth to work
         // around ApplicationWindow not tracking its size in the Android split
         // view; current Qt versions track the window size correctly.
@@ -915,6 +924,10 @@ AppWindow {
         }
 
         Keys.onReleased: function (event) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && stackView.currentPageHandlesBack()) {
+                event.accepted = true
+                return
+            }
             if (event.key === Qt.Key_Back) {
                 if (stackView.depth > 1)
                     stackView.pop()
@@ -1231,6 +1244,11 @@ AppWindow {
         // Use this hack only on the Android platform
         if (Qt.platform.os !== "android")
             return
+
+        if (stackView.currentPageHandlesBack()) {
+            close.accepted = false
+            return
+        }
 
         if(stackView.depth > 1) {
             close.accepted = false // prevent closing of the app
